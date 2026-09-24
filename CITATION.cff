@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "Divisible-Sandpile-Percolation: a Lean 4 formalization of Quantitative explosion and percolation of the divisible sandpile"
+abstract: >-
+  A machine-checked Lean 4 / mathlib formalization of the paper "Quantitative
+  explosion and percolation of the divisible sandpile" (Bou-Rabee and
+  Panagiotis, arXiv:2609.02829): for every d >= 2 the toppled set of the
+  divisible sandpile percolates for every mean close enough to one
+  (Theorem 1.1), the level sets {u_t > c h(t)} of the finite-time odometer at
+  mean one percolate at an explicit dimension-dependent scale h(t)
+  (Theorem 1.2), and the quantitative explosion and scaling results at mean
+  one in every dimension (Theorem 1.3), together with every lemma,
+  proposition and corollary of the paper.  The results the paper cites
+  without proof are taken as explicit hypotheses.  The development contains
+  no sorry and no custom axiom.
+type: software
+authors:
+  - family-names: Bou-Rabee
+    given-names: Ahmed
+keywords:
+  - Lean
+  - mathlib
+  - formal verification
+  - divisible sandpile
+  - percolation
+  - optimal stopping
+  - membrane model
+license: Apache-2.0
+# Add a Zenodo DOI here once an archived release is minted.
+repository-code: "https://github.com/nitromannitol/Divisible-Sandpile-Percolation"
+references:
+  - type: article
+    title: "Quantitative explosion and percolation of the divisible sandpile"
+    authors:
+      - family-names: Bou-Rabee
+        given-names: Ahmed
+      - family-names: Panagiotis
+        given-names: Christoforos
+    url: "https://arxiv.org/abs/2609.02829"
+    identifiers:
+      - type: other
+        value: "arXiv:2609.02829"
+    notes: "The paper formalized by this repository."

@@ -1,0 +1,122 @@
+/-
+Expected maxima of finite families with a common sub-Gaussian
+exponential bound, without an independence hypothesis.
+-/
+import Sandpile.Support.GaussianIntegrability
+import Sandpile.Support.CrossingContinuity
+import Sandpile.Support.ExponentialMoments
+import Mathlib.Probability.Moments.SubGaussian
+
+open LatticeProb
+
+open MeasureTheory ProbabilityTheory Set
+open scoped BigOperators NNReal ENNReal
+
+noncomputable section
+namespace Sandpile
+
+variable {I Ω : Type*} [Fintype I] [Nonempty I] [MeasurableSpace Ω]
+  {μ : Measure Ω}
+
+lemma lipschitzWith_finiteMaximum : LipschitzWith 1 (finiteMaximum (I := I)) := by
+  apply LipschitzWith.of_dist_le_mul
+  intro x y
+  simp only [NNReal.coe_one, one_mul, Real.dist_eq]
+  exact abs_finiteMaximum_sub_le x y (fun i => by
+    simpa only [Real.dist_eq] using dist_le_pi_dist x y i)
+
+lemma finiteMaximum_abs_nonneg (f : I → ℝ) : 0 ≤ finiteMaximum (fun i => |f i|) := by
+  let i : I := Classical.choice inferInstance
+  exact (abs_nonneg (f i)).trans (le_finiteMaximum (fun j => |f j|) i)
+
+lemma finiteMaximum_abs_le_sum (f : I → ℝ) : finiteMaximum (fun i => |f i|) ≤ ∑ i, |f i| := by
+  apply (finiteMaximum_le_iff _ _).mpr
+  intro i
+  exact Finset.single_le_sum (f := fun j => |f j|) (fun j _ => abs_nonneg (f j)) (Finset.mem_univ i)
+
+lemma aemeasurable_finiteMaximum_abs {X : I → Ω → ℝ} (hX : ∀ i, AEMeasurable (X i) μ) :
+    AEMeasurable (fun ω => finiteMaximum (fun i => |X i ω|)) μ := by
+  exact lipschitzWith_finiteMaximum.continuous.measurable.comp_aemeasurable
+    (aemeasurable_pi_lambda _ (fun i => (hX i).abs))
+
+lemma integrable_finiteMaximum_abs {X : I → Ω → ℝ} (hX : ∀ i, Integrable (X i) μ) :
+    Integrable (fun ω => finiteMaximum (fun i => |X i ω|)) μ := by
+  refine Integrable.mono' (integrable_finsetSum Finset.univ (fun i _ => (hX i).abs))
+    (aemeasurable_finiteMaximum_abs (fun i => (hX i).aemeasurable)).aestronglyMeasurable ?_
+  filter_upwards with ω
+  rw [Real.norm_eq_abs, abs_of_nonneg (finiteMaximum_abs_nonneg _)]
+  exact finiteMaximum_abs_le_sum _
+
+lemma integrable_exp_abs_of_subgaussian {X : Ω → ℝ} {c : ℝ≥0}
+    (hX : HasSubgaussianMGF X c μ) (a : ℝ) : Integrable (fun ω => Real.exp (a * |X ω|)) μ := by
+  refine Integrable.mono' ((hX.integrable_exp_mul a).add (hX.integrable_exp_mul (-a)))
+    (Real.measurable_exp.comp_aemeasurable (hX.aemeasurable.abs.const_mul a)).aestronglyMeasurable ?_
+  filter_upwards with ω
+  simpa only [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Pi.add_apply] using exp_abs_le_exp_add a (X ω)
+
+lemma integral_exp_abs_le_of_subgaussian {X : Ω → ℝ} {c : ℝ≥0}
+    (hX : HasSubgaussianMGF X c μ) (a : ℝ) :
+    (∫ ω, Real.exp (a * |X ω|) ∂μ) ≤ 2 * Real.exp ((c : ℝ) * a ^ 2 / 2) := by
+  calc
+    _ ≤ ∫ ω, Real.exp (a * X ω) + Real.exp (-a * X ω) ∂μ :=
+      integral_mono (integrable_exp_abs_of_subgaussian hX a)
+        ((hX.integrable_exp_mul a).add (hX.integrable_exp_mul (-a))) (fun ω => exp_abs_le_exp_add a (X ω))
+    _ = (∫ ω, Real.exp (a * X ω) ∂μ) + ∫ ω, Real.exp (-a * X ω) ∂μ :=
+      integral_add (hX.integrable_exp_mul a) (hX.integrable_exp_mul (-a))
+    _ ≤ Real.exp ((c : ℝ) * a ^ 2 / 2) + Real.exp ((c : ℝ) * (-a) ^ 2 / 2) :=
+      add_le_add (hX.mgf_le a) (hX.mgf_le (-a))
+    _ = _ := by rw [neg_sq]; ring
+
+lemma exp_finiteMaximum_le_sum (f : I → ℝ) (a : ℝ) :
+    Real.exp (a * finiteMaximum f) ≤ ∑ i, Real.exp (a * f i) := by
+  obtain ⟨i, hi⟩ := finiteMaximum_mem f
+  rw [hi]
+  exact Finset.single_le_sum (f := fun j => Real.exp (a * f j)) (fun j _ => (Real.exp_pos _).le) (Finset.mem_univ i)
+
+lemma integrable_exp_finiteMaximum_abs {X : I → Ω → ℝ} {c : ℝ≥0}
+    (hX : ∀ i, HasSubgaussianMGF (X i) c μ) (a : ℝ) :
+    Integrable (fun ω => Real.exp (a * finiteMaximum (fun i => |X i ω|))) μ := by
+  refine Integrable.mono' (integrable_finsetSum Finset.univ (fun i _ => integrable_exp_abs_of_subgaussian (hX i) a))
+    (Real.measurable_exp.comp_aemeasurable
+      ((aemeasurable_finiteMaximum_abs (fun i => (hX i).aemeasurable)).const_mul a)).aestronglyMeasurable ?_
+  filter_upwards with ω
+  rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+  exact exp_finiteMaximum_le_sum _ a
+
+lemma integral_exp_finiteMaximum_abs_le {X : I → Ω → ℝ} {c : ℝ≥0}
+    (hX : ∀ i, HasSubgaussianMGF (X i) c μ) (a : ℝ) :
+    (∫ ω, Real.exp (a * finiteMaximum (fun i => |X i ω|)) ∂μ) ≤
+      (2 * Fintype.card I) * Real.exp ((c : ℝ) * a ^ 2 / 2) := by
+  calc
+    _ ≤ ∫ ω, ∑ i, Real.exp (a * |X i ω|) ∂μ :=
+      integral_mono (integrable_exp_finiteMaximum_abs hX a)
+        (integrable_finsetSum Finset.univ (fun i _ => integrable_exp_abs_of_subgaussian (hX i) a))
+        (fun ω => exp_finiteMaximum_le_sum _ a)
+    _ = ∑ i, ∫ ω, Real.exp (a * |X i ω|) ∂μ :=
+      integral_finsetSum Finset.univ (fun i _ => integrable_exp_abs_of_subgaussian (hX i) a)
+    _ ≤ ∑ _ : I, 2 * Real.exp ((c : ℝ) * a ^ 2 / 2) :=
+      Finset.sum_le_sum (fun i _ => integral_exp_abs_le_of_subgaussian (hX i) a)
+    _ = _ := by simp; ring
+
+variable [IsProbabilityMeasure μ]
+
+lemma integral_finiteMaximum_abs_le {X : I → Ω → ℝ} {c : ℝ≥0}
+    (hX : ∀ i, HasSubgaussianMGF (X i) c μ) :
+    (∫ ω, finiteMaximum (fun i => |X i ω|) ∂μ) ≤
+      (1 + (c : ℝ) / 2) * Real.sqrt (Real.log (2 * Fintype.card I)) := by
+  have hcard : (1 : ℝ) ≤ Fintype.card I := by exact_mod_cast Fintype.card_pos (α := I)
+  have hlog : 0 < Real.log (2 * Fintype.card I) := Real.log_pos (by linarith)
+  let a : ℝ := Real.sqrt (Real.log (2 * Fintype.card I))
+  have ha : 0 < a := Real.sqrt_pos.mpr hlog
+  have ha2 : a ^ 2 = Real.log (2 * Fintype.card I) := Real.sq_sqrt hlog.le
+  have hi := integrable_finiteMaximum_abs (fun i => (hX i).integrable)
+  have hj := convexOn_exp.map_integral_le Real.continuous_exp.continuousOn isClosed_univ
+    (ae_of_all μ (fun _ => mem_univ _)) (hi.const_mul a) (integrable_exp_finiteMaximum_abs hX a)
+  rw [integral_const_mul] at hj
+  have hb := hj.trans (integral_exp_finiteMaximum_abs_le hX a)
+  have hh := Real.log_le_log (Real.exp_pos _) hb
+  rw [Real.log_exp, Real.log_mul (by positivity) (Real.exp_ne_zero _), Real.log_exp] at hh
+  change _ ≤ (1 + (c : ℝ) / 2) * a
+  nlinarith
+
+end Sandpile

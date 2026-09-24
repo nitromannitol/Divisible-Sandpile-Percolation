@@ -1,0 +1,113 @@
+/-
+The positive-probability infinite-scale crossing event has probability one.
+A bounded Hilbert basis identifies the noise coordinates. Removing a finite
+prefix changes the ball fields by a bounded multiple of the crossing scale,
+so the countable chain event agrees with an event in every coordinate tail.
+A common tail representative and Kolmogorov's law complete the upgrade.
+-/
+import Sandpile.Support.LimBoundedBasis
+import Sandpile.Support.LimKernelL1
+import Sandpile.Support.LimNoiseProjection
+import Sandpile.Support.LimChainTail
+
+open MeasureTheory ProbabilityTheory Set Filter InnerProductSpace
+open Sandpile.Continuum Sandpile.Support Sandpile.Frozen.FixedScaleCrossings
+open scoped ENNReal NNReal RealInnerProductSpace
+
+theorem Sandpile.Support.exists_finiteNoiseRemainder_bound {Ω ι : Type*} {d : ℕ}
+    (hd : d = 2 ∨ d = 3) (W : (Space d → ℝ) → Ω → ℝ)
+    (b : ι → Lp ℝ 2 (volume : Measure (Space d)))
+    (hb : ∀ i, MemLp (fun y => b i y) ∞ volume) (q : Finset ι) (ω : Ω) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℝ, 0 < s → s ≤ 1 → ∀ u : Space 2,
+      |ballField d W s u ω - ballField d (Sandpile.Support.finiteNoiseRemainder W b q) s u ω|
+        ≤ C * crossScale d s := by
+  classical
+  choose C hC0 hC using fun i =>
+    Sandpile.Support.exists_ballKernel_pairing_bound hd (fun y => b i y) (hb i)
+  let D : ℝ := ∑ i ∈ q, C i * |W (fun y => b i y) ω|
+  refine ⟨D, Finset.sum_nonneg (fun i _ => mul_nonneg (hC0 i) (abs_nonneg _)), ?_⟩
+  intro s hs hs1 u
+  change |W (ballKernel d s u) ω - (W (ballKernel d s u) ω -
+    ∑ i ∈ q, (∫ y, ballKernel d s u y * b i y) * W (fun y => b i y) ω)| ≤ _
+  rw [sub_sub_cancel]
+  calc |∑ i ∈ q, (∫ y, ballKernel d s u y * b i y) * W (fun y => b i y) ω| ≤
+      ∑ i ∈ q, |(∫ y, ballKernel d s u y * b i y) * W (fun y => b i y) ω| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ i ∈ q, C i * crossScale d s * |W (fun y => b i y) ω| := by
+      apply Finset.sum_le_sum
+      intro i _
+      rw [abs_mul]
+      exact mul_le_mul_of_nonneg_right (hC i s hs hs1 u) (abs_nonneg _)
+    _ = D * crossScale d s := by
+      dsimp [D]
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro i _
+      ring
+
+theorem Sandpile.Support.scaleCrossingAS_of_bounded_basis {d : ℕ}
+    (hd : d = 2 ∨ d = 3) (w : Set ℕ)
+    (b : HilbertBasis w ℝ (Lp ℝ 2 (volume : Measure (Space d))))
+    (hb : ∀ i, MemLp (fun y => b i y) ∞ volume) : ScaleCrossingAS d := by
+  classical
+  intro Ω mΩ P hP W hW hc a c hac i hlow
+  let σ : w → MeasurableSpace Ω := fun j =>
+    MeasurableSpace.comap (W (fun y => b j y)) inferInstance
+  have hσ : ∀ j, σ j ≤ mΩ := fun j => (hW.meas _ (Lp.memLp (b j))).comap_le
+  have hind : iIndep σ P := Sandpile.Support.iIndepFun_whiteNoise_orthonormal hW b b.orthonormal
+  have hmW : ∀ s : ℚ, 0 < s → ∀ u, Measurable (ballField d W (s : ℝ) u) :=
+    fun s hs u => hW.meas _ (memLp_ballKernel hd (by exact_mod_cast hs) u)
+  have hcW : ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
+      ∀ᵐ ω ∂P, Continuous fun u => ballField d W (s : ℝ) u ω :=
+    fun s hs hs1 => hc (s : ℝ) (by exact_mod_cast hs) hs1
+  let E : Set Ω := ⋂ n, scaleChainEvent d W a c i n
+  have hEm : MeasurableSet E := MeasurableSet.iInter (measurableSet_scaleChainEvent hmW a c i)
+  have hpos : 0 < P E := scaleChainIntersection_positive hac hmW hcW hlow
+  have hAE : ∀ᵐ ω ∂P, ω ∈ E := by
+    refine Sandpile.Support.ae_mem_of_cut_tail_representatives P σ hσ hind
+      (fun j => j.val) hEm ?_ hpos
+    intro n
+    let q : Finset w := (Finset.range n).subtype (fun k => k ∈ w)
+    let W' := Sandpile.Support.finiteNoiseRemainder W b q
+    let mt : MeasurableSpace Ω := ⨆ j : w, ⨆ (_ : n ≤ j.val), σ j
+    have hmt : mt ≤ mΩ := iSup_le fun j => iSup_le fun _ => hσ j
+    have hmξ : ∀ j : w, j ∉ q → AEStronglyMeasurable[mt] (W (fun y => b j y)) P := by
+      intro j hj
+      have hnj : n ≤ j.val := by
+        simpa only [q, Finset.mem_subtype, Finset.mem_range, not_lt] using hj
+      have hle : σ j ≤ mt := le_iSup_of_le j (le_iSup_of_le hnj le_rfl)
+      have hmj : @Measurable Ω ℝ mt inferInstance (W (fun y => b j y)) :=
+        (comap_measurable (W (fun y => b j y))).mono hle le_rfl
+      exact hmj.stronglyMeasurable.aestronglyMeasurable
+    have hmW' : ∀ s : ℚ, 0 < s → ∀ u,
+        AEStronglyMeasurable[mt] (ballField d W' (s : ℝ) u) P := by
+      intro s hs u
+      exact @Sandpile.Support.aestronglyMeasurable_finiteNoiseRemainder Ω w mΩ d P hP W
+        hW b mt hmt q hmξ (ballKernel d (s : ℝ) u)
+        (memLp_ballKernel hd (by exact_mod_cast hs) u)
+    obtain ⟨F, hFm, hFe⟩ :=
+      @Sandpile.Support.exists_scaleChainIntersection_representative Ω mΩ P d mt W' hmW' a c i
+    refine ⟨F, hFm, hFe.trans (Filter.Eventually.of_forall ?_)⟩
+    intro ω
+    obtain ⟨C, hC, hshift⟩ := Sandpile.Support.exists_finiteNoiseRemainder_bound hd W b hb q ω
+    have hs : ∀ s : ℚ, 0 < s → (s : ℝ) < 1 → ∀ u ∈ rectSet a c,
+        |ballField d W (s : ℝ) u ω - ballField d W' (s : ℝ) u ω| ≤ C * crossScale d (s : ℝ) :=
+      fun s hs hs1 u _ => hshift s (by exact_mod_cast hs) hs1.le u
+    apply propext
+    change (ω ∈ ⋂ n, scaleChainEvent d W' a c i n) ↔ (ω ∈ E)
+    constructor
+    · intro hω
+      exact @Sandpile.Support.scaleChainIntersection_of_bounded_perturbation Ω mΩ d W' W a c i ω C hC
+        (fun s hp hs1 u hu => by simpa only [abs_sub_comm] using hs s hp hs1 u hu) hω
+    · exact @Sandpile.Support.scaleChainIntersection_of_bounded_perturbation Ω mΩ d W W' a c i ω C hC hs
+  have heq := scaleChainIntersection_ae_eq hac hcW (i := i)
+  filter_upwards [hAE, heq] with ω hω heq
+  exact (iff_of_eq heq).mp hω
+
+theorem Sandpile.Support.scaleCrossingAS {d : ℕ} (hd : d = 2 ∨ d = 3) :
+    ScaleCrossingAS d := by
+  letI : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
+  obtain ⟨w, b, hb⟩ := Sandpile.Support.exists_bounded_hilbertBasis
+    (volume : Measure (Space d))
+  exact Sandpile.Support.scaleCrossingAS_of_bounded_basis hd w b hb
+

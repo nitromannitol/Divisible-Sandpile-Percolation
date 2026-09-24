@@ -1,0 +1,479 @@
+\begin{thebibliography}{OSSS05}
+
+\bibitem[Aizenman and Grimmett(1991)]{AizenmanGrimmett}
+M.~Aizenman and G.~R. Grimmett.
+\newblock Strict monotonicity for critical points in percolation and
+ferromagnetic models.
+\newblock \emph{J. Stat. Phys.}, 63(5--6):817--835, 1991.
+\newblock DOI: 10.1007/BF01029985.
+
+\bibitem[Bak et al.(1987)Bak, Tang, and Wiesenfeld]{BakTangWiesenfeld}
+P.~Bak, C.~Tang, and K.~Wiesenfeld.
+\newblock Self-organized criticality: an explanation of 1/f noise.
+\newblock \emph{Phys. Rev. Lett.}, 59(4):381--384, 1987.
+\newblock DOI: 10.1103/PhysRevLett.59.381.
+
+\bibitem[Balister et al.(2014)Balister, Bollob\'as, and Riordan]{BalisterBollobasRiordan}
+P.~Balister, B.~Bollob\'as, and O.~Riordan.
+\newblock Essential enhancements revisited.
+\newblock Preprint, 2014.
+\newblock arXiv:1402.0834. DOI: 10.48550/arXiv.1402.0834.
+
+\bibitem[Beffara and Gayet(2017)]{BeffaraGayet}
+V.~Beffara and D.~Gayet.
+\newblock Percolation of random nodal lines.
+\newblock \emph{Publ. Math. Inst. Hautes \'Etudes Sci.}, 126:131--176, 2017.
+\newblock arXiv:1605.08605. DOI: 10.1007/s10240-017-0093-0.
+
+\bibitem[Bolthausen(1989)]{Bolt}
+E.~Bolthausen.
+\newblock A central limit theorem for two-dimensional random walks in random sceneries.
+\newblock \emph{Ann. Probab.}, 17(1):108--115, 1989.
+\newblock DOI: 10.1214/aop/1176991497.
+
+\bibitem[Bond and Levine(2016a)]{BondLevineI}
+B.~Bond and L.~Levine.
+\newblock Abelian networks I. Foundations and examples.
+\newblock \emph{SIAM J. Discrete Math.}, 30(2):856--874, 2016.
+\newblock arXiv:1309.3445. DOI: 10.1137/15M1030984.
+
+\bibitem[Bou-Rabee(2021)]{BouRabeeRandomASM}
+A.~Bou-Rabee.
+\newblock Convergence of the random Abelian sandpile.
+\newblock \emph{Ann. Probab.}, 49(6):3168--3196, 2021.
+\newblock arXiv:1909.07849. DOI: 10.1214/21-AOP1528.
+
+\bibitem[Bou-Rabee(2022)]{BouRabeeDimReduction}
+A.~Bou-Rabee.
+\newblock Dynamic dimensional reduction in the Abelian sandpile.
+\newblock \emph{Comm. Math. Phys.}, 390(2):933--958, 2022.
+\newblock arXiv:2009.05968. DOI: 10.1007/s00220-022-04322-z.
+
+\bibitem[Bou-Rabee(2024a)]{BouRabeeExploding}
+A.~Bou-Rabee.
+\newblock A shape theorem for exploding sandpiles.
+\newblock \emph{Ann. Appl. Probab.}, 34(1A):714--742, 2024.
+\newblock arXiv:2102.04422. DOI: 10.1214/23-AAP1976.
+
+\bibitem[Bou-Rabee(2024b)]{BouRabeeFLattice}
+A.~Bou-Rabee.
+\newblock Integer superharmonic matrices on the {$F$}-lattice.
+\newblock \emph{Adv. Math.}, 436:109400, 2024.
+\newblock arXiv:2110.07556. DOI: 10.1016/j.aim.2023.109400.
+
+\bibitem[Bou-Rabee et~al.(2026)Bou-Rabee, Peres, and Sava-Huss]{BPSH}
+A.~Bou-Rabee, Y.~Peres, and E.~Sava-Huss.
+\newblock Divisible sandpiles via random walks in random scenery.
+\newblock Preprint, 2026.
+\newblock arXiv:2604.13968. DOI: 10.48550/arXiv.2604.13968.
+
+\bibitem[Boucheron et al.(2013)Boucheron, Lugosi, and Massart]{BoucheronLugosiMassart}
+S.~Boucheron, G.~Lugosi, and P.~Massart.
+\newblock \emph{Concentration Inequalities: A Nonasymptotic Theory of
+Independence}.
+\newblock Oxford University Press, Oxford, 2013.
+\newblock DOI: 10.1093/acprof:oso/9780199535255.001.0001.
+
+\bibitem[Bricmont et al.(1987)Bricmont, Lebowitz, and Maes]{BLM}
+J.~Bricmont, J.~L. Lebowitz, and C.~Maes.
+\newblock Percolation in strongly correlated systems: the massless Gaussian field.
+\newblock \emph{J. Stat. Phys.}, 48(5--6):1249--1268, 1987.
+\newblock DOI: 10.1007/BF01009544.
+
+\bibitem[Caravenna and Deuschel(2009)]{CaravennaDeuschel}
+F.~Caravenna and J.-D.~Deuschel.
+\newblock Scaling limits of $(1+1)$-dimensional pinning models with Laplacian
+interaction.
+\newblock \emph{Ann. Probab.}, 37(3):903--945, 2009.
+\newblock arXiv:0802.3154. DOI: 10.1214/08-AOP424.
+
+\bibitem[Chan and Levine(2022)]{ChanLevineIV}
+S.~H. Chan and L.~Levine.
+\newblock Abelian networks IV. Dynamics of nonhalting networks.
+\newblock \emph{Mem. Amer. Math. Soc.}, 276(1358):vii+89, 2022.
+\newblock arXiv:1804.03322. DOI: 10.1090/memo/1358.
+
+\bibitem[Chiarini and Nitzschner(2023)]{ChiariniNitzschner}
+A.~Chiarini and M.~Nitzschner.
+\newblock Phase transition for level-set percolation of the membrane model in dimensions $d\geq5$.
+\newblock \emph{J. Stat. Phys.}, 190:59, 2023.
+\newblock arXiv:2112.09116. DOI: 10.1007/s10955-023-03072-z.
+
+\bibitem[Chiarini et al.(2021)Chiarini, Jara, and Ruszel]{CJR}
+L.~Chiarini, M.~Jara, and W.~M. Ruszel.
+\newblock Constructing fractional Gaussian fields from long-range divisible sandpiles on the torus.
+\newblock \emph{Stochastic Process. Appl.}, 140:147--182, 2021.
+\newblock arXiv:1808.06078. DOI: 10.1016/j.spa.2021.06.006.
+
+\bibitem[Cipriani et al.(2018a)Cipriani, Hazra, and Ruszel]{CHR}
+A.~Cipriani, R.~S. Hazra, and W.~M. Ruszel.
+\newblock Scaling limit of the odometer in divisible sandpiles.
+\newblock \emph{Probab. Theory Related Fields}, 172(3--4):829--868, 2018.
+\newblock arXiv:1604.03754.
+\newblock DOI: 10.1007/s00440-017-0821-x.
+
+\bibitem[Cipriani et al.(2018b)Cipriani, Hazra, and Ruszel]{CHRheavy}
+A.~Cipriani, R.~S. Hazra, and W.~M. Ruszel.
+\newblock The divisible sandpile with heavy-tailed variables.
+\newblock \emph{Stochastic Process. Appl.}, 128(9):3054--3081, 2018.
+\newblock arXiv:1610.09863. DOI: 10.1016/j.spa.2017.10.013.
+
+\bibitem[Cipriani et al.(2019)Cipriani, Dan, and Hazra]{CDH}
+A.~Cipriani, B.~Dan, and R.~S. Hazra.
+\newblock The scaling limit of the membrane model.
+\newblock \emph{Ann. Probab.}, 47(6):3963--4001, 2019.
+\newblock arXiv:1801.05663. DOI: 10.1214/19-AOP1351.
+
+\bibitem[Coquet and Toldo(2007)]{CoquetToldo}
+F.~Coquet and S.~Toldo.
+\newblock Convergence of values in optimal stopping and convergence of optimal stopping times.
+\newblock \emph{Electron. J. Probab.}, 12:207--228, 2007.
+\newblock DOI: 10.1214/EJP.v12-288.
+
+\bibitem[de Haan and Ferreira(2006)]{deHaanFerreira}
+L.~de Haan and A.~Ferreira.
+\newblock \emph{Extreme Value Theory: An Introduction}.
+\newblock Springer Series in Operations Research and Financial Engineering. Springer, New York, 2006.
+\newblock DOI: 10.1007/0-387-34471-3.
+
+\bibitem[Dhar(1990)]{Dhar90}
+D.~Dhar.
+\newblock Self-organized critical state of sandpile automaton models.
+\newblock \emph{Phys. Rev. Lett.}, 64(14):1613--1616, 1990.
+\newblock DOI: 10.1103/PhysRevLett.64.1613.
+
+\bibitem[Dhar et al.(2009)Dhar, Sadhu, and Chandra]{DharSadhuChandra}
+D.~Dhar, T.~Sadhu, and S.~Chandra.
+\newblock Pattern formation in growing sandpiles.
+\newblock \emph{Europhys. Lett.}, 85(4):48002, 2009.
+\newblock arXiv:0808.1732. DOI: 10.1209/0295-5075/85/48002.
+
+\bibitem[Drewitz et al.(2018)Drewitz, Pr\'evost, and Rodriguez]{DPR}
+A.~Drewitz, A.~Pr\'evost, and P.-F.~Rodriguez.
+\newblock The sign clusters of the massless Gaussian free field percolate on $\mathbb{Z}^d$, $d\geq3$ (and more).
+\newblock \emph{Comm. Math. Phys.}, 362(2):513--546, 2018.
+\newblock arXiv:1708.03285. DOI: 10.1007/s00220-018-3209-6.
+
+\bibitem[Duminil-Copin et al.(2023)Duminil-Copin, Goswami, Rodr\'iguez, and Severo]{DGRS}
+H.~Duminil-Copin, S.~Goswami, P.-F.~Rodr\'iguez, and F.~Severo.
+\newblock Equality of critical parameters for percolation of Gaussian free field level sets.
+\newblock \emph{Duke Math.\ J.}, 172(5):839--913, 2023.
+\newblock arXiv:2002.07735. DOI: 10.1215/00127094-2022-0017.
+
+\bibitem[Ferrari and Niederhauser(2006)]{FerrariNiederhauserHarness}
+P.~A. Ferrari and B.~M. Niederhauser.
+\newblock Harness processes and harmonic crystals.
+\newblock \emph{Stochastic Process. Appl.}, 116(6):939--956, 2006.
+\newblock arXiv:math/0312402. DOI: 10.1016/j.spa.2005.12.004.
+
+\bibitem[Ferrari et al.(2004)Ferrari, Fontes, Niederhauser, and Vachkovskaia]{FerrariFontesNiederhauserVachkovskaiaWall}
+P.~A. Ferrari, L.~R.~G. Fontes, B.~M. Niederhauser, and M.~Vachkovskaia.
+\newblock The serial harness interacting with a wall.
+\newblock \emph{Stochastic Process. Appl.}, 114(1):175--190, 2004.
+\newblock arXiv:math/0210218. DOI: 10.1016/j.spa.2004.05.003.
+
+\bibitem[Fey et al.(2009)Fey, Meester, and Redig]{FMR}
+A.~Fey, R.~Meester, and F.~Redig.
+\newblock Stabilizability and percolation in the infinite volume sandpile model.
+\newblock \emph{Ann. Probab.}, 37(2):654--675, 2009.
+\newblock arXiv:0710.0939. DOI: 10.1214/08-AOP415.
+
+\bibitem[Fey et al.(2010)Fey, Levine, and Peres]{FeyLevinePeres}
+A.~Fey, L.~Levine, and Y.~Peres.
+\newblock Growth rates and explosions in sandpiles.
+\newblock \emph{J. Stat. Phys.}, 138(1--3):143--159, 2010.
+\newblock arXiv:0901.3805. DOI: 10.1007/s10955-009-9899-6.
+
+\bibitem[Fey-den Boer and Redig(2008)]{FeyRedigShapes}
+A.~Fey-den Boer and F.~Redig.
+\newblock Limiting shapes for deterministic centrally seeded growth models.
+\newblock \emph{J. Stat. Phys.}, 130(3):579--597, 2008.
+\newblock arXiv:math/0702450. DOI: 10.1007/s10955-007-9450-6.
+
+\bibitem[Franke and Saigo(2009)]{FrankeSaigoExtremes}
+B.~Franke and T.~Saigo.
+\newblock The extremes of random walks in random sceneries.
+\newblock \emph{Adv. in Appl. Probab.}, 41(2):452--468, 2009.
+\newblock DOI: 10.1239/aap/1246886619.
+
+\bibitem[Fr\'ometa and Jara(2018)]{FroJar}
+S.~Fr\'ometa and M.~Jara.
+\newblock Scaling limit for a long-range divisible sandpile.
+\newblock \emph{SIAM J. Math. Anal.}, 50(3):2317--2342, 2018.
+\newblock arXiv:1507.03624. DOI: 10.1137/16M1068062.
+
+\bibitem[Furlan and Mourrat(2017)]{FurlanMourrat}
+M.~Furlan and J.-C.~Mourrat.
+\newblock A tightness criterion for random fields, with application to the
+Ising model.
+\newblock \emph{Electron. J. Probab.}, 22:Paper No.~97, 2017.
+\newblock arXiv:1502.07335. DOI: 10.1214/17-EJP121.
+
+\bibitem[Gantert et al.(2006)Gantert, van der Hofstad, and K\"onig]{GantertHofstadKonig}
+N.~Gantert, R.~van der Hofstad, and W.~K\"onig.
+\newblock Deviations of a random walk in a random scenery with stretched exponential tails.
+\newblock \emph{Stochastic Process. Appl.}, 116(3):480--492, 2006.
+\newblock arXiv:math/0411361. DOI: 10.1016/j.spa.2005.10.006.
+
+\bibitem[Gantert et al.(2007)Gantert, K\"onig, and Shi]{GKS}
+N.~Gantert, W.~K\"onig, and Z.~Shi.
+\newblock Annealed deviations of random walk in random scenery.
+\newblock \emph{Ann. Inst. Henri Poincar\'e Probab. Stat.}, 43(1):47--76, 2007.
+\newblock arXiv:math/0408327. DOI: 10.1016/j.anihpb.2005.12.002.
+
+\bibitem[Gwynne and Miller(2021)]{GwynneMillerLQGMetric}
+E.~Gwynne and J.~Miller.
+\newblock Existence and uniqueness of the Liouville quantum gravity metric for
+$\gamma\in(0,2)$.
+\newblock \emph{Invent. Math.}, 223(1):213--333, 2021.
+\newblock arXiv:1905.00383. DOI: 10.1007/s00222-020-00991-6.
+
+\bibitem[Hammersley(1967)]{HammersleyHarnesses}
+J.~M. Hammersley.
+\newblock Harnesses.
+\newblock In \emph{Proceedings of the Fifth Berkeley Symposium on Mathematical
+Statistics and Probability, Volume III: Physical Sciences}, pages 89--117.
+University of California Press, Berkeley, 1967.
+\newblock Available at \url{https://projecteuclid.org/euclid.bsmsp/1200513623}.
+
+\bibitem[Holroyd et al.(2008)Holroyd, Levine, M\'esz\'aros, Peres, Propp, and Wilson]{HolroydLevineMeszarosPeresProppWilson}
+A.~E. Holroyd, L.~Levine, K.~M\'esz\'aros, Y.~Peres, J.~Propp, and
+D.~B. Wilson.
+\newblock Chip-firing and rotor-routing on directed graphs.
+\newblock In \emph{In and Out of Equilibrium 2}, Progress in Probability,
+vol.~60, pages 331--364. Birkh\"auser, Basel, 2008.
+\newblock arXiv:0801.3306. DOI: 10.1007/978-3-7643-8786-0\_17.
+
+\bibitem[J\'arai(2018)]{Jarai}
+A.~A. J\'arai.
+\newblock Sandpile models.
+\newblock \emph{Probab. Surv.}, 15:243--306, 2018.
+\newblock arXiv:1401.0354. DOI: 10.1214/14-PS228.
+
+\bibitem[Kesten and Spitzer(1979)]{KesSpi}
+H.~Kesten and F.~Spitzer.
+\newblock A limit theorem related to a new class of self-similar processes.
+\newblock \emph{Z. Wahrsch. Verw. Gebiete}, 50(1):5--25, 1979.
+\newblock DOI: 10.1007/BF00535672.
+
+\bibitem[K\"ohler-Schindler and Tassion(2023)]{KohlerSchindlerTassion}
+L.~K\"ohler-Schindler and V.~Tassion.
+\newblock Crossing probabilities for planar percolation.
+\newblock \emph{Duke Math.\ J.}, 172(4):809--838, 2023.
+\newblock arXiv:2011.04618. DOI: 10.1215/00127094-2022-0015.
+
+\bibitem[Kurt(2007)]{Kurt}
+N.~Kurt.
+\newblock Entropic repulsion for a class of Gaussian interface models in high dimensions.
+\newblock \emph{Stochastic Process. Appl.}, 117(1):23--34, 2007.
+\newblock arXiv:math/0510143. DOI: 10.1016/j.spa.2006.05.011.
+
+\bibitem[Kurt(2009)]{Kurt09}
+N.~Kurt.
+\newblock Maximum and entropic repulsion for a Gaussian membrane model in the critical dimension.
+\newblock \emph{Ann. Probab.}, 37(2):687--725, 2009.
+\newblock arXiv:0801.0551. DOI: 10.1214/08-AOP417.
+
+\bibitem[Lawler(1991)]{LawlerInt}
+G.~F. Lawler.
+\newblock \emph{Intersections of Random Walks}.
+\newblock Probability and Its Applications. Birkh\"auser, Boston, 1991; reprinted in Modern Birkh\"auser Classics, 2013.
+\newblock DOI: 10.1007/978-1-4614-5972-9.
+
+\bibitem[Lawler and Limic(2010)]{LawlerLimic}
+G.~F. Lawler and V.~Limic.
+\newblock \emph{Random Walk: A Modern Introduction}.
+\newblock Cambridge Studies in Advanced Mathematics, vol.~123. Cambridge University Press, 2010.
+\newblock DOI: 10.1017/CBO9780511750854.
+
+\bibitem[Levine and Peres(2009)]{LevinePeres09}
+L.~Levine and Y.~Peres.
+\newblock Strong spherical asymptotics for rotor-router aggregation and the divisible sandpile.
+\newblock \emph{Potential Anal.}, 30(1):1--27, 2009.
+\newblock arXiv:0704.0688. DOI: 10.1007/s11118-008-9104-6.
+
+\bibitem[Levine and Peres(2010)]{LevinePeres}
+L.~Levine and Y.~Peres.
+\newblock Scaling limits for internal aggregation models with multiple sources.
+\newblock \emph{J. Anal. Math.}, 111(1):151--219, 2010.
+\newblock arXiv:0712.3378. DOI: 10.1007/s11854-010-0015-2.
+
+\bibitem[Levine and Propp(2010)]{LevinePropp}
+L.~Levine and J.~Propp.
+\newblock What is \ldots{} a sandpile?
+\newblock \emph{Notices Amer. Math. Soc.}, 57(8):976--979, 2010.
+\newblock Available at \url{https://pi.math.cornell.edu/~levine/what-is-a-sandpile.pdf}.
+
+\bibitem[Levine et al.(2016)Levine, Pegden, and Smart]{LevinePegdenSmartAbelian}
+L.~Levine, W.~Pegden, and C.~K. Smart.
+\newblock Apollonian structure in the Abelian sandpile.
+\newblock \emph{Geom. Funct. Anal.}, 26(1):306--336, 2016.
+\newblock arXiv:1208.4839. DOI: 10.1007/s00039-016-0358-7.
+
+\bibitem[Levine et~al.(2016)Levine, Murugan, Peres, and Ugurcan]{LMPU}
+L.~Levine, M.~Murugan, Y.~Peres, and B.~E. Ugurcan.
+\newblock The divisible sandpile at critical density.
+\newblock \emph{Ann. Henri Poincar\'e}, 17(7):1677--1711, 2016.
+\newblock arXiv:1501.07258. DOI: 10.1007/s00023-015-0433-x.
+
+\bibitem[Levine et al.(2017)Levine, Pegden, and Smart]{LevinePegdenSmart}
+L.~Levine, W.~Pegden, and C.~K. Smart.
+\newblock The Apollonian structure of integer superharmonic matrices.
+\newblock \emph{Ann. of Math. (2)}, 186(1):1--67, 2017.
+\newblock arXiv:1309.3267. DOI: 10.4007/annals.2017.186.1.1.
+
+\bibitem[Li and Liu(2026)]{LiLiuIntermediate}
+X.~Li and R.~Liu.
+\newblock The intermediate level-sets of the four-dimensional membrane model.
+\newblock \emph{Acta Math. Sin. (Engl. Ser.)}, 42(6):1432--1456, 2026.
+\newblock DOI: 10.1007/s10114-026-4341-4.
+
+\bibitem[Li and Shao(2002)]{LiShao}
+W.~V. Li and Q.-M. Shao.
+\newblock A normal comparison inequality and its applications.
+\newblock \emph{Probab. Theory Related Fields}, 122(4):494--508, 2002.
+\newblock DOI: 10.1007/s004400100176.
+
+\bibitem[Liggett et al.(1997)Liggett, Schonmann, and Stacey]{LSS}
+T.~M. Liggett, R.~H. Schonmann, and A.~M. Stacey.
+\newblock Domination by product measures.
+\newblock \emph{Ann. Probab.}, 25(1):71--95, 1997.
+\newblock DOI: 10.1214/aop/1024404279.
+
+\bibitem[Liu et al.(1990)Liu, Kaplan, and Gray]{LiuKaplanGray}
+S.~H. Liu, T.~Kaplan, and L.~J. Gray.
+\newblock Geometry and dynamics of deterministic sand piles.
+\newblock \emph{Phys. Rev. A}, 42(6):3207--3212, 1990.
+\newblock DOI: 10.1103/PhysRevA.42.3207.
+
+\bibitem[Lodhia et al.(2016)Lodhia, Sheffield, Sun, and Watson]{LSSW}
+A.~Lodhia, S.~Sheffield, X.~Sun, and S.~S. Watson.
+\newblock Fractional Gaussian fields: a survey.
+\newblock \emph{Probab. Surv.}, 13:1--56, 2016.
+\newblock arXiv:1407.5598. DOI: 10.1214/14-PS243.
+
+\bibitem[Lupu(2016)]{Lupu}
+T.~Lupu.
+\newblock From loop clusters and random interlacements to the free field.
+\newblock \emph{Ann. Probab.}, 44(3):2117--2146, 2016.
+\newblock arXiv:1402.0298. DOI: 10.1214/15-AOP1019.
+
+\bibitem[Meester et al.(2001)Meester, Redig, and Znamenski]{MeesterRedigZnamenski}
+R.~Meester, F.~Redig, and D.~Znamenski.
+\newblock The abelian sandpile: a mathematical introduction.
+\newblock \emph{Markov Process. Related Fields}, 7(4):509--523, 2001.
+\newblock arXiv:cond-mat/0301481. DOI: 10.48550/arXiv.cond-mat/0301481.
+
+\bibitem[Molchanov and Stepanov(1983a)]{MolStepI}
+S.~A. Molchanov and A.~K. Stepanov.
+\newblock Percolation in random fields. I.
+\newblock \emph{Theoret. and Math. Phys.}, 55(2):478--484, 1983.
+\newblock DOI: 10.1007/BF01015808.
+
+\bibitem[Muirhead(2024)]{Mui2}
+S.~Muirhead.
+\newblock Percolation of strongly correlated Gaussian fields~II. Sharpness of the phase transition.
+\newblock \emph{Ann. Probab.}, 52(3):838--881, 2024.
+\newblock arXiv:2206.10724. DOI: 10.1214/23-AOP1673.
+
+\bibitem[Muirhead and Severo(2024)]{MuiSev}
+S.~Muirhead and F.~Severo.
+\newblock Percolation of strongly correlated Gaussian fields~I. Decay of subcritical connection probabilities.
+\newblock \emph{Probab. Math. Phys.}, 5(2):357--412, 2024.
+\newblock arXiv:2206.10723. DOI: 10.2140/pmp.2024.5.357.
+
+\bibitem[Muirhead and Vanneuville(2020)]{MuiVan}
+S.~Muirhead and H.~Vanneuville.
+\newblock The sharp phase transition for level set percolation of smooth planar Gaussian fields.
+\newblock \emph{Ann. Inst. Henri Poincar\'e Probab. Stat.}, 56(2):1358--1390, 2020.
+\newblock arXiv:1806.11545. DOI: 10.1214/19-AIHP1006.
+
+\bibitem[Ostojic(2003)]{Ostojic}
+S.~Ostojic.
+\newblock Patterns formed by addition of grains to only one site of an abelian
+sandpile.
+\newblock \emph{Physica A}, 318(1--2):187--199, 2003.
+\newblock DOI: 10.1016/S0378-4371(02)01426-7.
+
+\bibitem[Panagiotis and Stauffer(2026)]{PanStauffer}
+C.~Panagiotis and A.~Stauffer.
+\newblock Uniqueness of the infinite cluster for monotone percolation models without insertion tolerance.
+\newblock Preprint, 2026.
+\newblock arXiv:2603.29420. DOI: 10.48550/arXiv.2603.29420.
+
+\bibitem[Pegden and Smart(2013)]{PegdenSmart}
+W.~Pegden and C.~K. Smart.
+\newblock Convergence of the Abelian sandpile.
+\newblock \emph{Duke Math. J.}, 162(4):627--642, 2013.
+\newblock arXiv:1105.0111. DOI: 10.1215/00127094-2079677.
+
+\bibitem[Peskir and Shiryaev(2006)]{PeskirShiryaev}
+G.~Peskir and A.~N. Shiryaev.
+\newblock \emph{Optimal Stopping and Free-Boundary Problems}.
+\newblock Lectures in Mathematics ETH Z\"urich. Birkh\"auser, Basel, 2006.
+\newblock DOI: 10.1007/978-3-7643-7390-0.
+
+\bibitem[Pinelis(2013)]{PinelisRecentering}
+I.~Pinelis.
+\newblock Optimal re-centering bounds, with applications to Rosenthal-type
+concentration of measure inequalities.
+\newblock In \emph{High Dimensional Probability VI}, volume~66 of
+\emph{Progress in Probability}, pages 81--93. Birkh\"auser, Basel, 2013.
+\newblock arXiv:1111.2622. DOI: 10.1007/978-3-0348-0490-5\_6.
+
+\bibitem[Pitt(1982)]{Pitt}
+L.~D. Pitt.
+\newblock Positively correlated normal variables are associated.
+\newblock \emph{Ann. Probab.}, 10(2):496--499, 1982.
+\newblock DOI: 10.1214/aop/1176993872.
+
+\bibitem[Rai\v{c}(2019)]{Raic}
+M.~Rai\v{c}.
+\newblock A multivariate Berry--Esseen theorem with explicit constants.
+\newblock \emph{Bernoulli}, 25(4A):2824--2853, 2019.
+\newblock arXiv:1802.06475. DOI: 10.3150/18-BEJ1072.
+
+\bibitem[Redig(2006)]{Redig}
+F.~Redig.
+\newblock Mathematical aspects of the abelian sandpile model.
+\newblock In \emph{Mathematical Statistical Physics}, Les Houches Summer School
+Session LXXXIII, pages 657--729. Elsevier, Amsterdam, 2006.
+\newblock DOI: 10.1016/S0924-8099(06)80051-X.
+
+\bibitem[Rodriguez and Sznitman(2013)]{RodSzn}
+P.-F.~Rodriguez and A.-S.~Sznitman.
+\newblock Phase transition and level-set percolation for the Gaussian free field.
+\newblock \emph{Comm. Math. Phys.}, 320(2):571--601, 2013.
+\newblock arXiv:1202.5172. DOI: 10.1007/s00220-012-1649-y.
+
+\bibitem[Sadhu and Dhar(2010)]{SadhuDharSinks}
+T.~Sadhu and D.~Dhar.
+\newblock Pattern formation in growing sandpiles with multiple sources or sinks.
+\newblock \emph{J. Stat. Phys.}, 138(4--5):815--837, 2010.
+\newblock arXiv:0909.3192. DOI: 10.1007/s10955-009-9901-3.
+
+\bibitem[Schweiger(2020)]{Schweiger20}
+F.~Schweiger.
+\newblock The maximum of the four-dimensional membrane model.
+\newblock \emph{Ann. Probab.}, 48(2):714--741, 2020.
+\newblock arXiv:1903.02522. DOI: 10.1214/19-AOP1372.
+
+\bibitem[Severo(2022)]{Severo}
+F.~Severo.
+\newblock Sharp phase transition for Gaussian percolation in all dimensions.
+\newblock \emph{Ann. Henri Lebesgue}, 5:987--1008, 2022.
+\newblock arXiv:2105.05219. DOI: 10.5802/ahl.141.
+
+\bibitem[Tim\'ar(2013)]{Timar}
+\'A.~Tim\'ar.
+\newblock Boundary-connectivity via graph theory.
+\newblock \emph{Proc. Amer. Math. Soc.}, 141(2):475--480, 2013.
+\newblock arXiv:0711.1713. DOI: 10.1090/S0002-9939-2012-11333-4.
+
+\bibitem[Toom(1997)]{ToomHarness}
+A.~Toom.
+\newblock Tails in harnesses.
+\newblock \emph{J. Stat. Phys.}, 88(1--2):347--364, 1997.
+\newblock DOI: 10.1007/BF02508475.
+
+\end{thebibliography}

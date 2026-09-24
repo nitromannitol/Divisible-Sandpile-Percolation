@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Audit.CriticalLevels.Challenge",
+  "solution_module": "Audit.CriticalLevels.Solution",
+  "theorem_names": [
+    "SandpileAudit.critical_level_percolation"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

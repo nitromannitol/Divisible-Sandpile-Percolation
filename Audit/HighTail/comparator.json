@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Audit.HighTail.Challenge",
+  "solution_module": "Audit.HighTail.Solution",
+  "theorem_names": [
+    "SandpileAudit.high_tail"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

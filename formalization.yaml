@@ -1,0 +1,425 @@
+version: "v0.3"
+
+project:
+  name: "Divisible-Sandpile-Percolation"
+  authors:
+    - "Ahmed Bou-Rabee"
+  license: "Apache-2.0"
+
+sources:
+  - title: "Quantitative explosion and percolation of the divisible sandpile"
+    authors:
+      - "Ahmed Bou-Rabee"
+      - "Christoforos Panagiotis"
+    id: "arXiv:2609.02829"
+    url: "https://arxiv.org/abs/2609.02829"
+    type: "manuscript"
+    license: ""                 # TODO(author): the license under which the paper is posted
+    author_contacted: "n/a"     # the formalizer is an author of the source
+    prior_work: ""
+
+status:
+  scope: >-
+    A Lean 4 / Mathlib formalization of every labelled theorem, lemma,
+    proposition and corollary of the paper (58 labelled statements, registered
+    as 70 nodes, one per part of a statement in several parts): percolation of
+    the toppled set below mean one (Theorem 1.1), percolation of the critical
+    level sets of the finite-time odometer (Theorem 1.2), and the ten parts of
+    the critical growth and scaling theorem (Theorem 1.3), with the lemmas,
+    propositions and corollaries behind them.  SCOPE BOUNDARY: 26 results the
+    paper cites from the literature are stated as propositions in
+    Sandpile/External/ and are explicit hypotheses of every theorem whose proof
+    uses them; six of them are also proved here (Sandpile/External/*Proved.lean),
+    so the development rests on the remaining 20.  ASSUMPTIONS.md lists all 26
+    with their Lean statements.  Not formalized: the proof-overview,
+    related-work and open-problem subsections, the unlabelled remarks
+    (including the nonpercolation remark at low mean, which quotes a Peierls
+    argument of Fey, Meester and Redig), and the figures.  The main theorems are
+    stated in full in Sandpile/MainTheorems.lean; all twelve are additionally
+    restated over a Mathlib-only vocabulary for the Lean comparator (Audit/).
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  main_results:
+    - declaration: "Sandpile.percolation_below_criticality"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/Nontriviality/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 4.3.1 and Chapter 6, the ball-killed Green estimates (Sandpile.External.BallGreenBounds), hypothesis"
+        - "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, planar RSW (Sandpile.External.PlanarRSW), hypothesis"
+        - "Liggett, Schonmann and Stacey, Corollary 1.4 (Sandpile.External.LSSDomination), hypothesis"
+        - "Timar, Theorem 3, exterior boundary connectivity (Sandpile.External.ExteriorBoundaryConnected), hypothesis"
+        - "Kohler-Schindler and Tassion, Theorem 1, continuum form (Sandpile.External.ContinuumRSW), hypothesis"
+        - "Pitt, the Gaussian FKG inequality (Sandpile.External.PittGaussianFKG), hypothesis"
+        - "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball (Sandpile.External.BallOccupationDensity), hypothesis"
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form (Sandpile.External.CubeStoppingStability), hypothesis"
+    - declaration: "Sandpile.critical_level_percolation"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/CriticalLevels/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 4.3.1 and Chapter 6, the ball-killed Green estimates (Sandpile.External.BallGreenBounds), hypothesis"
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
+        - "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, planar RSW (Sandpile.External.PlanarRSW), hypothesis"
+        - "Liggett, Schonmann and Stacey, Corollary 1.4 (Sandpile.External.LSSDomination), hypothesis"
+        - "Timar, Theorem 3, exterior boundary connectivity (Sandpile.External.ExteriorBoundaryConnected), hypothesis"
+        - "Kohler-Schindler and Tassion, Theorem 1, continuum form (Sandpile.External.ContinuumRSW), hypothesis"
+        - "Pitt, the Gaussian FKG inequality (Sandpile.External.PittGaussianFKG), hypothesis"
+        - "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball (Sandpile.External.BallOccupationDensity), hypothesis"
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form (Sandpile.External.CubeStoppingStability), hypothesis"
+    - declaration: "Sandpile.mean_growth_le_three"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/MeanGrowthLow/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Coquet and Toldo, Theorem 3 and Corollary 4 (Sandpile.External.ContinuumStoppingStability), hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
+        - "Peskir and Shiryaev, Theorem 2.2 (Sandpile.External.ContinuumOptimalStopping), hypothesis"
+    - declaration: "Sandpile.brownian_scaling_limit"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/BrownianScalingLimit/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Coquet and Toldo, Theorem 3 and Corollary 4 (Sandpile.External.ContinuumStoppingStability), hypothesis"
+    - declaration: "Sandpile.mean_growth_four"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/MeanGrowthFour/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.four_first_order"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourFirstOrder/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.four_gaussian"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourGaussian/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 2.1.3, Eq. (2.8), paired dimension-four form (Sandpile.External.PairedLocalCLTFour), hypothesis"
+    - declaration: "Sandpile.four_sobolev"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourSobolev/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; also proved here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.HeatKernelBounds), hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
+        - "Furlan and Mourrat, Theorem 2.30 (Sandpile.External.ContinuumBesovTightness), hypothesis"
+        - "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 (Sandpile.External.MembraneScalingLimitFour), hypothesis"
+    - declaration: "Sandpile.high_first_order"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighFirstOrder/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+    - declaration: "Sandpile.high_tail"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighTail/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+    - declaration: "Sandpile.high_sobolev_limit"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighSobolevLimit/comparator.json"
+      literature_dependencies: 
+        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; also proved here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.HeatKernelBounds), hypothesis"
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+        - "Borell; Tsirelson, Ibragimov and Sudakov (Sandpile.External.GaussianLipschitzConcentration), hypothesis"
+        - "Li and Shao, Corollary 2.1 (Sandpile.External.NormalComparison), hypothesis"
+        - "Lawler, Intersections of Random Walks, Theorem 3.3.2 (Sandpile.External.IntersectionSecondMoment), hypothesis"
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Furlan and Mourrat, Theorem 2.30 (Sandpile.External.ContinuumBesovTightness), hypothesis"
+    - declaration: "Sandpile.high_nonconvergence"
+      file: "Sandpile/MainTheorems.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighNonconvergence/comparator.json"
+      literature_dependencies: 
+        - "Lawler, Intersections of Random Walks, Theorem 3.3.2 (Sandpile.External.IntersectionSecondMoment), hypothesis"
+        - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
+        - "Furlan and Mourrat, Theorem 2.30 (Sandpile.External.ContinuumBesovTightness), hypothesis"
+    - declaration: "SandpileAudit.percolation_below_criticality"
+      file: "Audit/Nontriviality/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/Nontriviality/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.percolation_below_criticality, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.critical_level_percolation"
+      file: "Audit/CriticalLevels/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/CriticalLevels/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.critical_level_percolation, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.mean_growth_le_three"
+      file: "Audit/MeanGrowthLow/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/MeanGrowthLow/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.mean_growth_le_three, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.brownian_scaling_limit"
+      file: "Audit/BrownianScalingLimit/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/BrownianScalingLimit/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.brownian_scaling_limit, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.mean_growth_four"
+      file: "Audit/MeanGrowthFour/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/MeanGrowthFour/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.mean_growth_four, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.four_first_order"
+      file: "Audit/FourFirstOrder/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourFirstOrder/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.four_first_order, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.four_gaussian"
+      file: "Audit/FourGaussian/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourGaussian/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.four_gaussian, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.four_sobolev"
+      file: "Audit/FourSobolev/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/FourSobolev/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.four_sobolev, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.high_first_order"
+      file: "Audit/HighFirstOrder/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighFirstOrder/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.high_first_order, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.high_tail"
+      file: "Audit/HighTail/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighTail/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.high_tail, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.high_sobolev_limit"
+      file: "Audit/HighSobolevLimit/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighSobolevLimit/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.high_sobolev_limit, restated over the Mathlib-only vocabulary"]
+    - declaration: "SandpileAudit.high_nonconvergence"
+      file: "Audit/HighNonconvergence/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/HighNonconvergence/comparator.json"
+      literature_dependencies: ["the same hypotheses as Sandpile.high_nonconvergence, restated over the Mathlib-only vocabulary"]
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "claude-opus (Opus generals; the records do not name the version)"
+        - "claude-sonnet (Sonnet generals; the records do not name the version)"
+        - "claude-opus-5-5"
+        - "gpt-6-astra"
+        - "deepseek-v4.1-flash"
+        - "glm-5.3"
+        - "glm-5.3-flash"
+        - "kimi-code/k3-256k"
+      framework: >-
+        Claude Code (Anthropic) as the supervising harness and, through its
+        subagents, the harness of the Opus and Sonnet generals; Codex CLI
+        (OpenAI) for gpt-6-astra; a custom Python driver over a hosted API
+        (glm_general.py) for the DeepSeek and GLM generals; scripted API
+        fan-outs for the glm-5.3-flash and deepseek-v4.1-flash proof drafts;
+        Kimi Code CLI for kimi-code/k3-256k
+      tool_setup: >-
+        Lake builds under leanprover/lean4:v4.32.0 with Mathlib at revision
+        81a5d257c8e410db227a6665ed08f64fea08e997 and the shared library
+        Lattice-Probability at commit bbe0b90.  Division of labour: a
+        supervising Claude Code session, whose model the records do not name,
+        set up the frozen-statement scaffold (2026-09-06), carried out the
+        author's decisions, executed some of them on main, and merged the agents'
+        branches.  Claude Opus generals (Claude Code
+        subagents, in shifts from 2026-09-10) worked the continuum and
+        tightness nodes, the linearization chain, the downstream main theorems
+        including the parts of Theorem 1.3 (2026-09-11), the killed scaling
+        remark (2026-09-12) and the dimension greater than four linearization
+        and many-limits chain.  gpt-6-astra (Codex CLI, reasoning max) worked
+        the dimension-four chain (2026-09-07) and, in runs on 2026-09-12,
+        repaired the limiting-crossing, stopping and white-noise work, wrote
+        the fourth version of the crossing statement and repaired a merge.
+        deepseek-v4.1-flash generals (custom driver) worked the continuum,
+        crossing, linearization, dimension greater than four and Brownian ball
+        chains (2026-09-11 to 2026-09-15); glm-5.3 generals (custom driver)
+        worked the percolation and linearization chain (from 2026-09-10) and
+        the growth chain; glm-5.3-flash and deepseek-v4.1-flash drafted
+        compile-filtered candidates for short proof bodies, accepted only after
+        checking.  Claude Sonnet generals (claude --model sonnet, from
+        2026-09-16) continued the many-limits, Brownian ball, crossing, growth
+        and Theorem 1.3 work.  kimi-code/k3-256k (Kimi Code CLI) worked on
+        Theorem 1.3(i)(b) on a separate branch (2026-09-15/16); its commits
+        were not merged.  claude-opus-5-5 wrote Sandpile/MainTheorems.lean,
+        the comparator surface Audit/ and this release documentation
+        (2026-09-23/24).  A frozen-statement manifest (ledger/manifest.yaml)
+        pins each registered statement by the SHA-256 of its text, and the
+        tools/ checkers verify the hashes, the axiom closure of every node, a
+        warning-free build, coverage of every labelled statement of the paper,
+        the clause and exponent readings, and quantifier order.  The Lean
+        comparator (leanprover/comparator) was run on all twelve Audit pairs
+        on 2026-09-24, at commit 4545f0b, and every pair passed with the Lean
+        kernel and with the independent nanoda kernel; the results and the
+        reproduction steps are in Audit/COMPARATOR_RUNS.md.
+        .github/workflows/comparator.yml runs the same check on request.
+      cost:
+        wall_time: >-
+          about two and a half weeks of calendar time (2026-09-06 to
+          2026-09-23, 1007 commits on main), every paper statement sealed by
+          2026-09-18; the comparator surface on 2026-09-23/24
+        spend_usd: "not tracked (subscription and API accounts)"
+        hardware: "a 20-thread Intel i9-9900X / 125 GB RAM Ubuntu machine"
+      prompting_notes: >-
+        Human-directed agent work, supervised by the author, with the author's
+        statement-level decisions recorded.  Every statement was
+        pinned before its proof was attempted, and proofs were accepted only
+        through the manifest and axiom gates.
+  spend_usd: "not tracked (subscription and API accounts)"
+  notes: >-
+    All Lean code in this repository was written by the listed models under the
+    supervision of the author.  Every proof is checked by the Lean kernel and
+    Mathlib; the verified library contains no sorry and no custom axiom.  The
+    results the paper cites without proof enter as explicit hypotheses, not
+    axioms.  The Mathlib-only comparator challenge files
+    (Audit/*/Challenge.lean) each contain exactly one intentional
+    statement-level sorry (the theorem body), which is filled by the
+    corresponding Audit/*/Solution.lean.  The shared library
+    Lattice-Probability is a separate formalization by the same author, also
+    written with AI models, not part of this repository.
+
+fidelity:
+  divergences: >-
+    CORRESPONDENCE.md records every place where a Lean statement is not
+    literally the paper's: the fields are fixed by their one-site law;
+    convergence in H^{-s}_loc and in C_loc is stated as convergence in
+    distribution of each pairing to the matching Gaussian together with
+    tightness of the norms, since Mathlib has no Sobolev space; white noise and
+    Brownian motion are predicates, each statement quantified over a
+    probability space carrying them, and both are shown non-vacuous by
+    construction; an exponential-moment bound is stated with the integrability
+    of the exponential; the infinite Green field is the limit of the
+    finite-box partial sums; the crossing statements carry the paper's
+    continuous-modification clause as an explicit almost-sure hypothesis, and
+    the continuum crossing comparison is stated for a field on a probability
+    space; the Brownian optimal-stopping minimality holds almost surely; the
+    continuum value is read off a continuous modification of the Gaussian heat
+    potential; and in Theorem 1.1 the threshold is bound after the witnesses
+    and before the density.  The cited results enter as hypotheses whose Lean
+    statements are in ASSUMPTIONS.md; that they render the cited theorems
+    faithfully is a reading, not a check.
+
+review:
+  status: "author-verified"
+  reviewers:
+    - "Ahmed Bou-Rabee"
+  notes: >-
+    Correctness of every proof is guaranteed by the Lean kernel and Mathlib (no
+    sorry, no custom axiom).  The author ruled on the statement-level
+    decisions recorded during development.  This is not external peer
+    review.
+
+alignment:
+  namespace: "Sandpile"
+  statements:
+    - source: "Theorem 1.1 (thm:main-nontriviality)"
+      lean: "Sandpile.percolation_below_criticality"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.percolation_below_criticality. Comparator challenge Audit/Nontriviality/."
+    - source: "Theorem 1.2 (thm:main-critical-level-percolation)"
+      lean: "Sandpile.critical_level_percolation"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.critical_level_percolation. Comparator challenge Audit/CriticalLevels/."
+    - source: "Theorem 1.3(i)(a) (thm:main-explosion)"
+      lean: "Sandpile.mean_growth_le_three"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.mean_growth_le_three. Comparator challenge Audit/MeanGrowthLow/."
+    - source: "Theorem 1.3(i)(b) (thm:main-explosion)"
+      lean: "Sandpile.brownian_scaling_limit"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.brownian_scaling_limit. Comparator challenge Audit/BrownianScalingLimit/."
+    - source: "Theorem 1.3(ii)(a), first clause (thm:main-explosion)"
+      lean: "Sandpile.mean_growth_four"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.mean_growth_four. Comparator challenge Audit/MeanGrowthFour/."
+    - source: "Theorem 1.3(ii)(a), second clause (thm:main-explosion)"
+      lean: "Sandpile.four_first_order"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.four_first_order. Comparator challenge Audit/FourFirstOrder/."
+    - source: "Theorem 1.3(ii)(b) (thm:main-explosion)"
+      lean: "Sandpile.four_gaussian"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.four_gaussian. Comparator challenge Audit/FourGaussian/."
+    - source: "Theorem 1.3(ii)(c) (thm:main-explosion)"
+      lean: "Sandpile.four_sobolev"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.four_sobolev. Comparator challenge Audit/FourSobolev/."
+    - source: "Theorem 1.3(iii)(a) (thm:main-explosion)"
+      lean: "Sandpile.high_first_order"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.high_first_order. Comparator challenge Audit/HighFirstOrder/."
+    - source: "Theorem 1.3(iii)(b) (thm:main-explosion)"
+      lean: "Sandpile.high_tail"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.high_tail. Comparator challenge Audit/HighTail/."
+    - source: "Theorem 1.3(iii)(c) (thm:main-explosion)"
+      lean: "Sandpile.high_sobolev_limit"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.high_sobolev_limit. Comparator challenge Audit/HighSobolevLimit/."
+    - source: "Theorem 1.3(iii)(d) (thm:main-explosion)"
+      lean: "Sandpile.high_nonconvergence"
+      module: "Sandpile.MainTheorems"
+      status: "proved"
+      note: "Certified statement Sandpile.Frozen.high_nonconvergence. Comparator challenge Audit/HighNonconvergence/."
+    - source: "The lemmas, propositions and corollaries of the paper, and the other parts of multi-part statements"
+      lean: "Sandpile.Frozen.*"
+      module: "Sandpile.Frozen"
+      status: "proved"
+      note: "70 paper-statement nodes in all, listed with their paper locations in CORRESPONDENCE.md."
+    - source: "Cited results"
+      lean: "Sandpile.External.*"
+      module: "Sandpile.External"
+      status: "assumed"
+      note: "Explicit hypotheses of the theorems that use them; 26 propositions, six of them also proved here; listed in ASSUMPTIONS.md."
+
+acknowledgements: >-
+  The paper is joint work with Christoforos Panagiotis.  Built on Lean 4,
+  Mathlib, Lake, the shared library Lattice-Probability, and
+  leanprover/comparator.

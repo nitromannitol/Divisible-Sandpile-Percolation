@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Audit.FourFirstOrder.Challenge",
+  "solution_module": "Audit.FourFirstOrder.Solution",
+  "theorem_names": [
+    "SandpileAudit.four_first_order"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

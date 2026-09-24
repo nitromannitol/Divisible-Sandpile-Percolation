@@ -1,0 +1,106 @@
+/-
+Conditional expectation of a product coordinate on the product of one-site
+sigma-algebras. Resampling one coordinate preserves the product measure;
+conditioning on a measurable cross-section then reduces to the one-site identity.
+-/
+import LatticeProb.Prob.Splice
+import LatticeProb.Prob.Coordinate
+
+open MeasureTheory MeasurableSpace
+
+namespace Sandpile
+
+variable {ι : Type*}
+
+@[reducible] def productAlg (m : MeasurableSpace ℝ) : MeasurableSpace (ι → ℝ) :=
+  ⨆ i : ι, MeasurableSpace.comap (fun ξ : ι → ℝ => ξ i) m
+
+theorem productAlg_le {m : MeasurableSpace ℝ} (hm : m ≤ borel ℝ) :
+    productAlg (ι := ι) m ≤ @MeasurableSpace.pi ι (fun _ => ℝ) (fun _ => borel ℝ) := by
+  letI : MeasurableSpace ℝ := borel ℝ
+  refine iSup_le fun i => ?_
+  have hi : Measurable (fun ξ : ι → ℝ => ξ i) := measurable_pi_apply i
+  exact (MeasurableSpace.comap_mono hm).trans hi.comap_le
+
+theorem measurable_update_productAlg [DecidableEq ι] (m : MeasurableSpace ℝ)
+    (ξ : ι → ℝ) (i : ι) :
+    Measurable[m, productAlg m] (fun z => Function.update ξ i z) := by
+  letI : MeasurableSpace ℝ := m
+  change Measurable (fun z => Function.update ξ i z)
+  refine measurable_pi_lambda _ fun j => ?_
+  by_cases hj : j = i
+  · subst hj
+    simp only [Function.update_self]
+    exact measurable_id
+  · simp only [Function.update_of_ne hj]
+    exact measurable_const
+
+/-- Conditioning every coordinate separately commutes with taking their independent product. -/
+theorem condExp_infinitePi_coordinate [DecidableEq ι] (ν : Measure ℝ) [IsProbabilityMeasure ν]
+    (m : MeasurableSpace ℝ) (hm : m ≤ borel ℝ) (hint : Integrable id ν) (i : ι) :
+    (Measure.infinitePi (X := fun _ : ι => ℝ) (mX := fun _ => borel ℝ) (fun _ : ι => ν))[fun ξ => ξ i | productAlg m]
+      =ᵐ[Measure.infinitePi (X := fun _ : ι => ℝ) (mX := fun _ => borel ℝ) (fun _ : ι => ν)] fun ξ => (ν[id | m]) (ξ i) := by
+  letI : MeasurableSpace ℝ := borel ℝ
+  set P := Measure.infinitePi (X := fun _ : ι => ℝ) (mX := fun _ => borel ℝ) (fun _ : ι => ν)
+  set g : ℝ → ℝ := ν[id | m]
+  have hg : Integrable g ν := integrable_condExp
+  have hgi : Integrable (fun ξ : ι → ℝ => g (ξ i)) P :=
+    (measurePreserving_eval_infinitePi (mX := fun _ : ι => borel ℝ) (fun _ : ι => ν) i).integrable_comp_of_integrable hg
+  have hfi : Integrable (fun ξ : ι → ℝ => ξ i) P := by
+    simpa only [Function.comp_def, id_eq] using
+      (measurePreserving_eval_infinitePi (mX := fun _ : ι => borel ℝ) (fun _ : ι => ν) i).integrable_comp_of_integrable hint
+  have himeas : Measurable[productAlg m, m] (fun ξ : ι → ℝ => ξ i) :=
+    measurable_iff_comap_le.mpr (le_iSup (fun j : ι => MeasurableSpace.comap (fun ξ : ι → ℝ => ξ j) m) i)
+  have hgs : StronglyMeasurable[productAlg m] (fun ξ : ι → ℝ => g (ξ i)) :=
+    stronglyMeasurable_condExp.comp_measurable himeas
+  refine (ae_eq_condExp_of_forall_setIntegral_eq (productAlg_le hm) hfi
+    (fun _ _ _ => hgi.integrableOn) ?_ hgs.aestronglyMeasurable).symm
+  intro A hA _
+  have hAm : MeasurableSet A := productAlg_le hm A hA
+  set F := A.indicator (fun ξ : ι → ℝ => ξ i)
+  set G := A.indicator (fun ξ : ι → ℝ => g (ξ i))
+  have hF : Integrable F P := hfi.indicator hAm
+  have hG : Integrable G P := hgi.indicator hAm
+  have hup := LatticeProb.measurePreserving_update_infinitePi (fun _ : ι => ν) i
+  have hFU : Integrable (fun q : (ι → ℝ) × ℝ => F (Function.update q.1 i q.2)) (P.prod ν) :=
+    hup.integrable_comp_of_integrable hF
+  have hGU : Integrable (fun q : (ι → ℝ) × ℝ => G (Function.update q.1 i q.2)) (P.prod ν) :=
+    hup.integrable_comp_of_integrable hG
+  have he (ξ : ι → ℝ) : (∫ z, G (Function.update ξ i z) ∂ν) =
+      ∫ z, F (Function.update ξ i z) ∂ν := by
+    set B := (fun z => Function.update ξ i z) ⁻¹' A
+    have hB : MeasurableSet[m] B := (measurable_update_productAlg m ξ i) hA
+    have hB0 : MeasurableSet B := hm B hB
+    have heG : (fun z => G (Function.update ξ i z)) = B.indicator g := by
+      funext z
+      dsimp only [G]
+      by_cases hz : Function.update ξ i z ∈ A
+      · rw [Set.indicator_of_mem hz, Set.indicator_of_mem (show z ∈ B from hz), Function.update_self]
+      · rw [Set.indicator_of_notMem hz, Set.indicator_of_notMem (show z ∉ B from hz)]
+    have heF : (fun z => F (Function.update ξ i z)) = B.indicator id := by
+      funext z
+      dsimp only [F]
+      by_cases hz : Function.update ξ i z ∈ A
+      · rw [Set.indicator_of_mem hz, Set.indicator_of_mem (show z ∈ B from hz), Function.update_self]
+        rfl
+      · rw [Set.indicator_of_notMem hz, Set.indicator_of_notMem (show z ∉ B from hz)]
+    rw [heG, heF, integral_indicator hB0, integral_indicator hB0]
+    exact setIntegral_condExp hm hint hB
+  have h1 : (∫ ξ, G ξ ∂P) = ∫ ξ, ∫ z, G (Function.update ξ i z) ∂ν ∂P := by
+    have heq := integral_map hup.measurable.aemeasurable
+      (show AEStronglyMeasurable G ((P.prod ν).map (fun q => Function.update q.1 i q.2)) by
+        rw [hup.map_eq]; exact hG.aestronglyMeasurable)
+    rw [hup.map_eq] at heq
+    exact heq.trans (integral_prod _ hGU)
+  have h2 : (∫ ξ, F ξ ∂P) = ∫ ξ, ∫ z, F (Function.update ξ i z) ∂ν ∂P := by
+    have heq := integral_map hup.measurable.aemeasurable
+      (show AEStronglyMeasurable F ((P.prod ν).map (fun q => Function.update q.1 i q.2)) by
+        rw [hup.map_eq]; exact hF.aestronglyMeasurable)
+    rw [hup.map_eq] at heq
+    exact heq.trans (integral_prod _ hFU)
+  rw [← integral_indicator hAm, ← integral_indicator hAm]
+  change (∫ ξ, G ξ ∂P) = ∫ ξ, F ξ ∂P
+  rw [h1, h2]
+  exact integral_congr_ae (Filter.Eventually.of_forall he)
+
+end Sandpile

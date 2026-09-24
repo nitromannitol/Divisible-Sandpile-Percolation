@@ -1,0 +1,164 @@
+/-
+Measurability of natural-filtration stopping times and their stopped positions.
+Almost-everywhere measurable coordinates and almost-everywhere continuous paths
+suffice: the completion makes the coordinates measurable, and replacing the
+exceptional paths by zero gives a jointly measurable process there.
+-/
+import Sandpile.Continuum.Stopping
+
+open MeasureTheory ProbabilityTheory
+open scoped NNReal ENNReal
+
+
+theorem Sandpile.Continuum.IsBrownianStopping.measurable {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {τ : Ω → ℝ≥0}
+    (hτ : Sandpile.Continuum.IsBrownianStopping B τ) (hm : ∀ t, StronglyMeasurable (B t)) :
+    Measurable τ := by
+  have h := (Sandpile.Continuum.isBrownianStopping_iff_natFiltration B hm τ).1 hτ
+  exact measurable_coe_nnreal_ennreal_iff.1 (h.measurable.mono h.measurableSpace_le le_rfl)
+
+theorem Sandpile.Continuum.IsBrownianStopping.aemeasurable {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {τ : Ω → ℝ≥0}
+    (hτ : Sandpile.Continuum.IsBrownianStopping B τ) (P : Measure Ω)
+    (hm : ∀ t, AEMeasurable (B t) P) : AEMeasurable τ P := by
+  have ht : @Measurable Ω ℝ≥0 (MeasurableSpace.comap (fun ω => fun t => B t ω) inferInstance)
+      inferInstance τ := measurable_coe_nnreal_ennreal_iff.1
+    (MeasureTheory.IsStoppingTime.measurable hτ |>.mono
+      (MeasureTheory.IsStoppingTime.measurableSpace_le hτ) le_rfl)
+  have hp : @Measurable (NullMeasurableSpace Ω P) (ℝ≥0 → Sandpile.Continuum.Space d)
+      inferInstance inferInstance (fun ω => fun t => B t ω) :=
+    measurable_pi_lambda _ fun t => (hm t).nullMeasurable
+  exact (show NullMeasurable τ P from ht.mono hp.comap_le le_rfl).aemeasurable
+
+theorem Sandpile.Continuum.measurable_stopped_position {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {τ : Ω → ℝ≥0}
+    (hm : ∀ t, Measurable (B t)) (hc : ∀ ω, Continuous fun t => B t ω)
+    (hτ : Measurable τ) : Measurable (fun ω => B (τ ω) ω) := by
+  exact (measurable_uncurry_of_continuous_of_measurable hc hm).comp (hτ.prodMk measurable_id)
+
+theorem Sandpile.Continuum.aemeasurable_stopped_position {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {τ : Ω → ℝ≥0} (P : Measure Ω)
+    (hm : ∀ t, AEMeasurable (B t) P) (hc : ∀ᵐ ω ∂P, Continuous fun t => B t ω)
+    (hτ : AEMeasurable τ P) : AEMeasurable (fun ω => B (τ ω) ω) P := by
+  classical
+  let S : Set Ω := {ω | Continuous fun t => B t ω}
+  have hS : NullMeasurableSet S P := by
+    simpa only [compl_compl] using
+      (NullMeasurableSet.of_null (show P Sᶜ = 0 from ae_iff.1 hc)).compl
+  let C : ℝ≥0 → Ω → Sandpile.Continuum.Space d :=
+    fun t => S.piecewise (B t) (fun _ => 0)
+  have hmC : ∀ t, @Measurable (NullMeasurableSpace Ω P) (Sandpile.Continuum.Space d)
+      inferInstance inferInstance (C t) := fun t =>
+    (hm t).nullMeasurable.measurable'.piecewise hS measurable_const
+  have hcC : ∀ ω, Continuous fun t => C t ω := by
+    intro ω
+    by_cases hω : ω ∈ S
+    · simpa only [C, Set.piecewise, if_pos hω] using (show Continuous (fun t => B t ω) from hω)
+    · simpa only [C, Set.piecewise, if_neg hω] using
+        (continuous_const : Continuous fun _ : ℝ≥0 => (0 : Sandpile.Continuum.Space d))
+  have hY : NullMeasurable (fun ω => C (τ ω) ω) P :=
+    (measurable_uncurry_of_continuous_of_measurable hcC hmC).comp
+      (hτ.nullMeasurable.measurable'.prodMk measurable_id)
+  refine hY.aemeasurable.congr ?_
+  filter_upwards [hc] with ω hω
+  exact if_pos hω
+
+
+theorem Sandpile.Continuum.IsBrownian.aemeasurable {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {x : Sandpile.Continuum.Space d} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d}
+    {P : Measure Ω} (hB : Sandpile.Continuum.IsBrownian d x B P) (t : ℝ≥0) :
+    AEMeasurable (B t) P := by
+  have hm : ∀ i : Fin d, AEMeasurable (fun ω => B t ω i) P := by
+    intro i
+    have hpos : (0 : ℝ) < (d : ℝ) :=
+      Nat.cast_pos.mpr (lt_of_le_of_lt (Nat.zero_le _) i.isLt)
+    have hsq : Real.sqrt (d : ℝ) ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hpos)
+    have h := (((hB.coord i).toIsPreBrownianReal.aemeasurable t).const_mul
+      (Real.sqrt (d : ℝ))⁻¹).add_const (x i)
+    have heq : (fun ω => (Real.sqrt (d : ℝ))⁻¹ *
+        (Real.sqrt (d : ℝ) * (B t ω i - x i)) + x i) = fun ω => B t ω i := by
+      funext ω
+      rw [← mul_assoc, inv_mul_cancel₀ hsq, one_mul, sub_add_cancel]
+    rwa [heq] at h
+  exact (WithLp.measurable_toLp 2 (Fin d → ℝ)).comp_aemeasurable
+    (aemeasurable_pi_lambda _ hm)
+
+
+theorem Sandpile.Continuum.aemeasurable_brownian_payoff {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {x : Sandpile.Continuum.Space d} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d}
+    {P : Measure Ω} (hB : Sandpile.Continuum.IsBrownian d x B P)
+    {τ : Ω → ℝ≥0} (hτ : Sandpile.Continuum.IsBrownianStopping B τ)
+    (h : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hh : Measurable (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2)) (T : ℝ) :
+    AEMeasurable (fun ω => -h (T - τ ω) (B (τ ω) ω)) P := by
+  have ht := hτ.aemeasurable P hB.aemeasurable
+  have hB' : LatticeProb.IsBrownianSpace d x B P := ⟨hB.start, hB.coord, hB.indep⟩
+  have hY := Sandpile.Continuum.aemeasurable_stopped_position P hB.aemeasurable hB'.cont ht
+  exact (hh.comp_aemeasurable ((aemeasurable_const.sub
+    (measurable_coe_nnreal_real.comp_aemeasurable ht)).prodMk hY)).neg
+
+
+theorem Sandpile.Continuum.integrable_ae_bounded_stopped_payoff {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} (P : Measure Ω) [IsFiniteMeasure P] (τ : Ω → ℝ≥0)
+    (Y : Ω → Sandpile.Continuum.Space d) (hτ : AEMeasurable τ P) (hY : AEMeasurable Y P)
+    (h : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hh : Measurable (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2))
+    (T M : ℝ) (hb : ∀ᵐ ω ∂P, |h (T - τ ω) (Y ω)| ≤ M) :
+    Integrable (fun ω => -h (T - τ ω) (Y ω)) P := by
+  have hm := (hh.comp_aemeasurable (((aemeasurable_const (b := T)).sub
+    (measurable_coe_nnreal_real.comp_aemeasurable hτ)).prodMk hY)).neg
+  refine (integrable_const M).mono' hm.aestronglyMeasurable ?_
+  exact hb.mono fun ω hω => by simpa only [norm_neg, Real.norm_eq_abs] using hω
+
+
+theorem Sandpile.Continuum.aemeasurable_stopped_payoff_of_continuousOn {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} (P : Measure Ω) (τ : Ω → ℝ≥0) (Y : Ω → Sandpile.Continuum.Space d)
+    (hτ : AEMeasurable τ P) (hY : AEMeasurable Y P) (h : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (T : ℝ) (hh : ContinuousOn (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2)
+      (Set.Icc 0 T ×ˢ Set.univ)) (hbound : ∀ ω, (τ ω : ℝ) ≤ T) :
+    AEMeasurable (fun ω => -h (T - τ ω) (Y ω)) P := by
+  classical
+  let S : Set (ℝ × Sandpile.Continuum.Space d) := Set.Icc 0 T ×ˢ Set.univ
+  let H := S.piecewise (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2) (fun _ => 0)
+  have hm : Measurable H := hh.measurable_piecewise continuous_const.continuousOn
+    (measurableSet_Icc.prod MeasurableSet.univ)
+  have hp := ((aemeasurable_const (b := T)).sub
+    (measurable_coe_nnreal_real.comp_aemeasurable hτ)).prodMk hY
+  have hmem : ∀ ω, (T - (τ ω : ℝ), Y ω) ∈ S := fun ω =>
+    ⟨⟨sub_nonneg.mpr (hbound ω), sub_le_self _ (τ ω).coe_nonneg⟩, Set.mem_univ _⟩
+  have heq : (fun ω => -H (T - (τ ω : ℝ), Y ω)) = fun ω => -h (T - τ ω) (Y ω) := by
+    funext ω
+    simp only [H, Set.piecewise, if_pos (hmem ω)]
+  exact heq ▸ (hm.comp_aemeasurable hp).neg
+
+
+/-- Every natural stopping time has an integrable bounded Borel reward. -/
+theorem Sandpile.Continuum.integrable_brownian_payoff {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ} {x : Sandpile.Continuum.Space d} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d}
+    {P : Measure Ω} [IsFiniteMeasure P] (hB : Sandpile.Continuum.IsBrownian d x B P)
+    {τ : Ω → ℝ≥0} (hτ : Sandpile.Continuum.IsBrownianStopping B τ)
+    (h : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hh : Measurable (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2))
+    (T M : ℝ) (hb : ∀ᵐ ω ∂P, |h (T - τ ω) (B (τ ω) ω)| ≤ M) :
+    Integrable (fun ω => -h (T - τ ω) (B (τ ω) ω)) P := by
+  refine (integrable_const M).mono'
+    (Sandpile.Continuum.aemeasurable_brownian_payoff hB hτ h hh T).aestronglyMeasurable ?_
+  exact hb.mono fun ω hω => by simpa only [norm_neg, Real.norm_eq_abs] using hω
+
+/-- Continuity only on the relevant time strip suffices for a bounded stopped payoff. -/
+theorem Sandpile.Continuum.integrable_brownian_payoff_of_continuousOn
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} {x : Sandpile.Continuum.Space d}
+    {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {P : Measure Ω} [IsFiniteMeasure P]
+    (hB : Sandpile.Continuum.IsBrownian d x B P) {τ : Ω → ℝ≥0}
+    (hτ : Sandpile.Continuum.IsBrownianStopping B τ)
+    (h : ℝ → Sandpile.Continuum.Space d → ℝ) (T M : ℝ)
+    (hh : ContinuousOn (fun q : ℝ × Sandpile.Continuum.Space d => h q.1 q.2)
+      (Set.Icc 0 T ×ˢ Set.univ)) (hbound : ∀ ω, (τ ω : ℝ) ≤ T)
+    (hb : ∀ᵐ ω ∂P, |h (T - τ ω) (B (τ ω) ω)| ≤ M) :
+    Integrable (fun ω => -h (T - τ ω) (B (τ ω) ω)) P := by
+  have ht := hτ.aemeasurable P hB.aemeasurable
+  have hB' : LatticeProb.IsBrownianSpace d x B P := ⟨hB.start, hB.coord, hB.indep⟩
+  have hY := Sandpile.Continuum.aemeasurable_stopped_position P hB.aemeasurable hB'.cont ht
+  have hm := Sandpile.Continuum.aemeasurable_stopped_payoff_of_continuousOn P τ _ ht hY h T hh hbound
+  refine (integrable_const M).mono' hm.aestronglyMeasurable ?_
+  exact hb.mono fun ω hω => by simpa only [norm_neg, Real.norm_eq_abs] using hω

@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Audit.MeanGrowthFour.Challenge",
+  "solution_module": "Audit.MeanGrowthFour.Solution",
+  "theorem_names": [
+    "SandpileAudit.mean_growth_four"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

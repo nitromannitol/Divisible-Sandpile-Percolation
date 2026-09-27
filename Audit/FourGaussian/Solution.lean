@@ -20,7 +20,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(ii)(b) (`thm:main-explosion`). -/
 theorem four_gaussian
-    (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :
@@ -34,7 +33,6 @@ theorem four_gaussian
       variance (fun σ => odometer σ t 0) (centeredMassLaw 4 ν) / Real.log t)
       atTop (𝓝 (4 * variance id ν / Real.pi ^ 2)) := by
   rw [Bridge.meanOdometer_eq, Bridge.odometer_eq]
-  exact Sandpile.four_gaussian (Bridge.pairedLocalCLTFour hPaired) ν hmean hvar hvar' θ₀ hθ₀
-    hexp
+  exact Sandpile.four_gaussian ν hmean hvar hvar' θ₀ hθ₀ hexp
 
 end SandpileAudit

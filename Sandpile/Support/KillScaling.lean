@@ -18,7 +18,7 @@ open scoped ENNReal NNReal
 open Sandpile Sandpile.Continuum
 
 theorem Sandpile.dlt4_killed_scaling_of_inputs
-    (hLocalCLT : Sandpile.External.LocalCLT)
+    (_hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -47,7 +47,7 @@ theorem Sandpile.dlt4_killed_scaling_of_inputs
                     T 1 u|}
           ≤ ENNReal.ofReal δ := by
   classical
-  obtain ⟨hfdd, htight⟩ := Sandpile.Frozen.heat_potential_invariance hLocalCLT d (by omega) hd3
+  obtain ⟨hfdd, htight⟩ := Sandpile.Frozen.heat_potential_invariance d (by omega) hd3
     ν hmean hvar hvar' θ₀ hθ₀ hexp PW W hW T hT
   obtain ⟨ρ, hρ, hKρ⟩ := hK.isBounded.subset_closedBall_lt 0 (0 : Space d)
   have hKn : ∀ u ∈ K, ‖u‖ ≤ ρ := fun u hu => by

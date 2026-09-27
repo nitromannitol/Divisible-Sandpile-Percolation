@@ -1,5 +1,5 @@
 /-
-Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2515-2530`
+Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2542-2557`
 (label `thm:limiting-odometer-crossing`):
 
   "[Localized Brownian crossings]  Fix axis-parallel rectangles

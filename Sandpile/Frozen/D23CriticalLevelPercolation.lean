@@ -1,5 +1,5 @@
 /-
-Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2569-2584`
+Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2596-2611`
 (label `thm:d23-critical-level-percolation`):
 
   "[Critical level-set percolation]  Fix $d\in\{2,3\}$, $\nu_{0}>0$,
@@ -33,6 +33,7 @@ non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
 import Sandpile.Law
+import Sandpile.External.LocalCLTProved
 import Sandpile.Support.D23PlaneSite
 import Sandpile.Support.D23Final
 
@@ -44,7 +45,6 @@ theorem Sandpile.Frozen.d23_critical_level_percolation
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : d = 2 ∨ d = 3) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (ν : Measure ℝ), IsProbabilityMeasure ν →
@@ -59,4 +59,4 @@ theorem Sandpile.Frozen.d23_critical_level_percolation
 -- FROZEN-STATEMENT-END
 :=
   Sandpile.Support.d23_critical_level_percolation_assembled d hd hLSS hRSWc hPitt hOcc
-    hLocalCLT hCube ν₀ θ₀ K₀ hν₀ hθ₀
+    Sandpile.External.localCLT hCube ν₀ θ₀ K₀ hν₀ hθ₀

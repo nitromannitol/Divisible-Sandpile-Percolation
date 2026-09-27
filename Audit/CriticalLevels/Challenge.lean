@@ -30,15 +30,15 @@ The paper uses results from the literature without proof.  The certified
 statement takes each one its proof uses as an explicit hypothesis, unless that
 result is itself proved unconditionally in this repository, in which case the
 certified statement carries no hypothesis for it.  `GreenBoundsHigh` (the
-`d ≥ 5` Green-function estimates) and `VarianceScale` (the finite-time variance
-scale, membrane correlations and window bounds of `ssec:green-estimates`) are
-each proved unconditionally in this repository
-(`Sandpile.External.greenBoundsHigh`, `Sandpile.External.varianceScale`), so
-neither is carried as a hypothesis by the certified statement, and this
-challenge carries neither either.
+`d ≥ 5` Green-function estimates), `VarianceScale` (the finite-time variance
+scale, membrane correlations and window bounds of `ssec:green-estimates`),
+`LocalCLT` (the local central limit theorem) and `BallGreenBounds` (the
+dimension-four ball-killed Green estimates) are each proved unconditionally
+in this repository (`Sandpile.External.greenBoundsHigh`,
+`Sandpile.External.varianceScale`, `Sandpile.External.localCLT`,
+`Sandpile.External.ballGreenBounds`), so none is carried as a hypothesis by
+the certified statement, and this challenge carries none of them either.
 
-* `External.BallGreenBounds`: the dimension-four ball-killed Green estimates
-  (Lawler and Limic, Theorem 4.3.1 and Chapter 6);
 * `External.PlanarRSW`: the planar RSW comparison (Köhler-Schindler and Tassion,
   Theorem 1 and Comment 1);
 * `External.LSSDomination`: domination by Bernoulli percolation (Liggett,
@@ -50,8 +50,6 @@ challenge carries neither either.
 * `External.PittGaussianFKG`: Pitt's Gaussian FKG theorem;
 * `External.BallOccupationDensity`: the Green function of a Euclidean ball as an
   occupation density (Mörters and Peres, Chapter 3);
-* `External.LocalCLT`: the local central limit theorem (Lawler and Limic,
-  Theorem 2.1.3);
 * `External.CubeStoppingStability`: stability of cube-killed optimal-stopping
   values (Coquet and Toldo, Theorem 3 and Corollary 4).
 
@@ -1183,21 +1181,6 @@ def NormalComparison : Prop :=
                 Real.exp (-(b i ^ 2 + b j ^ 2) /
                   (2 * (v : ℝ) * (1 + S i j / (v : ℝ))))
 
-/-- The number of intersections of two paths, counted with multiplicity, in `ℝ≥0∞`. -/
-noncomputable def interCount {d : ℕ} (X Y : ℕ → Site d) : ℝ≥0∞ :=
-  ∑' p : ℕ × ℕ, Set.indicator {q : ℕ × ℕ | X q.1 = Y q.2} (fun _ => (1 : ℝ≥0∞)) p
-
-/-- The second intersection estimate `eq:dgt4-intersection-second-moment` for two
-independent simple random walks in `d ≥ 5` (Lawler, *Intersections of Random Walks*,
-Theorem 3.3.2).  Assumed. -/
-def IntersectionSecondMoment : Prop :=
-  ∀ d : ℕ, 5 ≤ d →
-    ∃ C : ℝ, 0 < C ∧
-      ∀ x y : Site d,
-        (∫⁻ X, ∫⁻ Y, interCount X Y ^ 2
-            ∂(walkLaw d y) ∂(walkLaw d x)) ≤
-          ENNReal.ofReal (C * (1 + latticeNorm (x - y)) ^ (4 - (d : ℝ)))
-
 end External
 
 end SandpileAudit
@@ -1210,14 +1193,12 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.2 (`thm:main-critical-level-percolation`). -/
 theorem critical_level_percolation
-    (hBallGreen : External.BallGreenBounds)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
-    (hLocalCLT : External.LocalCLT)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →

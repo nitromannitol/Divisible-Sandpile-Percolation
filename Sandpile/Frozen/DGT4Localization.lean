@@ -1,5 +1,5 @@
 /-
-Localization lemma of sandpile.tex, frozen.  `sandpile.tex:6424-6435`
+Localization lemma of sandpile.tex, frozen.  `sandpile.tex:6451-6462`
 (label `lem:dgt4-localization`):
 
   "For a finite set $K\subset\Z^d$ and $r\geq1$, write

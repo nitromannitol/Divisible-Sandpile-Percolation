@@ -25,14 +25,12 @@ set_option linter.unusedVariables false
 /-- The statement of `Audit/Nontriviality/Challenge.lean`. -/
 def percolation_below_criticality : Prop :=
   ∀
-    (hBallGreen : External.BallGreenBounds)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
-    (hLocalCLT : External.LocalCLT)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))
     (hmean : ∀ ρ ∈ Set.Ioc (0 : ℝ) 1, ∫ s, s ∂(μ ρ) = ρ)
@@ -47,14 +45,12 @@ def percolation_below_criticality : Prop :=
 /-- The statement of `Audit/CriticalLevels/Challenge.lean`. -/
 def critical_level_percolation : Prop :=
   ∀
-    (hBallGreen : External.BallGreenBounds)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
-    (hLocalCLT : External.LocalCLT)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀),
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -69,7 +65,6 @@ def critical_level_percolation : Prop :=
 /-- The statement of `Audit/MeanGrowthLow/Challenge.lean`. -/
 def mean_growth_le_three : Prop :=
   ∀
-    (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{0})
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
@@ -82,7 +77,6 @@ def mean_growth_le_three : Prop :=
 /-- The statement of `Audit/BrownianScalingLimit/Challenge.lean`. -/
 def brownian_scaling_limit : Prop :=
   ∀
-    (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -160,7 +154,6 @@ def four_first_order : Prop :=
 /-- The statement of `Audit/FourGaussian/Challenge.lean`. -/
 def four_gaussian : Prop :=
   ∀
-    (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν),
@@ -249,8 +242,6 @@ def high_sobolev_limit : Prop :=
   ∀
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
-    (hInter : External.IntersectionSecondMoment)
-    (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -282,8 +273,6 @@ def high_sobolev_limit : Prop :=
 /-- The statement of `Audit/HighNonconvergence/Challenge.lean`. -/
 def high_nonconvergence : Prop :=
   ∀
-    (hInter : External.IntersectionSecondMoment)
-    (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ)),
     ∃ ν : Measure ℝ, IsProbabilityMeasure ν ∧ ∀ [_i : IsProbabilityMeasure ν],

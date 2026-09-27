@@ -265,8 +265,4 @@ theorem normalComparison (h : SandpileAudit.External.NormalComparison) :
     Sandpile.External.NormalComparison :=
   h
 
-theorem intersectionSecondMoment (h : SandpileAudit.External.IntersectionSecondMoment) :
-    Sandpile.External.IntersectionSecondMoment :=
-  h
-
 end SandpileAudit.Bridge

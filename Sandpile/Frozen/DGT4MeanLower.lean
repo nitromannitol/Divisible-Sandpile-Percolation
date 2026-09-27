@@ -1,5 +1,5 @@
 /-
-Corollary of sandpile.tex, frozen.  `sandpile.tex:4299-4314`
+Corollary of sandpile.tex, frozen.  `sandpile.tex:4326-4341`
 (label `cor:dgt4-mean-lower`, parts (i) and (ii)):
 
   "(i) Let $(\zeta(x))_{x\in\Z^d}$ be i.i.d., mean zero, integrable, and

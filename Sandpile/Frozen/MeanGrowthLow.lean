@@ -41,12 +41,12 @@ import Sandpile.Support.MeanAExplosionA
 import Sandpile.External.ContStoppingStability
 import Sandpile.External.VarianceScaleProved
 import Sandpile.External.ContinuumOptimalStopping
+import Sandpile.External.LocalCLTProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.mean_growth_le_three
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{0})
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], Sandpile.External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
@@ -56,5 +56,5 @@ theorem Sandpile.Frozen.mean_growth_le_three
       Tendsto (fun t : ℕ => (t : ℝ) ^ (-((4 - (d : ℝ)) / 4)) *
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L)
 -- FROZEN-STATEMENT-END
-:= Sandpile.Support.mean_growth_le_three_wired hLocalCLT hStab Sandpile.External.varianceScale hOS
-    d hd hd3 ν hprob hmean hvar hvar' θ₀ hθ₀ hexp
+:= Sandpile.Support.mean_growth_le_three_wired Sandpile.External.localCLT hStab
+    Sandpile.External.varianceScale hOS d hd hd3 ν hprob hmean hvar hvar' θ₀ hθ₀ hexp

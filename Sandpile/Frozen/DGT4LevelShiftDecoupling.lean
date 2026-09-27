@@ -1,5 +1,5 @@
 /-
-Level-shift decoupling lemma of sandpile.tex, frozen.  `sandpile.tex:6472-6486`
+Level-shift decoupling lemma of sandpile.tex, frozen.  `sandpile.tex:6499-6513`
 (label `lem:dgt4-level-shift-decoupling`):
 
   "There are $c>0$ and $C<\infty$ such that the following holds. Let

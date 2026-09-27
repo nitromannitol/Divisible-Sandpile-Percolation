@@ -1,5 +1,5 @@
 /-
-Corollary of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1793-1799`
+Corollary of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1820-1826`
 (label `cor:critical-mean-one`, under the standing hypotheses of Subsection
 `ssec:expl-d123` stated at `sandpile.tex:1696-1701`):
 

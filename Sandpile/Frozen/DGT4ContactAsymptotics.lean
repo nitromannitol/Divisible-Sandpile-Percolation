@@ -1,5 +1,5 @@
 /-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4867-4869`
+Proposition of sandpile.tex, frozen.  `sandpile.tex:4894-4896`
 (label `prop:dgt4-contact-asymptotics`):
 
   "As $n \to \infty$, we have $\P(u_n(0)=0)\sim\frac{G(0,0)\kappa}{n}$."

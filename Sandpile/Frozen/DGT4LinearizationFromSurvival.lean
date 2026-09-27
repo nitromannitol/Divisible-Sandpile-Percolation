@@ -1,5 +1,5 @@
 /-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:5659-5704`
+Lemma of sandpile.tex, frozen.  `sandpile.tex:5686-5731`
 (label `lem:dgt4-linearization-from-survival`):
 
   "Suppose that the scenery variables are independent and identically

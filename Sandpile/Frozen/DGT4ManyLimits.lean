@@ -1,6 +1,6 @@
 /-
 Theorem 1.3(iii)(d) of sandpile.tex in sharper form, frozen.
-`sandpile.tex:5944-5972` (label `thm:dgt4-many-limits`):
+`sandpile.tex:5971-5999` (label `thm:dgt4-many-limits`):
 
   "Let $d\geq5$.  There exists an i.i.d.\ scenery $(\zeta(x))_{x\in\Z^d}$ whose
    one-site law has mean zero, variance one, a strictly positive $C^\infty$
@@ -66,6 +66,7 @@ import Sandpile.Walk
 import Sandpile.Continuum.Membrane
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
 import Sandpile.External.IntersectionSecondMomentProved
 import Sandpile.Support.Dgt4AManyLimitsAssembly
 
@@ -74,7 +75,7 @@ open scoped ENNReal NNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_many_limits
-    (hLocalCLT : Sandpile.External.LocalCLT) (d : ℕ) (hd : 5 ≤ d)
+    (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
     ∃ ν : Measure ℝ, ∃ _ : IsProbabilityMeasure ν,
       ∫ z, z ∂ν = 0 ∧ variance (id : ℝ → ℝ) ν = 1 ∧
@@ -109,5 +110,6 @@ theorem Sandpile.Frozen.dgt4_many_limits
   have hHeat : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨ν, hprob, hmean, hvar, hdens, htail, hstep3, hdistinct⟩ :=
-    Sandpile.Support.dgt4_many_limits_assembled d hd hGreenHigh hInter hHeat hLocalCLT hBesov
+    Sandpile.Support.dgt4_many_limits_assembled d hd hGreenHigh hInter hHeat
+      Sandpile.External.localCLT hBesov
   exact ⟨ν, hprob, hmean, hvar, hdens, htail, hstep3, hdistinct⟩

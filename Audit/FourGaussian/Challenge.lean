@@ -25,11 +25,12 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.
-
-* `External.PairedLocalCLTFour`: the paired dimension-four local limit estimate
-  (Lawler and Limic, Theorem 2.1.3).
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `PairedLocalCLTFour` is
+proved unconditionally in this repository
+(`Sandpile.External.pairedLocalCLTFour`), so it is not carried as a hypothesis
+by the certified statement, and this challenge does not carry it either.
 
 ## Presentation deltas
 
@@ -1159,21 +1160,6 @@ def NormalComparison : Prop :=
                 Real.exp (-(b i ^ 2 + b j ^ 2) /
                   (2 * (v : ℝ) * (1 + S i j / (v : ℝ))))
 
-/-- The number of intersections of two paths, counted with multiplicity, in `ℝ≥0∞`. -/
-noncomputable def interCount {d : ℕ} (X Y : ℕ → Site d) : ℝ≥0∞ :=
-  ∑' p : ℕ × ℕ, Set.indicator {q : ℕ × ℕ | X q.1 = Y q.2} (fun _ => (1 : ℝ≥0∞)) p
-
-/-- The second intersection estimate `eq:dgt4-intersection-second-moment` for two
-independent simple random walks in `d ≥ 5` (Lawler, *Intersections of Random Walks*,
-Theorem 3.3.2).  Assumed. -/
-def IntersectionSecondMoment : Prop :=
-  ∀ d : ℕ, 5 ≤ d →
-    ∃ C : ℝ, 0 < C ∧
-      ∀ x y : Site d,
-        (∫⁻ X, ∫⁻ Y, interCount X Y ^ 2
-            ∂(walkLaw d y) ∂(walkLaw d x)) ≤
-          ENNReal.ofReal (C * (1 + latticeNorm (x - y)) ^ (4 - (d : ℝ)))
-
 end External
 
 end SandpileAudit
@@ -1186,7 +1172,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(ii)(b) (`thm:main-explosion`). -/
 theorem four_gaussian
-    (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :

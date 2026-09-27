@@ -1,5 +1,5 @@
 /-
-Lemma of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1665-1675`
+Lemma of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1692-1702`
 (label `lem:sobolev-tightness`):
 
   "[Tightness from covariance decay]  Let $0<\beta<d$ and $K<\infty$.  For each

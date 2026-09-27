@@ -1,5 +1,5 @@
 /-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3451-3473`
+Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3478-3500`
 (label `lem:d4-soft-bottleneck`):
 
   "Let $Q\subset\Z^2$ be a finite axis-parallel lattice rectangle, and let

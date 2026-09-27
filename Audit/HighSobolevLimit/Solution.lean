@@ -22,8 +22,6 @@ open scoped NNReal ENNReal
 theorem high_sobolev_limit
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
-    (_hInter : External.IntersectionSecondMoment)
-    (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -54,7 +52,6 @@ theorem high_sobolev_limit
   rw [Bridge.meanOdometer_eq, Bridge.odometer_eq]
   exact Sandpile.high_sobolev_limit (Bridge.gaussianLipschitzConcentration hGaussConc)
     (Bridge.normalComparison hNormal)
-    (Bridge.localCLT hLocalCLT) d hd (Bridge.continuumBesovTightness _ hBesov) ν hmean hvar
-    hvar'
+    d hd (Bridge.continuumBesovTightness _ hBesov) ν hmean hvar hvar'
 
 end SandpileAudit

@@ -1,5 +1,5 @@
 /-
-Corollary of Section 5 of sandpile.tex, frozen.  `sandpile.tex:2971-2978`
+Corollary of Section 5 of sandpile.tex, frozen.  `sandpile.tex:2998-3005`
 (label `cor:d4-logarithmic-mean-lower`):
 
   "Let $(\zeta(x))_{x\in\Z^4}$ be i.i.d., mean zero, integrable, and

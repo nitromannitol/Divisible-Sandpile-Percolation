@@ -1,5 +1,5 @@
 /-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:5513-5530`
+Lemma of sandpile.tex, frozen.  `sandpile.tex:5540-5557`
 (label `lem:dgt4-path-survival`):
 
   "Let $T>0$, $\kappa>0$, and $n_R\coloneqq\lfloor R^2T\rfloor$, and suppose

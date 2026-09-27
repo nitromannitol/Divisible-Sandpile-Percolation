@@ -99,7 +99,7 @@ theorem crit23_d23_branch
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
+    (_hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : d = 2 ∨ d = 3) (ν₀ θ₀ K₀ : ℝ)
     (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
@@ -116,7 +116,7 @@ theorem crit23_d23_branch
   have hd3 : d ≤ 3 := by omega
   have hd0 : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd1
   obtain ⟨c, hc, t₀, hmain⟩ :=
-    Sandpile.Frozen.d23_critical_level_percolation hLSS hRSWc hPitt hOcc hLocalCLT hCube
+    Sandpile.Frozen.d23_critical_level_percolation hLSS hRSWc hPitt hOcc hCube
       d hd (ν₀ / (2 * (d : ℝ)))
       (2 * (d : ℝ) * θ₀) K₀ (by positivity) (by positivity)
   refine ⟨c, hc, t₀, ?_⟩
@@ -147,7 +147,7 @@ theorem crit23_d23_branch
 `thm:d4-critical-level-percolation` at the centred law of `μ`, pushed to the
 ambient lattice. -/
 theorem crit23_d4_branch
-    (hBallGreen : Sandpile.External.BallGreenBounds)
+    (_hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (_hVarScale : Sandpile.External.VarianceScale)
@@ -162,7 +162,7 @@ theorem crit23_d4_branch
             {x | c * Sandpile.criticalScale 4 t < Sandpile.odometer σ t x} := by
   obtain ⟨c, hc, t₀, hmain⟩ :=
     massLaw_critical_level_percolation_four ν₀ θ₀ K₀ hθ₀
-      (Sandpile.Frozen.d4_critical_level_percolation hBallGreen hRSW hLSS
+      (Sandpile.Frozen.d4_critical_level_percolation hRSW hLSS
         (ν₀ / 8) (8 * θ₀) K₀ (by positivity) (by positivity))
   refine ⟨c, hc, t₀, ?_⟩
   intro μ hμ hmean hvar hexpint hexp t ht

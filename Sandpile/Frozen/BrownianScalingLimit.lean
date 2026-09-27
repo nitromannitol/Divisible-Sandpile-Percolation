@@ -72,6 +72,7 @@ import Sandpile.Law
 import Sandpile.Continuum.Stopping
 import Sandpile.Support.ExplInterp
 import Sandpile.External.ContStoppingStability
+import Sandpile.External.LocalCLTProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -80,7 +81,6 @@ universe u
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.brownian_scaling_limit
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -132,5 +132,5 @@ theorem Sandpile.Frozen.brownian_scaling_limit
             ENNReal.ofReal ε)
 -- FROZEN-STATEMENT-END
 := by
-  exact Sandpile.brownian_scaling_limit_of_localCLT hLocalCLT hStab d hd hd3 ν
+  exact Sandpile.brownian_scaling_limit_of_localCLT Sandpile.External.localCLT hStab d hd hd3 ν
     hmean hvar hvar' θ₀ hθ₀ hexp Ω P W hW Z hZmod hZcont hZgrow Ω' P' B hB hBc hBm T hT

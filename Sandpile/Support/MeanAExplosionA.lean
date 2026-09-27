@@ -33,7 +33,7 @@ open Sandpile.Continuum
 origin**, on an arbitrary pair of realization spaces, from the scaling limit at
 `T = 1` and the exponential moments of `prop:continuum-value-selfsimilar`. -/
 theorem mean_variance_limit_at_origin
-    (hLocalCLT : Sandpile.External.LocalCLT)
+    (_hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{0})
     (_hVarScale : Sandpile.External.VarianceScale)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -64,11 +64,11 @@ theorem mean_variance_limit_at_origin
   have hsq : Integrable (fun z : ℝ => z ^ 2) ν := integrable_sq_of_evariance ν hvar'
   obtain ⟨Z, hZmod, hZcont, hZgrow⟩ :=
     exists_continuous_version_growth hd hd3 hν2.le PW W hW
-  have hib := Sandpile.Frozen.brownian_scaling_limit hLocalCLT hStab d hd hd3 ν hmean hvar hvar'
+  have hib := Sandpile.Frozen.brownian_scaling_limit hStab d hd hd3 ν hmean hvar hvar'
     θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB B hB hBc hBm 1 one_pos
   have hres := tendstoInDistribution_rescaled_one_zero d ν PW PB Z B
     (hib.1 1 (fun _ => (0 : Space d)))
-  have hself := Sandpile.Frozen.continuum_value_self_similar hLocalCLT hStab d hd0 hd3 ν hmean
+  have hself := Sandpile.Frozen.continuum_value_self_similar hStab d hd0 hd3 ν hmean
     hvar hvar' θ₀ hθ₀ hexp PW W hW Z hZmod hZcont hZgrow PB hOS B hB hBc hBm
   obtain ⟨θ, hθ, ⟨M, hM⟩, hZexp⟩ := hself.2.1
   set C : ℝ := max M (∫ ω, Real.exp (θ * continuumValue d Z B PB 1 0 ω) ∂PW) with hC

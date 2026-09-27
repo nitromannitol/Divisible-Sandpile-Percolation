@@ -1,5 +1,5 @@
 /-
-Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1962-1981`
+Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1989-2008`
 (label `prop:continuum-value-selfsimilar`):
 
   "For every $T>0$ and every $x\in\R^d$,
@@ -107,7 +107,6 @@ universe u
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.continuum_value_self_similar
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd0 : 0 < d) (hd : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
@@ -166,5 +165,5 @@ theorem Sandpile.Frozen.continuum_value_self_similar
   have _ := hOS
   exact Sandpile.Support.continuum_value_self_similar_of_parabolic_limit
     d hd0 hd ν hvar hvar' θ₀ hθ₀ hexp PW W hW Z hZmod hZcont PB B
-    (fun T hT => Sandpile.Frozen.brownian_scaling_limit hLocalCLT hStab d hd0 hd ν hmean
+    (fun T hT => Sandpile.Frozen.brownian_scaling_limit hStab d hd0 hd ν hmean
       hvar hvar' θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB B hB hBc hBm T hT)

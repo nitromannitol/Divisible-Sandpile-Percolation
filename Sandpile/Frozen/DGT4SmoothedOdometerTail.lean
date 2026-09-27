@@ -1,6 +1,6 @@
 /-
 Lemma (lower tail of the smoothed centred odometer) of sandpile.tex, frozen.
-`sandpile.tex:4461-4472` (label `lem:dgt4-smoothed-odometer-tail`):
+`sandpile.tex:4488-4499` (label `lem:dgt4-smoothed-odometer-tail`):
 
   "Suppose $\E e^{\theta_0|\zeta(0)|}\leq K_0$ for some $\theta_0>0$ and
    $K_0<\infty$.  There are constants $c,C>0$ such that, for all $m\geq1$,

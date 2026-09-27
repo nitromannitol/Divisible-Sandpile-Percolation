@@ -1,5 +1,5 @@
 /-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3002-3015`
+Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3029-3042`
 (label `lem:d4-difference-tail`):
 
   "There are constants $A_0,c,C\in(0,\infty)$ such that, for all $t\geq2$ and

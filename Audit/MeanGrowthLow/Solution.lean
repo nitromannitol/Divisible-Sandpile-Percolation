@@ -20,7 +20,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(i)(a) (`thm:main-explosion`). -/
 theorem mean_growth_le_three
-    (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{0})
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
@@ -30,7 +29,7 @@ theorem mean_growth_le_three
       Tendsto (fun t : ℕ => (t : ℝ) ^ (-((4 - (d : ℝ)) / 4)) *
         meanOdometer (centeredMassLaw d ν) t) atTop (𝓝 L) := by
   rw [Bridge.meanOdometer_eq]
-  exact Sandpile.mean_growth_le_three (Bridge.localCLT hLocalCLT)
+  exact Sandpile.mean_growth_le_three
     (Bridge.continuumStoppingStability hStab)
     (fun ΩB _ => Bridge.continuumOptimalStopping ΩB (hOS ΩB)) d hd hd3 ν hprob hmean hvar hvar'
     θ₀ hθ₀ hexp

@@ -1657,6 +1657,33 @@ For the dimension-four linearization argument, we also need estimates for the co
 		\mathcal U_Z(T,z)\, .
 	\]
 	\end{lemma}
+	\begin{proof}
+		Fix $u\in K$ and a stopping time $\tau\leq T$, and write
+		$\sigma=\tau_{u,A}$. The payoffs of $\tau$ and of $\tau\wedge\sigma$ agree
+		off the event $\{\sigma<\tau\}$. On this event, the strong Markov property
+		of Brownian motion at $\sigma$ bounds the conditional reward after $\sigma$
+		by $\mathcal U_Z(T-\sigma,B_\sigma)$, the value of the restarted motion for
+		the remaining horizon, and $|B_\sigma-u|=A$. Almost surely $Z$ grows at most
+		polynomially on $[0,T]\times\R^d$, and the running maximum of Brownian
+		motion on $[0,T]$ has moments of all orders, so every reward in this
+		argument is integrable.
+
+		The value increases with the horizon: $\mathcal U_Z(s,z)\leq\mathcal
+		U_Z(T,z)$ for $0\leq s\leq T$. Indeed, the increment
+		$V(a,y)=Z(a+T-s,y)-Z(a,y)$ solves the heat equation, because the
+		time-independent white noise cancels, so $r\mapsto V(s-r,B_r)$ is a
+		martingale on $[0,s]$ and $\mathbf E_z V(s-\tau,B_\tau)=V(s,z)$ for every
+		stopping time $\tau\leq s$. Hence
+		$Z(T,z)-\mathbf E_z Z(T-\tau,B_\tau)=Z(s,z)-\mathbf E_z Z(s-\tau,B_\tau)$,
+		so every payoff available at horizon $s$ in
+		\eqref{eq:continuum-membrane-stopping-value} is available at horizon $T$.
+
+		Taking the supremum over $\tau$ gives
+		$\mathcal U_Z(T,u)-\mathcal U_{Z,A}(T,u)\leq\P(\tau_{u,A}<T)\sup_z
+		\mathcal U_Z(T,z)$, the supremum over the points $z$ within distance $A$ of
+		$K$. The Gaussian tail $\P(\tau_{u,A}<T)\leq Ce^{-cA^2/T}$ of the exit time
+		completes the proof.
+	\end{proof}
 
 	\subsection{Tightness in negative Sobolev spaces}\label{ssec:sobolev-tightness}
 	We will use the following easy consequence of the tightness

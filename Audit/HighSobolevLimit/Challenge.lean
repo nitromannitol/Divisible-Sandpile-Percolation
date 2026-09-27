@@ -28,20 +28,17 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 The paper uses results from the literature without proof.  The certified
 statement takes each one its proof uses as an explicit hypothesis, unless that
 result is itself proved unconditionally in this repository, in which case the
-certified statement carries no hypothesis for it.  `HeatKernelBounds` and
-`GreenBoundsHigh` are each proved unconditionally in this repository
-(`Sandpile.External.heatKernelBounds`, `Sandpile.External.greenBoundsHigh`), so
-neither is carried as a hypothesis by the certified statement, and this
-challenge carries neither either.
+certified statement carries no hypothesis for it.  `HeatKernelBounds`,
+`GreenBoundsHigh`, `IntersectionSecondMoment` and `LocalCLT` are each proved
+unconditionally in this repository (`Sandpile.External.heatKernelBounds`,
+`Sandpile.External.greenBoundsHigh`, `Sandpile.External.intersectionSecondMoment`,
+`Sandpile.External.localCLT`), so none is carried as a hypothesis by the
+certified statement, and this challenge carries none of them either.
 
 * `External.GaussianLipschitzConcentration`: Gaussian concentration for
   Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov);
 * `External.NormalComparison`: the normal comparison inequality (Li and Shao,
   Corollary 2.1);
-* `External.IntersectionSecondMoment`: the second moment of the intersections of
-  two walks (Lawler, Theorem 3.3.2);
-* `External.LocalCLT`: the local central limit theorem (Lawler and Limic,
-  Theorem 2.1.3);
 * `External.ContinuumBesovTightness`: the Besov tightness criterion (Furlan and
   Mourrat, Theorem 2.30).
 
@@ -1173,21 +1170,6 @@ def NormalComparison : Prop :=
                 Real.exp (-(b i ^ 2 + b j ^ 2) /
                   (2 * (v : ℝ) * (1 + S i j / (v : ℝ))))
 
-/-- The number of intersections of two paths, counted with multiplicity, in `ℝ≥0∞`. -/
-noncomputable def interCount {d : ℕ} (X Y : ℕ → Site d) : ℝ≥0∞ :=
-  ∑' p : ℕ × ℕ, Set.indicator {q : ℕ × ℕ | X q.1 = Y q.2} (fun _ => (1 : ℝ≥0∞)) p
-
-/-- The second intersection estimate `eq:dgt4-intersection-second-moment` for two
-independent simple random walks in `d ≥ 5` (Lawler, *Intersections of Random Walks*,
-Theorem 3.3.2).  Assumed. -/
-def IntersectionSecondMoment : Prop :=
-  ∀ d : ℕ, 5 ≤ d →
-    ∃ C : ℝ, 0 < C ∧
-      ∀ x y : Site d,
-        (∫⁻ X, ∫⁻ Y, interCount X Y ^ 2
-            ∂(walkLaw d y) ∂(walkLaw d x)) ≤
-          ENNReal.ofReal (C * (1 + latticeNorm (x - y)) ^ (4 - (d : ℝ)))
-
 end External
 
 end SandpileAudit
@@ -1202,8 +1184,6 @@ open scoped NNReal ENNReal
 theorem high_sobolev_limit
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
-    (hInter : External.IntersectionSecondMoment)
-    (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]

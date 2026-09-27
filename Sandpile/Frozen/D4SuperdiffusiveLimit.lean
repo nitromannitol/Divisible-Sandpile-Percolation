@@ -1,5 +1,5 @@
 /-
-Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3329-3337`
+Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3356-3364`
 (label `prop:d4-superdiffusive-limit`):
 
   "[Superdiffusive membrane limit in dimension four]  Fix a bounded smooth

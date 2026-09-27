@@ -19,7 +19,6 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.four_gaussian
-    (hPaired : Sandpile.External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :
@@ -34,5 +33,5 @@ theorem Sandpile.Frozen.four_gaussian
       atTop (𝓝 (4 * variance id ν / Real.pi ^ 2))
 -- FROZEN-STATEMENT-END
 := by
-  exact Sandpile.Frozen.d4_one_point_gaussian hPaired
+  exact Sandpile.Frozen.d4_one_point_gaussian
     ν hmean hvar hvar' θ₀ hθ₀ hexp

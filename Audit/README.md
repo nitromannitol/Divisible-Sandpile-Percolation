@@ -36,11 +36,14 @@ functions, negative Sobolev norms, the lattice pairing, the membrane covariances
 white noise, Brownian motion, the Brownian stopping values and the multilinear
 interpolation; the planar crossing events, the `∗`-lattice and the exterior
 boundary, the continuum planar fields and their crossings; and the cited
-results that the twelve statements carry: seventeen are still carried as
-hypotheses, and three more (`GreenBoundsHigh`, `HeatKernelBounds`,
-`VarianceScale`) the vocabulary still defines but no statement below takes as a
-hypothesis, since each is proved unconditionally in the repository; see "What
-Is Checked".
+results that the twelve statements carry: thirteen are still carried as
+hypotheses, and six more (`GreenBoundsHigh`, `HeatKernelBounds`,
+`VarianceScale`, `LocalCLT`, `PairedLocalCLTFour`, `BallGreenBounds`) the
+vocabulary still defines but no statement below takes as a hypothesis, since
+each is proved unconditionally in the repository; a seventh,
+`IntersectionSecondMoment`, is likewise proved unconditionally and is no
+longer defined in the vocabulary at all, having been dropped from the two
+statements that once carried it; see "What Is Checked".
 
 ## What Is Checked
 
@@ -50,25 +53,33 @@ library theorem carries, restated in the vocabulary.
 
 | Directory | Cited results carried as hypotheses (namespace `External`) |
 | --- | --- |
-| `Nontriviality/` | `BallGreenBounds`, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`, `CubeStoppingStability` |
-| `CriticalLevels/` | `BallGreenBounds`, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`, `CubeStoppingStability` |
-| `MeanGrowthLow/` | `LocalCLT`, `ContinuumStoppingStability`, `ContinuumOptimalStopping` |
-| `BrownianScalingLimit/` | `LocalCLT`, `ContinuumStoppingStability` |
+| `Nontriviality/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `CubeStoppingStability` |
+| `CriticalLevels/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `CubeStoppingStability` |
+| `MeanGrowthLow/` | `ContinuumStoppingStability`, `ContinuumOptimalStopping` |
+| `BrownianScalingLimit/` | `ContinuumStoppingStability` |
 | `MeanGrowthFour/` | none |
 | `FourFirstOrder/` | none |
-| `FourGaussian/` | `PairedLocalCLTFour` |
+| `FourGaussian/` | none |
 | `FourSobolev/` | `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
 | `HighFirstOrder/` | none |
 | `HighTail/` | none |
-| `HighSobolevLimit/` | `GaussianLipschitzConcentration`, `NormalComparison`, `IntersectionSecondMoment`, `LocalCLT`, `ContinuumBesovTightness` |
-| `HighNonconvergence/` | `IntersectionSecondMoment`, `LocalCLT`, `ContinuumBesovTightness` |
+| `HighSobolevLimit/` | `GaussianLipschitzConcentration`, `NormalComparison`, `ContinuumBesovTightness` |
+| `HighNonconvergence/` | `ContinuumBesovTightness` |
 
-Three cited results, `GreenBoundsHigh`, `HeatKernelBounds` and `VarianceScale`,
-are proved unconditionally in the repository (`Sandpile/External/*Proved.lean`;
-see `ASSUMPTIONS.md`) rather than assumed.  Earlier versions of `CriticalLevels/`,
-`FourSobolev/`, `HighFirstOrder/`, `HighTail/`, `HighSobolevLimit/` and
-`MeanGrowthLow/` carried one or more of them as hypotheses; the certified
-statements now carry none of the three, and neither do the challenges above.
+Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
+`IntersectionSecondMoment`, `LocalCLT`, `PairedLocalCLTFour` and
+`BallGreenBounds`, are proved unconditionally in the repository
+(`Sandpile/External/*Proved.lean`; see `ASSUMPTIONS.md`) rather than assumed.
+Earlier versions of `CriticalLevels/`, `FourSobolev/`, `HighFirstOrder/`,
+`HighTail/`, `HighSobolevLimit/` and `MeanGrowthLow/` carried one or more of
+the first three as hypotheses, earlier versions of `HighSobolevLimit/` and
+`HighNonconvergence/` carried `IntersectionSecondMoment`, earlier versions of
+`Nontriviality/`, `CriticalLevels/`, `MeanGrowthLow/`, `BrownianScalingLimit/`,
+`HighSobolevLimit/` and `HighNonconvergence/` carried `LocalCLT`, an earlier
+version of `FourGaussian/` carried `PairedLocalCLTFour`, and earlier versions
+of `Nontriviality/` and `CriticalLevels/` carried `BallGreenBounds`; the
+certified statements now carry none of the seven, and neither do the
+challenges above.
 
 The content of each theorem is summarized in the docstring of its challenge and
 in `Sandpile/MainTheorems.lean`.
@@ -112,7 +123,7 @@ library or repository name `LatticeProb.X`, `Sandpile.X`,
 | `exteriorVertexBoundary` | `Sandpile/Support/ExteriorBoundary.lean` |
 | `Continuum.PlaneSymmetry`, `PlaneSymmetry.toFun`, `fieldLaw`, `IsSymmetricField`, `IsAssociatedField` | `Sandpile/Support/CrossField.lean` |
 | `FixedScaleCrossings.planePoint`, `ballKernel`, `rectSet`, `Crosses` | `Sandpile/Support/ContinuumPlanar.lean` (namespace `Sandpile.Frozen.FixedScaleCrossings`) |
-| `External.*` and their auxiliary definitions (`BallGreen.*`, `Variance.*`, `Lclt.*`, `Snell.*`, `latticeNorm`, `latticeDist`, `tailKernel`, `SameParity`, `membraneDefect`, `interCount`) | `Sandpile/External/` |
+| `External.*` and their auxiliary definitions (`BallGreen.*`, `Variance.*`, `Lclt.*`, `Snell.*`, `latticeNorm`, `latticeDist`, `tailKernel`, `SameParity`, `membraneDefect`) | `Sandpile/External/` |
 
 The only textual changes are the namespaces, a proof of the irreflexivity field
 of `lattice` that uses no library lemma, and the `noncomputable` marker on

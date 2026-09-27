@@ -1,6 +1,6 @@
 /-
 High-dimensional critical percolation theorem of sandpile.tex, frozen.
-`sandpile.tex:6672-6694` (label `thm:dgt4-nontriviality`):
+`sandpile.tex:6699-6721` (label `thm:dgt4-nontriviality`):
 
   "Fix $\nu_0>0$, $\theta_0>0$, and $K_0<\infty$. There are
    $b=b(d,\theta_0,K_0)>0$, $C=C(d,\theta_0,K_0)<\infty$,

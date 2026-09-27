@@ -1,5 +1,5 @@
 /-
-Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3243-3256`
+Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3270-3283`
 (label `prop:d4-one-point-gaussian`):
 
   "As $t\to\infty$,
@@ -24,13 +24,13 @@ and the second-moment transfer from the membrane are proved locally.
 -/
 import Sandpile.Law
 import Sandpile.External.VarianceScale
+import Sandpile.External.PairedLocalCLTFourProved
 import Sandpile.Support.D4Gaussian
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_one_point_gaussian
-    (hPaired : Sandpile.External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :
@@ -49,4 +49,5 @@ theorem Sandpile.Frozen.d4_one_point_gaussian
   have _hPositive := hvar
   have hsq : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp measurable_id.aestronglyMeasurable).mp hvar'
-  exact Sandpile.odometer_gaussian_four_mass hVarScale hPaired ν hsq hmean θ hθ hexp
+  exact Sandpile.odometer_gaussian_four_mass hVarScale Sandpile.External.pairedLocalCLTFour ν
+    hsq hmean θ hθ hexp

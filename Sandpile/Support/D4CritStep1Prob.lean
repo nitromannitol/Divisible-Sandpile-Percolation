@@ -21,7 +21,7 @@ theorem eaExitValue_eq_frExitValue (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (ζ : Site
 
 /-- Step 1: a mean at least `2b` makes the event `Y_r(z) < b` exponentially
 unlikely, uniformly in the site. -/
-theorem measure_exit_value_low_le (hBallGreen : Sandpile.External.BallGreenBounds)
+theorem measure_exit_value_low_le (_hBallGreen : Sandpile.External.BallGreenBounds)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
       ∀ Aloc : ℝ, 1 ≤ Aloc → ∀ Aex : ℕ, 1 ≤ Aex →
@@ -34,7 +34,7 @@ theorem measure_exit_value_low_le (hBallGreen : Sandpile.External.BallGreenBound
           LatticeProb.iidLaw 4 ν {ζ : Site 4 → ℝ | frExitValue Aex Aloc r ζ x < b}
             ≤ ENNReal.ofReal (C * Real.exp (-(c * min (b ^ 2) (b * (r : ℝ) ^ 2)))) := by
   obtain ⟨c, C, hc, hC, hconc⟩ :=
-    Sandpile.Frozen.d4_exit_average_concentration hBallGreen θ₀ K₀ hθ₀
+    Sandpile.Frozen.d4_exit_average_concentration θ₀ K₀ hθ₀
   refine ⟨c, C, hc, hC, ?_⟩
   intro Aloc hAloc Aex hAex ν hν hmean hint hK r hr b hb hEY x
   have hsub : {ζ : Site 4 → ℝ | frExitValue Aex Aloc r ζ x < b} ⊆

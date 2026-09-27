@@ -1,5 +1,5 @@
 /-
-Corollary of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2041-2059`
+Corollary of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2068-2086`
 (label `cor:dlt4-mean-asymptotic`):
 
   "For every $T>0$ and $x\in\R^d$,
@@ -74,6 +74,7 @@ powers `t^{(4-d)/4}` are `Real.rpow` of a nonnegative base.
 -/
 import Sandpile.Continuum.Stopping
 import Sandpile.Law
+import Sandpile.External.LocalCLTProved
 import Sandpile.Support.MeanACorollary
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -84,7 +85,6 @@ universe u
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dlt4_mean_asymptotic
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd0 : 0 < d) (hd : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
@@ -146,5 +146,6 @@ theorem Sandpile.Frozen.dlt4_mean_asymptotic
 -- FROZEN-STATEMENT-END
 := by
   have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
-  exact Sandpile.Support.dlt4_mean_asymptotic_wired hLocalCLT hStab hVarScale d hd0 hd ν hmean
-    hvar hvar' θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB hOS B hB hBc hBm T hT x
+  exact Sandpile.Support.dlt4_mean_asymptotic_wired Sandpile.External.localCLT hStab hVarScale
+    d hd0 hd ν hmean hvar hvar' θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB hOS B hB hBc
+    hBm T hT x

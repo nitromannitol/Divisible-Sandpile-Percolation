@@ -133,7 +133,7 @@ have the same limit in distribution; tightness is the odometer's own. -/
 theorem dgt4_diffusive_membrane_of
     (_hHeatKernel : Sandpile.External.HeatKernelBounds)
     (hGreenHigh : Sandpile.External.GreenBoundsHigh)
-    (hLocalCLT : Sandpile.External.LocalCLT)
+    (_hLocalCLT : Sandpile.External.LocalCLT)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤)
@@ -248,7 +248,7 @@ theorem dgt4_diffusive_membrane_of
       (fun R => (hOW R).aestronglyMeasurable) aestronglyMeasurable_zero ?_
     simp only [sub_zero]
     exact heL
-  have hWlim := (Sandpile.Frozen.weighted_membrane_limit hLocalCLT
+  have hWlim := (Sandpile.Frozen.weighted_membrane_limit
     d hd hBesov T hT q hqc.continuousOn ν hmean hvar hvar' s hs).1 φ hφtest
   exact MeasureTheory.tendstoInDistribution_of_tendstoInMeasure_sub O (id : ℝ → ℝ)
     hWlim hmeasure (fun R => (hOmem R).aestronglyMeasurable.aemeasurable)

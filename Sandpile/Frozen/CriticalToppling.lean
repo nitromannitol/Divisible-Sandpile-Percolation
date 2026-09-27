@@ -1,5 +1,5 @@
 /-
-Theorem of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1703-1721`
+Theorem of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1730-1748`
 (label `thm:critical-toppling`, with the standing hypotheses of
 Subsection `ssec:expl-d123` stated at `sandpile.tex:1696-1701`):
 

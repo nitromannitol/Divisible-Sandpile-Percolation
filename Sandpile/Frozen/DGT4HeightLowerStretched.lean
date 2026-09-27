@@ -1,6 +1,6 @@
 /-
 Proposition (Refined lower bound under a stretched-exponential lower-tail
-bound) of sandpile.tex, frozen.  `sandpile.tex:4339-4350`
+bound) of sandpile.tex, frozen.  `sandpile.tex:4366-4377`
 (label `prop:dgt4-height-lower-stretched`):
 
   "Suppose \eqref{eq:dgt4-exp-moment} holds.  Suppose also that there are

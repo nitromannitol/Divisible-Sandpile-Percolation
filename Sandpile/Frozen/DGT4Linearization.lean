@@ -1,5 +1,5 @@
 /-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4782-4798`
+Proposition of sandpile.tex, frozen.  `sandpile.tex:4809-4825`
 (label `prop:dgt4-linearization`):
 
   "Fix $T>0$ and let $n_R\coloneqq\lfloor R^2T\rfloor$.  For every

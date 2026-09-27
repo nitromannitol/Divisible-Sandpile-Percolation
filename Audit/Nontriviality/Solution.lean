@@ -20,14 +20,12 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.1 (`thm:main-nontriviality`). -/
 theorem percolation_below_criticality
-    (hBallGreen : External.BallGreenBounds)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
-    (hLocalCLT : External.LocalCLT)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))
     (hmean : ∀ ρ ∈ Set.Ioc (0 : ℝ) 1, ∫ s, s ∂(μ ρ) = ρ)
@@ -39,11 +37,11 @@ theorem percolation_below_criticality
       ∀ᵐ σ ∂(massLaw d (μ ρ)),
         HasInfiniteComponent (toppledSet σ) := by
   rw [Bridge.toppledSet_eq]
-  exact Sandpile.percolation_below_criticality (Bridge.ballGreenBounds hBallGreen)
+  exact Sandpile.percolation_below_criticality
     (Bridge.planarRSW hRSW) (Bridge.lssDomination hLSS)
     (Bridge.exteriorBoundaryConnected hBoundary) (Bridge.continuumRSW hRSWc)
     (Bridge.pittGaussianFKG hPitt) (Bridge.ballOccupationDensity hOcc)
-    (Bridge.localCLT hLocalCLT) (Bridge.cubeStoppingStability hCube) d hd μ hprob hmean ρ₀ ν₀ θ₀
+    (Bridge.cubeStoppingStability hCube) d hd μ hprob hmean ρ₀ ν₀ θ₀
     K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 
 end SandpileAudit

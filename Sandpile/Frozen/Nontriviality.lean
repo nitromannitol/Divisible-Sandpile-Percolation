@@ -43,14 +43,12 @@ open MeasureTheory ProbabilityTheory
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.percolation_below_criticality
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))
     (hmean : ∀ ρ ∈ Set.Ioc (0 : ℝ) 1, ∫ s, s ∂(μ ρ) = ρ)
@@ -65,5 +63,5 @@ theorem Sandpile.Frozen.percolation_below_criticality
 := by
   exact Sandpile.Support.percolation_below_criticality_of_critical_levels d hd μ hprob hmean
     ρ₀ ν₀ θ₀ K₀ hρ₀ hθ₀ hvar hexpint hexp
-    (Sandpile.Frozen.critical_level_percolation hBallGreen hRSW hLSS hBoundary
-      hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀)
+    (Sandpile.Frozen.critical_level_percolation hRSW hLSS hBoundary
+      hRSWc hPitt hOcc hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀)

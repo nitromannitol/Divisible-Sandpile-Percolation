@@ -1,5 +1,5 @@
 /-
-Theorem of sandpile.tex, frozen.  `sandpile.tex:4660-4683`
+Theorem of sandpile.tex, frozen.  `sandpile.tex:4687-4710`
 (label `thm:dgt4-diffusive-membrane`):
 
   "Let $d\geq5$.  Suppose that $(\zeta(x))_{x\in\Z^d}$ are i.i.d.\ and
@@ -71,6 +71,7 @@ import Sandpile.External.HeatKernelBounds
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.NormalComparison
 import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.GaussianLipschitzConcentration
 import Sandpile.Support.ManyLMembrane
@@ -82,7 +83,6 @@ open scoped ENNReal NNReal
 theorem Sandpile.Frozen.dgt4_diffusive_membrane
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -112,4 +112,4 @@ theorem Sandpile.Frozen.dgt4_diffusive_membrane
   have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   exact Sandpile.Support.dgt4_diffusive_membrane_of_inputs hHeatKernel hGreenHigh hGaussConc
-    hNormal hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase
+    hNormal Sandpile.External.localCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase

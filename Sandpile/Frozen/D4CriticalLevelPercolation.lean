@@ -1,5 +1,5 @@
 /-
-Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3996-4012`
+Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:4023-4039`
 (label `thm:d4-critical-level-percolation`):
 
   "Fix $\nu_{0}>0$, $\theta_{0}>0$, and $K_{0}<\infty$.  There are
@@ -27,6 +27,7 @@ every law with no exponential moment.
 -/
 import Sandpile.Law
 import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
 import Sandpile.External.PlanarRSW
 import Sandpile.External.LSSDomination
 import Sandpile.External.VarianceScale
@@ -41,7 +42,6 @@ open MeasureTheory ProbabilityTheory
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_critical_level_percolation
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
@@ -59,7 +59,8 @@ theorem Sandpile.Frozen.d4_critical_level_percolation
   classical
   have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   obtain ⟨b₀, Aloc, Aex, hb₀, hAloc, hAex, hblock⟩ :=
-    Sandpile.exists_block_estimate hBallGreen hRSW hVarScale ν₀ θ₀ K₀ hν₀ hθ₀
+    Sandpile.exists_block_estimate Sandpile.External.ballGreenBounds hRSW hVarScale ν₀ θ₀ K₀ hν₀
+      hθ₀
   set k : ℕ := ⌈4 * Aloc + 20⌉₊ with hkdef
   have hkle : 4 * Aloc + 20 ≤ (k : ℝ) := Nat.le_ceil _
   obtain ⟨δ, hδ, hLSSmain⟩ := Sandpile.good_block_percolation hLSS k

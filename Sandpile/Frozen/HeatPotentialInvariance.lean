@@ -1,5 +1,5 @@
 /-
-Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1842-1849`
+Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1869-1876`
 (label `prop:dlt4-heat-potential-invariance`):
 
   "[Invariance of the heat potential]  Fix $0<T<\infty$.  Then
@@ -65,6 +65,7 @@ import Sandpile.Continuum.WhiteNoise
 import Sandpile.Walk
 import Sandpile.Law
 import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
 import Sandpile.Support.HeatPotentialDefs
 import Sandpile.Support.HeatPotentialClauses
 
@@ -73,7 +74,6 @@ open scoped NNReal ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.heat_potential_invariance
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd0 : 0 < d) (hd : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -106,5 +106,5 @@ theorem Sandpile.Frozen.heat_potential_invariance
                   Sandpile.Frozen.HeatPotentialInvariance.linInterp d R
                     (Sandpile.scenery d σ) q.1 q.2|} ≤ ENNReal.ofReal ε))
 -- FROZEN-STATEMENT-END
-:= Sandpile.Support.heat_potential_invariance_of_clauses hLocalCLT d hd0 hd ν hmean
-    hvar hvar' θ₀ hθ₀ hexp PW W hW T hT
+:= Sandpile.Support.heat_potential_invariance_of_clauses Sandpile.External.localCLT d hd0 hd ν
+    hmean hvar hvar' θ₀ hθ₀ hexp PW W hW T hT

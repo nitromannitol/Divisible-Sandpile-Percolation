@@ -53,7 +53,6 @@ open scoped NNReal ENNReal
 theorem Sandpile.Frozen.high_sobolev_limit
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -87,4 +86,4 @@ theorem Sandpile.Frozen.high_sobolev_limit
     (fun κ hatom hcase =>
       (Sandpile.Frozen.dgt4_diffusive_membrane
         hGaussConc hNormal
-        hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase).1)
+        d hd hBesov ν hatom hmean hvar hvar' κ hcase).1)

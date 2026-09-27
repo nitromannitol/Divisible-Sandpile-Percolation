@@ -1,5 +1,5 @@
 /-
-Blocking-to-crossing lemma of sandpile.tex, frozen.  `sandpile.tex:6635-6642`
+Blocking-to-crossing lemma of sandpile.tex, frozen.  `sandpile.tex:6662-6669`
 (label `lem:dgt4-blocking-to-crossing`):
 
   "Let $\mathcal O\subseteq\Z^d$, and let $S=Q(0,1)$. Suppose

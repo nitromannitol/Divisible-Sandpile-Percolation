@@ -84,6 +84,12 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
     "lem-brownian-ball-localization": {
         "-cA^2/T": "notation: the paper's e^{-c A^2/T} is Real.exp (-(c * A ^ 2 / T)) in the Lean inequality, with the same c, A and T (c bound by exists C c, A by forall A >= 1, T by forall T > 0).",
     },
+    "ext-brownian-exit-step": {
+        "-cA^2/T": "split: the e^{-cA^2/T} tail of the displayed inequality (and of the proof's closing sentence) belongs to the Gaussian exit-time estimate, formalized separately by Sandpile.Continuum.exists_ball_exit_tail_closed_uniform and consumed directly by lem-brownian-ball-localization; the strong Markov step this External asserts bounds the excess by a supremum of values, with no exponential factor of its own.",
+    },
+    "lem-brownian-value-mono-horizon": {
+        "-cA^2/T": "split: the e^{-cA^2/T} tail belongs to the displayed inequality of lem-brownian-ball-localization; this node formalizes only the horizon-monotonicity step of the proof (sandpile.tex:1671-1679, inside the proof and so not itself label-anchorable), which carries no exponential factor.",
+    },
     "lem-convex-linear-bound": {
         "N": "notation: N is only the upper limit of the sums sum_{i=1}^N and of the index range 1 <= i <= N, not an exponent; Lean writes the same range as the type Fin N of coordinates (N : Nat is the theorem's natural-number argument, coordinates Fin N -> Real, sums over the whole type, 0-indexed).",
     },
@@ -135,6 +141,7 @@ EXPECTED_ABSENT: dict[str, dict[str, str]] = {
     },
     "rem-dlt4-killed-scaling": {
         "Q(\\lfloorRu\\rfloor,R)": "notation: the paper's superscript on u (the lattice box Q(floor(Ru),R) in u^{Q(floor(Ru),R)}) is the first (domain) argument of Sandpile.localizedOdometer, supplied in the Lean statement as Sandpile.supBox (fun i => floor(R * u i)) R; I read Sandpile.supBox (Sandpile/Frozen/MeanLocalization.lean:41, {y | forall i, |y i - x i| <= floor(L)}, the paper's Q(x,L) of sandpile.tex:680 with integer coordinates, so radius R real is equivalent to floor(R)) and Sandpile.localizedOdometer (Sandpile/Walk.lean:109, the paper's u_t^D(x) of eq:localized-odometer with tau_D as the first exit, zero off D); both match.",
+        "d": "notation: the paper's `[-1,1]^d` (sandpile.tex:1937, the cube `u+[-1,1]^d` the values are killed on exiting) is a set-power exponent naming the ambient dimension `d` of the statement, the same `d` the Lean statement quantifies over (`Sandpile.Frozen.dlt4_killed_scaling` binds `d : Nat` with `1 <= d` and `d <= 3`); it is not a power of a quantity, exactly like `\\R^d`, but `SET_BASE` only recognizes `\\Z`, `\\R`, `\\N`, `\\T` and `\\mathbb{...}` as set bases, not the interval `[-1,1]`.",
     },
     "thm-dgt4-height-upper-tail": {
         "1/\\min\\{\u03b3,d/2\\}": "notation: the paper's (log t)^{1/min{gamma,d/2}} is Lean's (Real.log t) ^ (1 / min gamma ((d : R) / 2)), where gamma is the Lean variable and R the reals; the exponent is the same, with min{gamma,d/2} spelled `min gamma ((d:R)/2)` (d cast to the reals) and 1/(.) as `1 / (.)`, in the frozen conclusion `Sandpile.meanOdometer ... t <= C * (Real.log t) ^ (...)`",

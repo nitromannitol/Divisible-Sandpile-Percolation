@@ -48,9 +48,9 @@ theorem brownian_ball_localization_of_external (d : ℕ) (hd : d < 4)
   rcases Nat.eq_zero_or_pos d with h0 | hpos
   · subst h0
     exact brownian_ball_localization_of_residuals_frozen 0 hd hGrow0
-      (ballStepResidual_of_exitStep 0 hExit hGrow0)
+      (ballStepResidual_of_exitStep 0 hd hExit hGrow0)
   · exact brownian_ball_localization_of_residuals_frozen d hd
       (ballGrowthResidual_of_external d hpos (by omega))
-      (ballStepResidual_of_exitStep d hExit (ballGrowthResidual_of_external d hpos (by omega)))
+      (ballStepResidual_of_exitStep d hd hExit (ballGrowthResidual_of_external d hpos (by omega)))
 
 end Sandpile.Continuum

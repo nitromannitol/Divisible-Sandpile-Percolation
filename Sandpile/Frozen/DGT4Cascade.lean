@@ -1,5 +1,5 @@
 /-
-Cascade lemma of sandpile.tex, frozen.  `sandpile.tex:6543-6552`
+Cascade lemma of sandpile.tex, frozen.  `sandpile.tex:6570-6579`
 (label `lem:dgt4-cascade`):
 
   "There are $b,C>0$ and $M<\infty$ such that, whenever $\E u_t(0)\geq M$, for

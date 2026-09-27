@@ -1,5 +1,5 @@
 /-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:4804-4820`
+Lemma of sandpile.tex, frozen.  `sandpile.tex:4831-4847`
 (label `lem:dgt4-weighted-last-visits`):
 
   "Let $X$ be simple random walk started at the origin.  For integers

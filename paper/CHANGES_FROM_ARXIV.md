@@ -193,3 +193,50 @@ functions are again `ExpStable` with constants added (`ExpStable.sum`,
 `Sandpile.Frozen.d4_soft_bottleneck`, are unchanged; the addition is to the
 proof only. The Step 5 sentence at line 3840 now cites this addition instead
 of asserting the stability without a citation.
+
+## 9. Section 3.2, proof of `lem:brownian-ball-localization`, line 1660
+
+arXiv states the lemma after the sentence "The same argument extends to the
+Brownian motion analogue of the odometer" and gives no proof.  Added after the
+lemma:
+
+> Fix $u\in K$ and a stopping time $\tau\leq T$, and write
+> $\sigma=\tau_{u,A}$. The payoffs of $\tau$ and of $\tau\wedge\sigma$ agree
+> off the event $\{\sigma<\tau\}$. On this event, the strong Markov property
+> of Brownian motion at $\sigma$ bounds the conditional reward after $\sigma$
+> by $\mathcal U_Z(T-\sigma,B_\sigma)$, the value of the restarted motion for
+> the remaining horizon, and $|B_\sigma-u|=A$. Almost surely $Z$ grows at most
+> polynomially on $[0,T]\times\R^d$, and the running maximum of Brownian
+> motion on $[0,T]$ has moments of all orders, so every reward in this
+> argument is integrable.
+>
+> The value increases with the horizon: $\mathcal U_Z(s,z)\leq\mathcal
+> U_Z(T,z)$ for $0\leq s\leq T$. Indeed, the increment
+> $V(a,y)=Z(a+T-s,y)-Z(a,y)$ solves the heat equation, because the
+> time-independent white noise cancels, so $r\mapsto V(s-r,B_r)$ is a
+> martingale on $[0,s]$ and $\mathbf E_z V(s-\tau,B_\tau)=V(s,z)$ for every
+> stopping time $\tau\leq s$. Hence
+> $Z(T,z)-\mathbf E_z Z(T-\tau,B_\tau)=Z(s,z)-\mathbf E_z Z(s-\tau,B_\tau)$,
+> so every payoff available at horizon $s$ in
+> \eqref{eq:continuum-membrane-stopping-value} is available at horizon $T$.
+>
+> Taking the supremum over $\tau$ gives
+> $\mathcal U_Z(T,u)-\mathcal U_{Z,A}(T,u)\leq\P(\tau_{u,A}<T)\sup_z
+> \mathcal U_Z(T,z)$, the supremum over the points $z$ within distance $A$ of
+> $K$. The Gaussian tail $\P(\tau_{u,A}<T)\leq Ce^{-cA^2/T}$ of the exit time
+> completes the proof.
+
+The lattice argument of `lem:localization-killing` does not transfer verbatim.
+After the exit the restarted motion has only the remaining horizon $T-\sigma$,
+and the lattice proof bounds its reward by the value at the full horizon, which
+there is immediate because a stopping time bounded by $T-\sigma$ is bounded by
+$T$.  For the Brownian value $\mathcal U_Z(T,x)=Z(T,x)+\sup_\tau\mathbf
+E_x[-Z(T-\tau,B_\tau)]$ the horizon also enters the field, so monotonicity in the
+horizon is a property of $Z$ and needs the argument of the second paragraph;
+for a general continuous field it is false.  The proof also makes explicit the
+integrability that the strong Markov step needs.  The lemma's statement is
+unchanged.  In the formalization the strong Markov step is the cited input
+`Sandpile.External.BrownianExitStep`, stated with an integrable envelope and
+with the value at the remaining horizon (see `ledger/decisions.md`, D-001), and
+the monotonicity in the horizon is the repository node
+`Sandpile.Frozen.brownian_value_mono_horizon`.

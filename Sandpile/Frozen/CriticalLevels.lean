@@ -29,25 +29,25 @@ neither is carried here as an explicit hypothesis.
 import Sandpile.Law
 import Sandpile.Support.Crit23Scale
 import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
 import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.VarianceScaleProved
 import Sandpile.External.PlanarRSW
 import Sandpile.External.LSSDomination
 import Sandpile.External.ExteriorBoundaryConnected
+import Sandpile.External.LocalCLTProved
 import Sandpile.Support.Crit23MainAssembly
 
 open MeasureTheory ProbabilityTheory
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_level_percolation
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -60,6 +60,7 @@ theorem Sandpile.Frozen.critical_level_percolation
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x}
 -- FROZEN-STATEMENT-END
 := by
-  exact critical_level_percolation_assembly hBallGreen Sandpile.External.greenBoundsHigh
+  exact critical_level_percolation_assembly Sandpile.External.ballGreenBounds
+    Sandpile.External.greenBoundsHigh
     Sandpile.External.varianceScale hRSW hLSS
-    hBoundary hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
+    hBoundary hRSWc hPitt hOcc Sandpile.External.localCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀

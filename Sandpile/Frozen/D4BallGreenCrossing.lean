@@ -1,5 +1,5 @@
 /-
-Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3548-3569`
+Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3575-3596`
 (label `thm:d4-ball-green-crossing`):
 
   "[Uniform ball-killed Green crossing estimate]  Fix $\nu_{0}>0$,
@@ -71,6 +71,7 @@ Gaussian far field, so it enters as the explicit hypothesis `hRSW`.
 -/
 import Sandpile.Support.BallCrossingDefinitions
 import Sandpile.Support.D4CrossingAssembly
+import Sandpile.External.BallGreenBoundsProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -79,7 +80,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_ball_green_crossing
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (ν₀ θ₀ K₀ ϑ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) (hϑ : 1 ≤ ϑ) :
     ∀ ε : ℝ, 0 < ε → ∃ γ C : ℝ, 0 < γ ∧ 0 < C ∧ ∃ r₀ : ℕ,
@@ -94,4 +94,5 @@ theorem Sandpile.Frozen.d4_ball_green_crossing
             ENNReal.ofReal (C * (Real.log r) ^ 3 * (r : ℝ) ^ (-γ))
 -- FROZEN-STATEMENT-END
 := by
-  exact d4_ball_green_crossing_of_rsw hBallGreen hRSW ν₀ θ₀ K₀ ϑ hν₀ hθ₀ hϑ
+  exact d4_ball_green_crossing_of_rsw Sandpile.External.ballGreenBounds hRSW ν₀ θ₀ K₀ ϑ hν₀ hθ₀
+    hϑ

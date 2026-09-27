@@ -1,5 +1,5 @@
 /-
-Lemma of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2424-2434`
+Lemma of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2451-2461`
 (label `lem:finite-scale-extraction`):
 
   "[Finite-scale extraction]  Fix $N\geq1$ axis-parallel rectangles

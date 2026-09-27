@@ -13,7 +13,7 @@
 version: 1
 source_pin:
   file: paper/sandpile.tex
-  sha256: 94cebd0c15beb6ae60e87f58d79a5836232eff57efa189cebd4aefe17465eb42
+  sha256: 886793b75289a92d7acbbf93231f5b86a6b1eae1e444e64751a08193e707d5ca
 nodes:
   - id: ext-green-bounds-high
     version: 2
@@ -128,7 +128,7 @@ nodes:
   - id: cor-dgt4-mean-lower
     version: 2
     kind: theorem
-    source: sandpile.tex:4299-4314 (label cor-dgt4-mean-lower)
+    source: sandpile.tex:4326-4341 (label cor-dgt4-mean-lower)
     file: Sandpile/Frozen/DGT4MeanLower.lean
     export: Sandpile.Frozen.dgt4_mean_lower
     state: SEALED
@@ -139,7 +139,7 @@ nodes:
   - id: cor-d4-logarithmic-mean-lower
     version: 2
     kind: theorem
-    source: sandpile.tex:2971-2978 (label cor-d4-logarithmic-mean-lower)
+    source: sandpile.tex:2998-3005 (label cor-d4-logarithmic-mean-lower)
     file: Sandpile/Frozen/D4LogMeanLower.lean
     export: Sandpile.Frozen.d4_log_mean_lower
     state: SEALED
@@ -150,23 +150,12 @@ nodes:
   - id: lem-d4-finite-range-lower-bound
     version: 2
     kind: theorem
-    source: sandpile.tex:3923-3931 (label lem-d4-finite-range-lower-bound)
+    source: sandpile.tex:3950-3958 (label lem-d4-finite-range-lower-bound)
     file: Sandpile/Frozen/D4FiniteRangeLowerBound.lean
     export: Sandpile.Frozen.d4_finite_range_lower_bound
     state: SEALED
     frozen_sha256: d6a26344dae4829fd46b16f8e29123f5e8fa941fbd639e4262cb18f67b642f2a
     provider: Sandpile.Frozen.d4_finite_range_lower_bound
-    approved: "2026-09-08"
-
-  - id: lem-d4-exit-average-concentration
-    version: 4
-    kind: theorem
-    source: sandpile.tex:3947-3958 (label lem-d4-exit-average-concentration)
-    file: Sandpile/Frozen/D4ExitAverageConcentration.lean
-    export: Sandpile.Frozen.d4_exit_average_concentration
-    state: SEALED
-    frozen_sha256: bc0bc250dcad3f394bd6e14a1b9fb05985f0e6efc16475c00da596492725debc
-    provider: Sandpile.Frozen.d4_exit_average_concentration
     approved: "2026-09-08"
 
   - id: thm-main-explosion-ii-a
@@ -191,32 +180,10 @@ nodes:
     provider: Sandpile.Frozen.four_first_order
     approved: "2026-09-08"
 
-  - id: lem-d4-double-heat-kernel
-    version: 4
-    kind: theorem
-    source: sandpile.tex:1164-1169 (label lem-d4-double-heat-kernel)
-    file: Sandpile/Frozen/DoubleHeatKernel.lean
-    export: Sandpile.Frozen.d4_double_heat_kernel
-    state: SEALED
-    frozen_sha256: 8d28805d17cc6d014819ae9980678103fd5b459f83e3feb6d628a7199ca0b527
-    provider: Sandpile.Frozen.d4_double_heat_kernel
-    approved: "2026-09-08"
-
-  - id: thm-main-explosion-ii-b
-    version: 3
-    kind: theorem
-    source: sandpile.tex:247-253 (label thm-main-explosion, part (ii)(b))
-    file: Sandpile/Frozen/FourGaussian.lean
-    export: Sandpile.Frozen.four_gaussian
-    state: SEALED
-    frozen_sha256: d80e49130820dfa69fa18f19b761867195908533c701b46ec53297e059a576e9
-    provider: Sandpile.Frozen.four_gaussian
-    approved: "2026-09-08"
-
   - id: lem-d4-soft-bottleneck
     version: 2
     kind: theorem
-    source: sandpile.tex:3451-3473 (label lem-d4-soft-bottleneck)
+    source: sandpile.tex:3478-3500 (label lem-d4-soft-bottleneck)
     file: Sandpile/Frozen/D4SoftBottleneck.lean
     export: Sandpile.Frozen.d4_soft_bottleneck
     state: SEALED
@@ -238,7 +205,7 @@ nodes:
   - id: lem-dgt4-blocking-to-crossing
     version: 3
     kind: theorem
-    source: sandpile.tex:6635-6642 (label lem-dgt4-blocking-to-crossing)
+    source: sandpile.tex:6662-6669 (label lem-dgt4-blocking-to-crossing)
     file: Sandpile/Frozen/DGT4BlockingToCrossing.lean
     export: Sandpile.Frozen.dgt4_blocking_to_crossing
     state: SEALED
@@ -249,24 +216,13 @@ nodes:
   - id: ext-planar-rsw
     version: 1
     kind: definition
-    source: sandpile.tex:2235-2237 (Kohler-Schindler–Tassion Theorem 1 and Comment 1, planar crossing comparison)
+    source: sandpile.tex:2262-2264 (Kohler-Schindler–Tassion Theorem 1 and Comment 1, planar crossing comparison)
     file: Sandpile/External/PlanarRSW.lean
     export: Sandpile.External.PlanarRSW
     state: FROZEN
     frozen_sha256: 0ae2bd89db0f6fa9278a60b555de6de2e834feba5a12bd5ab4c2ced2685ecdc4
     provider: Sandpile.External.PlanarRSW
     approved: "2026-09-08"
-
-  - id: thm-d4-ball-green-crossing
-    version: 5
-    kind: theorem
-    source: sandpile.tex:3548-3569 (label thm:d4-ball-green-crossing)
-    file: Sandpile/Frozen/D4BallGreenCrossing.lean
-    export: Sandpile.Frozen.d4_ball_green_crossing
-    state: SEALED
-    frozen_sha256: f112b860aa27db373d089da8803f73980e1ca504c311043ee378f45f9c6d69b8
-    provider: Sandpile.Frozen.d4_ball_green_crossing
-    approved: "2026-09-10"
 
   - id: ext-lss-domination
     version: 1
@@ -304,7 +260,7 @@ nodes:
   - id: lem-sobolev-tightness
     version: 2
     kind: theorem
-    source: sandpile.tex:1665-1675 (label lem-sobolev-tightness)
+    source: sandpile.tex:1692-1702 (label lem-sobolev-tightness)
     file: Sandpile/Frozen/SobolevTightness.lean
     export: Sandpile.Frozen.sobolev_tightness
     state: SEALED
@@ -315,7 +271,7 @@ nodes:
   - id: lem-dgt4-weighted-last-visits
     version: 2
     kind: theorem
-    source: sandpile.tex:4804-4820 (label lem-dgt4-weighted-last-visits)
+    source: sandpile.tex:4831-4847 (label lem-dgt4-weighted-last-visits)
     file: Sandpile/Frozen/DGT4LastVisits.lean
     export: Sandpile.Frozen.dgt4_last_visits
     state: SEALED
@@ -326,7 +282,7 @@ nodes:
   - id: ext-normal-comparison
     version: 1
     kind: definition
-    source: sandpile.tex:5509-5516 (LiShao Corollary 2.1 p. 496, normal comparison inequality)
+    source: sandpile.tex:5536-5543 (LiShao Corollary 2.1 p. 496, normal comparison inequality)
     file: Sandpile/External/NormalComparison.lean
     export: Sandpile.External.NormalComparison
     state: FROZEN
@@ -359,7 +315,7 @@ nodes:
   - id: ext-gaussian-law-covariance
     version: 2
     kind: theorem
-    source: sandpile.tex:2110-2111 (the unit-scale field's invariances, which this classical fact supports, namely that a centred Gaussian field is determined in law by its covariance); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    source: sandpile.tex:2137-2138 (the unit-scale field's invariances, which this classical fact supports, namely that a centred Gaussian field is determined in law by its covariance); a cited result, proved unconditionally in this repository from the shared library rather than assumed
     file: Sandpile/External/GaussianLawCovarianceProved.lean
     export: Sandpile.External.gaussianLawDeterminedByCovariance
     state: SEALED
@@ -378,21 +334,10 @@ nodes:
     provider: Sandpile.External.pinsker
     approved: "2026-09-25"
 
-  - id: prop-dlt4-heat-potential-invariance
-    version: 3
-    kind: theorem
-    source: sandpile.tex:1842-1849 (label prop-dlt4-heat-potential-invariance)
-    file: Sandpile/Frozen/HeatPotentialInvariance.lean
-    export: Sandpile.Frozen.heat_potential_invariance
-    state: SEALED
-    frozen_sha256: cf02af44b464e22718b4a2a642759583793f1dcae3ceeae04393e2e569a20f06
-    provider: Sandpile.Frozen.heat_potential_invariance
-    approved: "2026-09-11"
-
   - id: ext-cube-stopping-stability
     version: 1
     kind: definition
-    source: sandpile.tex:1929-1931 and sandpile.tex:1900-1907 (CoquetToldo Theorem 3 and Corollary 4, stability of killed optimal-stopping values)
+    source: sandpile.tex:1956-1958 and sandpile.tex:1900-1907 (CoquetToldo Theorem 3 and Corollary 4, stability of killed optimal-stopping values)
     file: Sandpile/External/CubeStoppingStability.lean
     export: Sandpile.External.CubeStoppingStability
     state: FROZEN
@@ -403,7 +348,7 @@ nodes:
   - id: ext-gaussian-lipschitz-concentration
     version: 1
     kind: definition
-    source: sandpile.tex:5273-5278 (Borell 1975 and Tsirelson-Ibragimov-Sudakov 1976, Gaussian concentration for a Lipschitz functional)
+    source: sandpile.tex:5300-5305 (Borell 1975 and Tsirelson-Ibragimov-Sudakov 1976, Gaussian concentration for a Lipschitz functional)
     file: Sandpile/External/GaussianLipschitzConcentration.lean
     export: Sandpile.External.GaussianLipschitzConcentration
     state: FROZEN
@@ -425,7 +370,7 @@ nodes:
   - id: ext-continuum-stopping-stability
     version: 2
     kind: definition
-    source: sandpile.tex:1900-1907 (CoquetToldo Theorem 3 and Corollary 4, stability of optimal-stopping values)
+    source: sandpile.tex:1927-1934 (CoquetToldo Theorem 3 and Corollary 4, stability of optimal-stopping values)
     file: Sandpile/External/ContStoppingStability.lean
     export: Sandpile.External.ContinuumStoppingStability
     state: FROZEN
@@ -433,30 +378,10 @@ nodes:
     provider: Sandpile.External.ContinuumStoppingStability
     approved: "2026-09-14"
 
-  - id: ext-brownian-exit-step
-    version: 2
-    kind: definition
-    source: sandpile.tex:1618, 1640-1658 (strong Markov at the ball exit time)
-    file: Sandpile/External/BrownianExitStep.lean
-    export: Sandpile.External.BrownianExitStep
-    state: FROZEN
-    frozen_sha256: 5dcab81b3e6f2360c8570064e7bfe5265f46cfef2daec9d893d512acb1e74804
-    provider: Sandpile.External.BrownianExitStep
-    approved: "2026-09-14"
-
-  - id: lem-brownian-ball-localization
-    version: 6
-    kind: theorem
-    source: sandpile.tex:1648-1659 (label lem-brownian-ball-localization)
-    file: Sandpile/Frozen/BrownianBallLocalization.lean
-    export: Sandpile.Frozen.brownian_ball_localization
-    state: SEALED
-    frozen_sha256: 9dd206a075f13ac93a6b5182a72daa20d0febe58c6346ce0e0e358b0ddad37c6
-    provider: Sandpile.Frozen.brownian_ball_localization
   - id: ext-rellich-kondrachov-negsobolev
     version: 1
     kind: definition
-    source: sandpile.tex:5615-5660 (RellichKondrachov compact Sobolev embedding, cited implicitly in the H-s-loc clause of lem:dgt4-linearization-from-survival)
+    source: sandpile.tex:5642-5687 (RellichKondrachov compact Sobolev embedding, cited implicitly in the H-s-loc clause of lem:dgt4-linearization-from-survival)
     file: Sandpile/External/RellichKondrachovNegSobolev.lean
     export: Sandpile.External.RellichKondrachovNegSobolev
     state: FROZEN
@@ -467,46 +392,13 @@ nodes:
   - id: ext-ball-occupation-density
     version: 2
     kind: definition
-    source: sandpile.tex:2074-2088 (the kernel of X_s, in the context of eq:dlt4-linear-gaussian-potential), sandpile.tex:2499-2503 (expected occupation density); Morters-Peres, Brownian Motion, Ch. 3, Green function of a ball, theorem number not verified
+    source: sandpile.tex:2101-2115 (the kernel of X_s, in the context of eq:dlt4-linear-gaussian-potential), sandpile.tex:2499-2503 (expected occupation density); Morters-Peres, Brownian Motion, Ch. 3, Green function of a ball, theorem number not verified
     file: Sandpile/External/BallOccupationDensity.lean
     export: Sandpile.External.BallOccupationDensity
     state: FROZEN
     frozen_sha256: 43a2ec07e5023f41b16b02cdc5cac64e18f410cffc6a9633360499f4b0d878d4
     provider: Sandpile.External.BallOccupationDensity
     approved: "2026-09-16"
-
-  - id: thm-main-explosion-i-b
-    version: 8
-    kind: theorem
-    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b))
-    file: Sandpile/Frozen/BrownianScalingLimit.lean
-    export: Sandpile.Frozen.brownian_scaling_limit
-    state: SEALED
-    frozen_sha256: f2070100980410a551678fe09557176f8cd3af46ebfcb12f21c1d68e53835902
-    provider: Sandpile.Frozen.brownian_scaling_limit
-    approved: "2026-09-18"
-
-  - id: thm-d23-critical-level-percolation
-    version: 3
-    kind: theorem
-    source: sandpile.tex:2569-2584 (label thm-d23-critical-level-percolation)
-    file: Sandpile/Frozen/D23CriticalLevelPercolation.lean
-    export: Sandpile.Frozen.d23_critical_level_percolation
-    state: SEALED
-    frozen_sha256: 6ce3e68a08b86214f7fc045be3e1b35ee7e9068535c4a70dd34f365440241801
-    provider: Sandpile.Frozen.d23_critical_level_percolation
-    approved: "2026-09-18"
-
-  - id: thm-main-nontriviality
-    version: 5
-    kind: theorem
-    source: sandpile.tex:95-103 (label thm-main-nontriviality)
-    file: Sandpile/Frozen/Nontriviality.lean
-    export: Sandpile.Frozen.percolation_below_criticality
-    state: SEALED
-    frozen_sha256: a0a3ead389fc142dc5864f7780ca6415feb8f7dee5fcbfe6bfc183f228044db7
-    provider: Sandpile.Frozen.percolation_below_criticality
-    approved: "2026-09-18"
 
   - id: lem-recursion
     version: 3
@@ -519,21 +411,10 @@ nodes:
     provider: Sandpile.Frozen.odometer_recursion
     approved: "2026-09-19"
 
-  - id: rem-dlt4-killed-scaling
-    version: 5
-    kind: theorem
-    source: sandpile.tex:1930-1957 (label rem-dlt4-killed-scaling)
-    file: Sandpile/Frozen/DLT4KilledScaling.lean
-    export: Sandpile.Frozen.dlt4_killed_scaling
-    state: SEALED
-    frozen_sha256: 695c032273d7732771ae941b249cf2dc7be48dd09d0c53de46425abfecd0c2d4
-    provider: Sandpile.Frozen.dlt4_killed_scaling
-    approved: "2026-09-19"
-
   - id: lem-finite-scale-extraction
     version: 8
     kind: theorem
-    source: sandpile.tex:2424-2434 (label lem-finite-scale-extraction)
+    source: sandpile.tex:2451-2461 (label lem-finite-scale-extraction)
     file: Sandpile/Frozen/FiniteScaleExtraction.lean
     export: Sandpile.Frozen.finite_scale_extraction
     state: SEALED
@@ -544,7 +425,7 @@ nodes:
   - id: thm-limiting-odometer-crossing
     version: 9
     kind: theorem
-    source: sandpile.tex:2515-2530 (thm-limiting-odometer-crossing); the stopping value is evaluated at the continuous heat-potential modification fixed at sandpile.tex:1019-1021, required by the stopped-field comparison at sandpile.tex:2500-2513; ball-field continuity is retained for finite-scale extraction
+    source: sandpile.tex:2542-2557 (thm-limiting-odometer-crossing); the stopping value is evaluated at the continuous heat-potential modification fixed at sandpile.tex:1019-1021, required by the stopped-field comparison at sandpile.tex:2500-2513; ball-field continuity is retained for finite-scale extraction
     file: Sandpile/Frozen/LimitingOdometerCrossing.lean
     export: Sandpile.Frozen.limiting_odometer_crossing
     state: SEALED
@@ -555,7 +436,7 @@ nodes:
   - id: prop-fixed-scale-crossings
     version: 7
     kind: theorem
-    source: sandpile.tex:2130-2137 (label prop-fixed-scale-crossings)
+    source: sandpile.tex:2157-2164 (label prop-fixed-scale-crossings)
     file: Sandpile/Frozen/FixedScaleCrossings.lean
     export: Sandpile.Frozen.fixed_scale_crossings
     state: SEALED
@@ -599,7 +480,7 @@ nodes:
   - id: ext-continuum-besov-tightness
     version: 2
     kind: definition
-    source: sandpile.tex:1676-1680 (FurlanMourrat Theorem 2.30 at p=q=2, covariance form, with the Besov-Sobolev identification)
+    source: sandpile.tex:1703-1707 (FurlanMourrat Theorem 2.30 at p=q=2, covariance form, with the Besov-Sobolev identification)
     file: Sandpile/External/ContinuumBesovTightness.lean
     export: Sandpile.External.ContinuumBesovTightness
     state: FROZEN
@@ -684,28 +565,6 @@ nodes:
     provider: Sandpile.Frozen.four_sobolev
     approved: "2026-09-25"
 
-  - id: thm-main-explosion-i-a
-    version: 7
-    kind: theorem
-    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a))
-    file: Sandpile/Frozen/MeanGrowthLow.lean
-    export: Sandpile.Frozen.mean_growth_le_three
-    state: SEALED
-    frozen_sha256: cf6f3fa8d5ef519a0e95663c93ff9c2c7d657dbfc3caad94ead993cffb8ab8c3
-    provider: Sandpile.Frozen.mean_growth_le_three
-    approved: "2026-09-25"
-
-  - id: thm-main-critical-level-percolation
-    version: 6
-    kind: theorem
-    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation)
-    file: Sandpile/Frozen/CriticalLevels.lean
-    export: Sandpile.Frozen.critical_level_percolation
-    state: SEALED
-    frozen_sha256: bad4f293aef28f904091f236b29b9f5d484e11092c0a7d807eb7bf35dd7b678c
-    provider: Sandpile.Frozen.critical_level_percolation
-    approved: "2026-09-25"
-
   - id: ext-intersection-second-moment
     version: 2
     kind: theorem
@@ -715,28 +574,6 @@ nodes:
     state: SEALED
     frozen_sha256: 7690cf61ce21585257a62413fd22e1288c663b4aaa7e2ce4e6ceb97b305adec6
     provider: Sandpile.External.intersectionSecondMoment
-    approved: "2026-09-26"
-
-  - id: thm-main-explosion-iii-d
-    version: 6
-    kind: theorem
-    source: sandpile.tex:286-293 (label thm-main-explosion, part (iii)(d)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment
-    file: Sandpile/Frozen/HighNonconvergence.lean
-    export: Sandpile.Frozen.high_nonconvergence
-    state: SEALED
-    frozen_sha256: 538efe8c4166d1817a9480053d6eec100f87f1041fec610eb0373f056abfa9ba
-    provider: Sandpile.Frozen.high_nonconvergence
-    approved: "2026-09-26"
-
-  - id: thm-main-explosion-iii-c
-    version: 5
-    kind: theorem
-    source: sandpile.tex:274-285 (label thm-main-explosion, part (iii)(c)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment
-    file: Sandpile/Frozen/HighSobolevLimit.lean
-    export: Sandpile.Frozen.high_sobolev_limit
-    state: SEALED
-    frozen_sha256: 34dfc1bf79b50ed3a3634975e1df63c251b788bf2e0a98de69200e07e9fe985a
-    provider: Sandpile.Frozen.high_sobolev_limit
     approved: "2026-09-26"
 
   - id: cor-mean-localization
@@ -753,7 +590,7 @@ nodes:
   - id: prop-d4-diffusive-tightness
     version: 4
     kind: theorem
-    source: sandpile.tex:3290-3297 (label prop-d4-diffusive-tightness); the heat-kernel bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.heatKernelBounds
+    source: sandpile.tex:3317-3324 (label prop-d4-diffusive-tightness); the heat-kernel bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.heatKernelBounds
     file: Sandpile/Frozen/D4DiffusiveTightness.lean
     export: Sandpile.Frozen.d4_diffusive_tightness
     state: SEALED
@@ -764,7 +601,7 @@ nodes:
   - id: thm-critical-toppling
     version: 5
     kind: theorem
-    source: sandpile.tex:1703-1721 (label thm-critical-toppling); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:1730-1748 (label thm-critical-toppling); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/CriticalToppling.lean
     export: Sandpile.Frozen.critical_toppling
     state: SEALED
@@ -775,7 +612,7 @@ nodes:
   - id: cor-critical-mean-one
     version: 5
     kind: theorem
-    source: sandpile.tex:1793-1799 (label cor-critical-mean-one); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:1820-1826 (label cor-critical-mean-one); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/CriticalMeanOne.lean
     export: Sandpile.Frozen.critical_mean_one
     state: SEALED
@@ -786,7 +623,7 @@ nodes:
   - id: lem-d4-difference-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:3002-3015 (label lem-d4-difference-tail); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3029-3042 (label lem-d4-difference-tail); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/D4DifferenceTail.lean
     export: Sandpile.Frozen.d4_difference_tail
     state: SEALED
@@ -797,7 +634,7 @@ nodes:
   - id: prop-d4-pointwise-linearization
     version: 4
     kind: theorem
-    source: sandpile.tex:3060-3075 (label prop-d4-pointwise-linearization); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3087-3102 (label prop-d4-pointwise-linearization); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/D4PointwiseLinearization.lean
     export: Sandpile.Frozen.d4_pointwise_linearization
     state: SEALED
@@ -808,7 +645,7 @@ nodes:
   - id: thm-critical-toppling-d4
     version: 5
     kind: theorem
-    source: sandpile.tex:2692-2721 (label thm-critical-toppling-d4); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:2719-2748 (label thm-critical-toppling-d4); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/CriticalTopplingD4.lean
     export: Sandpile.Frozen.critical_toppling_d4
     state: SEALED
@@ -816,54 +653,10 @@ nodes:
     provider: Sandpile.Frozen.critical_toppling_d4
     approved: "2026-09-26"
 
-  - id: prop-d4-one-point-gaussian
-    version: 5
-    kind: theorem
-    source: sandpile.tex:3243-3256 (label prop-d4-one-point-gaussian); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
-    file: Sandpile/Frozen/D4OnePointGaussian.lean
-    export: Sandpile.Frozen.d4_one_point_gaussian
-    state: SEALED
-    frozen_sha256: 62ae13783120e943d7b09defa806b7051bb0fca625500bf2379bdd63b444dc84
-    provider: Sandpile.Frozen.d4_one_point_gaussian
-    approved: "2026-09-26"
-
-  - id: thm-d4-critical-level-percolation
-    version: 7
-    kind: theorem
-    source: sandpile.tex:3996-4012 (label thm:d4-critical-level-percolation); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
-    file: Sandpile/Frozen/D4CriticalLevelPercolation.lean
-    export: Sandpile.Frozen.d4_critical_level_percolation
-    state: SEALED
-    frozen_sha256: c00a27a6e2205c12bf5451b6dfd43c2369f30f9d9739f64450c69ae2f8c1dfe8
-    provider: Sandpile.Frozen.d4_critical_level_percolation
-    approved: "2026-09-26"
-
-  - id: prop-continuum-value-selfsimilar
-    version: 9
-    kind: theorem
-    source: sandpile.tex:1962-1981 (label prop-continuum-value-selfsimilar); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
-    file: Sandpile/Frozen/ContinuumValueSelfSimilar.lean
-    export: Sandpile.Frozen.continuum_value_self_similar
-    state: SEALED
-    frozen_sha256: f5af5fa38b3c83fcb6dd5f27e4bfd30ac05e34ebdc8faf629cc7b65cc22f0d37
-    provider: Sandpile.Frozen.continuum_value_self_similar
-    approved: "2026-09-26"
-
-  - id: cor-dlt4-mean-asymptotic
-    version: 7
-    kind: theorem
-    source: sandpile.tex:2041-2059 (label cor-dlt4-mean-asymptotic); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
-    file: Sandpile/Frozen/MeanAsymptotic.lean
-    export: Sandpile.Frozen.dlt4_mean_asymptotic
-    state: SEALED
-    frozen_sha256: 8f6465593d007dd5c290367490c60ac05876aa32922fa10e4f5c22b2b97e7140
-    provider: Sandpile.Frozen.dlt4_mean_asymptotic
-    approved: "2026-09-26"
-
   - id: prop-d4-superdiffusive-limit
     version: 7
     kind: theorem
-    source: sandpile.tex:3329-3337 (label prop-d4-superdiffusive-limit); the variance-scale hypothesis is now also dropped, discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3356-3364 (label prop-d4-superdiffusive-limit); the variance-scale hypothesis is now also dropped, discharged unconditionally by Sandpile.External.varianceScale
     file: Sandpile/Frozen/D4SuperdiffusiveLimit.lean
     export: Sandpile.Frozen.d4_superdiffusive_limit
     state: SEALED
@@ -874,7 +667,7 @@ nodes:
   - id: lem-dgt4-cascade
     version: 5
     kind: theorem
-    source: sandpile.tex:6543-6552 (label lem-dgt4-cascade); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6570-6579 (label lem-dgt4-cascade); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4Cascade.lean
     export: Sandpile.Frozen.dgt4_cascade
     state: SEALED
@@ -885,7 +678,7 @@ nodes:
   - id: prop-dgt4-contact-asymptotics
     version: 5
     kind: theorem
-    source: sandpile.tex:4867-4869 (label prop-dgt4-contact-asymptotics); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4894-4896 (label prop-dgt4-contact-asymptotics); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4ContactAsymptotics.lean
     export: Sandpile.Frozen.dgt4_contact_asymptotics
     state: SEALED
@@ -896,7 +689,7 @@ nodes:
   - id: lem-dgt4-stretched-green-scenery-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4385-4402 (label lem-dgt4-stretched-green-scenery-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4412-4429 (label lem-dgt4-stretched-green-scenery-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4GreenSceneryTail.lean
     export: Sandpile.Frozen.dgt4_green_scenery_tail
     state: SEALED
@@ -907,7 +700,7 @@ nodes:
   - id: thm-dgt4-height-lower
     version: 4
     kind: theorem
-    source: sandpile.tex:4168-4191 (label thm-dgt4-height-lower); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4195-4218 (label thm-dgt4-height-lower); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4HeightLower.lean
     export: Sandpile.Frozen.dgt4_height_lower
     state: SEALED
@@ -918,7 +711,7 @@ nodes:
   - id: prop-dgt4-height-lower-stretched
     version: 4
     kind: theorem
-    source: sandpile.tex:4339-4350 (label prop-dgt4-height-lower-stretched); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4366-4377 (label prop-dgt4-height-lower-stretched); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4HeightLowerStretched.lean
     export: Sandpile.Frozen.dgt4_height_lower_stretched
     state: SEALED
@@ -929,7 +722,7 @@ nodes:
   - id: thm-dgt4-height-upper-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4501-4512 (label thm-dgt4-height-upper-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4528-4539 (label thm-dgt4-height-upper-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4HeightUpperTail.lean
     export: Sandpile.Frozen.dgt4_height_upper_tail
     state: SEALED
@@ -940,7 +733,7 @@ nodes:
   - id: lem-dgt4-level-shift-decoupling
     version: 5
     kind: theorem
-    source: sandpile.tex:6472-6486 (label lem-dgt4-level-shift-decoupling); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6499-6513 (label lem-dgt4-level-shift-decoupling); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4LevelShiftDecoupling.lean
     export: Sandpile.Frozen.dgt4_level_shift_decoupling
     state: SEALED
@@ -951,7 +744,7 @@ nodes:
   - id: lem-dgt4-linearization-from-survival
     version: 6
     kind: theorem
-    source: sandpile.tex:5659-5704 (label lem-dgt4-linearization-from-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:5686-5731 (label lem-dgt4-linearization-from-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4LinearizationFromSurvival.lean
     export: Sandpile.Frozen.dgt4_linearization_from_survival
     state: SEALED
@@ -962,7 +755,7 @@ nodes:
   - id: prop-dgt4-linearization
     version: 5
     kind: theorem
-    source: sandpile.tex:4782-4798 (label prop-dgt4-linearization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4809-4825 (label prop-dgt4-linearization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4Linearization.lean
     export: Sandpile.Frozen.dgt4_linearization
     state: SEALED
@@ -973,7 +766,7 @@ nodes:
   - id: lem-dgt4-localization
     version: 5
     kind: theorem
-    source: sandpile.tex:6424-6435 (label lem-dgt4-localization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6451-6462 (label lem-dgt4-localization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4Localization.lean
     export: Sandpile.Frozen.dgt4_localization
     state: SEALED
@@ -981,21 +774,10 @@ nodes:
     provider: Sandpile.Frozen.dgt4_localization
     approved: "2026-09-26"
 
-  - id: thm-dgt4-many-limits
-    version: 6
-    kind: theorem
-    source: sandpile.tex:5944-5972 (label thm-dgt4-many-limits); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh
-    file: Sandpile/Frozen/DGT4ManyLimits.lean
-    export: Sandpile.Frozen.dgt4_many_limits
-    state: SEALED
-    frozen_sha256: 2fae9b46a1e8faca3d983c67a2408c2044c155444d437d4ade5593c1b96b1214
-    provider: Sandpile.Frozen.dgt4_many_limits
-    approved: "2026-09-26"
-
   - id: thm-dgt4-nontriviality
     version: 6
     kind: theorem
-    source: sandpile.tex:6672-6694 (label thm-dgt4-nontriviality); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6699-6721 (label thm-dgt4-nontriviality); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4Nontriviality.lean
     export: Sandpile.Frozen.dgt4_nontriviality
     state: SEALED
@@ -1006,7 +788,7 @@ nodes:
   - id: lem-dgt4-origin-frozen
     version: 4
     kind: theorem
-    source: sandpile.tex:4882-4918 (label lem-dgt4-origin-frozen); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4909-4945 (label lem-dgt4-origin-frozen); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4OriginFrozen.lean
     export: Sandpile.Frozen.dgt4_origin_frozen
     state: SEALED
@@ -1017,7 +799,7 @@ nodes:
   - id: lem-dgt4-path-survival
     version: 6
     kind: theorem
-    source: sandpile.tex:5513-5530 (label lem-dgt4-path-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:5540-5557 (label lem-dgt4-path-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4PathSurvival.lean
     export: Sandpile.Frozen.dgt4_path_survival
     state: SEALED
@@ -1028,34 +810,12 @@ nodes:
   - id: lem-dgt4-smoothed-odometer-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4461-4472 (label lem-dgt4-smoothed-odometer-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4488-4499 (label lem-dgt4-smoothed-odometer-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
     file: Sandpile/Frozen/DGT4SmoothedOdometerTail.lean
     export: Sandpile.Frozen.dgt4_smoothed_odometer_tail
     state: SEALED
     frozen_sha256: 96d912b77b3bd44765fe82213b5557eea9ffd72e7fa3d7455d0c352df9b8833b
     provider: Sandpile.Frozen.dgt4_smoothed_odometer_tail
-    approved: "2026-09-26"
-
-  - id: prop-weighted-membrane-limit
-    version: 5
-    kind: theorem
-    source: sandpile.tex:4736-4747 (label prop-weighted-membrane-limit); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh
-    file: Sandpile/Frozen/WeightedMembraneLimit.lean
-    export: Sandpile.Frozen.weighted_membrane_limit
-    state: SEALED
-    frozen_sha256: 29dac679e170110c8bc0c1cc3d8d2d0e7d0056539a5109369bd940b13d487b97
-    provider: Sandpile.Frozen.weighted_membrane_limit
-    approved: "2026-09-26"
-
-  - id: thm-dgt4-diffusive-membrane
-    version: 8
-    kind: theorem
-    source: sandpile.tex:4660-4683 (label thm-dgt4-diffusive-membrane); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh
-    file: Sandpile/Frozen/DGT4DiffusiveMembrane.lean
-    export: Sandpile.Frozen.dgt4_diffusive_membrane
-    state: SEALED
-    frozen_sha256: b76d5a8c3eeaf100fb78a0a2637f01ad3f36864195b6a2a2c754527e2c840e46
-    provider: Sandpile.Frozen.dgt4_diffusive_membrane
     approved: "2026-09-26"
 
   - id: ext-paired-local-clt-four
@@ -1089,5 +849,258 @@ nodes:
     state: SEALED
     frozen_sha256: 78de7c61c313fe626f26be80880ffa4e3870ad74794a6ad16689b67aeba012df
     provider: Sandpile.External.ballGreenBounds
+    approved: "2026-09-27"
+
+  - id: thm-dgt4-many-limits
+    version: 7
+    kind: theorem
+    source: sandpile.tex:5971-5999 (label thm-dgt4-many-limits); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/DGT4ManyLimits.lean
+    export: Sandpile.Frozen.dgt4_many_limits
+    state: SEALED
+    frozen_sha256: edd29e2e30a142c1e6ae9e86403218875d9c66271e316bbef4cec9c7a40e65ba
+    provider: Sandpile.Frozen.dgt4_many_limits
+    approved: "2026-09-27"
+
+  - id: thm-d23-critical-level-percolation
+    version: 4
+    kind: theorem
+    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/D23CriticalLevelPercolation.lean
+    export: Sandpile.Frozen.d23_critical_level_percolation
+    state: SEALED
+    frozen_sha256: 214f6867c95ccc99c8f265128f810b0c14679461725629d47844e64c23a28ebc
+    provider: Sandpile.Frozen.d23_critical_level_percolation
+    approved: "2026-09-27"
+
+  - id: prop-continuum-value-selfsimilar
+    version: 10
+    kind: theorem
+    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/ContinuumValueSelfSimilar.lean
+    export: Sandpile.Frozen.continuum_value_self_similar
+    state: SEALED
+    frozen_sha256: 25e2738e19eb58e9e457274b2e42ea0c2bfaac8ec97cd39cb5867e2aaab0a7e4
+    provider: Sandpile.Frozen.continuum_value_self_similar
+    approved: "2026-09-27"
+
+  - id: thm-main-explosion-i-b
+    version: 9
+    kind: theorem
+    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/BrownianScalingLimit.lean
+    export: Sandpile.Frozen.brownian_scaling_limit
+    state: SEALED
+    frozen_sha256: f2e99095e17627a28babc307e712dc5406d18b58b4190fe9ac6d7e577576553e
+    provider: Sandpile.Frozen.brownian_scaling_limit
+    approved: "2026-09-27"
+
+  - id: lem-d4-double-heat-kernel
+    version: 5
+    kind: theorem
+    source: sandpile.tex:1164-1169 (label lem-d4-double-heat-kernel); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/DoubleHeatKernel.lean
+    export: Sandpile.Frozen.d4_double_heat_kernel
+    state: SEALED
+    frozen_sha256: f4b59b4163838552d084bad49bac27a5d07ec5fb8f9c65adb3efcf634502ef3f
+    provider: Sandpile.Frozen.d4_double_heat_kernel
+    approved: "2026-09-27"
+
+  - id: thm-dgt4-diffusive-membrane
+    version: 9
+    kind: theorem
+    source: sandpile.tex:4687-4710 (label thm-dgt4-diffusive-membrane); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/DGT4DiffusiveMembrane.lean
+    export: Sandpile.Frozen.dgt4_diffusive_membrane
+    state: SEALED
+    frozen_sha256: f5bc119abb3230b39675d0a2600ee5fccd2a8c680d0b1bcd020f34074ed6238c
+    provider: Sandpile.Frozen.dgt4_diffusive_membrane
+    approved: "2026-09-27"
+
+  - id: prop-dlt4-heat-potential-invariance
+    version: 4
+    kind: theorem
+    source: sandpile.tex:1869-1876 (label prop-dlt4-heat-potential-invariance); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/HeatPotentialInvariance.lean
+    export: Sandpile.Frozen.heat_potential_invariance
+    state: SEALED
+    frozen_sha256: 7dd7d4319f85349548cbe13d9f884bfd85494ce4bf21903e68c47631bdab91ee
+    provider: Sandpile.Frozen.heat_potential_invariance
+    approved: "2026-09-27"
+
+  - id: thm-main-explosion-i-a
+    version: 8
+    kind: theorem
+    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/MeanGrowthLow.lean
+    export: Sandpile.Frozen.mean_growth_le_three
+    state: SEALED
+    frozen_sha256: 8aca3d8f8b85389dd4ae0cf9d61b72eb612a88cf6d047661f67ba8e0bb56b1c6
+    provider: Sandpile.Frozen.mean_growth_le_three
+    approved: "2026-09-27"
+
+  - id: cor-dlt4-mean-asymptotic
+    version: 8
+    kind: theorem
+    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/MeanAsymptotic.lean
+    export: Sandpile.Frozen.dlt4_mean_asymptotic
+    state: SEALED
+    frozen_sha256: b647c423046cc28b56f241a9b120cef1c286f03732fbfc27206525363263e912
+    provider: Sandpile.Frozen.dlt4_mean_asymptotic
+    approved: "2026-09-27"
+
+  - id: thm-main-explosion-iii-d
+    version: 7
+    kind: theorem
+    source: sandpile.tex:286-293 (label thm-main-explosion, part (iii)(d)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/HighNonconvergence.lean
+    export: Sandpile.Frozen.high_nonconvergence
+    state: SEALED
+    frozen_sha256: b0040f082459663653d8df2f060e54e22ef5150685626a64b8a43594ae8359ad
+    provider: Sandpile.Frozen.high_nonconvergence
+    approved: "2026-09-27"
+
+  - id: prop-weighted-membrane-limit
+    version: 6
+    kind: theorem
+    source: sandpile.tex:4763-4774 (label prop-weighted-membrane-limit); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/WeightedMembraneLimit.lean
+    export: Sandpile.Frozen.weighted_membrane_limit
+    state: SEALED
+    frozen_sha256: 59ad4f77be0961eae09edc7cdaf2af56ae2aebcad3759bc7ffd90bf525c76124
+    provider: Sandpile.Frozen.weighted_membrane_limit
+    approved: "2026-09-27"
+
+  - id: rem-dlt4-killed-scaling
+    version: 6
+    kind: theorem
+    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/DLT4KilledScaling.lean
+    export: Sandpile.Frozen.dlt4_killed_scaling
+    state: SEALED
+    frozen_sha256: 168146799493ed9406ae4d2df453a553a8b96f4bd2b883b35d3410efdfd4946d
+    provider: Sandpile.Frozen.dlt4_killed_scaling
+    approved: "2026-09-27"
+
+  - id: thm-main-explosion-iii-c
+    version: 6
+    kind: theorem
+    source: sandpile.tex:274-285 (label thm-main-explosion, part (iii)(c)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    file: Sandpile/Frozen/HighSobolevLimit.lean
+    export: Sandpile.Frozen.high_sobolev_limit
+    state: SEALED
+    frozen_sha256: baf78b95ac2d664e1c02ba428cf6a675603d9e286c130c91a7c509470a748d0a
+    provider: Sandpile.Frozen.high_sobolev_limit
+    approved: "2026-09-27"
+
+  - id: prop-d4-one-point-gaussian
+    version: 6
+    kind: theorem
+    source: sandpile.tex:3270-3283 (label prop-d4-one-point-gaussian); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the paired dimension-four local limit hypothesis is also dropped, now discharged unconditionally by Sandpile.External.pairedLocalCLTFour
+    file: Sandpile/Frozen/D4OnePointGaussian.lean
+    export: Sandpile.Frozen.d4_one_point_gaussian
+    state: SEALED
+    frozen_sha256: deb2d6bc3027a1e10d5306ec493f9f95e5670e8835d190ae52cb05fd0f42f9ed
+    provider: Sandpile.Frozen.d4_one_point_gaussian
+    approved: "2026-09-27"
+
+  - id: thm-main-explosion-ii-b
+    version: 4
+    kind: theorem
+    source: sandpile.tex:247-253 (label thm-main-explosion, part (ii)(b)); the paired dimension-four local limit hypothesis is dropped, now discharged unconditionally by Sandpile.External.pairedLocalCLTFour
+    file: Sandpile/Frozen/FourGaussian.lean
+    export: Sandpile.Frozen.four_gaussian
+    state: SEALED
+    frozen_sha256: b41e91a033536702f3354fe7ab8eff7c72d7054a45c452cf9259e4b4dd9f1ce4
+    provider: Sandpile.Frozen.four_gaussian
+    approved: "2026-09-27"
+
+  - id: thm-main-nontriviality
+    version: 7
+    kind: theorem
+    source: sandpile.tex:95-103 (label thm-main-nontriviality); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    file: Sandpile/Frozen/Nontriviality.lean
+    export: Sandpile.Frozen.percolation_below_criticality
+    state: SEALED
+    frozen_sha256: 8b66af1b26ea0a2f1677d5f6f5ee336fff1d6cecf434f9a0c9b27944b4b4b8b4
+    provider: Sandpile.Frozen.percolation_below_criticality
+    approved: "2026-09-27"
+
+  - id: thm-main-critical-level-percolation
+    version: 8
+    kind: theorem
+    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    file: Sandpile/Frozen/CriticalLevels.lean
+    export: Sandpile.Frozen.critical_level_percolation
+    state: SEALED
+    frozen_sha256: 612e1f10c28ebffcd9c3c2b2ab0ad6d00d3f502de5d422c0796df772231db3fa
+    provider: Sandpile.Frozen.critical_level_percolation
+    approved: "2026-09-27"
+
+  - id: thm-d4-ball-green-crossing
+    version: 6
+    kind: theorem
+    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); the ball-killed Green bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    file: Sandpile/Frozen/D4BallGreenCrossing.lean
+    export: Sandpile.Frozen.d4_ball_green_crossing
+    state: SEALED
+    frozen_sha256: 730cdccb9b4a7d534fd604557c070bde570566d5f4281108f2628d7264f8c850
+    provider: Sandpile.Frozen.d4_ball_green_crossing
+    approved: "2026-09-27"
+
+  - id: lem-d4-exit-average-concentration
+    version: 5
+    kind: theorem
+    source: sandpile.tex:3974-3985 (label lem-d4-exit-average-concentration); the ball-killed Green bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    file: Sandpile/Frozen/D4ExitAverageConcentration.lean
+    export: Sandpile.Frozen.d4_exit_average_concentration
+    state: SEALED
+    frozen_sha256: 01c5e8705799d54e2e82896729c72d959cabef84f5f965d0ac81251c52064615
+    provider: Sandpile.Frozen.d4_exit_average_concentration
+    approved: "2026-09-27"
+
+  - id: thm-d4-critical-level-percolation
+    version: 8
+    kind: theorem
+    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    file: Sandpile/Frozen/D4CriticalLevelPercolation.lean
+    export: Sandpile.Frozen.d4_critical_level_percolation
+    state: SEALED
+    frozen_sha256: 612e7e6d973c51aa0b1fc8632b3e2c04ccb0763f3642ca8960da22669c42bc89
+    provider: Sandpile.Frozen.d4_critical_level_percolation
+    approved: "2026-09-27"
+
+  - id: ext-brownian-exit-step
+    version: 3
+    kind: definition
+    source: sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; repaired 2026-09-27, see ledger/decisions.md D-001
+    file: Sandpile/External/BrownianExitStep.lean
+    export: Sandpile.External.BrownianExitStep
+    state: FROZEN
+    frozen_sha256: 0aeebcb64fe85fcf26ba084c7348e96e0d7b051d4efe54d997f2378258d8ade9
+    provider: Sandpile.External.BrownianExitStep
+    approved: "2026-09-27"
+
+  - id: lem-brownian-value-mono-horizon
+    version: 2
+    kind: theorem
+    source: sandpile.tex:1648-1659 (label lem:brownian-ball-localization, monotonicity of the value in the horizon used in the proof)
+    file: Sandpile/Frozen/BrownianValueMonotone.lean
+    export: Sandpile.Frozen.brownian_value_mono_horizon
+    state: SEALED
+    frozen_sha256: b44b2719cc8c6121e7f017ff2b831957ec75e8ba0d338ae80c3e6d75566b6c53
+    provider: Sandpile.Frozen.brownian_value_mono_horizon
+    approved: "2026-09-27"
+
+  - id: lem-brownian-ball-localization
+    version: 8
+    kind: theorem
+    source: sandpile.tex:1648-1659 (label lem:brownian-ball-localization)
+    file: Sandpile/Frozen/BrownianBallLocalization.lean
+    export: Sandpile.Frozen.brownian_ball_localization
+    state: SEALED
+    frozen_sha256: 9dd206a075f13ac93a6b5182a72daa20d0febe58c6346ce0e0e358b0ddad37c6
+    provider: Sandpile.Frozen.brownian_ball_localization
     approved: "2026-09-27"
 

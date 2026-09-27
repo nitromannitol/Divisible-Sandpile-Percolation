@@ -20,7 +20,7 @@ namespace Sandpile
 of the ball field at the level `-ε log(2r)` fails with polynomially small
 probability, uniformly in the coarse site. -/
 theorem measure_not_blockGood_ballField_le
-    (hBallGreen : Sandpile.External.BallGreenBounds)
+    (_hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) (ε : ℝ) (hε : 0 < ε) :
     ∃ γ B : ℝ, 0 < γ ∧ 0 < B ∧ ∃ r₀ : ℕ, ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
@@ -35,9 +35,9 @@ theorem measure_not_blockGood_ballField_le
           ≤ ENNReal.ofReal (B * (Real.log ((2 * r : ℕ) : ℝ)) ^ 3 *
               ((2 * r : ℕ) : ℝ) ^ (-γ)) := by
   obtain ⟨γ₁, C₁, hγ₁, hC₁, r₁, h₁⟩ :=
-    Sandpile.Frozen.d4_ball_green_crossing hBallGreen hRSW ν₀ θ₀ K₀ 1 hν₀ hθ₀ le_rfl ε hε
+    Sandpile.Frozen.d4_ball_green_crossing hRSW ν₀ θ₀ K₀ 1 hν₀ hθ₀ le_rfl ε hε
   obtain ⟨γ₂, C₂, hγ₂, hC₂, r₂, h₂⟩ :=
-    Sandpile.Frozen.d4_ball_green_crossing hBallGreen hRSW ν₀ θ₀ K₀ 2 hν₀ hθ₀ (by norm_num) ε hε
+    Sandpile.Frozen.d4_ball_green_crossing hRSW ν₀ θ₀ K₀ 2 hν₀ hθ₀ (by norm_num) ε hε
   refine ⟨min γ₁ γ₂, 2 * (C₁ + C₂), lt_min hγ₁ hγ₂, by positivity, max (max r₁ r₂) 1, ?_⟩
   intro ν hν hmean hvar hint hK r hr z
   have hr1 : r₁ ≤ 2 * r := by omega

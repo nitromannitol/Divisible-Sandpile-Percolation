@@ -1,5 +1,5 @@
 /-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3923-3931`
+Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3950-3958`
 (label `lem:d4-finite-range-lower-bound`):
 
   "For every $z\in\Z^4$,

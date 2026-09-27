@@ -473,6 +473,22 @@ REVIEWED: dict[str, str] = {
         "t x =ae gaussianPotential d nu2 W t x and a.s. continuity on Icc 0 T x univ for every T "
         "> 0 (the paper's locally continuous version); the conclusion is a.e. in omega under PW, "
         "since Z is defined only a.s.",
+    "lem-brownian-value-mono-horizon":
+        "The label's own range (1648-1659) is the displayed ball-localization inequality, "
+        "formalized by lem-brownian-ball-localization; this node instead formalizes the "
+        "sub-argument the label's PROOF uses (1671-1679, inside the proof environment, so not "
+        "itself an anchorable environment and not separately labelled): 'the value increases with the "
+        "horizon: U_Z(s,z) <= U_Z(T,z) for 0 <= s <= T', proved there from the martingale "
+        "property of the increment Z(a+T-s,.) - Z(a,.), which solves the heat equation because "
+        "the time-independent white noise cancels. One paper assertion, one Lean conclusion with "
+        "no top-level conjunction: a.s. in omega under PW, for every z and every s in Icc 0 T, "
+        "brownianValue (B z) PB (fun t x => Z t x omega) s z <= brownianValue (B z) PB (fun t x "
+        "=> Z t x omega) T z. B, PB, W, Z, nu2 and their hypotheses are bound identically to "
+        "lem-brownian-ball-localization (a white noise W on OmegaW, a Brownian family on OmegaB "
+        "indexed by starting point with IsBrownian, path continuity and StronglyMeasurable time "
+        "slices, and Z a modification of the Gaussian heat potential, a.s. continuous on every "
+        "finite time strip); d < 4 is hd : d < 4. The paper's C, c, A, T decay factor of the "
+        "displayed inequality plays no role in this step and is not asserted here.",
     "lem-convex-linear-bound":
         "Paper makes one assertion (a single displayed inequality, 'there is a universal "
         "C<infinity such that for every L>0 ...') under the hypotheses xi_1..xi_N i.i.d. "

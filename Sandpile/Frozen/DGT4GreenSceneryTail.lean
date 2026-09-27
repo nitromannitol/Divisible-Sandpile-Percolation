@@ -1,6 +1,6 @@
 /-
 Lemma (lower tail of a finite Green average of the scenery) of sandpile.tex,
-frozen.  `sandpile.tex:4385-4402`
+frozen.  `sandpile.tex:4412-4429`
 (label `lem:dgt4-stretched-green-scenery-tail`):
 
   "Suppose $\gamma\in[1,\infty)$, with $\gamma\ne d/2$.  Assume

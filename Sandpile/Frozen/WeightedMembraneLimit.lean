@@ -1,5 +1,5 @@
 /-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4736-4747`
+Proposition of sandpile.tex, frozen.  `sandpile.tex:4763-4774`
 (label `prop:weighted-membrane-limit`):
 
   "Let $d\geq5$ and $T>0$, let $q:[0,T]\to\R$ be continuous, and suppose that
@@ -55,6 +55,7 @@ import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.HeatKernelBounds
 import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.Support.ContVarianceLimit
 import Sandpile.Support.TightWeightedMembrane
@@ -83,7 +84,6 @@ end Sandpile.Frozen.WeightedMembraneLimit
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.weighted_membrane_limit
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (T : ℝ) (hT : 0 < T)
@@ -140,8 +140,8 @@ theorem Sandpile.Frozen.weighted_membrane_limit
         (nhds (∫ x : Sandpile.Continuum.Space d, ∫ y : Sandpile.Continuum.Space d, φ x * φ y *
           (∫ r in (0:ℝ)..T, ∫ r' in (0:ℝ)..T,
             q r * q r' * Sandpile.Continuum.heatKernelBM d (r + r') x y))) := by
-      refine (Sandpile.Support.tendsto_sum_scaledCoeff_sq hLocalCLT hHeatKernel hd1 hT q hq φ
-        hint hC hsupp).congr' ?_
+      refine (Sandpile.Support.tendsto_sum_scaledCoeff_sq Sandpile.External.localCLT hHeatKernel
+        hd1 hT q hq φ hint hC hsupp).congr' ?_
       filter_upwards [Filter.eventually_gt_atTop (0:ℝ)] with R hR
       exact (Sandpile.Support.sum_scaledCoeff_sq_congr hR L hT.le q q' hqq φ).symm
     have hmain := Sandpile.Support.weighted_pairing_tendsto_of_covariance' hd1 hT.le ν hsq hmean

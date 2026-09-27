@@ -338,7 +338,7 @@ theorem abs_cutoff_meshValue_translate_sub_le
 
 set_option maxHeartbeats 1600000 in
 theorem exists_odometer_cell_oscillation
-    (hLocalCLT : Sandpile.External.LocalCLT) (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
+    (_hLocalCLT : Sandpile.External.LocalCLT) (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -351,7 +351,7 @@ theorem exists_odometer_cell_oscillation
         ≤ ENNReal.ofReal δ := by
   classical
   obtain ⟨ΩW, mW, PW, hPW, W, hW⟩ := Sandpile.Continuum.exists_isWhiteNoise d
-  obtain ⟨hfdd, htight⟩ := Sandpile.Frozen.heat_potential_invariance hLocalCLT d (by omega) hd3
+  obtain ⟨hfdd, htight⟩ := Sandpile.Frozen.heat_potential_invariance d (by omega) hd3
     ν hmean hvar hvar' θ₀ hθ₀ hexp PW W hW T hT
   obtain ⟨K, hK, hwenv⟩ := Sandpile.Support.exists_mesh_annulus_bound
     Sandpile.External.heatKernelBounds hd hd3 (θ := 1/2) (by norm_num) (by norm_num)

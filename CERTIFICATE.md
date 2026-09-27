@@ -8,12 +8,12 @@ edit it by hand.
 ## What is claimed
 
 Every theorem, lemma, proposition and corollary of the paper is stated in
-Lean 4: 70 nodes, all `SEALED`, proved from Mathlib and the shared
+Lean 4: 71 nodes, all `SEALED`, proved from Mathlib and the shared
 library Lattice-Probability.  No node contains a `sorry` and none adds an
 axiom.
 
 The development is NOT unconditional.  28 further nodes state results the
-paper quotes from other papers; 20 of them are assumed, each carried as an
+paper quotes from other papers; 16 of them are assumed, each carried as an
 explicit hypothesis by the theorems that use it, and the rest are proved here.
 The theorems below are therefore proved modulo those hypotheses, which are
 listed with their statements in `ASSUMPTIONS.md`.
@@ -24,10 +24,10 @@ listed with their statements in `ASSUMPTIONS.md`.
 |---|---|
 | Lean toolchain | `leanprover/lean4:v4.32.0` |
 | Mathlib revision | `81a5d257c8e410db227a6665ed08f64fea08e997` |
-| Paper (`paper/sandpile.tex`) SHA-256 | `94cebd0c15beb6ae60e87f58d79a5836232eff57efa189cebd4aefe17465eb42` |
-| Build | succeeded, 10173 jobs |
+| Paper (`paper/sandpile.tex`) SHA-256 | `886793b75289a92d7acbbf93231f5b86a6b1eae1e444e64751a08193e707d5ca` |
+| Build | succeeded, 10229 jobs |
 | Build warnings | 0 |
-| Generated | 2026-09-25 |
+| Generated | 2026-09-27 |
 
 ## Reproducing it
 
@@ -53,105 +53,106 @@ nowhere below.
 | # | node | Lean name | paper | axioms |
 |---|---|---|---|---|
 | 1 | `ext-green-bounds-high` | `Sandpile.External.greenBoundsHigh` | — | classical only |
-| 2 | `ext-ball-green-bounds` | `Sandpile.External.BallGreenBounds` | — | classical only |
-| 3 | `ext-local-clt` | `Sandpile.External.LocalCLT` | — | classical only |
-| 4 | `ext-variance-scale` | `Sandpile.External.varianceScale` | — | classical only |
-| 5 | `lem-reflection-increment` | `Sandpile.Frozen.reflection_increment` | `lem-reflection-increment` | classical only |
-| 6 | `ext-optimal-stopping` | `Sandpile.External.optimalStopping` | — | classical only |
-| 7 | `thm-gaussian-upper-proved` | `Sandpile.External.gaussianUpper` | — | classical only |
-| 8 | `lem-weighted-exp-conc` | `Sandpile.Frozen.weighted_exp_concentration` | `lem-weighted-exp-conc` | classical only |
-| 9 | `lem-convex-linear-bound` | `Sandpile.Frozen.convex_linear_bound` | `lem-convex-linear-bound` | classical only |
-| 10 | `lem-dgt4-smoothed-odometer-tail` | `Sandpile.Frozen.dgt4_smoothed_odometer_tail` | `lem-dgt4-smoothed-odometer-tail` | classical only |
-| 11 | `ext-multivariate-berry-esseen` | `Sandpile.External.MultivariateBerryEsseen` | — | classical only |
-| 12 | `lem-dgt4-stretched-green-scenery-tail` | `Sandpile.Frozen.dgt4_green_scenery_tail` | `lem-dgt4-stretched-green-scenery-tail` | classical only |
-| 13 | `thm-white-noise-exists` | `Sandpile.Continuum.exists_isWhiteNoise` | — | classical only |
-| 14 | `thm-brownian-exists` | `Sandpile.Continuum.exists_isBrownian` | — | classical only |
-| 15 | `prop-dgt4-height-lower-stretched` | `Sandpile.Frozen.dgt4_height_lower_stretched` | `prop-dgt4-height-lower-stretched` | classical only |
-| 16 | `cor-dgt4-mean-lower` | `Sandpile.Frozen.dgt4_mean_lower` | `cor-dgt4-mean-lower` | classical only |
-| 17 | `thm-dgt4-height-lower` | `Sandpile.Frozen.dgt4_height_lower` | `thm-dgt4-height-lower` | classical only |
-| 18 | `thm-dgt4-height-upper-tail` | `Sandpile.Frozen.dgt4_height_upper_tail` | `thm-dgt4-height-upper-tail` | classical only |
-| 19 | `thm-critical-toppling` | `Sandpile.Frozen.critical_toppling` | `thm-critical-toppling` | classical only |
-| 20 | `cor-critical-mean-one` | `Sandpile.Frozen.critical_mean_one` | `cor-critical-mean-one` | classical only |
-| 21 | `lem-d4-difference-tail` | `Sandpile.Frozen.d4_difference_tail` | `lem-d4-difference-tail` | classical only |
-| 22 | `prop-d4-pointwise-linearization` | `Sandpile.Frozen.d4_pointwise_linearization` | `prop-d4-pointwise-linearization` | classical only |
-| 23 | `thm-critical-toppling-d4` | `Sandpile.Frozen.critical_toppling_d4` | `thm-critical-toppling-d4` | classical only |
-| 24 | `cor-d4-logarithmic-mean-lower` | `Sandpile.Frozen.d4_log_mean_lower` | `cor-d4-logarithmic-mean-lower` | classical only |
-| 25 | `lem-dgt4-origin-frozen` | `Sandpile.Frozen.dgt4_origin_frozen` | `lem-dgt4-origin-frozen` | classical only |
-| 26 | `lem-d4-finite-range-lower-bound` | `Sandpile.Frozen.d4_finite_range_lower_bound` | `lem-d4-finite-range-lower-bound` | classical only |
-| 27 | `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `lem-d4-exit-average-concentration` | classical only |
-| 28 | `thm-main-explosion-ii-a` | `Sandpile.Frozen.mean_growth_four` | `thm:main-explosion` | classical only |
-| 29 | `thm-main-explosion-ii-a-first-order` | `Sandpile.Frozen.four_first_order` | `thm:main-explosion` | classical only |
-| 30 | `ext-paired-local-clt-four` | `Sandpile.External.PairedLocalCLTFour` | — | classical only |
-| 31 | `lem-d4-double-heat-kernel` | `Sandpile.Frozen.d4_double_heat_kernel` | `lem-d4-double-heat-kernel` | classical only |
-| 32 | `prop-d4-one-point-gaussian` | `Sandpile.Frozen.d4_one_point_gaussian` | `prop-d4-one-point-gaussian` | classical only |
-| 33 | `thm-main-explosion-ii-b` | `Sandpile.Frozen.four_gaussian` | `thm-main-explosion` | classical only |
-| 34 | `lem-d4-soft-bottleneck` | `Sandpile.Frozen.d4_soft_bottleneck` | `lem-d4-soft-bottleneck` | classical only |
-| 35 | `lem-dgt4-localization` | `Sandpile.Frozen.dgt4_localization` | `lem-dgt4-localization` | classical only |
-| 36 | `lem-dgt4-level-shift-decoupling` | `Sandpile.Frozen.dgt4_level_shift_decoupling` | `lem-dgt4-level-shift-decoupling` | classical only |
-| 37 | `lem-dgt4-cascade` | `Sandpile.Frozen.dgt4_cascade` | `lem-dgt4-cascade` | classical only |
-| 38 | `ext-exterior-boundary-connected` | `Sandpile.External.ExteriorBoundaryConnected` | — | classical only |
-| 39 | `lem-dgt4-blocking-to-crossing` | `Sandpile.Frozen.dgt4_blocking_to_crossing` | `lem-dgt4-blocking-to-crossing` | classical only |
-| 40 | `thm-dgt4-nontriviality` | `Sandpile.Frozen.dgt4_nontriviality` | `thm-dgt4-nontriviality` | classical only |
-| 41 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | — | classical only |
-| 42 | `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `thm:d4-ball-green-crossing` | classical only |
-| 43 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | — | classical only |
-| 44 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | — | classical only |
-| 45 | `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `prop-brownian-os` | classical only |
-| 46 | `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `lem-sobolev-tightness` | classical only |
-| 47 | `prop-d4-diffusive-tightness` | `Sandpile.Frozen.d4_diffusive_tightness` | `prop-d4-diffusive-tightness` | classical only |
-| 48 | `prop-weighted-membrane-limit` | `Sandpile.Frozen.weighted_membrane_limit` | `prop-weighted-membrane-limit` | classical only |
-| 49 | `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `lem-dgt4-weighted-last-visits` | classical only |
-| 50 | `ext-normal-comparison` | `Sandpile.External.NormalComparison` | — | classical only |
-| 51 | `ext-intersection-second-moment` | `Sandpile.External.IntersectionSecondMoment` | `eq-dgt4-intersection-second-moment` | classical only |
-| 52 | `lem-dgt4-path-survival` | `Sandpile.Frozen.dgt4_path_survival` | `lem-dgt4-path-survival` | classical only |
-| 53 | `ext-continuum-rsw` | `Sandpile.External.ContinuumRSW` | — | classical only |
-| 54 | `ext-pitt-gaussian-fkg` | `Sandpile.External.PittGaussianFKG` | — | classical only |
-| 55 | `ext-gaussian-law-covariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` | — | classical only |
-| 56 | `ext-pinsker` | `Sandpile.External.pinsker` | — | classical only |
-| 57 | `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `thm:d4-critical-level-percolation` | classical only |
-| 58 | `prop-dlt4-heat-potential-invariance` | `Sandpile.Frozen.heat_potential_invariance` | `prop-dlt4-heat-potential-invariance` | classical only |
-| 59 | `ext-cube-stopping-stability` | `Sandpile.External.CubeStoppingStability` | — | classical only |
-| 60 | `ext-gaussian-lipschitz-concentration` | `Sandpile.External.GaussianLipschitzConcentration` | — | classical only |
+| 2 | `ext-variance-scale` | `Sandpile.External.varianceScale` | — | classical only |
+| 3 | `lem-reflection-increment` | `Sandpile.Frozen.reflection_increment` | `lem-reflection-increment` | classical only |
+| 4 | `ext-optimal-stopping` | `Sandpile.External.optimalStopping` | — | classical only |
+| 5 | `thm-gaussian-upper-proved` | `Sandpile.External.gaussianUpper` | — | classical only |
+| 6 | `lem-weighted-exp-conc` | `Sandpile.Frozen.weighted_exp_concentration` | `lem-weighted-exp-conc` | classical only |
+| 7 | `lem-convex-linear-bound` | `Sandpile.Frozen.convex_linear_bound` | `lem-convex-linear-bound` | classical only |
+| 8 | `ext-multivariate-berry-esseen` | `Sandpile.External.MultivariateBerryEsseen` | — | classical only |
+| 9 | `thm-white-noise-exists` | `Sandpile.Continuum.exists_isWhiteNoise` | — | classical only |
+| 10 | `thm-brownian-exists` | `Sandpile.Continuum.exists_isBrownian` | — | classical only |
+| 11 | `cor-dgt4-mean-lower` | `Sandpile.Frozen.dgt4_mean_lower` | `cor-dgt4-mean-lower` | classical only |
+| 12 | `cor-d4-logarithmic-mean-lower` | `Sandpile.Frozen.d4_log_mean_lower` | `cor-d4-logarithmic-mean-lower` | classical only |
+| 13 | `lem-d4-finite-range-lower-bound` | `Sandpile.Frozen.d4_finite_range_lower_bound` | `lem-d4-finite-range-lower-bound` | classical only |
+| 14 | `thm-main-explosion-ii-a` | `Sandpile.Frozen.mean_growth_four` | `thm:main-explosion` | classical only |
+| 15 | `thm-main-explosion-ii-a-first-order` | `Sandpile.Frozen.four_first_order` | `thm:main-explosion` | classical only |
+| 16 | `lem-d4-soft-bottleneck` | `Sandpile.Frozen.d4_soft_bottleneck` | `lem-d4-soft-bottleneck` | classical only |
+| 17 | `ext-exterior-boundary-connected` | `Sandpile.External.ExteriorBoundaryConnected` | — | classical only |
+| 18 | `lem-dgt4-blocking-to-crossing` | `Sandpile.Frozen.dgt4_blocking_to_crossing` | `lem-dgt4-blocking-to-crossing` | classical only |
+| 19 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | — | classical only |
+| 20 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | — | classical only |
+| 21 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | — | classical only |
+| 22 | `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `prop-brownian-os` | classical only |
+| 23 | `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `lem-sobolev-tightness` | classical only |
+| 24 | `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `lem-dgt4-weighted-last-visits` | classical only |
+| 25 | `ext-normal-comparison` | `Sandpile.External.NormalComparison` | — | classical only |
+| 26 | `ext-continuum-rsw` | `Sandpile.External.ContinuumRSW` | — | classical only |
+| 27 | `ext-pitt-gaussian-fkg` | `Sandpile.External.PittGaussianFKG` | — | classical only |
+| 28 | `ext-gaussian-law-covariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` | — | classical only |
+| 29 | `ext-pinsker` | `Sandpile.External.pinsker` | — | classical only |
+| 30 | `ext-cube-stopping-stability` | `Sandpile.External.CubeStoppingStability` | — | classical only |
+| 31 | `ext-gaussian-lipschitz-concentration` | `Sandpile.External.GaussianLipschitzConcentration` | — | classical only |
+| 32 | `ext-membrane-scaling-four` | `Sandpile.External.MembraneScalingLimitFour` | — | classical only |
+| 33 | `ext-continuum-stopping-stability` | `Sandpile.External.ContinuumStoppingStability` | — | classical only |
+| 34 | `ext-rellich-kondrachov-negsobolev` | `Sandpile.External.RellichKondrachovNegSobolev` | — | classical only |
+| 35 | `ext-ball-occupation-density` | `Sandpile.External.BallOccupationDensity` | — | classical only |
+| 36 | `lem-recursion` | `Sandpile.Frozen.odometer_recursion` | `lem-recursion` | classical only |
+| 37 | `lem-finite-scale-extraction` | `Sandpile.Frozen.finite_scale_extraction` | `lem-finite-scale-extraction` | classical only |
+| 38 | `thm-limiting-odometer-crossing` | `Sandpile.Frozen.limiting_odometer_crossing` | — | classical only |
+| 39 | `prop-fixed-scale-crossings` | `Sandpile.Frozen.fixed_scale_crossings` | `prop-fixed-scale-crossings` | classical only |
+| 40 | `prop-finite-time-concentration-scale` | `Sandpile.Frozen.finite_time_concentration_scale` | `prop-finite-time-concentration-scale` | classical only |
+| 41 | `ext-heat-kernel-bounds` | `Sandpile.External.heatKernelBounds` | — | classical only |
+| 42 | `thm-max-displacement-proved` | `Sandpile.External.maxDisplacement` | — | classical only |
+| 43 | `ext-continuum-besov-tightness` | `Sandpile.External.ContinuumBesovTightness` | — | classical only |
+| 44 | `thm-rw` | `Sandpile.Frozen.random_walk_representation` | `thm-RW` | classical only |
+| 45 | `lem-difference-representation` | `Sandpile.Frozen.difference_representation` | `lem-difference-representation` | classical only |
+| 46 | `lem-localization-killing` | `Sandpile.Frozen.localization_killing` | `lem-localization-killing` | classical only |
+| 47 | `lem-odometer-derivative` | `Sandpile.Frozen.odometer_derivative` | `lem-odometer-derivative` | classical only |
+| 48 | `thm-main-explosion-iii-a` | `Sandpile.Frozen.high_first_order` | `thm:main-explosion` | classical only |
+| 49 | `thm-main-explosion-iii-b` | `Sandpile.Frozen.high_tail` | `thm:main-explosion` | classical only |
+| 50 | `thm-main-explosion-ii-c` | `Sandpile.Frozen.four_sobolev` | `thm:main-explosion` | classical only |
+| 51 | `ext-intersection-second-moment` | `Sandpile.External.intersectionSecondMoment` | `eq-dgt4-intersection-second-moment` | classical only |
+| 52 | `cor-mean-localization` | `Sandpile.Frozen.mean_localization` | `cor-mean-localization` | classical only |
+| 53 | `prop-d4-diffusive-tightness` | `Sandpile.Frozen.d4_diffusive_tightness` | `prop-d4-diffusive-tightness` | classical only |
+| 54 | `thm-critical-toppling` | `Sandpile.Frozen.critical_toppling` | `thm-critical-toppling` | classical only |
+| 55 | `cor-critical-mean-one` | `Sandpile.Frozen.critical_mean_one` | `cor-critical-mean-one` | classical only |
+| 56 | `lem-d4-difference-tail` | `Sandpile.Frozen.d4_difference_tail` | `lem-d4-difference-tail` | classical only |
+| 57 | `prop-d4-pointwise-linearization` | `Sandpile.Frozen.d4_pointwise_linearization` | `prop-d4-pointwise-linearization` | classical only |
+| 58 | `thm-critical-toppling-d4` | `Sandpile.Frozen.critical_toppling_d4` | `thm-critical-toppling-d4` | classical only |
+| 59 | `prop-d4-superdiffusive-limit` | `Sandpile.Frozen.d4_superdiffusive_limit` | `prop-d4-superdiffusive-limit` | classical only |
+| 60 | `lem-dgt4-cascade` | `Sandpile.Frozen.dgt4_cascade` | `lem-dgt4-cascade` | classical only |
 | 61 | `prop-dgt4-contact-asymptotics` | `Sandpile.Frozen.dgt4_contact_asymptotics` | `prop-dgt4-contact-asymptotics` | classical only |
-| 62 | `prop-dgt4-linearization` | `Sandpile.Frozen.dgt4_linearization` | `prop-dgt4-linearization` | classical only |
-| 63 | `thm-dgt4-diffusive-membrane` | `Sandpile.Frozen.dgt4_diffusive_membrane` | `thm-dgt4-diffusive-membrane` | classical only |
-| 64 | `ext-membrane-scaling-four` | `Sandpile.External.MembraneScalingLimitFour` | — | classical only |
-| 65 | `prop-d4-superdiffusive-limit` | `Sandpile.Frozen.d4_superdiffusive_limit` | `prop-d4-superdiffusive-limit` | classical only |
-| 66 | `ext-continuum-stopping-stability` | `Sandpile.External.ContinuumStoppingStability` | — | classical only |
-| 67 | `ext-brownian-exit-step` | `Sandpile.External.BrownianExitStep` | — | classical only |
-| 68 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `lem-brownian-ball-localization` | classical only |
-| 69 | `ext-rellich-kondrachov-negsobolev` | `Sandpile.External.RellichKondrachovNegSobolev` | — | classical only |
-| 70 | `lem-dgt4-linearization-from-survival` | `Sandpile.Frozen.dgt4_linearization_from_survival` | `lem-dgt4-linearization-from-survival` | classical only |
-| 71 | `ext-ball-occupation-density` | `Sandpile.External.BallOccupationDensity` | — | classical only |
-| 72 | `prop-continuum-value-selfsimilar` | `Sandpile.Frozen.continuum_value_self_similar` | `prop-continuum-value-selfsimilar` | classical only |
-| 73 | `thm-main-explosion-i-b` | `Sandpile.Frozen.brownian_scaling_limit` | `thm-main-explosion` | classical only |
-| 74 | `cor-dlt4-mean-asymptotic` | `Sandpile.Frozen.dlt4_mean_asymptotic` | `cor-dlt4-mean-asymptotic` | classical only |
-| 75 | `thm-dgt4-many-limits` | `Sandpile.Frozen.dgt4_many_limits` | `thm-dgt4-many-limits` | classical only |
-| 76 | `thm-d23-critical-level-percolation` | `Sandpile.Frozen.d23_critical_level_percolation` | `thm-d23-critical-level-percolation` | classical only |
-| 77 | `thm-main-nontriviality` | `Sandpile.Frozen.percolation_below_criticality` | `thm-main-nontriviality` | classical only |
-| 78 | `thm-main-explosion-iii-d` | `Sandpile.Frozen.high_nonconvergence` | `thm-main-explosion` | classical only |
-| 79 | `lem-recursion` | `Sandpile.Frozen.odometer_recursion` | `lem-recursion` | classical only |
-| 80 | `cor-mean-localization` | `Sandpile.Frozen.mean_localization` | `cor-mean-localization` | classical only |
-| 81 | `rem-dlt4-killed-scaling` | `Sandpile.Frozen.dlt4_killed_scaling` | `rem-dlt4-killed-scaling` | classical only |
-| 82 | `lem-finite-scale-extraction` | `Sandpile.Frozen.finite_scale_extraction` | `lem-finite-scale-extraction` | classical only |
-| 83 | `thm-limiting-odometer-crossing` | `Sandpile.Frozen.limiting_odometer_crossing` | — | classical only |
-| 84 | `prop-fixed-scale-crossings` | `Sandpile.Frozen.fixed_scale_crossings` | `prop-fixed-scale-crossings` | classical only |
-| 85 | `prop-finite-time-concentration-scale` | `Sandpile.Frozen.finite_time_concentration_scale` | `prop-finite-time-concentration-scale` | classical only |
-| 86 | `ext-heat-kernel-bounds` | `Sandpile.External.heatKernelBounds` | — | classical only |
-| 87 | `thm-max-displacement-proved` | `Sandpile.External.maxDisplacement` | — | classical only |
-| 88 | `ext-continuum-besov-tightness` | `Sandpile.External.ContinuumBesovTightness` | — | classical only |
-| 89 | `thm-rw` | `Sandpile.Frozen.random_walk_representation` | `thm-RW` | classical only |
-| 90 | `lem-difference-representation` | `Sandpile.Frozen.difference_representation` | `lem-difference-representation` | classical only |
-| 91 | `lem-localization-killing` | `Sandpile.Frozen.localization_killing` | `lem-localization-killing` | classical only |
-| 92 | `lem-odometer-derivative` | `Sandpile.Frozen.odometer_derivative` | `lem-odometer-derivative` | classical only |
-| 93 | `thm-main-explosion-iii-a` | `Sandpile.Frozen.high_first_order` | `thm:main-explosion` | classical only |
-| 94 | `thm-main-explosion-iii-b` | `Sandpile.Frozen.high_tail` | `thm:main-explosion` | classical only |
-| 95 | `thm-main-explosion-iii-c` | `Sandpile.Frozen.high_sobolev_limit` | `thm:main-explosion` | classical only |
-| 96 | `thm-main-explosion-ii-c` | `Sandpile.Frozen.four_sobolev` | `thm:main-explosion` | classical only |
-| 97 | `thm-main-explosion-i-a` | `Sandpile.Frozen.mean_growth_le_three` | `thm:main-explosion` | classical only |
-| 98 | `thm-main-critical-level-percolation` | `Sandpile.Frozen.critical_level_percolation` | `thm-main-critical-level-percolation` | classical only |
+| 62 | `lem-dgt4-stretched-green-scenery-tail` | `Sandpile.Frozen.dgt4_green_scenery_tail` | `lem-dgt4-stretched-green-scenery-tail` | classical only |
+| 63 | `thm-dgt4-height-lower` | `Sandpile.Frozen.dgt4_height_lower` | `thm-dgt4-height-lower` | classical only |
+| 64 | `prop-dgt4-height-lower-stretched` | `Sandpile.Frozen.dgt4_height_lower_stretched` | `prop-dgt4-height-lower-stretched` | classical only |
+| 65 | `thm-dgt4-height-upper-tail` | `Sandpile.Frozen.dgt4_height_upper_tail` | `thm-dgt4-height-upper-tail` | classical only |
+| 66 | `lem-dgt4-level-shift-decoupling` | `Sandpile.Frozen.dgt4_level_shift_decoupling` | `lem-dgt4-level-shift-decoupling` | classical only |
+| 67 | `lem-dgt4-linearization-from-survival` | `Sandpile.Frozen.dgt4_linearization_from_survival` | `lem-dgt4-linearization-from-survival` | classical only |
+| 68 | `prop-dgt4-linearization` | `Sandpile.Frozen.dgt4_linearization` | `prop-dgt4-linearization` | classical only |
+| 69 | `lem-dgt4-localization` | `Sandpile.Frozen.dgt4_localization` | `lem-dgt4-localization` | classical only |
+| 70 | `thm-dgt4-nontriviality` | `Sandpile.Frozen.dgt4_nontriviality` | `thm-dgt4-nontriviality` | classical only |
+| 71 | `lem-dgt4-origin-frozen` | `Sandpile.Frozen.dgt4_origin_frozen` | `lem-dgt4-origin-frozen` | classical only |
+| 72 | `lem-dgt4-path-survival` | `Sandpile.Frozen.dgt4_path_survival` | `lem-dgt4-path-survival` | classical only |
+| 73 | `lem-dgt4-smoothed-odometer-tail` | `Sandpile.Frozen.dgt4_smoothed_odometer_tail` | `lem-dgt4-smoothed-odometer-tail` | classical only |
+| 74 | `ext-paired-local-clt-four` | `Sandpile.External.pairedLocalCLTFour` | — | classical only |
+| 75 | `ext-local-clt` | `Sandpile.External.localCLT` | — | classical only |
+| 76 | `ext-ball-green-bounds` | `Sandpile.External.ballGreenBounds` | — | classical only |
+| 77 | `thm-dgt4-many-limits` | `Sandpile.Frozen.dgt4_many_limits` | `thm-dgt4-many-limits` | classical only |
+| 78 | `thm-d23-critical-level-percolation` | `Sandpile.Frozen.d23_critical_level_percolation` | `thm-d23-critical-level-percolation` | classical only |
+| 79 | `prop-continuum-value-selfsimilar` | `Sandpile.Frozen.continuum_value_self_similar` | `prop-continuum-value-selfsimilar` | classical only |
+| 80 | `thm-main-explosion-i-b` | `Sandpile.Frozen.brownian_scaling_limit` | `thm-main-explosion` | classical only |
+| 81 | `lem-d4-double-heat-kernel` | `Sandpile.Frozen.d4_double_heat_kernel` | `lem-d4-double-heat-kernel` | classical only |
+| 82 | `thm-dgt4-diffusive-membrane` | `Sandpile.Frozen.dgt4_diffusive_membrane` | `thm-dgt4-diffusive-membrane` | classical only |
+| 83 | `prop-dlt4-heat-potential-invariance` | `Sandpile.Frozen.heat_potential_invariance` | `prop-dlt4-heat-potential-invariance` | classical only |
+| 84 | `thm-main-explosion-i-a` | `Sandpile.Frozen.mean_growth_le_three` | `thm:main-explosion` | classical only |
+| 85 | `cor-dlt4-mean-asymptotic` | `Sandpile.Frozen.dlt4_mean_asymptotic` | `cor-dlt4-mean-asymptotic` | classical only |
+| 86 | `thm-main-explosion-iii-d` | `Sandpile.Frozen.high_nonconvergence` | `thm-main-explosion` | classical only |
+| 87 | `prop-weighted-membrane-limit` | `Sandpile.Frozen.weighted_membrane_limit` | `prop-weighted-membrane-limit` | classical only |
+| 88 | `rem-dlt4-killed-scaling` | `Sandpile.Frozen.dlt4_killed_scaling` | `rem-dlt4-killed-scaling` | classical only |
+| 89 | `thm-main-explosion-iii-c` | `Sandpile.Frozen.high_sobolev_limit` | `thm-main-explosion` | classical only |
+| 90 | `prop-d4-one-point-gaussian` | `Sandpile.Frozen.d4_one_point_gaussian` | `prop-d4-one-point-gaussian` | classical only |
+| 91 | `thm-main-explosion-ii-b` | `Sandpile.Frozen.four_gaussian` | `thm-main-explosion` | classical only |
+| 92 | `thm-main-nontriviality` | `Sandpile.Frozen.percolation_below_criticality` | `thm-main-nontriviality` | classical only |
+| 93 | `thm-main-critical-level-percolation` | `Sandpile.Frozen.critical_level_percolation` | `thm-main-critical-level-percolation` | classical only |
+| 94 | `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `thm:d4-ball-green-crossing` | classical only |
+| 95 | `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `lem-d4-exit-average-concentration` | classical only |
+| 96 | `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `thm:d4-critical-level-percolation` | classical only |
+| 97 | `ext-brownian-exit-step` | `Sandpile.External.BrownianExitStep` | — | classical only |
+| 98 | `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `lem:brownian-ball-localization` | classical only |
+| 99 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `lem:brownian-ball-localization` | classical only |
 
-98 of 98 nodes depend on nothing beyond the three classical
+99 of 99 nodes depend on nothing beyond the three classical
 axioms.  Every node's state in `ledger/manifest.yaml` is `SEALED`.
 
 ## Frozen statements
@@ -163,86 +164,41 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | node | SHA-256 of the frozen statement |
 |---|---|
 | `ext-green-bounds-high` | `1089d0bcf24eb796b49a340e4d41102cc446b6a91c28eb40077b21d8abef9854` |
-| `ext-ball-green-bounds` | `0e3578ff60e7b4cb11a2b1784e55ba700e9b4ddf1e6c3865a7d946a4c2f2c5b2` |
-| `ext-local-clt` | `fb0fbe13f07e0e43b7485b243fbb0bbed02c581dc582e3856013bdcf8ff5d84f` |
 | `ext-variance-scale` | `38be267fecb15e25df213a1e78613b6598820b101df76eb83660470456a8b529` |
 | `lem-reflection-increment` | `b4e6776acb66270fa3b72b0245fbb7c338a9da4391417397bbb645665441fc7d` |
 | `ext-optimal-stopping` | `50a5612509541bb1c9e063ad718b459bc9072c232fea41648faef0bc0c50527a` |
 | `thm-gaussian-upper-proved` | `6bc2d60d95981c664df28235dd6474ef996733d48c4917fcbba5d57a8f7d63e4` |
 | `lem-weighted-exp-conc` | `cde3fa027de6cb6601febf9b49b286959ecaac00bcf10b433ad305d2288bb1a8` |
 | `lem-convex-linear-bound` | `6a1bee52a2b536f68854249a19228e240ebdac75c96906b327eec80ea7d4b3ad` |
-| `lem-dgt4-smoothed-odometer-tail` | `0deeb3a34800ca12989657cd670fe91f78804e5d45c390c9099d48a6939c9bc3` |
 | `ext-multivariate-berry-esseen` | `693a87a50c0a3e50a874d0465c2664bd6f5244e4efe7236d8bcf6bdcac769969` |
-| `lem-dgt4-stretched-green-scenery-tail` | `0ffdd5b09a3fe664b0ba62880ce1d8eaa0c1786fe65e8f3b75d1567e62fd5d27` |
 | `thm-white-noise-exists` | `3d8dc3ab829523b8334ba7a5902c807e1ca28e1a4c6263aa7d4fb9f4b69ba409` |
 | `thm-brownian-exists` | `ba9bd7d94a0501c44bd82fbd01d94ec3102745aa0af0a305fc47cac6e425444d` |
-| `prop-dgt4-height-lower-stretched` | `d78972c6d5e5bcd7828edca8e8879e18316bffd8efef3e2ae2de62c303a6876c` |
 | `cor-dgt4-mean-lower` | `b7756ddb707afbb1dc5926335a83e4ea0ef44f5f4324d3ca5c8563d9fafc20f7` |
-| `thm-dgt4-height-lower` | `79b5be5f907cca09462d9cbc30ab219fb146061c2b8cc5ca058848461af3445c` |
-| `thm-dgt4-height-upper-tail` | `e62c4985693ba75a9782812a8df13a0fcf25d9f45ce3c3f6e367d986f728d1ed` |
-| `thm-critical-toppling` | `8bc0aafe001f8bb1df20360dc2d2718e0a88470f42f3a2f4ac7f964e347d86db` |
-| `cor-critical-mean-one` | `6d3d9043919c79848a4e0f9e413cf449950e8b5d2a89d91423b6f7d1b5ec386d` |
-| `lem-d4-difference-tail` | `f3959b452670bc8202905cf1e0b8e007b9533b21ed561ccf40491eb8a7bad061` |
-| `prop-d4-pointwise-linearization` | `c57d71f5fcfe4cedf6dd8cdaf64a033e9bc5485dbd1a01af9de0c487800d67c3` |
-| `thm-critical-toppling-d4` | `99ed65d1daedc665f47a75dedec98f1a0cb3c431cde638d5acfa2ef7440415dc` |
 | `cor-d4-logarithmic-mean-lower` | `3dae46004d466d2f8fefaea88fb7950de866afd27a6accca99cd68a6ab92a834` |
-| `lem-dgt4-origin-frozen` | `eb016172bccdb529cd952b3569df716138e2b763191bb97b7d9eeee930deeea4` |
 | `lem-d4-finite-range-lower-bound` | `d6a26344dae4829fd46b16f8e29123f5e8fa941fbd639e4262cb18f67b642f2a` |
-| `lem-d4-exit-average-concentration` | `bc0bc250dcad3f394bd6e14a1b9fb05985f0e6efc16475c00da596492725debc` |
 | `thm-main-explosion-ii-a` | `19edf234fa88c8459c512f0d84eb8d301675e27c08e68e77e066005c255a48b2` |
 | `thm-main-explosion-ii-a-first-order` | `bec76c39b1175ba6af9dd089c20b21f33e479c9a42e99eb0f3c89d18cb6bea50` |
-| `ext-paired-local-clt-four` | `2a6df976f4cb9934f7d13c8001d2192a9fedad1f9fe2fb8aa505d8ce98f834ec` |
-| `lem-d4-double-heat-kernel` | `8d28805d17cc6d014819ae9980678103fd5b459f83e3feb6d628a7199ca0b527` |
-| `prop-d4-one-point-gaussian` | `5df51ae3390f8f7d82e077b69c6523857fa4a6dcdad64fd210dc25ceb68ba4aa` |
-| `thm-main-explosion-ii-b` | `d80e49130820dfa69fa18f19b761867195908533c701b46ec53297e059a576e9` |
 | `lem-d4-soft-bottleneck` | `a7b5de486dc5cb9a0dd337ffa08e541270d99588857e68694628b862ce3a4f0b` |
-| `lem-dgt4-localization` | `49d5835a72a18f3d425d3cf523db7f7f7eec5919f5178260c6735fcbb054acba` |
-| `lem-dgt4-level-shift-decoupling` | `e55facdcb8dfbc5aee7749fda54a9b77b7c21cadef85dd0e29b96282ae58841c` |
-| `lem-dgt4-cascade` | `14cded792633aafa66de3f3b14930091f684faea3a2d136210e367c5cb745f2d` |
 | `ext-exterior-boundary-connected` | `5e10a290353f8b24e7a60dc086624b84abc04daab771f9ac3f0c730f4a07e628` |
 | `lem-dgt4-blocking-to-crossing` | `52e7e161eee97f2cf1730940ac7ba575024df8618eb9fb993709dcebfa056e62` |
-| `thm-dgt4-nontriviality` | `44a863076cc0fc7db13f797af8e5f88a22a6e6c83de580a5abaa2632b059bbc6` |
 | `ext-planar-rsw` | `0ae2bd89db0f6fa9278a60b555de6de2e834feba5a12bd5ab4c2ced2685ecdc4` |
-| `thm-d4-ball-green-crossing` | `f112b860aa27db373d089da8803f73980e1ca504c311043ee378f45f9c6d69b8` |
 | `ext-lss-domination` | `98f2a1d197d73dbbfc9de9ad1d4ee5c13977d9b62495b8befb83ff70f2fd5a96` |
 | `ext-continuum-optimal-stopping` | `09748d20885c9e08b8d894015a6e912d2b9a957032adc9b3f197350b74626234` |
 | `prop-brownian-os` | `f82353e4fb954d03050ea15364074ea8a7dee465375ed8fa574dc2285a283568` |
 | `lem-sobolev-tightness` | `28aa1819493b17d96196507f2f41e88ed26948c46d39b957b19761f6b6326fbf` |
-| `prop-d4-diffusive-tightness` | `87de2fc0e1bda259397c04b324cac2861edaf387d30627fe384bf8e5c24a776a` |
-| `prop-weighted-membrane-limit` | `4a755a2c84dff4aacd067f53feac54bd4ec514f521f3c55fc6af75957bbe8822` |
 | `lem-dgt4-weighted-last-visits` | `bfa9926b9b3214fb23442fee101487cee6a9ded9d11ba414412dff5793e14374` |
 | `ext-normal-comparison` | `ce44350b4d4d0fa89376bb9148e2d3a28f9686efab06f50218a7f0a579225108` |
-| `ext-intersection-second-moment` | `0f3e00ade273a723355fd8d582a5a92bf2120499b384d90a1b676ce3a8164b11` |
-| `lem-dgt4-path-survival` | `464f6a87ce4d1efc77d4514224ad08d45ba15ba333bc5785da933943d93b86d6` |
 | `ext-continuum-rsw` | `cf22eb43e6fa4556064182210a488dae35f4e8c38012cc56221b775d5f4faaf6` |
 | `ext-pitt-gaussian-fkg` | `18bc7b6f05b7825e98bb1d2104ffe0b625c11f75eaf7787e4a726b8cf72de301` |
 | `ext-gaussian-law-covariance` | `a74a2ccb839f261ecc9e1775bb1b5309f05eb87690ac7dc0c99585f3de7d7531` |
 | `ext-pinsker` | `051063a0dfae9d4317f653c7bab3be752d3059be80fcb4f73b75fecc72f0adc8` |
-| `thm-d4-critical-level-percolation` | `2ad5eca7cd3bed3d7e3cd3a7a6183769560c1da05a7fd14cbc1b88c294659d2f` |
-| `prop-dlt4-heat-potential-invariance` | `cf02af44b464e22718b4a2a642759583793f1dcae3ceeae04393e2e569a20f06` |
 | `ext-cube-stopping-stability` | `6d087780d8c28e94430977e47e5df786082268f7575102d0c8694f194d0ecb63` |
 | `ext-gaussian-lipschitz-concentration` | `593d6115d7f967f4aa56428a89c0b225ae301a9fe3368fe2db44615a0ff87c20` |
-| `prop-dgt4-contact-asymptotics` | `25a4fe536470da2e1650a7717227e1a8b52a7b58da02b698f09be88a22ba9a3a` |
-| `prop-dgt4-linearization` | `f15b04805be154085ce0b80b5b8bbd6ee1c485ad27ed139bfafcb7fd55d31026` |
-| `thm-dgt4-diffusive-membrane` | `2d443aba9045c3b7a7d69b4ac8e06630502aa5cf2a999cac7aeff36be4133b83` |
 | `ext-membrane-scaling-four` | `cf0693588491997322265c8876df370494020d9625222fd7207702756f0afab0` |
-| `prop-d4-superdiffusive-limit` | `79d7eb7c528c775ccf7278d7610db537e59dda98236db2859f7313c001a58a5c` |
 | `ext-continuum-stopping-stability` | `1a29e4bcaedbd8e44aadb532d4de7f8bf74e122300908b8bcc67f6e70e930cb8` |
-| `ext-brownian-exit-step` | `5dcab81b3e6f2360c8570064e7bfe5265f46cfef2daec9d893d512acb1e74804` |
-| `lem-brownian-ball-localization` | `9dd206a075f13ac93a6b5182a72daa20d0febe58c6346ce0e0e358b0ddad37c6` |
 | `ext-rellich-kondrachov-negsobolev` | `30484f96851b0082e8ca2d7af6792dc10c73a39dc50c1dd74a2dd5f3b86c89f7` |
-| `lem-dgt4-linearization-from-survival` | `08ce40fa2dfb77d0c2dff1b233089feab8f0be3e56cd5d3001b2a844d1997732` |
 | `ext-ball-occupation-density` | `43a2ec07e5023f41b16b02cdc5cac64e18f410cffc6a9633360499f4b0d878d4` |
-| `prop-continuum-value-selfsimilar` | `d5e61750b6e472d280cfb055e3b97fcd6f47f92cf0413f06500635fc94e78d97` |
-| `thm-main-explosion-i-b` | `f2070100980410a551678fe09557176f8cd3af46ebfcb12f21c1d68e53835902` |
-| `cor-dlt4-mean-asymptotic` | `2f143cf35f193839c06fd58f4a476f6259222ffc05a370f6051ac783ee670249` |
-| `thm-dgt4-many-limits` | `daa36586df09f169f83b7d4a1128a10fbc65754a9904a721c4e627fda7831299` |
-| `thm-d23-critical-level-percolation` | `6ce3e68a08b86214f7fc045be3e1b35ee7e9068535c4a70dd34f365440241801` |
-| `thm-main-nontriviality` | `a0a3ead389fc142dc5864f7780ca6415feb8f7dee5fcbfe6bfc183f228044db7` |
-| `thm-main-explosion-iii-d` | `8b26e149a5ceb63689c9da724748cf42b5af799d946ca509a9a37d58a7891624` |
 | `lem-recursion` | `5463c5f8eaf71f004a6336cd33127a790f2ddb29948a7fedb29c344687102ab1` |
-| `cor-mean-localization` | `0bd729f4800ae60922d1f0a390ab3285c635556eb9d6e69f6419adf406905fd0` |
-| `rem-dlt4-killed-scaling` | `695c032273d7732771ae941b249cf2dc7be48dd09d0c53de46425abfecd0c2d4` |
 | `lem-finite-scale-extraction` | `e6fbaaf930026aa43dd7ceec091b13b19e4fef12807d80f49df05fbe335e3905` |
 | `thm-limiting-odometer-crossing` | `1288ff15b789d476d3f56584916e14d232943dcdf73aa22ef124d1a2f55781e4` |
 | `prop-fixed-scale-crossings` | `276cb7494350df8afe36e4f12f280af9520048c1472b988d034b1c616f913029` |
@@ -256,10 +212,56 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `lem-odometer-derivative` | `c1aca9e1f6e3dadffa460122ab4ed11265509b830cfe3f47ffd0793b9a030fc8` |
 | `thm-main-explosion-iii-a` | `b165790a943142008377ea6e0dae67988d9f42fe19678c6c9eb82fd7e38c8d61` |
 | `thm-main-explosion-iii-b` | `670253366db20953efea4004c821a376d8628b9f640b2093838db687f993c70b` |
-| `thm-main-explosion-iii-c` | `c9575efb3a9705ee114207be4a4151360e94bab8587f1b14a6ca747ccec474b8` |
 | `thm-main-explosion-ii-c` | `9586262156f799140d8da342905a7d8ba486d44606dae16f1713bf9467b7b43f` |
-| `thm-main-explosion-i-a` | `cf6f3fa8d5ef519a0e95663c93ff9c2c7d657dbfc3caad94ead993cffb8ab8c3` |
-| `thm-main-critical-level-percolation` | `bad4f293aef28f904091f236b29b9f5d484e11092c0a7d807eb7bf35dd7b678c` |
+| `ext-intersection-second-moment` | `7690cf61ce21585257a62413fd22e1288c663b4aaa7e2ce4e6ceb97b305adec6` |
+| `cor-mean-localization` | `d808abb774b9c47af4c39a74fc71ffb7f66d542c6ccd02a416a2825969a5850a` |
+| `prop-d4-diffusive-tightness` | `ae21b2376b073f2792fcefa0a58762c774aa940c1619d4a8d04a5ff6e01bfd95` |
+| `thm-critical-toppling` | `24a69b951ee78548541af7484cba209080925de83e9e229cae43210e8bff3cdb` |
+| `cor-critical-mean-one` | `ffb91ded75084b690dc4fe4f853f595390db3d49cc370389f24f6596e24fb3a3` |
+| `lem-d4-difference-tail` | `535c61362033368d1639d651629a6ab815f67dea4cc789e9b0d0da82a2e473d9` |
+| `prop-d4-pointwise-linearization` | `73b74e8e8129eb48f7514f4deedd9d7557a12d15b771fcc7d3caa3d427162e45` |
+| `thm-critical-toppling-d4` | `bbcf15018b53d978f1e85678841c3de77ef4384d89f4cabbc60636b4bb245dca` |
+| `prop-d4-superdiffusive-limit` | `11b16f893cd2582e04b23080e3b90127497c8e2b316fc0e4d79bceb3ade0e930` |
+| `lem-dgt4-cascade` | `bc3dc2c7bac3c27ef250db30ac1b1f6b7a7d8cb7eb805fef2df79c470b747808` |
+| `prop-dgt4-contact-asymptotics` | `f190901db4797e725301c0f333fa12f82e64dbc61cf0e6c445b35155c561b91c` |
+| `lem-dgt4-stretched-green-scenery-tail` | `466e3c51a771d227ea8b88a2f36469a0602d9d5f0b091c5096fb1ddf1d4ca738` |
+| `thm-dgt4-height-lower` | `26ee09dd9825dae591ff88a9fe70e9676bb49642ba11ee0123e86d1672ab676d` |
+| `prop-dgt4-height-lower-stretched` | `35760a3af37e80395a5d842d325cbfe703a714face4ca4a87d367dd65bc11f65` |
+| `thm-dgt4-height-upper-tail` | `0d7d4dbc04139629fe94eebbb41607fdc3e2d917106de739c931d5d3eb9ddf17` |
+| `lem-dgt4-level-shift-decoupling` | `5bde2c15acc53b9a49e62b9616a765e35e3eb5fc6d3fc2ba79f96253d270e599` |
+| `lem-dgt4-linearization-from-survival` | `feeb4929f1191498077dbfb46b6cbd6abcce4edb64174d806c15023dc34132a2` |
+| `prop-dgt4-linearization` | `cc388b063d967fa54f6793f6e766614a72af6ef1c14042951b629c275d809dfd` |
+| `lem-dgt4-localization` | `c5451e7f8bb66641fb22e8d59ef797cf03fdb3c14a8576044aaed09c3698c5b3` |
+| `thm-dgt4-nontriviality` | `3b0adb1c23d1bad678d9df79a2cec3cd279c6eee701cfe48bb196a72260638da` |
+| `lem-dgt4-origin-frozen` | `44af75ebdbfb80d8c001532d9c01a4f696f1cb222ed46197b4a743fc12164739` |
+| `lem-dgt4-path-survival` | `4c108f13b7513d1f9d4b882555e13aad490d7181a0ccb701e489380568d2a23d` |
+| `lem-dgt4-smoothed-odometer-tail` | `96d912b77b3bd44765fe82213b5557eea9ffd72e7fa3d7455d0c352df9b8833b` |
+| `ext-paired-local-clt-four` | `c4bf79e11706c767ba2cd154da17cb983667f54b46d9c8ba3c9bca05d0a0e380` |
+| `ext-local-clt` | `17ea76602416856a695b5ea5fff947eac82e6378cbeae09cc66ef261b23b2c15` |
+| `ext-ball-green-bounds` | `78de7c61c313fe626f26be80880ffa4e3870ad74794a6ad16689b67aeba012df` |
+| `thm-dgt4-many-limits` | `edd29e2e30a142c1e6ae9e86403218875d9c66271e316bbef4cec9c7a40e65ba` |
+| `thm-d23-critical-level-percolation` | `214f6867c95ccc99c8f265128f810b0c14679461725629d47844e64c23a28ebc` |
+| `prop-continuum-value-selfsimilar` | `25e2738e19eb58e9e457274b2e42ea0c2bfaac8ec97cd39cb5867e2aaab0a7e4` |
+| `thm-main-explosion-i-b` | `f2e99095e17627a28babc307e712dc5406d18b58b4190fe9ac6d7e577576553e` |
+| `lem-d4-double-heat-kernel` | `f4b59b4163838552d084bad49bac27a5d07ec5fb8f9c65adb3efcf634502ef3f` |
+| `thm-dgt4-diffusive-membrane` | `f5bc119abb3230b39675d0a2600ee5fccd2a8c680d0b1bcd020f34074ed6238c` |
+| `prop-dlt4-heat-potential-invariance` | `7dd7d4319f85349548cbe13d9f884bfd85494ce4bf21903e68c47631bdab91ee` |
+| `thm-main-explosion-i-a` | `8aca3d8f8b85389dd4ae0cf9d61b72eb612a88cf6d047661f67ba8e0bb56b1c6` |
+| `cor-dlt4-mean-asymptotic` | `b647c423046cc28b56f241a9b120cef1c286f03732fbfc27206525363263e912` |
+| `thm-main-explosion-iii-d` | `b0040f082459663653d8df2f060e54e22ef5150685626a64b8a43594ae8359ad` |
+| `prop-weighted-membrane-limit` | `59ad4f77be0961eae09edc7cdaf2af56ae2aebcad3759bc7ffd90bf525c76124` |
+| `rem-dlt4-killed-scaling` | `168146799493ed9406ae4d2df453a553a8b96f4bd2b883b35d3410efdfd4946d` |
+| `thm-main-explosion-iii-c` | `baf78b95ac2d664e1c02ba428cf6a675603d9e286c130c91a7c509470a748d0a` |
+| `prop-d4-one-point-gaussian` | `deb2d6bc3027a1e10d5306ec493f9f95e5670e8835d190ae52cb05fd0f42f9ed` |
+| `thm-main-explosion-ii-b` | `b41e91a033536702f3354fe7ab8eff7c72d7054a45c452cf9259e4b4dd9f1ce4` |
+| `thm-main-nontriviality` | `8b66af1b26ea0a2f1677d5f6f5ee336fff1d6cecf434f9a0c9b27944b4b4b8b4` |
+| `thm-main-critical-level-percolation` | `612e1f10c28ebffcd9c3c2b2ab0ad6d00d3f502de5d422c0796df772231db3fa` |
+| `thm-d4-ball-green-crossing` | `730cdccb9b4a7d534fd604557c070bde570566d5f4281108f2628d7264f8c850` |
+| `lem-d4-exit-average-concentration` | `01c5e8705799d54e2e82896729c72d959cabef84f5f965d0ac81251c52064615` |
+| `thm-d4-critical-level-percolation` | `612e7e6d973c51aa0b1fc8632b3e2c04ccb0763f3642ca8960da22669c42bc89` |
+| `ext-brownian-exit-step` | `0aeebcb64fe85fcf26ba084c7348e96e0d7b051d4efe54d997f2378258d8ade9` |
+| `lem-brownian-value-mono-horizon` | `b44b2719cc8c6121e7f017ff2b831957ec75e8ba0d338ae80c3e6d75566b6c53` |
+| `lem-brownian-ball-localization` | `9dd206a075f13ac93a6b5182a72daa20d0febe58c6346ce0e0e358b0ddad37c6` |
 
 ## What is not claimed
 

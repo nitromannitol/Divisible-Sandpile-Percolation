@@ -37,8 +37,7 @@ The solutions use these definitionally, with no rewriting: the `exact` that
 closes each solution, and the bridges of Section 3 that are proved by the
 hypothesis itself (`planarRSW`, `lssDomination`, `exteriorBoundaryConnected`,
 `pittGaussianFKG`, `continuumBesovTightness`, `gaussianLipschitzConcentration`,
-`normalComparison`, `intersectionSecondMoment`), are checked by the kernel,
-which unfolds both sides.
+`normalComparison`), are checked by the kernel, which unfolds both sides.
 
 ## 2. Recursive copies and structure copies
 

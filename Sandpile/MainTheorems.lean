@@ -79,14 +79,12 @@ universe u
 /-- **Theorem 1.1** (`thm:main-nontriviality`).  The certified statement is
 `Sandpile.Frozen.percolation_below_criticality`. -/
 theorem Sandpile.percolation_below_criticality
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))
     (hmean : ∀ ρ ∈ Set.Ioc (0 : ℝ) 1, ∫ s, s ∂(μ ρ) = ρ)
@@ -97,20 +95,18 @@ theorem Sandpile.percolation_below_criticality
     ∃ ρPlus ∈ Set.Ico ρ₀ 1, ∀ ρ ∈ Set.Ioo ρPlus 1,
       ∀ᵐ σ ∂(Sandpile.massLaw d (μ ρ)),
         Sandpile.HasInfiniteComponent (Sandpile.toppledSet σ) := by
-  exact Sandpile.Frozen.percolation_below_criticality hBallGreen hRSW hLSS hBoundary hRSWc hPitt
-    hOcc hLocalCLT hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
+  exact Sandpile.Frozen.percolation_below_criticality hRSW hLSS hBoundary hRSWc hPitt
+    hOcc hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 
 /-- **Theorem 1.2** (`thm:main-critical-level-percolation`).  The certified statement is
 `Sandpile.Frozen.critical_level_percolation`. -/
 theorem Sandpile.critical_level_percolation
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
     (hOcc : Sandpile.External.BallOccupationDensity)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hCube : Sandpile.External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -121,13 +117,12 @@ theorem Sandpile.critical_level_percolation
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} := by
-  exact Sandpile.Frozen.critical_level_percolation hBallGreen hRSW hLSS
-    hBoundary hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
+  exact Sandpile.Frozen.critical_level_percolation hRSW hLSS
+    hBoundary hRSWc hPitt hOcc hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
 
 /-- **Theorem 1.3(i)(a)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.mean_growth_le_three`. -/
 theorem Sandpile.mean_growth_le_three
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{0})
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], Sandpile.External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
@@ -136,13 +131,12 @@ theorem Sandpile.mean_growth_le_three
     ∃ L : ℝ, 0 < L ∧
       Tendsto (fun t : ℕ => (t : ℝ) ^ (-((4 - (d : ℝ)) / 4)) *
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L) := by
-  exact Sandpile.Frozen.mean_growth_le_three hLocalCLT hStab hOS d hd hd3 ν hprob
+  exact Sandpile.Frozen.mean_growth_le_three hStab hOS d hd hd3 ν hprob
     hmean hvar hvar' θ₀ hθ₀ hexp
 
 /-- **Theorem 1.3(i)(b)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.brownian_scaling_limit`. -/
 theorem Sandpile.brownian_scaling_limit
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -192,7 +186,7 @@ theorem Sandpile.brownian_scaling_limit
                   Sandpile.Continuum.multilinearInterp R
                     (fun y => R ^ (-(2 - (d : ℝ) / 2)) * Sandpile.odometer σ ⌊T * R ^ 2⌋₊ y) z'|} ≤
             ENNReal.ofReal ε) := by
-  exact Sandpile.Frozen.brownian_scaling_limit hLocalCLT hStab d hd hd3 ν hmean hvar hvar' θ₀
+  exact Sandpile.Frozen.brownian_scaling_limit hStab d hd hd3 ν hmean hvar hvar' θ₀
     hθ₀ hexp Ω P W hW Z hZmod hZcont hZgrow Ω' P' B hB hBc hBm T hT
 
 /-- **Theorem 1.3(ii)(a), first clause** (`thm:main-explosion`).  The certified statement is
@@ -224,7 +218,6 @@ theorem Sandpile.four_first_order
 /-- **Theorem 1.3(ii)(b)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.four_gaussian`. -/
 theorem Sandpile.four_gaussian
-    (hPaired : Sandpile.External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :
@@ -237,7 +230,7 @@ theorem Sandpile.four_gaussian
     Tendsto (fun t : ℕ =>
       variance (fun σ => Sandpile.odometer σ t 0) (Sandpile.centeredMassLaw 4 ν) / Real.log t)
       atTop (𝓝 (4 * variance id ν / Real.pi ^ 2)) := by
-  exact Sandpile.Frozen.four_gaussian hPaired ν hmean hvar hvar' θ₀ hθ₀ hexp
+  exact Sandpile.Frozen.four_gaussian ν hmean hvar hvar' θ₀ hθ₀ hexp
 
 /-- **Theorem 1.3(ii)(c)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.four_sobolev`. -/
@@ -320,7 +313,6 @@ theorem Sandpile.high_tail
 theorem Sandpile.high_sobolev_limit
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -349,12 +341,11 @@ theorem Sandpile.high_sobolev_limit
                       Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Sandpile.Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
   exact Sandpile.Frozen.high_sobolev_limit hGaussConc hNormal
-    hLocalCLT d hd hBesov ν hmean hvar hvar'
+    d hd hBesov ν hmean hvar hvar'
 
 /-- **Theorem 1.3(iii)(d)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_nonconvergence`. -/
 theorem Sandpile.high_nonconvergence
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
     ∃ ν : Measure ℝ, IsProbabilityMeasure ν ∧ ∀ [_i : IsProbabilityMeasure ν],
@@ -386,4 +377,4 @@ theorem Sandpile.high_nonconvergence
               (Sandpile.Continuum.Space d → ℝ) → ℝ,
             Sandpile.Continuum.TendstoInNegSobolev d s (Sandpile.centeredMassLaw d ν)
               (Sandpile.Continuum.diffusiveFluctuation (Sandpile.centeredMassLaw d ν) T) K := by
-  exact Sandpile.Frozen.high_nonconvergence hLocalCLT d hd hBesov
+  exact Sandpile.Frozen.high_nonconvergence d hd hBesov

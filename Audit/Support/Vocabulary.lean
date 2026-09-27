@@ -1132,21 +1132,6 @@ def NormalComparison : Prop :=
                 Real.exp (-(b i ^ 2 + b j ^ 2) /
                   (2 * (v : ℝ) * (1 + S i j / (v : ℝ))))
 
-/-- The number of intersections of two paths, counted with multiplicity, in `ℝ≥0∞`. -/
-noncomputable def interCount {d : ℕ} (X Y : ℕ → Site d) : ℝ≥0∞ :=
-  ∑' p : ℕ × ℕ, Set.indicator {q : ℕ × ℕ | X q.1 = Y q.2} (fun _ => (1 : ℝ≥0∞)) p
-
-/-- The second intersection estimate `eq:dgt4-intersection-second-moment` for two
-independent simple random walks in `d ≥ 5` (Lawler, *Intersections of Random Walks*,
-Theorem 3.3.2).  Assumed. -/
-def IntersectionSecondMoment : Prop :=
-  ∀ d : ℕ, 5 ≤ d →
-    ∃ C : ℝ, 0 < C ∧
-      ∀ x y : Site d,
-        (∫⁻ X, ∫⁻ Y, interCount X Y ^ 2
-            ∂(walkLaw d y) ∂(walkLaw d x)) ≤
-          ENNReal.ofReal (C * (1 + latticeNorm (x - y)) ^ (4 - (d : ℝ)))
-
 end External
 
 end SandpileAudit

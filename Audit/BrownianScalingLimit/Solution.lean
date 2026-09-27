@@ -22,7 +22,6 @@ universe u
 
 /-- Theorem 1.3(i)(b) (`thm:main-explosion`). -/
 theorem brownian_scaling_limit
-    (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{u})
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -73,7 +72,7 @@ theorem brownian_scaling_limit
                     (fun y => R ^ (-(2 - (d : ℝ) / 2)) * odometer σ ⌊T * R ^ 2⌋₊ y) z'|} ≤
             ENNReal.ofReal ε) := by
   rw [Bridge.odometer_eq]
-  exact Sandpile.brownian_scaling_limit (Bridge.localCLT hLocalCLT)
+  exact Sandpile.brownian_scaling_limit
     (Bridge.continuumStoppingStability hStab) d hd hd3 ν hmean hvar hvar' θ₀ hθ₀ hexp Ω P W
     (Bridge.isWhiteNoise d W P hW) Z hZmod hZcont hZgrow Ω' P' B
     (fun x => (Bridge.isBrownian_iff _ _ _ _).1 (hB x)) hBc hBm T hT

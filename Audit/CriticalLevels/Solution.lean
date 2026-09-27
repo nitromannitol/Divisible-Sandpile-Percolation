@@ -20,14 +20,12 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.2 (`thm:main-critical-level-percolation`). -/
 theorem critical_level_percolation
-    (hBallGreen : External.BallGreenBounds)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
-    (hLocalCLT : External.LocalCLT)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -39,11 +37,11 @@ theorem critical_level_percolation
           HasInfiniteComponent
             {x | c * criticalScale d t < odometer σ t x} := by
   rw [Bridge.odometer_eq]
-  exact Sandpile.critical_level_percolation (Bridge.ballGreenBounds hBallGreen)
+  exact Sandpile.critical_level_percolation
     (Bridge.planarRSW hRSW)
     (Bridge.lssDomination hLSS) (Bridge.exteriorBoundaryConnected hBoundary)
     (Bridge.continuumRSW hRSWc) (Bridge.pittGaussianFKG hPitt)
-    (Bridge.ballOccupationDensity hOcc) (Bridge.localCLT hLocalCLT)
+    (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd ν₀ θ₀ K₀ hν₀ hθ₀
 
 end SandpileAudit

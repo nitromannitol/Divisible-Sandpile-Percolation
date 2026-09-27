@@ -1,5 +1,5 @@
 /-
-Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2130-2137`
+Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2157-2164`
 (label `prop:fixed-scale-crossings`):
 
   "For every $\theta>0$ there is $p>0$ such that, for every $L\geq0$,

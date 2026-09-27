@@ -1,6 +1,6 @@
 /-
 Theorem (High-dimensional mean growth) of sandpile.tex, frozen.
-`sandpile.tex:4168-4191` (label `thm:dgt4-height-lower`):
+`sandpile.tex:4195-4218` (label `thm:dgt4-height-lower`):
 
   "Fix $\nu_0>0$, $\theta_0>0$, and $K_0<\infty$.  There are $c,C>0$ and
    $t_0<\infty$, depending only on $d,\nu_0,\theta_0,K_0$, such that every

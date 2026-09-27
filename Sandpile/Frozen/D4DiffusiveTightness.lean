@@ -1,5 +1,5 @@
 /-
-Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3290-3297`
+Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3317-3324`
 (label `prop:d4-diffusive-tightness`):
 
   "[Diffusive tightness in dimension four]  Suppose that

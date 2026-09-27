@@ -1,5 +1,5 @@
 /-
-Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:2692-2721`
+Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:2719-2748`
 (label `thm:critical-toppling-d4`):
 
   "Fix $\nu_{0}>0$, $\theta_{0}>0$, and $K_{0}<\infty$.  There are constants

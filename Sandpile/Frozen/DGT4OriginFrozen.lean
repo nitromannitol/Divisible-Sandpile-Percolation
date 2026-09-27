@@ -1,5 +1,5 @@
 /-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:4882-4918`
+Lemma of sandpile.tex, frozen.  `sandpile.tex:4909-4945`
 (label `lem:dgt4-origin-frozen`):
 
   "Assume that $d\geq5$ and that the scenery is i.i.d., atomless, centered,

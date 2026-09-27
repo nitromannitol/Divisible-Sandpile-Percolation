@@ -1,5 +1,5 @@
 /-
-The cube-killed scaling limit of `sandpile.tex:1930-1957`
+The cube-killed scaling limit of `sandpile.tex:1957-1984`
 (label `rem:dlt4-killed-scaling`).  The remark makes three assertions, and the statement is
 their conjunction.
 
@@ -45,6 +45,7 @@ import Sandpile.External.ContStoppingStability
 import Sandpile.Frozen.MeanLocalization
 import Sandpile.Support.KillScaling
 import Sandpile.Support.ExplKilledSequence
+import Sandpile.External.LocalCLTProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -53,7 +54,6 @@ open scoped NNReal ENNReal
 theorem Sandpile.Frozen.dlt4_killed_scaling
     (hStab : Sandpile.External.ContinuumStoppingStability.{0})
     (hCube : Sandpile.External.CubeStoppingStability)
-    (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -112,8 +112,8 @@ theorem Sandpile.Frozen.dlt4_killed_scaling
   by
     have _hStab := hStab
     have hσ : 0 < variance id ν := ENNReal.toReal_pos hvar.ne' hvar'.ne
-    refine ⟨Sandpile.dlt4_killed_scaling_of_inputs hLocalCLT hCube d hd hd3 ν hmean hvar hvar'
-      θ₀ hθ₀ hexp ΩW PW W hW hZcont ΩB PB B hB K hK T hT ε δ hε hδ, ?_, ?_, ?_⟩
+    refine ⟨Sandpile.dlt4_killed_scaling_of_inputs Sandpile.External.localCLT hCube d hd hd3 ν
+      hmean hvar hvar' θ₀ hθ₀ hexp ΩW PW W hW hZcont ΩB PB B hB K hK T hT ε δ hε hδ, ?_, ?_, ?_⟩
     · filter_upwards [hZcont] with ω hω u _
       exact Sandpile.Continuum.brownianValueBall_le_brownianValueCube_of_continuous PB (B u) u
         (hB u) _ hω T hT.le
@@ -122,8 +122,9 @@ theorem Sandpile.Frozen.dlt4_killed_scaling
           Sandpile.Continuum.gaussianPotential d v W q.1 q.2 ω := by
         filter_upwards [hZcont] with ω hω
         exact Sandpile.Continuum.continuous_gaussianPotential_of_pos_variance v _ hσ W ω hω
-      exact Sandpile.dlt4_killed_scaling_sequence_of_inputs hLocalCLT hCube d hd hd3 θ M v hθ hv
-        νs hprob hmeans hexps hMs hvars ΩW PW W hW hZv ΩB PB B hB K hK T hT ε δ hε hδ
+      exact Sandpile.dlt4_killed_scaling_sequence_of_inputs Sandpile.External.localCLT hCube d hd
+        hd3 θ M v hθ hv νs hprob hmeans hexps hMs hvars ΩW PW W hW hZv ΩB PB B hB K hK T hT ε δ
+        hε hδ
     · intro v ω u
       exact Sandpile.Continuum.brownianValueCube_gaussianPotential_eq_sqrt_mul (B u) PB v W ω T
         1 u

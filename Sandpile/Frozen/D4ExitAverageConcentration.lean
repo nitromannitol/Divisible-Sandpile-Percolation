@@ -1,5 +1,5 @@
 /-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3947-3958`
+Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3974-3985`
 (label `lem:d4-exit-average-concentration`):
 
   "Fix $\theta_{0}>0$ and $K_{0}<\infty$.  There are $c>0$ and $C<\infty$,
@@ -50,6 +50,7 @@ every law with no exponential moment.
 -/
 import Sandpile.Support.ExitConcentration
 import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -75,7 +76,6 @@ end Sandpile
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_exit_average_concentration
-    (hBallGreen : Sandpile.External.BallGreenBounds)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
       ∀ Aloc : ℝ, 1 ≤ Aloc → ∀ Aex : ℕ, 1 ≤ Aex →
@@ -89,7 +89,8 @@ theorem Sandpile.Frozen.d4_exit_average_concentration
             ENNReal.ofReal (C * Real.exp (-(c * min (s ^ 2) (s * (r : ℝ) ^ 2))))
 -- FROZEN-STATEMENT-END
 := by
-  obtain ⟨c, C, hc, hC, htail⟩ := Sandpile.exists_cube_exit_concentration hBallGreen θ₀ K₀ hθ₀
+  obtain ⟨c, C, hc, hC, htail⟩ :=
+    Sandpile.exists_cube_exit_concentration Sandpile.External.ballGreenBounds θ₀ K₀ hθ₀
   refine ⟨c, C, hc, hC, ?_⟩
   intro Aloc _hAloc Aex _hAex ν hν _hmean hexp hK r hr s hs z
   have he : ∀ ζ : Sandpile.Site 4 → ℝ,

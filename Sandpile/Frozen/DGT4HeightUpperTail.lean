@@ -1,6 +1,6 @@
 /-
 Theorem (Refined high-dimensional upper bound) of sandpile.tex, frozen.
-`sandpile.tex:4501-4512` (label `thm:dgt4-height-upper-tail`):
+`sandpile.tex:4528-4539` (label `thm:dgt4-height-upper-tail`):
 
   "Assume \eqref{eq:dgt4-exp-moment}.  Suppose that there are
    $\gamma\in[1,\infty)$, $\gamma\ne d/2$, and $c_0,C_0,s_{0}>0$ such that for

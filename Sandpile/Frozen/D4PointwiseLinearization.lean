@@ -1,5 +1,5 @@
 /-
-Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3060-3075`
+Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3087-3102`
 (label `prop:d4-pointwise-linearization`):
 
   "There are constants $c,C\in(0,\infty)$ such that, for all integers $t\geq3$

@@ -27,13 +27,13 @@ hypothesis list is `Var ≥ ν₀²` together with `E e^{θ₀|ζ(0)|} ≤ K₀`
 -/
 import Sandpile.Law
 import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.HeightLower
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_height_lower
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∃ t₀ : ℕ,
       ∀ ν : Measure ℝ, IsProbabilityMeasure ν → ∫ z, z ∂ν = 0 →
@@ -58,6 +58,7 @@ theorem Sandpile.Frozen.dgt4_height_lower
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hd2 : (0 : ℝ) < (d : ℝ) / 2 := by
     have : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd1

@@ -18,7 +18,6 @@ moment those two land.
 import Sandpile.Support.ContDGT4Membrane
 import Sandpile.Frozen.DGT4Linearization
 import Sandpile.External.NormalComparison
-import Sandpile.External.IntersectionSecondMoment
 import Sandpile.Frozen.DGT4ContactAsymptotics
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -40,7 +39,6 @@ theorem dgt4_diffusive_membrane_of_inputs
     (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
@@ -77,10 +75,10 @@ theorem dgt4_diffusive_membrane_of_inputs
   refine ⟨fun T hT s hs => ?_, ?_⟩
   · exact dgt4_diffusive_membrane_of hHeatKernel hGreenHigh hLocalCLT hBesov hd ν hmean hvar
       hvar' κ hκ T hT
-      (fun φ hφ => Sandpile.Frozen.dgt4_linearization hGreenHigh hGaussConc hNormal hInter d hd hBesov ν hatom hmean hvar
+      (fun φ hφ => Sandpile.Frozen.dgt4_linearization hGaussConc hNormal d hd hBesov ν hatom hmean hvar
         hvar' κ hcase
         T hT φ hφ) s hs
-  · exact Sandpile.Frozen.dgt4_contact_asymptotics hGreenHigh hGaussConc d hd ν hatom hmean hvar hvar'
+  · exact Sandpile.Frozen.dgt4_contact_asymptotics hGaussConc d hd ν hatom hmean hvar hvar'
       κ hcase
 
 end Sandpile.Support

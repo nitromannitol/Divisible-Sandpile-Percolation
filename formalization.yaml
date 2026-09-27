@@ -28,10 +28,11 @@ status:
     the critical growth and scaling theorem (Theorem 1.3), with the lemmas,
     propositions and corollaries behind them.  SCOPE BOUNDARY: 26 results the
     paper cites from the literature are stated as propositions in
-    Sandpile/External/ and are explicit hypotheses of every theorem whose proof
-    uses them; six of them are also proved here (Sandpile/External/*Proved.lean),
-    so the development rests on the remaining 20.  ASSUMPTIONS.md lists all 26
-    with their Lean statements.  Not formalized: the proof-overview,
+    Sandpile/External/.  20 of them remain explicit hypotheses of every theorem
+    whose proof uses them and are assumed, not proved; ASSUMPTIONS.md lists all
+    20 with their Lean statements.  The remaining 6 are proved unconditionally
+    here (Sandpile/External/*Proved.lean) and are dropped as hypotheses from
+    every statement that used them.  Not formalized: the proof-overview,
     related-work and open-problem subsections, the unlabelled remarks
     (including the nonpercolation remark at low mean, which quotes a Peierls
     argument of Fey, Meester and Redig), and the figures.  The main theorems are
@@ -66,8 +67,6 @@ status:
       comparator_config: "Audit/CriticalLevels/comparator.json"
       literature_dependencies: 
         - "Lawler and Limic, Theorem 4.3.1 and Chapter 6, the ball-killed Green estimates (Sandpile.External.BallGreenBounds), hypothesis"
-        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
-        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
         - "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, planar RSW (Sandpile.External.PlanarRSW), hypothesis"
         - "Liggett, Schonmann and Stacey, Corollary 1.4 (Sandpile.External.LSSDomination), hypothesis"
         - "Timar, Theorem 3, exterior boundary connectivity (Sandpile.External.ExteriorBoundaryConnected), hypothesis"
@@ -76,6 +75,8 @@ status:
         - "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball (Sandpile.External.BallOccupationDensity), hypothesis"
         - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
         - "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form (Sandpile.External.CubeStoppingStability), hypothesis"
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; proved unconditionally here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.greenBoundsHigh), used internally, not a hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; proved unconditionally here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.varianceScale), used internally, not a hypothesis"
     - declaration: "Sandpile.mean_growth_le_three"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
@@ -84,8 +85,8 @@ status:
       literature_dependencies: 
         - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
         - "Coquet and Toldo, Theorem 3 and Corollary 4 (Sandpile.External.ContinuumStoppingStability), hypothesis"
-        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
         - "Peskir and Shiryaev, Theorem 2.2 (Sandpile.External.ContinuumOptimalStopping), hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; proved unconditionally here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.varianceScale), used internally, not a hypothesis"
     - declaration: "Sandpile.brownian_scaling_limit"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
@@ -112,44 +113,44 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/FourGaussian/comparator.json"
       literature_dependencies: 
-        - "Lawler and Limic, Theorem 2.1.3, Eq. (2.8), paired dimension-four form (Sandpile.External.PairedLocalCLTFour), hypothesis"
+        - "Lawler and Limic, Theorem 2.1.3, Eq. (2.8), paired dimension-four form (Sandpile.External.PairedLocalCLTFour); proved unconditionally here, Sandpile/External/PairedLocalCLTFourProved.lean (Sandpile.External.pairedLocalCLTFour), still carried as an explicit hypothesis"
     - declaration: "Sandpile.four_sobolev"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/FourSobolev/comparator.json"
-      literature_dependencies: 
-        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; also proved here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.HeatKernelBounds), hypothesis"
-        - "the finite-time variance scale of ssec:green-estimates; also proved here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.VarianceScale), hypothesis"
+      literature_dependencies:
         - "Furlan and Mourrat, Theorem 2.30 (Sandpile.External.ContinuumBesovTightness), hypothesis"
         - "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 (Sandpile.External.MembraneScalingLimitFour), hypothesis"
+        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; proved unconditionally here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.heatKernelBounds), used internally, not a hypothesis"
+        - "the finite-time variance scale of ssec:green-estimates; proved unconditionally here, Sandpile/External/VarianceScaleProved.lean (Sandpile.External.varianceScale), used internally, not a hypothesis"
     - declaration: "Sandpile.high_first_order"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/HighFirstOrder/comparator.json"
-      literature_dependencies: 
-        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+      literature_dependencies:
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; proved unconditionally here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.greenBoundsHigh), used internally, not a hypothesis"
     - declaration: "Sandpile.high_tail"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/HighTail/comparator.json"
-      literature_dependencies: 
-        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+      literature_dependencies:
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; proved unconditionally here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.greenBoundsHigh), used internally, not a hypothesis"
     - declaration: "Sandpile.high_sobolev_limit"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/HighSobolevLimit/comparator.json"
-      literature_dependencies: 
-        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; also proved here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.HeatKernelBounds), hypothesis"
-        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; also proved here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.GreenBoundsHigh), hypothesis"
+      literature_dependencies:
         - "Borell; Tsirelson, Ibragimov and Sudakov (Sandpile.External.GaussianLipschitzConcentration), hypothesis"
         - "Li and Shao, Corollary 2.1 (Sandpile.External.NormalComparison), hypothesis"
         - "Lawler, Intersections of Random Walks, Theorem 3.3.2 (Sandpile.External.IntersectionSecondMoment), hypothesis"
         - "Lawler and Limic, Theorem 2.1.3, the local central limit theorem (Sandpile.External.LocalCLT), hypothesis"
         - "Furlan and Mourrat, Theorem 2.30 (Sandpile.External.ContinuumBesovTightness), hypothesis"
+        - "Lawler and Limic, Propositions 2.4.1 and 2.4.4; proved unconditionally here, Sandpile/External/HeatKernelBoundsProved.lean (Sandpile.External.heatKernelBounds), used internally, not a hypothesis"
+        - "Lawler and Limic, Theorem 4.3.1, and Lawler, Chapter 3, the d >= 5 Green estimates; proved unconditionally here, Sandpile/External/GreenBoundsHighProved.lean (Sandpile.External.greenBoundsHigh), used internally, not a hypothesis"
     - declaration: "Sandpile.high_nonconvergence"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
@@ -413,11 +414,16 @@ alignment:
       module: "Sandpile.Frozen"
       status: "proved"
       note: "70 paper-statement nodes in all, listed with their paper locations in CORRESPONDENCE.md."
-    - source: "Cited results"
+    - source: "Cited results, still assumed"
       lean: "Sandpile.External.*"
       module: "Sandpile.External"
       status: "assumed"
-      note: "Explicit hypotheses of the theorems that use them; 26 propositions, six of them also proved here; listed in ASSUMPTIONS.md."
+      note: "Explicit hypotheses of the theorems that use them; 20 propositions; listed in ASSUMPTIONS.md."
+    - source: "Cited results, proved unconditionally here"
+      lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker}"
+      module: "Sandpile.External"
+      status: "proved"
+      note: "6 propositions the paper cites without proof, proved unconditionally from the shared library Lattice-Probability; each is a SEALED manifest node, not a hypothesis of any statement in this file."
 
 acknowledgements: >-
   The paper is joint work with Christoforos Panagiotis.  Built on Lean 4,

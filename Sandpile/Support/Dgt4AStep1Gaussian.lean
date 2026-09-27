@@ -109,7 +109,7 @@ variable {d : ℕ}
 /-- `\E u_n(0)\leq K\sqrt{\log n}`, the upper half of `eq:dgt4-gaussian-height-order`
 (`sandpile.tex:5030-5032`) in the Gaussian case: `thm:dgt4-height-upper-tail` at the
 sub-Gaussian exponent `\gamma=2`, where `\min(\gamma,d/2)=2` for `d\geq5`. -/
-theorem exists_meanOdometer_le_sqrt_log (hGH : Sandpile.External.GreenBoundsHigh)
+theorem exists_meanOdometer_le_sqrt_log (_hGH : Sandpile.External.GreenBoundsHigh)
     (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) :
     ∃ K : ℝ, 0 < K ∧ ∀ n : ℕ, 2 ≤ n →
       meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n ≤ K * Real.sqrt (Real.log n) := by
@@ -130,7 +130,7 @@ theorem exists_meanOdometer_le_sqrt_log (hGH : Sandpile.External.GreenBoundsHigh
   have hexpint : Integrable (fun z : ℝ => Real.exp (1 * |z|)) (gaussianReal 0 v) :=
     integrable_exp_abs_gaussian 1 v
   obtain ⟨C₀, c₀, hC₀, hc₀, htail⟩ := exists_gaussian_lower_tail_le v hv
-  obtain ⟨C, hC, hbound⟩ := Sandpile.Frozen.dgt4_height_upper_tail hGH d hd (gaussianReal 0 v)
+  obtain ⟨C, hC, hbound⟩ := Sandpile.Frozen.dgt4_height_upper_tail d hd (gaussianReal 0 v)
     inferInstance hmean hvar hvar'
     1 (∫ z, Real.exp (1 * |z|) ∂(gaussianReal 0 v)) one_pos hexpint le_rfl
     2 (by norm_num) (by intro h; linarith)

@@ -146,7 +146,7 @@ repository was missing. -/
 theorem manyLStep3Input_of_thresholds (d : ℕ) (hd : 5 ≤ d)
     (hGreen : Sandpile.External.GreenBoundsHigh)
     (hInter : Sandpile.External.IntersectionSecondMoment)
-    (hHeat : Sandpile.External.HeatKernelBounds)
+    (_hHeat : Sandpile.External.HeatKernelBounds)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν] [NullSingletonClass ν]
@@ -181,7 +181,7 @@ theorem manyLStep3Input_of_thresholds (d : ℕ) (hd : 5 ≤ d)
     fun ε hε η hη => (tendsto_add_atTop_nat N).eventually (hthrκ T hT ε hε η hη)
   have hq : ContinuousOn (fun t : ℝ => (1 - t / T) ^ κ) (Set.Icc 0 T) :=
     ContinuousOn.rpow_const (by fun_prop) (fun _ _ => Or.inr hκ0.le)
-  have hW := Sandpile.Frozen.weighted_membrane_limit hHeat hGreen hLocalCLT d hd hBesov T hT
+  have hW := Sandpile.Frozen.weighted_membrane_limit hLocalCLT d hd hBesov T hT
     (fun t => (1 - t / T) ^ κ) hq ν hmean hvar hvar' s hs
   rw [generalWeightedMembraneCov_eq_weighted d (variance (id : ℝ → ℝ) ν) T κ]
     at hW

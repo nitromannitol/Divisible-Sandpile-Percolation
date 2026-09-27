@@ -77,7 +77,7 @@ theorem integrable_avg_originOdometer_centred_rpow (hd : 5 ≤ d) (ν : Measure 
 /-- `eq:dgt4-origin-fixed-mean` in the language of the i.i.d. field:
 `G(0,0)\E Pw_n(0)/\E u_n(0)\to1`, i.e. `\E Pw_n(0)\sim\E u_n(0)/G(0,0)`. -/
 theorem tendsto_meanAvg_originOdometer_ratio
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤) :
@@ -89,7 +89,7 @@ theorem tendsto_meanAvg_originOdometer_ratio
   have hmom2 : Integrable (fun z : ℝ => |z| ^ (2 : ℝ)) ν :=
     Sandpile.integrable_abs_rpow_two ν (integrable_sq_of_evariance ν hvar')
   obtain ⟨hratio, -⟩ :=
-    (Sandpile.Frozen.dgt4_origin_frozen hGreenHigh d hd ν hatom hmean hvar hvar').2.1
+    (Sandpile.Frozen.dgt4_origin_frozen d hd ν hatom hmean hvar hvar').2.1
       2 le_rfl hmom2
   simp only [Sandpile.killedOdometer_eq_originOdometer] at hratio
   refine hratio.congr fun n => ?_
@@ -120,7 +120,7 @@ theorem tendsto_prob_avg_originOdometer_ratio
   have hmom2 : Integrable (fun z : ℝ => |z| ^ (2 : ℝ)) ν :=
     Sandpile.integrable_abs_rpow_two ν (integrable_sq_of_evariance ν hvar')
   obtain ⟨-, M, hM⟩ :=
-    (Sandpile.Frozen.dgt4_origin_frozen hGreenHigh d hd ν hatom hmean hvar hvar').2.1
+    (Sandpile.Frozen.dgt4_origin_frozen d hd ν hatom hmean hvar hvar').2.1
       2 le_rfl hmom2
   simp only [Sandpile.killedOdometer_eq_originOdometer] at hM
   have hmean_eq : ∀ n : ℕ,

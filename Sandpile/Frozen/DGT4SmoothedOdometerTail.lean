@@ -26,12 +26,12 @@ which is at least one.
 import Sandpile.Support.Smoothed
 import Sandpile.Frozen.WeightedExpConcentration
 import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -67,7 +67,7 @@ theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
     have h1 : max z 0 ≤ |z| := max_le (le_abs_self z) (abs_nonneg z)
     have h2 : Real.exp (θ₀ * |z|) / θ₀ = 1 / θ₀ * Real.exp (θ₀ * |z|) := by ring
     linarith [habs, h1, h2.le, h2.ge]
-  obtain ⟨-, -, ⟨C₁, hC₁, htail⟩, -, -⟩ := hGreenHigh d hd
+  obtain ⟨-, -, ⟨C₁, hC₁, htail⟩, -, -⟩ := Sandpile.External.greenBoundsHigh d hd
   obtain ⟨c₀, C₀, hc₀, hC₀, hconc⟩ := Sandpile.Frozen.weighted_exp_concentration.2.1 θ₀ K₀ hθ₀
   refine ⟨c₀ / C₁, C₀, div_pos hc₀ hC₁, hC₀, ?_⟩
   intro m hm n s hs

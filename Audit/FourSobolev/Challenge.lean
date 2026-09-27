@@ -26,16 +26,14 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.  Of these,
-`HeatKernelBounds` and `VarianceScale` are also proved in the repository
-(`Sandpile/External/*Proved.lean`), but the certified statement keeps them as
-hypotheses, and so does the challenge.
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `HeatKernelBounds` and
+`VarianceScale` are each proved unconditionally in this repository
+(`Sandpile.External.heatKernelBounds`, `Sandpile.External.varianceScale`), so
+neither is carried as a hypothesis by the certified statement, and this
+challenge carries neither either.
 
-* `External.HeatKernelBounds`: the heat-kernel bounds (Lawler and Limic,
-  Propositions 2.4.1 and 2.4.4);
-* `External.VarianceScale`: the finite-time variance scale, membrane
-  correlations and window bounds of `ssec:green-estimates`;
 * `External.ContinuumBesovTightness`: the Besov tightness criterion (Furlan and
   Mourrat, Theorem 2.30);
 * `External.MembraneScalingLimitFour`: the scaling limit of the four-dimensional
@@ -1197,8 +1195,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(ii)(c) (`thm:main-explosion`). -/
 theorem four_sobolev
-    (hHeatKernel : External.HeatKernelBounds)
-    (hVarScale : External.VarianceScale)
     (hBesov : External.ContinuumBesovTightness (Site 4 → ℝ))
     (hMembrane : External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]

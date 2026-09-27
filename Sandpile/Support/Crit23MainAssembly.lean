@@ -150,7 +150,7 @@ theorem crit23_d4_branch
     (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
-    (hVarScale : Sandpile.External.VarianceScale)
+    (_hVarScale : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       ∫ s, s ∂μ = 1 → ENNReal.ofReal (ν₀ ^ 2) ≤ evariance id μ →
@@ -162,7 +162,7 @@ theorem crit23_d4_branch
             {x | c * Sandpile.criticalScale 4 t < Sandpile.odometer σ t x} := by
   obtain ⟨c, hc, t₀, hmain⟩ :=
     massLaw_critical_level_percolation_four ν₀ θ₀ K₀ hθ₀
-      (Sandpile.Frozen.d4_critical_level_percolation hBallGreen hRSW hLSS hVarScale
+      (Sandpile.Frozen.d4_critical_level_percolation hBallGreen hRSW hLSS
         (ν₀ / 8) (8 * θ₀) K₀ (by positivity) (by positivity))
   refine ⟨c, hc, t₀, ?_⟩
   intro μ hμ hmean hvar hexpint hexp t ht
@@ -175,7 +175,7 @@ theorem crit23_d4_branch
 scenery language to the mass-field language. -/
 theorem crit23_dgt4_branch
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       ∫ s, s ∂μ = 1 → ENNReal.ofReal (ν₀ ^ 2) ≤ evariance id μ →
@@ -188,7 +188,7 @@ theorem crit23_dgt4_branch
   have hd1 : 1 ≤ d := by omega
   have hd0 : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd1
   obtain ⟨b, C, hb, hC, hmain⟩ :=
-    Sandpile.Frozen.dgt4_nontriviality hBoundary hGreenHigh d hd (2 * (d : ℝ) * θ₀) K₀
+    Sandpile.Frozen.dgt4_nontriviality hBoundary d hd (2 * (d : ℝ) * θ₀) K₀
       (by positivity)
   obtain ⟨c, hc, t₀, hreg⟩ :=
     hmain (ν₀ / (2 * (d : ℝ))) (by positivity)

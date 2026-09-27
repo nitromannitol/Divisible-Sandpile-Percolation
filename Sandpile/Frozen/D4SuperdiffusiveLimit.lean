@@ -59,8 +59,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_superdiffusive_limit
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hVarScale : Sandpile.External.VarianceScale)
     (hMembrane : Sandpile.External.MembraneScalingLimitFour)
     (D : Set (Sandpile.Continuum.Space 4)) (hD : Sandpile.Continuum.IsDomain D)
     (w : Sandpile.Continuum.Space 4 → ℝ)
@@ -90,6 +88,8 @@ theorem Sandpile.Frozen.d4_superdiffusive_limit
           ENNReal.ofReal ε)
 -- FROZEN-STATEMENT-END
 := by
+  have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   haveI := hprob
   -- the moment hypotheses the two clauses consume, from the finite variance
   have hsqm : MemLp (id : ℝ → ℝ) 2 ν :=

@@ -26,7 +26,7 @@ namespace Sandpile
 in the vocabulary of `lem:dgt4-linearization-from-survival`, at the time weights
 `q_{R,j} = (1 - j/(R^2T))^κ`. -/
 theorem dgt4_survival_inputs_of_thresholds
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hNormal : Sandpile.External.NormalComparison)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
@@ -58,7 +58,7 @@ theorem dgt4_survival_inputs_of_thresholds
                 (∑ r ∈ Finset.range (i + 1), ∑ h ∈ Finset.range (j + 1),
                   Set.indicator {p : ℕ × ℕ | X p.1 = Y p.2} (fun _ => (1 : ℝ)) (r, h)) +
                 εfun R :=
-  Sandpile.Frozen.dgt4_path_survival hGreenHigh hNormal d hd ν hatom hmean hvar hvar' J hJ T hT
+  Sandpile.Frozen.dgt4_path_survival hNormal d hd ν hatom hmean hvar hvar' J hJ T hT
     κ hκ hthr
 
 end Sandpile

@@ -114,7 +114,7 @@ lemma measure_inter_le_sq_add_errors {Ω : Type*} [MeasurableSpace Ω]
     _ ≤ (p ^ 2 + μ D₁ + μ D₂) + (μ D₁ + μ D₂) := add_le_add hprod le_rfl
     _ = p ^ 2 + 2 * (μ D₁ + μ D₂) := by ring
 
-lemma odometer_sublevel_decoupling (hGH : External.GreenBoundsHigh)
+lemma odometer_sublevel_decoupling (_hGH : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c : ℝ, 0 < c ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → 0 < evariance id ν → evariance id ν < ⊤ →
@@ -135,7 +135,7 @@ lemma odometer_sublevel_decoupling (hGH : External.GreenBoundsHigh)
           p ^ 2 + ENNReal.ofReal (4 * ((K₁.card : ℝ) + K₂.card) *
             Real.exp (-(c * min (a ^ 2 * r ^ ((d : ℝ) - 4)) (a * r ^ ((d : ℝ) - 2))))) := by
   classical
-  obtain ⟨c, hc, htail⟩ := Frozen.dgt4_localization hGH d hd θ K hθ
+  obtain ⟨c, hc, htail⟩ := Frozen.dgt4_localization d hd θ K hθ
   refine ⟨c, hc, ?_⟩
   intro ν hν hmean hvp hvf hexp hK K₁ K₂ r a hr ha hdisj t m W₁ W₂ s p hp hC₁ hC₂
   haveI := hν

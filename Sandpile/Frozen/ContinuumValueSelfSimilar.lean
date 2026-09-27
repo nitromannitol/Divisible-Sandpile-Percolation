@@ -109,7 +109,6 @@ universe u
 theorem Sandpile.Frozen.continuum_value_self_similar
     (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
-    (hVarScale : Sandpile.External.VarianceScale)
     (d : ℕ) (hd0 : 0 < d) (hd : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -164,7 +163,6 @@ theorem Sandpile.Frozen.continuum_value_self_similar
         Z B PB 1 0 ω ^ p ∂PW)
 -- FROZEN-STATEMENT-END
 := by
-  have _ := hVarScale
   have _ := hOS
   exact Sandpile.Support.continuum_value_self_similar_of_parabolic_limit
     d hd0 hd ν hvar hvar' θ₀ hθ₀ hexp PW W hW Z hZmod hZcont PB B

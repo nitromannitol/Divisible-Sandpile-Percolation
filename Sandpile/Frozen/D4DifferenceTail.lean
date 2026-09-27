@@ -27,7 +27,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_difference_tail
-    (hVarScale : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :
@@ -39,6 +38,7 @@ theorem Sandpile.Frozen.d4_difference_tail
           ENNReal.ofReal (C / ((t : ℝ) + 2) ^ 2)
 -- FROZEN-STATEMENT-END
 := by
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   have _ := hvar
   have _ := hvar'
   obtain ⟨A₀, c, C, hA₀, hc, hC, h⟩ :=

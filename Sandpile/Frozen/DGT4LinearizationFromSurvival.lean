@@ -73,7 +73,7 @@ import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Continuum.Membrane
 import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.IntersectionSecondMoment
+import Sandpile.External.IntersectionSecondMomentProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.RellichKondrachovNegSobolev
 import Sandpile.Support.LinJacobianFirstConjunct
@@ -100,8 +100,6 @@ end Sandpile.Frozen.DGT4LinearizationFromSurvival
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_linearization_from_survival
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (hRK : Sandpile.External.RellichKondrachovNegSobolev) (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -156,6 +154,9 @@ theorem Sandpile.Frozen.dgt4_linearization_from_survival
               atTop (𝓝 0)
 -- FROZEN-STATEMENT-END
 := by
+  have hInter : Sandpile.External.IntersectionSecondMoment :=
+    Sandpile.External.intersectionSecondMoment
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   haveI : NeZero d := ⟨by omega⟩
   haveI : NullSingletonClass ν := ⟨fun z => hatom z⟩
   have _hvar := hvar

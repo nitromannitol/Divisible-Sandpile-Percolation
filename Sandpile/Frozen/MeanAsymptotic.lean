@@ -86,7 +86,6 @@ universe u
 theorem Sandpile.Frozen.dlt4_mean_asymptotic
     (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
-    (hVarScale : Sandpile.External.VarianceScale)
     (d : ℕ) (hd0 : 0 < d) (hd : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -145,5 +144,7 @@ theorem Sandpile.Frozen.dlt4_mean_asymptotic
             Z B PB 1 0 ω) PW * (t : ℝ) ^ ((4 - (d : ℝ)) / 2)))
         atTop (𝓝 1)
 -- FROZEN-STATEMENT-END
-:= Sandpile.Support.dlt4_mean_asymptotic_wired hLocalCLT hStab hVarScale d hd0 hd ν hmean hvar hvar'
-    θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB hOS B hB hBc hBm T hT x
+:= by
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
+  exact Sandpile.Support.dlt4_mean_asymptotic_wired hLocalCLT hStab hVarScale d hd0 hd ν hmean
+    hvar hvar' θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB hOS B hB hBc hBm T hT x

@@ -27,18 +27,18 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.  Of these,
-`GreenBoundsHigh` and `VarianceScale` are also proved in the repository
-(`Sandpile/External/*Proved.lean`), but the certified statement keeps them as
-hypotheses, and so does the challenge.
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `GreenBoundsHigh` (the
+`d ≥ 5` Green-function estimates) and `VarianceScale` (the finite-time variance
+scale, membrane correlations and window bounds of `ssec:green-estimates`) are
+each proved unconditionally in this repository
+(`Sandpile.External.greenBoundsHigh`, `Sandpile.External.varianceScale`), so
+neither is carried as a hypothesis by the certified statement, and this
+challenge carries neither either.
 
 * `External.BallGreenBounds`: the dimension-four ball-killed Green estimates
   (Lawler and Limic, Theorem 4.3.1 and Chapter 6);
-* `External.GreenBoundsHigh`: the `d ≥ 5` Green-function estimates (Lawler and
-  Limic, Theorem 4.3.1; Lawler, Chapter 3);
-* `External.VarianceScale`: the finite-time variance scale, membrane
-  correlations and window bounds of `ssec:green-estimates`;
 * `External.PlanarRSW`: the planar RSW comparison (Köhler-Schindler and Tassion,
   Theorem 1 and Comment 1);
 * `External.LSSDomination`: domination by Bernoulli percolation (Liggett,
@@ -1211,8 +1211,6 @@ open scoped NNReal ENNReal
 /-- Theorem 1.2 (`thm:main-critical-level-percolation`). -/
 theorem critical_level_percolation
     (hBallGreen : External.BallGreenBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
-    (hVarScale : External.VarianceScale)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)

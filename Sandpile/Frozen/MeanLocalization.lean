@@ -37,6 +37,7 @@ The dimension hypothesis `1 ≤ d` is the paper's standing assumption.
 -/
 import Sandpile.Walk
 import Sandpile.External.HeatKernelBounds
+import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.Support.Stationary
 import Sandpile.Support.MeanLocalization
 
@@ -49,7 +50,6 @@ def Sandpile.supBox {d : ℕ} (x : Sandpile.Site d) (L : ℝ) : Set (Sandpile.Si
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.mean_localization
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
     (d : ℕ) (hd : 1 ≤ d)
     (P : Measure (Sandpile.Site d → ℝ)) (hprob : IsProbabilityMeasure P)
     (hstat : Sandpile.IsStationary d P)
@@ -66,6 +66,7 @@ theorem Sandpile.Frozen.mean_localization
                 ∫ ζ, Sandpile.odometerOf ζ t 0 ∂P
 -- FROZEN-STATEMENT-END
 := by
+  have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
   haveI := hprob
   haveI : NeZero d := ⟨by omega⟩
   obtain ⟨-, -, C₀, c₀, hC₀, hc₀, hbnd⟩ := hHeatKernel d hd

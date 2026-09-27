@@ -32,13 +32,18 @@ Theorem~\ref{thm:dgt4-diffusive-membrane}", so this statement carries the cited
 inputs of that theorem: the heat-kernel bounds, the Green estimates in `d ≥ 5`,
 Gaussian concentration for a Lipschitz functional, the normal comparison, the
 intersection second moment, the local central limit theorem, and the Besov
-tightness criterion.  The five added at version 3 are the ones that theorem
-carries and this statement did not.
+tightness criterion.  The heat-kernel bounds and the `d ≥ 5` Green estimates are
+each proved unconditionally in this repository
+(`Sandpile.External.heatKernelBounds`, `Sandpile.External.greenBoundsHigh`), so
+neither is carried here as an explicit hypothesis; the rest, added at version 3,
+remain hypotheses that this statement did not carry before.
 -/
 import Sandpile.Law
 import Sandpile.Continuum.Membrane
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.LocalCLT
+import Sandpile.External.HeatKernelBoundsProved
+import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.ExplHighSobolev
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -46,11 +51,8 @@ open scoped NNReal ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.high_sobolev_limit
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
@@ -83,5 +85,6 @@ theorem Sandpile.Frozen.high_sobolev_limit
 :=
   Sandpile.Support.high_sobolev_limit_of_membrane hd ν hmean hvar hvar'
     (fun κ hatom hcase =>
-      (Sandpile.Frozen.dgt4_diffusive_membrane hHeatKernel hGreenHigh hGaussConc hNormal
-        hInter hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase).1)
+      (Sandpile.Frozen.dgt4_diffusive_membrane
+        hGaussConc hNormal
+        hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase).1)

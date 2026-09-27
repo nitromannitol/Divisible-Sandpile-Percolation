@@ -39,6 +39,7 @@ every law with no exponential moment.
 -/
 import Sandpile.Walk
 import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.OdometerLocalization
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -63,7 +64,6 @@ end Sandpile.Frozen.DGT4Localization
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_localization
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → 0 < evariance id ν → evariance id ν < ⊤ →
@@ -85,6 +85,7 @@ theorem Sandpile.Frozen.dgt4_localization
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨c, hc, htail⟩ := Sandpile.odometer_condExp_tail hGreenHigh hd θ₀ K₀ hθ₀
   refine ⟨c, hc, ?_⟩
   intro ν hν _hmean _hvarpos _hvarfin hexp hK K r a hr ha t

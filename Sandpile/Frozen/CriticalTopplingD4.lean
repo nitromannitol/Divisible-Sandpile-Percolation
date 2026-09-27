@@ -40,7 +40,6 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_toppling_d4
-    (hVarScale : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∃ t₀ : ℕ, ∀ (ν : Measure ℝ), IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → ENNReal.ofReal (ν₀ ^ 2) ≤ evariance id ν →
@@ -63,6 +62,7 @@ theorem Sandpile.Frozen.critical_toppling_d4
               Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t) atTop (𝓝 1))
 -- FROZEN-STATEMENT-END
 := by
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   obtain ⟨cL, hcL, tL, hlower⟩ :=
     Sandpile.exists_log_mean_lower_four hVarScale ν₀ θ₀ K₀ hν₀ hθ₀
   obtain ⟨CU, hCU, hupper⟩ :=

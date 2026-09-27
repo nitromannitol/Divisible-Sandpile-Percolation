@@ -10,21 +10,22 @@ Both `≍` are written with two constants and a threshold.
 
 The paper proves this part from `prop:dgt4-height-lower-stretched` and
 `thm:dgt4-height-upper-tail`, whose proofs cite `eq:dgt4-green-tail`,
-`eq:dgt4-green-l2` and `eq:dgt4-tail-kernel`, so by the standing convention of
-this repository the statement takes `Sandpile.External.GreenBoundsHigh` as an
-explicit hypothesis and nothing more.  The exponential-moment bound `K₀` that
-those two statements quantify over is read off the law itself here, since this
-statement fixes the law first.
+`eq:dgt4-green-l2` and `eq:dgt4-tail-kernel`; the `d ≥ 5` Green estimates are
+proved unconditionally in this repository, `Sandpile.External.greenBoundsHigh`
+(`Sandpile/External/GreenBoundsHighProved.lean`), so they are not carried here
+as an explicit hypothesis.  The exponential-moment bound `K₀` that those two
+statements quantify over is read off the law itself here, since this statement
+fixes the law first.
 -/
 import Sandpile.Law
 import Sandpile.Frozen.DGT4HeightUpperTail
 import Sandpile.Frozen.DGT4HeightLowerStretched
+import Sandpile.External.GreenBoundsHighProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.high_tail
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -78,10 +79,12 @@ theorem Sandpile.Frozen.high_tail
     rw [one_mul]
     exact ENNReal.ofReal_le_of_le_toReal (hboth s hs).1
   obtain ⟨C, hC, hup⟩ :=
-    Sandpile.Frozen.dgt4_height_upper_tail hGreenHigh d hd ν hprob hmean hvar hvar' θ₀
+    Sandpile.Frozen.dgt4_height_upper_tail d hd ν hprob hmean
+      hvar hvar' θ₀
       (∫ z, Real.exp (θ₀ * |z|) ∂ν) hθ₀ hexp le_rfl γ hγ hγd a 1 s₀ ha one_pos hs₀ hupper
   obtain ⟨c, hc, hlow⟩ :=
-    Sandpile.Frozen.dgt4_height_lower_stretched hGreenHigh d hd ν hprob hmean hvar hvar' θ₀
+    Sandpile.Frozen.dgt4_height_lower_stretched d hd ν hprob
+      hmean hvar hvar' θ₀
       (∫ z, Real.exp (θ₀ * |z|) ∂ν) hθ₀ hexp le_rfl γ 1 b s₀
       (lt_of_lt_of_le one_pos hγ) one_pos hb hs₀ hlower
   refine ⟨min c C, max c C, lt_min hc hC,

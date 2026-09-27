@@ -28,13 +28,13 @@ supported.  The probability itself is compared in `ℝ≥0∞` against
 `ENNReal.ofReal` of the right side, so no `toReal` junk enters.  The standing
 hypotheses of the section, `E ζ(0) = 0` and `0 < Var(ζ(0)) < ∞`, are listed.
 -/
+import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.GreenSceneryTail
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_green_scenery_tail
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -55,6 +55,7 @@ theorem Sandpile.Frozen.dgt4_green_scenery_tail
 -- FROZEN-STATEMENT-END
 := by
   haveI := hprob
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   -- The variance hypotheses are the standing ones of the section and are not
   -- used: the bound depends on the law only through its exponential moment and
   -- its lower tail.

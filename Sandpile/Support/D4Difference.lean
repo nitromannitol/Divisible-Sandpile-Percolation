@@ -277,7 +277,7 @@ theorem odometerOf_sub_membrane_le (hd : 1 ≤ d) (ζ : Site d → ℝ) (t : ℕ
     {lam : ℝ}
     (hlam : ∀ m : ℕ, m ≤ t → ∀ z ∈ boxFinset x t, -(membrane ζ m z) ≤ lam) :
     odometerOf ζ t x - membrane ζ t x ≤ lam := by
-  rw [Sandpile.Frozen.difference_representation Sandpile.External.optimalStopping d hd ζ t x]
+  rw [Sandpile.Frozen.difference_representation d hd ζ t x]
   exact stoppingSup_neg_membrane_le hd x ζ t hlam
 
 /-- **The union bound over the reachable pairs.** -/

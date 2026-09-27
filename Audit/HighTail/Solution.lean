@@ -20,7 +20,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(b) (`thm:main-explosion`). -/
 theorem high_tail
-    (hGreenHigh : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -34,7 +33,7 @@ theorem high_tail
         meanOdometer (centeredMassLaw d ν) t ≤
           C * (Real.log t) ^ (1 / min γ ((d : ℝ) / 2)) := by
   rw [Bridge.meanOdometer_eq]
-  exact Sandpile.high_tail (Bridge.greenBoundsHigh hGreenHigh) d hd ν hprob hmean hvar hvar' θ₀
+  exact Sandpile.high_tail d hd ν hprob hmean hvar hvar' θ₀
     hθ₀ hexp γ hγ hγd htail
 
 end SandpileAudit

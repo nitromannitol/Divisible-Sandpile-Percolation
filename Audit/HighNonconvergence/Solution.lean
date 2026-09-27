@@ -20,7 +20,7 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(d) (`thm:main-explosion`). -/
 theorem high_nonconvergence
-    (hInter : External.IntersectionSecondMoment)
+    (_hInter : External.IntersectionSecondMoment)
     (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ)) :
@@ -54,7 +54,7 @@ theorem high_nonconvergence
             Continuum.TendstoInNegSobolev d s (centeredMassLaw d ν)
               (Continuum.diffusiveFluctuation (centeredMassLaw d ν) T) K := by
   rw [Bridge.diffusiveFluctuation_eq]
-  exact Sandpile.high_nonconvergence (Bridge.intersectionSecondMoment hInter)
+  exact Sandpile.high_nonconvergence
     (Bridge.localCLT hLocalCLT) d hd (Bridge.continuumBesovTightness _ hBesov)
 
 end SandpileAudit

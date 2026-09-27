@@ -29,7 +29,6 @@ open MeasureTheory ProbabilityTheory Filter Topology
 set_option maxHeartbeats 4000000 in
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_mean_one
-    (hVarScale : Sandpile.External.VarianceScale)
     (hBerryEsseen : Sandpile.External.MultivariateBerryEsseen)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -41,6 +40,7 @@ theorem Sandpile.Frozen.critical_mean_one
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   haveI := hprob
   have hne0 : evariance (id : ℝ → ℝ) ν ≠ 0 := ne_of_gt hvar
   have hnetop : evariance (id : ℝ → ℝ) ν ≠ ⊤ := ne_of_lt hvar'
@@ -80,7 +80,7 @@ theorem Sandpile.Frozen.critical_mean_one
     have h4 : min (4 / (4 - (d : ℝ))) (1 / δ) * δ ≤ 1 := by linarith
     rw [hadef]; nlinarith [h4]
   obtain ⟨c, C, hc, hC, hb⟩ :=
-    Sandpile.Frozen.critical_toppling hVarScale hBerryEsseen d hd hd3
+    Sandpile.Frozen.critical_toppling hBerryEsseen d hd hd3
       (Real.sqrt (variance (id : ℝ → ℝ) ν))
       ((∫ z, |z| ^ 3 ∂ν) / variance (id : ℝ → ℝ) ν ^ ((3 : ℝ) / 2)) hν₀ a ha hainv
   set t₀ : ℕ := max 4 ⌈(2 : ℝ) ^ (1 / δ)⌉₊ with ht₀def

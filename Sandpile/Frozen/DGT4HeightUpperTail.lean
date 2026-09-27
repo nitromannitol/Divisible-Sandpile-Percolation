@@ -31,7 +31,6 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_height_upper_tail
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -48,6 +47,7 @@ theorem Sandpile.Frozen.dgt4_height_upper_tail
 := by
   classical
   haveI := hprob
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hdR : (5 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hint : Integrable id ν := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint

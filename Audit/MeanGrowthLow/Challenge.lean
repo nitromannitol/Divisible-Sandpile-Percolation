@@ -24,18 +24,18 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.  Of these,
-`VarianceScale` is also proved in the repository
-(`Sandpile/External/*Proved.lean`), but the certified statement keeps it as a
-hypothesis, and so does the challenge.
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `VarianceScale`, the
+finite-time variance scale, membrane correlations and window bounds of
+`ssec:green-estimates`, is proved unconditionally in this repository
+(`Sandpile.External.varianceScale`), so it is not carried as a hypothesis by
+the certified statement, and this challenge carries none either.
 
 * `External.LocalCLT`: the local central limit theorem (Lawler and Limic,
   Theorem 2.1.3);
 * `External.ContinuumStoppingStability`: stability of optimal-stopping values
   (Coquet and Toldo, Theorem 3 and Corollary 4);
-* `External.VarianceScale`: the finite-time variance scale, membrane
-  correlations and window bounds of `ssec:green-estimates`;
 * `External.ContinuumOptimalStopping`: finite-horizon optimal stopping for
   Brownian motion (Peskir and Shiryaev, Theorem 2.2).
 
@@ -1196,7 +1196,6 @@ open scoped NNReal ENNReal
 theorem mean_growth_le_three
     (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{0})
-    (hVarScale : External.VarianceScale)
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)

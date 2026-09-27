@@ -29,7 +29,7 @@ convergence is the hypothesis `hSuper`, which is the conclusion of
 `prop:d4-superdiffusive-limit` at every domain, averaging density and exponent
 `α > 2`. -/
 theorem four_sobolev_of_superdiffusive
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
+    (_hHeatKernel : Sandpile.External.HeatKernelBounds)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site 4 → ℝ))
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -83,7 +83,7 @@ theorem four_sobolev_of_superdiffusive
                           (fun x => Sandpile.odometer σ ⌊R ^ α⌋₊ x -
                             Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))} ≤
                   ENNReal.ofReal ε := by
-  refine ⟨Sandpile.Frozen.d4_diffusive_tightness hHeatKernel hBesov ν hprob hmean hvar hvar'
+  refine ⟨Sandpile.Frozen.d4_diffusive_tightness hBesov ν hprob hmean hvar hvar'
     T hT s hs, ?_⟩
   intro D hD w hw α hα
   exact hSuper D hD w hw α hα

@@ -110,7 +110,6 @@ end Sandpile.Frozen.DGT4PathSurvival
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_path_survival
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hNormal : Sandpile.External.NormalComparison)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
@@ -157,7 +156,6 @@ theorem Sandpile.Frozen.dgt4_path_survival
   -- the Green bounds, the mean-zero hypothesis and the nondegeneracy of the one-site law
   -- are the standing hypotheses of the subsection; the two conclusions use only the
   -- atomlessness (through the Gaussian branch) and the finite variance.
-  have _hGreenHigh := hGreenHigh
   have _hmean := hmean
   have _hvar := hvar
   refine ⟨Sandpile.tendsto_averaged_survival_of_thresholds hNormal hd ν hatom hvar' J hJ T hT κ hκ

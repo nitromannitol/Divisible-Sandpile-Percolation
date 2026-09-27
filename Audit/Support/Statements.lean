@@ -48,8 +48,6 @@ def percolation_below_criticality : Prop :=
 def critical_level_percolation : Prop :=
   ∀
     (hBallGreen : External.BallGreenBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
-    (hVarScale : External.VarianceScale)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
@@ -73,7 +71,6 @@ def mean_growth_le_three : Prop :=
   ∀
     (hLocalCLT : External.LocalCLT)
     (hStab : External.ContinuumStoppingStability.{0})
-    (hVarScale : External.VarianceScale)
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -180,8 +177,6 @@ def four_gaussian : Prop :=
 /-- The statement of `Audit/FourSobolev/Challenge.lean`. -/
 def four_sobolev : Prop :=
   ∀
-    (hHeatKernel : External.HeatKernelBounds)
-    (hVarScale : External.VarianceScale)
     (hBesov : External.ContinuumBesovTightness (Site 4 → ℝ))
     (hMembrane : External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -220,7 +215,6 @@ def four_sobolev : Prop :=
 /-- The statement of `Audit/HighFirstOrder/Challenge.lean`. -/
 def high_first_order : Prop :=
   ∀
-    (hGreenHigh : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν),
@@ -237,7 +231,6 @@ def high_first_order : Prop :=
 /-- The statement of `Audit/HighTail/Challenge.lean`. -/
 def high_tail : Prop :=
   ∀
-    (hGreenHigh : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -254,8 +247,6 @@ def high_tail : Prop :=
 /-- The statement of `Audit/HighSobolevLimit/Challenge.lean`. -/
 def high_sobolev_limit : Prop :=
   ∀
-    (hHeatKernel : External.HeatKernelBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
     (hInter : External.IntersectionSecondMoment)

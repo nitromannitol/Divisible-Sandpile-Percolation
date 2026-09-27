@@ -25,8 +25,16 @@ Each theorem below restates its certified counterpart in `Sandpile/Frozen/` and 
 `exact` of it, so the statements displayed in this file are the certified ones.  The
 hypotheses whose types are named `Sandpile.External.*` are results the paper cites without
 proof; they are assumed, not proved, and are listed with their statements in `ASSUMPTIONS.md`.
-Six of them are also proved in this repository (the files `Sandpile/External/*Proved.lean`),
-but the statements keep them as hypotheses, exactly as the frozen statements do.
+Six cited inputs are also proved in this repository (the files
+`Sandpile/External/*Proved.lean`): the `d ≥ 5` Green estimates, the finite-time variance scale,
+the heat-kernel bounds, the optimal-stopping representation, the Gaussian-law-by-covariance
+fact, and Pinsker's inequality.  Of these, the first three appear as explicit hypotheses of
+theorems below at earlier versions; since each is now proved unconditionally, no theorem here
+carries it as a hypothesis any longer.  The optimal-stopping representation is used, and
+discharged the same way, inside the certified proofs of `thm:RW` and two lemmas that feed
+these theorems; it was never itself a hypothesis of a theorem in this file.  The
+Gaussian-law-by-covariance fact and Pinsker's inequality are used only inside the certified
+proofs and are not hypotheses of any theorem in this file either.
 
 * `Sandpile.percolation_below_criticality`: for `d ≥ 2` and a family of laws `μ_ρ` of mean `ρ`
   with a uniform variance lower bound and a uniform exponential moment on `[ρ₀, 1)`, there is
@@ -96,8 +104,6 @@ theorem Sandpile.percolation_below_criticality
 `Sandpile.Frozen.critical_level_percolation`. -/
 theorem Sandpile.critical_level_percolation
     (hBallGreen : Sandpile.External.BallGreenBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
-    (hVarScale : Sandpile.External.VarianceScale)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
@@ -115,7 +121,7 @@ theorem Sandpile.critical_level_percolation
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} := by
-  exact Sandpile.Frozen.critical_level_percolation hBallGreen hGreenHigh hVarScale hRSW hLSS
+  exact Sandpile.Frozen.critical_level_percolation hBallGreen hRSW hLSS
     hBoundary hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
 
 /-- **Theorem 1.3(i)(a)** (`thm:main-explosion`).  The certified statement is
@@ -123,7 +129,6 @@ theorem Sandpile.critical_level_percolation
 theorem Sandpile.mean_growth_le_three
     (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{0})
-    (hVarScale : Sandpile.External.VarianceScale)
     (hOS : ∀ (ΩB : Type) [MeasurableSpace ΩB], Sandpile.External.ContinuumOptimalStopping ΩB)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -131,7 +136,7 @@ theorem Sandpile.mean_growth_le_three
     ∃ L : ℝ, 0 < L ∧
       Tendsto (fun t : ℕ => (t : ℝ) ^ (-((4 - (d : ℝ)) / 4)) *
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L) := by
-  exact Sandpile.Frozen.mean_growth_le_three hLocalCLT hStab hVarScale hOS d hd hd3 ν hprob
+  exact Sandpile.Frozen.mean_growth_le_three hLocalCLT hStab hOS d hd hd3 ν hprob
     hmean hvar hvar' θ₀ hθ₀ hexp
 
 /-- **Theorem 1.3(i)(b)** (`thm:main-explosion`).  The certified statement is
@@ -237,8 +242,6 @@ theorem Sandpile.four_gaussian
 /-- **Theorem 1.3(ii)(c)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.four_sobolev`. -/
 theorem Sandpile.four_sobolev
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hVarScale : Sandpile.External.VarianceScale)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site 4 → ℝ))
     (hMembrane : Sandpile.External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -273,13 +276,12 @@ theorem Sandpile.four_sobolev
                           (fun x => Sandpile.odometer σ ⌊R ^ α⌋₊ x -
                             Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))} ≤
                   ENNReal.ofReal ε := by
-  exact Sandpile.Frozen.four_sobolev hHeatKernel hVarScale hBesov hMembrane ν hmean hvar hvar'
+  exact Sandpile.Frozen.four_sobolev hBesov hMembrane ν hmean hvar hvar'
     θ₀ hθ₀ hexp T hT s hs
 
 /-- **Theorem 1.3(iii)(a)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_first_order`. -/
 theorem Sandpile.high_first_order
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :
@@ -293,12 +295,11 @@ theorem Sandpile.high_first_order
     ∃ c : ℝ, 0 < c ∧ ∀ᶠ t : ℕ in atTop,
       c * (Real.log t) ^ ((2 : ℝ) / d) ≤ Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t
     := by
-  exact Sandpile.Frozen.high_first_order hGreenHigh d hd ν hprob hmean hvar hvar' θ₀ hθ₀ hexp
+  exact Sandpile.Frozen.high_first_order d hd ν hprob hmean hvar hvar' θ₀ hθ₀ hexp
 
 /-- **Theorem 1.3(iii)(b)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_tail`. -/
 theorem Sandpile.high_tail
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -311,17 +312,14 @@ theorem Sandpile.high_tail
           Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t ∧
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t ≤
           C * (Real.log t) ^ (1 / min γ ((d : ℝ) / 2)) := by
-  exact Sandpile.Frozen.high_tail hGreenHigh d hd ν hprob hmean hvar hvar' θ₀ hθ₀ hexp γ hγ hγd
+  exact Sandpile.Frozen.high_tail d hd ν hprob hmean hvar hvar' θ₀ hθ₀ hexp γ hγ hγd
     htail
 
 /-- **Theorem 1.3(iii)(c)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_sobolev_limit`. -/
 theorem Sandpile.high_sobolev_limit
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
@@ -350,13 +348,12 @@ theorem Sandpile.high_sobolev_limit
                     (fun x => Sandpile.odometer σ ⌊T * R ^ 2⌋₊ x -
                       Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Sandpile.Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
-  exact Sandpile.Frozen.high_sobolev_limit hHeatKernel hGreenHigh hGaussConc hNormal hInter
+  exact Sandpile.Frozen.high_sobolev_limit hGaussConc hNormal
     hLocalCLT d hd hBesov ν hmean hvar hvar'
 
 /-- **Theorem 1.3(iii)(d)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_nonconvergence`. -/
 theorem Sandpile.high_nonconvergence
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
@@ -389,4 +386,4 @@ theorem Sandpile.high_nonconvergence
               (Sandpile.Continuum.Space d → ℝ) → ℝ,
             Sandpile.Continuum.TendstoInNegSobolev d s (Sandpile.centeredMassLaw d ν)
               (Sandpile.Continuum.diffusiveFluctuation (Sandpile.centeredMassLaw d ν) T) K := by
-  exact Sandpile.Frozen.high_nonconvergence hInter hLocalCLT d hd hBesov
+  exact Sandpile.Frozen.high_nonconvergence hLocalCLT d hd hBesov

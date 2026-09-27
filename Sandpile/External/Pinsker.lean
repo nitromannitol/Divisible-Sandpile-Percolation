@@ -28,12 +28,10 @@ import Mathlib.InformationTheory.KullbackLeibler.Basic
 
 open MeasureTheory Set
 
--- FROZEN-STATEMENT-BEGIN
 /-- Pinsker's inequality on one measurable set, in the bounded form the level
-loss uses.  Assumed, not proved. -/
+loss uses.  Proved, not assumed: see `Sandpile/External/PinskerProved.lean`. -/
 def Sandpile.External.Pinsker : Prop :=
   ∀ (T : Type) [MeasurableSpace T] (μ ν : Measure T) [IsProbabilityMeasure μ]
     [IsProbabilityMeasure ν] (A : Set T), MeasurableSet A →
     ∀ δ : ℝ, 0 ≤ δ → InformationTheory.klDiv μ ν ≤ ENNReal.ofReal δ →
       |μ.real A - ν.real A| ≤ Real.sqrt (δ / 2)
--- FROZEN-STATEMENT-END

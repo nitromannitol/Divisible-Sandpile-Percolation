@@ -20,11 +20,9 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(c) (`thm:main-explosion`). -/
 theorem high_sobolev_limit
-    (hHeatKernel : External.HeatKernelBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
-    (hInter : External.IntersectionSecondMoment)
+    (_hInter : External.IntersectionSecondMoment)
     (hLocalCLT : External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
@@ -54,9 +52,8 @@ theorem high_sobolev_limit
                       meanOdometer (centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
   rw [Bridge.meanOdometer_eq, Bridge.odometer_eq]
-  exact Sandpile.high_sobolev_limit (Bridge.heatKernelBounds hHeatKernel)
-    (Bridge.greenBoundsHigh hGreenHigh) (Bridge.gaussianLipschitzConcentration hGaussConc)
-    (Bridge.normalComparison hNormal) (Bridge.intersectionSecondMoment hInter)
+  exact Sandpile.high_sobolev_limit (Bridge.gaussianLipschitzConcentration hGaussConc)
+    (Bridge.normalComparison hNormal)
     (Bridge.localCLT hLocalCLT) d hd (Bridge.continuumBesovTightness _ hBesov) ν hmean hvar
     hvar'
 

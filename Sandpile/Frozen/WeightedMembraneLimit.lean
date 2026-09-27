@@ -51,7 +51,9 @@ import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Continuum.Membrane
 import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.HeatKernelBounds
+import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.External.LocalCLT
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.Support.ContVarianceLimit
@@ -81,8 +83,6 @@ end Sandpile.Frozen.WeightedMembraneLimit
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.weighted_membrane_limit
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
@@ -102,6 +102,8 @@ theorem Sandpile.Frozen.weighted_membrane_limit
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have _ := hvar
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hsq : MemLp (id : ℝ → ℝ) 2 ν :=

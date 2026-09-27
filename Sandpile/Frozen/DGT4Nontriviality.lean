@@ -74,7 +74,6 @@ end Sandpile.Frozen.DGT4Nontriviality
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_nontriviality
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ b C : ℝ, 0 < b ∧ 0 < C ∧ ∀ ν₀ : ℝ, 0 < ν₀ →
       ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
@@ -97,6 +96,7 @@ theorem Sandpile.Frozen.dgt4_nontriviality
 -- FROZEN-STATEMENT-END
 := by
   letI : NeZero d := ⟨by omega⟩
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨b, C, M, hb, hC, hM, hconn⟩ :=
     Sandpile.exists_odometer_origin_connection hBoundary hGreenHigh d hd θ₀ K₀ hθ₀
   refine ⟨b, C, hb, hC, ?_⟩

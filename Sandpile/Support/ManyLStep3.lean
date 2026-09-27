@@ -58,9 +58,8 @@ def UniformContactThresholds (d : ℕ) (ν : Measure ℝ) (κ T : ℝ) : Prop :=
 `lem:dgt4-linearization-from-survival` at the weight `q(r) = (1-r/T)^κ`, and the
 latter's first conjunct is the frozen linearization verbatim. -/
 theorem dgt4_linearization_of_survival
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (hRK : Sandpile.External.RellichKondrachovNegSobolev)
@@ -99,7 +98,7 @@ theorem dgt4_linearization_of_survival
   have hJ : Sandpile.Frozen.DGT4PathSurvival.IsThresholdField ν
       (fun σ x => -(Sandpile.green d 0 0 * Sandpile.scenery d σ x)) :=
     Or.inl fun σ x => rfl
-  obtain ⟨hsurv, hcov⟩ := Sandpile.Frozen.dgt4_path_survival hGreenHigh hNormal d hd ν hatom
+  obtain ⟨hsurv, hcov⟩ := Sandpile.Frozen.dgt4_path_survival hNormal d hd ν hatom
     hmean hvar hvar' _ hJ T hT κ hκ hthresholds
   have hq : ∀ (R : ℝ) (j : ℕ), j < ⌊R ^ 2 * T⌋₊ →
       (1 - (j : ℝ) / (R ^ 2 * T)) ^ κ ∈ Set.Icc (0 : ℝ) 1 := by
@@ -119,7 +118,7 @@ theorem dgt4_linearization_of_survival
       rw [sub_le_iff_le_add, le_add_iff_nonneg_right]
       exact div_nonneg (Nat.cast_nonneg j) hR2.le
     exact ⟨Real.rpow_nonneg h0 κ, Real.rpow_le_one h0 h1 hκ.le⟩
-  exact (Sandpile.Frozen.dgt4_linearization_from_survival hGreenHigh hInter d hd hBesov hRK ν
+  exact (Sandpile.Frozen.dgt4_linearization_from_survival d hd hBesov hRK ν
     hatom hmean hvar hvar' T hT (fun R j => (1 - (j : ℝ) / (R ^ 2 * T)) ^ κ) hq hsurv hcov).1
     φ hφ
 

@@ -75,7 +75,7 @@ theorem reflected_subset (hd : 1 ≤ d) (ζ : Site d → ℝ) (t : ℕ) (mean h 
 
 /-- **The lower tail of `ζ(0) + P u_t(0)`.**  For `E u_t(0) ≥ 2` the tail decays
 exponentially in `h + E u_t(0)`. -/
-theorem exists_reflected_tail (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
+theorem exists_reflected_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -90,7 +90,7 @@ theorem exists_reflected_tail (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 
   haveI := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   obtain ⟨c₀, C₀, hc₀, hC₀, hsm⟩ :=
-    Sandpile.Frozen.dgt4_smoothed_odometer_tail hGH d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
+    Sandpile.Frozen.dgt4_smoothed_odometer_tail d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
       hexpint hexp
   have hK₀ : 0 < max K₀ 1 := lt_of_lt_of_le one_pos (le_max_right _ _)
   refine ⟨min θ₀ c₀, max K₀ 1 + C₀, lt_min hθ₀ hc₀, by positivity, ?_⟩

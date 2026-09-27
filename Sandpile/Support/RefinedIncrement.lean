@@ -187,7 +187,7 @@ theorem smoothed_exponent_lower {d : ℕ} (hd : 5 ≤ d) {ε h M β : ℝ}
 /-- **The refined lower tail of `ζ(0) + P u_t(0)`.**  For `h = u + E u_t(0)`
 between a fixed threshold and `t/ε`, the tail is at most `C e^{-c h^β}` with
 `β = min(γ, d/2)`. -/
-theorem exists_refined_tail (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
+theorem exists_refined_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -234,10 +234,10 @@ theorem exists_refined_tail (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
         _ = 1 / 8 := by field_simp
     linarith
   obtain ⟨cG, CG, hcG, hCG, hsummable, hGtail⟩ :=
-    Sandpile.Frozen.dgt4_green_scenery_tail hGH d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
+    Sandpile.Frozen.dgt4_green_scenery_tail d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
       hexpint hexp γ hγ hγd c₁ C₁ s₀ hc₁ hC₁ hs₀ htailν
   obtain ⟨cS, CS, hcS, hCS, hStail⟩ :=
-    Sandpile.Frozen.dgt4_smoothed_odometer_tail hGH d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
+    Sandpile.Frozen.dgt4_smoothed_odometer_tail d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
       hexpint hexp
   set κ : ℝ := 49 / 256 * ε ^ (((d : ℝ) - 2) / 2) with hκdef
   have hκ0 : 0 < κ := by rw [hκdef]; positivity

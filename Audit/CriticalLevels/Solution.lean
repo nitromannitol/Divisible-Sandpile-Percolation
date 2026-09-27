@@ -21,8 +21,6 @@ open scoped NNReal ENNReal
 /-- Theorem 1.2 (`thm:main-critical-level-percolation`). -/
 theorem critical_level_percolation
     (hBallGreen : External.BallGreenBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
-    (hVarScale : External.VarianceScale)
     (hRSW : External.PlanarRSW)
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
@@ -42,7 +40,7 @@ theorem critical_level_percolation
             {x | c * criticalScale d t < odometer σ t x} := by
   rw [Bridge.odometer_eq]
   exact Sandpile.critical_level_percolation (Bridge.ballGreenBounds hBallGreen)
-    (Bridge.greenBoundsHigh hGreenHigh) (Bridge.varianceScale hVarScale) (Bridge.planarRSW hRSW)
+    (Bridge.planarRSW hRSW)
     (Bridge.lssDomination hLSS) (Bridge.exteriorBoundaryConnected hBoundary)
     (Bridge.continuumRSW hRSWc) (Bridge.pittGaussianFKG hPitt)
     (Bridge.ballOccupationDensity hOcc) (Bridge.localCLT hLocalCLT)

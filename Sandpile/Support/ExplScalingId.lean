@@ -130,7 +130,7 @@ theorem rescaled_difference_representation (hd : 1 ≤ d) (R : ℝ) (hR : 0 < R)
       = Frozen.HeatPotentialInvariance.meshValue d R ζ t x
         + stoppingSup t x
             (fun k X => -Frozen.HeatPotentialInvariance.meshValue d R ζ (t - k) (X k)) := by
-  have hdr := Sandpile.Frozen.difference_representation Sandpile.External.optimalStopping d hd ζ t x
+  have hdr := Sandpile.Frozen.difference_representation d hd ζ t x
   have hc : (0 : ℝ) ≤ R ^ ((d : ℝ) / 2 - 2) := (Real.rpow_pos_of_pos hR _).le
   have hfun : (fun (k : ℕ) (X : ℕ → Site d) =>
         -Frozen.HeatPotentialInvariance.meshValue d R ζ (t - k) (X k))

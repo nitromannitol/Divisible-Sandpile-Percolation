@@ -28,7 +28,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_pointwise_linearization
-    (hVarScale : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :
@@ -42,6 +41,7 @@ theorem Sandpile.Frozen.d4_pointwise_linearization
             (-(c * min (lam ^ 2 / (1 + Real.log (Real.log t))) lam)))
 -- FROZEN-STATEMENT-END
 := by
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   have _ := hvar
   have _ := hvar'
   haveI := hprob

@@ -65,6 +65,5 @@ theorem Sandpile.Frozen.percolation_below_criticality
 := by
   exact Sandpile.Support.percolation_below_criticality_of_critical_levels d hd μ hprob hmean
     ρ₀ ν₀ θ₀ K₀ hρ₀ hθ₀ hvar hexpint hexp
-    (Sandpile.Frozen.critical_level_percolation hBallGreen
-      Sandpile.External.greenBoundsHigh Sandpile.External.varianceScale hRSW hLSS hBoundary
+    (Sandpile.Frozen.critical_level_percolation hBallGreen hRSW hLSS hBoundary
       hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀)

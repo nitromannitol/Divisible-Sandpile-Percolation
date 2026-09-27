@@ -27,18 +27,19 @@ the step law of the walk degenerates and both sides take junk values.
 
 The paper's proof writes the odometer as the value of the stopping problem, which
 is the optimal-stopping representation, a cited result rather than a theorem of
-the paper; it therefore enters as the explicit hypothesis `hOS`, as it does in
-`thm:RW` and in `lem:difference-representation`.
+the paper.  It is proved unconditionally in this repository,
+`Sandpile.External.optimalStopping` (`Sandpile/External/BPSHProved.lean`), so it
+is no longer carried here as an explicit hypothesis, as in `thm:RW` and in
+`lem:difference-representation`.
 -/
 import Sandpile.Walk
-import Sandpile.External.BPSH
+import Sandpile.External.BPSHProved
 import Sandpile.Support.Localization
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.localization_killing
-    (hOS : Sandpile.External.OptimalStopping)
     (d : ℕ) (hd : 1 ≤ d) (ζ : Sandpile.Site d → ℝ) (D : Set (Sandpile.Site d))
     (x : Sandpile.Site d) (hx : x ∈ D) (t : ℕ) :
     0 ≤ Sandpile.odometerOf ζ t x - Sandpile.localizedOdometer D ζ t x ∧
@@ -48,11 +49,13 @@ theorem Sandpile.Frozen.localization_killing
           ∂(Sandpile.walkLaw d x)
 -- FROZEN-STATEMENT-END
 := by
-  refine ⟨sub_nonneg.mpr (Sandpile.localizedOdometer_le hOS hd D ζ t x hx), ?_⟩
+  refine ⟨sub_nonneg.mpr
+    (Sandpile.localizedOdometer_le Sandpile.External.optimalStopping hd D ζ t x hx), ?_⟩
   have hEq : (∫ X, Set.indicator
         {X : ℕ → Sandpile.Site d | Sandpile.exitTime D X ≤ (t : ℕ∞)}
         (fun X => Sandpile.odometerOf ζ t (X (Sandpile.exitTime D X).toNat)) X
         ∂(Sandpile.walkLaw d x))
       = ∫ X, Sandpile.exitReward D ζ t X ∂(Sandpile.walkLaw d x) := rfl
   rw [hEq]
-  exact Sandpile.odometerOf_sub_localizedOdometer_le hOS hd D ζ t x hx
+  exact Sandpile.odometerOf_sub_localizedOdometer_le
+    Sandpile.External.optimalStopping hd D ζ t x hx

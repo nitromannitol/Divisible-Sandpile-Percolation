@@ -43,7 +43,7 @@ theorem measure_symmDiff_congr_left {alpha : Type*} [MeasurableSpace alpha]
 /-- The contact event `{u_{n+1}(0)=0}` inside a symmetric difference is the event
 `{-ζ(0) > Pw_n(0)}` of `eq:dgt4-origin-fixed-identities`. -/
 theorem symmDiff_contact_eq_killed
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤)
@@ -53,7 +53,7 @@ theorem symmDiff_contact_eq_killed
           {σ | Sandpile.avg (Sandpile.Frozen.DGT4OriginFrozen.killedOdometer
               (Sandpile.scenery d σ) n) 0 < -Sandpile.scenery d σ 0} A) :=
   measure_symmDiff_congr_left _
-    ((Sandpile.Frozen.dgt4_origin_frozen hGreenHigh d hd ν hatom hmean hvar hvar').1 n).1
+    ((Sandpile.Frozen.dgt4_origin_frozen d hd ν hatom hmean hvar hvar').1 n).1
 
 
 /-- `ThresholdRelativeError`, the threshold comparison of both case proofs, written

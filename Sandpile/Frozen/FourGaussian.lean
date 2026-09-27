@@ -34,5 +34,5 @@ theorem Sandpile.Frozen.four_gaussian
       atTop (𝓝 (4 * variance id ν / Real.pi ^ 2))
 -- FROZEN-STATEMENT-END
 := by
-  exact Sandpile.Frozen.d4_one_point_gaussian Sandpile.External.varianceScale hPaired
+  exact Sandpile.Frozen.d4_one_point_gaussian hPaired
     ν hmean hvar hvar' θ₀ hθ₀ hexp

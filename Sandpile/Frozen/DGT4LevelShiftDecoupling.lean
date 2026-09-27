@@ -92,7 +92,6 @@ end Sandpile.Frozen.DGT4LevelShiftDecoupling
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_level_shift_decoupling
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → 0 < evariance id ν → evariance id ν < ⊤ →
@@ -117,6 +116,7 @@ theorem Sandpile.Frozen.dgt4_level_shift_decoupling
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨c, hc, hdec⟩ := Sandpile.odometer_sublevel_decoupling hGreenHigh d hd θ₀ K₀ hθ₀
   refine ⟨c, 8 * (5 : ℝ) ^ d, hc, by positivity, ?_⟩
   intro ν hν hmean hvp hvf hexp hK t x₁ x₂ L r hL hr hsep s a ha _hs

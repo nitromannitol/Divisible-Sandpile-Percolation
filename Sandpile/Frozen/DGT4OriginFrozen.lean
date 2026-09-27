@@ -77,7 +77,6 @@ end Sandpile.Frozen.DGT4OriginFrozen
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_origin_frozen
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤) :
@@ -121,6 +120,7 @@ theorem Sandpile.Frozen.dgt4_origin_frozen
                 ENNReal.ofReal (C * Real.exp (-(lam * r))))
 -- FROZEN-STATEMENT-END
 := by
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have hd1 : 1 ≤ d := by omega
   have hLp : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp measurable_id.aestronglyMeasurable).mp hvar'

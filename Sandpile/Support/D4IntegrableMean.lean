@@ -34,7 +34,7 @@ theorem exists_log_mean_lower_integrable_four (ν : Measure ℝ) [IsProbabilityM
     exact hrvar.le
   set K := ∫ z, Real.exp |z| ∂ρ
   obtain ⟨c, C, hc, _, t₀, hb⟩ := Sandpile.Frozen.critical_toppling_d4
-    Sandpile.External.varianceScale (Real.sqrt r) 1 K (Real.sqrt_pos.mpr hr) (by norm_num)
+    (Real.sqrt r) 1 K (Real.sqrt_pos.mpr hr) (by norm_num)
   have hlo := (hb ρ ‹_› hmρ hvr (by simpa using hiρ) (by simp [K])).1
   refine ⟨c, hc, t₀, fun t ht => ?_⟩
   have hl : c * Real.log t ≤ meanOdometer (centeredMassLaw 4 ρ) t := (hlo t ht).1

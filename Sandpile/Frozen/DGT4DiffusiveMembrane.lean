@@ -70,7 +70,6 @@ import Sandpile.Continuum.Membrane
 import Sandpile.External.HeatKernelBounds
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.NormalComparison
-import Sandpile.External.IntersectionSecondMoment
 import Sandpile.External.LocalCLT
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.GaussianLipschitzConcentration
@@ -81,11 +80,8 @@ open scoped ENNReal NNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_diffusive_membrane
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
@@ -112,6 +108,8 @@ theorem Sandpile.Frozen.dgt4_diffusive_membrane
           ((Sandpile.centeredMassLaw d ν) {σ | Sandpile.odometer σ n 0 = 0}).toReal /
             (Sandpile.green d 0 0 * κ / n)) atTop (𝓝 1)
 -- FROZEN-STATEMENT-END
-:=
-  Sandpile.Support.dgt4_diffusive_membrane_of_inputs hHeatKernel hGreenHigh hGaussConc hNormal
-    hInter hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase
+:= by
+  have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
+  exact Sandpile.Support.dgt4_diffusive_membrane_of_inputs hHeatKernel hGreenHigh hGaussConc
+    hNormal hLocalCLT d hd hBesov ν hatom hmean hvar hvar' κ hcase

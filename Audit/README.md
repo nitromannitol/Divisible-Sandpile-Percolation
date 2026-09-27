@@ -35,8 +35,12 @@ scenery and the membrane field; the Brownian heat and Green kernels, test
 functions, negative Sobolev norms, the lattice pairing, the membrane covariances,
 white noise, Brownian motion, the Brownian stopping values and the multilinear
 interpolation; the planar crossing events, the `∗`-lattice and the exterior
-boundary, the continuum planar fields and their crossings; and the twenty cited
-results that the twelve statements carry.
+boundary, the continuum planar fields and their crossings; and the cited
+results that the twelve statements carry: seventeen are still carried as
+hypotheses, and three more (`GreenBoundsHigh`, `HeatKernelBounds`,
+`VarianceScale`) the vocabulary still defines but no statement below takes as a
+hypothesis, since each is proved unconditionally in the repository; see "What
+Is Checked".
 
 ## What Is Checked
 
@@ -47,22 +51,24 @@ library theorem carries, restated in the vocabulary.
 | Directory | Cited results carried as hypotheses (namespace `External`) |
 | --- | --- |
 | `Nontriviality/` | `BallGreenBounds`, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`, `CubeStoppingStability` |
-| `CriticalLevels/` | `BallGreenBounds`, `GreenBoundsHigh`, `VarianceScale`, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`, `CubeStoppingStability` |
-| `MeanGrowthLow/` | `LocalCLT`, `ContinuumStoppingStability`, `VarianceScale`, `ContinuumOptimalStopping` |
+| `CriticalLevels/` | `BallGreenBounds`, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`, `CubeStoppingStability` |
+| `MeanGrowthLow/` | `LocalCLT`, `ContinuumStoppingStability`, `ContinuumOptimalStopping` |
 | `BrownianScalingLimit/` | `LocalCLT`, `ContinuumStoppingStability` |
 | `MeanGrowthFour/` | none |
 | `FourFirstOrder/` | none |
 | `FourGaussian/` | `PairedLocalCLTFour` |
-| `FourSobolev/` | `HeatKernelBounds`, `VarianceScale`, `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
-| `HighFirstOrder/` | `GreenBoundsHigh` |
-| `HighTail/` | `GreenBoundsHigh` |
-| `HighSobolevLimit/` | `HeatKernelBounds`, `GreenBoundsHigh`, `GaussianLipschitzConcentration`, `NormalComparison`, `IntersectionSecondMoment`, `LocalCLT`, `ContinuumBesovTightness` |
+| `FourSobolev/` | `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
+| `HighFirstOrder/` | none |
+| `HighTail/` | none |
+| `HighSobolevLimit/` | `GaussianLipschitzConcentration`, `NormalComparison`, `IntersectionSecondMoment`, `LocalCLT`, `ContinuumBesovTightness` |
 | `HighNonconvergence/` | `IntersectionSecondMoment`, `LocalCLT`, `ContinuumBesovTightness` |
 
-Three of these, `GreenBoundsHigh`, `HeatKernelBounds` and `VarianceScale`,
-are also proved in the repository (`Sandpile/External/*Proved.lean`; see
-`ASSUMPTIONS.md`).  The certified statements keep them as hypotheses, and so do
-the challenges.
+Three cited results, `GreenBoundsHigh`, `HeatKernelBounds` and `VarianceScale`,
+are proved unconditionally in the repository (`Sandpile/External/*Proved.lean`;
+see `ASSUMPTIONS.md`) rather than assumed.  Earlier versions of `CriticalLevels/`,
+`FourSobolev/`, `HighFirstOrder/`, `HighTail/`, `HighSobolevLimit/` and
+`MeanGrowthLow/` carried one or more of them as hypotheses; the certified
+statements now carry none of the three, and neither do the challenges above.
 
 The content of each theorem is summarized in the docstring of its challenge and
 in `Sandpile/MainTheorems.lean`.

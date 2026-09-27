@@ -66,6 +66,7 @@ import Sandpile.Walk
 import Sandpile.Continuum.Membrane
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.LocalCLT
+import Sandpile.External.IntersectionSecondMomentProved
 import Sandpile.Support.Dgt4AManyLimitsAssembly
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -73,9 +74,6 @@ open scoped ENNReal NNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_many_limits
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
-    (hHeat : Sandpile.External.HeatKernelBounds)
     (hLocalCLT : Sandpile.External.LocalCLT) (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
     ∃ ν : Measure ℝ, ∃ _ : IsProbabilityMeasure ν,
@@ -106,6 +104,10 @@ theorem Sandpile.Frozen.dgt4_many_limits
             Sandpile.Continuum.weightedMembraneCov d (variance (id : ℝ → ℝ) ν) κ' T φ φ
 -- FROZEN-STATEMENT-END
 := by
+  have hInter : Sandpile.External.IntersectionSecondMoment :=
+    Sandpile.External.intersectionSecondMoment
+  have hHeat : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨ν, hprob, hmean, hvar, hdens, htail, hstep3, hdistinct⟩ :=
     Sandpile.Support.dgt4_many_limits_assembled d hd hGreenHigh hInter hHeat hLocalCLT hBesov
   exact ⟨ν, hprob, hmean, hvar, hdens, htail, hstep3, hdistinct⟩

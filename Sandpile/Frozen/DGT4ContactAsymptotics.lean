@@ -47,7 +47,6 @@ open scoped ENNReal NNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_contact_asymptotics
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
@@ -64,6 +63,7 @@ theorem Sandpile.Frozen.dgt4_contact_asymptotics
         ((Sandpile.centeredMassLaw d ν) {σ | Sandpile.odometer σ n 0 = 0}).toReal /
           (Sandpile.green d 0 0 * κ / n)) atTop (𝓝 1)
 -- FROZEN-STATEMENT-END
-:=
-  Sandpile.dgt4_contact_asymptotics_of_hcase hGreenHigh hGaussConc d hd ν hatom hmean hvar
+:= by
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
+  exact Sandpile.dgt4_contact_asymptotics_of_hcase hGreenHigh hGaussConc d hd ν hatom hmean hvar
     hvar' κ hcase

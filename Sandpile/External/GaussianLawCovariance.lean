@@ -32,9 +32,8 @@ import Sandpile.Support.CrossField
 
 open MeasureTheory ProbabilityTheory Set
 
--- FROZEN-STATEMENT-BEGIN
 /-- A centred Gaussian planar field is determined in law by its covariance.
-Assumed, not proved. -/
+Proved, not assumed: see `Sandpile/External/GaussianLawCovarianceProved.lean`. -/
 def Sandpile.External.GaussianLawDeterminedByCovariance : Prop :=
   ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
     (X Y : Sandpile.Continuum.Space 2 → Ω → ℝ),
@@ -43,4 +42,3 @@ def Sandpile.External.GaussianLawDeterminedByCovariance : Prop :=
     (∀ u, ∫ ω, X u ω ∂P = 0) → (∀ u, ∫ ω, Y u ω ∂P = 0) →
     (∀ u v, ∫ ω, X u ω * X v ω ∂P = ∫ ω, Y u ω * Y v ω ∂P) →
     Sandpile.Continuum.fieldLaw P X = Sandpile.Continuum.fieldLaw P Y
--- FROZEN-STATEMENT-END

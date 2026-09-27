@@ -58,7 +58,7 @@ theorem window_sq_split {S Dt Y A : ℝ} (hS0 : 0 ≤ S) (hSD : S ≤ Dt)
 
 /-- **The second moment of the excess of `u_t-V_t` over `A_0\log(t+2)`**, from
 the exponential form of `lem:d4-difference-tail`. -/
-theorem exists_excess_sq_bound_four (hVS : Sandpile.External.VarianceScale)
+theorem exists_excess_sq_bound_four (_hVS : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :
@@ -69,7 +69,7 @@ theorem exists_excess_sq_bound_four (hVS : Sandpile.External.VarianceScale)
         A₀ * Real.log ((t : ℝ) + 2))) ^ 2 ∂(LatticeProb.iidLaw 4 ν) ≤
           C / ((t : ℝ) + 2) ^ 2 := by
   obtain ⟨A₀, c, C, hA₀, hc, hC, htail⟩ :=
-    Sandpile.Frozen.d4_difference_tail hVS ν hprob hmean hvar hvar' θ hθ hexp
+    Sandpile.Frozen.d4_difference_tail ν hprob hmean hvar hvar' θ hθ hexp
   refine ⟨A₀, 4 / c ^ 2 * C, hA₀, by positivity, ?_⟩
   intro t ht x
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP

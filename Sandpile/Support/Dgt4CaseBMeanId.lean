@@ -62,7 +62,7 @@ theorem killedOdometer_eq_originOdometer (ζ : Sandpile.Site d → ℝ) (n : ℕ
 the mean odometer is the expectation of the integrated lower tail at the random level
 `Pw_n(0)`. -/
 theorem meanOdometer_increment_eq_integral
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
+    (_hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤) (n : ℕ) :
@@ -74,7 +74,7 @@ theorem meanOdometer_increment_eq_integral
   have hLp : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp measurable_id.aestronglyMeasurable).mp hvar'
   have hint : Integrable (id : ℝ → ℝ) ν := hLp.integrable (by norm_num)
-  have hfro := ((Sandpile.Frozen.dgt4_origin_frozen hGreenHigh d hd ν hatom hmean hvar hvar').1 n).2.2
+  have hfro := ((Sandpile.Frozen.dgt4_origin_frozen d hd ν hatom hmean hvar hvar').1 n).2.2
   rw [hfro]
   simp only [killedOdometer_eq_originOdometer]
   have hmeasF : AEStronglyMeasurable

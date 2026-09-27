@@ -19,23 +19,24 @@ stopping times bounded by `t`.  The dimension carries `1 ≤ d` because at `d = 
 the averaging operator behind `odometerOf` and `membrane` is a junk zero.
 
 The paper's proof starts from the optimal-stopping representation, which is a
-cited result rather than a theorem of the paper, so that result enters here as
-the explicit hypothesis `hOS`, exactly as it does in the frozen `thm:RW`.
+cited result rather than a theorem of the paper.  It is proved unconditionally
+in this repository, `Sandpile.External.optimalStopping`
+(`Sandpile/External/BPSHProved.lean`), so it is no longer carried here as an
+explicit hypothesis, exactly as in the frozen `thm:RW`.
 -/
-import Sandpile.External.BPSH
+import Sandpile.External.BPSHProved
 import Sandpile.Support.Stopped
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.difference_representation
-    (hOS : Sandpile.External.OptimalStopping)
     (d : ℕ) (hd : 1 ≤ d) (ζ : Sandpile.Site d → ℝ) (t : ℕ) (x : Sandpile.Site d) :
     Sandpile.odometerOf ζ t x - Sandpile.membrane ζ t x =
       Sandpile.stoppingSup t x (fun k X => -(Sandpile.membrane ζ (t - k) (X k)))
 -- FROZEN-STATEMENT-END
 := by
-  rw [(hOS d hd ζ t x).1]
+  rw [(Sandpile.External.optimalStopping d hd ζ t x).1]
   show sSup {a : ℝ | ∃ τ : (ℕ → Sandpile.Site d) → ℕ, Sandpile.IsWalkStopping τ ∧
       (∀ X, τ X ≤ t) ∧ a = ∫ X, Sandpile.sceneryPartialSum ζ (τ X) X
         ∂(Sandpile.walkLaw d x)} - Sandpile.membrane ζ t x = _

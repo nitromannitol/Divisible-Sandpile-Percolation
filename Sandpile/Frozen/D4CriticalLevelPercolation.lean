@@ -44,7 +44,6 @@ theorem Sandpile.Frozen.d4_critical_level_percolation
     (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
-    (hVarScale : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ, ∀ (ν : Measure ℝ), IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → ENNReal.ofReal (ν₀ ^ 2) ≤ evariance id ν →
@@ -58,6 +57,7 @@ theorem Sandpile.Frozen.d4_critical_level_percolation
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   obtain ⟨b₀, Aloc, Aex, hb₀, hAloc, hAex, hblock⟩ :=
     Sandpile.exists_block_estimate hBallGreen hRSW hVarScale ν₀ θ₀ K₀ hν₀ hθ₀
   set k : ℕ := ⌈4 * Aloc + 20⌉₊ with hkdef

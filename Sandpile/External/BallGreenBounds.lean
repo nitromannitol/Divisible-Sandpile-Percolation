@@ -113,7 +113,6 @@ noncomputable def timeTail (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) : ℝ :=
 
 end Sandpile.External.BallGreen
 
--- FROZEN-STATEMENT-BEGIN
 /-- The dimension-four ball-killed Green estimates of `ssec:green-estimates`:
 `eq:d4ball-point`, `eq:d4ball-square`, `eq:d4ball-near`, the annular gradient
 bound of `sandpile.tex:1256-1260`, `eq:d4ball-far-cube`, `eq:d4ball-shift` and
@@ -161,4 +160,3 @@ def Sandpile.External.BallGreenBounds : Prop :=
           (∑' u : Sandpile.Site 4,
               Sandpile.External.BallGreen.timeTail r A u ^ 2) ≤
             C * Real.exp (-c * A))
--- FROZEN-STATEMENT-END

@@ -46,7 +46,6 @@ noncomputable def Sandpile.lowerTailRemainder (d : ℕ) (t : ℕ) (L a : ℝ) : 
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_toppling
-    (hVarScale : Sandpile.External.VarianceScale)
     (hBerryEsseen : Sandpile.External.MultivariateBerryEsseen)
     (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3) (ν₀ M : ℝ) (hν₀ : 0 < ν₀)
     (a : ℝ) (ha : 0 < a) (ha' : a < 4 / (4 - (d : ℝ))) :
@@ -61,6 +60,7 @@ theorem Sandpile.Frozen.critical_toppling
           ENNReal.ofReal (C * L ^ (-c) + C * Sandpile.lowerTailRemainder d t L a)
 -- FROZEN-STATEMENT-END
 := by
+  have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   obtain ⟨c, C, hc, hC, hbound⟩ :=
     Sandpile.exists_critical_toppling_bound hVarScale hBerryEsseen d hd hd3 ν₀ M hν₀ a ha ha'
   refine ⟨c, C, hc, hC, ?_⟩

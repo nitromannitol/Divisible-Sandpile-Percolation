@@ -244,14 +244,24 @@ def definition_bodies() -> dict[str, str]:
 
 
 def with_definitions(blk: str, bodies: dict[str, str]) -> str:
-    """The frozen block plus the body of each definition it names."""
+    """The frozen block plus the body of each definition it names, inlined to
+    two levels: a statement can name a definition whose own body calls a
+    second definition (`generalWeightedMembraneCov` calls `heatKernelBM`), and
+    the exponent or exponential being checked for can sit in that second
+    body rather than in the first."""
     out = [blk]
-    for name in sorted(set(re.findall(r"[A-Za-z_][A-Za-z0-9_.']*", blk))):
-        # a statement writes the qualified `Parking.nearRate`; the declaration
-        # inside `namespace Parking` writes the short name
-        body = bodies.get(name) or bodies.get(name.split(".")[-1])
-        if body is not None and body not in out:
-            out.append(body)
+    frontier = [blk]
+    for _ in range(2):
+        next_frontier = []
+        for text in frontier:
+            for name in sorted(set(re.findall(r"[A-Za-z_][A-Za-z0-9_.']*", text))):
+                # a statement writes the qualified `Parking.nearRate`; the declaration
+                # inside `namespace Parking` writes the short name
+                body = bodies.get(name) or bodies.get(name.split(".")[-1])
+                if body is not None and body not in out:
+                    out.append(body)
+                    next_frontier.append(body)
+        frontier = next_frontier
     return "\n".join(out)
 
 

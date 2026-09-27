@@ -10,6 +10,7 @@ import Sandpile.Continuum.WhiteNoiseExists
 import Sandpile.External.BPSH
 import Sandpile.External.BPSHProved
 import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
 import Sandpile.External.BerryEsseen
 import Sandpile.External.ContStoppingStability
 import Sandpile.External.BrownianExitStep
@@ -18,6 +19,7 @@ import Sandpile.External.ContinuumOptimalStopping
 import Sandpile.External.ContinuumRSW
 import Sandpile.External.CubeStoppingStability
 import Sandpile.External.ExteriorBoundaryConnected
+import Sandpile.External.GaussianFourierProved
 import Sandpile.External.GaussianLawCovariance
 import Sandpile.External.GaussianLawCovarianceProved
 import Sandpile.External.GaussianLipschitzConcentration
@@ -27,12 +29,15 @@ import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.HeatKernelBounds
 import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.External.IntersectionSecondMoment
+import Sandpile.External.IntersectionSecondMomentProved
 import Sandpile.External.LSSDomination
 import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
 import Sandpile.External.MaxDisplacementProved
 import Sandpile.External.MembraneScalingFour
 import Sandpile.External.NormalComparison
 import Sandpile.External.PairedLocalCLTFour
+import Sandpile.External.PairedLocalCLTFourProved
 import Sandpile.External.Pinsker
 import Sandpile.External.PinskerProved
 import Sandpile.External.PittGaussianFKG

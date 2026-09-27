@@ -30,7 +30,6 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_height_lower_stretched
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -46,7 +45,6 @@ theorem Sandpile.Frozen.dgt4_height_lower_stretched
 := by
   classical
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
-  have _ := hGreenHigh
   have _ := hvar
   have _ := hvar'
   have _ := hexp

@@ -27,18 +27,18 @@ enters the statement.  In `u_{n-i}` the index is a truncated subtraction, which
 agrees with the paper because `i ≤ j ≤ n - 1`.
 
 The paper's proof reads the second right-hand side off the optimal-stopping
-representation, which is a cited result rather than a theorem of the paper, so
-that result enters here as the explicit hypothesis `hOS`, exactly as it does in
-the frozen `thm:RW`.
+representation, which is a cited result rather than a theorem of the paper.  It
+is proved unconditionally in this repository, `Sandpile.External.optimalStopping`
+(`Sandpile/External/BPSHProved.lean`), so it is no longer carried here as an
+explicit hypothesis, exactly as in the frozen `thm:RW`.
 -/
-import Sandpile.External.BPSH
+import Sandpile.External.BPSHProved
 import Sandpile.Support.OdometerPathDerivative
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.odometer_derivative
-    (hOS : Sandpile.External.OptimalStopping)
     (d : ℕ) (hd : 1 ≤ d) (ν : Sandpile.Site d → Measure ℝ)
     (hprob : ∀ x, IsProbabilityMeasure (ν x))
     (hatom : ∀ x, NullSingletonClass (ν x)) :
@@ -84,5 +84,6 @@ theorem Sandpile.Frozen.odometer_derivative
     intro X
     apply Finset.sum_congr rfl
     intro j hj
-    rw [Sandpile.active_product_eq_optimalStop_indicator hOS hd ζ n j
+    rw [Sandpile.active_product_eq_optimalStop_indicator
+      Sandpile.External.optimalStopping hd ζ n j
       (Nat.le_of_lt (Finset.mem_range.mp hj)) X]

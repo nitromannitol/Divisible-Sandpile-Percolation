@@ -24,14 +24,14 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.  Of these,
-`GreenBoundsHigh` is also proved in the repository
-(`Sandpile/External/*Proved.lean`), but the certified statement keeps it as a
-hypothesis, and so does the challenge.
-
-* `External.GreenBoundsHigh`: the `d ≥ 5` Green-function estimates (Lawler and
-  Limic, Theorem 4.3.1; Lawler, Chapter 3).
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `GreenBoundsHigh`, the
+`d ≥ 5` Green-function estimates (Lawler and Limic, Theorem 4.3.1; Lawler,
+Chapter 3), is proved unconditionally in this repository
+(`Sandpile.External.greenBoundsHigh`, `Sandpile/External/GreenBoundsHighProved.lean`),
+so it is not carried as a hypothesis by the certified statement, and this
+challenge carries none either.
 
 ## Presentation deltas
 
@@ -1188,7 +1188,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(a) (`thm:main-explosion`). -/
 theorem high_first_order
-    (hGreenHigh : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν)
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hexp : Integrable (fun z => Real.exp (θ₀ * |z|)) ν) :

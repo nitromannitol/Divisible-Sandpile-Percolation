@@ -26,16 +26,14 @@ challenges.  The sole intentional `sorry` is the proof of the final theorem.
 ## Cited results
 
 The paper uses results from the literature without proof.  The certified
-statement takes each one its proof uses as an explicit hypothesis, and this
-challenge carries the same hypotheses, restated in the vocabulary.  Of these,
-`HeatKernelBounds` and `GreenBoundsHigh` are also proved in the repository
-(`Sandpile/External/*Proved.lean`), but the certified statement keeps them as
-hypotheses, and so does the challenge.
+statement takes each one its proof uses as an explicit hypothesis, unless that
+result is itself proved unconditionally in this repository, in which case the
+certified statement carries no hypothesis for it.  `HeatKernelBounds` and
+`GreenBoundsHigh` are each proved unconditionally in this repository
+(`Sandpile.External.heatKernelBounds`, `Sandpile.External.greenBoundsHigh`), so
+neither is carried as a hypothesis by the certified statement, and this
+challenge carries neither either.
 
-* `External.HeatKernelBounds`: the heat-kernel bounds (Lawler and Limic,
-  Propositions 2.4.1 and 2.4.4);
-* `External.GreenBoundsHigh`: the `d ≥ 5` Green-function estimates (Lawler and
-  Limic, Theorem 4.3.1; Lawler, Chapter 3);
 * `External.GaussianLipschitzConcentration`: Gaussian concentration for
   Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov);
 * `External.NormalComparison`: the normal comparison inequality (Li and Shao,
@@ -1202,8 +1200,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(c) (`thm:main-explosion`). -/
 theorem high_sobolev_limit
-    (hHeatKernel : External.HeatKernelBounds)
-    (hGreenHigh : External.GreenBoundsHigh)
     (hGaussConc : External.GaussianLipschitzConcentration)
     (hNormal : External.NormalComparison)
     (hInter : External.IntersectionSecondMoment)

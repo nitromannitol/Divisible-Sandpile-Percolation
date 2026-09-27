@@ -26,7 +26,7 @@ theorem exists_critical_bounds_fixed_four (ν : Measure ℝ) [IsProbabilityMeasu
   have hs : 0 < Real.sqrt (evariance id ν).toReal := Real.sqrt_pos.mpr hv
   have hvb : ENNReal.ofReal (Real.sqrt (evariance id ν).toReal ^ 2) ≤ evariance id ν := by
     rw [Real.sq_sqrt hv.le, ENNReal.ofReal_toReal hvar'.ne]
-  obtain ⟨c, C, hc, hC, t₀, hb⟩ := Frozen.critical_toppling_d4 External.varianceScale
+  obtain ⟨c, C, hc, hC, t₀, hb⟩ := Frozen.critical_toppling_d4
     (Real.sqrt (evariance id ν).toReal) θ (∫ z, Real.exp (θ * |z|) ∂ν) hs hθ
   have h := hb ν inferInstance hmean hvb hexp le_rfl
   exact ⟨c, C, hc, hC, t₀, h.1, h.2.2⟩

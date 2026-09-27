@@ -147,7 +147,7 @@ lemma exists_odometer_origin_connection (hBoundary : External.ExteriorBoundaryCo
             ((∫ ω, odometerOf ω t (0 : Site d) ∂(LatticeProb.iidLaw d ν)) / 2))ᶜ ≤
               ENNReal.ofReal (C * Real.exp (-(b *
                 (∫ ω, odometerOf ω t (0 : Site d) ∂(LatticeProb.iidLaw d ν))))) := by
-  obtain ⟨b₀, C₀, M₀, hb₀, hC₀, hcascade⟩ := Frozen.dgt4_cascade hGH d hd θ K hθ
+  obtain ⟨b₀, C₀, M₀, hb₀, hC₀, hcascade⟩ := Frozen.dgt4_cascade d hd θ K hθ
   obtain ⟨b₁, C₁, hb₁, hC₁, hconc⟩ := exists_odometerOf_conc hGH hd θ K hθ
   obtain ⟨M₁, hM₁, hsum⟩ := exists_weighted_double_exp_sum_bound ((64 : ℝ) ^ d) b₀
     (one_le_pow₀ (by norm_num)) hb₀

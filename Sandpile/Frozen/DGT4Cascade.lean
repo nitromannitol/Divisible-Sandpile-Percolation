@@ -87,7 +87,6 @@ end Sandpile.Frozen.DGT4Cascade
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_cascade
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ b C M : ℝ, 0 < b ∧ 0 < C ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → 0 < evariance id ν → evariance id ν < ⊤ →
@@ -103,6 +102,7 @@ theorem Sandpile.Frozen.dgt4_cascade
 -- FROZEN-STATEMENT-END
 := by
   classical
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨c, C, hc, hC, hstep⟩ := Sandpile.exists_annular_probability_step hGreenHigh d hd θ₀ K₀ hθ₀
   obtain ⟨c₀, C₀, hc₀, hC₀, hinit⟩ := Sandpile.exists_annular_probability_initial hGreenHigh d hd θ₀ K₀ hθ₀
   obtain ⟨b, η, M, hb, hη, hM, hsolve⟩ := Sandpile.exists_double_exponential_bound

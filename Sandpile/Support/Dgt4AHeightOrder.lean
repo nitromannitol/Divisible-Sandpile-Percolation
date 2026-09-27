@@ -135,7 +135,7 @@ variable {d : ℕ}
 /-- **The lower half of `eq:dgt4-gaussian-height-order`** (`sandpile.tex:5030-5032`) in the
 Gaussian case: `prop:dgt4-height-lower-stretched` at the sub-Gaussian exponent `\gamma=2`,
 where `\min(\gamma,d/2)=2` for `d\geq5`. -/
-theorem exists_sqrt_log_le_meanOdometer (hGH : Sandpile.External.GreenBoundsHigh)
+theorem exists_sqrt_log_le_meanOdometer (_hGH : Sandpile.External.GreenBoundsHigh)
     (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) :
     ∃ c : ℝ, 0 < c ∧ ∀ᶠ n : ℕ in atTop,
       c * Real.sqrt (Real.log n) ≤ meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n := by
@@ -156,7 +156,7 @@ theorem exists_sqrt_log_le_meanOdometer (hGH : Sandpile.External.GreenBoundsHigh
   have hexpint : Integrable (fun z : ℝ => Real.exp (1 * |z|)) (gaussianReal 0 v) :=
     integrable_exp_abs_gaussian 1 v
   obtain ⟨a₁, A, s₀, ha₁, hA, hs₀, htail⟩ := exists_gaussian_lower_tail_ge v hv
-  obtain ⟨c, hc, hlow⟩ := Sandpile.Frozen.dgt4_height_lower_stretched hGH d hd
+  obtain ⟨c, hc, hlow⟩ := Sandpile.Frozen.dgt4_height_lower_stretched d hd
     (gaussianReal 0 v) inferInstance hmean hvar hvar'
     1 (∫ z, Real.exp (1 * |z|) ∂(gaussianReal 0 v)) one_pos hexpint le_rfl
     2 a₁ A s₀ (by norm_num) ha₁ hA hs₀ htail

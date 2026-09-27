@@ -21,13 +21,16 @@ The proof reduces to the three regime theorems of the paper, which carry the
 cited inputs `PlanarRSW` and `LSSDomination` (dimensions two, three and four)
 and `ExteriorBoundaryConnected` (dimensions five and higher); those three
 inputs are hypotheses here, as the paper's proof reaches them through its
-citations.
+citations.  The `d ≥ 5` Green estimates and the variance-scale input are also
+cited, but each is proved unconditionally in this repository
+(`Sandpile.External.greenBoundsHigh`, `Sandpile.External.varianceScale`), so
+neither is carried here as an explicit hypothesis.
 -/
 import Sandpile.Law
 import Sandpile.Support.Crit23Scale
 import Sandpile.External.BallGreenBounds
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.VarianceScale
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.External.VarianceScaleProved
 import Sandpile.External.PlanarRSW
 import Sandpile.External.LSSDomination
 import Sandpile.External.ExteriorBoundaryConnected
@@ -38,8 +41,6 @@ open MeasureTheory ProbabilityTheory
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_level_percolation
     (hBallGreen : Sandpile.External.BallGreenBounds)
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
-    (hVarScale : Sandpile.External.VarianceScale)
     (hRSW : Sandpile.External.PlanarRSW)
     (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
@@ -59,5 +60,6 @@ theorem Sandpile.Frozen.critical_level_percolation
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x}
 -- FROZEN-STATEMENT-END
 := by
-  exact critical_level_percolation_assembly hBallGreen hGreenHigh hVarScale hRSW hLSS
+  exact critical_level_percolation_assembly hBallGreen Sandpile.External.greenBoundsHigh
+    Sandpile.External.varianceScale hRSW hLSS
     hBoundary hRSWc hPitt hOcc hLocalCLT hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀

@@ -17,7 +17,6 @@ denominators are nonzero because `1 ≤ n`.
 -/
 import Sandpile.Support.Kernel
 
--- FROZEN-STATEMENT-BEGIN
 /-- The dimension-four specialization of the paired local limit estimate,
 Lawler–Limic Theorem 2.1.3, Eq. (2.8). Assumed, not proved. -/
 def Sandpile.External.PairedLocalCLTFour : Prop :=
@@ -26,4 +25,3 @@ def Sandpile.External.PairedLocalCLTFour : Prop :=
       8 / (Real.pi ^ 2 * (n : ℝ) ^ 2) *
         Real.exp (-2 * (∑ i : Fin 4, ((x i - y i : ℤ) : ℝ) ^ 2) / n)| ≤
       C / (n : ℝ) ^ 3
--- FROZEN-STATEMENT-END

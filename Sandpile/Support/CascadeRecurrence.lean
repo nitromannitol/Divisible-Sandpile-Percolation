@@ -51,7 +51,7 @@ lemma annularProbability_le_one (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (t : ℕ) (m : ℝ) (R : ℕ) (s : ℝ) : annularProbability (d := d) ν t m R s ≤ 1 :=
   iSup_le fun _ => prob_le_one
 
-lemma exists_annular_probability_step (hGH : External.GreenBoundsHigh)
+lemma exists_annular_probability_step (_hGH : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
       ∫ z, z ∂ν = 0 → 0 < evariance id ν → evariance id ν < ⊤ →
@@ -66,7 +66,7 @@ lemma exists_annular_probability_step (hGH : External.GreenBoundsHigh)
             min (a ^ 2 * (R : ℝ) ^ ((d : ℝ) - 4)) (a * (R : ℝ) ^ ((d : ℝ) - 2))))) := by
   classical
   haveI : NeZero d := ⟨by omega⟩
-  obtain ⟨c, C₀, hc, hC₀, hdec⟩ := Frozen.dgt4_level_shift_decoupling hGH d hd θ K hθ
+  obtain ⟨c, C₀, hc, hC₀, hdec⟩ := Frozen.dgt4_level_shift_decoupling d hd θ K hθ
   let N : ℝ := ((259 ^ d) ^ 2 : ℕ)
   have hN : 0 < N := by dsimp [N]; positivity
   let C := N * (C₀ + 1)

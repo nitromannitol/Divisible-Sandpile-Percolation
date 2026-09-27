@@ -79,7 +79,6 @@ noncomputable def scaledSite {d : ℕ} (R : ℝ) (x : Sandpile.Site d) :
 
 end Sandpile.External.Lclt
 
--- FROZEN-STATEMENT-BEGIN
 /-- The local central limit theorem in the parity form `eq:lclt-parity` of
 `ssec:green-estimates` (`sandpile.tex:1145-1161`), with the supremum written as
 a uniform bound over the admissible triples.  Assumed, not proved. -/
@@ -99,4 +98,3 @@ def Sandpile.External.LocalCLT : Prop :=
                             Sandpile.Continuum.heatKernelBM d ((ℓ : ℝ) / R ^ 2)
                               (Sandpile.External.Lclt.scaledSite R x)
                               (Sandpile.External.Lclt.scaledSite R y)| ≤ ε
--- FROZEN-STATEMENT-END

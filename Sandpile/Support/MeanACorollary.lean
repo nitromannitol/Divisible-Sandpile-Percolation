@@ -30,7 +30,7 @@ open Sandpile.Continuum
 theorem dlt4_mean_asymptotic_wired
     (hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})
-    (hVarScale : Sandpile.External.VarianceScale)
+    (_hVarScale : Sandpile.External.VarianceScale)
     (d : ℕ) (hd0 : 0 < d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -84,7 +84,7 @@ theorem dlt4_mean_asymptotic_wired
     θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB B hB hBc hBm 1 one_pos
   have hres := tendstoInDistribution_rescaled_one_zero d ν PW PB Z B
     (hib.1 1 (fun _ => (0 : Space d)))
-  have hself := Sandpile.Frozen.continuum_value_self_similar hLocalCLT hStab hVarScale d hd0 hd3 ν hmean
+  have hself := Sandpile.Frozen.continuum_value_self_similar hLocalCLT hStab d hd0 hd3 ν hmean
     hvar hvar' θ₀ hθ₀ hexp PW W hW Z hZmod hZcont hZgrow PB hOS B hB hBc hBm
   obtain ⟨U, hU, hUlaw⟩ := hself.1
   obtain ⟨θ, hθ, ⟨M, hM⟩, hZexp⟩ := hself.2.1

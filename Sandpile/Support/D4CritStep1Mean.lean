@@ -21,7 +21,7 @@ namespace Sandpile
 
 /-- Step 1a: the mean of the localized exit value is at least `2 b₀ log R`,
 uniformly in the site and over the law class. -/
-theorem exists_step1_mean (hVarScale : Sandpile.External.VarianceScale)
+theorem exists_step1_mean (_hVarScale : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ (c₀ b₀ Aloc : ℝ) (Aex : ℕ), 0 < c₀ ∧ b₀ = c₀ / 16 ∧ 1 ≤ Aloc ∧ 1 ≤ Aex ∧
       ∃ R₀ : ℕ, 2 ≤ R₀ ∧
@@ -33,7 +33,7 @@ theorem exists_step1_mean (hVarScale : Sandpile.External.VarianceScale)
           2 * b₀ * Real.log R ≤ ∫ ζ, eaExitValue Aex Aloc R ζ x
             ∂(LatticeProb.iidLaw 4 ν) := by
   obtain ⟨c₀, C₀, hc₀, hC₀, t₁, hCT⟩ :=
-    Sandpile.Frozen.critical_toppling_d4 hVarScale ν₀ θ₀ K₀ hν₀ hθ₀
+    Sandpile.Frozen.critical_toppling_d4 ν₀ θ₀ K₀ hν₀ hθ₀
   obtain ⟨C₁, c₁, hC₁, hc₁, hlocU⟩ :=
     mean_localization_uniform 4 (by norm_num) 1 (by norm_num)
   obtain ⟨Aloc, hAloc1, hAlocSmall⟩ := exists_loc_radius C₀ C₁ c₁ c₀ hC₀ hC₁ hc₁ hc₀

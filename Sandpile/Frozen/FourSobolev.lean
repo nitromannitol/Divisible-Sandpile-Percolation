@@ -33,17 +33,19 @@ Theorem 1.3 assumes it in part (ii).
 
 Cited inputs (standing convention R1).  The two propositions the proof combines
 carry the heat-kernel bounds, the Besov tightness criterion and the variance
-scaling of the four-dimensional field, so this statement carries them too;
-`hHeatKernel` and `hVarScale` were added at version 2 for that reason, and
-`hMembrane`, the scaling limit of the four-dimensional discrete membrane field
-cited in Step 1 of `prop:d4-superdiffusive-limit`, at version 5.
+scaling of the four-dimensional field, so this statement carried them too at
+earlier versions; the heat-kernel bounds and the variance scaling are each
+proved unconditionally in this repository (`Sandpile.External.heatKernelBounds`,
+`Sandpile.External.varianceScale`), so neither is carried here as an explicit
+hypothesis.  `hMembrane`, the scaling limit of the four-dimensional discrete
+membrane field cited in Step 1 of `prop:d4-superdiffusive-limit`, remains one.
 -/
 import Sandpile.Law
 import Sandpile.Continuum.Membrane
 import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.HeatKernelBounds
+import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.External.MembraneScalingFour
-import Sandpile.External.VarianceScale
+import Sandpile.External.VarianceScaleProved
 import Sandpile.Support.ExplFourSobolev
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -51,8 +53,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.four_sobolev
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
-    (hVarScale : Sandpile.External.VarianceScale)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site 4 → ℝ))
     (hMembrane : Sandpile.External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -93,9 +93,10 @@ theorem Sandpile.Frozen.four_sobolev
   -- (`sandpile.tex:302-304`).  The first conjunct, the tightness at the diffusive times
   -- `⌊TR²⌋`, is `prop:d4-diffusive-tightness`; the second is `prop:d4-superdiffusive-limit`
   -- at every domain, every averaging density and every exponent `α > 2`.
-  Sandpile.Support.four_sobolev_of_superdiffusive hHeatKernel hBesov ν inferInstance hmean
-    hvar hvar' T hT s hs
+  Sandpile.Support.four_sobolev_of_superdiffusive Sandpile.External.heatKernelBounds hBesov ν
+    inferInstance hmean hvar hvar' T hT s hs
     (fun D hD w hw α hα =>
-      Sandpile.Frozen.d4_superdiffusive_limit hHeatKernel hVarScale hMembrane D hD w hw α hα ν
+      Sandpile.Frozen.d4_superdiffusive_limit
+        hMembrane D hD w hw α hα ν
         inferInstance
         hmean hvar hvar' θ₀ hθ₀ hexp s hs)

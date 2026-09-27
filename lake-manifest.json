@@ -19,10 +19,10 @@
    "type": "git",
    "subDir": null,
    "scope": "",
-   "rev": "bbe0b90a7cf0517db0578139aaab7f152edbc45e",
+   "rev": "720e65e0842d8e2180f6be93a1af31b047c354b2",
    "name": "\u00ablattice-probability\u00bb",
    "manifestFile": "lake-manifest.json",
-   "inputRev": "bbe0b90a7cf0517db0578139aaab7f152edbc45e",
+   "inputRev": "720e65e0842d8e2180f6be93a1af31b047c354b2",
    "inherited": false,
    "configFile": "lakefile.lean"
   },

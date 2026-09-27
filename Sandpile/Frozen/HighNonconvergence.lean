@@ -49,13 +49,13 @@ import Sandpile.Support.Dgt4AManyLimitsAssembly
 import Sandpile.Support.ExplHighNonconvergence
 import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.HeatKernelBoundsProved
+import Sandpile.External.IntersectionSecondMomentProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.high_nonconvergence
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (hLocalCLT : Sandpile.External.LocalCLT)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
@@ -92,5 +92,6 @@ theorem Sandpile.Frozen.high_nonconvergence
 :=
   Sandpile.Support.high_nonconvergence_of_many_limits Sandpile.External.heatKernelBounds
     Sandpile.External.greenBoundsHigh hLocalCLT hBesov hd
-    (Sandpile.Support.dgt4_many_limits_assembled d hd Sandpile.External.greenBoundsHigh hInter
+    (Sandpile.Support.dgt4_many_limits_assembled d hd Sandpile.External.greenBoundsHigh
+      Sandpile.External.intersectionSecondMoment
       Sandpile.External.heatKernelBounds hLocalCLT hBesov)

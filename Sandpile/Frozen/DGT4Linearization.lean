@@ -50,7 +50,7 @@ import Sandpile.Continuum.Membrane
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.GaussianLipschitzConcentration
 import Sandpile.External.NormalComparison
-import Sandpile.External.IntersectionSecondMoment
+import Sandpile.External.IntersectionSecondMomentProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.Support.LinJacobianFirstConjunct
 import Sandpile.Support.Dgt4LinAllPaths
@@ -61,10 +61,8 @@ open scoped ENNReal NNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.dgt4_linearization
-    (hGreenHigh : Sandpile.External.GreenBoundsHigh)
     (hGaussConc : Sandpile.External.GaussianLipschitzConcentration)
     (hNormal : Sandpile.External.NormalComparison)
-    (hInter : Sandpile.External.IntersectionSecondMoment)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -92,6 +90,9 @@ theorem Sandpile.Frozen.dgt4_linearization
       atTop (𝓝 0)
 -- FROZEN-STATEMENT-END
 := by
+  have hInter : Sandpile.External.IntersectionSecondMoment :=
+    Sandpile.External.intersectionSecondMoment
+  have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have _besov := hBesov
   haveI : NeZero d := ⟨by omega⟩
   haveI : NullSingletonClass ν := ⟨fun z => hatom z⟩

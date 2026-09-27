@@ -38,6 +38,7 @@ the field `R^{-ε}(u_t - E u_t(0))` at `t = ⌊TR²⌋` has covariance at most
 restores the factor `R^{β/2} = R^{ε}`, giving exactly the family of the
 statement.
 -/
+import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.Support.TightD4Covariance
 import Sandpile.Support.TightNegSobolev
 
@@ -46,7 +47,6 @@ open scoped ENNReal
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_diffusive_tightness
-    (hHeatKernel : Sandpile.External.HeatKernelBounds)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site 4 → ℝ))
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -58,6 +58,7 @@ theorem Sandpile.Frozen.d4_diffusive_tightness
             Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) ⌊T * R ^ 2⌋₊) φ)
 -- FROZEN-STATEMENT-END
 := by
+  have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
   haveI := hprob
   have _hMeanZero := hmean
   have _hNondegenerate := hvar

@@ -1,17 +1,18 @@
-/-
-The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the two analytic inputs of its proof: the polynomial growth of the continuous
-version of the Gaussian heat potential (`Sandpile.Support.continuousVersionGrowth`,
-proved rather than assumed) and the strong Markov property at the exit time of the
-ball (`Sandpile.External.BrownianExitStep`).
-
-The dimension is split at zero: in dimension zero the space is a single point and the
-growth residual is immediate from continuity on the strip, while in positive dimension
-the growth residual is `Sandpile.Support.continuousVersionGrowth`.  The strong Markov
-step is the External input in every dimension.
--/
 import Sandpile.Support.ExplBallExitStep
 import Sandpile.Support.BallGrowthExternal
+
+/-!
+# Ball localization from the growth and exit-step external inputs
+
+This file derives the frozen statement of `lem:brownian-ball-localization` from the two
+analytic inputs of its proof: the polynomial growth of the continuous version of the Gaussian
+heat potential (`Sandpile.Support.continuousVersionGrowth`, proved rather than assumed) and the
+strong Markov property at the exit time of the ball (`Sandpile.External.BrownianExitStep`). The
+dimension is split at zero: in dimension zero the space is a single point and the growth
+residual is immediate from continuity on the strip, while in positive dimension the growth
+residual is `Sandpile.Support.continuousVersionGrowth`; the strong Markov step is the external
+input in every dimension.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

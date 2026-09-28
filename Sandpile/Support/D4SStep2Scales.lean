@@ -1,17 +1,19 @@
-/-
-The scale bookkeeping of Step 2 of `prop:d4-superdiffusive-limit`
-(`sandpile.tex:3366-3382`).
+import Sandpile.Support.D4SScaleSq
+
+/-!
+# Scale bookkeeping for Step 2
+
+The scale bookkeeping of Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3366-3382`).
 
 Step 2 runs at the intermediate scale `n_R = ⌊R\sqrt{t_R}⌋` inside the time
-`t_R = ⌊R^\alpha⌋`, and its two displays need four facts about those scales for
-large `R`: the window is nonempty, it is at most half the time, the remaining
-time `t_R-n_R` is at least three so that `\log\log` is defined and nonnegative,
-and the second moment at `t_R-n_R` is below the second moment at `t_R`.  The
-second display also needs the new limit `((1+\log\log t_R)^2+M)R^{-\sigma}\to0`,
-which is where its rate `R^{-\min\{s,1\}}` beats the growth of the second
-moment.
+`t_R = ⌊R^\alpha⌋`, and its two displays need four facts about those scales for large `R`:
+the window is nonempty, it is at most half the time, the remaining time `t_R-n_R` is at
+least three so that `\log\log` is defined and nonnegative (`eventually_step2_scales`), and
+the second moment at `t_R-n_R` is below the second moment at `t_R` (`sq_loglog_mono`). The
+second display also needs the new limit `((1+\log\log t_R)^2+M)R^{-\sigma}\to0`
+(`tendsto_loglog_mul_rpow_inv`, specialized to `σ = 2` by `tendsto_loglog_mul_inv_sq`), which
+is where its rate `R^{-\min\{s,1\}}` beats the growth of the second moment.
 -/
-import Sandpile.Support.D4SScaleSq
 
 open LatticeProb
 

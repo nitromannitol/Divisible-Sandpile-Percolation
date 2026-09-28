@@ -1,5 +1,15 @@
 import Mathlib
 
+/-!
+# The lattice-count bound and the second scale-separation majorant
+
+For `α > 2` and `R ≥ 2`, with `t_R = ⌊R^α⌋₊`, `scale_sep_nR_le` bounds the intermediate lattice
+count `n_R = ⌊R √t_R⌋₊` by `R^{α/2+1}`. `scale_sep_second_bound` uses this, together with the
+side condition `n_R ≤ t_R/2`, to majorize the second scale-separation quotient
+`n_R log²(t_R+2)/(t_R-n_R)` by `8 log²(R^α+2)/R^{α/2-1}` (`sandpile.tex:3334-3336`), the input
+`tendsto_scale_sep_second` needs.
+-/
+
 open Real
 
 namespace Sandpile.D4Super
@@ -29,6 +39,9 @@ theorem scale_sep_nR_le (α : ℝ) (hα : 2 < α) (R : ℝ) (hR : 2 ≤ R) :
   exact le_trans hN1 (le_trans hN2 (le_of_eq hN3))
 
 
+/-- **The second scale-separation majorant** (`sandpile.tex:3334-3336`): under the side condition
+`n_R ≤ t_R/2`, `n_R log²(t_R+2)/(t_R-n_R) ≤ 8 log²(R^α+2)/R^{α/2-1}`, using the bound
+`scale_sep_nR_le` on `n_R`. -/
 theorem scale_sep_second_bound (α : ℝ) (hα : 2 < α) (R : ℝ) (hR : 2 ≤ R)
     (hnR : (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) ≤ ⌊R ^ α⌋₊ / 2)
     :
@@ -74,7 +87,8 @@ theorem scale_sep_second_bound (α : ℝ) (hα : 2 < α) (R : ℝ) (hR : 2 ≤ R
   have hRα4 : (4:ℝ) ≤ R ^ α := by linarith
   have hkey : n * L ^ 2 * D ≤ 8 * L' ^ 2 * (t - n) := by
     have h1 : n * L ^ 2 * D ≤ R ^ (α / 2 + 1) * L ^ 2 * D := by
-      exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hN (by positivity)) (by positivity)
+      exact mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right hN (by positivity)) (by positivity)
     have h2 : R ^ (α / 2 + 1) * L ^ 2 * D = R ^ α * L ^ 2 := by
       linear_combination L ^ 2 * hA
     have h3 : R ^ α * L ^ 2 ≤ R ^ α * L' ^ 2 := by

@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Dgt4Truncation
+
+/-! # Pair-Killed Green Kernel Lipschitz Bound
+
 The coordinate Lipschitz bound for the odometer killed on an arbitrary set, at the sharp
 constant of the odometer killed at the origin alone.
 
@@ -11,7 +14,6 @@ origin and at one further site: the paper's `(G(x,0)+G(x,z))/(G(0,0)+G(0,z))` is
 constant than `G(0,z)/G(0,0)`, and the argument uses only the square summability, which the
 larger constant already has.
 -/
-import Sandpile.Support.Dgt4Truncation
 
 open MeasureTheory Filter Topology
 
@@ -52,15 +54,22 @@ theorem killedHeat_mono {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
 noncomputable def localGreenTime (D : Set (Site d)) (n : ℕ) (x z : Site d) : ℝ :=
   ∑ k ∈ Finset.range n, LatticeProb.Graph.killedHeat (LatticeProb.lattice d) D k x z
 
+/-- `localGreenTime D n x z` is a sum of nonnegative killed heat kernel values, hence
+nonnegative. -/
 theorem localGreenTime_nonneg (D : Set (Site d)) (n : ℕ) (x z : Site d) :
     0 ≤ localGreenTime D n x z :=
   Finset.sum_nonneg fun k _ => LatticeProb.Network.killedHeat_nonneg _ k x z
 
+/-- The killed Green kernel vanishes when its source `x` lies outside the killing set `D`,
+since every killed heat kernel term does. -/
 theorem localGreenTime_of_notMem {D : Set (Site d)} {x : Site d} (hx : x ∉ D) (n : ℕ)
     (z : Site d) : localGreenTime D n x z = 0 := by
   refine Finset.sum_eq_zero fun k _ => ?_
   exact LatticeProb.Network.killedHeat_of_source_not_mem hx k z
 
+/-- The one-step recursion for `localGreenTime` at a source `x ∈ D`: the `(n+1)`-step kernel
+from `x` to `z` is the indicator of `x = z` plus the walk average at `x` of the `n`-step
+kernel to `z`. -/
 theorem localGreenTime_succ (D : Set (Site d)) (n : ℕ) (x z : Site d) (hx : x ∈ D) :
     localGreenTime D (n + 1) x z
       = (if x = z then 1 else 0) + avg (fun y => localGreenTime D n y z) x := by

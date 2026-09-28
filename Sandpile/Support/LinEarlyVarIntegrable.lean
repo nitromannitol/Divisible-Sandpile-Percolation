@@ -1,13 +1,17 @@
-/-
-Integrability of the per-site walk-pair integral of the visit-weighted covariance sum.
-
-`eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): each per-site integrand
-of the expansion is measurable and bounded by `t.card ^ 2`, hence integrable against
-the walk-pair law, so the site sum may be exchanged with the walk-pair integral.
--/
 import Sandpile.Support.LinEarlyVarDefs
 import Sandpile.Support.LinEarlyVarSite
 import Sandpile.Support.LinEarlyVarNorm
+
+/-!
+# Integrability and summability of the per-site covariance integrand
+
+Each per-site integrand of the early-derivative-variance expansion, the double time sum
+of visit indicators weighted by `covSurvival`, is measurable and bounded by `t.card ^ 2`,
+hence integrable against the walk-pair law `walkPairLaw d x y`. Summing the norms of these
+integrals over sites is in turn bounded, using the pointwise collapse identity
+`tsum_site_collapse`, so the family of per-site integrals is summable and the site sum
+may be exchanged with the walk-pair integral.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -15,6 +19,10 @@ namespace Sandpile
 
 variable {d : ℕ} [NeZero d]
 
+/-- The per-site double time sum of the visit-weighted conditional covariance is
+integrable against the walk-pair law `walkPairLaw d x y`, being measurable and bounded by
+`(t.card : ℝ) ^ 2` since each visit indicator is `0` or `1` and each conditional
+covariance `covSurvival` has absolute value at most `1`. -/
 theorem integrable_integral_covSurvival (μ : Measure (Site d → ℝ)) [IsProbabilityMeasure μ]
     (n : ℕ) (t : Finset ℕ) (z : Site d) (x y : Site d) :
     Integrable (fun p : (ℕ → Site d) × (ℕ → Site d) =>
@@ -28,9 +36,11 @@ theorem integrable_integral_covSurvival (μ : Measure (Site d → ℝ)) [IsProba
     refine Finset.measurable_sum t fun j hj => ?_
     refine Measurable.mul ?_ ?_
     · refine Measurable.mul ?_ ?_
-      · exact Measurable.ite (measurableSet_eq.preimage ((measurable_pi_apply i).comp measurable_fst))
+      · exact Measurable.ite
+          (measurableSet_eq.preimage ((measurable_pi_apply i).comp measurable_fst))
           measurable_const measurable_const
-      · exact Measurable.ite (measurableSet_eq.preimage ((measurable_pi_apply j).comp measurable_snd))
+      · exact Measurable.ite
+          (measurableSet_eq.preimage ((measurable_pi_apply j).comp measurable_snd))
           measurable_const measurable_const
     · show Measurable (fun p : (ℕ → Site d) × (ℕ → Site d) =>
         ∫ σ : Site d → ℝ, (survivalInd σ n i p.1 - ∫ σ', survivalInd σ' n i p.1 ∂μ) *
@@ -69,6 +79,10 @@ theorem integrable_integral_covSurvival (μ : Measure (Site d → ℝ)) [IsProba
     have hc : (0 : ℝ) ≤ (t.card : ℝ) := Nat.cast_nonneg _
     nlinarith [hc]
 
+/-- The family, indexed by sites `z`, of walk-pair integrals of the norm of the per-site
+covariance integrand is summable: the finite partial sums are bounded uniformly by
+`(t.card : ℝ) ^ 2`, using `tsum_site_collapse` to collapse the site sum of visit-indicator
+products to the intersection indicator. -/
 theorem summable_integral_norm_covSurvival (μ : Measure (Site d → ℝ))
     [IsProbabilityMeasure μ] (n : ℕ) (t : Finset ℕ) (x y : Site d) :
     Summable (fun z : Site d => ∫ p, ‖(∑ i ∈ t, ∑ j ∈ t,
@@ -124,7 +138,8 @@ theorem summable_integral_norm_covSurvival (μ : Measure (Site d → ℝ))
           ≤ ∑' z : Site d, ∑ i ∈ t, ∑ j ∈ t,
           (if p.1 i = z then (1 : ℝ) else 0) * (if p.2 j = z then (1 : ℝ) else 0) := by
         refine Summable.sum_le_tsum u (fun z hz => ?_) ?_
-        · exact Finset.sum_nonneg fun i hi => Finset.sum_nonneg fun j hj => by split <;> split <;> norm_num
+        · exact Finset.sum_nonneg fun i hi => Finset.sum_nonneg fun j hj => by
+            split <;> split <;> norm_num
         · refine summable_of_hasFiniteSupport ?_
           refine (t.image p.1).finite_toSet.subset ?_
           intro z hz

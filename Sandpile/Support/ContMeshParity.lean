@@ -1,22 +1,25 @@
-/-
-The parity-restricted double time sums of `sandpile.tex:1157-1161` with an
-`R`-DEPENDENT integrand.
-
-The limit theorems of `Sandpile.Support.ContMeshIntegral` take a fixed bounded
-continuous integrand, while the integrand produced by the local central limit
-theorem of `sandpile.tex:1145-1161` depends on `R`, both through the accuracy of
-the theorem itself and through the mesh points at which the Brownian kernel is
-read.  This file removes that dependence: a double Riemann sum over any set of
-index pairs moves by at most the number of pairs times the mesh area times the
-uniform distance between the two integrands, so an `R`-dependent integrand
-converging uniformly to a fixed one has the same limit.
-
-The parity class of the time pairs is also `R`-dependent, since it is fixed by
-the parity of the coordinate sum of the two lattice sites, which moves with `R`.
-Both classes have the same limit, half the double time integral, so the limit
-does not see which class is taken.
--/
 import Sandpile.Support.ContMeshIntegral
+
+/-!
+# Parity-restricted double sums with a varying integrand
+
+The parity-restricted double time sums of `sandpile.tex:1157-1161` with an
+`R`-dependent integrand. The limit theorems of `Sandpile.Support.ContMeshIntegral` take a
+fixed bounded continuous integrand, while the integrand produced by the local central
+limit theorem of `sandpile.tex:1145-1161` depends on `R`, both through the accuracy of the
+local limit theorem itself and through the mesh points at which the Brownian kernel is
+read. This file removes that dependence: a double Riemann sum over any set of index pairs
+moves by at most the number of pairs times the mesh area times the uniform distance
+between the two integrands (`abs_sum2_filter_sub_le`), so an `R`-dependent integrand
+converging uniformly to a fixed one has the same limit as the fixed integrand
+(`tendsto_sum2_parity_of_family`, and its eventual-closeness form
+`tendsto_sum2_parity_of_family'`).
+
+The parity class of the time pairs is also `R`-dependent, since it is fixed by the parity
+of the coordinate sum of the two lattice sites, which moves with `R`. Both classes have
+the same limit, half the double time integral, so the limit does not see which class is
+taken (`tendsto_of_eq_or_eq`).
+-/
 
 open MeasureTheory Filter Topology
 

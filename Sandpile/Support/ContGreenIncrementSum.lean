@@ -1,36 +1,37 @@
-/-
+import Sandpile.Support.ContGreenIncrement
+import Sandpile.Support.Radial
+import Sandpile.Support.TightKernel
+import LatticeProb.Support.ContSums
+
+/-!
+# The double time sum of the squared Green increment
+
 The double time sum of the squared Green increment, summed.
 
 `ContGreenIncrement` bounds the summand `Γ_s(x,x')` of the identity
 
   `∑_z (g_k(x,z) - g_k(x',z))^2 = ∑_{a<k} ∑_{b<k} Γ_{a+b}(x,x')`
 
-in two ways: crudely, `|Γ_s| ≤ C s^{-d/2}`, and paired over two consecutive
-times, `|Γ_s + Γ_{s+1}| ≤ C (|x-x'|+1)^{1-θ} s^{-(d+1-θ)/2}` for any `θ` in the
-unit interval.  This module carries out the summation.
+in two ways: crudely, `|Γ_s| ≤ C s^{-d/2}`, and paired over two consecutive times,
+`|Γ_s + Γ_{s+1}| ≤ C (|x-x'|+1)^{1-θ} s^{-(d+1-θ)/2}` for any `θ` in the unit interval. This
+module carries out the summation.
 
-For each fixed `a` the inner sum over `b` is split into consecutive pairs, so
-that every pair is an instance of the paired bound at the time `a+2j`, with one
-unpaired term left over when `k` is odd.  The resulting double sum of
-`(1+a+2j)^{-(d+1-θ)/2}` is bounded by counting the square `[0,k)^2` by the
-larger of the two indices: the diagonal shell `max(a,j) = s` has `2s+1` cells,
-so the double sum is at most `2 ∑_{s<k} (1+s)^{1-(d+1-θ)/2}`, which the
-telescoping power sum of `Radial` bounds by a multiple of
-`(1+k)^{(3-d+θ)/2}`.  The exponent condition for that sum to converge is
-`(d+1-θ)/2 < 2`, that is `d < 3 + θ`, which is why the argument runs in every
+For each fixed `a` the inner sum over `b` is split into consecutive pairs, so that every pair is
+an instance of the paired bound at the time `a+2j`, with one unpaired term left over when `k` is
+odd. The resulting double sum of `(1+a+2j)^{-(d+1-θ)/2}` is bounded by counting the square
+`[0,k)^2` by the larger of the two indices: the diagonal shell `max(a,j) = s` has `2s+1` cells, so
+the double sum is at most `2 ∑_{s<k} (1+s)^{1-(d+1-θ)/2}`, which the telescoping power sum of
+`Radial` bounds by a multiple of `(1+k)^{(3-d+θ)/2}`. The exponent condition for that sum to
+converge is `(d+1-θ)/2 < 2`, that is `d < 3 + θ`, which is why the argument runs in every
 dimension at most three and needs a strictly positive `θ` only at `d = 3`.
 
-The exponent is the one the scaling demands: with the prefactor `R^{d-4}` of
-the rescaled field, the lattice separation `R|w-w'|` and the time `R^2 r`,
+The exponent is the one the scaling demands: with the prefactor `R^{d-4}` of the rescaled field,
+the lattice separation `R|w-w'|` and the time `R^2 r`,
 
   `R^{d-4} (R|w-w'|)^{1-θ} (R^2 r)^{(3-d+θ)/2} = |w-w'|^{1-θ} r^{(3-d+θ)/2}` ,
 
 the power of `R` cancelling identically for every `d` and every `θ`.
 -/
-import Sandpile.Support.ContGreenIncrement
-import Sandpile.Support.Radial
-import Sandpile.Support.TightKernel
-import LatticeProb.Support.ContSums
 
 open LatticeProb
 

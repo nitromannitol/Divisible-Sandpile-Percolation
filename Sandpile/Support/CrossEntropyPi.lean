@@ -1,25 +1,21 @@
-/-
-Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2300-2400`), the
-finite-dimensional part of the Cameron--Martin entropy bound.
-
-  "For Gaussian white noise, the relative entropy between the unshifted law on
-   one revealed unit cube and the law shifted by `(L/(𝔪R))dz` is
-   `L²/(2𝔪²R²)`."
-
-The exploration reveals `𝒩` unit cubes, and the shift is the same on each of
-them, so the relative entropy of the shifted law of the revealed noise is `𝒩`
-times the one-dimensional value.  `Sandpile/Support/CrossEntropy.lean` has the
-one-dimensional value `klDiv_gaussianReal_shift`; this module multiplies it over
-the finitely many coordinates the exploration reads.
-
-The product of `n` copies of a Gaussian is carried to the product of the first
-coordinate with the product of the rest by `piFinSuccAbove`, a measurable
-equivalence, and the relative entropy is invariant under one
-(`klDiv_map_measurableEquiv`); the chain rule `klDiv_compProd_eq_add` then
-splits off the first coordinate, whose relative entropy is the one-dimensional
-value, and the remaining factor is the same product with one fewer coordinate.
--/
 import Sandpile.Support.CrossEntropy
+
+/-!
+# The finite-dimensional Cameron-Martin entropy bound
+
+Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2300-2400`), the finite-dimensional part
+of the Cameron-Martin entropy bound: for Gaussian white noise, the relative entropy between
+the unshifted law on one revealed unit cube and the law shifted by `(L/(𝔪R))dz` is
+`L²/(2𝔪²R²)`. The exploration reveals `𝒩` unit cubes, and the shift is the same on each of
+them, so the relative entropy of the shifted law of the revealed noise is `𝒩` times the
+one-dimensional value. `Sandpile/Support/CrossEntropy.lean` has the one-dimensional value
+`klDiv_gaussianReal_shift`; this module multiplies it over the finitely many coordinates the
+exploration reads. The product of `n` copies of a Gaussian is carried to the product of the
+first coordinate with the product of the rest by `piFinSuccAbove`, a measurable equivalence,
+and the relative entropy is invariant under one (`klDiv_map_measurableEquiv`); the chain rule
+`klDiv_compProd_eq_add` then splits off the first coordinate, whose relative entropy is the
+one-dimensional value, and the remaining factor is the same product with one fewer coordinate.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

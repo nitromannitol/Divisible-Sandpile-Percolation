@@ -1,12 +1,15 @@
-/-
-The finite-coordinate form of `D_n` reads only the box `Q(0,n+1)`: the odometer at `x`
-after `n` steps reads the box of radius `n` about `x`, and the neighbour average at the
-origin reads those boxes about the `2d` neighbours.
--/
 import Sandpile.Support.Dgt4ADeviationScenery
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.Stationary
 import Sandpile.Support.Kernel
+
+/-!
+# `D_n` depends on the scenery only through a finite box
+
+The finite-coordinate form of `D_n` reads only the box `Q(0,n+1)`: the odometer at `x` after `n`
+steps reads the box of radius `n` about `x`, and the neighbour average at the origin reads those
+boxes about the `2d` neighbours.
+-/
 
 open MeasureTheory Filter Topology Set
 

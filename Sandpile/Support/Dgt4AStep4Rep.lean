@@ -1,7 +1,10 @@
-/-
-**The integral representation of Step 4 of case (a)**
-(`eq:dgt4-gaussian-integral-representation`, `sandpile.tex:5262-5266`): conditioning on
-`-V_\infty(0)` and changing variables to `y`,
+import Sandpile.Support.Dgt4AStep3Limit
+
+/-!
+# The integral representation of Step 4 of case (a)
+
+The integral representation of Step 4 of case (a) (`eq:dgt4-gaussian-integral-representation`,
+`sandpile.tex:5262-5266`): conditioning on `-V_\infty(0)` and changing variables to `y`,
 
   `\frac{\E u_n(0)}{\Sigma^2\P(-V_\infty(0)>\E u_n(0))}\E(-\zeta(0)-Pu_n(0))_+
      =\int_\R m_n(y)\rho_n(y)\,dy` .
@@ -9,9 +12,8 @@
 The conditioning is already an identity of measures (`integral_iidLaw_gauss_shift`), the
 standard Gaussian carries the explicit density `gaussianPDFReal`
 (`integral_gaussianReal_eq_integral_smul`), and what remains is the affine substitution
-`s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sigma`, which is the lemma below.
+`s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sigma`, which is the change-of-variables lemma below.
 -/
-import Sandpile.Support.Dgt4AStep3Limit
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

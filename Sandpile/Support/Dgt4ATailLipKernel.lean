@@ -1,11 +1,15 @@
-/-
-The `j`-step Lipschitz bound of Step 1 of case (a) in the form the paper writes it
-(`sandpile.tex:5063-5065`): changing `\zeta(z)` by `h>0` changes
-`P^j(V_\infty-u_n)(0)` by at most `h\sum_{r\geq j}p_r(0,z)`, the tail kernel of
-`eq:dgt4-tail-kernel`.
--/
 import Sandpile.Support.Dgt4ATailLip
 import Sandpile.Support.Dgt4ATailKernelEq
+
+/-!
+# The `j`-step Lipschitz bound rewritten with the tail kernel
+
+The `j`-step Lipschitz bound of Step 1 of case (a), in the form the paper writes it
+(`sandpile.tex:5063-5065`): changing `\zeta(z)` by `h > 0` changes `P^j(V_\infty-u_n)(0)` by
+at most `h\sum_{r\geq j}p_r(0,z)`, the tail kernel of `eq:dgt4-tail-kernel`. This file
+identifies that raw heat-kernel sum with the packaged `tailKernel` of
+`Dgt4ATailKernelEq.lean`.
+-/
 
 open MeasureTheory Filter Topology Set
 

@@ -1,15 +1,16 @@
-/-
-The covariance matrix of the linear forms of `thm:critical-toppling` is positive
-semidefinite.
+import Sandpile.External.BerryEsseen
 
-`Sandpile.External.BerryEsseen.gram ν a` is `Var(ν)` times the Gram matrix of
-the coefficient family `a`, so it is symmetric and its quadratic form is a
-nonnegative multiple of a sum of squares.  This is what lets the persistence
-bound for the multivariate Gaussian, which is stated for a covariance matrix, be
-applied to it: the matrix fed to `multivariateGaussian` in
+/-!
+# The covariance matrix of the linear forms is positive semidefinite
+
+The covariance matrix of the linear forms of `thm:critical-toppling` is positive semidefinite.
+
+`Sandpile.External.BerryEsseen.gram ν a` is `Var(ν)` times the Gram matrix of the coefficient
+family `a`, so it is symmetric and its quadratic form is a nonnegative multiple of a sum of
+squares. This is what lets the persistence bound for the multivariate Gaussian, which is stated
+for a covariance matrix, be applied to it: the matrix fed to `multivariateGaussian` in
 `Sandpile.External.MultivariateBerryEsseen` is never an arbitrary matrix.
 -/
-import Sandpile.External.BerryEsseen
 
 open MeasureTheory ProbabilityTheory
 open scoped Matrix

@@ -1,14 +1,18 @@
-/-
-The infinite Gaussian Green field of `eq:dgt4-infinite-green-field`
-(`sandpile.tex:4834-4836`), in the representation fixed for this
-formalization: the limit of the finite-box partial sums along the boxes, not an unordered real `tsum`.  For the Gaussian
-scenery of the threshold branch the partial sums converge in `L²` and almost
-surely, so the limit below is the field the paper uses; on the null set where
-the real limit does not exist the value is zero, and every statement that
-depends on the value is stated in its almost-sure form.
--/
 import Sandpile.Basic
 import Sandpile.Walk
+
+/-!
+# Infinite Gaussian Green field
+
+The infinite Gaussian Green field of `eq:dgt4-infinite-green-field`
+(`sandpile.tex:4834-4836`), in the representation fixed for this
+formalization: the limit of the finite-box partial sums along the boxes, not
+an unordered real `tsum`. For the Gaussian scenery of the threshold branch the
+partial sums converge in `L²` and almost surely, so the limit below is the
+field the paper uses; on the null set where the real limit does not exist the
+value is zero, and every statement that depends on the value is stated in its
+almost-sure form.
+-/
 
 open scoped Classical
 open MeasureTheory Filter Set Topology
@@ -19,6 +23,9 @@ namespace Sandpile
 def greenFieldBox (d : ℕ) (n : ℕ) : Set (Site d) :=
   {z | ∀ i : Fin d, |z i| ≤ (n : ℤ)}
 
+/-- `greenFieldBox d n` is finite: it embeds in the finite product
+`∏ i : Fin d, Icc (-n) n`, so it inherits a `Fintype` instance from that
+embedding. -/
 noncomputable instance greenFieldBoxFintype (d n : ℕ) : Fintype ↑(greenFieldBox d n) := by
   have h1 : greenFieldBox d n
       ⊆ Set.pi (Set.univ : Set (Fin d)) (fun _ => Set.Icc (-(n:ℤ)) (n:ℤ)) := by

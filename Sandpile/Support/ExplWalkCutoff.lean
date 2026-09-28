@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ExplDyadic
+import Sandpile.External.MaxDisplacementProved
+import Sandpile.Support.ContCoeffCoarse
+
+/-!
+# The Walk Cutoff Error
+
 The walk half of the cutoff error of `sandpile.tex:1908-1921`, in the vocabulary
 of the walk, with the maximal-displacement estimate discharged.
 
@@ -29,9 +35,6 @@ any mass is finite; `exists_walk_cutoff_error_of_annulus_bound` is the form with
 no confinement hypothesis and no annulus count, which is what the proof of
 Theorem 1.3(i)(b) uses.
 -/
-import Sandpile.Support.ExplDyadic
-import Sandpile.External.MaxDisplacementProved
-import Sandpile.Support.ContCoeffCoarse
 
 open MeasureTheory Filter Topology
 open scoped NNReal ENNReal

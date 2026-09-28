@@ -1,14 +1,17 @@
-/-
-The cube-killed scaling argument along varying scenery laws with a common
-exponential bound (`sandpile.tex:1950-1955,2640-2647`). The only heat-potential
-limit input is finite-dimensional convergence along the same sequence.
--/
 import Sandpile.Support.D23HeatCoupling
 import Sandpile.Support.KillValueStability
 import Sandpile.Support.KillMeshApproximation
 import Sandpile.Support.KillAssembly
 import Sandpile.Support.KillRadius
 import Sandpile.Support.ExplRewardFamily
+
+/-!
+# Cube-killed scaling along varying scenery laws
+
+The cube-killed scaling argument along varying scenery laws with a common
+exponential bound (`sandpile.tex:1950-1955,2640-2647`). The only heat-potential
+limit input is finite-dimensional convergence along the same sequence.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
@@ -93,7 +96,8 @@ theorem Sandpile.dlt4_killed_scaling_seq_of_fdd
     apply le_trans (measure_mono ?_) (hM₀ (ν j) inferInstance (hmean j) (hexp j) (hK₀ j) R hR1)
     rintro σ ⟨q, hq, hv⟩
     exact ⟨q, hq, (le_max_left M₀ 0).trans_lt hv⟩
-  have hbadO : centeredMassLaw d (ν j) badO ≤ ENNReal.ofReal (δ / 3) := hosc (ν j) inferInstance (hmean j) (hexp j) (hK₀ j) R hR1
+  have hbadO : centeredMassLaw d (ν j) badO ≤ ENNReal.ofReal (δ / 3) :=
+    hosc (ν j) inferInstance (hmean j) (hexp j) (hK₀ j) R hR1
   have hbadC : PW badC = 0 := ae_iff.mp hZcont
   refine ⟨P, hP, hPf, hPs, ?_⟩
   have hsub : {p : (Site d → ℝ) × ΩW | ∃ u ∈ K,
@@ -180,11 +184,13 @@ theorem Sandpile.dlt4_killed_scaling_seq_of_fdd
       le_of_not_gt (fun h => hob ⟨q, hq, (T, u), hcu, hmesh R hRmm T hT.le u, h⟩)
     have hcou : |v p.1 T u - z p.2 T u| ≤ η :=
       le_of_not_gt (fun h => hg ⟨(T, u), hcu, h⟩)
-    have hqval : v p.1 q.1 q.2 = Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y := by
+    have hqval : v p.1 q.1 q.2 =
+        Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y := by
       simpa only [v, q, y, Nat.cast_zero, sub_zero, Nat.sub_zero,
         Support.scaledSite_floor_eq_meshPoint] using
         linInterp_scaledSite R hRp.ne' (scenery d p.1) n 0 (Nat.zero_le n) y
-    have hfield : |Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y - z p.2 T u| ≤ 2 * η := by
+    have hfield : |Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y
+        - z p.2 T u| ≤ 2 * η := by
       rw [← hqval]
       have ht := abs_sub_le (v p.1 q.1 q.2) (v p.1 T u) (z p.2 T u)
       linarith
@@ -202,10 +208,12 @@ theorem Sandpile.dlt4_killed_scaling_seq_of_fdd
     linarith
   calc
     P _ ≤ centeredMassLaw d (ν j) (badM ∪ badO) + P badG + PW badC :=
-      measure_error_le_of_marginals (centeredMassLaw d (ν j)) PW P hPf hPs (badM ∪ badO) badC badG _ hsub
+      measure_error_le_of_marginals (centeredMassLaw d (ν j)) PW P hPf hPs (badM ∪ badO)
+        badC badG _ hsub
     _ ≤ (ENNReal.ofReal (δ / 3) + ENNReal.ofReal (δ / 3)) + ENNReal.ofReal (δ / 3) + 0 := by
       rw [hbadC]
-      exact add_le_add (add_le_add ((measure_union_le _ _).trans (add_le_add hbadM hbadO)) hPgap) le_rfl
+      exact add_le_add
+        (add_le_add ((measure_union_le _ _).trans (add_le_add hbadM hbadO)) hPgap) le_rfl
     _ = ENNReal.ofReal δ := by
       rw [add_zero, ← ENNReal.ofReal_add (by positivity) (by positivity),
         ← ENNReal.ofReal_add (by positivity) (by positivity)]

@@ -1,11 +1,14 @@
-/-
-The second moment of a centred variable from its two-sided Gaussian tail: if
-`\P(t\leq|X|)\leq2e^{-ct^2}` for every `t\geq0` then `\E X^2\leq2/c`.  This is the
-layer-cake step that turns the concentration of `D_n` (`sandpile.tex:5059-5061`) into the
-second-moment bound of Step 1 of case (a).
--/
 import Sandpile.Support.Dgt4ATailPointwise
 import Mathlib.MeasureTheory.Integral.Gamma
+
+/-!
+# Second moment from a two-sided Gaussian tail
+
+The second moment of a centred variable from its two-sided Gaussian tail: if
+`\P(t\leq|X|)\leq2e^{-ct^2}` for every `t\geq0` then `\E X^2\leq2/c`. This is the layer-cake step
+that turns the concentration of `D_n` (`sandpile.tex:5059-5061`) into the second-moment bound of
+Step 1 of case (a).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

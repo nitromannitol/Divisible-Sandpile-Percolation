@@ -1,4 +1,14 @@
-/-
+import Sandpile.Continuum.WhiteNoise
+import Sandpile.Walk
+import Sandpile.Law
+import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
+import Sandpile.Support.HeatPotentialDefs
+import Sandpile.Support.HeatPotentialClauses
+
+/-!
+# Invariance of the heat potential
+
 Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1869-1876`
 (label `prop:dlt4-heat-potential-invariance`):
 
@@ -11,7 +21,8 @@ Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1869-1876`
 The rescaled linear field is defined in the running text just above,
 `sandpile.tex:1833-1839`: "The rescaled linear field is defined by
 \[
-  Z_R(r,w)\coloneqq R^{d/2-2}\sum_{z\in\Z^d} g_{\lfloor R^2r\rfloor}(\lfloor Rw\rfloor,z)\zeta(z)\, .
+  Z_R(r,w)\coloneqq R^{d/2-2}\sum_{z\in\Z^d}
+    g_{\lfloor R^2r\rfloor}(\lfloor Rw\rfloor,z)\zeta(z)\, .
 \]
 Write $Z_R^{\rm lin}$ for the standard interpolation of $Z_R$ from the mesh
 $R^{-2}\Z_+\times R^{-1}\Z^d$."  The limit `Z` is the Gaussian heat potential of
@@ -61,13 +72,6 @@ scenery, which is the `Var(ζ(0))` appearing in `Z`, is `variance id ν`.
 supported; no junk value arises.  `⌊R^2 r⌋` is `Nat.floor`, which agrees with
 the paper's floor on the range `r ≥ 0` where it is used.
 -/
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.Walk
-import Sandpile.Law
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Support.HeatPotentialClauses
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

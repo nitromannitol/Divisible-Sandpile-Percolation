@@ -1,35 +1,3 @@
-/-
-Theorem 1.1 of sandpile.tex, frozen.  `sandpile.tex:95-103`
-(label `thm:main-nontriviality`):
-
-  "Let $d\geq2$, let $(\mu_\rho)_{\rho\in(0,1]}$ be a family of laws with mean
-   $\E_{\mu_\rho}\sigma(0)=\rho$, and let the masses be i.i.d. with law
-   $\mu_\rho$.  Suppose there are $\rho_0\in(0,1)$, $\nu_0>0$, $\theta_0>0$, and
-   $K_0<\infty$ such that [uniform variance and exponential-moment bounds].
-   Then there is $\rho_+\in[\rho_0,1)$ such that $\mathcal T^{(\rho)}$ contains
-   an infinite nearest-neighbor component almost surely for every
-   $\rho\in(\rho_+,1)$."
-
-The threshold `ρ₊` is bound after the family, so it is a genuine constant of
-the model and not a function of `ρ`.  The exponential-moment bound is stated
-together with the integrability of the exponential, as the paper's `K₀ < ∞`
-requires: the Bochner integral of a non-integrable nonnegative function is zero,
-so the bound alone would hold for every law with no exponential moment.
-
-The proof reduces to Theorem 1.2, whose own proof carries the cited inputs
-`PlanarRSW`, `LSSDomination` and `ExteriorBoundaryConnected`; those three inputs
-are hypotheses here.
-
-The threshold `ρ₊`.  The paper writes `ρ₊ = ρ₊(d,(μ_ρ)) ∈ [ρ₀,1)`, and the two
-halves of that phrase pull in different directions: the annotation names `d` and
-the family, while the membership `ρ₀ ≤ ρ₊` ties the threshold to the witness
-`ρ₀`, since for a valid witness above a witness-independent `ρ₊` the membership
-would fail.  The threshold is therefore bound here after `ρ₀`, `ν₀`, `θ₀` and
-`K₀`, which is the reading under which both halves hold.  What the theorem's
-content rests on is the other side of the binding, and it is what this statement
-asserts: `ρ₊` is fixed before the density `ρ`, so one threshold serves every
-`ρ ∈ (ρ₊,1)`.
--/
 import Sandpile.Law
 import Sandpile.External.BallGreenBounds
 import Sandpile.External.PlanarRSW
@@ -38,6 +6,21 @@ import Sandpile.External.ExteriorBoundaryConnected
 import Sandpile.External.GreenBoundsHighProved
 import Sandpile.External.VarianceScaleProved
 import Sandpile.Support.ExplNontriviality
+
+/-!
+# Percolation below criticality, frozen
+
+Theorem 1.1 of `sandpile.tex`, frozen (`sandpile.tex:95-103`, label `thm:main-nontriviality`):
+for `d ≥ 2`, a family of laws `(μ_ρ)` with mean `ρ` and uniform variance and exponential-moment
+bounds near `ρ = 1`, there is a threshold `ρ₊ ∈ [ρ₀, 1)`, depending on the family but not on `ρ`,
+such that the toppled set contains an infinite nearest-neighbor component almost surely for every
+`ρ ∈ (ρ₊, 1)`. The threshold is bound after `ρ₀, ν₀, θ₀, K₀` so that it is genuinely uniform: one
+`ρ₊` serves every density above it. The proof reduces to Theorem 1.2 (`critical_level_percolation`),
+whose own proof carries the cited inputs `PlanarRSW`, `LSSDomination` and
+`ExteriorBoundaryConnected`, so those three, together with the further cited inputs
+`ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity` and `CubeStoppingStability` that
+`Sandpile.Support.percolation_below_criticality_of_critical_levels` needs, are hypotheses here.
+-/
 
 open MeasureTheory ProbabilityTheory
 

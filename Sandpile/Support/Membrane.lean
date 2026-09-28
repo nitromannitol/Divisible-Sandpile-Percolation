@@ -1,16 +1,17 @@
-/-
-The membrane field of `sandpile.tex`, `eq:membrane-recursion`, is defined here by
-its recursion `V_{n+1} = ζ + P V_n`.  The paper also writes it in Green form,
-`eq:linear-green-field`,
-
-  `V_n(x) = ∑_{k<n} ∑_y p_k(x,y) ζ(y) = ∑_y g_n(x,y) ζ(y)`,
-
-and that is the form every estimate in the paper uses.  The two agree; that is
-what this file proves.  The sums are honest `tsum`s rather than sums over a box:
-`g_n(x, ·)` is supported in the box of radius `n` about `x`, so every series here
-is summable whatever the scenery, by `summable_greenTime_mul`.
--/
 import Sandpile.Support.Kernel
+
+/-!
+# The membrane field agrees with its Green-function form
+
+The membrane field of `sandpile.tex`, `eq:membrane-recursion`, is defined elsewhere by its
+recursion `V_{n+1} = ζ + P V_n`. The paper also writes it in Green form,
+`eq:linear-green-field`, `V_n(x) = ∑_{k<n} ∑_y p_k(x,y) ζ(y) = ∑_y g_n(x,y) ζ(y)`, and that is
+the form every estimate in the paper uses. The two agree; `membrane_eq_greenTime` proves it,
+by induction using the one-step recursion for the finite-time Green kernel
+(`greenTime_succ_avg`). The sums are honest `tsum`s rather than sums over a box: `g_n(x, ·)` is
+supported in the box of radius `n` about `x`, so every series here is summable whatever the
+scenery, by `summable_greenTime_mul`.
+-/
 
 namespace Sandpile
 

@@ -1,10 +1,19 @@
-/-
-Four long rectangle crossings around a square annulus, with uniform positive
-probability and independence at separated scales.
--/
 import Sandpile.Support.CrossLocalEvents
 import Sandpile.Support.CrossFixedScaleZero
 import Sandpile.Support.LimSymmetry
+
+/-!
+# Four-crossing avoidance around a square annulus
+
+Four long rectangle crossings around a square annulus, with uniform positive probability and
+independence at separated scales. The four side rectangles of an annulus centred at `x` with
+radius `r` each have a uniform positive zero-level crossing probability, obtained from the RSW
+estimate and a symmetry transfer that centres the crossing rectangle. Annuli whose radii grow
+by a factor of eight are separated by more than the dependence range of the unit ball field,
+so the four-crossing events at successive scales are independent, giving a geometric bound on
+the probability that none of the first `n` annuli is crossed on all four sides. The same bound
+is transferred to nonpositive crossings by negating the white-noise field.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal
@@ -39,23 +48,37 @@ theorem measure_crossing_general_same_level {Ω : Type*} [MeasurableSpace Ω]
   exact crosses_image_of_symmetry (rectSymmetry_maps_rect a b i)
     (rectSymmetry_face_lo a b i) (rectSymmetry_face_hi a b i) hω
 
-/-- The four side rectangles have width four and thickness one. -/
+/-- The four side rectangles have width four and thickness one: `annulusSideLo j` is the low
+corner, in units of the radius `r`, of the `j`-th side rectangle of the annulus. -/
 def annulusSideLo : Fin 4 → Fin 2 → ℝ := ![![-2, 1], ![-2, -2], ![1, -2], ![-2, -2]]
+/-- The high corner, in units of the radius `r`, matching `annulusSideLo`, so together they
+cut out the four side rectangles of the square annulus. -/
 def annulusSideHi : Fin 4 → Fin 2 → ℝ := ![![2, 2], ![2, -1], ![2, 2], ![-1, 2]]
+/-- The crossing direction of the `j`-th annulus side rectangle: coordinate `0` for the
+horizontal sides and coordinate `1` for the vertical sides. -/
 def annulusSideDir : Fin 4 → Fin 2 := ![0, 0, 1, 1]
 
+/-- The low corner of the `j`-th side rectangle of the annulus centred at `x` with radius `r`,
+namely `x` shifted by the scaled offset `annulusSideLo j`. -/
 def annulusLo (x : Space 2) (r : ℝ) (j : Fin 4) (k : Fin 2) : ℝ :=
   x k + r * annulusSideLo j k
+/-- The high corner of the `j`-th side rectangle of the annulus centred at `x` with radius
+`r`, namely `x` shifted by the scaled offset `annulusSideHi j`. -/
 def annulusHi (x : Space 2) (r : ℝ) (j : Fin 4) (k : Fin 2) : ℝ :=
   x k + r * annulusSideHi j k
 
+/-- Side `j` of the annulus has length `4 * r` in its crossing direction `annulusSideDir j`
+and thickness `r` in the other coordinate. -/
 theorem annulus_lengths (x : Space 2) (r : ℝ) (j : Fin 4) :
     annulusHi x r j (annulusSideDir j) - annulusLo x r j (annulusSideDir j) = 4 * r ∧
     annulusHi x r j (swapIdx (annulusSideDir j)) -
       annulusLo x r j (swapIdx (annulusSideDir j)) = r := by
   fin_cases j <;>
-    norm_num [annulusHi, annulusLo, annulusSideHi, annulusSideLo, annulusSideDir, swapIdx] <;> constructor <;> ring
+    norm_num [annulusHi, annulusLo, annulusSideHi, annulusSideLo, annulusSideDir, swapIdx] <;>
+      constructor <;> ring
 
+/-- Each side rectangle of the annulus is nondegenerate: its low corner is strictly below its
+high corner in both coordinates, given a positive radius `r`. -/
 theorem annulus_nondegenerate (x : Space 2) {r : ℝ} (hr : 0 < r) (j : Fin 4) (k : Fin 2) :
     annulusLo x r j k < annulusHi x r j k := by
   fin_cases j <;> fin_cases k <;>
@@ -65,6 +88,8 @@ theorem annulus_nondegenerate (x : Space 2) {r : ℝ} (hr : 0 < r) (j : Fin 4) (
 def annulusRegion (x : Space 2) (r : ℝ) : Set (Space 2) :=
   {u | r ≤ ‖u - x‖ ∧ ‖u - x‖ ≤ 3 * r}
 
+/-- Each side rectangle of the annulus centred at `x` with radius `r` sits inside the
+Euclidean annulus `annulusRegion x r`, that is, between distance `r` and `3 * r` from `x`. -/
 theorem annulus_rect_subset (x : Space 2) {r : ℝ} (hr : 0 ≤ r) (j : Fin 4) :
     rectSet (annulusLo x r j) (annulusHi x r j) ⊆ annulusRegion x r := by
   intro u hu
@@ -79,7 +104,8 @@ theorem annulus_rect_subset (x : Space 2) {r : ℝ} (hr : 0 ≤ r) (j : Fin 4) :
     have hpos := le_abs_self (u (swapIdx (annulusSideDir j)) - x (swapIdx (annulusSideDir j)))
     have hneg := neg_le_abs (u (swapIdx (annulusSideDir j)) - x (swapIdx (annulusSideDir j)))
     fin_cases j <;>
-      norm_num [annulusLo, annulusHi, annulusSideLo, annulusSideHi, annulusSideDir, swapIdx] at h ⊢ <;>
+      norm_num [annulusLo, annulusHi, annulusSideLo, annulusSideHi, annulusSideDir, swapIdx]
+        at h ⊢ <;>
       linarith [h.1, h.2]
   constructor
   · apply hl.trans
@@ -104,7 +130,8 @@ theorem uniform_annulus_side_crossing (hRSW : Sandpile.External.ContinuumRSW) :
           c ≤ P.real {ω | Crosses (annulusLo x r j) (annulusHi x r j) (annulusSideDir j)
             {u | 0 ≤ X u ω}} := by
   obtain ⟨c, hc, hbound⟩ := uniform_zero_crossing_constant hRSW 4 (by norm_num)
-  refine ⟨min c (1 / 2), lt_min hc (by norm_num), lt_of_le_of_lt (min_le_right _ _) (by norm_num), ?_⟩
+  refine ⟨min c (1 / 2), lt_min hc (by norm_num),
+      lt_of_le_of_lt (min_le_right _ _) (by norm_num), ?_⟩
   intro Ω _ P _ X hm hcont hsym hass x r hr j
   have h := hbound Ω P X hm hcont hsym hass (r / 2) (by norm_num; linarith)
   have hcents : centLo (annulusLo x r j) (annulusHi x r j) (annulusSideDir j) =

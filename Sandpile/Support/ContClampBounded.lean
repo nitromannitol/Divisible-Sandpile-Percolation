@@ -1,11 +1,16 @@
-/-
-Boundedness and integrability of the clamped field's stopping payoffs, from a
-polynomial bound on the field.  These are the two side conditions the measurability
-of the clamped value needs.
--/
 import Sandpile.Support.ContValueClamp
 import Sandpile.Support.ExplCutoffError
 import Sandpile.Support.StopMeasurable
+
+/-!
+# Boundedness and integrability of the clamped field's stopping payoffs
+
+Boundedness and integrability of the clamped field's stopping payoffs, from a polynomial bound
+`|h t y| ≤ C * (1 + ‖y‖) ^ k` on the field. These are the two side conditions the measurability of
+the clamped value needs: the clamp `clampField d n h` inherits a uniform bound `C * (1 + n) ^ k`
+from that polynomial bound, which in turn bounds the stopping payoffs and makes every bounded
+stopped payoff of the clamped field integrable.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set Metric
 open scoped NNReal ENNReal
@@ -23,7 +28,8 @@ theorem bddAbove_stoppingPayoffs_clampField {ΩB : Type*} [MeasurableSpace ΩB]
     (hint : ∀ τ : ΩB → ℝ≥0, IsBrownianStopping B τ → (∀ ω, (τ ω : ℝ) ≤ T) →
       Integrable (fun ω => -clampField d n h (T - τ ω) (B (τ ω) ω)) PB) :
     BddAbove (stoppingPayoffs B PB (clampField d n h) T) := by
-  exact Sandpile.Continuum.bddAbove_stoppingPayoffs_of_bound B PB (clampField d n h) T (C * (1 + n) ^ k) (fun s y => abs_clampField_le h C k hC hk hbound hn s y) hint
+  exact Sandpile.Continuum.bddAbove_stoppingPayoffs_of_bound B PB (clampField d n h) T
+    (C * (1 + n) ^ k) (fun s y => abs_clampField_le h C k hC hk hbound hn s y) hint
 
 /-- The stopped payoff of the clamped field is integrable, for every bounded stopping
 time, because the clamped field is bounded by `C * (1 + n) ^ k`. -/

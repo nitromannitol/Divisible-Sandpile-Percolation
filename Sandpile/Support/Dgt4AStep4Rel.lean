@@ -1,19 +1,20 @@
-/-
-**Step 4 of case (a) for the threshold comparison**
-(`eq:dgt4-contact-threshold-relative-error`, `sandpile.tex:4977-4980` and
-`sandpile.tex:5283-5286`): "\eqref{eq:dgt4-gaussian-conditional-contact} likewise gives
-\eqref{eq:dgt4-contact-threshold-relative-error} in case (a)".
+import Sandpile.Support.Dgt4AStep4Prob
 
-The conditioning of `Support/Dgt4AStep4Repr.lean` applies verbatim with the indicator of the
-symmetric difference in place of the reflection term.  At the level `y` the threshold event
-is deterministic, because the conditioned field at the origin is
-`-(\E u_n(0)+\Sigma^2y/\E u_n(0))`: it holds for `y>0` and fails for `y<0`.  So the
+/-!
+# Step 4 of case (a) for the threshold comparison
+
+Step 4 of case (a) for the threshold comparison (`eq:dgt4-contact-threshold-relative-error`,
+`sandpile.tex:4977-4980` and `sandpile.tex:5283-5286`): the conditional-contact estimate
+likewise gives the threshold relative-error estimate in case (a). The conditioning of
+`Support/Dgt4AStep4Repr.lean` applies verbatim with the indicator of the symmetric
+difference in place of the reflection term. At the level `y` the threshold event is
+deterministic, because the conditioned field at the origin is
+`-(\E u_n(0)+\Sigma^2y/\E u_n(0))`: it holds for `y>0` and fails for `y<0`. So the
 conditional probability of the symmetric difference is the conditional contact probability
 for `y<0` and its complement for `y>0`, and both tend to zero by
-`Support/Dgt4AStep4Prob.lean`.  The same dominating function as for the mean serves here,
+`Support/Dgt4AStep4Prob.lean`. The same dominating function as for the mean serves here,
 since the conditional probability is at most one.
 -/
-import Sandpile.Support.Dgt4AStep4Prob
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal
@@ -37,13 +38,19 @@ def contactSet (d : ℕ) (n : ℕ) : Set (Site d → ℝ) := {ζ | odometerOf ζ
 def thresholdSet (d : ℕ) (v : ℝ≥0) (n : ℕ) : Set (Site d → ℝ) :=
   {ζ | meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n < -infiniteGreenField ζ 0}
 
+/-- `contactSet d n` is measurable, being the level set where the measurable map
+`odometerOf (n+1) 0` equals `0`. -/
 theorem measurableSet_contactSet (d : ℕ) (n : ℕ) : MeasurableSet (contactSet d n) :=
   measurableSet_eq_fun (measurable_odometerOf (n + 1) 0) measurable_const
 
+/-- `thresholdSet d v n` is measurable, being the strict sublevel set of the measurable map
+`fun ζ => -infiniteGreenField ζ 0`. -/
 theorem measurableSet_thresholdSet (d : ℕ) (v : ℝ≥0) (n : ℕ) :
     MeasurableSet (thresholdSet d v n) :=
   measurableSet_lt measurable_const (measurable_infiniteGreenField (0 : Site d)).neg
 
+/-- The symmetric difference of `contactSet` and `thresholdSet` is measurable, being a
+symmetric difference of two measurable sets. -/
 theorem measurableSet_symmSet (d : ℕ) (v : ℝ≥0) (n : ℕ) :
     MeasurableSet (symmDiff (contactSet d n) (thresholdSet d v n)) :=
   (measurableSet_contactSet d n).symmDiff (measurableSet_thresholdSet d v n)
@@ -54,6 +61,8 @@ noncomputable def condSymmProb (d : ℕ) (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) 
       (condScenery d hd (Real.sqrt (v : ℝ)) r (condLevel d hd v y n))
     ∂((LatticeProb.gaussLaw (Site d)).map (residField d hd))
 
+/-- `condScenery`, precomposed with `condLevel`, is jointly measurable in the pair `(y, r)` of
+the level parameter `y` and the residual `r`. -/
 theorem measurable_condScenery_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun p : ℝ × (Site d → ℝ) =>
       condScenery d hd c p.2 (condLevel d hd v p.1 n)) := by
@@ -64,6 +73,9 @@ theorem measurable_condScenery_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n : 
   refine Measurable.add ((measurable_pi_apply z).comp measurable_snd) ?_
   exact ((measurable_condLevel hd v n).comp measurable_fst).mul_const _
 
+/-- `condSymmProb` is measurable in the level `y`, obtained by integrating the jointly
+measurable indicator of the symmetric difference, precomposed with the conditioned scenery,
+over the residual. -/
 theorem measurable_condSymmProb (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condSymmProb d hd v n y) := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
@@ -75,6 +87,8 @@ theorem measurable_condSymmProb (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
       (measurable_condScenery_pair hd (Real.sqrt (v : ℝ)) v n))).stronglyMeasurable
   exact hjoint.integral_prod_right'.measurable
 
+/-- `condSymmProb` at the level `y` is the probability, as a real number, that the
+conditioned scenery lands in the symmetric difference of the contact and threshold events. -/
 theorem condSymmProb_eq_measure (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     condSymmProb d hd v n y
       = (((LatticeProb.gaussLaw (Site d)).map (residField d hd))
@@ -104,11 +118,14 @@ theorem condSymmProb_eq_measure (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ)
   rw [integral_congr_ae (Filter.Eventually.of_forall hfun),
     integral_indicator_const (1 : ℝ) hpre, smul_eq_mul, mul_one, measureReal_def]
 
+/-- `condSymmProb` is nonnegative, being the real part of a measure. -/
 theorem condSymmProb_nonneg (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     0 ≤ condSymmProb d hd v n y := by
   rw [condSymmProb_eq_measure]
   exact ENNReal.toReal_nonneg
 
+/-- `condSymmProb` is at most `1`, being the real part of the measure of a set under the
+probability measure `(LatticeProb.gaussLaw (Site d)).map (residField d hd)`. -/
 theorem condSymmProb_le_one (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     condSymmProb d hd v n y ≤ 1 := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=

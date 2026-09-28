@@ -1,22 +1,23 @@
-/-
-The two-term bound at a fixed set of geometric scales.
-
-This is the probabilistic core of `thm:critical-toppling`.  Testing the odometer
-against the membrane field at the times `n_j = N q^j` puts the lower event
-inside an orthant of the standardized fields; the multivariate Berry-Esseen
-comparison replaces that orthant probability by the Gaussian one at the cost of
-the third absolute moment of the coefficients; the covariance matrix is nearly
-isotropic once `q` is large, so the Gaussian orthant is at most `κ^m` with
-`κ < 1`; and the third moment is the sum over the scales of the Green supremum
-against its own standard deviation.  What is left after this is real arithmetic
-in `t` and `L`: the choice of `N`, the count `m` of scales, the verification
-that the thresholds are below one, and the passage from `κ^m` to `L^{-c}`.
--/
 import Sandpile.Support.EventBridge
 import Sandpile.Support.GaussPersist
 import Sandpile.Support.Spectral
 import Sandpile.Support.ScaleRates
 import Sandpile.Support.ThirdMoment
+
+/-!
+# The two-term bound at a fixed set of geometric scales
+
+This is the probabilistic core of `thm:critical-toppling`. Testing the odometer against the
+membrane field at the times `n_j = N q^j` puts the lower event inside an orthant of the
+standardized fields; the multivariate Berry-Esseen comparison replaces that orthant probability
+by the Gaussian one at the cost of the third absolute moment of the coefficients; the covariance
+matrix is nearly isotropic once `q` is large, so the Gaussian orthant is at most `κ^m` with
+`κ < 1` (`gaussian_orthant_le_kappa`); and the third moment is the sum over the scales of the
+Green supremum against its own standard deviation. `exists_critical_scale_bound` assembles these
+into the two-term bound. What is left after this is real arithmetic in `t` and `L`: the choice
+of `N`, the count `m` of scales, the verification that the thresholds are below one, and the
+passage from `κ^m` to `L^{-c}`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.External.BerryEsseen

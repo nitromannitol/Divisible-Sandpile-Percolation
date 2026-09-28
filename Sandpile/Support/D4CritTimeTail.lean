@@ -1,21 +1,25 @@
-/-
-Step 2 of the dimension-four critical-level percolation proof
-(`sandpile.tex:4028-4046`): the infinite-time ball Green field is replaced by
-its finite-time version.  The coefficient vector of the difference is the
-finite-time tail `q_{r,A}` of `eq:d4ball-time-tail`, whose maximum is `C r^{-2}`
-and whose square sum is `C`, so the weighted exponential concentration of
-`lem:weighted-exp-conc` gives a `C exp(-c min(s², s r²))` deviation bound,
-uniformly in the site and in the horizon.
--/
 import Sandpile.Support.TwoScaleTail
 import Sandpile.Support.NearKernel
 import Sandpile.Frozen.D4FiniteRangeLowerBound
+
+/-!
+# Step 2: the finite-time truncation of the ball Green field
+
+Step 2 of the dimension-four critical-level percolation proof (`sandpile.tex:4028-4046`): the
+infinite-time ball Green field is replaced by its finite-time version. The coefficient vector of
+the difference is the finite-time tail `q_{r,A}` of `eq:d4ball-time-tail`, whose maximum is
+`C r^{-2}` and whose square sum is `C`, so the weighted exponential concentration of
+`lem:weighted-exp-conc` gives a `C exp(-c min(s², s r²))` deviation bound, uniformly in the site
+and in the horizon.
+-/
 
 open MeasureTheory
 
 noncomputable section
 namespace Sandpile
 
+/-- If `u` lies outside `boxFinset 0 r`, it also lies outside `External.BallGreen.box r`: the
+two describe the same box, one via `Finset` membership and the other via a sup-norm bound. -/
 lemma notMem_box_of_notMem_boxFinset (r : ℕ) {u : Site 4} (hu : u ∉ boxFinset 0 r) :
     u ∉ External.BallGreen.box r := by
   intro hb
@@ -25,12 +29,18 @@ lemma notMem_box_of_notMem_boxFinset (r : ℕ) {u : Site 4} (hu : u ∉ boxFinse
   intro i _
   simpa only [Pi.zero_apply, zero_sub, Int.natAbs_neg] using hb i
 
+/-- `frCube` and `ballCube` denote the same box. -/
 lemma frCube_eq_ballCube (x : Site 4) (L : ℝ) : frCube x L = ballCube x L := rfl
 
+/-- The floor of `(Aex : ℝ) * (r : ℝ) ^ 2` recovers the natural number `Aex * r ^ 2`
+exactly. -/
 lemma floor_natCast_mul_sq (Aex r : ℕ) : ⌊(Aex : ℝ) * (r : ℝ) ^ 2⌋₊ = Aex * r ^ 2 := by
   rw [show (Aex : ℝ) * (r : ℝ) ^ 2 = ((Aex * r ^ 2 : ℕ) : ℝ) by push_cast; ring,
     Nat.floor_natCast]
 
+/-- The finite-time tail `External.BallGreen.timeTail r A` vanishes outside
+`boxFinset 0 r`, since both the infinite-time and finite-time killed Green
+functions vanish there. -/
 lemma timeTail_eq_zero_of_notMem_boxFinset (r : ℕ) (A : ℝ) {u : Site 4}
     (hu : u ∉ boxFinset 0 r) : External.BallGreen.timeTail r A u = 0 := by
   unfold External.BallGreen.timeTail

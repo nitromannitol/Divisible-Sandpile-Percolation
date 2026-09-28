@@ -1,4 +1,6 @@
-/-
+import Sandpile.Support.Dgt4AStep1Gaussian
+
+/-!
 The two elementary inputs that Step 2 of case (a) takes from Step 1
 (`sandpile.tex:5104-5107`): "By `eq:dgt4-centered-value-decay`, stationarity, Jensen's
 inequality, and `eq:dgt4-mean-increment-bound`".
@@ -8,7 +10,6 @@ second moment of Step 1 into a first moment; stationarity is that `P^k` preserve
 of a functional whose mean does not depend on the site, since the heat kernel is a
 probability.
 -/
-import Sandpile.Support.Dgt4AStep1Gaussian
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

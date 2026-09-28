@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.Dgt4ABandStep23
+import Sandpile.Support.Dgt4ATestedLinearizationSequence
+import Sandpile.Support.ManyLStep3Input
+import Sandpile.Support.ManyLSubseq
+import Sandpile.Frozen.WeightedMembraneLimit
+
+/-! # Composing Step 3: contact thresholds to field limits
+
 Step 3: from the contact thresholds to the field limits.
 
 The repository has Step 3's two halves but never composes them, so nothing
@@ -16,11 +23,6 @@ one converges to the same limit.  The weight the many-limits construction uses i
 `q t = (1 - t/T)^κ`, and at that weight the general covariance is the `κ`
 covariance, which is what the frozen statement names.
 -/
-import Sandpile.Support.Dgt4ABandStep23
-import Sandpile.Support.Dgt4ATestedLinearizationSequence
-import Sandpile.Support.ManyLStep3Input
-import Sandpile.Support.ManyLSubseq
-import Sandpile.Frozen.WeightedMembraneLimit
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -46,6 +48,9 @@ theorem generalWeightedMembraneCov_eq_weighted (d : ℕ) (v T κ : ℝ) :
 inductive TrivTwo | a | b
 deriving DecidableEq
 
+/-- `TrivTwo` carries the trivial (bottom) σ-algebra `{∅, univ}`, so on it the only
+measurable functions are the a.e.-constant ones, which is what the refutation below
+exploits. -/
 instance : MeasurableSpace TrivTwo := ⊥
 
 /-! ### A Slutsky step in negative Sobolev is NOT available as first stated

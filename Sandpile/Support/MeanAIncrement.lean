@@ -1,25 +1,20 @@
-/-
-The `L²` increments of the finite-time Brownian Green kernel `g^{BM}_t(x,·)` of
-`eq:brownian-heat-green-kernels`, in space and in time.  They are what the
-Kolmogorov criterion needs of the Gaussian heat potential
-`eq:dlt4-linear-gaussian-potential`, whose increment `Z(t,x) - Z(s,y)` is a
-centred Gaussian of variance `Var(ζ(0))‖g_t(x,·) - g_s(y,·)‖²`.
-
-Both increments are read off the continuum Green identity
-`integral_greenTimeBM_mul_two`: the `L²` pairing of two Green kernels is the
-double time integral of the heat kernel between the base points.  The space
-increment at a fixed time is therefore twice the double time integral of
-`p_r(x,x) - p_r(x,y)`, and that difference carries a factor `‖x-y‖^{1/2}` at the
-price of a quarter power of the time,
-
-  `p_r(x,x) - p_r(x,y) ≤ C_d ‖x-y‖^{1/2} r^{-(2d+1)/4}` ,
-
-because `1 - e^{-z} ≤ z^{1/4}`.  Splitting `r = s + u` by
-`(s+u)^{-e} ≤ 2^{-e}s^{-e/2}u^{-e/2}` turns the double time integral into the
-square of a single one, which converges below dimension four since
-`(2d+1)/8 < 1` for `d ≤ 3`.  No change of variables is needed anywhere.
--/
 import Sandpile.Support.ContBMGreenIdentity
+
+/-!
+# `L²` increments of the finite-time Green kernel
+
+The `L²` increments of the finite-time Brownian Green kernel `g^{BM}_t(x,·)` of
+`eq:brownian-heat-green-kernels`, in space and in time: what the Kolmogorov criterion needs of
+the Gaussian heat potential, whose increment `Z(t,x) - Z(s,y)` is a centred Gaussian of variance
+`Var(ζ(0))‖g_t(x,·) - g_s(y,·)‖²`. Both increments are read off the continuum Green identity
+`integral_greenTimeBM_mul_two`, which writes the `L²` pairing of two Green kernels as the double
+time integral of the heat kernel between the base points; the space increment at a fixed time is
+then twice the double time integral of `p_r(x,x) - p_r(x,y) ≤ C_d ‖x-y‖^{1/2} r^{-(2d+1)/4}`,
+using `1 - e^{-z} ≤ z^{1/4}`. Splitting `r = s + u` by
+`(s+u)^{-e} ≤ 2^{-e}s^{-e/2}u^{-e/2}` turns the double time integral into the square of a single
+one, which converges below dimension four since `(2d+1)/8 < 1` for `d ≤ 3`, with no change of
+variables needed anywhere.
+-/
 
 open MeasureTheory
 open scoped NNReal Real ENNReal
@@ -71,6 +66,7 @@ theorem rpow_add_le_mul_rpow {e r r' : ℝ} (he : 0 ≤ e) (hr : 0 < r) (hr' : 0
 noncomputable def greenDiffConst (d : ℕ) : ℝ :=
   (2 * Real.pi / (d : ℝ)) ^ (-(d : ℝ) / 2) * ((d : ℝ) / 2) ^ ((1 : ℝ) / 4)
 
+/-- `greenDiffConst d` is positive. -/
 theorem greenDiffConst_pos (hd : 1 ≤ d) : 0 < greenDiffConst d := by
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
   have hpi := Real.pi_pos
@@ -426,6 +422,7 @@ theorem integral_prod_diagKernel_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {t : ℝ} (S 
 noncomputable def greenTimeFactor (d : ℕ) (T : ℝ) : ℝ :=
   T ^ (1 - (d : ℝ) / 4) / (1 - (d : ℝ) / 4)
 
+/-- `greenTimeFactor d T` is nonnegative below dimension four. -/
 theorem greenTimeFactor_nonneg (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) :
     0 ≤ greenTimeFactor d T := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -433,6 +430,8 @@ theorem greenTimeFactor_nonneg (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) :
   rw [greenTimeFactor]
   exact div_nonneg (Real.rpow_nonneg hT _) hc.le
 
+/-- The time integral `∫_0^t r^{-d/4} dr` is bounded by `greenTimeFactor d T` for every
+`t ≤ T`. -/
 theorem integral_Ioo_rpow_le_factor (hd3 : d ≤ 3) {t T : ℝ} (ht : 0 ≤ t) (htT : t ≤ T) :
     ∫ r in Set.Ioo (0 : ℝ) t, r ^ (-(d : ℝ) / 4) ≤ greenTimeFactor d T := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -462,6 +461,8 @@ theorem integral_greenTimeBM_sq_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {t T : ℝ} (h
     exact Real.rpow_nonneg hr.1.le _
   exact mul_le_mul h1 h1 h0 (greenTimeFactor_nonneg hd3 (le_trans ht htT))
 
+/-- The squared increment of the Green kernel is integrable, since each Green kernel lies
+in `L²`. -/
 theorem integrable_greenTimeBM_sub_sq (hd : 1 ≤ d) (hd3 : d ≤ 3) {t s : ℝ} (ht : 0 ≤ t)
     (hs : 0 ≤ s) (x y : Space d) :
     Integrable (fun w : Space d => (greenTimeBM d t x w - greenTimeBM d s y w) ^ 2) volume := by

@@ -1,15 +1,23 @@
-/-
+import Sandpile.Support.ExplOptionalSampling
+
+/-!
+# Bounded Optional Sampling for Continuous Martingales
+
 Bounded optional sampling for continuous martingales.
 
 The upper dyadic stopped values are conditional expectations of one integrable
 terminal value. Their uniform integrability and pathwise convergence imply
 integrability and preservation of expectation at every bounded stopping time.
 -/
-import Sandpile.Support.ExplOptionalSampling
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 
+/-- For a continuous martingale `M` and a stopping time `τ` bounded by `T`, the stopped value
+`M τ` is integrable and has the same expectation as `M 0`: approximate `τ` from above by the
+dyadic times `LatticeProb.dyUp n τ`, whose stopped values are conditional expectations of
+`M (T + 1)` and hence uniformly integrable, then pass to the a.e. and `L¹` limit along `n`. -/
 theorem integrable_stopped_martingale_eq_of_continuous {Ω : Type*}
     [mΩ : MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
     (𝔽 : Filtration ℝ≥0 mΩ) (M : ℝ≥0 → Ω → ℝ) (hM : Martingale M 𝔽 P)

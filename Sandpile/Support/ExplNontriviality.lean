@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ExplMassShift
+import Sandpile.Support.PercolationEvents
+import Sandpile.Frozen.CriticalLevels
+
+/-!
+# Theorem 1.1 From Theorem 1.2 by a Mass Shift
+
 Theorem 1.1 of `sandpile.tex` (`sandpile.tex:95-104`) from Theorem 1.2
 (`sandpile.tex:113-126`), which is exactly the paper's own derivation at
 `sandpile.tex:317-342`.
@@ -25,9 +31,6 @@ original one is a pushforward: raising every coordinate by `a` maps the i.i.d.
 law of `μ` to the i.i.d. law of the shift of `μ` (`massLaw_map_add_const`), and
 `MeasureTheory.ae_of_ae_map` carries the conclusion back along it.
 -/
-import Sandpile.Support.ExplMassShift
-import Sandpile.Support.PercolationEvents
-import Sandpile.Frozen.CriticalLevels
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal

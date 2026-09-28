@@ -1,40 +1,21 @@
-/-
-Localization lemma of sandpile.tex, frozen.  `sandpile.tex:1612-1617`
-(label `lem:localization-killing`):
-
-  "For every $D\subseteq\Z^d$, every $x\in D$, and every $t\geq0$,
-   \[
-     0\leq u_t(x)-u_t^D(x)
-     \leq\mathbf E_x\bigl[\mathbf 1_{\{\tau_D\leq t\}} u_t(X_{\tau_D})\bigr]\, .
-   \]"
-
-Modelling.  `u_t` is `Sandpile.odometerOf ζ t` and `u_t^D` is
-`Sandpile.localizedOdometer D ζ t`, both driven by a deterministic scenery `ζ`;
-the lemma is a pathwise statement about a fixed scenery, so no law appears.
-The right-hand side is an integral against `Sandpile.walkLaw d x`, the law of
-simple random walk started at `x` on path space `ℕ → Site d`.
-
-`Sandpile.exitTime D X` has type `ℕ∞`, so the event `\{\tau_D\leq t\}` is
-`{X | exitTime D X ≤ (t : ℕ∞)}` and the walk is evaluated at
-`(exitTime D X).toNat`.  On the complement of that event the exit time may be
-`⊤`, where `toNat` takes the junk value `0`; the integrand is written with
-`Set.indicator` of the event, so the junk value is multiplied by zero and never
-read.  On the event itself the exit time is a genuine natural number and
-`toNat` inverts the coercion.
-
-The dimension hypothesis `1 ≤ d` is the paper's standing assumption: at `d = 0`
-the step law of the walk degenerates and both sides take junk values.
-
-The paper's proof writes the odometer as the value of the stopping problem, which
-is the optimal-stopping representation, a cited result rather than a theorem of
-the paper.  It is proved unconditionally in this repository,
-`Sandpile.External.optimalStopping` (`Sandpile/External/BPSHProved.lean`), so it
-is no longer carried here as an explicit hypothesis, as in `thm:RW` and in
-`lem:difference-representation`.
--/
 import Sandpile.Walk
 import Sandpile.External.BPSHProved
 import Sandpile.Support.Localization
+
+/-!
+# The localization-killing lemma, frozen
+
+Localization lemma of `sandpile.tex`, frozen (`sandpile.tex:1612-1617`, label
+`lem:localization-killing`): for a deterministic scenery `ζ`, every `D ⊆ ℤ^d`, `x ∈ D`, and
+`t ≥ 0`, the deficit `u_t(x) - u_t^D(x)` between the full and the `D`-localized odometer is
+nonnegative and bounded above by the expected reward `E_x[1_{τ_D ≤ t} u_t(X_{τ_D})]`, an integral
+against the simple random walk law `Sandpile.walkLaw d x` on path space. Since
+`Sandpile.exitTime D X` has type `ℕ∞`, the event `{τ_D ≤ t}` is written with `Set.indicator` so
+that the junk value `(⊤).toNat = 0` on its complement is multiplied by zero and never read. The
+paper's proof invokes the optimal-stopping representation of the odometer as a cited result, now
+proved unconditionally as `Sandpile.External.optimalStopping`, so it is no longer carried here as
+an explicit hypothesis.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

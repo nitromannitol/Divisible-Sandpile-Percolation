@@ -1,44 +1,3 @@
-/-
-The cube-killed scaling limit of `sandpile.tex:1957-1984`
-(label `rem:dlt4-killed-scaling`).  The remark makes three assertions, and the statement is
-their conjunction.
-
-(1) The coupling.  For a centered scenery law in dimensions at most three, the rescaled
-localized odometer can be coupled with the cube-killed Brownian value so that their uniform
-distance on each compact set tends to zero in probability.  The Gaussian heat potential is the
-continuous version fixed at `sandpile.tex:1019-1021` and `sandpile.tex:2104`.
-
-(2) The comparison `𝒰_{Z,□}(T,u) ≥ 𝒰_{Z,1}(T,u)`, "since the Euclidean unit ball is contained in
-this cube" (`sandpile.tex:1946-1948`).  The left side is `brownianValueCube` and the right side
-is `brownianValueBall` at radius one, both for the Gaussian potential, with the motion started at
-`u`.  It is stated for almost every white-noise sample, the sample points at which the heat
-potential is continuous, and for every `u` in the compact set `K` at once.  Continuity is what
-bounds the payoffs of the cube-killed family: the reward is bounded on the compact strip over
-the cube, so no boundedness of the unrestricted payoffs is assumed.
-
-(3) The same conclusion for a sequence of scenery laws (`sandpile.tex:1950-1955`): "mean-zero
-i.i.d. laws satisfying a common exponential-moment bound whose variances converge to `ν²>0`", the
-limit being "`ν` times the value for unit-variance scenery".  The laws are the probability
-measures `νs k` of mean zero; the common bound is one exponent `θ > 0` and one finite `M` with
-`νs k` integrating `exp (θ |z|)` to at most `M` for every `k`; the variances converge to `v`, the
-`ν²` of the remark, with `v > 0`.  The coupling is stated jointly in the law index and the scale:
-there are `k₀` and `R₀` such that every pair `(νs k, R)` with `k ≥ k₀` and `R ≥ R₀` carries it,
-with the cube-killed value of the potential of the limiting variance `gaussianPotential d v W`.
-That the limit is `√v` times the value for unit-variance scenery is the identity of the last
-conjunct, valid at every sample point and every `v`, between the value of `gaussianPotential d v W`
-and `√v` times the value of `gaussianPotential d 1 W`.  The continuity of the potential of
-variance `v` is not a further hypothesis: the variance enters the potential as a constant factor,
-so continuity at the variance of `ν` gives it.
-
-The proof of (1) uses the parity local central limit theorem through heat-potential
-invariance, and cube stopping stability through the killed form of the cited
-Coquet-Toldo result (`sandpile.tex:1900-1907`, `sandpile.tex:1929-1931`).  The
-two realization spaces are bound at `Type 0` and the stability input is taken at
-that universe, which is the universe where the motion of the statement lives.  (2) is
-`brownianValueBall_le_brownianValueCube_of_continuous`, and (3) is the fixed-law proof run along
-the sequence, in `Sandpile.dlt4_killed_scaling_sequence_of_inputs`, whose finite-dimensional
-input is `heat_potential_fd_seq`.
--/
 import Sandpile.Law
 import Sandpile.Support.ExplKilledValue
 import Sandpile.External.ContStoppingStability
@@ -46,6 +5,24 @@ import Sandpile.Frozen.MeanLocalization
 import Sandpile.Support.KillScaling
 import Sandpile.Support.ExplKilledSequence
 import Sandpile.External.LocalCLTProved
+
+/-!
+# The cube-killed scaling limit, frozen
+
+The cube-killed scaling limit of `sandpile.tex:1957-1984` (label `rem:dlt4-killed-scaling`), a
+conjunction of three assertions. (1) For a centered scenery law in dimensions at most three, the
+rescaled localized odometer can be coupled with the cube-killed Brownian value
+`brownianValueCube` so that their uniform distance on each compact set tends to zero in
+probability, using the Gaussian heat potential fixed at `sandpile.tex:1019-1021` and
+`sandpile.tex:2104`. (2) The comparison `brownianValueBall ≤ brownianValueCube` at radius one,
+since the Euclidean unit ball is contained in the cube, holding for almost every white-noise
+sample and every point of a compact set `K`. (3) The same coupling for a sequence of mean-zero
+i.i.d. laws with a common exponential-moment bound whose variances converge to `v > 0`, uniformly
+in the law index and the scale, together with the identity that the cube-killed value at variance
+`v` is `√v` times the value at unit variance. The proof of (1) uses the parity local CLT through
+heat-potential invariance and cube stopping stability through the killed form of the cited
+Coquet-Toldo result, with both realization spaces bound at `Type 0`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,58 +1,27 @@
-/-
-Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3356-3364`
-(label `prop:d4-superdiffusive-limit`):
-
-  "[Superdiffusive membrane limit in dimension four]  Fix a bounded smooth
-   domain $D\subset\R^4$, a density $\omega\in C_c^\infty(D)$ satisfying
-   $\omega\geq0$ and $\int_D\omega(x)dx=1$, and $\alpha>2$.  Then, for every
-   $s>0$, as $R\to\infty$,
-   \[
-     \left[\bigl(u_{\lfloor R^\alpha\rfloor}-\E u_{\lfloor R^\alpha\rfloor}(0)
-     \bigr)^{(R)}\right]^\omega\Longrightarrow\mathcal G_4^\omega
-     \qquad\text{in }H^{-s}(D)\, .
-   \]
-   Here $\mathcal G_4$ is the four-dimensional continuum membrane model of
-   Subsection~\ref{ssec:continuum-membrane-fields} and the superscript $\omega$
-   is defined in \eqref{eq:d4-omega-representative}."
-
-Modelling.  The scenery `ζ` is carried by its one-site law `ν` and the field by
-`centeredMassLaw 4 ν`, the law of `σ = 1 + 8ζ`, so `u_t` is
-`Sandpile.odometer σ t` and `E u_t(0)` is `Sandpile.meanOdometer`.  The
-standing hypotheses of `sec:dim4-regime` are in force: mean-zero i.i.d.\
-scenery with `0 < Var(ζ(0)) < ∞` and an exponential moment.  The domain is
-`IsDomain D` and the density is `IsAveragingDensity D ω`, which is exactly the
-paper's three conditions on `ω`.  The time is `⌊R^α⌋` as a natural number.
-
-Both sides carry the `ω`-representative of `eq:d4-omega-representative`:
-the left side is `omegaRep D ω` applied to the pairing functional, and the
-limit is the centred Gaussian random distribution with covariance
-`omegaMembraneCov4 D ω Var(ζ(0))`, that is `Cov(𝒢_4(φ̃), 𝒢_4(ψ̃))` with
-`φ̃ = φ - ω∫_D φ`.  This is `𝒢_4^ω`.  Because the limit is a covariance, no
-white noise and no auxiliary probability space are needed here.
-
-Cited input (standing convention R1).  Step 1 of the paper's proof cites the
-convergence of the discrete membrane field to the continuum membrane field, so
-the statement carries `Sandpile.External.MembraneScalingLimitFour`, which is
-that convergence stated for the four-dimensional potential kernel; the paper's
-own new point, that the time truncation washes out at superdiffusive times, is
-not assumed but proved here.
-
-The convergence is in `H^{-s}(D)` for the fixed domain `D` of the statement,
-not in `H^{-s}_{\rm loc}(\R^4)`, so `Sandpile.Continuum.TendstoInNegSobolev` is
-not used: its two clauses quantify over test functions on all of `ℝ^4` and over
-all bounded domains.  Instead the two clauses are written out inline for the
-single domain `D`: every pairing with a test function supported in `D`
-converges in distribution to the centred Gaussian with the matching variance,
-and the `H^{-s}(D)` norms are tight.  This is neither a weakening nor a
-strengthening of that definition, but its specialization to one domain, which
-is what the paper states.
--/
 import Sandpile.Law
 import Sandpile.Continuum.Membrane
 import Sandpile.External.HeatKernelBounds
 import Sandpile.External.MembraneScalingFour
 import Sandpile.External.VarianceScale
 import Sandpile.Support.D4STightness
+
+/-!
+# The superdiffusive membrane limit in dimension four, frozen
+
+Proposition of Section 5 of `sandpile.tex`, frozen (`sandpile.tex:3356-3364`, label
+`prop:d4-superdiffusive-limit`): fixing a bounded smooth domain `D ⊂ ℝ⁴`, an averaging density
+`ω`, and `α > 2`, the recentred, rescaled, `ω`-paired odometer field converges as `R → ∞` to the
+four-dimensional continuum membrane model `𝒢_4^ω` in `H^{-s}(D)`, for every `s > 0`. The scenery
+`ζ` is carried by `centeredMassLaw 4 ν`, `u_t` is `Sandpile.odometer σ t`, `E u_t(0)` is
+`Sandpile.meanOdometer`, the domain and density hypotheses are `IsDomain D` and
+`IsAveragingDensity D w`, and both sides carry the `ω`-representative `omegaRep D w` of
+`eq:d4-omega-representative`, with limit covariance `omegaMembraneCov4 D w (variance id ν)`.
+Convergence is stated for the fixed domain `D` alone, as two clauses inline rather than through
+`Sandpile.Continuum.TendstoInNegSobolev`'s `H^{-s}_loc(ℝ^4)` quantification. The cited input is
+`Sandpile.External.MembraneScalingLimitFour`, the convergence of the discrete membrane field to
+the continuum one for the four-dimensional potential kernel; the paper's own new point, that time
+truncation washes out at superdiffusive times, is proved rather than assumed.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

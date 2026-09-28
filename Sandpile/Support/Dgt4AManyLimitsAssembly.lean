@@ -1,23 +1,24 @@
-/-
-The many-limits theorem, assembled.
-
-Step 1 constructs the law; Step 2 gives the contact estimates; the bridge takes a
-subsequence for each exponent; Step 3 turns those into the field limits.  All four
-are proved.  What is missing is that Step 1 does not EXPOSE three of the five band
-predicates its own construction satisfies, so the chain cannot be joined.
-
-`BandParameters.exists_admissible` already supplies every parameter condition the
-three need: `1/A < ℓ₁`, `1 - λ₀ℓ₁ + (λ₀-1)/A < 0`, `∑ ω < 1` and `1/ℓ₁ < λ₀`.  The
-predicates themselves are proved at the constructed law by `bandProfile_law`,
-`bandDensity_law` and `bandLowerIsolation_law`.  So the first theorem below is a
-matter of applying what exists, not of new mathematics.
--/
 import Sandpile.Support.ManyLStep3Build
 import Sandpile.Support.Dgt4ABandLawNormalized
 import Sandpile.Support.Dgt4ABandLawDensity
 import Sandpile.Support.Dgt4ABandLawLower
 import Sandpile.Support.Dgt4ABandLawParameters
 import LatticeProb.Walk.SRWPos
+
+/-!
+# The many-limits theorem, assembled
+
+Step 1 constructs the law; Step 2 gives the contact estimates; the bridge takes a subsequence
+for each exponent; Step 3 turns those into the field limits. All four are proved. What is
+missing is that Step 1 does not EXPOSE three of the five band predicates its own construction
+satisfies, so the chain cannot be joined.
+
+`BandParameters.exists_admissible` already supplies every parameter condition the three need:
+`1/A < ℓ₁`, `1 - λ₀ℓ₁ + (λ₀-1)/A < 0`, `∑ ω < 1` and `1/ℓ₁ < λ₀`. The predicates themselves are
+proved at the constructed law by `bandProfile_law`, `bandDensity_law` and
+`bandLowerIsolation_law`. So the first theorem below is a matter of applying what exists, not of
+new mathematics.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

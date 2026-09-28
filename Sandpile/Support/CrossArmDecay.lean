@@ -1,4 +1,7 @@
-/-
+import Mathlib
+
+/-! # Fixed-scale arm decay
+
 The quantitative core of Step 1 of `prop:fixed-scale-crossings`
 (`sandpile.tex:2213-2235`): geometric decay over separated scales is a power of
 the ratio.
@@ -27,7 +30,6 @@ and the constant is `(1-c)⁻¹`.  Both are explicit: the paper's `C` and `α` o
 `4κ^i r₁ ≤ r₂`, and `r₂/r₁ ≤ κ^{N+1}`, which is what turns `(1-c)^N` into a
 power of `r₁/r₂`.
 -/
-import Mathlib
 
 open MeasureTheory ProbabilityTheory
 

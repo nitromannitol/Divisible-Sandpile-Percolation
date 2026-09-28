@@ -1,18 +1,32 @@
-/-
-Smooth crossing values for finite lattice rectangles. Coordinate paths give
-connectivity, loop removal identifies the bounded-walk maximum with simple
-crossings, and logarithmic recursion depth gives the three derivative bounds.
--/
 import Sandpile.Support.CrossingDefinitions
 import Sandpile.Support.BoundedBottleneck
+
+/-!
+# Smooth crossing values for finite lattice rectangles
+
+Smooth crossing values for finite lattice rectangles. Coordinate paths give connectivity
+(`rectangleGraph_preconnected`, built by moving one coordinate at a time with
+`rectangle_update_reachable`), loop removal identifies the bounded-walk maximum
+`boundedBottleneckValue` with the simple-path crossing value `crossingValue`
+(`crossingValue_eq_bounded_max`), and a logarithmic recursion depth
+(`exists_logarithmic_walk_depth`) gives a smooth approximation `L` to `crossingValue` with the
+three coordinate-derivative bounds `SmoothBottleneckBound` at an error and a depth both
+logarithmic in the rectangle's cardinality (`rectangle_smooth_bottleneck_at_depth`,
+`exists_smooth_rectangle_bottleneck`).
+-/
 
 open LatticeProb
 
 namespace Sandpile
 
+/-- The subgraph of `lattice 2` induced on a finite rectangle `Q`: adjacency of sites of `Q` in
+the ambient lattice. -/
 noncomputable def rectangleGraph (Q : Finset (Site 2)) : SimpleGraph Q :=
   (lattice 2).induce (Q : Set (Site 2))
 
+/-- Updating a single coordinate `i` of a point `x ∈ Q` to any value `t` between the rectangle's
+bounds in that coordinate keeps the result in `Q`, since the other coordinates are unaffected and
+already satisfy the rectangle's bounds. -/
 lemma rectangle_update_mem {Q : Finset (Site 2)} {lo hi : Site 2}
     (hQ : ∀ z : Site 2, z ∈ Q ↔ ∀ i : Fin 2, lo i ≤ z i ∧ z i ≤ hi i)
     {x : Site 2} (hx : x ∈ Q) (i : Fin 2) {t : ℤ} (htlo : lo i ≤ t) (hthi : t ≤ hi i) :
@@ -23,17 +37,23 @@ lemma rectangle_update_mem {Q : Finset (Site 2)} {lo hi : Site 2}
   · subst j; simpa using And.intro htlo hthi
   · simpa only [Function.update_of_ne hj] using (hQ x).mp hx j
 
+/-- Increasing coordinate `i` of `x ∈ Q` from its current value up to any target `t ≤ hi i` stays
+inside `Q` and is reachable in `rectangleGraph Q`: induct on `t` with `Int.leInduction`, each
+step being a single unit move along axis `i`. -/
 lemma rectangle_update_reachable_ge {Q : Finset (Site 2)} {lo hi : Site 2}
     (hQ : ∀ z : Site 2, z ∈ Q ↔ ∀ i : Fin 2, lo i ≤ z i ∧ z i ≤ hi i)
     {x : Site 2} (hx : x ∈ Q) (i : Fin 2) {t : ℤ} (hxt : x i ≤ t) (hthi : t ≤ hi i) :
     (rectangleGraph Q).Reachable ⟨x, hx⟩
-      ⟨Function.update x i t, rectangle_update_mem hQ hx i ((hQ x).mp hx i |>.1.trans hxt) hthi⟩ := by
+      ⟨Function.update x i t,
+        rectangle_update_mem hQ hx i ((hQ x).mp hx i |>.1.trans hxt) hthi⟩ := by
   have H : ∀ (t : ℤ) (hxt : x i ≤ t) (hthi : t ≤ hi i),
       (rectangleGraph Q).Reachable ⟨x, hx⟩
-        ⟨Function.update x i t, rectangle_update_mem hQ hx i ((hQ x).mp hx i |>.1.trans hxt) hthi⟩ := by
+        ⟨Function.update x i t,
+          rectangle_update_mem hQ hx i ((hQ x).mp hx i |>.1.trans hxt) hthi⟩ := by
     apply Int.leInduction
     · intro ht
-      simpa only [Function.update_eq_self] using (SimpleGraph.Reachable.refl (G := rectangleGraph Q) ⟨x, hx⟩)
+      simpa only [Function.update_eq_self] using
+        (SimpleGraph.Reachable.refl (G := rectangleGraph Q) ⟨x, hx⟩)
     · intro s hxs ih hs
       have hs' : s ≤ hi i := by omega
       apply (ih hs').trans
@@ -47,6 +67,10 @@ lemma rectangle_update_reachable_ge {Q : Finset (Site 2)} {lo hi : Site 2}
       · simp [LatticeProb.unit, hj]
   exact H t hxt hthi
 
+/-- Updating a single coordinate `i` of `x ∈ Q` to any target value `t` within the rectangle's
+bounds is reachable in `rectangleGraph Q`, whether `t` is above or below the current value: the
+increasing case is `rectangle_update_reachable_ge` directly, and the decreasing case follows from
+it applied in reverse. -/
 lemma rectangle_update_reachable {Q : Finset (Site 2)} {lo hi : Site 2}
     (hQ : ∀ z : Site 2, z ∈ Q ↔ ∀ i : Fin 2, lo i ≤ z i ∧ z i ≤ hi i)
     {x : Site 2} (hx : x ∈ Q) (i : Fin 2) {t : ℤ} (htlo : lo i ≤ t) (hthi : t ≤ hi i) :
@@ -61,6 +85,9 @@ lemma rectangle_update_reachable {Q : Finset (Site 2)} {lo hi : Site 2}
       simpa only [Function.update_idem, Function.update_eq_self] using hh
     exact hh'.symm
 
+/-- `rectangleGraph Q` is preconnected for a lattice rectangle `Q`: any two points can be joined
+by first moving coordinate `0` and then coordinate `1` to match, using
+`rectangle_update_reachable` twice. -/
 lemma rectangleGraph_preconnected {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q) :
     (rectangleGraph Q).Preconnected := by
   obtain ⟨lo, hi, hQ⟩ := hQ
@@ -70,19 +97,26 @@ lemma rectangleGraph_preconnected {Q : Finset (Site 2)} (hQ : IsLatticeRectangle
   have hx' := rectangle_update_mem hQ x.property 0 hy0.1 hy0.2
   have h0 := rectangle_update_reachable hQ x.property 0 hy0.1 hy0.2
   have h1 := rectangle_update_reachable hQ hx' 1 hy1.1 hy1.2
-  have he : Function.update (Function.update (x : Site 2) 0 ((y : Site 2) 0)) 1 ((y : Site 2) 1) = y := by
+  have he : Function.update (Function.update (x : Site 2) 0 ((y : Site 2) 0)) 1 ((y : Site 2) 1)
+      = y := by
     ext i
     fin_cases i <;> simp
   simpa only [he] using h0.trans h1
 
+/-- The left side of a rectangle `Q`: the points of `Q` whose first coordinate is minimal among
+all points of `Q`. -/
 noncomputable def rectangleLeft (Q : Finset (Site 2)) : Finset Q := by
   classical
   exact Finset.univ.filter (fun z : Q => ∀ w ∈ Q, (z : Site 2) 0 ≤ w 0)
 
+/-- The right side of a rectangle `Q`: the points of `Q` whose first coordinate is maximal among
+all points of `Q`. -/
 noncomputable def rectangleRight (Q : Finset (Site 2)) : Finset Q := by
   classical
   exact Finset.univ.filter (fun z : Q => ∀ w ∈ Q, w 0 ≤ (z : Site 2) 0)
 
+/-- Both `rectangleLeft Q` and `rectangleRight Q` are nonempty for a nonempty lattice rectangle:
+the rectangle's own left and right corners `lo` and `hi` witness them. -/
 lemma rectangle_boundaries_nonempty {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     (hN : Q.Nonempty) : (rectangleLeft Q).Nonempty ∧ (rectangleRight Q).Nonempty := by
   classical
@@ -99,6 +133,8 @@ lemma rectangle_boundaries_nonempty {Q : Finset (Site 2)} (hQ : IsLatticeRectang
     simp only [rectangleRight, Finset.mem_filter, Finset.mem_univ, true_and]
     exact fun w hw => ((hQ w).mp hw 0).2
 
+/-- The support of a simple graph path from a left-boundary point to a right-boundary point of
+`Q` is a crossing path, in the sense of `IsCrossingPath`. -/
 lemma isCrossingPath_of_walk {Q : Finset (Site 2)} {a b : Q}
     (p : (rectangleGraph Q).Walk a b) (hp : p.IsPath)
     (ha : a ∈ rectangleLeft Q) (hb : b ∈ rectangleRight Q) : IsCrossingPath Q p.support := by
@@ -119,6 +155,9 @@ lemma isCrossingPath_of_walk {Q : Finset (Site 2)} {a b : Q}
     subst z
     exact hb'
 
+/-- The converse of `isCrossingPath_of_walk`: a crossing path `Γ` arises as the support of a
+simple graph walk (via `SimpleGraph.Walk.ofSupport`) between a left-boundary and a right-boundary
+point of `Q`. -/
 lemma crossingPath_walk {Q : Finset (Site 2)} {Γ : List Q} (hΓ : IsCrossingPath Q Γ) :
     ∃ (a b : Q) (p : (rectangleGraph Q).Walk a b),
       p.IsPath ∧ p.support = Γ ∧ a ∈ rectangleLeft Q ∧ b ∈ rectangleRight Q := by
@@ -133,6 +172,9 @@ lemma crossingPath_walk {Q : Finset (Site 2)} {Γ : List Q} (hΓ : IsCrossingPat
   · apply Finset.mem_filter.mpr
     exact ⟨Finset.mem_univ _, hΓ.2.2.2.2 _ (List.getLast_mem_getLast? _)⟩
 
+/-- Any two points of a lattice rectangle `Q` are within `BoundedReach (rectangleGraph Q) n` of
+each other once `Q.card ≤ 2 ^ n`: `rectangleGraph_preconnected` gives a walk, and its bypass has
+length below `Q.card` since it is a simple path in a graph on `Q.card` vertices. -/
 lemma rectangle_boundedReach {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     {n : ℕ} (hn : Q.card ≤ 2 ^ n) (a b : Q) : BoundedReach (rectangleGraph Q) n a b := by
   obtain ⟨p⟩ := rectangleGraph_preconnected hQ a b
@@ -140,6 +182,13 @@ lemma rectangle_boundedReach {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
   have hh : p.bypass.length < Q.card := by simpa using p.bypass_isPath.length_lt
   exact hh.le.trans hn
 
+/-- **The crossing value equals the bounded-walk maximum.** For a lattice rectangle `Q` with
+`Q.card ≤ 2 ^ n`, `crossingValue Q F` (the supremum over crossing paths of their minimum field
+value) equals the finite maximum, over all left/right boundary pairs, of the exact recursive
+bottleneck `boundedBottleneckValue (rectangleGraph Q) n`: crossing paths give simple paths of
+length below `Q.card ≤ 2 ^ n` by `crossingPath_walk`, and conversely a bypassed maximizing walk of
+that bounded length gives a crossing path by `isCrossingPath_of_walk`, so `walkBottleneck` and
+`boundedBottleneckValue` agree on the extremizers on both sides. -/
 lemma crossingValue_eq_bounded_max {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     {n : ℕ} (hn : Q.card ≤ 2 ^ n)
     [Nonempty (rectangleLeft Q)] [Nonempty (rectangleRight Q)] (F : Q → ℝ) :
@@ -173,6 +222,14 @@ lemma crossingValue_eq_bounded_max {Q : Finset (Site 2)} (hQ : IsLatticeRectangl
     rw [← hp]
     exact walkBottleneck_le_bypass p F
 
+/-- **A smooth approximation to a rectangle's crossing value at walk depth `n`.** For a lattice
+rectangle `Q` with `Q.card ≤ 2 ^ n`, the softmax `L` of `smoothBoundedBottleneck` over every
+left/right boundary pair satisfies `SmoothBottleneckBound β (2n+2) L` and approximates
+`crossingValue Q` to within an error `((n+1)(log Q.card + log 2) + 2 log Q.card) / β`: the bound
+comes from `smoothBoundedBottleneck_bound` composed with `SmoothBottleneckBound.softMaximum`, and
+the error from `crossingValue_eq_bounded_max`, `smoothBoundedBottleneck_error` and
+`abs_softMaximum_sub_finiteMaximum`, the last contributing the extra `2 log Q.card / β` from the
+number of boundary pairs. -/
 lemma rectangle_smooth_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     (hN : Q.Nonempty) {n : ℕ} (hn : Q.card ≤ 2 ^ n) {β : ℝ} (hβ : 0 < β) :
     ∃ L : (Q → ℝ) → ℝ, SmoothBottleneckBound β (2 * n + 2) L ∧
@@ -216,6 +273,9 @@ lemma rectangle_smooth_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLattice
         add_le_add le_rfl (div_le_div_of_nonneg_right hlog hβ.le)
       _ = _ := by ring
 
+/-- **A logarithmic recursion depth suffices.** For every `N ≥ 2` there is `n` with `N ≤ 2 ^ n`
+and `n + 1 ≤ (3 / log 2) log N`: take `n = ⌈(log N) / (log 2)⌉`, whose ceiling gives `N ≤ 2 ^ n`
+after exponentiating, and whose defining bound `⌈x⌉ < x + 1` gives the linear estimate. -/
 lemma exists_logarithmic_walk_depth {N : ℕ} (hN : 2 ≤ N) :
     ∃ n : ℕ, N ≤ 2 ^ n ∧ (n + 1 : ℝ) ≤ (3 / Real.log 2) * Real.log N := by
   have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
@@ -237,6 +297,13 @@ lemma exists_logarithmic_walk_depth {N : ℕ} (hN : 2 ≤ N) :
       _ ≤ 3 * x := by linarith
       _ = _ := by dsimp only [x]; ring
 
+/-- **A universal smooth approximation to any rectangle's crossing value.** There is a single
+constant `C` such that for every lattice rectangle `Q` with at least two sites and every `β ≥ 1`,
+some smooth `L` approximates `crossingValue Q` to within `C (log Q.card)² / β`, with its `k`-th
+coordinate derivatives (`k = 1, 2, 3`) summing to at most `C β^{k-1} (log Q.card)^{k-1}`: obtained
+from `rectangle_smooth_bottleneck_at_depth` at the logarithmic depth furnished by
+`exists_logarithmic_walk_depth`, unfolding `SmoothBottleneckBound.iteratedFDeriv` for the
+derivative bounds. -/
 lemma exists_smooth_rectangle_bottleneck :
     ∃ C : ℝ, 0 < C ∧
       ∀ Q : Finset (Site 2), IsLatticeRectangle Q → 2 ≤ Q.card →
@@ -251,9 +318,12 @@ lemma exists_smooth_rectangle_bottleneck :
   let D : ℝ := 6 / Real.log 2
   let C : ℝ := 6 * (1 + D) ^ 2 + 8 / Real.log 2 + 1
   have hD : 0 < D := div_pos (by norm_num) hlog2
-  have hc0 : 6 ≤ C := by dsimp only [C]; nlinarith [sq_nonneg D, div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
-  have hc1 : 6 * D ≤ C := by dsimp only [C]; nlinarith [sq_nonneg D, div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
-  have hc2 : 6 * D ^ 2 ≤ C := by dsimp only [C]; nlinarith [div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
+  have hc0 : 6 ≤ C := by
+    dsimp only [C]; nlinarith [sq_nonneg D, div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
+  have hc1 : 6 * D ≤ C := by
+    dsimp only [C]; nlinarith [sq_nonneg D, div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
+  have hc2 : 6 * D ^ 2 ≤ C := by
+    dsimp only [C]; nlinarith [div_pos (by norm_num : (0 : ℝ) < 8) hlog2]
   have hcE : 8 / Real.log 2 ≤ C := by dsimp only [C]; nlinarith [sq_nonneg (1 + D)]
   refine ⟨C, by linarith, ?_⟩
   intro Q hQ hN β hβ

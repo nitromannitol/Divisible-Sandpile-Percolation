@@ -1,14 +1,17 @@
-/-
-The algebra of the averaging operator and the heat kernel.
+import Sandpile.Support.Kernel
+
+/-!
+# The averaging operator, the heat kernel, and their iterates
 
 `sandpile.tex` writes `P^m u_n(0) = \sum_z p_m(0,z) u_n(z)` and, in the proof of
-`lem:dgt4-smoothed-odometer-tail`, `\sum_z p_m(0,z) g_n(z,y) = \sum_{j<n}
-p_{m+j}(0,y)`.  Both are identities about the shared recursion: the iterate of
-the averaging operator IS the heat kernel, and the heat kernel is a semigroup.
-Every sum here is finitely supported, since `p_k(x, ·)` vanishes outside the box
-of radius `k` about `x`, so no summability hypothesis is ever needed.
+`lem:dgt4-smoothed-odometer-tail`, `\sum_z p_m(0,z) g_n(z,y) = \sum_{j<n} p_{m+j}(0,y)`. Both
+are identities about the shared recursion: the `m`-th iterate `avg^[m]` of the averaging
+operator equals convolution against `heatKernel d m` (`avg_iterate`), and the heat kernel is a
+probability kernel (`tsum_heatKernel`) forming a semigroup under Chapman-Kolmogorov
+(`tsum_heatKernel_mul_heatKernel`). Every sum here is finitely supported, since `heatKernel d k
+x` vanishes outside the box of radius `k` about `x`, so no summability hypothesis is ever
+needed as a side condition.
 -/
-import Sandpile.Support.Kernel
 
 open MeasureTheory
 
@@ -26,6 +29,8 @@ theorem tsum_heatKernel_mul_eq_sum (k : ℕ) (x : Site d) (f : Site d → ℝ) :
     exact hz (mem_boxFinset (heatKernel_support k x hne))
   simp [hp]
 
+/-- The heat kernel `heatKernel d k x` multiplied by any function is summable, since the
+kernel vanishes outside the finite box of radius `k` about `x`. -/
 theorem summable_heatKernel_mul (k : ℕ) (x : Site d) (f : Site d → ℝ) :
     Summable fun z : Site d => heatKernel d k x z * f z := by
   refine summable_of_ne_finset_zero (s := boxFinset x k) fun z hz => ?_

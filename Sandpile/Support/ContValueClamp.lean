@@ -1,24 +1,24 @@
-/-
-The value is a measurable functional of the field's sample point, by clamping.
-
-The value `𝒰_Z(T,x)` reads the field at every point the motion can reach before
-`T`, which is an unbounded set, so the measurability of `ω ↦ 𝒰_Z(T,x)(ω)` is not
-a pointwise statement.  The route here is the one the continuous
-modification makes available: clamp the field radially to the ball of radius `n`.
-The clamped field is bounded, and the value built from it reads the field only
-through its restriction to the compact box `[0,T] × B(0,n)`, where the value is a
-continuous functional of the field in the sup norm and the field is measurable as
-a map into the continuous functions.  The clamped values converge to the value of
-`Z` as `n → ∞`, because the clamped field differs from `Z` only outside the ball
-and the motion leaves the ball with probability tending to zero.
-
-This module carries the pointwise bound on the clamped field and the elementary
-supremum comparison used by the convergence step.
--/
 import Sandpile.Continuum.Kernel
 import Sandpile.Support.ContValueLipschitz
 import Sandpile.Support.ContValueMeasurable
 import Mathlib
+
+/-!
+# Measurability of the continuum value by radial clamping
+
+The value `𝒰_Z(T,x)` reads the field at every point the motion can reach before `T`, which is
+an unbounded set, so the measurability of `ω ↦ 𝒰_Z(T,x)(ω)` is not a pointwise statement. The
+route here is the one the continuous modification makes available: clamp the field radially to
+the ball of radius `n`. The clamped field is bounded, and the value built from it reads the
+field only through its restriction to the compact box `[0,T] × B(0,n)`, where the value is a
+continuous functional of the field in the sup norm and the field is measurable as a map into
+the continuous functions. The clamped values converge to the value of `Z` as `n → ∞`, because
+the clamped field differs from `Z` only outside the ball and the motion leaves the ball with
+probability tending to zero.
+
+This module carries the pointwise bound on the clamped field and the elementary supremum
+comparison used by the convergence step.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set Metric
 open scoped NNReal ENNReal
@@ -31,7 +31,8 @@ namespace Sandpile.Support
 the value, once the two attainable sets are known to be within `ε` elementwise. -/
 theorem abs_sSup_sub_le_of_close {S T : Set ℝ} (hS : S.Nonempty) (hT : T.Nonempty)
     (hbS : BddAbove S) (hbT : BddAbove T) {ε : ℝ} (_hε : 0 ≤ ε)
-    (h1 : ∀ a ∈ S, ∃ b ∈ T, |a - b| ≤ ε) (h2 : ∀ b ∈ T, ∃ a ∈ S, |a - b| ≤ ε) :
+    (h1 : ∀ a ∈ S, ∃ b ∈ T, |a - b| ≤ ε)
+    (h2 : ∀ b ∈ T, ∃ a ∈ S, |a - b| ≤ ε) :
     |sSup S - sSup T| ≤ ε := by
   rw [abs_sub_le_iff]
   constructor
@@ -51,7 +52,8 @@ theorem abs_sSup_sub_le_of_close {S T : Set ℝ} (hS : S.Nonempty) (hT : T.Nonem
     linarith
 
 /-- The radial clamp of a field to the ball of radius `n`. -/
-noncomputable def clampField (d : ℕ) (n : ℝ) (h : ℝ → Space d → ℝ) : ℝ → Space d → ℝ :=
+noncomputable def clampField (d : ℕ) (n : ℝ) (h : ℝ → Space d → ℝ) :
+    ℝ → Space d → ℝ :=
   fun t y => h t (if ‖y‖ ≤ n then y else (n / ‖y‖) • y)
 
 /-- **The clamped field is bounded by `C (1+n)^k`.**  The clamp maps every point into
@@ -261,8 +263,11 @@ theorem aemeasurable_brownianValue_of_clamp {ΩW ΩB : Type*} [MeasurableSpace �
     (T : ℝ) (_hT : 0 < T) (x : Space d)
     (_hZcont : ∀ᵐ ω ∂PW, ContinuousOn (fun p : ℝ × Space d => Z p.1 p.2 ω)
       (Set.Icc (0:ℝ) T ×ˢ (Set.univ : Set (Space d))))
-    (hmeas : ∀ n : ℕ, AEMeasurable (fun ω => brownianValue B PB (clampField d (n:ℝ) (fun t z => Z t z ω)) T x) PW)
-    (hlim : ∀ᵐ ω ∂PW, Tendsto (fun n : ℕ => brownianValue B PB (clampField d (n:ℝ) (fun t z => Z t z ω)) T x) atTop (𝓝 (brownianValue B PB (fun t z => Z t z ω) T x))) :
+    (hmeas : ∀ n : ℕ, AEMeasurable
+      (fun ω => brownianValue B PB (clampField d (n:ℝ) (fun t z => Z t z ω)) T x) PW)
+    (hlim : ∀ᵐ ω ∂PW, Tendsto
+      (fun n : ℕ => brownianValue B PB (clampField d (n:ℝ) (fun t z => Z t z ω)) T x)
+      atTop (𝓝 (brownianValue B PB (fun t z => Z t z ω) T x))) :
     AEMeasurable (fun ω => brownianValue B PB (fun t z => Z t z ω) T x) PW := by
   exact aemeasurable_of_tendsto_metrizable_ae atTop hmeas hlim
 

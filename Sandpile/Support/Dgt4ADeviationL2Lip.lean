@@ -1,13 +1,16 @@
-/-
-The centred deviation `D_n` of `sandpile.tex:5050-5051` is Lipschitz for the `\ell^2`
-distance between sceneries, with the constant `2\|G(0,\cdot)\|` that Cauchy-Schwarz reads
-off `eq:dgt4-green-l2`.  This is the form the Gaussian concentration of
-`Sandpile.External.GaussianLipschitzConcentration` consumes: the coordinatewise bound
-`abs_centeredDeviation_update_le` controls one coordinate at a time, while the conditioning
-of `sandpile.tex:5270-5271` moves every coordinate at once.
--/
 import Sandpile.Support.Dgt4AConcField
 import Sandpile.Support.Dgt4ADeviationLip
+
+/-!
+# `\ell^2` Lipschitz bound for the centred deviation
+
+The centred deviation `D_n` of `sandpile.tex:5050-5051` is Lipschitz for the `\ell^2` distance
+between sceneries, with the constant `2\|G(0,\cdot)\|` that Cauchy-Schwarz reads off
+`eq:dgt4-green-l2`. This is the form the Gaussian concentration of
+`Sandpile.External.GaussianLipschitzConcentration` consumes: the coordinatewise bound
+`abs_centeredDeviation_update_le` controls one coordinate at a time, while the conditioning of
+`sandpile.tex:5270-5271` moves every coordinate at once.
+-/
 
 open MeasureTheory Filter Topology Set
 

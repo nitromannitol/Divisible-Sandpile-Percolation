@@ -1,12 +1,21 @@
-/-
+import Sandpile.Support.D23Rectangle
+import Sandpile.Support.D4CritBlock
+import Sandpile.Support.CrossingContinuity
+
+/-!
+# Transferring continuum crossings to discrete good blocks
+
 The probability transfer in `sandpile.tex:2645-2663`. Continuous crossings
 produce eventual sampled good blocks. Continuity of measure for the measurable
 finite-grid events controls their failure probability, and the coupling error
 pays for the remaining level margin. The discrete laws may vary with the scale.
+`measurableSet_blockGood_field` gives measurability of the finite good-block event,
+`measure_bad_block_le_of_coupling` transfers a bad discrete block bound across a coupling up to
+a uniform-error event, `eventually_measure_bad_sampled_block_lt` uses continuity of measure
+along the grid sampling of a continuous crossing field to make sampled bad-block probability
+eventually small, and `eventually_measure_bad_block_lt_of_couplings` combines the two to control
+the discrete law's bad-block probability along a sequence of couplings to the continuum field.
 -/
-import Sandpile.Support.D23Rectangle
-import Sandpile.Support.D4CritBlock
-import Sandpile.Support.CrossingContinuity
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal
@@ -40,8 +49,10 @@ theorem measure_bad_block_le_of_coupling
     μ {ω | ¬ BlockGood R (F ω) (l - η) 0} ≤
       ν {ω | ¬ BlockGood R (G ω) l 0} +
         P {p | ∃ z ∈ planeRectangle (4 * R) (4 * R), η < |F p.1 z - G p.2 z|} := by
-  have hbadF : MeasurableSet {ω | ¬ BlockGood R (F ω) (l - η) 0} := (measurableSet_blockGood_field F hF R (l - η) 0).compl
-  have hbadG : MeasurableSet {ω | ¬ BlockGood R (G ω) l 0} := (measurableSet_blockGood_field G hG R l 0).compl
+  have hbadF : MeasurableSet {ω | ¬ BlockGood R (F ω) (l - η) 0} :=
+    (measurableSet_blockGood_field F hF R (l - η) 0).compl
+  have hbadG : MeasurableSet {ω | ¬ BlockGood R (G ω) l 0} :=
+    (measurableSet_blockGood_field G hG R l 0).compl
   rw [← hfst, Measure.map_apply measurable_fst hbadF]
   rw [← hsnd, Measure.map_apply measurable_snd hbadG]
   apply le_trans (measure_mono ?_) (measure_union_le _ _)

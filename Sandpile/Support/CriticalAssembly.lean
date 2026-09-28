@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.LogRates
+import Sandpile.Support.ThresholdRate
+import Sandpile.Support.Smoothed
+import Sandpile.External.VarianceScale
+
+/-! # Critical toppling bound assembly
+
 The arithmetic that turns the fixed-scale bound into the statement of
 `thm:critical-toppling`.
 
@@ -9,10 +15,6 @@ standard deviation of the membrane field from below, the third-moment rate
 against the Green supremum, the count of scales against `log t`, and the passage
 from `κ^m` to `L^{-c}`.
 -/
-import Sandpile.Support.LogRates
-import Sandpile.Support.ThresholdRate
-import Sandpile.Support.Smoothed
-import Sandpile.External.VarianceScale
 
 open MeasureTheory ProbabilityTheory
 

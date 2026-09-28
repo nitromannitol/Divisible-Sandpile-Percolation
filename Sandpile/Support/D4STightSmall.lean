@@ -1,19 +1,22 @@
-/-
-The small-scale half of the tightness clause of `prop:d4-superdiffusive-limit`
-(`sandpile.tex:3324-3327`).
-
-Steps 2 and 3 of the paper's proof make the two error terms small only as
-`R\to\infty`, while the tightness clause quantifies over every `R\geq1`.  Below
-any fixed threshold the whole centred odometer field is bounded crudely: the
-time `\lfloor R^\alpha\rfloor` is at most `\lfloor R_0^\alpha\rfloor`, the mesh
-meets at most the box of radius `\lceil R_0L\rceil+1`, and `R^{-4}\leq1`, so the
-uniform second moment of the centred odometer over that range of times bounds
-the expectation of the mesh sum, and Markov's inequality turns that into a
-single level `M` above which the `H^{-s}(D)` norm is unlikely.
--/
 import Sandpile.Support.D4SMarkov
 import Sandpile.Support.D4SNegSobolev
 import Sandpile.Support.D4STight
+
+/-!
+# Tightness on the small-scale range
+
+The small-scale half of the tightness clause of `prop:d4-superdiffusive-limit`
+(`sandpile.tex:3324-3327`).
+
+Steps 2 and 3 of the paper's proof make the two error terms small only as `R\to\infty`, while
+the tightness clause quantifies over every `R\geq1`. Below any fixed threshold the whole
+centred odometer field is bounded crudely: the time `\lfloor R^\alpha\rfloor` is at most
+`\lfloor R_0^\alpha\rfloor`, the mesh meets at most the box of radius `\lceil R_0L\rceil+1`,
+and `R^{-4}\leq1`, so the uniform second moment of the centred odometer over that range of
+times bounds the expectation of the mesh sum, and Markov's inequality
+(`measure_gt_le_of_sqrt_bound`) turns that into a single level `M` above which the `H^{-s}(D)`
+norm is unlikely (`exists_tight_bound_small`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -22,6 +25,9 @@ namespace Sandpile.Support
 
 open Sandpile Sandpile.Continuum
 
+/-- A Markov-type tail bound: if `N ω ≤ K * √(Y ω)` pointwise for a nonnegative integrable
+`Y` with `K ^ 2 * ∫ Y ≤ B`, then `P {N > M} ≤ B / M ^ 2`. Squares the pointwise domination to
+reduce to `mul_meas_ge_le_integral_of_nonneg` (Markov's inequality) applied to `K ^ 2 * Y`. -/
 theorem measure_gt_le_of_sqrt_bound
     {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsFiniteMeasure P]
     (N : Ω → ℝ≥0∞) (Y : Ω → ℝ) (K B M : ℝ)
@@ -60,6 +66,13 @@ theorem measure_gt_le_of_sqrt_bound
         (ENNReal.ofReal_toReal hfin).symm
     _ ≤ ENNReal.ofReal (B / M ^ 2) := ENNReal.ofReal_le_ofReal hreal
 
+/-- **Tightness on the small-scale range `1 ≤ R ≤ R₀`.** Produces a single level `M` above
+which the `H^{-s}(D)` norm of the `ω`-representative of the centred, rescaled odometer field
+has probability at most `ε`, uniformly over that whole range: the time `⌊R^α⌋₊` is bounded by
+`⌊R₀^α⌋₊`, the mesh sum is bounded by `Sandpile.Support.exists_uniform_second_moment_le` at
+that fixed time and a fixed box radius depending on `R₀`, and `measure_gt_le_of_sqrt_bound`
+turns the resulting second-moment bound into the tail bound via
+`exists_negSobolevNorm_omegaRep_le`. -/
 theorem exists_tight_bound_small (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hsq : Integrable (fun z : ℝ => z ^ 2) ν)
     {s : ℝ} (hs : 0 ≤ s) {D : Set (Space 4)} (hD : IsDomain D) {w : Space 4 → ℝ}

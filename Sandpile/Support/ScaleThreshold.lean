@@ -1,14 +1,16 @@
-/-
+import Sandpile.Support.ScaleCount
+
+/-!
+# The scale `N`, the threshold, and the bounded range of `L`
+
 The scale `N`, the threshold, and the bounded range of `L`.
 
-`sandpile.tex:1735-1743` takes `N = ⌊t L^{-a}⌋` and needs three things of it:
-that it is at least two, that it is at most `t L^{-a}` and at least half of it,
-and that it is at most `t`.  The normalized thresholds `h/√Var(V_{n_j}(0))` are
-then below the fixed `η` of the persistence bound once `L` is large, because the
-exponent `a(4-d)/4 - 1` is negative; the finitely many smaller `L` are absorbed
-by enlarging the constant, which is what the last lemma records.
+`sandpile.tex:1735-1743` takes `N = ⌊t L^{-a}⌋` and needs three things of it: that it is at least
+two, that it is at most `t L^{-a}` and at least half of it, and that it is at most `t`. The
+normalized thresholds `h/√Var(V_{n_j}(0))` are then below the fixed `η` of the persistence bound
+once `L` is large, because the exponent `a(4-d)/4 - 1` is negative; the finitely many smaller `L`
+are absorbed by enlarging the constant, which is what the last lemma records.
 -/
-import Sandpile.Support.ScaleCount
 
 namespace Sandpile
 

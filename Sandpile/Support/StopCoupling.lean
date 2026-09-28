@@ -1,12 +1,30 @@
-/-
-Finite couplings with prescribed marginals. Equal submasses are matched by
-normalized product measures, and the remaining marginals are coupled separately.
--/
 import Mathlib
+
+/-!
+# Finite couplings with prescribed marginals
+
+Finite couplings with prescribed marginals. Equal submasses are matched by normalized product
+measures, and the remaining marginals are coupled separately.
+
+The construction proceeds in stages: `exists_coupling_of_equal_finite_mass` couples two finite
+measures of equal total mass by a rescaled product measure; `exists_coupling_extending_subcoupling`
+extends a subcoupling of two probability measures to a full coupling by matching the leftover mass
+on each side; `exists_coupling_matching_finite_measures` iterates this over finitely many pairs of
+submeasures with equal pairwise mass. `exists_submeasure_mass` extracts a submeasure of any
+prescribed mass below the total, and `sum_restrict_le_of_disjoint` bounds the sum of restrictions
+to disjoint sets. `coupling_compl_rectangle_null` shows a coupling whose marginals are confined to
+`A` and `B` puts no mass off the rectangle `A ×ˢ B`. These combine in
+`exists_coupling_matching_cells` to build a coupling of `μ` and `ν` that matches disjoint cells
+`A i, B i` as closely as possible, leaving mass at most `1 - ∑ min (μ (A i)) (ν (B i))` off the
+union of matched rectangles.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- Two finite measures `μ, ν` of equal total mass admit a coupling `π` (with `π.map Prod.fst = μ`
+and `π.map Prod.snd = ν`) built by rescaling the product measure `μ.prod ν` by `(μ univ)⁻¹`, which
+also preserves the total mass `π univ = μ univ`. -/
 theorem Sandpile.Continuum.exists_coupling_of_equal_finite_mass
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') [IsFiniteMeasure μ] [IsFiniteMeasure ν]
@@ -29,6 +47,11 @@ theorem Sandpile.Continuum.exists_coupling_of_equal_finite_mass
   rw [← hfst, Measure.map_apply measurable_fst MeasurableSet.univ]
   rfl
 
+/-- **Extending a subcoupling to a full coupling.** Given probability measures `μ, ν` and a
+finite subcoupling `π` whose marginals are dominated by `μ, ν`, there is a full coupling
+`P = π + R` for some remainder `R`, obtained by matching the leftover marginal masses
+`μ - π.map Prod.fst` and `ν - π.map Prod.snd` (which are equal, both `1 - π univ`) via
+`exists_coupling_of_equal_finite_mass`. -/
 theorem Sandpile.Continuum.exists_coupling_extending_subcoupling
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
@@ -56,6 +79,11 @@ theorem Sandpile.Continuum.exists_coupling_extending_subcoupling
   refine ⟨π + R, R, hP, hPf, hPs, rfl, ?_⟩
   rw [hRm, Measure.sub_apply MeasurableSet.univ hfst, hf, (measure_univ : μ univ = 1)]
 
+/-- **Coupling finitely many matched submeasure pairs, extended to a full coupling.** Given
+finitely many pairs of submeasures `μs i ≤ μ`, `νs i ≤ ν` with `μs i univ = νs i univ` for each
+`i`, there are individual couplings `π i` of `μs i, νs i` (via
+`exists_coupling_of_equal_finite_mass`) whose sum extends, via
+`exists_coupling_extending_subcoupling`, to a full coupling `P` of `μ, ν`. -/
 theorem Sandpile.Continuum.exists_coupling_matching_finite_measures
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
@@ -87,6 +115,8 @@ theorem Sandpile.Continuum.exists_coupling_matching_finite_measures
   refine ⟨P, R, π, hP, hPf, hPs, fun i => ⟨hπf i, hπs i⟩, hPR, ?_⟩
   simpa only [Measure.finsetSum_apply, hπm] using hRm
 
+/-- Any target mass `a ≤ μ univ` is realized as the total mass of a submeasure `ν ≤ μ`, by
+rescaling `μ` by the ratio `a / μ univ`. -/
 theorem Sandpile.Continuum.exists_submeasure_mass
     {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsFiniteMeasure μ]
     (a : ℝ≥0∞) (ha : a ≤ μ univ) :
@@ -104,6 +134,9 @@ theorem Sandpile.Continuum.exists_submeasure_mass
   · rw [Measure.smul_apply, smul_eq_mul,
       ENNReal.div_mul_cancel h0 (measure_ne_top μ univ)]
 
+/-- The sum of the restrictions of `μ` to finitely many pairwise disjoint measurable sets `A i`
+is bounded above by `μ` itself, since the restrictions sum to the restriction of `μ` to the
+disjoint union `⋃ i, A i`. -/
 theorem Sandpile.Continuum.sum_restrict_le_of_disjoint
     {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
     (N : ℕ) (A : Fin N → Set Ω)
@@ -114,6 +147,9 @@ theorem Sandpile.Continuum.sum_restrict_le_of_disjoint
   rw [← he]
   exact Measure.restrict_le_self
 
+/-- If a coupling `π`'s marginals are confined to `μ.restrict A` and `ν.restrict B`, then `π`
+gives zero mass to the complement of the rectangle `A ×ˢ B`, since the complement splits as the
+union of the preimages of `Aᶜ` and `Bᶜ` under the two projections, each of which is `π`-null. -/
 theorem Sandpile.Continuum.coupling_compl_rectangle_null
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') (π : Measure (Ω × Ω'))
@@ -137,6 +173,12 @@ theorem Sandpile.Continuum.coupling_compl_rectangle_null
   rw [he]
   exact measure_union_null hf0 hs0
 
+/-- **The cell-matching coupling.** Given disjoint measurable cells `A i` partitioning part of
+`Ω` and `B i` partitioning part of `Ω'`, there is a coupling `P` of `μ, ν` that puts mass
+`min (μ (A i)) (ν (B i))` on each rectangle `A i ×ˢ B i` (via `exists_submeasure_mass` on each
+side and `exists_coupling_matching_finite_measures` to assemble and extend them), leaving mass
+at most `1 - ∑ i, min (μ (A i)) (ν (B i))` off the union of the matched rectangles, by
+`coupling_compl_rectangle_null` applied cell by cell. -/
 theorem Sandpile.Continuum.exists_coupling_matching_cells
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
@@ -176,7 +218,8 @@ theorem Sandpile.Continuum.exists_coupling_matching_cells
     exact Sandpile.Continuum.coupling_compl_rectangle_null μ ν (π i) (A i) (B i) (hA i) (hB i)
       ((hπ i).1.trans_le (hμs i)) ((hπ i).2.trans_le (hνs i))
   refine ⟨P, hP, hPf, hPs, ?_⟩
-  rw [hPR, Measure.add_apply, Measure.finsetSum_apply, Finset.sum_eq_zero (fun i _ => hz i), zero_add]
+  rw [hPR, Measure.add_apply, Measure.finsetSum_apply,
+    Finset.sum_eq_zero (fun i _ => hz i), zero_add]
   calc
     R (⋃ i, A i ×ˢ B i)ᶜ ≤ R univ := measure_mono (subset_univ _)
     _ = 1 - ∑ i, min (μ (A i)) (ν (B i)) := by simpa only [hμm, a] using hRm

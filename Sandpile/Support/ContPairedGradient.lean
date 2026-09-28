@@ -1,33 +1,38 @@
-/-
-The kernel of two consecutive times, and the gradient bound it carries with no
-parity hypothesis.
-
-The total variation gradient bound of `ssec:green-estimates`,
-`∑_y|p_n(x,y)-p_n(w,y)| ≤ C|x-w|n^{-1/2}`, holds only when `x` and `w` have the
-same parity, and it must: at a single time the walk from `x` and the walk from a
-site of the opposite parity are supported on disjoint sets, so the difference is
-as large as the two kernels themselves.  The `L²` increment of the Green
-coefficients at two mesh sites `⌊Rw⌋` and `⌊Rw'⌋` cannot avoid that case, since
-two nearby points of `ℝ^d` have mesh sites of either parity.
-
-Summing the kernel over two consecutive times removes the obstruction.  Write
-`P_n(x,y) = p_n(x,y)+p_{n+1}(x,y)`.  If `x` and `x'` have the same parity the
-bound applies to both summands.  If they do not, the one-step recursion in the
-base point,
-`p_{n+1}(x',y) = (2d)^{-1}∑_i (p_n(x'+e_i,y)+p_n(x'-e_i,y))`, pairs `p_n(x,·)`
-with `p_{n+1}(x',·)` and `p_{n+1}(x,·)` with `p_n(x',·)`: every site `x'±e_i` has
-the parity of `x`, and its distance to `x` exceeds `|x-x'|` by at most one.  Both
-cases give
-`∑_y|P_n(x,y)-P_n(x',y)| ≤ C(|x-x'|+1)n^{-1/2}` with no hypothesis on the parity.
-
-Chapman-Kolmogorov then upgrades that to the pointwise bound
-`|P_n(x,y)-P_n(x',y)| ≤ C(|x-x'|+1)n^{-(d+1)/2}` exactly as in
-`ContHeatGradient`: the pairing sits on the first half of the time, which is what
-`tsum_pairedKernel_mul` records, and the second half contributes its uniform
-Gaussian bound.
--/
 import Sandpile.Support.ContHeatGradient
 import Sandpile.Support.ContLcltPoint
+
+/-!
+# The paired kernel and its parity-free gradient bound
+
+The kernel of two consecutive times (`pairedKernel`), and the gradient bound it carries
+with no parity hypothesis.
+
+The total variation gradient bound of `ssec:green-estimates`,
+`∑_y|p_n(x,y)-p_n(w,y)| ≤ C|x-w|n^{-1/2}`, holds only when `x` and `w` have the same
+parity, and it must: at a single time the walk from `x` and the walk from a site of the
+opposite parity are supported on disjoint sets, so the difference is as large as the two
+kernels themselves. The `L²` increment of the Green coefficients at two mesh sites `⌊Rw⌋`
+and `⌊Rw'⌋` cannot avoid that case, since two nearby points of `ℝ^d` have mesh sites of
+either parity.
+
+Summing the kernel over two consecutive times removes the obstruction. Write
+`P_n(x,y) = p_n(x,y)+p_{n+1}(x,y)`. If `x` and `x'` have the same parity
+(`tsum_abs_pairedKernel_sub_le_of_sameParity`) the bound applies to both summands. If they
+do not (`tsum_abs_pairedKernel_sub_le_of_not_sameParity`), the one-step recursion in the
+base point (`heatKernel_sub_succ_eq`),
+`p_{n+1}(x',y) = (2d)^{-1}∑_i (p_n(x'+e_i,y)+p_n(x'-e_i,y))`, pairs `p_n(x,·)` with
+`p_{n+1}(x',·)` and `p_{n+1}(x,·)` with `p_n(x',·)`: every site `x'±e_i` has the parity of
+`x`, and its distance to `x` exceeds `|x-x'|` by at most one
+(`tsum_abs_heatKernel_sub_succ_le`). Both cases give
+`∑_y|P_n(x,y)-P_n(x',y)| ≤ C(|x-x'|+1)n^{-1/2}` with no hypothesis on the parity
+(`exists_paired_tv_gradient`).
+
+Chapman-Kolmogorov then upgrades that to the pointwise bound
+`|P_n(x,y)-P_n(x',y)| ≤ C(|x-x'|+1)n^{-(d+1)/2}` (`exists_paired_pointwise_gradient`)
+exactly as in `ContHeatGradient`: the pairing sits on the first half of the time, which is
+what `tsum_pairedKernel_mul` records, and the second half contributes its uniform Gaussian
+bound.
+-/
 
 open MeasureTheory Filter Topology
 

@@ -1,11 +1,12 @@
-/-
-Theorem 1.3(ii)(a), second clause, of sandpile.tex, frozen.  `sandpile.tex:245-246`
-(label `thm:main-explosion`, part (ii)(a)):
-
-  "[$d=4$] for every fixed $x\in\Z^4$, $u_t(x)/\E u_t(0)\to1$ in $L^2$ and
-   almost surely."
--/
 import Sandpile.Support.D4Applications
+
+/-!
+# First-order odometer convergence at `d = 4`, frozen
+
+Theorem 1.3(ii)(a), second clause, of `sandpile.tex`, frozen (`sandpile.tex:245-246`, label
+`thm:main-explosion`, part (ii)(a)): at `d = 4`, for every fixed `x ∈ ℤ⁴`, the ratio
+`u_t(x)/E u_t(0)` converges to `1` in `L²` and almost surely.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

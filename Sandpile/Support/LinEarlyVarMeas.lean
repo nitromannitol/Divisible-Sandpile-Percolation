@@ -1,11 +1,14 @@
-/-
-Measurability of the uncurried visit-weighted survival time sum.
-
-`eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): the covariance
-hypothesis of the paper is applied to the time sums, so their joint measurability
-in the path and the scenery is needed.
--/
 import Sandpile.Support.LinSurvivalGradient
+
+/-!
+# Measurability and integrability of the visit-weighted survival time sum
+
+The visit-weighted survival time sum `∑ i ∈ t, 1_{X i = z} * survivalInd σ n i X` is jointly
+measurable in the path `X` and the scenery `σ`, uniformly bounded by `t.card`, and its
+integral over the path law `walkLaw d x` is measurable, integrable and in `L²` as a
+function of `σ`. These facts supply the covariance hypothesis needed for the
+early-derivative-variance computation.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -13,6 +16,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The visit-weighted survival time sum, seen as a function of the pair of the path `X`
+and the scenery `σ` via `Function.uncurry`, is jointly measurable. -/
 theorem measurable_uncurry_timesum (n : ℕ) (t : Finset ℕ) (z : Site d) :
     Measurable (Function.uncurry fun X : ℕ → Site d =>
       fun σ : Site d → ℝ => ∑ i ∈ t, (if X i = z then (1 : ℝ) else 0) * survivalInd σ n i X) := by
@@ -52,7 +57,8 @@ theorem integrable_integral_timesum [NeZero d] (μ : Measure (Site d → ℝ)) [
     Integrable (fun σ => ∫ X, ∑ i ∈ t, (if X i = z then (1 : ℝ) else 0) * survivalInd σ n i X
       ∂(walkLaw d x)) μ := by
   refine Integrable.of_bound ?_ (t.card : ℝ) (Filter.Eventually.of_forall fun σ => ?_)
-  · exact (StronglyMeasurable.integral_prod_left (measurable_uncurry_timesum n t z).stronglyMeasurable).aestronglyMeasurable
+  · exact (StronglyMeasurable.integral_prod_left
+      (measurable_uncurry_timesum n t z).stronglyMeasurable).aestronglyMeasurable
   · rw [Real.norm_eq_abs]
     exact abs_integral_timesum_le_card σ n t z x
 

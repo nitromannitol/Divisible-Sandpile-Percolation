@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ABandLawVariance
+import Sandpile.Support.Dgt4ABandLawTail
+import Sandpile.Support.Dgt4ABandParameters
+
+/-!
+# The centered, variance-one band law
+
 The centered, variance-one one-site law of Step 1 of `thm:dgt4-many-limits`
 (`sandpile.tex:5903`, `sandpile.tex:5972-5977`).
 
@@ -16,9 +22,6 @@ hypothesis below; scaling the weight constant `c_0` down makes it true, and
 scaling `c_0` changes nothing else about the parameters, so all the admissible
 inequalities of `BandParameters.exists_admissible` survive.
 -/
-import Sandpile.Support.Dgt4ABandLawVariance
-import Sandpile.Support.Dgt4ABandLawTail
-import Sandpile.Support.Dgt4ABandParameters
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -128,21 +131,29 @@ def BandParameters.scaleWeight (P : BandParameters) (ε : ℝ) (hε : 0 < ε) : 
   hlam0 := P.hlam0
   htheta := P.htheta
 
+/-- Scaling the weight constant leaves the level ratio `A` unchanged. -/
 @[simp] theorem BandParameters.scaleWeight_A (P : BandParameters) (ε : ℝ) (hε : 0 < ε) :
     (P.scaleWeight ε hε).A = P.A := rfl
 
+/-- Scaling the weight constant leaves `l1` unchanged. -/
 @[simp] theorem BandParameters.scaleWeight_l1 (P : BandParameters) (ε : ℝ) (hε : 0 < ε) :
     (P.scaleWeight ε hε).l1 = P.l1 := rfl
 
+/-- Scaling the weight constant leaves `lam0` unchanged. -/
 @[simp] theorem BandParameters.scaleWeight_lam0 (P : BandParameters) (ε : ℝ) (hε : 0 < ε) :
     (P.scaleWeight ε hε).lam0 = P.lam0 := rfl
 
+/-- Scaling the weight constant leaves the exponent sequence `theta` unchanged. -/
 @[simp] theorem BandParameters.scaleWeight_theta (P : BandParameters) (ε : ℝ) (hε : 0 < ε) :
     (P.scaleWeight ε hε).theta = P.theta := rfl
 
+/-- Scaling the weight constant leaves each band level `level k` unchanged, since the level
+depends only on `A` and `theta`. -/
 @[simp] theorem BandParameters.scaleWeight_level (P : BandParameters) (ε : ℝ) (hε : 0 < ε)
     (k : ℕ) : (P.scaleWeight ε hε).level k = P.level k := rfl
 
+/-- Scaling the weight constant by `ε` scales each band weight `weight k` by the same `ε`,
+since `weight` is `c0` times a level-dependent factor and only `c0` is scaled. -/
 @[simp] theorem BandParameters.scaleWeight_weight (P : BandParameters) (ε : ℝ) (hε : 0 < ε)
     (k : ℕ) : (P.scaleWeight ε hε).weight k = ε * P.weight k := by
   simp only [BandParameters.weight, BandParameters.scaleWeight, BandParameters.level]

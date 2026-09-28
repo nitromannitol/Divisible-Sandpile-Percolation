@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.MeanAIndex
+import Sandpile.Support.MeanAMoment
+import Sandpile.Support.MeanAPositive
+import Sandpile.Support.ContMeanAsymptotic
+import Sandpile.Support.Odometer
+
+/-! # Moment convergence at the origin from convergence in distribution
+
 The limit of the mean and of the variance of the rescaled odometer at `(1,0)`.
 
 `cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`) is stated in the paper as
@@ -16,11 +23,6 @@ exponentially integrable on the nonnegative half-line, which is the content of
   the exponential moment, since the value is almost surely nonnegative as a limit
   in distribution of nonnegative variables.
 -/
-import Sandpile.Support.MeanAIndex
-import Sandpile.Support.MeanAMoment
-import Sandpile.Support.MeanAPositive
-import Sandpile.Support.ContMeanAsymptotic
-import Sandpile.Support.Odometer
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

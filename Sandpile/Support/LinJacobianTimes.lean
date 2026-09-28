@@ -1,19 +1,16 @@
-/-
-The time split of the coordinate derivative of the tested field, Step 1 of
-`lem:dgt4-linearization-from-survival` (`sandpile.tex:5720-5727`):
-
-  `D^{≤}_{R,z} = ∑_x a_R(x) E_x ∑_{i ≤ n_R-δR²} 1_{X_i=z} S_{n_R,i}(X)`,
-  `D^{>}_{R,z} = ∂_{ζ(z)}F_R - D^{≤}_{R,z}`.
-
-Both are instances of one object: the path derivative of `eq:odometer-derivative`
-with the time sum restricted to a finite set of times.  Restricting to
-`Finset.range n` recovers the full Jacobian, restriction is additive over a
-disjoint union, and dropping the survival factor bounds the restricted
-derivative by the corresponding sum of heat kernels, which is the late estimate
-of `eq:dgt4-late-derivative-variance`.
--/
 import Sandpile.Support.OdometerPathDerivative
 import Sandpile.Support.LinIntersect
+
+/-!
+# The time-restricted coordinate derivative of the tested field
+
+The coordinate derivative `∂_{ζ(z)} F_R` splits into an early and a late part according to
+whether the walk's visit time lies in a finite set `t` of times: `jacobianTimes ζ n t x z` is the
+path derivative of the odometer Jacobian with the time sum restricted to `t`, weighted by the
+survival factor `pathSurvivalOf`. Restricting to `Finset.range n` recovers the full Jacobian, the
+restriction is additive over a disjoint union of time sets, and dropping the survival factor
+bounds the restricted derivative by the corresponding sum of heat kernels.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -27,16 +24,19 @@ noncomputable def pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) (X : ℕ → 
   ∏ i ∈ Finset.range (j + 1), (if 0 < odometerOf ζ (n - i) (X i) then (1 : ℝ) else 0)
 
 omit [NeZero d] in
+/-- The survival factor `pathSurvivalOf ζ n j X` is nonnegative, being a product of indicators. -/
 theorem pathSurvivalOf_nonneg (ζ : Site d → ℝ) (n j : ℕ) (X : ℕ → Site d) :
     0 ≤ pathSurvivalOf ζ n j X :=
   Finset.prod_nonneg fun i _ => by positivity
 
 omit [NeZero d] in
+/-- The survival factor `pathSurvivalOf ζ n j X` is at most one, being a product of indicators. -/
 theorem pathSurvivalOf_le_one (ζ : Site d → ℝ) (n j : ℕ) (X : ℕ → Site d) :
     pathSurvivalOf ζ n j X ≤ 1 :=
   Finset.prod_le_one (fun i _ => by positivity) fun i _ => by split_ifs <;> norm_num
 
 omit [NeZero d] in
+/-- The survival factor `pathSurvivalOf ζ n j` is a measurable function of the path `X`. -/
 theorem measurable_pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) :
     Measurable fun X : ℕ → Site d => pathSurvivalOf ζ n j X := by
   classical
@@ -52,11 +52,14 @@ noncomputable def jacobianTimes (ζ : Site d → ℝ) (n : ℕ) (t : Finset ℕ)
   ∫ X, ∑ j ∈ t, (if X j = z then (1 : ℝ) else 0) * pathSurvivalOf ζ n j X ∂(walkLaw d x)
 
 omit [NeZero d] in
+/-- The visit indicator times the survival factor is nonnegative. -/
 theorem visit_pathSurvivalOf_nonneg (ζ : Site d → ℝ) (n j : ℕ) (z : Site d) (X : ℕ → Site d) :
     0 ≤ (if X j = z then (1 : ℝ) else 0) * pathSurvivalOf ζ n j X :=
   mul_nonneg (by positivity) (pathSurvivalOf_nonneg ζ n j X)
 
 omit [NeZero d] in
+/-- Dropping the survival factor: the visit indicator times the survival factor is at most the
+visit indicator alone. -/
 theorem visit_pathSurvivalOf_le (ζ : Site d → ℝ) (n j : ℕ) (z : Site d) (X : ℕ → Site d) :
     (if X j = z then (1 : ℝ) else 0) * pathSurvivalOf ζ n j X
       ≤ (if X j = z then (1 : ℝ) else 0) := by
@@ -64,6 +67,8 @@ theorem visit_pathSurvivalOf_le (ζ : Site d → ℝ) (n j : ℕ) (z : Site d) (
   exact mul_le_mul_of_nonneg_left (pathSurvivalOf_le_one ζ n j X) (by positivity)
 
 omit [NeZero d] in
+/-- The product of the visit indicator at `z` and the survival factor is a measurable function
+of the path `X`. -/
 theorem measurable_visit_pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) (z : Site d) :
     Measurable fun X : ℕ → Site d =>
       (if X j = z then (1 : ℝ) else 0) * pathSurvivalOf ζ n j X := by
@@ -71,6 +76,8 @@ theorem measurable_visit_pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) (z : S
   exact (Measurable.ite (measurableSet_path_eq j z) measurable_const measurable_const).mul
     (measurable_pathSurvivalOf ζ n j)
 
+/-- The product of the visit indicator at `z` and the survival factor is integrable against the
+walk law, being bounded by the constant `1`. -/
 theorem integrable_visit_pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) (x z : Site d) :
     Integrable (fun X : ℕ → Site d =>
       (if X j = z then (1 : ℝ) else 0) * pathSurvivalOf ζ n j X) (walkLaw d x) := by
@@ -81,6 +88,8 @@ theorem integrable_visit_pathSurvivalOf (ζ : Site d → ℝ) (n j : ℕ) (x z :
   refine (visit_pathSurvivalOf_le ζ n j z X).trans ?_
   split_ifs <;> norm_num
 
+/-- The finite sum over `t` of the visit-indicator-times-survival-factor terms is integrable
+against the walk law. -/
 theorem integrable_sum_visit_pathSurvivalOf (ζ : Site d → ℝ) (n : ℕ) (t : Finset ℕ)
     (x z : Site d) :
     Integrable (fun X : ℕ → Site d =>
@@ -108,6 +117,7 @@ theorem jacobianTimes_union (ζ : Site d → ℝ) (n : ℕ) {t u : Finset ℕ} (
   exact integral_congr_ae (Filter.Eventually.of_forall fun X => Finset.sum_union htu)
 
 omit [NeZero d] in
+/-- The time-restricted coordinate derivative `jacobianTimes ζ n t x z` is nonnegative. -/
 theorem jacobianTimes_nonneg (ζ : Site d → ℝ) (n : ℕ) (t : Finset ℕ) (x z : Site d) :
     0 ≤ jacobianTimes ζ n t x z :=
   integral_nonneg fun X => Finset.sum_nonneg fun j _ => visit_pathSurvivalOf_nonneg ζ n j z X

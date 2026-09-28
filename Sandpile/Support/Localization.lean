@@ -1,24 +1,23 @@
-/-
-The localized value of `sandpile.tex`, `eq:localized-odometer`, against the
-odometer.
-
-The walk of `Sandpile/Walk.lean` is the walk of `LatticeProb/Walk/Markov.lean`:
-the increment law, the path map and the walk law are the same definitions, so
-the library's Markov property applies here verbatim.  The bridge is recorded
-first.
-
-The localized value is the same supremum over bounded stopping times as the
-odometer, but of the scenery summed only while the walk has stayed in `D`.  That
-truncated sum is the plain scenery sum stopped at `τ ∧ τ_D`, and `τ ∧ τ_D` is
-itself a bounded stopping time, so the localized value's set of values is a
-subset of the odometer's and the first half of `lem:localization-killing`
-follows.
--/
 import Sandpile.Support.Stopped
 import Sandpile.Support.Odometer
 import Sandpile.External.BPSH
 import Sandpile.External.BPSHProved
 import LatticeProb.Walk.Markov
+
+/-!
+# The localized odometer compared to the odometer
+
+The sandpile's walk is definitionally the library's walk (the increment law, the path map and
+the walk law are the same definitions), so the library's strong Markov property applies here
+verbatim. The localized odometer is the same supremum over bounded stopping times as the
+odometer, but of the scenery summed only while the walk has stayed in a set `D`; that truncated
+sum equals the plain scenery sum stopped at `τ ∧ τ_D`, where `τ_D` is the exit time from `D`,
+and `τ ∧ τ_D` is itself a bounded stopping time, so the localized value never exceeds the
+odometer. Conversely, the reward collected between `τ ∧ τ_D` and `τ` is bounded, via the strong
+Markov property applied at `τ ∧ τ_D` to the residual scenery sum, by the expected reward
+`exitReward` read at the walk's exit position, giving the two-sided comparison between the
+odometer and its localized version.
+-/
 
 open MeasureTheory
 
@@ -28,13 +27,19 @@ variable {d : ℕ}
 
 /-! ### The walk here is the walk in the library -/
 
+/-- The sandpile's step law is definitionally the library's increment law
+`LatticeProb.incLaw`. -/
 theorem stepLaw_eq_incLaw (d : ℕ) : stepLaw d = LatticeProb.incLaw d := rfl
 
+/-- The sandpile's `walkPath` is definitionally the library's `LatticeProb.sitePath`. -/
 theorem walkPath_eq_sitePath (x : Site d) : walkPath x = LatticeProb.sitePath x := rfl
 
+/-- The sandpile's `walkLaw` is definitionally the library's `LatticeProb.siteWalkLaw`. -/
 theorem walkLaw_eq_siteWalkLaw (d : ℕ) (x : Site d) :
     walkLaw d x = LatticeProb.siteWalkLaw d x := rfl
 
+/-- The sandpile's stopping-time predicate `IsWalkStopping` coincides with the library's
+`LatticeProb.IsWalkStopping`. -/
 theorem isWalkStopping_iff {τ : (ℕ → Site d) → ℕ} :
     IsWalkStopping τ ↔ LatticeProb.IsWalkStopping τ := Iff.rfl
 
@@ -46,6 +51,8 @@ noncomputable def exitNat (D : Set (Site d)) (t : ℕ) (X : ℕ → Site d) : �
   open Classical in
   if h : ∃ j, j ≤ t ∧ X j ∉ D then Nat.find h else t + 1
 
+/-- If the walk has left `D` by some time `j ≤ t`, the exit index `exitNat D t X` is at
+most `j`. -/
 theorem exitNat_le_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} {j : ℕ}
     (hjt : j ≤ t) (hj : X j ∉ D) : exitNat D t X ≤ j := by
   classical
@@ -54,12 +61,14 @@ theorem exitNat_le_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} {j : ℕ
   rw [dif_pos hex]
   exact Nat.find_le ⟨hjt, hj⟩
 
+/-- Every time strictly before the exit index, and at most `t`, has the walk still in `D`. -/
 theorem mem_of_lt_exitNat {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} {j : ℕ}
     (hj : j < exitNat D t X) (hjt : j ≤ t) : X j ∈ D := by
   by_contra hc
   have := exitNat_le_of hjt hc
   omega
 
+/-- When the exit index is at most `t`, the walk has genuinely left `D` at that index. -/
 theorem notMem_exitNat {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     (h : exitNat D t X ≤ t) : X (exitNat D t X) ∉ D := by
   classical
@@ -92,10 +101,14 @@ noncomputable def stopBeforeExit (D : Set (Site d)) (t : ℕ)
     (τ : (ℕ → Site d) → ℕ) (X : ℕ → Site d) : ℕ :=
   min (τ X) (exitNat D t X)
 
+/-- `stopBeforeExit D t τ` never exceeds `t`, since both `τ` and the exit index it is
+minimized against are bounded by `t`. -/
 theorem stopBeforeExit_le {D : Set (Site d)} {t : ℕ} {τ : (ℕ → Site d) → ℕ}
     (hτt : ∀ X, τ X ≤ t) (X : ℕ → Site d) : stopBeforeExit D t τ X ≤ t :=
   le_trans (min_le_left _ _) (hτt X)
 
+/-- `stopBeforeExit D t τ` is itself a stopping time whenever `τ` is, since the exit index
+`exitNat D t` depends on a path only through its positions up to the time in question. -/
 theorem isWalkStopping_stopBeforeExit {D : Set (Site d)} {t : ℕ} {τ : (ℕ → Site d) → ℕ}
     (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     IsWalkStopping (stopBeforeExit D t τ) := by
@@ -194,9 +207,11 @@ residual stopping index of the path glued from the past and the future. -/
 def gluePath (k : ℕ) (X Y : ℕ → Site d) (j : ℕ) : Site d :=
   if j ≤ k then X j else Y (j - k)
 
+/-- For `j ≤ k`, `gluePath k X Y` agrees with `X` at `j`. -/
 theorem gluePath_of_le {k : ℕ} {X Y : ℕ → Site d} {j : ℕ} (h : j ≤ k) :
     gluePath k X Y j = X j := by simp [gluePath, h]
 
+/-- `gluePath k X Y` depends on `X` only through its values up to `k`. -/
 theorem gluePath_congr (k : ℕ) {X X' : ℕ → Site d} (h : ∀ j ≤ k, X j = X' j)
     (Y : ℕ → Site d) : gluePath k X Y = gluePath k X' Y := by
   funext j
@@ -256,6 +271,9 @@ noncomputable def afterExit (s : Finset (Site d)) (ζ : Site d → ℝ)
     (τ : (ℕ → Site d) → ℕ) (k : ℕ) (X Y : ℕ → Site d) : ℝ :=
   if τ X = k then 0 else residualSum s ζ k τ X Y
 
+/-- The functional `afterExit` is bounded by `t * M` whenever the truncated scenery is bounded
+by `M`, since it sums at most `t` such terms and is zero when the stopping time has already
+occurred. -/
 theorem abs_afterExit_le (s : Finset (Site d)) (ζ : Site d → ℝ) {τ : (ℕ → Site d) → ℕ}
     {t : ℕ} (hτt : ∀ X, τ X ≤ t) {M : ℝ} (hM : ∀ y, |trunc s ζ y| ≤ M)
     (k : ℕ) (X Y : ℕ → Site d) : |afterExit s ζ τ k X Y| ≤ t * M := by
@@ -301,6 +319,7 @@ theorem afterExit_shift (s : Finset (Site d)) (ζ : Site d → ℝ)
   · rw [if_neg hk]
     exact Finset.sum_congr rfl fun i _ => rfl
 
+/-- `gluePath k` is measurable as a function of the pair of paths it glues together. -/
 theorem measurable_gluePath (k : ℕ) :
     Measurable fun p : (ℕ → Site d) × (ℕ → Site d) => gluePath k p.1 p.2 := by
   refine measurable_pi_lambda _ fun j => ?_
@@ -311,6 +330,7 @@ theorem measurable_gluePath (k : ℕ) :
   · simp only [if_neg h]
     exact (measurable_pi_apply (j - k)).comp measurable_snd
 
+/-- `afterExit s ζ τ k`, uncurried over the pair of paths it is glued from, is measurable. -/
 theorem measurable_afterExit (s : Finset (Site d)) (ζ : Site d → ℝ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) {t : ℕ} (hτt : ∀ X, τ X ≤ t) (k : ℕ) :
     Measurable (Function.uncurry (afterExit s ζ τ k)) := by
@@ -370,6 +390,8 @@ that inner expectation is one of the competitors in the optimal-stopping problem
 at `X_σ`, so it is at most `u_t(X_σ)`.  On the event `σ = τ` there is no reward
 to collect, and off it `σ` is the exit time, which is then at most `t`. -/
 
+/-- `walkLaw d x` is a probability measure, inherited from the library's
+`LatticeProb.siteWalkLaw`. -/
 instance walkLaw_isProbabilityMeasure (d : ℕ) [NeZero d] (x : Site d) :
     IsProbabilityMeasure (walkLaw d x) := by
   rw [show walkLaw d x = LatticeProb.siteWalkLaw d x from rfl]
@@ -392,6 +414,8 @@ theorem ae_boxDist_walk (hd : 1 ≤ d) (x : Site d) :
 
 /-! ### The exit time in `ℕ∞` and the exit index in `ℕ` -/
 
+/-- The exit index is at most `t` iff the walk has genuinely left `D` by some time up to
+`t`. -/
 theorem exitNat_le_iff {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} :
     exitNat D t X ≤ t ↔ ∃ j ≤ t, X j ∉ D := by
   constructor
@@ -400,6 +424,7 @@ theorem exitNat_le_iff {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} :
   · rintro ⟨j, hj, hjD⟩
     exact le_trans (exitNat_le_of hj hjD) hj
 
+/-- If the walk stays in `D` through time `t`, the exit index is `t + 1`. -/
 theorem exitNat_eq_succ_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     (h : ∀ j ≤ t, X j ∈ D) : exitNat D t X = t + 1 := by
   classical
@@ -408,6 +433,7 @@ theorem exitNat_eq_succ_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
   rintro ⟨j, hj, hjD⟩
   exact hjD (h j hj)
 
+/-- The exit index depends on the path only through its values up to `t`. -/
 theorem exitNat_congr' {D : Set (Site d)} {t : ℕ} {X Y : ℕ → Site d}
     (h : ∀ j ≤ t, X j = Y j) : exitNat D t X = exitNat D t Y := by
   by_cases hc : exitNat D t X ≤ t
@@ -435,6 +461,7 @@ theorem exitTime_eq_exitNat {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     exact hn (mem_of_lt_exitNat (D := D) (t := t) (X := X) (j := n) (by omega) (by omega))
   exact_mod_cast hle
 
+/-- The `ℕ∞`-valued exit time is at most `t` iff the `ℕ`-valued exit index is at most `t`. -/
 theorem exitTime_le_iff {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} :
     exitTime D X ≤ (t : ℕ∞) ↔ exitNat D t X ≤ t := by
   constructor
@@ -467,6 +494,8 @@ noncomputable def exitReward (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ)
   Set.indicator {X : ℕ → Site d | exitTime D X ≤ (t : ℕ∞)}
     (fun X => odometerOf ζ t (X (exitTime D X).toNat)) X
 
+/-- When the exit index is at most `t`, the exit reward is the odometer read at the exit
+position. -/
 theorem exitReward_of_le {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     (ζ : Site d → ℝ) (h : exitNat D t X ≤ t) :
     exitReward D ζ t X = odometerOf ζ t (X (exitNat D t X)) := by
@@ -475,6 +504,7 @@ theorem exitReward_of_le {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
   rw [Set.indicator_of_mem hmem, exitTime_eq_exitNat h]
   simp
 
+/-- When the walk never leaves `D` by time `t`, the exit reward is zero. -/
 theorem exitReward_of_not_le {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     (ζ : Site d → ℝ) (h : ¬ exitNat D t X ≤ t) : exitReward D ζ t X = 0 := by
   unfold exitReward
@@ -482,12 +512,15 @@ theorem exitReward_of_not_le {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     fun hc => h (exitTime_le_iff.mp hc)
   exact Set.indicator_of_notMem hmem _
 
+/-- The exit reward is nonnegative: it is either the nonnegative odometer or zero. -/
 theorem exitReward_nonneg (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) (X : ℕ → Site d) :
     0 ≤ exitReward D ζ t X := by
   by_cases h : exitNat D t X ≤ t
   · rw [exitReward_of_le ζ h]; exact odometerOf_nonneg _ _ _
   · rw [exitReward_of_not_le ζ h]
 
+/-- The exit reward is measurable, since it depends on the path only through its positions
+up to time `t`. -/
 theorem measurable_exitReward (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) :
     Measurable (exitReward D ζ t) := by
   refine measurable_of_dependsOn t _ fun X Y h => ?_
@@ -500,6 +533,8 @@ theorem measurable_exitReward (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ)
 noncomputable def odometerBound (x : Site d) (t : ℕ) (ζ : Site d → ℝ) : ℝ :=
   ∑ z ∈ boxFinset x t, |odometerOf ζ t z|
 
+/-- The exit reward is integrable, dominated by the fixed constant `odometerBound x t ζ` since
+the walk cannot leave the box `boxFinset x t` by time `t`. -/
 theorem integrable_exitReward (hd : 1 ≤ d) (x : Site d) (D : Set (Site d))
     (ζ : Site d → ℝ) (t : ℕ) :
     Integrable (exitReward D ζ t) (walkLaw d x) := by
@@ -514,6 +549,8 @@ theorem integrable_exitReward (hd : 1 ≤ d) (x : Site d) (D : Set (Site d))
   · rw [exitReward_of_not_le ζ hc, abs_zero]
     exact Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/-- The scenery sum stopped at a bounded stopping time `τ` is integrable, dominated by `t`
+times the scenery's bound on the box the walk cannot leave by time `t`. -/
 theorem integrable_stoppedScenery_walk (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun X => sceneryPartialSum ζ (τ X) X) (walkLaw d x) := by
@@ -698,10 +735,14 @@ def localizedSet (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) (x : Site d)
   {a : ℝ | ∃ τ : (ℕ → Site d) → ℕ, IsWalkStopping τ ∧ (∀ X, τ X ≤ t) ∧
     a = ∫ X, sceneryPartialSum ζ (stopBeforeExit D t τ X) X ∂(walkLaw d x)}
 
+/-- The localized optimal-stopping set of values is nonempty: the zero stopping time is
+always a competitor. -/
 theorem localizedSet_nonempty (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) (x : Site d) :
     (localizedSet D ζ t x).Nonempty :=
   ⟨_, ⟨fun _ => 0, isWalkStopping_zero, fun _ => Nat.zero_le t, rfl⟩⟩
 
+/-- The localized optimal-stopping set of values is bounded above by `t` times the
+scenery's bound on the box the walk cannot leave. -/
 theorem bddAbove_localizedSet (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ)
     (x : Site d) : BddAbove (localizedSet D ζ t x) := by
   refine ⟨t * sceneryBound x t ζ, ?_⟩
@@ -709,6 +750,9 @@ theorem bddAbove_localizedSet (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d →
   exact le_trans (le_abs_self _) (abs_integral_stoppedScenery_le hd x ζ t
     (isWalkStopping_stopBeforeExit hτ hτt) (stopBeforeExit_le hτt))
 
+/-- At a point of `D`, the localized odometer is the supremum of `localizedSet`, the same
+family of values written with the plain scenery sum stopped at `τ ∧ τ_D` instead of the
+truncated-indicator sum. -/
 theorem localizedOdometer_eq_sSup (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ)
     (x : Site d) (hx : x ∈ D) :
     localizedOdometer D ζ t x = sSup (localizedSet D ζ t x) := by
@@ -751,6 +795,8 @@ theorem abs_integral_stoppedScenery_sub_le (hd : 1 ≤ d) (x : Site d) (ζ η : 
   rw [integral_congr_ae (Filter.Eventually.of_forall hpt)]
   exact abs_integral_stoppedScenery_le hd x (fun y => ζ y - η y) t hρ hρt
 
+/-- If every element of a nonempty set `A` is within `K` of some element of a bounded-above
+set `B`, then `sSup A ≤ sSup B + K`. -/
 theorem sSup_le_sSup_add {A B : Set ℝ} (hA : A.Nonempty) (hBb : BddAbove B) (K : ℝ)
     (h : ∀ a ∈ A, ∃ b ∈ B, a ≤ b + K) : sSup A ≤ sSup B + K := by
   refine csSup_le hA fun a ha => ?_
@@ -791,6 +837,8 @@ theorem abs_localizedOdometer_sub_le (hd : 1 ≤ d) (D : Set (Site d)) (ζ η : 
       Set.indicator_of_notMem hx]
     simpa using hK
 
+/-- The localized odometer is continuous in the scenery, as a consequence of the Lipschitz
+bound `abs_localizedOdometer_sub_le`. -/
 theorem continuous_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t : ℕ) (x : Site d) :
     Continuous fun ζ : Site d → ℝ => localizedOdometer D ζ t x := by
   rw [continuous_iff_continuousAt]
@@ -811,10 +859,13 @@ theorem continuous_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t : ℕ)
   have := abs_localizedOdometer_sub_le hd D η ζ t x
   simpa using this
 
+/-- The localized odometer is measurable in the scenery, since it is continuous in it. -/
 theorem measurable_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t : ℕ) (x : Site d) :
     Measurable fun ζ : Site d → ℝ => localizedOdometer D ζ t x :=
   (continuous_localizedOdometer hd D t x).measurable
 
+/-- The localized odometer is nonnegative: the zero stopping time is a competitor with
+value zero. -/
 theorem localizedOdometer_nonneg (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ)
     (x : Site d) : 0 ≤ localizedOdometer D ζ t x := by
   by_cases hx : x ∈ D
@@ -846,6 +897,7 @@ theorem odometerOf_sub_localizedOdometer_le (hOS : External.OptimalStopping) (hd
   linarith
 
 
+/-- At horizon `t = 0` the localized odometer vanishes, matching the plain odometer there. -/
 theorem localizedOdometer_zero (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ)
     (x : Site d) : localizedOdometer D ζ 0 x = 0 := by
   by_cases hx : x ∈ D

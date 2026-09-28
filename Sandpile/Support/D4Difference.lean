@@ -1,15 +1,3 @@
-/-
-The upper tail of `u_t - V_t` in dimension four.
-
-`lem:d4-difference-tail` (`sandpile.tex:3008-3047`) reads the difference through
-the optimal-stopping representation, bounds it by the largest positive part of
-`-V_r(y)` over the times and sites the walk can reach, and then unions the
-sub-exponential tail of a single membrane value over those `C(t+2)^5` pairs.
-This file carries the three ingredients: the membrane as a linear functional of
-the scenery in a box, with the `\ell^2` and `\ell^\infty` bounds that
-`eq:d4-full-window-bounds` gives in dimension four; the pathwise bound on the
-optimal-stopping supremum; and the union bound over the reachable pairs.
--/
 import Sandpile.Frozen.WeightedExpConcentration
 import Sandpile.Frozen.DifferenceRepresentation
 import Sandpile.External.BPSHProved
@@ -19,6 +7,18 @@ import Sandpile.Support.PointwiseConc
 import Sandpile.Support.Stopped
 import Sandpile.Support.IncrementBall
 import Sandpile.External.VarianceScale
+
+/-!
+# The upper tail of `u_t - V_t` in dimension four
+
+`lem:d4-difference-tail` (`sandpile.tex:3008-3047`) reads the difference through the
+optimal-stopping representation, bounds it by the largest positive part of `-V_r(y)` over the
+times and sites the walk can reach, and then unions the sub-exponential tail of a single
+membrane value over those `C(t+2)^5` pairs. This file carries the three ingredients: the
+membrane as a linear functional of the scenery in a box, with the `\ell^2` and `\ell^\infty`
+bounds that `eq:d4-full-window-bounds` gives in dimension four; the pathwise bound on the
+optimal-stopping supremum; and the union bound over the reachable pairs.
+-/
 
 open LatticeProb
 
@@ -34,14 +34,21 @@ noncomputable def boxMembrane (t : ℕ) (x : Site d)
     (ξ : Fin (boxFinset x t).card → ℝ) : ℝ :=
   ∑ i, greenTime d t x (boxEnum x t i) * ξ i
 
+/-- `boxMembrane` evaluated at the coordinates of `ζ` picked out by `boxEnum` recovers
+`membrane ζ t x`. -/
 theorem boxMembrane_pick (t : ℕ) (x : Site d) (ζ : Site d → ℝ) :
     boxMembrane t x (fun i => ζ (boxEnum x t i)) = membrane ζ t x :=
   (membrane_eq_sum_boxEnum t x ζ).symm
 
+/-- `boxMembrane t x` is measurable, being a finite sum of coordinate projections
+scaled by `greenTime`. -/
 theorem measurable_boxMembrane (t : ℕ) (x : Site d) : Measurable (boxMembrane t x) := by
   unfold boxMembrane
   exact Finset.measurable_sum _ fun i _ => (measurable_pi_apply i).const_mul _
 
+/-- Updating a single coordinate `i` of `ξ` changes `boxMembrane t x ξ` by at most
+`greenTime d t x (boxEnum x t i)` times the size of the update: the Lipschitz constant of
+`boxMembrane` in each coordinate is its Green-function coefficient. -/
 theorem abs_boxMembrane_update_le (t : ℕ) (x : Site d)
     (ξ : Fin (boxFinset x t).card → ℝ) (i : Fin (boxFinset x t).card) (y : ℝ) :
     |boxMembrane t x ξ - boxMembrane t x (Function.update ξ i y)|
@@ -60,6 +67,8 @@ theorem abs_boxMembrane_update_le (t : ℕ) (x : Site d)
       exact absurd (Finset.mem_univ i) hi
   rw [h, abs_mul, abs_of_nonneg (greenTime_nonneg t x (boxEnum x t i))]
 
+/-- The membrane field has mean zero under the i.i.d. scenery law: `membrane` is a finite
+linear combination of coordinates, each of mean zero, so its integral vanishes. -/
 theorem integral_membrane_zero (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0) (t : ℕ) (x : Site d) :
     ∫ ζ, membrane ζ t x ∂(LatticeProb.iidLaw d ν) = 0 := by
@@ -73,6 +82,9 @@ theorem integral_membrane_zero (ν : Measure ℝ) [IsProbabilityMeasure ν]
   simp only [integral_const_mul, integral_coord ν hint, hmean, mul_zero,
     Finset.sum_const_zero]
 
+/-- The box-coordinate transposition of `integral_membrane_zero`: `boxMembrane t x` has mean
+zero under the product law, via the coordinate-picking measure isomorphism
+`integral_pick`. -/
 theorem integral_boxMembrane_zero (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0) (t : ℕ) (x : Site d) :
     ∫ ξ, boxMembrane t x ξ ∂(Measure.pi fun _ : Fin (boxFinset x t).card => ν) = 0 := by
@@ -86,6 +98,7 @@ theorem greenTime_one_le_one (x y : Site d) : greenTime d 1 x y ≤ 1 := by
   rw [greenTime_succ, greenTime_zero, heatKernel_zero, zero_add]
   split <;> norm_num
 
+/-- `log 3 ≥ 1`, since `e < 3`. -/
 theorem one_le_log_three : (1 : ℝ) ≤ Real.log 3 := by
   have he : Real.exp 1 < 3 := by
     have := Real.exp_one_lt_d9

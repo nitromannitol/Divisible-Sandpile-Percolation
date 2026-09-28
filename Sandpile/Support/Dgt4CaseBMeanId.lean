@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4CaseBSplit
+import Sandpile.Frozen.DGT4OriginFrozen
+
+/-!
+# Case (b): the mean-increment identity
+
 The mean-increment identity of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5406-5409`): "Since $Pw_n(0)$ is independent of the atomless $\zeta(0)$, the
 identities \eqref{eq:dgt4-origin-fixed-identities} give
@@ -8,8 +13,6 @@ Read through the split of `Support/Dgt4CaseBSplit.lean`, the right-hand side is 
 expectation of the INTEGRATED LOWER TAIL at the random level `Pw_n(0)`, which is the form
 the replacement theorem of `Support/Dgt4CaseBReplace.lean` consumes.
 -/
-import Sandpile.Support.Dgt4CaseBSplit
-import Sandpile.Frozen.DGT4OriginFrozen
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

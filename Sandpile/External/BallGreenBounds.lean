@@ -1,4 +1,8 @@
-/-
+import Sandpile.Walk
+
+/-!
+# The dimension-four ball-killed Green estimates, as an external input
+
 External input: the ball-killed Green estimates in dimension four collected in
 `ssec:green-estimates` of `sandpile.tex`.  The paper does not prove them; it
 records at `sandpile.tex:1242-1246` that
@@ -71,7 +75,6 @@ constrained only on `[0,∞)`, which is the paper's hypothesis, and `h` evaluate
 it only at `|u|/L ≥ 0`, so the unconstrained values of `φ` on the negative axis
 never enter.
 -/
-import Sandpile.Walk
 
 open MeasureTheory
 

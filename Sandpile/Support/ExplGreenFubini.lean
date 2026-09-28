@@ -1,18 +1,19 @@
-/-
-Pointwise spatial kernels in stochastic Fubini for the continuous heat potential.
-
-An integrable joint scalar representative identifies a Bochner L2 integral on a
-sigma-finite spatial measure. The proof tests against indicators of finite-measure
-sets. Brownian Green kernels have spatial L1 mass equal to their horizon, so a
-bounded measurable family of Green kernels is integrable on the full product.
-
-Consequently the white-noise index in the stopped continuous-field identity can
-be written as the literal spatial function
-  y |-> integral sqrt(variance) * g_(T-tau)(B_tau,y) dP_B.
-The equality remains almost sure for each fixed stopping time; it does not assert
-an event simultaneous over all admissible stopping times.
--/
 import Sandpile.Support.ExplHeatVersion
+
+/-!
+# Pointwise spatial kernels in stochastic Fubini for the continuous heat potential
+
+An integrable joint scalar representative identifies a Bochner L2 integral on a sigma-finite
+spatial measure (`coe_integral_L2_eq_integral_of_integrable`). The proof tests against indicators
+of finite-measure sets. Brownian Green kernels have spatial L1 mass equal to their horizon
+(`integrable_greenTimeBM_and_integral_eq`), so a bounded measurable family of Green kernels is
+integrable on the full product (`integrable_greenTimeBM_product`).
+
+Consequently the white-noise index in the stopped continuous-field identity can be written as the
+literal spatial function `y ↦ ∫ b, √ν² * g_{T-τ}(B_τ b, y) dP_B`
+(`gaussianPotential_stopped_integral_comm_pointwise`). The equality remains almost sure for each
+fixed stopping time; it does not assert an event simultaneous over all admissible stopping times.
+-/
 
 open LatticeProb
 
@@ -21,7 +22,13 @@ open scoped ENNReal NNReal RealInnerProductSpace InnerProductSpace
 
 namespace Sandpile.Support
 
-theorem coe_integral_L2_eq_integral_of_integrable {U Ω : Type*} [MeasurableSpace U] [MeasurableSpace Ω]
+/-- **A jointly integrable scalar representative identifies the Bochner integral pointwise.**
+Given an integrable `F : U → Lp ℝ 2 P` and a jointly integrable `g` with `g u =ᵐ[P] F u` for
+every `u`, the coercion of `∫ u, F u ∂μ` to a function agrees almost everywhere with
+`ω ↦ ∫ u, g u ω ∂μ`. Proved by testing against indicators of finite-measure sets via
+`ae_eq_of_forall_setIntegral_eq_of_sigmaFinite` and swapping the iterated integral. -/
+theorem coe_integral_L2_eq_integral_of_integrable {U Ω : Type*} [MeasurableSpace U]
+    [MeasurableSpace Ω]
     (μ : Measure U) [SigmaFinite μ] (P : Measure Ω) [SigmaFinite P]
     (F : U → Lp ℝ 2 P) (hF : Integrable F μ)
     (g : U → Ω → ℝ) (hg : Integrable (Function.uncurry g) (μ.prod P))
@@ -50,7 +57,12 @@ theorem coe_integral_L2_eq_integral_of_integrable {U Ω : Type*} [MeasurableSpac
 
 open Sandpile.Support Sandpile.Continuum
 
-theorem integrable_greenTimeBM_and_integral_eq {d : ℕ} (hd : 1 ≤ d) {t : ℝ} (ht : 0 ≤ t) (x : Space d) :
+/-- **A Brownian Green kernel has spatial L1 mass equal to its horizon.** For `t ≥ 0`,
+`greenTimeBM d t x`, the time-integrated Brownian heat kernel from `x` run up to time `t`, is
+integrable in space and its spatial integral is exactly `t`. Proved by Fubini, using that
+`heatKernelBM` integrates to `1` in space at every intermediate time. -/
+theorem integrable_greenTimeBM_and_integral_eq {d : ℕ} (hd : 1 ≤ d) {t : ℝ} (ht : 0 ≤ t)
+    (x : Space d) :
     Integrable (greenTimeBM d t x) volume ∧ (∫ y, greenTimeBM d t x y) = t := by
   let μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) t)
   haveI : IsFiniteMeasure μ := ⟨by rw [Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
@@ -79,6 +91,12 @@ theorem integrable_greenTimeBM_and_integral_eq {d : ℕ} (hd : 1 ≤ d) {t : ℝ
         exact integral_heatKernelBM_eq_one hd hu.1 x
     _ = t := by simp [μ, ht]
 
+/-- **A measurable family of Green kernels bounded in time is integrable on the full product.**
+Given a measurable `q : U → ℝ≥0 × Space d` with `(q u).1 ≤ T` for every `u`, the map
+`(u, y) ↦ greenTimeBM d (q u).1 (q u).2 y` is integrable on `μ.prod volume`. Proved via
+`integrable_prod_iff`, with the sections integrable by
+`integrable_greenTimeBM_and_integral_eq` and their L1 norms dominated by the integrable constant
+`T`. -/
 theorem integrable_greenTimeBM_product {U : Type*} [MeasurableSpace U]
     (μ : Measure U) [IsFiniteMeasure μ] {d : ℕ} (hd : 1 ≤ d)
     (q : U → ℝ≥0 × Space d) (hq : Measurable q) (T : ℝ≥0)
@@ -89,14 +107,18 @@ theorem integrable_greenTimeBM_product {U : Type*} [MeasurableSpace U]
     (hq.comp measurable_fst).prodMk measurable_snd
   have hm := (measurable_uncurry_greenTimeBM d).comp hq'
   have hsections : ∀ᵐ u ∂μ, Integrable (fun y => greenTimeBM d (q u).1 (q u).2 y) volume :=
-    Eventually.of_forall fun u => (integrable_greenTimeBM_and_integral_eq hd (t := ((q u).1 : ℝ)) (q u).1.property (q u).2).1
+    Eventually.of_forall fun u =>
+      (integrable_greenTimeBM_and_integral_eq hd (t := ((q u).1 : ℝ)) (q u).1.property
+        (q u).2).1
   have he (u : U) : (∫ y : Space d, ‖greenTimeBM d (q u).1 (q u).2 y‖) = ((q u).1 : ℝ) := by
     calc (∫ y : Space d, ‖greenTimeBM d (q u).1 (q u).2 y‖)
         = ∫ y : Space d, greenTimeBM d (q u).1 (q u).2 y := by
           apply integral_congr_ae
           exact Eventually.of_forall fun y => Real.norm_of_nonneg
             (greenTimeBM_nonneg d (q u).1.property (q u).2 y)
-      _ = ((q u).1 : ℝ) := (integrable_greenTimeBM_and_integral_eq hd (t := ((q u).1 : ℝ)) (q u).1.property (q u).2).2
+      _ = ((q u).1 : ℝ) :=
+          (integrable_greenTimeBM_and_integral_eq hd (t := ((q u).1 : ℝ)) (q u).1.property
+            (q u).2).2
   have htint : Integrable (fun u => ((q u).1 : ℝ)) μ := by
     apply (integrable_const (μ := μ) (T : ℝ)).mono' (hq.fst.subtype_val.aestronglyMeasurable)
     exact Eventually.of_forall fun u => by
@@ -112,6 +134,13 @@ namespace Sandpile.Continuum
 
 open Sandpile.Support
 
+/-- **The white-noise index of the stopped Gaussian potential is the literal spatial Green
+kernel, pointwise.** At a fixed bounded stopping time `τ`, the stopped reward
+`ω ↦ ∫ b, Z (T - τ b) (B (τ b) b) ω ∂PB` is a.e. equal to `W` evaluated at
+`y ↦ ∫ b, √ν² · greenTimeBM d (T - τ b) (B (τ b) b) y ∂PB`, and the stopped reward is a.e.
+integrable. Obtained from `gaussianPotential_stopped_integral_comm` by identifying its L2
+representative `F` with the pointwise Green-kernel average `f` via
+`coe_integral_L2_eq_integral_of_integrable`. -/
 theorem gaussianPotential_stopped_integral_comm_pointwise {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}

@@ -1,15 +1,16 @@
-/-
-The affine map `w ↦ T^{-1/2}(w-x)` of `ssec:scaling-dlt4` and its action on
-Lebesgue measure.
-
-`prop:continuum-value-selfsimilar` rescales space by `√T` about the point `x`.
-On `ℝ^d` that map multiplies Lebesgue measure by `T^{-d/2}`, which is the whole
-content of the Brownian scaling of the white noise: the two factors `T^{-d/4}`
-that make the rescaled noise a white noise again are the square roots of that
-Jacobian.
--/
 import Sandpile.Continuum.Kernel
 import Mathlib
+
+/-!
+# The affine rescaling map and its action on Lebesgue measure
+
+The space rescaling `w ↦ T^{-1/2} (w - x)` about a point `x` multiplies Lebesgue measure on
+`Space d` by the Jacobian factor `T^{-d/2}` (`map_scaleShift`), which transports integrals
+(`integral_comp_scaleShift`) and preserves square integrability (`memLp_comp_scaleShift`). This
+is the entire content of the Brownian scaling of the white noise: the two factors `T^{-d/4}`
+that make the rescaled white noise a white noise again are exactly the square roots of this
+Jacobian (`scale_factor_sq`).
+-/
 
 open MeasureTheory
 

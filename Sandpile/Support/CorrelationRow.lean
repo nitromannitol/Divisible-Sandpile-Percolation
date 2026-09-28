@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CriticalScales
+import Sandpile.Support.GeomRow
+
+/-! # Correlation matrix rows at geometric scales
+
 The rows of the correlation matrix at the geometric scales.
 
 At the times `n_j = N q^j` the correlation bound `eq:corr-bound` decays
@@ -8,11 +12,11 @@ extra logarithm is absorbed by `1 + l log q ≤ 3 q^{l/4}`.  Summing the row the
 gives off-diagonal mass at most `12 C q^{-1/4}`, which is what makes the
 covariance matrix of the standardized fields nearly isotropic once `q` is large.
 -/
-import Sandpile.Support.CriticalScales
-import Sandpile.Support.GeomRow
 
 namespace Sandpile
 
+/-- For `y ≥ 0`, `1 + 4*y ≤ 3 * Real.exp y`, proved by squaring the tangent-line bound
+`1 + y/2 ≤ Real.exp (y/2)` and completing the square in `y`. -/
 theorem one_add_four_le_three_exp {y : ℝ} (hy : 0 ≤ y) : 1 + 4 * y ≤ 3 * Real.exp y := by
   have h1 : 1 + y / 2 ≤ Real.exp (y / 2) := by
     have := Real.add_one_le_exp (y / 2)
@@ -38,10 +42,14 @@ theorem one_add_mul_log_le {q : ℕ} (hq : 1 ≤ q) (l : ℕ) :
   have h4 : 4 * y = (l : ℝ) * Real.log (q : ℝ) := by rw [hy]; ring
   linarith [this, h4]
 
+/-- For `x > 0`, the natural power of a real power is the real power of the product
+exponent: `(x^a)^l = x^(a*l)`, via `Real.rpow_natCast` and `Real.rpow_mul`. -/
 theorem rpow_pow_eq {x : ℝ} (hx : 0 < x) (a : ℝ) (l : ℕ) :
     (x ^ a) ^ l = x ^ (a * (l : ℝ)) := by
   rw [← Real.rpow_natCast (x ^ a) l, ← Real.rpow_mul hx.le]
 
+/-- The ratio of consecutive geometric scale sizes `N * q ^ j` and `N * q ^ (j + l)` is
+exactly `q ^ (-l)`. -/
 theorem ratio_geom {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N) (j l : ℕ) :
     ((N * q ^ j : ℕ) : ℝ) / ((N * q ^ (j + l) : ℕ) : ℝ) = (q : ℝ) ^ (-(l : ℝ)) := by
   have hq0 : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hq
@@ -52,6 +60,8 @@ theorem ratio_geom {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N) (j l : ℕ) :
   rw [Real.rpow_neg hq0.le, Real.rpow_natCast, pow_add]
   field_simp
 
+/-- The reciprocal of `ratio_geom`: `N * q ^ (j + l)` divided by `N * q ^ j` is exactly
+`q ^ l`. -/
 theorem ratio_geom_inv {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N) (j l : ℕ) :
     ((N * q ^ (j + l) : ℕ) : ℝ) / ((N * q ^ j : ℕ) : ℝ) = (q : ℝ) ^ ((l : ℝ)) := by
   have hq0 : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hq
@@ -69,10 +79,13 @@ namespace Sandpile
 `n_j = N q^j`. -/
 noncomputable def geomRatio (q : ℕ) : ℝ := (q : ℝ) ^ (-(1 : ℝ) / 4)
 
+/-- `geomRatio q` is positive for `q ≥ 1`, since it is a real power of the positive
+base `q`. -/
 theorem geomRatio_pos {q : ℕ} (hq : 1 ≤ q) : 0 < geomRatio q := by
   have hq0 : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hq
   exact Real.rpow_pos_of_pos hq0 _
 
+/-- The `l`-th power of `geomRatio q` equals `q ^ (-l/4)`, via `rpow_pow_eq`. -/
 theorem geomRatio_pow {q : ℕ} (hq : 1 ≤ q) (l : ℕ) :
     (geomRatio q) ^ l = (q : ℝ) ^ (-(l : ℝ) / 4) := by
   have hq0 : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hq
@@ -126,6 +139,8 @@ open MeasureTheory ProbabilityTheory
 
 variable {d : ℕ}
 
+/-- `Sandpile.External.BerryEsseen.gram` is symmetric in its row and column indices
+`j` and `k`, by commutativity of multiplication inside the defining sum. -/
 theorem gram_symm {N m : ℕ} (ν : Measure ℝ) (a : Fin N → Fin m → ℝ) (j k : Fin m) :
     Sandpile.External.BerryEsseen.gram ν a j k
       = Sandpile.External.BerryEsseen.gram ν a k j := by
@@ -134,10 +149,15 @@ theorem gram_symm {N m : ℕ} (ν : Measure ℝ) (a : Fin N → Fin m → ℝ) (
   congr 1
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/-- The product of the two Green-time kernels `greenTime d m x` and `greenTime d n y` is
+summable over `Site d`, inherited from `summable_greenTime_mul`. -/
 theorem summable_greenTime_mul_greenTime (m n : ℕ) (x y : Site d) :
     Summable fun z : Site d => greenTime d m x z * greenTime d n y z :=
   summable_greenTime_mul m x _
 
+/-- Each Gram entry of the standardized coefficients `stdCoeff` is nonnegative: after
+unfolding via `gram_stdCoeff` it is a nonnegative sum of products of Green-time values
+divided by a positive normalizing product of `Real.sqrt (greenSq ...)` terms. -/
 theorem gram_stdCoeff_nonneg (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ → ℝ) ν)
     {s : Finset (Site d)} {m : ℕ} {ns : Fin m → ℕ} (hns : ∀ j, 1 ≤ ns j)
     (hsub : ∀ j, boxFinset (0 : Site d) (ns j) ⊆ s) (j k : Fin m) :
@@ -149,6 +169,10 @@ theorem gram_stdCoeff_nonneg (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ �
     mul_pos (Real.sqrt_pos.mpr (greenSq_pos (hns j))) (Real.sqrt_pos.mpr (greenSq_pos (hns k)))
   positivity
 
+/-- Under the correlation-decay hypothesis `hcorr`, the Gram entry
+`gram ν (stdCoeff d ν s ns) j k` for `ns j ≤ ns k` is bounded by
+`C * corrRate d (ns j) (ns k)`, obtained by dividing the numerator bound from `hcorr`
+by the normalizing product of `Real.sqrt (greenSq ...)` terms. -/
 theorem gram_stdCoeff_le (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ → ℝ) ν)
     {C : ℝ}
     (hcorr : ∀ m n : ℕ, 1 ≤ m → m ≤ n →

@@ -1,6 +1,20 @@
 import Sandpile.Support.ExplFieldAverage
 import Sandpile.Support.ExplGreenSemigroup
 
+/-!
+# Heat Semigroup Identity for the Gaussian Field
+
+This module proves the additive heat-semigroup identity for the continuous
+Gaussian potential field: convolving the field at time `s` against the Brownian
+heat kernel `heatKernelBM d r x` recovers the increment `Z (r + s) x - Z r x`.
+Along the way it rewrites `withDensity`-integration against the heat kernel as a
+plain weighted integral (`integral_heatKernelBM_measure`) and shows that white
+noise indices agreeing almost everywhere give equal white-noise values
+(`whiteNoise_index_congr`). It does not assume any particular continuous
+modification of the field beyond the hypotheses `hmod`/`hc` supplied to
+`gaussianPotential_heat_semigroup`.
+-/
+
 open LatticeProb
 
 open MeasureTheory ProbabilityTheory Filter Topology

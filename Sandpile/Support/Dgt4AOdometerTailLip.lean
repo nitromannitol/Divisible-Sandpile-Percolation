@@ -1,16 +1,19 @@
-/-
-The `j`-step Lipschitz bound for the odometer alone: changing `\zeta(z)` changes
-`P^ju_n(0)` by at most the tail kernel `\sum_{r\geq j}p_r(0,z)` there
-(`eq:dgt4-tail-kernel`, `sandpile.tex:5063-5065`).  The finite-time Green kernel is below
-the Green function, and the `j`-step average of the Green function at the origin is the
-heat-kernel tail.
--/
 import Sandpile.Support.Dgt4ATailKernel
 import Sandpile.Support.Dgt4ATailKernelEq
 import Sandpile.Support.Dgt4AIterateSub
 import Sandpile.Support.Dgt4AIterateAbs
 import Sandpile.Support.TightWeightedMembrane
 import Sandpile.Support.Lipschitz
+
+/-!
+# The `j`-step Lipschitz bound for the odometer alone
+
+The `j`-step Lipschitz bound for the odometer alone: changing `\zeta(z)` changes `P^ju_n(0)`
+by at most the tail kernel `\sum_{r\geq j}p_r(0,z)` there (`eq:dgt4-tail-kernel`,
+`sandpile.tex:5063-5065`). The finite-time Green kernel is bounded by the Green function, and
+the `j`-step average of the Green function at the origin is the heat-kernel tail, so the two
+facts combine into this single-site estimate.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -37,7 +40,8 @@ theorem abs_avgIterate_odometerOf_update_le (hd : 5 ≤ d) (ζ : Site d → ℝ)
     (fun y => Sandpile.odometerOf ζ n y)
     (fun y => Sandpile.odometerOf (Function.update ζ z v) n y) j 0
   refine h1.trans ?_
-  refine (Sandpile.avg_iterate_abs_le _ _ (fun y => Sandpile.green d y z) (|ζ z - v|) j hpt).trans ?_
+  refine (Sandpile.avg_iterate_abs_le _ _ (fun y => Sandpile.green d y z)
+    (|ζ z - v|) j hpt).trans ?_
   rw [Sandpile.avg_iterate_green_eq_tailKernel (by omega : 3 ≤ d) j z,
     Sandpile.tsum_heatKernel_add_eq_tailKernel j z]
 

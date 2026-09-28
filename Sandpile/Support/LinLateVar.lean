@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinContract
+
+/-!
+# The late-time bound of Step 1
+
 The late-time bound of Step 1 of `lem:dgt4-linearization-from-survival`
 (`eq:dgt4-late-derivative-variance`, `sandpile.tex:5755-5767`).
 
@@ -13,10 +17,9 @@ give `∑_z (D^{>}_{R,z})^2 ≤ (\delta R^2+2)^2 ∑_z a_R(z)^2`."
 
 That chain is exactly the inequality below, with the finite set of late times abstract:
 Cauchy-Schwarz at each site, the exchange of the sum over sites with the finite sum over
-times, and `Sandpile.tsum_sq_avg_iterate_le` applied to each time.  The factor
+times, and `Sandpile.tsum_sq_avg_iterate_le` applied to each time. The factor
 `(\delta R^2+2)^2` is the square of the number of late times.
 -/
-import Sandpile.Support.LinContract
 
 namespace Sandpile
 

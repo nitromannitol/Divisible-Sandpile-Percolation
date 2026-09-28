@@ -1,10 +1,13 @@
-/-
-Almost-everywhere measurability of the Gaussian heat potential and of any modification
-of it, in the field's sample point.  This is the per-point input the measurability of
-the continuum value is built from.
--/
 import Sandpile.Support.ContBMSquare
 import Sandpile.Continuum.WhiteNoise
+
+/-!
+# Almost-everywhere measurability of the Gaussian heat potential
+
+Almost-everywhere measurability of the Gaussian heat potential and of any modification of it, in
+the field's sample point. This is the per-point input the measurability of the continuum value is
+built from.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

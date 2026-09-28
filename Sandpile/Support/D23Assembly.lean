@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.D23Input
+import Sandpile.Support.D23Component
+import Sandpile.Support.D23Scale
+import Sandpile.Support.D4GoodBlock
+
+/-!
+# Critical level-set percolation in dimensions two and three
+
 The assembly of the dimension-two and dimension-three critical level-set
 percolation theorem (`sandpile.tex:2576-2612`) from the block-crossing estimate
 `eq:d23-block-crossing-estimate`: the good-block process of the localized
@@ -7,12 +14,9 @@ block-crossing estimate gives, through \citet[Corollary~1.4]{LSS}, an infinite
 nearest-neighbour component of the localized level set at the block scale
 `R = ⌊√(t/T)⌋`, and the localized odometer at the block horizon `⌊R²T⌋ ≤ t` is
 dominated by the odometer at time `t`, whose level `ct^{(4-d)/4}` is below
-`cR^{2-d/2}`.
+`cR^{2-d/2}`. The assembly is carried out by
+`d23_critical_level_percolation_of_block_crossing`.
 -/
-import Sandpile.Support.D23Input
-import Sandpile.Support.D23Component
-import Sandpile.Support.D23Scale
-import Sandpile.Support.D4GoodBlock
 
 open MeasureTheory ProbabilityTheory
 

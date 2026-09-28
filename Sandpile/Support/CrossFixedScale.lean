@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.CrossZeroLevel
+import Sandpile.Support.CrossLiminf
+import Sandpile.Support.CrossDuality
+
+/-!
+# Assembling the fixed-scale crossing proposition
+
 `prop:fixed-scale-crossings` (`sandpile.tex:2121-2128`) assembled from the three
 inputs its proof uses, so that what remains of the proposition is exactly those
 three and nothing else:
@@ -30,9 +36,6 @@ field, in `Sandpile/Support/CrossDuality.lean`, at the level `-ε` for every
 left of the proposition there is the level loss of Steps 2 and 3.  The level
 loss is the long part of the paper's proof and is not touched.
 -/
-import Sandpile.Support.CrossZeroLevel
-import Sandpile.Support.CrossLiminf
-import Sandpile.Support.CrossDuality
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

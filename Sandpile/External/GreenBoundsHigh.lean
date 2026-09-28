@@ -1,4 +1,7 @@
-/-
+import Sandpile.Walk
+
+/-! # Green-Function Bounds in High Dimension
+
 External input: the Green-function and intersection estimates for simple random
 walk in dimensions `d ≥ 5` collected in `ssec:green-estimates` of
 `sandpile.tex`.  The paper does not prove them; it records at
@@ -76,7 +79,6 @@ is at least one for the same reason.  The dimension carries `5 ≤ d`, which is
 the paper's hypothesis and is also what keeps `Sandpile.green` away from the
 junk zero it takes in the recurrent dimensions.
 -/
-import Sandpile.Walk
 
 open MeasureTheory
 

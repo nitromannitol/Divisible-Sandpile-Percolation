@@ -1,23 +1,24 @@
-/-
-The `L²` bound on the tested cell masses, `sandpile.tex:5699-5702`
-(equation `eq:dgt4-tested-cell-l2`): "Each `φ_R(x)` is the integral of `φ` over
-a cell of volume `R^{-d}`, so the Cauchy-Schwarz inequality gives
-`φ_R(x)² ≤ R^{-d} ∫_{R^{-1}(x+[0,1)^d)} φ(w)² dw`; summing over the cells,
-which tile `ℝ^d`, gives `∑_x a_R(x)² ≤ C(φ) R^{-4}`."
-
-The Cauchy-Schwarz step is proved here in the form
-`(∫_A f)² ≤ μ(A) ∫_A f²`, by the discriminant of the nonnegative quadratic
-`t ↦ ∫_A (f - t)²`, and the cells are disjoint and measurable, so the sum of
-the cell integrals of `φ²` is the integral over their union, which is at most
-the integral over `ℝ^d`.
--/
 import Sandpile.Support.ContCell
+
+/-!
+# The `L²` bound on the tested cell masses
+
+Each `φ_R(x)` is the integral of a test function `φ` over a cell of volume `R^{-d}`, so
+the Cauchy-Schwarz inequality gives `φ_R(x)² ≤ R^{-d} ∫ φ²` over that cell; summing over
+finitely many cells, which are disjoint, gives `∑_x a_R(x)² ≤ C(φ) R^{-4}` for the scaled
+masses `a_R(x) = R^{(d-4)/2} φ_R(x)`. The Cauchy-Schwarz step `(∫_A f)² ≤ μ(A) ∫_A f²` is
+proved from the discriminant of the nonnegative quadratic `t ↦ ∫_A (f - t)²`, and the sum
+of the cell integrals of `φ²` is bounded by the integral of `φ²` over all of `ℝ^d`.
+-/
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum
 
 namespace Sandpile
 
+/-- The Cauchy-Schwarz bound `(∫_A f)² ≤ μ.real(A) * ∫_A f²`, proved from the
+nonnegativity of `∫_A (f - t)²` for every real `t`, taking `t = m / V` when the measure
+`V` of `A` is positive and handling the null case separately. -/
 theorem sq_setIntegral_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (A : Set α)
     (f : α → ℝ) (hf : IntegrableOn f A μ) (hf2 : IntegrableOn (fun z => f z ^ 2) A μ)
     (hA : μ A ≠ ⊤) :
@@ -67,6 +68,8 @@ theorem sq_setIntegral_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (A
 
 variable {d : ℕ}
 
+/-- The square of a test function `φ` is integrable, since `φ` is continuous with
+compact support and squaring preserves compact support of the vanishing locus. -/
 theorem integrable_sq_of_isTestFn {φ : Space d → ℝ}
     (hφ : Sandpile.Continuum.IsTestFn Set.univ φ) :
     Integrable (fun z => φ z ^ 2) (volume : Measure (Space d)) := by
@@ -78,11 +81,16 @@ theorem integrable_sq_of_isTestFn {φ : Space d → ℝ}
   have hz0 : φ z = 0 := image_eq_zero_of_notMem_tsupport hz
   simp [hz0]
 
+/-- The real-valued volume of a cell `Sandpile.Support.cell d R x` of side length
+`R⁻¹` is `R⁻¹ ^ d`. -/
 theorem measureReal_cell {R : ℝ} (hR : 0 < R) (x : Sandpile.Site d) :
     (volume : Measure (Space d)).real (Sandpile.Support.cell d R x) = R⁻¹ ^ d := by
   rw [MeasureTheory.measureReal_def, Sandpile.Support.volume_cell d hR x, ENNReal.toReal_pow,
     ENNReal.toReal_ofReal (le_of_lt (inv_pos.mpr hR))]
 
+/-- The square of one tested cell mass `Sandpile.Support.cellMass R φ x` is at most
+`R⁻¹ ^ d` times the integral of `φ²` over that cell, by the Cauchy-Schwarz bound
+`sq_setIntegral_le` applied to the cell's finite volume. -/
 theorem sq_cellMass_le {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     (hφ : Sandpile.Continuum.IsTestFn Set.univ φ) (x : Sandpile.Site d) :
     (Sandpile.Support.cellMass R φ x) ^ 2
@@ -97,6 +105,9 @@ theorem sq_cellMass_le {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     hint.integrableOn hint2.integrableOn hfin
   rwa [measureReal_cell hR x] at h
 
+/-- The sum, over a finite set of sites `s`, of the squared tested cell masses is at
+most `R⁻¹ ^ d` times the integral of `φ²` over all of `Space d`, since the cells are
+disjoint and their union has integral at most that of the whole space. -/
 theorem sum_sq_cellMass_le {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     (hφ : Sandpile.Continuum.IsTestFn Set.univ φ) (s : Finset (Sandpile.Site d)) :
     ∑ x ∈ s, (Sandpile.Support.cellMass R φ x) ^ 2

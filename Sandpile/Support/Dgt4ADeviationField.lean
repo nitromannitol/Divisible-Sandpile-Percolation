@@ -1,12 +1,17 @@
-/-
-The centred increment as a FIELD, `D_n(x)=\zeta(x)-(u_n(x)-Pu_n(x))`, and its stationarity.
-Translating the scenery by `y` moves the field from the origin to `y`, and the i.i.d. law is
-invariant under that translation, so every site has the same second moment.  This is the
-"conditional Jensen's inequality" input of the telescoping of `sandpile.tex:5074-5077`.
--/
 import Sandpile.Support.Dgt4AL2Cube
 import Sandpile.Support.Translation
 import Sandpile.Support.Stationary
+
+/-!
+# The centred increment as a stationary field
+
+The centred increment as a FIELD, `D_n(x)=\zeta(x)-(u_n(x)-Pu_n(x))` (`sceneryDeviationField`),
+and its stationarity. Translating the scenery by `y` moves the field from the origin to `y`
+(`sceneryDeviationField_shift`), and the i.i.d. law is invariant under that translation
+(`integral_comp_shiftField`), so every site has the same second moment
+(`integral_sceneryDeviationField_sq`). This is the "conditional Jensen's inequality" input of
+the telescoping of `sandpile.tex:5074-5077`.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -18,6 +23,7 @@ variable {d : ℕ}
 noncomputable def sceneryDeviationField (d : ℕ) (ζ : Site d → ℝ) (n : ℕ) (x : Site d) : ℝ :=
   ζ x - (odometerOf ζ n x - Sandpile.avg (fun y => odometerOf ζ n y) x)
 
+/-- The field at the origin recovers the scalar deviation `sceneryDeviation`. -/
 theorem sceneryDeviationField_zero (ζ : Site d → ℝ) (n : ℕ) :
     sceneryDeviationField d ζ n 0 = sceneryDeviation d ζ n := rfl
 

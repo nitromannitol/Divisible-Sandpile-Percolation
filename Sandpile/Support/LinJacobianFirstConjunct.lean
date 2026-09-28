@@ -1,23 +1,24 @@
-/-
-**The first conclusion of `lem:dgt4-linearization-from-survival`**
-(`eq:dgt4-linearization-from-paths`, `sandpile.tex:5651-5657`) for an arbitrary
-test function.
-
-`Support/LinJacobianTestedL2.lean` proves it for a NONNEGATIVE test function,
-which is what makes the tested field convex in each coordinate of the scenery.
-The pairing is linear in the test function, so a signed one enters as the
-difference of its positive and negative parts, and the mean square of a
-difference is at most twice the sum of the two mean squares.  Neither part is
-smooth, which is why the cell estimate was restated in
-`Support/LinJacobianCellGeneral.lean` for a bounded, integrable and square
-integrable test function.
-The limits may be taken along any real-scale filter below `atTop`;
-the default scale-filter bound retains the unrestricted real-scale form.
--/
 import Sandpile.Support.LinJacobianTestedL2
 import Sandpile.Support.LinL2Two
 import Sandpile.Support.ContDGT4Membrane
 import Sandpile.Support.ContDominated
+
+/-!
+# The first conclusion of the linearization lemma, for a signed test function
+
+This module proves **the first conclusion of `lem:dgt4-linearization-from-survival`**
+(`eq:dgt4-linearization-from-paths`, `sandpile.tex:5651-5657`) for an arbitrary test function.
+
+`Support/LinJacobianTestedL2.lean` proves it for a NONNEGATIVE test function, which is what makes
+the tested field convex in each coordinate of the scenery. The pairing is linear in the test
+function, so a signed one enters as the difference of its positive and negative parts
+(`posPart_facts`, `latticePairing_sub_testFn`), and the mean square of a difference is at most
+twice the sum of the two mean squares. Neither part is smooth, which is why the cell estimate was
+restated in `Support/LinJacobianCellGeneral.lean` for a bounded, integrable and square integrable
+test function (`integrable_sq_frozen_pairing`). The main result `tendsto_l2_frozen_pairing`
+assembles these pieces. The limits may be taken along any real-scale filter below `atTop`; the
+default scale-filter bound retains the unrestricted real-scale form.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -226,7 +227,8 @@ theorem tendsto_l2_frozen_pairing {l : Filter ℝ} [NeZero d] (hd : 5 ≤ d)
     fun R => integrable_sq_frozen_pairing ν (by omega) hsqν hpos R ⌊R ^ 2 * T⌋₊ (q R) mf
       hmint hms (Sandpile.Support.supportBox d R L)
       (fun z hz => Sandpile.Support.floor_mem_boxFinset R z (hms z hz))
-  have hint3 : ∀ R : ℝ, Integrable (fun σ => (A R σ - Bf R σ) ^ 2) (Sandpile.centeredMassLaw d ν) := by
+  have hint3 : ∀ R : ℝ, Integrable (fun σ => (A R σ - Bf R σ) ^ 2)
+      (Sandpile.centeredMassLaw d ν) := by
     intro R
     refine Integrable.congr (integrable_sq_frozen_pairing ν (by omega) hsqν hpos R
       ⌊R ^ 2 * T⌋₊ (q R) φ hint hsupp (Sandpile.Support.supportBox d R L)
@@ -236,7 +238,8 @@ theorem tendsto_l2_frozen_pairing {l : Filter ℝ} [NeZero d] (hd : 5 ≤ d)
     Cφ L hCφ hL hpb hpint hps T hT q C hsurv hcov
   have hvm := tendsto_l2_frozen_of_nonneg (hl := hl) hd hGreen hInter ν hmean hsqν mf hmsq hm0
     Cφ L hCφ hL hmb hmint hms T hT q C hsurv hcov
-  have hmain := tendsto_l2_of_two_remainders (Sandpile.centeredMassLaw d ν) A (fun _ _ => (0 : ℝ)) Bf (fun _ _ => (0 : ℝ))
+  have hmain := tendsto_l2_of_two_remainders (Sandpile.centeredMassLaw d ν) A
+      (fun _ _ => (0 : ℝ)) Bf (fun _ _ => (0 : ℝ))
     (fun R => by simpa using hint1 R) (fun R => by simpa using hint2 R)
     (fun R => by simpa using hint3 R)
     (by simpa using hup) (by simpa using hvm)

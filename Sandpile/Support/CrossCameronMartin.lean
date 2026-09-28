@@ -1,28 +1,32 @@
-/-
-The Cameron--Martin shift of Step 3 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2334-2345`):
+import Sandpile.Support.CrossTiltMap
+import Sandpile.Support.CrossCubeBlocks
+import Sandpile.Support.LimNoiseCoordinates
+
+/-!
+# The Cameron--Martin shift of a white noise
+
+The Cameron--Martin shift of Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2334-2345`):
 
   "Let `P_ℓ` be the law obtained by adding the deterministic density `(ℓ/𝔪)dz` on every unit
    cube that the rule can reveal ... Since the unit kernel has mass `𝔪`, the shift raises
    every field value used by the exploration by `ℓ`."
 
 Here the shifted law is the exponential tilt of the white noise by `a 𝒲(k) - a²‖k‖²/2`,
-where `k` is the indicator of the shifted region, and the statement proved is that under this
-tilt the WHOLE family `(𝒲(g_t))_t` has the law of `(𝒲(g_t) + a⟨g_t,k⟩)_t`, for an arbitrary
-index type.  Applied with `g_t` the ball kernels at the points of the rectangle and `k` the
-indicator of the revealed region, `⟨g_t,k⟩ = 𝔪` and the field is raised by `a𝔪` at every
-point of the rectangle at once.
+where `k` is the indicator of the shifted region, and the statement proved
+(`whiteNoise_tilted_map_shift`) is that under this tilt the WHOLE family `(𝒲(g_t))_t` has
+the law of `(𝒲(g_t) + a⟨g_t,k⟩)_t`, for an arbitrary index type. Applied with `g_t` the
+ball kernels at the points of the rectangle and `k` the indicator of the revealed region,
+`⟨g_t,k⟩ = 𝔪` and the field is raised by `a𝔪` at every point of the rectangle at once.
 
-The proof is the classical one.  Split `𝒲(g_t) = (⟨g_t,k⟩/‖k‖²)𝒲(k) + Z_t`; the residual
-family `Z` is jointly Gaussian with `𝒲(k)` and uncorrelated with it, hence independent of it,
-so the joint law is a product.  The tilt is a function of the first factor alone, so it tilts
-only that factor (`tilted_prod_left`), where it is the one-dimensional Cameron--Martin
-identity `tilted_gaussianReal_zero`.  Reassembling `𝒲(g_t) = (⟨g_t,k⟩/‖k‖²)𝒲(k) + Z_t` turns
-the shift of the single Gaussian direction into the shift of every coordinate by `a⟨g_t,k⟩`.
+The proof is the classical one. Split `𝒲(g_t) = (⟨g_t,k⟩/‖k‖²)𝒲(k) + Z_t` where `Z` is
+`cmResidual`; the residual family `Z` is jointly Gaussian with `𝒲(k)`
+(`isGaussianProcess_cmResidual`) and uncorrelated with it, hence independent of it
+(`indepFun_cmResidual`), so the joint law is a product. The tilt is a function of the first
+factor alone, so it tilts only that factor (`tilted_prod_left`), where it is the
+one-dimensional Cameron--Martin identity `tilted_gaussianReal_zero`. Reassembling
+`𝒲(g_t) = (⟨g_t,k⟩/‖k‖²)𝒲(k) + Z_t` turns the shift of the single Gaussian direction into
+the shift of every coordinate by `a⟨g_t,k⟩`.
 -/
-import Sandpile.Support.CrossTiltMap
-import Sandpile.Support.CrossCubeBlocks
-import Sandpile.Support.LimNoiseCoordinates
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum
@@ -39,6 +43,8 @@ private noncomputable def cmResidual (W : (Space d → ℝ) → Ω → ℝ) (k :
   W (g t) ω - ((∫ y : Space d, g t y * k y) / (∫ y : Space d, k y * k y)) * W k ω
 
 omit [IsProbabilityMeasure P] in
+/-- `cmResidual` is measurable, as a difference of the white noise applied to `g t` and a
+constant multiple of the white noise applied to `k`. -/
 private theorem measurable_cmResidual (hW : IsWhiteNoise d W P) {k : Space d → ℝ}
     (hk : MemLp k 2 (volume : Measure (Space d))) {T : Type} (g : T → (Space d → ℝ))
     (hg : ∀ t, MemLp (g t) 2 (volume : Measure (Space d))) (t : T) :

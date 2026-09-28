@@ -1,5 +1,8 @@
-/-
-The field the exploration of Step 2 actually computes.
+import Sandpile.Support.CrossCubeBlocks
+import Sandpile.Support.CrossBallMemLp
+
+/-!
+# The field the exploration of Step 2 actually computes
 
 `sandpile.tex:2264-2268`: "For the unit square with center `z ∈ ℤ²`, let `𝒜(z)` be the finite
 collection of unit cubes in `ℝ^d` meeting the closed unit neighborhood of that square ...
@@ -8,17 +11,16 @@ have not already been revealed."
 
 Revealing the noise on a cube gives the values `𝒲(g)` for test functions `g` vanishing off that
 cube, so the value of the field at `u` that the exploration can compute is the SUM of the
-contributions of the cubes meeting the unit ball about `u`, one term per cube.  That sum,
+contributions of the cubes meeting the unit ball about `u`, one term per cube. That sum,
 `blockField`, is measurable for the sigma-algebras of those cubes on the nose, whereas
-`ballField` itself is only almost surely equal to it, because the white noise is additive only
-almost surely.  `CrossFieldVersion.closedCrossEvent_ae_eq_of_field_ae` is what makes the
-difference harmless: the crossing reads countably many values.
+`ballField` itself is only almost surely equal to it (`blockField_ae_eq`), because the white
+noise is additive only almost surely. `CrossFieldVersion.closedCrossEvent_ae_eq_of_field_ae` is
+what makes the difference harmless: the crossing reads countably many values.
 
-`nearSites d u` is the paper's `𝒜`, the sites whose unit cells can meet the unit ball about
-`u`; `exists_mem_nearSites_cell` is the covering statement that the shift of Step 3 also needs.
+`nearSites d u` is the paper's `𝒜`, the sites whose unit cells can meet the unit ball about `u`;
+`exists_mem_nearSites_cell` is the covering statement that the shift of Step 3 also needs, and
+`measurable_blockField` is the measurability statement for the revealed sigma-algebra.
 -/
-import Sandpile.Support.CrossCubeBlocks
-import Sandpile.Support.CrossBallMemLp
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -31,6 +33,9 @@ noncomputable def nearSites (d : ℕ) (u : Space 2) : Finset (Sandpile.Site d) :
   Finset.Icc (fun i => ⌊(planePoint (d := d) u) i⌋ - 1)
     (fun i => ⌊(planePoint (d := d) u) i⌋ + 1)
 
+/-- If `y` lies within distance `1` of the plane point of `u`, the unit-mesh site containing
+`y` lies in `nearSites d u`, since each coordinate then differs from the corresponding
+coordinate of `planePoint u` by less than `1`. -/
 theorem mem_nearSites_of_norm_lt_one {d : ℕ} (u : Space 2) {y : Space d}
     (h : ‖(planePoint (d := d) u) - y‖ < 1) :
     (fun i => ⌊(1 : ℝ) * y i⌋) ∈ nearSites d u := by
@@ -80,10 +85,14 @@ theorem cover_of_nearSites_range {d : ℕ} {ι : Type} (z : ι → Sandpile.Site
 noncomputable def kernelPiece (d : ℕ) (u : Space 2) (x : Sandpile.Site d) : Space d → ℝ :=
   Set.indicator (cell d 1 x) (ballKernel d 1 u)
 
+/-- `kernelPiece d u x` vanishes off the cell `cell d 1 x`, since it is defined as an indicator
+of that cell. -/
 theorem kernelPiece_eq_zero {d : ℕ} {u : Space 2} {x : Sandpile.Site d} {y : Space d}
     (hy : y ∉ cell d 1 x) : kernelPiece d u x y = 0 :=
   Set.indicator_of_notMem hy _
 
+/-- Each `kernelPiece d u x` is in `MemLp _ 2`, inherited from the unit ball kernel's own bound
+(`memLp_ballKernel`) by restricting to an indicator of the cell. -/
 theorem memLp_kernelPiece {d : ℕ} (hd : d = 2 ∨ d = 3) (u : Space 2) (x : Sandpile.Site d) :
     MemLp (kernelPiece d u x) 2 (volume : Measure (Space d)) :=
   (memLp_ballKernel hd one_pos u).indicator (measurableSet_cell d 1 x)
@@ -112,6 +121,8 @@ theorem ballKernel_eq_sum_kernelPiece (d : ℕ) (u : Space 2) (y : Space d) :
       rw [if_neg hge]
     exact hx₀mem (mem_nearSites_of_norm_lt_one u hlt)
 
+/-- Restates `ballKernel_eq_sum_kernelPiece` with the trivial scalar weight `1` on each term,
+matching the linear-combination shape `whiteNoise_finsetSum_ae` expects. -/
 theorem ballKernel_eq_sum_smul (d : ℕ) (u : Space 2) :
     ballKernel d 1 u = ∑ x ∈ nearSites d u, (1 : ℝ) • kernelPiece d u x := by
   funext y

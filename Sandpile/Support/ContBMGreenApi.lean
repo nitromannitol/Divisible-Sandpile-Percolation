@@ -1,14 +1,16 @@
-/-
-Basic API for the finite-time Brownian Green kernel `g^{BM}_t` of
-`eq:brownian-heat-green-kernels` (`sandpile.tex:963-968`), on top of its square
-integrability in dimensions one to three.  The `L²` norm of the heat kernel is
-the kernel at twice the time, a product of two Green kernels is integrable, and
-a finite linear combination of Green kernels is square integrable, which is what
-identifies the limit in `prop:dlt4-heat-potential-invariance` and makes the
-hypothesis `hQvar` of `heat_potential_fd_of_coeff` a statement about an honest
-integral rather than a junk value.
--/
 import Sandpile.Support.ContBMSquare
+
+/-!
+# API for the finite-time Brownian Green kernel
+
+Basic API for the finite-time Brownian Green kernel `g^{BM}_t` of
+`eq:brownian-heat-green-kernels` (`sandpile.tex:963-968`), built on top of its square
+integrability in dimensions one to three. The `L²` norm of the heat kernel is the kernel at
+twice the time, a product of two Green kernels is integrable, and a finite linear combination of
+Green kernels is square integrable, which is what identifies the limit in
+`prop:dlt4-heat-potential-invariance` and makes the hypothesis `hQvar` of
+`heat_potential_fd_of_coeff` a statement about an honest integral rather than a junk value.
+-/
 
 open MeasureTheory
 

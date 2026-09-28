@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossBallMemLp
+
+/-!
+# Finite-scale maximum field
+
 The finite-scale maximum field of `lem:finite-scale-extraction`
 (`sandpile.tex:2415-2425`):
 
@@ -11,7 +15,6 @@ Both are needed by the chain bracket of `Sandpile/Support/CrossUnion.lean`, whic
 is what carries a crossing statement from one space carrying white noise to
 another.
 -/
-import Sandpile.Support.CrossBallMemLp
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

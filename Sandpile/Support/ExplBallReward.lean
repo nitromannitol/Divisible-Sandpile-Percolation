@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ExplBallStep
+import Sandpile.Support.StopMeasurable
+
+/-! # Integrability of the Stopped Reward
+
 Integrability of the stopped reward of a continuous field with an integrable
 envelope, for every bounded stopping time of the motion.
 
@@ -8,8 +12,6 @@ integrable before the supremum can be read as a real number.  The envelope is th
 one the polynomial growth of the field supplies, and the stopping time is any
 bounded one of the motion.
 -/
-import Sandpile.Support.ExplBallStep
-import Sandpile.Support.StopMeasurable
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

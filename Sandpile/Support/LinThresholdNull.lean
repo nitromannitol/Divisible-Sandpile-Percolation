@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinThreshold
+import Sandpile.Support.Odometer
+import Sandpile.Support.LinGaussFactor
+
+/-! # Null-measurable threshold replacement
+
 The threshold events of the Gaussian branch are not measurable, only null measurable, and
 `eq:dgt4-path-contact-replacement` does not need them to be either.
 
@@ -14,9 +19,6 @@ inclusions, and the union bound over a finite family is monotonicity plus subadd
 no measurability enters at any step.  Second, the threshold events ARE null measurable, which
 is what every later step (Fubini, conditioning) will want.
 -/
-import Sandpile.Support.LinThreshold
-import Sandpile.Support.Odometer
-import Sandpile.Support.LinGaussFactor
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

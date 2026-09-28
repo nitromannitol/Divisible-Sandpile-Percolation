@@ -1,7 +1,14 @@
-/-
-Eventual bounds for negative and small powers of `r` against `log r`.
--/
 import Mathlib
+
+/-!
+# Eventual power bounds against `log r`
+
+Eventual bounds for negative and small powers of `r` against `log r`. `exists_two_le_rpow`
+shows that for any exponent `α > 0`, `r ^ α ≥ 2` once `r` is large enough, by comparing `r`
+to the fixed threshold `2 ^ (1/α)`. `rpow_neg_le_logCube` shows that for `δ ≥ 0` and `r ≥ 3`,
+the negative power `r ^ (-δ)` is at most `(log r) ^ 3`, since `r ^ (-δ) ≤ 1` while
+`log r ≥ 1` makes `(log r) ^ 3 ≥ 1`.
+-/
 
 open MeasureTheory
 

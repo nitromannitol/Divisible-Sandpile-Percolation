@@ -1,19 +1,19 @@
-/-
-The killed kernel is the walk's transition probability before the exit.
-
-`sandpile.tex:3863-3877` builds `𝓑_{r,N}(z)` from `g_N^{Q(0,r)}` and reads it
-against the odometer through the optimal-stopping representation, so the
-definition of `killedKernel` has to be identified with the walk.  This file
-proves that identification: pairing the killed kernel with a bounded field is
-the expectation of the field at time `k` on the event that the walk has not left
-the domain.  The induction runs on the LAST step, which is the recursion
-`killedPair_succ_shift`, and the Markov property at the deterministic time `k`
-is what supplies it.
--/
 import Sandpile.Support.Killed
 import Sandpile.Support.Localization
 import Sandpile.Support.Smoothed
 import Sandpile.Support.MembraneStopping
+
+/-!
+# The killed kernel is the walk's transition probability before the exit
+
+`sandpile.tex:3863-3877` builds `𝓑_{r,N}(z)` from `g_N^{Q(0,r)}` and reads it against the
+odometer through the optimal-stopping representation, so the definition of `killedKernel` has to
+be identified with the walk. This file proves that identification: pairing the killed kernel
+with a bounded field is the expectation of the field at time `k` on the event `pastIn` that the
+walk has not left the domain. The induction runs on the last step, which is the recursion
+`killedPair_succ_shift`, and the Markov property at the deterministic time `k` is what
+supplies it.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -26,13 +26,17 @@ open scoped Classical in
 noncomputable def pastIn (D : Set (Site d)) (k : ℕ) (X : ℕ → Site d) : ℝ :=
   if ∀ i ≤ k, X i ∈ D then 1 else 0
 
+/-- `pastIn` is nonnegative, since it takes only the values `0` and `1`. -/
 theorem pastIn_nonneg (D : Set (Site d)) (k : ℕ) (X : ℕ → Site d) : 0 ≤ pastIn D k X := by
   unfold pastIn; split <;> norm_num
 
+/-- `pastIn` is bounded by `1` in absolute value, since it takes only the values `0` and `1`. -/
 theorem abs_pastIn_le_one (D : Set (Site d)) (k : ℕ) (X : ℕ → Site d) :
     |pastIn D k X| ≤ 1 := by
   unfold pastIn; split <;> norm_num
 
+/-- `pastIn D k` depends only on the path's values up to time `k`: it agrees on any two paths
+that agree on `{0, ..., k}`. -/
 theorem pastIn_congr (D : Set (Site d)) (k : ℕ) {X Y : ℕ → Site d}
     (h : ∀ j ≤ k, X j = Y j) : pastIn D k X = pastIn D k Y := by
   unfold pastIn
@@ -44,6 +48,8 @@ theorem pastIn_congr (D : Set (Site d)) (k : ℕ) {X Y : ℕ → Site d}
   · rw [if_pos hX, if_pos (hiff.mp hX)]
   · rw [if_neg hX, if_neg (fun hc => hX (hiff.mpr hc))]
 
+/-- `pastIn D k` is measurable, since `pastIn_congr` shows it depends only on the finitely
+many coordinates `0, ..., k`. -/
 theorem measurable_pastIn (D : Set (Site d)) (k : ℕ) : Measurable (pastIn D k) :=
   measurable_of_dependsOn k _ fun _X _Y h => pastIn_congr D k h
 

@@ -1,30 +1,20 @@
-/-
-Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5495-5526`) in the Gaussian
-branch of `IsThresholdField`.
-
-The paper compares the probability that the threshold events hold at every site
-of a finite set with the product of the one-site probabilities:
-
-  "When $J$ is Gaussian, write $\rho_{xy}\coloneqq\Cov(J(x),J(y))/\Var(J(0))$
-   for the correlation; the comparison estimate \citep[Corollary~2.1,
-   p.~496]{LiShao} bounds the left-hand side by
-   $C\sum_{\{x,y\}\subset\Lambda}|\rho_{xy}|
-    \exp\{-(b_x^2+b_y^2)/(2\Var(J(0))(1+|\rho_{xy}|))\}$."
-
-To apply that input the law of the vector `(J(x))_{x∈Λ}` has to be exhibited as a
-centred Gaussian vector with a constant diagonal and nonnegative correlations.
-`Support/LinGaussBridge.lean` identifies the law of `(V_∞(x))_{x∈Λ}`; here the
-sign of `J=-V_∞` is carried through (a centred Gaussian vector is symmetric), the
-Gram matrix of the Green coefficients is shown to have the constant diagonal
-`Var(ζ(0))∑_z G(0,z)^2` and nonnegative entries, and the comparison inequality is
-applied.  What is left of Step 1 after this file is the analytic estimate of the
-right-hand side, which is where the tail inversion and the splitting of the pairs
-at distance `(\log R)^{2/(d-4)}` enter.
--/
 import Sandpile.Support.LinGaussBridge
 import Sandpile.Support.ExitGreen
 import Sandpile.External.NormalComparison
 import Sandpile.External.GreenBoundsHighProved
+
+/-!
+# The Gaussian threshold field and the normal comparison factorization
+
+In the Gaussian branch of `IsThresholdField`, the threshold field `J = -V_∞` at a finite family of
+sites is a centred Gaussian vector whose covariance matrix `greenGram` is the Gram matrix
+`Var(ζ(0)) ∑_z G(x,z) G(y,z)` of the Green coefficients, with constant diagonal `Var(ζ(0))
+greenSqSum d` and nonnegative entries. This file identifies that finite-dimensional law, its
+one-site marginal, and the orthant probability that the threshold events hold at every site, and
+then applies the normal comparison inequality to show that this orthant probability differs from
+the product of the one-site probabilities by an explicit sum over pairs of sites involving their
+correlations and levels.
+-/
 
 open LatticeProb.Isonormal
 

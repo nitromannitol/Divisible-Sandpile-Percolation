@@ -1,23 +1,27 @@
-/-
-The threshold probability of case (b) of `prop:dgt4-contact-asymptotics`.
-
-In case (b) the threshold field of `sandpile.tex:5454-5455` is
-`J = -G(0,0)\zeta`, so the threshold event `{J(0) > b}` is the event
-`{\zeta(0) < -b/G(0,0)}`, and its probability is the one-site lower tail of the
-scenery law.  That is what makes the case-(b) proof one-dimensional: the whole
-argument after the comparison with the odometer killed at the origin
-(`lem:dgt4-origin-frozen`) is regular variation of `t \mapsto \P(-\zeta(0)>t)`
-and of `t \mapsto \E(-\zeta(0)-t)_+`.
--/
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.Dgt4Thresholds
 import Sandpile.Support.Dgt4ThresholdChain
+
+/-!
+# The threshold probability of case (b)
+
+The threshold probability of case (b) of `prop:dgt4-contact-asymptotics`. In case (b) the
+threshold field of `sandpile.tex:5454-5455` is `J = -G(0,0)\zeta`, so the threshold event
+`{J(0) > b}` is the event `{\zeta(0) < -b/G(0,0)}`, and its probability is the one-site lower tail
+of the scenery law. That is what makes the case-(b) proof one-dimensional: the whole argument
+after the comparison with the odometer killed at the origin (`lem:dgt4-origin-frozen`) is regular
+variation of `t \mapsto \P(-\zeta(0)>t)` and of `t \mapsto \E(-\zeta(0)-t)_+`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 
 namespace Sandpile
 
+/-- The linear-threshold event `{b < -Gζ(0)}` has `centeredMassLaw`-probability
+`ν(Iio(-b/G))`: since `ζ(0)` has marginal law `ν` under the i.i.d. product measure, the event
+rewrites as the preimage of `Iio(-b/G)` under evaluation at the origin, whose pushforward is
+`ν` itself. -/
 theorem centeredMassLaw_threshold_linear (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hd : 1 ≤ d) (G b : ℝ) (hG : 0 < G) :
     (Sandpile.centeredMassLaw d ν) {σ | b < -(G * Sandpile.scenery d σ 0)}

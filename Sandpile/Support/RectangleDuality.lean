@@ -1,13 +1,27 @@
-/-
-A closed star separator and the crossing-value inequality for lattice rectangles.
--/
 import Sandpile.Support.RectangleOpenGrid
 import Sandpile.Support.CrossingWitness
 import Sandpile.Support.VerticalStar
 
+/-!
+# Closed star separator and crossing-value duality
+
+A closed star separator and the crossing-value inequality for lattice rectangles.
+Builds a star-graph path from the bottom edge to the top edge of a rectangle that avoids any
+set `A` for which no open-graph left-right crossing meets `A`
+(`rectangle_star_walk_of_no_open_lr`), specializes it to the super-level set of a field to get
+a bottom-to-top walk staying below the horizontal `crossingValue`
+(`rectangle_low_star_walk`), and combines it with a vertical crossing bound to derive the
+one-sided duality inequality between the horizontal crossing value, the vertical crossing
+value of `-F`, and the edge oscillation (`crossingValue_add_vertical_neg_ge`).
+-/
+
 noncomputable section
 namespace Sandpile
 
+/-- The graph homomorphism from `gridBadGraph` on the complement of the extended-open set of
+`A` into the star-lattice graph induced on the rectangle, sending a point via
+`gridRectanglePoint`; adjacency is preserved because both endpoints avoid the extended-open
+region of `A`. -/
 def rectangleClosedGridHom {w h : ℕ} (A : Set (planeRectangle w h)) :
     gridBadGraph ((rectangleExtendedOpen A)ᶜ) →g
       (starLatticeGraph 2).induce ((planeRectangle w h) : Set (Site 2)) where
@@ -21,6 +35,10 @@ def rectangleClosedGridHom {w h : ℕ} (A : Set (planeRectangle w h)) :
       exact q.property (Or.inl hq)
     · exact hpq
 
+/-- If no open-graph path from the left edge to the right edge of the rectangle avoids `A`,
+there is a star-graph walk `p` from the bottom edge (`(a : Site 2) 1 = 0`) to the top edge
+(`(b : Site 2) 1 = h`) whose support entirely avoids `A`, obtained by pushing the dual
+grid-crossing witness through `rectangleClosedGridHom`. -/
 lemma rectangle_star_walk_of_no_open_lr {w h : ℕ} (A : Set (planeRectangle w h))
     (hno : ¬∃ a b : A, (a : planeRectangle w h) ∈ rectangleLeft (planeRectangle w h) ∧
       (b : planeRectangle w h) ∈ rectangleRight (planeRectangle w h) ∧
@@ -46,6 +64,10 @@ lemma rectangle_star_walk_of_no_open_lr {w h : ℕ} (A : Set (planeRectangle w h
     intro hzA
     exact y.property (Or.inr hzA)
 
+/-- Every field `F` on a rectangle admits a star-graph walk from the bottom edge to the top
+edge along which `F` never exceeds `crossingValue (planeRectangle w h) F`, taking
+`A = {z | crossingValue ... < F z}` in `rectangle_star_walk_of_no_open_lr` and ruling out an
+open left-right path through `A` via `crossingValue_spec`. -/
 lemma rectangle_low_star_walk (w h : ℕ) (F : planeRectangle w h → ℝ) :
     ∃ (a b : planeRectangle w h)
       (p : ((starLatticeGraph 2).induce ((planeRectangle w h) : Set (Site 2))).Walk a b),
@@ -69,6 +91,10 @@ lemma rectangle_low_star_walk (w h : ℕ) (F : planeRectangle w h → ℝ) :
   obtain ⟨a, b, p, ha, hb, hp⟩ := rectangle_star_walk_of_no_open_lr A hno
   exact ⟨a, b, p, ha, hb, fun z hz => le_of_not_gt (hp z hz)⟩
 
+/-- A one-sided duality bound: `-edgeOscillation (rectangleGraph (planeRectangle w h)) F ≤
+crossingValue (planeRectangle w h) F + verticalCrossingValue w h (-F)`, obtained by applying
+`verticalCrossingValue_neg_ge_of_star_walk` to the bottom-to-top low star walk from
+`rectangle_low_star_walk`. -/
 lemma crossingValue_add_vertical_neg_ge (w h : ℕ) [Nonempty (planeRectangle w h)]
     (F : planeRectangle w h → ℝ) :
     -edgeOscillation (rectangleGraph (planeRectangle w h)) F ≤

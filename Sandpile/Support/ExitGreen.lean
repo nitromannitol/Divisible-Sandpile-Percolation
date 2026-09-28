@@ -1,13 +1,17 @@
-/-
-The first-passage decomposition of the Green function on path space.
-The stopped Poisson identity gives the decomposition at each bounded horizon.
-Transience makes exits from finite domains almost surely finite, and the
-uniform Green bound permits passage to the full exit time.
--/
 import Sandpile.Support.FiniteRange
 import Sandpile.Support.HitProb
 import LatticeProb.Graph.ExitDecomp
 import LatticeProb.Graph.ExitTime
+
+/-!
+# The first-passage decomposition of the Green function
+
+The first-passage decomposition of the Green function on path space. The stopped Poisson
+identity gives the decomposition at each bounded horizon (`integral_green_at_truncatedExit`).
+Transience makes exits from finite domains almost surely finite
+(`ae_exitTime_ne_top_of_finite`), and the uniform Green bound permits passage to the full exit
+time (`integral_green_at_exit`).
+-/
 
 open MeasureTheory Filter Topology
 
@@ -15,6 +19,10 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- A deterministic telescoping identity: the scenery partial sum of the increments `f - avg f`
+truncated at `N ≤ t`, plus `f (X N)`, equals `f (X 0)` plus the sum over `range t` of the
+increments `f(X(n+1)) - avg f(X n)` restricted to `n < N` by an indicator, via
+`telescope_stopped`. -/
 theorem stopped_poisson_telescope (f : Site d → ℝ) (t : ℕ) (X : ℕ → Site d)
     (N : ℕ) (hN : N ≤ t) :
     sceneryPartialSum (fun y => f y - avg f y) N X + f (X N) =
@@ -64,6 +72,8 @@ theorem integral_stopped_poisson (hd : 1 ≤ d) (x : Site d) (f : Site d → ℝ
     integral_finsetSum (Finset.range t) (fun n _ => (hinc n).1)]
   simp only [(hinc _).2, Finset.sum_const_zero, add_zero, probReal_univ, one_smul]
 
+/-- Averaging a translated field is the same as translating the average: `avg (fun y => f(y - w))
+x = avg f (x - w)`, since the neighbour set of `x` translates exactly to that of `x - w`. -/
 theorem avg_translate_field (f : Site d → ℝ) (w x : Site d) :
     avg (fun y => f (y - w)) x = avg f (x - w) := by
   unfold avg LatticeProb.walkOp LatticeProb.nbrSum
@@ -74,21 +84,30 @@ theorem avg_translate_field (f : Site d → ℝ) (w x : Site d) :
   dsimp only
   rw [hp, hm]
 
+/-- **The Poisson equation for the Green function.** `avg (fun w => green d w y) x = green d x y -
+(if x = y then 1 else 0)`, obtained by translating to the origin (`avg_translate_field`) and
+applying `LatticeProb.walkOp_srwGreenInf`. -/
 theorem avg_green (hd : 3 ≤ d) (x y : Site d) :
     avg (fun w => green d w y) x = green d x y - (if x = y then 1 else 0) := by
   simp only [External.Sec16.green_eq]
   rw [avg_translate_field]
   simpa only [avg, sub_eq_zero] using LatticeProb.walkOp_srwGreenInf hd (x - y)
 
+/-- In a transient dimension (`d ≥ 3`), the heat kernel `heatKernel d k x y` is summable in the
+time step `k`, by translating to `LatticeProb.summable_srwHeat` at `x - y`. -/
 theorem summable_heatKernel_transient (hd : 3 ≤ d) (x y : Site d) :
     Summable fun k => heatKernel d k x y := by
   simpa only [External.heatKernel_eq_srwHeat] using LatticeProb.summable_srwHeat hd (x - y)
 
+/-- The killed kernel `killedKernel D k x y` is summable in `k`, since it is nonnegative and
+dominated termwise by the summable heat kernel `summable_heatKernel_transient`. -/
 theorem summable_killedKernel_transient (hd : 3 ≤ d) (D : Set (Site d)) (x y : Site d) :
     Summable fun k => killedKernel D k x y :=
   Summable.of_nonneg_of_le (fun k => killedKernel_nonneg D k x y)
     (fun k => killedKernel_le_heatKernel D k x y) (summable_heatKernel_transient hd x y)
 
+/-- Pairing the killed Green function against the indicator of a single point `y` picks out the
+`y` term of the sum, giving `killedGreenTime D N x y`. -/
 theorem killedGreenPair_single (D : Set (Site d)) (N : ℕ) (x y : Site d) :
     killedGreenPair D N (fun w => if w = y then 1 else 0) x = killedGreenTime D N x y := by
   classical
@@ -97,6 +116,12 @@ theorem killedGreenPair_single (D : Set (Site d)) (N : ℕ) (x y : Site d) :
   · intro z hz
     simp [hz]
 
+/-- **The truncated first-passage decomposition of the Green function.** For the walk stopped at
+the exit from `D` capped at horizon `N`, `∫ X, green d (X (stopBeforeExit D N (fun _ => N) X)) y
+∂walkLaw d x = green d x y - killedGreenTime D N x y`: apply the stopped Poisson identity
+(`integral_stopped_poisson`) to `f = fun w => green d w y`, using the Poisson equation `avg_green`
+to identify the increments with the indicator of `y`, and `killedGreenPair_single` to evaluate
+the resulting killed scenery integral. -/
 theorem integral_green_at_truncatedExit (hd : 3 ≤ d) (x y : Site d)
     (D : Set (Site d)) (N : ℕ) :
     (∫ X, green d (X (stopBeforeExit D N (fun _ => N) X)) y ∂walkLaw d x) =
@@ -116,15 +141,22 @@ theorem integral_green_at_truncatedExit (hd : 3 ≤ d) (x y : Site d)
     integral_stoppedScenery_killed hd1 D N x, killedGreenPair_single] at hp
   linarith
 
+/-- The Green function is nonnegative, being a sum of nonnegative heat-kernel terms. -/
 theorem green_nonneg (x y : Site d) : 0 ≤ green d x y :=
   tsum_nonneg fun k => heatKernel_nonneg k x y
 
+/-- The Green function is largest on the diagonal: `green d x y ≤ green d 0 0`, since after
+translation it is the diagonal value times the hitting probability `LatticeProb.srwHitProb`,
+which is at most one. -/
 theorem green_le_diagonal (hd : 3 ≤ d) (x y : Site d) : green d x y ≤ green d 0 0 := by
   rw [External.Sec16.green_eq, External.Sec16.green_eq, sub_self,
     LatticeProb.srwGreenInf_eq_hitProb_mul hd]
   exact (mul_le_mul_of_nonneg_right (LatticeProb.srwHitProb_le_one (by omega) _)
     (LatticeProb.srwGreenInf_nonneg _)).trans_eq (one_mul _)
 
+/-- `killedKernel D n x y` agrees with the graph-theoretic killed heat kernel
+`LatticeProb.Graph.killedHeat` on the integer lattice, by induction on `n` using the walk-operator
+recursion `LatticeProb.Graph.Zd.killedHeat_succ_walkOp`. -/
 theorem killedKernel_eq_graph (D : Set (Site d)) (n : ℕ) (x y : Site d) :
     killedKernel D n x y = LatticeProb.Graph.killedHeat (LatticeProb.lattice d) D n x y := by
   classical
@@ -140,6 +172,9 @@ theorem killedKernel_eq_graph (D : Set (Site d)) (n : ℕ) (x y : Site d) :
         LatticeProb.walkOp, LatticeProb.nbrSum, ih]
     · simp [killedKernel, hx]
 
+/-- The killed kernel is symmetric in its two space arguments, transporting the reversibility of
+`LatticeProb.Network.killedHeat_reversible` along `killedKernel_eq_graph` and cancelling the
+shared degree factor `2d`. -/
 theorem killedKernel_symm (hd : 1 ≤ d) (D : Set (Site d)) (n : ℕ) (x y : Site d) :
     killedKernel D n x y = killedKernel D n y x := by
   have h := LatticeProb.Network.killedHeat_reversible (G := LatticeProb.lattice d) D n x y
@@ -147,21 +182,31 @@ theorem killedKernel_symm (hd : 1 ≤ d) (D : Set (Site d)) (n : ℕ) (x y : Sit
   rw [killedKernel_eq_graph, killedKernel_eq_graph]
   exact mul_left_cancel₀ (by exact_mod_cast (show 2 * d ≠ 0 by omega)) h
 
+/-- The killed Green function is symmetric, summing the termwise symmetry `killedKernel_symm`
+over time. -/
 theorem killedGreen_symm (hd : 1 ≤ d) (D : Set (Site d)) (x y : Site d) :
     killedGreen D x y = killedGreen D y x :=
   tsum_congr fun k => killedKernel_symm hd D k x y
 
+/-- Killing on the whole space (`D = Set.univ`) does nothing: `killedKernel Set.univ n x y =
+heatKernel d n x y`, by induction on `n`. -/
 theorem killedKernel_univ (n : ℕ) (x y : Site d) :
     killedKernel Set.univ n x y = heatKernel d n x y := by
   induction n generalizing x with
   | zero => simp [killedKernel, heatKernel, LatticeProb.LocalCLT.heatKernel]
   | succ n ih => simp [killedKernel, heatKernel, LatticeProb.LocalCLT.heatKernel, ih]
 
+/-- The (unkilled) Green function is symmetric, transferring `killedKernel_symm` through
+`killedKernel_univ`. -/
 theorem green_symm (hd : 1 ≤ d) (x y : Site d) : green d x y = green d y x := by
   refine tsum_congr fun k => ?_
   rw [← killedKernel_univ, ← killedKernel_univ]
   exact killedKernel_symm hd Set.univ k x y
 
+/-- The probability that the walk is in a finite set `C` at time `n` equals the sum of the heat
+kernel over `C`: pairing the past-in-`univ` weight against the indicator of `C` in
+`integral_pastIn_mul` and rewriting the killed kernel at `D = Set.univ` as the plain heat kernel
+(`killedKernel_univ`). -/
 theorem measure_walk_mem_finset (hd : 1 ≤ d) (x : Site d) (n : ℕ) (C : Finset (Site d)) :
     (walkLaw d x).real {X : ℕ → Site d | X n ∈ C} = ∑ y ∈ C, heatKernel d n x y := by
   classical
@@ -197,7 +242,8 @@ theorem ae_exitTime_ne_top_of_finite (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.F
       intro n
       simpa only [hD.mem_toFinset] using measure_walk_mem_finset (by omega) x n hD.toFinset
     simp only [he]
-    simpa using tendsto_finsetSum _ (fun y _ => (summable_heatKernel_transient hd x y).tendsto_atTop_zero)
+    simpa using tendsto_finsetSum _
+      (fun y _ => (summable_heatKernel_transient hd x y).tendsto_atTop_zero)
   have hle : ∀ n : ℕ, (walkLaw d x).real {X : ℕ → Site d | exitTime D X = ⊤} ≤
       (walkLaw d x).real {X : ℕ → Site d | X n ∈ D} := by
     intro n
@@ -213,6 +259,8 @@ theorem ae_exitTime_ne_top_of_finite (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.F
   simp only [not_not]
   rw [← ofReal_measureReal, hz, ENNReal.ofReal_zero]
 
+/-- When the exit time is within the horizon `N`, the capped stopping time
+`stopBeforeExit D N (fun _ => N)` equals the natural-number value of the exit time. -/
 theorem stoppedExit_eq_toNat {D : Set (Site d)} {N : ℕ} {X : ℕ → Site d}
     (hX : exitTime D X ≤ (N : ℕ∞)) :
     stopBeforeExit D N (fun _ => N) X = (exitTime D X).toNat := by
@@ -253,6 +301,8 @@ theorem integral_green_at_exit (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Finite)
     tendsto_const_nhds.sub (summable_killedKernel_transient hd D x y).hasSum.tendsto_sum_nat
   exact tendsto_nhds_unique hI (hg.congr fun N => (integral_green_at_truncatedExit hd x y D N).symm)
 
+/-- The map sending a path `X` to the site `X (exitTime D X).toNat` it occupies at exit is
+measurable, composing `LatticeProb.Graph.measurable_exitNat` with pointwise evaluation. -/
 theorem measurable_exit_site (D : Set (Site d)) :
     Measurable (fun X : ℕ → Site d => X (exitTime D X).toNat) := by
   have ht : Measurable (fun X : ℕ → Site d => (exitTime D X).toNat) :=
@@ -261,6 +311,9 @@ theorem measurable_exit_site (D : Set (Site d)) :
     measurable_from_prod_countable_left fun n => measurable_pi_apply n
   exact heval.comp (measurable_id.prodMk ht)
 
+/-- The Green function evaluated at the exit site, `X ↦ green d (X (exitTime D X).toNat) y`, is
+integrable: it is measurable (`measurable_exit_site`) and dominated by the diagonal value
+`green d 0 0` (`green_le_diagonal`). -/
 theorem integrable_green_at_exit (hd : 3 ≤ d) (D : Set (Site d)) (x y : Site d) :
     Integrable (fun X : ℕ → Site d => green d (X (exitTime D X).toNat) y) (walkLaw d x) := by
   haveI : NeZero d := ⟨by omega⟩
@@ -271,6 +324,8 @@ theorem integrable_green_at_exit (hd : 3 ≤ d) (D : Set (Site d)) (x y : Site d
     rw [Real.norm_eq_abs, abs_of_nonneg (green_nonneg _ _)]
     exact green_le_diagonal hd _ _
 
+/-- When the exit time is finite, the site occupied there is not in `D`, transporting
+`notMem_exitNat` through `exitTime_eq_exitNat`. -/
 theorem exitTime_toNat_notMem {D : Set (Site d)} {X : ℕ → Site d}
     (hX : exitTime D X ≠ ⊤) : X (exitTime D X).toNat ∉ D := by
   obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.mp hX
@@ -287,6 +342,10 @@ theorem integral_green_at_exit_symm (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Fi
   rw [integral_green_at_exit hd D hD, integral_green_at_exit hd D hD,
     green_symm (by omega) x y, killedGreen_symm (by omega) D x y]
 
+/-- A bound `M` on `green d w x` valid for every `w` outside `D` transfers to the exit average
+`∫ X, green d (X (exitTime D X).toNat) y ∂walkLaw d x ≤ M`: reversibility
+(`integral_green_at_exit_symm`) rewrites the average as a walk from `y`, which almost surely
+exits outside `D` (`exitTime_toNat_notMem`). -/
 theorem integral_green_at_exit_le_of_outside (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Finite)
     (x y : Site d) (M : ℝ) (hout : ∀ w ∉ D, green d w x ≤ M) :
     (∫ X, green d (X (exitTime D X).toNat) y ∂walkLaw d x) ≤ M := by
@@ -297,6 +356,9 @@ theorem integral_green_at_exit_le_of_outside (hd : 3 ≤ d) (D : Set (Site d)) (
   · filter_upwards [ae_exitTime_ne_top_of_finite hd D hD y] with X hX
     exact hout _ (exitTime_toNat_notMem hX)
 
+/-- The real-coordinate cube `{y | ∀ i, |y i - x i| ≤ r}` around `x` is finite, since it agrees
+with the lattice box `boxFinset x r` under the real-coordinate distance criterion
+`boxDist_le_iff_real_coords`. -/
 theorem finite_real_cube (x : Site d) (r : ℕ) :
     {y : Site d | ∀ i, |(y i : ℝ) - (x i : ℝ)| ≤ r}.Finite := by
   have he : {y : Site d | ∀ i, |(y i : ℝ) - (x i : ℝ)| ≤ r} =

@@ -1,23 +1,22 @@
-/-
-The contact event of the two case proofs, written through the odometer killed at
-the origin.
-
-`lem:dgt4-origin-frozen` (`sandpile.tex:4843-4862`, sealed) contains the
-identity `{u_{n+1}(0)=0} = {-\zeta(0)>Pw_n(0)}`, where `w_n` is the localized
-odometer with the walk killed on hitting the origin.  Both proofs of
-`prop:dgt4-contact-asymptotics` use it to free `\zeta(0)` from the neighbour
-dynamics: in case (b) the threshold `Pw_n(0)` is then replaced by its mean by
-regular variation, and in case (a) by conditioning on the Gaussian field.
-
-`symmDiff_contact_eq_killed` performs that replacement inside the symmetric
-difference of `ThresholdRelativeError`, and `thresholdRelativeError_killed`
-records the resulting form of that hypothesis.  The identity is almost sure, so
-the symmetric difference changes on a null set only, which is
-`measure_symmDiff_congr_left`; no measurability of the threshold event is
-needed, and none is available in the Gaussian branch.
--/
 import Sandpile.Frozen.DGT4OriginFrozen
 import Sandpile.Support.Dgt4ThresholdChain
+
+/-!
+# The contact event through the killed odometer
+
+The contact event of the two case proofs, written through the odometer killed at the origin.
+`lem:dgt4-origin-frozen` (`sandpile.tex:4843-4862`, sealed) contains the identity
+`{u_{n+1}(0)=0} = {-\zeta(0)>Pw_n(0)}`, where `w_n` is the localized odometer with the walk killed
+on hitting the origin. Both proofs of `prop:dgt4-contact-asymptotics` use it to free `\zeta(0)`
+from the neighbour dynamics: in case (b) the threshold `Pw_n(0)` is then replaced by its mean by
+regular variation, and in case (a) by conditioning on the Gaussian field.
+
+`symmDiff_contact_eq_killed` performs that replacement inside the symmetric difference of
+`ThresholdRelativeError`, and `thresholdRelativeError_killed` records the resulting form of that
+hypothesis. The identity is almost sure, so the symmetric difference changes on a null set only,
+which is `measure_symmDiff_congr_left`; no measurability of the threshold event is needed, and
+none is available in the Gaussian branch.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

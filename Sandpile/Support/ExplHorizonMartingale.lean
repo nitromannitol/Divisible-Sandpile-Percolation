@@ -1,19 +1,19 @@
-/-
-Horizon-free Brownian rewards from a backward heat-increment martingale.
-
-For t <= T, the relevant process is
-  h(T - min(r,t), B(min(r,t))) - h(t - min(r,t), B(min(r,t))).
-Bounded optional sampling identifies its expectation at every admissible stop
-with h(T,z) - h(t,z). The individual payoff integrals are legitimate under the
-stated common integrable envelope, so this gives HorizonFreeIncrement.
-
-The martingale property is stated explicitly: continuity alone does not imply
-it. For a continuous Gaussian heat potential it is the semigroup identity still
-needed after stochastic Fubini. The link from IsBrownianStopping to measurable
-natural-filtration stopping times is also explicit.
--/
 import Sandpile.Support.ExplHorizon
 import Sandpile.Support.ExplOptionalSampling
+
+/-!
+# Horizon-free Brownian rewards from a backward heat-increment martingale
+
+For `t ≤ T`, the relevant process is
+`h (T - min r t) (B (min r t)) - h (t - min r t) (B (min r t))`. Bounded optional sampling
+identifies its expectation at every admissible stop with `h T z - h t z`. The individual payoff
+integrals are legitimate under the stated common integrable envelope, so this gives
+`HorizonFreeIncrement`.
+
+The martingale property is stated explicitly: continuity alone does not imply it. For a continuous
+Gaussian heat potential it is the semigroup identity still needed after stochastic Fubini. The
+link from `IsBrownianStopping` to measurable natural-filtration stopping times is also explicit.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -22,6 +22,11 @@ namespace Sandpile.Continuum
 
 open Sandpile.Support
 
+/-- **Horizon-free Brownian rewards from a backward heat-increment martingale.** Given the
+martingale property of `h (T - min r t) (B (min r t)) - h (t - min r t) (B (min r t))` on the
+natural filtration of `B`, a common integrable envelope `D` dominating both rewards up to time
+`t`, and the start `B 0 = z` a.s., bounded optional sampling identifies the expectation of the
+process at every admissible stop with `h T z - h t z`, giving `HorizonFreeIncrement`. -/
 theorem horizonFreeIncrement_of_backward_martingale {Ω : Type*} [mΩ : MeasurableSpace Ω] {d : ℕ}
     (P : Measure Ω) [IsProbabilityMeasure P] (B : ℝ≥0 → Ω → Space d)
     (hBc : ∀ ω, Continuous fun r => B r ω) (hBm : ∀ r, StronglyMeasurable (B r))

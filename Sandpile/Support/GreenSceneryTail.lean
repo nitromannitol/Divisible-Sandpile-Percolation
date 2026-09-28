@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.GreenHigh
+import Sandpile.Support.SceneryTail
+
+/-!
+# The space sum of the log-Laplace transform of the scenery
+
 The space sum of the log-Laplace transform in the proof of
 `lem:dgt4-stretched-green-scenery-tail` (`sandpile.tex:4361-4410`).
 
@@ -22,8 +27,6 @@ file carries out the summation, in the two regions the exponent `q` separates:
 
 In both cases the exponent is `max(q, d/(d-2))`, which is `β/(β-1)`.
 -/
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.SceneryTail
 
 open LatticeProb
 
@@ -318,7 +321,8 @@ theorem exists_space_sum_low (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
         (1 + (LatticeProb.supNorm y : ℝ)) ^ (-a) ≤ Cbox * (1 + (R : ℝ)) ^ ((d : ℝ) - a) :=
       hbox R
     have hR3 : (1 : ℝ) + (R : ℝ) ≤ 3 * ρ := by linarith
-    have hpow : (1 + (R : ℝ)) ^ ((d : ℝ) - a) ≤ (3 : ℝ) ^ (d : ℕ) * (lam ^ (p - q) * A ^ (p - q)) := by
+    have hpow : (1 + (R : ℝ)) ^ ((d : ℝ) - a) ≤
+        (3 : ℝ) ^ (d : ℕ) * (lam ^ (p - q) * A ^ (p - q)) := by
       have h1 : (1 + (R : ℝ)) ^ ((d : ℝ) - a) ≤ (3 * ρ) ^ ((d : ℝ) - a) :=
         Real.rpow_le_rpow (by linarith) hR3 (by linarith)
       have h2 : (3 * ρ) ^ ((d : ℝ) - a) = (3 : ℝ) ^ ((d : ℝ) - a) * ρ ^ ((d : ℝ) - a) :=

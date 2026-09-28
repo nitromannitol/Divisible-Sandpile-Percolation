@@ -1,17 +1,19 @@
-/-
-Adjacency of good coarse blocks: if two neighbouring coarse sites of the
-`(2r)`-lattice are both good for the field `F` at level `ℓ`, then the
-level-`ℓ` superlevel set of `F` contains a nearest-neighbour walk joining a
-site of the first block's square to a site of the second block's square.
+import Sandpile.Support.BlockVerticalWalk
+import Sandpile.Support.PercSquareToWide
+import Sandpile.Support.PercAbsHom
+import Sandpile.Support.BlockSubwalk
+
+/-!
+# Adjacency of good coarse blocks
+
+If two neighbouring coarse sites of the `(2r)`-lattice are both good for the field `F`
+at level `ℓ`, then the level-`ℓ` superlevel set of `F` contains a nearest-neighbour walk
+joining a site of the first block's square to a site of the second block's square.
 This is the deterministic overlap step of `sandpile.tex:3979-3986`: the
 wide rectangle's left-right crossing meets the top-bottom crossings of both
 squares, because a bottom-top walk of the square is also a bottom-top walk
 of the wide rectangle, and opposite crossings of one rectangle intersect.
 -/
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.PercSquareToWide
-import Sandpile.Support.PercAbsHom
-import Sandpile.Support.BlockSubwalk
 
 open scoped NNReal
 noncomputable section

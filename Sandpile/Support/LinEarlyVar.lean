@@ -1,22 +1,25 @@
-/-
+import Sandpile.Support.LinIntersect
+import Sandpile.Support.LinPairSum
+
+/-!
+# The product law of two walks, and the early-variance arithmetic
+
 The product of two independent walks, and the arithmetic of
 `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`).
 
 The paper expands `∑_z Var(D^{≤}_{R,z})` as a double expectation `E_x E_y` over two
 independent walks of the intersection indicator against the conditional covariance of the
-two survivals.  `Support/LinIntersect.lean` already has the iterated `lintegral` form for
+two survivals. `Support/LinIntersect.lean` already has the iterated `lintegral` form for
 nonnegative integrands; the covariance is signed, so the product law and its Fubini are
-recorded here in the Bochner form as well.  (The same statements are filed as a request for
+recorded here in the Bochner form as well. (The same statements are filed as a request for
 the shared library.)
 
 `sum_indicator_mul_cov_le` is the arithmetic the paper then performs: the displayed
-intersection sum and the intersection sum of `eq:dgt4-positive-path-covariance` are each at
-most `I(X,Y)`, so their product is at most `I(X,Y)^2`, and the covariance hypothesis
+intersection sum and the intersection sum of `eq:dgt4-positive-path-covariance` are each
+at most `I(X,Y)`, so their product is at most `I(X,Y)^2`, and the covariance hypothesis
 `|Cov| ≤ C/(δR²) I + ε_R(δ)` gives
 `|∑_{i,j} 1{X_i=Y_j} Cov_{ij}| ≤ C/(δR²) I² + ε_R(δ) I`.
 -/
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.LinPairSum
 
 open MeasureTheory
 
@@ -29,6 +32,8 @@ noncomputable def walkPairLaw (d : ℕ) [NeZero d] (x y : Site d) :
     Measure ((ℕ → Site d) × (ℕ → Site d)) :=
   (walkLaw d x).prod (walkLaw d y)
 
+/-- The product law of two independent walks is a probability measure, since each factor
+`walkLaw d x` and `walkLaw d y` is one. -/
 instance isProbabilityMeasure_walkPairLaw [NeZero d] (x y : Site d) :
     IsProbabilityMeasure (walkPairLaw d x y) := by
   unfold walkPairLaw

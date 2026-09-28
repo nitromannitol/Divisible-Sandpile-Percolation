@@ -1,18 +1,16 @@
-/-
-The covariance of the Gaussian Green field is superharmonic, which is the first
-ingredient of `eq:dgt4-gaussian-covariance-sampling` (`sandpile.tex:5115-5119`):
-"Since `(I-P)\Cov(V_\infty(\cdot),V_\infty(0))(x)=\Var(\zeta(0))G(x,0)\geq0`, optional
-stopping gives ...".
-
-In the normalisation where the one-site variance is one the covariance is
-`C(x)=\sum_zG(x,z)G(0,z)`, and `C-PC=G(0,\cdot)`, which is nonnegative.  The proof is
-the Green equation `avg_green`, `(I-P)G(\cdot,y)(x)=\one_{x=y}`, together with the
-exchange of the neighbour average, a sum of `2d` terms, with the sum over `z`; the
-exchange needs only that `z\mapsto G(w,z)G(0,z)` is summable, which follows from the
-square summability of `G(w,\cdot)` and of `G(0,\cdot)` by the arithmetic mean.
--/
 import Sandpile.Support.Dgt4ACondition
 import Sandpile.Support.ExitGreen
+
+/-!
+# The Green covariance is superharmonic
+
+In the normalisation where the one-site variance is one, the covariance of the Gaussian
+Green field is `C(x) = ∑_z G(x, z) * G(0, z)`, and applying the neighbour-averaging operator
+`avg` gives `C(x) - avg C (x) = G(0, x) ≥ 0`, so `C` is superharmonic. The proof rewrites the
+neighbour average of the defining sum using the Green equation `avg_green`,
+`(I - P) G(·, y)(x) = 1_{x = y}`, exchanging the finite average over `2d` neighbours with the
+sum over `z`, which is justified by the square summability of `G(w, ·)` and `G(0, ·)`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,12 +1,20 @@
-/-
-The centring change of variables of dimension four: the mass field `σ` of the
-main theorem and the centred scenery `ζ` of `sec:dim4-regime` are related by
-`σ = 1 + 8ζ`, so the mass law of `μ` is the centred mass law of the law of
-`(s-1)/8`, and the hypotheses of the main theorem on `μ` become the hypotheses
-of the dimension-four theorem on that law.
--/
 import Sandpile.Law
 import Sandpile.Support.D4PlaneEmbed
+
+/-!
+# The centring change of variables in dimension four
+
+The centring change of variables of dimension four: the mass field `σ` of the main theorem and the
+centred scenery `ζ` of `sec:dim4-regime` are related by `σ = 1 + 8ζ`, so the mass law of `μ` is the
+centred mass law of the law of `(s-1)/8`, and the hypotheses of the main theorem on `μ` become the
+hypotheses of the dimension-four theorem on that law. `centeredMassLaw_map_centering` proves the law
+identity, the five lemmas following it (`integral_centering_eq_zero`, `integral_exp_centering`,
+`integrable_exp_centering`, `evariance_centering_le`, `integrable_id_of_shifted_exp_moment`)
+transport the main theorem's mean, exponential-moment and variance hypotheses on `μ` to the
+corresponding hypotheses on the centered law, and `massLaw_critical_level_percolation_four`
+assembles all of this into the dimension-four instance of the main critical level-set theorem stated
+in the mass-field language.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -20,7 +28,8 @@ theorem centeredMassLaw_map_centering (μ : Measure ℝ) :
     Sandpile.centeredMassLaw 4 (μ.map fun s => (s - 1) / 8) = Sandpile.massLaw 4 μ := by
   have hf : Measurable fun s : ℝ => (s - 1) / 8 := by fun_prop
   have hg : Measurable fun z : ℝ => 1 + 2 * ((4 : ℕ) : ℝ) * z := by fun_prop
-  have hmap : ((μ.map fun s : ℝ => (s - 1) / 8).map fun z : ℝ => 1 + 2 * ((4 : ℕ) : ℝ) * z) = μ := by
+  have hmap :
+      ((μ.map fun s : ℝ => (s - 1) / 8).map fun z : ℝ => 1 + 2 * ((4 : ℕ) : ℝ) * z) = μ := by
     rw [Measure.map_map hg hf]
     have hid : ((fun z : ℝ => 1 + 2 * ((4 : ℕ) : ℝ) * z) ∘ fun s : ℝ => (s - 1) / 8) = id := by
       funext s
@@ -31,6 +40,8 @@ theorem centeredMassLaw_map_centering (μ : Measure ℝ) :
   rw [hmap]
 
 
+/-- After centering and rescaling by `s ↦ (s - 1) / 8`, the pushed-forward law has mean zero,
+since the original mean is `1`. -/
 theorem integral_centering_eq_zero (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (hint : Integrable id μ) (hmean : ∫ s, s ∂μ = 1) :
     ∫ z, z ∂(μ.map fun s => (s - 1) / 8) = 0 := by
@@ -45,6 +56,10 @@ theorem integral_centering_eq_zero (μ : Measure ℝ) [IsProbabilityMeasure μ]
   simp
 
 
+/-- The exponential-moment integral transforms under the centering map exactly as expected:
+`∫ exp(8θ₀|z|)` against the pushed-forward law of `s ↦ (s - 1) / 8` equals `∫ exp(θ₀|s - 1|)`
+against the original law, by the change-of-variables formula `integral_map` and
+`|(s - 1) / 8| = |s - 1| / 8`. -/
 theorem integral_exp_centering (μ : Measure ℝ) (θ₀ : ℝ) :
     ∫ z, Real.exp (8 * θ₀ * |z|) ∂(μ.map fun s => (s - 1) / 8)
       = ∫ s, Real.exp (θ₀ * |s - 1|) ∂μ := by
@@ -59,6 +74,9 @@ theorem integral_exp_centering (μ : Measure ℝ) (θ₀ : ℝ) :
   ring
 
 
+/-- Integrability of the exponential moment `exp(θ₀|s - 1|)` under `μ` transfers to
+integrability of `exp(8θ₀|z|)` under the centered and rescaled pushed-forward law, since the two
+integrands agree pointwise via `z = (s - 1) / 8`. -/
 theorem integrable_exp_centering (μ : Measure ℝ) (θ₀ : ℝ)
     (h : Integrable (fun s => Real.exp (θ₀ * |s - 1|)) μ) :
     Integrable (fun z => Real.exp (8 * θ₀ * |z|)) (μ.map fun s => (s - 1) / 8) := by
@@ -71,6 +89,10 @@ theorem integrable_exp_centering (μ : Measure ℝ) (θ₀ : ℝ)
   ring
 
 
+/-- The variance lower bound `ν₀² ≤ evariance id μ` transfers to `(ν₀/8)² ≤ evariance id`
+under the centered, rescaled pushed-forward law, since `evariance` is quadratic under scaling by
+`1/8` (`evariance_mul`) and is unchanged by the mean-one shift `s ↦ s - 1`
+(`integral_sub`/`hmean`). -/
 theorem evariance_centering_le (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (hint : Integrable id μ) (hmean : ∫ s, s ∂μ = 1) (ν₀ : ℝ)
     (h : ENNReal.ofReal (ν₀ ^ 2) ≤ evariance id μ) :
@@ -106,6 +128,9 @@ theorem evariance_centering_le (μ : Measure ℝ) [IsProbabilityMeasure μ]
   gcongr
 
 
+/-- A finite exponential moment `∫ exp(θ₀|s - 1|) dμ` for some `θ₀ > 0` implies `id` itself is
+integrable, using the elementary bound `θ₀ t ≤ exp(θ₀ t) - 1` (`Real.add_one_le_exp`) applied at
+`t = |s - 1|` to dominate `|s - 1|`, and hence `|s|`, by an integrable function. -/
 theorem integrable_id_of_shifted_exp_moment (μ : Measure ℝ) [IsFiniteMeasure μ]
     (θ₀ : ℝ) (hθ₀ : 0 < θ₀)
     (h : Integrable (fun s => Real.exp (θ₀ * |s - 1|)) μ) : Integrable id μ := by

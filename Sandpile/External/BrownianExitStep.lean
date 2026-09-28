@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.ExplBallLocal
+
+/-! # Strong Markov Property at a Ball's Exit Time
+
 External input: the strong Markov property at the exit time of a Euclidean ball,
 in the set-integral form the localization argument of `lem:brownian-ball-localization`
 (`sandpile.tex:1640-1665`) consumes.
@@ -34,7 +37,6 @@ heat potential does increase with the horizon is proved in the repository, not a
 Mathlib 4.32 has the Markov property at a deterministic time and no strong Markov
 property at a stopping time, so the predicate below is assumed, and only it.
 -/
-import Sandpile.Support.ExplBallLocal
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

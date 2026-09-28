@@ -1,14 +1,16 @@
-/-
-Consequences of the `d ≥ 5` Green estimates that the tail arguments of
-`ssec:d5-height-upper` use in a pointwise form.  The assumed estimate
-`eq:dgt4-green-tail` bounds `G(0,z)` on a half-space `|z| ≥ r` with `r` an
-integer; the arguments split space at a real radius, so the bound is turned into
-the pointwise form `G(0,y) ≤ C(1+|y|)^{2-d}` valid at every site, the origin
-included, where the value is read off the square summability instead.
--/
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.Support.Kernel
 import Sandpile.Support.Radial
+
+/-!
+# Pointwise Green-function bounds above dimension four
+
+Turns the `d ≥ 5` Green estimates recorded in `Sandpile.External.GreenBoundsHigh`, which bound
+`G(0,z)` only on a half-space `|z| ≥ r` at an integer radius `r`, into the pointwise bound
+`G(0,y) ≤ C_G (1 + |y|)^{2-d}` valid at every site `y`, the origin included, and into summability
+of `G(0,y)^p` for every exponent `p` above the critical value `d/(d-2)`. This is the pointwise
+form of `eq:dgt4-green-tail` that the tail arguments of `ssec:d5-height-upper` need.
+-/
 
 open MeasureTheory
 

@@ -1,14 +1,17 @@
-/-
-`eq:dgt4-tested-cell-l2` (`sandpile.tex:5699-5702`) for a test function that is
-only bounded, integrable and square integrable with compact support.
-
-`Support/LinCellL2.lean` proves the display for a smooth compactly supported
-test function, but the only facts it uses are that the function and its square
-are integrable.  The linearization for a SIGNED test function is obtained by
-splitting it into its positive and negative parts, which are no longer smooth,
-so the display is restated here with those two integrabilities as hypotheses.
--/
 import Sandpile.Support.LinJacobianCell
+
+/-!
+# The cell `L²` bound for a general test function
+
+`eq:dgt4-tested-cell-l2` (`sandpile.tex:5699-5702`) for a test function that is only
+bounded, integrable and square integrable with compact support.
+
+`Support/LinCellL2.lean` proves the display for a smooth compactly supported test
+function, but the only facts it uses are that the function and its square are
+integrable. The linearization for a SIGNED test function is obtained by splitting it into
+its positive and negative parts, which are no longer smooth, so the display is restated
+here with those two integrabilities as hypotheses.
+-/
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum
@@ -17,7 +20,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
-/-- Cauchy-Schwarz on one cell of the mesh. -/
+/-- Cauchy-Schwarz on one cell of the mesh: the squared cell mass of a bounded and square
+integrable `φ` is at most `R⁻¹ᵈ` times the integral of `φ²` over the cell, via
+`sq_setIntegral_le` and the cell's finite volume `R⁻¹ᵈ`. -/
 theorem sq_cellMass_le' {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     (hint : Integrable φ) (hint2 : Integrable (fun z => φ z ^ 2)) (x : Sandpile.Site d) :
     (Sandpile.Support.cellMass R φ x) ^ 2
@@ -29,6 +34,9 @@ theorem sq_cellMass_le' {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     hint.integrableOn hint2.integrableOn hfin
   rwa [measureReal_cell hR x] at h
 
+/-- Summing `sq_cellMass_le'` over a finite set of cell centres: since the cells indexed by
+`s` are pairwise disjoint (`Sandpile.Support.cell_disjoint`), the sum of the squared cell
+masses is at most `R⁻¹ᵈ` times the integral of `φ²` over the whole space. -/
 theorem sum_sq_cellMass_le' {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     (hint : Integrable φ) (hint2 : Integrable (fun z => φ z ^ 2))
     (s : Finset (Sandpile.Site d)) :
@@ -50,6 +58,9 @@ theorem sum_sq_cellMass_le' {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
   rw [← hunion]
   exact setIntegral_le_integral hint2 (Filter.Eventually.of_forall fun z => sq_nonneg _)
 
+/-- The `sum_sq_cellMass_le'` bound rescaled by `R^{(d-4)/2}`, the tested weight's own
+scale factor: the rescaled sum of squared cell masses is at most `(∫ φ²) · R⁻⁴`, computed
+by absorbing the rescaling power into the `R⁻¹ᵈ` factor via `Real.rpow` arithmetic. -/
 theorem sum_sq_scaled_cellMass_le' {R : ℝ} (hR : 0 < R) {φ : Space d → ℝ}
     (hint : Integrable φ) (hint2 : Integrable (fun z => φ z ^ 2))
     (s : Finset (Sandpile.Site d)) :

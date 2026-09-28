@@ -1,27 +1,31 @@
-/-
-Stochastic Fubini for the actual continuous Gaussian heat potential.
-
-Coordinatewise modifications of a field do not determine values at random
-parameters. Almost-sure continuity on a separable time-space domain supplies a
-joint representative agreeing at every parameter on one common event. The
-continuity clauses on positive time strips supply that event on all nonnegative
-times. This transfers white-noise Fubini to the continuous field itself.
-
-For a bounded measurable stopping time, continuity and measurability of the
-motion make the stopped time-space parameter measurable. The Green-kernel L2
-bound then discharges Bochner integrability, so the resulting identity concerns
-the actual stopped continuous field. Its almost-sure event is for each fixed
-stopping time; an event uniform over all stopping times requires a further
-semigroup or martingale argument.
--/
 import Sandpile.Support.ExplNoiseFubini
 import Sandpile.Support.ExplKernelFamily
+
+/-!
+# Stochastic Fubini for the continuous Gaussian heat potential
+
+Coordinatewise modifications of a field do not determine its values at a random parameter, so
+almost-sure continuity in the parameter is used to build a single jointly measurable version
+`G` agreeing with the field at every parameter on one common event
+(`exists_joint_version_of_ae_continuous`). Continuity on compact time strips extends this to
+all nonnegative times (`ae_continuous_nonneg_of_time_strips`), transferring white-noise Fubini
+from a coordinatewise version to the actual continuous Gaussian potential
+(`gaussian_whiteNoise_integral_comm_continuous`). For a bounded measurable stopping time,
+continuity and measurability of the motion make the stopped space-time parameter measurable
+(`measurable_stopped_spaceTime`), and the Green-kernel `L²` bound then gives the same Fubini
+identity for the actual stopped continuous field (`gaussianPotential_stopped_integral_comm`),
+valid on an almost-sure event depending on the fixed stopping time.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 
 namespace Sandpile.Support
 
+/-- Given a family `Z : E → Ω → ℝ` that is `AEMeasurable` in `ω` for each `x` and almost
+surely continuous in `x` over a second-countable metric space `E`, there is a jointly
+strongly measurable `G` agreeing with `Z x` almost surely for every `x` simultaneously,
+built as the `limsup` along a strongly-measurable approximation of the identity on `E`. -/
 theorem exists_joint_version_of_ae_continuous {E Ω : Type*}
     [Nonempty E] [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
     [SecondCountableTopology E] [MeasurableSpace Ω]
@@ -61,6 +65,11 @@ namespace Sandpile.Continuum
 
 open Sandpile.Support
 
+/-- For a continuous-in-`x` version `Z x =ᵐ W (K x)` of white noise applied to an `L²` family
+`K`, and `q : U → E` with `u ↦ K (q u)` Bochner integrable in `Lp`, the observable
+`u ↦ Z (q u) ω` is a.e. integrable in `u`, and white noise applied to `∫ u, K (q u) ∂μ` agrees
+almost surely with `∫ u, Z (q u) ω ∂μ`: Fubini for a jointly continuous version, built from
+`exists_joint_version_of_ae_continuous` and `whiteNoise_integral_comm_of_version`. -/
 theorem whiteNoise_integral_comm_continuous {E Ω U : Type*}
     [Nonempty E] [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
     [SecondCountableTopology E] [MeasurableSpace Ω] [MeasurableSpace U]
@@ -91,6 +100,10 @@ theorem whiteNoise_integral_comm_continuous {E Ω U : Type*}
       (Eventually.of_forall fun u => hω (q u)))
 
 
+/-- If `Z` is almost surely jointly continuous on every compact strip
+`Set.Icc 0 T ×ˢ Set.univ`, then almost surely its restriction to nonnegative times
+`ℝ≥0 × Space d` is continuous, patching the strips using the one strip that contains
+each point. -/
 theorem ae_continuous_nonneg_of_time_strips {d : ℕ} {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) (Z : ℝ → Space d → Ω → ℝ)
     (hc : ∀ T : ℝ, 0 < T → ∀ᵐ ω ∂P,
@@ -119,6 +132,10 @@ theorem ae_continuous_nonneg_of_time_strips {d : ℕ} {Ω : Type*} [MeasurableSp
   rw [min_eq_left hq.le]
 
 
+/-- The Gaussian-potential specialization of `whiteNoise_integral_comm_continuous`: for
+`Z t x =ᵐ gaussianPotential d ν2 W t x` and `q : U → ℝ≥0 × Space d` with time coordinate
+bounded by `T`, white noise applied to `∫ u, √ν2 • greenTimeBM d (q u).1 (q u).2 ∂μ` agrees
+almost surely with `∫ u, Z (q u).1 (q u).2 ω ∂μ`. -/
 theorem gaussian_whiteNoise_integral_comm_continuous {Ω U : Type*}
     [MeasurableSpace Ω] [MeasurableSpace U] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {P : Measure Ω} [IsProbabilityMeasure P] {W : (Space d → ℝ) → Ω → ℝ}
@@ -144,6 +161,9 @@ theorem gaussian_whiteNoise_integral_comm_continuous {Ω U : Type*}
   exact whiteNoise_integral_comm_continuous hW K hK (fun p => Z p.1 p.2) hZ
     (ae_continuous_nonneg_of_time_strips P Z hc) μ q hq hint
 
+/-- For a process `B` with continuous paths and strongly measurable time slices and a
+measurable stopping time `τ` bounded by `T`, the stopped space-time point
+`ω ↦ (T - τ ω, B (τ ω) ω)` is measurable. -/
 theorem measurable_stopped_spaceTime {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (hBc : ∀ ω, Continuous fun t => B t ω)
     (hBm : ∀ t, StronglyMeasurable (B t)) (τ : Ω → ℝ≥0) (hτm : Measurable τ)
@@ -156,6 +176,10 @@ theorem measurable_stopped_spaceTime {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (measurable_const.sub hτm.subtype_val).subtype_mk
   exact ht.prodMk (hj.measurable.comp (hτm.prodMk measurable_id))
 
+/-- The stopped-time corollary of `gaussian_whiteNoise_integral_comm_continuous`: for a
+bounded stopping time `τ ≤ T` on a process `B` with continuous paths, white noise applied to
+`∫ b, √ν2 • greenTimeBM d (T - τ b) (B (τ b) b) ∂PB` agrees almost surely with
+`∫ b, Z (T - τ b) (B (τ b) b) ω ∂PB`, and this observable is integrable. -/
 theorem gaussianPotential_stopped_integral_comm {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}

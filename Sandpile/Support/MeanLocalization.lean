@@ -1,23 +1,19 @@
-/-
-Taking expectations in `lem:localization-killing`.
-
-The bound of that lemma is an expectation over the walk of the odometer read at
-the exit position, and the odometer there is still a function of the scenery.
-Averaging over the scenery therefore asks for the two integrals to be exchanged.
-Once they are, the inner scenery average of the odometer no longer depends on
-the exit position, by stationarity, and what is left is the mean odometer times
-the probability that the walk has left the domain.
-
-The scenery law is an arbitrary stationary law whose positive part at the origin
-is integrable, as in the paper.  Independence of the scenery is used nowhere: the
-exchange of the integrals needs only that the scenery law is a probability
-measure, and the exit position is then removed by translation invariance.  The
-statements for the i.i.d. law are the instances at `LatticeProb.iidLaw d ν`
-(`isStationary_iidLaw`).
--/
 import Sandpile.Support.Localization
 import Sandpile.External.BPSHProved
 import Sandpile.Support.Stationary
+
+/-!
+# Averaging the localization bound over the scenery
+
+Taking expectations in `lem:localization-killing`: the bound of that lemma is an expectation
+over the walk of the odometer read at the exit position, and the odometer there is still a
+function of the scenery, so averaging over the scenery exchanges the two integrals. Once
+exchanged, the inner scenery average of the odometer no longer depends on the exit position, by
+stationarity, and what is left is the mean odometer times the probability that the walk has
+left the domain. The scenery law is an arbitrary stationary law whose positive part at the
+origin is integrable, independence of the scenery is used nowhere, and the statements for the
+i.i.d. law are the instances at `LatticeProb.iidLaw d ν` (`isStationary_iidLaw`).
+-/
 
 open MeasureTheory
 
@@ -40,9 +36,11 @@ theorem measurable_of_dependsOn' {α : Type*} [MeasurableSpace α] (t : ℕ)
   rw [hrep]
   exact (measurable_of_countable _).comp (Finset.measurable_restrict _)
 
+/-- `exitNat D t` is measurable, since it depends only on the first `t + 1` steps of the path. -/
 theorem measurable_exitNat (D : Set (Site d)) (t : ℕ) : Measurable (exitNat D t) :=
   measurable_of_dependsOn' t _ fun _ _ h => exitNat_congr' h
 
+/-- The event that the walk has exited `D` by time `t` is measurable. -/
 theorem measurableSet_exited (D : Set (Site d)) (t : ℕ) :
     MeasurableSet {X : ℕ → Site d | exitNat D t X ≤ t} :=
   measurable_exitNat D t measurableSet_Iic
@@ -65,6 +63,8 @@ theorem exitReward_eq_sum (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) (X 
     have := Finset.mem_range.mp hm
     rw [if_neg (by omega)]
 
+/-- The reward at the exit is jointly measurable in the scenery and the path, via the
+finite-sum decomposition `exitReward_eq_sum`. -/
 theorem measurable_uncurry_exitReward (D : Set (Site d)) (t : ℕ) :
     Measurable fun p : (Site d → ℝ) × (ℕ → Site d) => exitReward D p.1 t p.2 := by
   classical
@@ -102,9 +102,12 @@ theorem ae_prod_boxDist (hd : 1 ≤ d) (μ : Measure (Site d → ℝ)) [IsProbab
     simp
   rw [hset, Measure.prod_prod, MeasureTheory.ae_iff.mp (ae_boxDist_walk hd x), mul_zero]
 
+/-- An integrable function of the first coordinate remains integrable after taking the product
+with any probability measure on the second coordinate. -/
 theorem integrable_comp_fst {μ : Measure (Site d → ℝ)} [IsProbabilityMeasure μ]
     {ν : Measure (ℕ → Site d)} [IsProbabilityMeasure ν] {H : (Site d → ℝ) → ℝ}
-    (hH : Integrable H μ) : Integrable (fun p : (Site d → ℝ) × (ℕ → Site d) => H p.1) (μ.prod ν) := by
+    (hH : Integrable H μ) :
+    Integrable (fun p : (Site d → ℝ) × (ℕ → Site d) => H p.1) (μ.prod ν) := by
   have hmapfst : (μ.prod ν).map Prod.fst = μ := Measure.fst_prod
   have hasm : AEStronglyMeasurable H ((μ.prod ν).map Prod.fst) := by
     rw [hmapfst]; exact hH.aestronglyMeasurable
@@ -113,6 +116,9 @@ theorem integrable_comp_fst {μ : Measure (Site d → ℝ)} [IsProbabilityMeasur
   rw [hmapfst]
   exact hH
 
+/-- The reward at the exit is integrable on the product of a stationary scenery law with the
+walk law, bounded by the (integrable) sum of the odometer over the box the walk cannot leave by
+time `t`. -/
 theorem integrable_prod_exitReward (hd : 1 ≤ d) (P : Measure (Site d → ℝ))
     [IsProbabilityMeasure P] (hstat : IsStationary d P)
     (hpos : Integrable (fun ζ : Site d → ℝ => max (ζ 0) 0) P)

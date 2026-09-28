@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinEarlyVarDefs
+import Sandpile.Support.LinEarlyVarFubini
+
+/-! # Early Variance Covariance Bound
+
 The conditional covariance of two survival indicators is at most one in absolute value.
 
 `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): the survival indicators
@@ -6,8 +10,6 @@ take values in `[0,1]`, so their covariance under a probability law on the scene
 bounded by one.  This is the bound that makes the walk-pair integrand of the expansion
 summable in the site variable.
 -/
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarFubini
 
 open MeasureTheory ProbabilityTheory
 

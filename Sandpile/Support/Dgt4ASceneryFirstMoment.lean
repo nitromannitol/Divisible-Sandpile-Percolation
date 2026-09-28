@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.Dgt4ASceneryMeanZero
+import Sandpile.Support.Dgt4ABoxDeviation
+import Sandpile.Support.Dgt4AMeanIncrement
+import Sandpile.Support.Dgt4AMeanIncrementInt
+import Sandpile.Support.D4Reflection
+
+/-!
+# First-moment bound in finite-coordinate form
+
 The first-moment bound of Step 1 of case (a) of `prop:dgt4-contact-asymptotics`,
 `\E|D_n|\leq2\E u_n(0)/n` (`sandpile.tex:5053-5055`), in the finite-coordinate form.
 The odometer recursion `u_{n+1}=\zeta+Pu_n+r_n` with the reflection term `r_n\geq0` splits
@@ -6,11 +14,6 @@ The odometer recursion `u_{n+1}=\zeta+Pu_n+r_n` with the reflection term `r_n\ge
 so `|D_n|\leq I_n+r_n`; the mean of `D_n` vanishes, so the two have the same mean, and
 `eq:dgt4-mean-increment-bound` bounds the increment.
 -/
-import Sandpile.Support.Dgt4ASceneryMeanZero
-import Sandpile.Support.Dgt4ABoxDeviation
-import Sandpile.Support.Dgt4AMeanIncrement
-import Sandpile.Support.Dgt4AMeanIncrementInt
-import Sandpile.Support.D4Reflection
 
 open MeasureTheory Filter Topology Set
 

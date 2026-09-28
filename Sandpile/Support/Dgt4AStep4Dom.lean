@@ -1,19 +1,19 @@
-/-
-**The dominating function of Step 4 of case (a)** (`sandpile.tex:5267-5295`).
-
-The paper dominates the integrand of `eq:dgt4-gaussian-integral-representation` in two
-regimes: "For `y\geq0`, `eq:dgt4-gaussian-covariance-sampling` shows that `m_n` is
-one-Lipschitz in `y`; since `m_n(0)\to0`, this gives `m_n(y)\leq C(1+y)` and
-`m_n(y)\rho_n(y)\leq C(1+y)e^{-y}`", and for `y\leq-1` it uses the concentration bound
-`eq:dgt4-gaussian-conditional-concentration`.
-
-The Lipschitz half is not needed: terminal domination already gives `m_n(y)\leq2|y|+1` for
-all `y` and all large `n`, which is the same bound with no covariance sampling.  Together
-with the concentration bound of `Support/Dgt4AStep4Neg.lean` and
-`\rho_n(y)\leq\rho_n(0)e^{-y}`, the single function `4(1+|y|)e^{2-|y|}` dominates the whole
-integrand, and it is integrable on the line.
--/
 import Sandpile.Support.Dgt4AStep4Repr
+
+/-!
+# The dominating function of Step 4 of case (a)
+
+The dominating function of Step 4 of case (a) (`sandpile.tex:5267-5295`). The paper
+dominates the integrand of `eq:dgt4-gaussian-integral-representation` in two regimes: for
+`y\geq0`, `eq:dgt4-gaussian-covariance-sampling` shows that `m_n` is one-Lipschitz in `y`;
+since `m_n(0)\to0`, this gives `m_n(y)\leq C(1+y)` and `m_n(y)\rho_n(y)\leq C(1+y)e^{-y}`,
+and for `y\leq-1` it uses the concentration bound
+`eq:dgt4-gaussian-conditional-concentration`. The Lipschitz half is not needed: terminal
+domination already gives `m_n(y)\leq2|y|+1` for all `y` and all large `n`, which is the same
+bound with no covariance sampling. Together with the concentration bound of
+`Support/Dgt4AStep4Neg.lean` and `\rho_n(y)\leq\rho_n(0)e^{-y}`, the single function
+`4(1+|y|)e^{2-|y|}` dominates the whole integrand, and it is integrable on the line.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal
@@ -77,6 +77,8 @@ theorem integrable_levelBound : Integrable (fun y : ℝ => (1 + |y|) * Real.exp 
     exact hIic.union hIoi
   exact this
 
+/-- `levelDensity` is nonnegative: it is a product of the nonnegative ratio `w/t`, the
+Gaussian density `gaussianPDFReal`, and the reciprocal of `gaussianUpperTail`. -/
 theorem levelDensity_nonneg (w : ℝ≥0) {t : ℝ} (ht : 0 < t) (y : ℝ) :
     0 ≤ levelDensity w t y := by
   rw [levelDensity]
@@ -85,6 +87,9 @@ theorem levelDensity_nonneg (w : ℝ≥0) {t : ℝ} (ht : 0 < t) (y : ℝ) :
   have h3 : (0 : ℝ) ≤ (w : ℝ) / t := div_nonneg w.coe_nonneg ht.le
   positivity
 
+/-- The density-ratio bound `eq:dgt4-gaussian-density-ratio` at finite `t`, before passing to
+the limit: `\rho_n(y)\leq\rho_n(0)e^{-y}` in the form `levelDensity w t y
+\leq levelDensity w t 0 * e^{-y}`. -/
 theorem levelDensity_le (w : ℝ≥0) (hw : w ≠ 0) {t : ℝ} (ht : 0 < t) (y : ℝ) :
     levelDensity w t y ≤ levelDensity w t 0 * Real.exp (-y) := by
   have h := densityRatio_le w hw ht y
@@ -107,6 +112,8 @@ theorem tendsto_levelDensity (w : ℝ≥0) (hw : w ≠ 0) {t : ℕ → ℝ}
     Tendsto (fun n : ℕ => levelDensity w (t n) y) atTop (𝓝 (Real.exp (-y))) :=
   (tendsto_density_ratio w hw y).comp ht
 
+/-- `condMeanReflected` is nonnegative, being the integral of the pointwise maximum of the
+reflected increment with `0`. -/
 theorem condMeanReflected_nonneg (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     0 ≤ condMeanReflected d hd v n y :=
   integral_nonneg fun _ => le_max_right _ _

@@ -1,11 +1,22 @@
-/-
-Intersection of opposite nearest-neighbor and star crossings, and exact rectangle duality.
--/
 import Sandpile.Support.WalkRay
+
+/-!
+# Nearest-neighbor and star crossing intersection
+
+Intersection of opposite nearest-neighbor and star crossings, and exact rectangle duality.
+`rectangle_nn_star_intersect` shows that a horizontal nearest-neighbor left-right crossing and
+a vertical star bottom-top crossing of the same rectangle must share a site, using the
+`walkRay` winding invariant along the induced infinite lattice walk that skirts the
+nearest-neighbor crossing. This is packaged into the equivalence
+`crossingValue_le_iff_low_star_walk` between a bound on the horizontal `crossingValue` and the
+existence of a low vertical star walk.
+-/
 
 noncomputable section
 namespace Sandpile
 
+/-- If `f` is constant across every edge of the walk `p`, then `f` agrees at the two
+endpoints `a` and `b`, proved by induction on `p`. -/
 lemma walk_value_eq_of_adj {V T : Type*} {G : SimpleGraph V} (f : V → T)
     {a b : V} (p : G.Walk a b)
     (hf : ∀ x ∈ p.support, ∀ y ∈ p.support, G.Adj x y → f x = f y) : f a = f b := by
@@ -15,6 +26,11 @@ lemma walk_value_eq_of_adj {V T : Type*} {G : SimpleGraph V} (f : V → T)
     exact (hf a (by simp) b (by simp) hab).trans
       (ih (fun x hx y hy hxy => hf x (by simp [hx]) y (by simp [hy]) hxy))
 
+/-- A horizontal nearest-neighbor left-right walk `p` and a vertical star bottom-top walk `q`
+of the same rectangle must share a site: some `z` on `q` coincides with some `t` on `p`. Proved
+by extending `p` to an infinite lattice walk `P` past both sides of the rectangle and deriving
+a contradiction from `walkRay_star_step`, `walkRay_below`, and `walkRay_above` if `q` never
+meets `p`. -/
 lemma rectangle_nn_star_intersect {w h : ℕ} {a b : planeRectangle w h}
     {c d : {x : Site 2 // x ∈ ((planeRectangle w h) : Set (Site 2))}}
     (p : (rectangleGraph (planeRectangle w h)).Walk a b)
@@ -43,7 +59,8 @@ lemma rectangle_nn_star_intersect {w h : ℕ} {a b : planeRectangle w h}
     rcases List.mem_cons.mp hz with hz | hz
     · exact Or.inl hz
     · rcases (SimpleGraph.Walk.mem_support_append_iff p₀ hr.toWalk).mp hz with hz | hz
-      · rw [show p₀.support = p.support.map (fun t : planeRectangle w h => (t : Site 2)) from SimpleGraph.Walk.support_map _ _] at hz
+      · rw [show p₀.support = p.support.map (fun t : planeRectangle w h => (t : Site 2))
+          from SimpleGraph.Walk.support_map _ _] at hz
         exact Or.inr (Or.inr (List.mem_map.mp hz))
       · change z ∈ [(b : Site 2), r] at hz
         rcases List.mem_cons.mp hz with hz | hz
@@ -92,6 +109,10 @@ lemma rectangle_nn_star_intersect {w h : ℕ} {a b : planeRectangle w h}
   rw [hbottom, htop] at hsame
   exact zero_ne_one hsame
 
+/-- If a vertical star walk `q` from the bottom edge to the top edge stays at most `level`,
+then `crossingValue (planeRectangle w h) F ≤ level`: any optimal horizontal crossing witness
+`p` must, by `rectangle_nn_star_intersect`, meet `q` at a shared site where `F` is at most
+`level`. -/
 lemma crossingValue_le_of_low_star_walk {w h : ℕ} (F : planeRectangle w h → ℝ)
     {a b : planeRectangle w h}
     (q : ((starLatticeGraph 2).induce ((planeRectangle w h) : Set (Site 2))).Walk a b)
@@ -107,6 +128,10 @@ lemma crossingValue_le_of_low_star_walk {w h : ℕ} (F : planeRectangle w h → 
     rw [hzt] at hF
     exact hF)
 
+/-- `crossingValue (planeRectangle w h) F ≤ level` is equivalent to the existence of a vertical
+star walk from the bottom edge to the top edge along which `F ≤ level`, combining
+`rectangle_low_star_walk` for the forward direction with `crossingValue_le_of_low_star_walk`
+for the reverse. -/
 lemma crossingValue_le_iff_low_star_walk (w h : ℕ) (F : planeRectangle w h → ℝ) (level : ℝ) :
     crossingValue (planeRectangle w h) F ≤ level ↔
       ∃ (a b : planeRectangle w h)

@@ -1,9 +1,18 @@
-/-
-Closed superlevel crossings at an increasing limit of levels, and the square
-crossing estimate at level zero.
--/
 import Sandpile.Support.CrossCompact
 import Sandpile.Support.CrossDuality
+
+/-!
+# Closed superlevel crossings at the limit level zero
+
+Closed superlevel crossings at an increasing limit of levels, and the square
+crossing estimate at level zero. `crosses_of_monotone_levels` passes a crossing to the limit
+of an increasing sequence of levels, which drives the countable-chain representative of a
+closed superlevel crossing (`crossing_ae_eq_iInter_crossApprox`, `nullMeasurableSet_crossing`,
+`measure_crossing_eq_of_fieldLaw`) and the descent from strictly negative levels to the
+crossing at level zero (`iInter_crossApprox_subset_zero`), which sign and coordinate symmetry
+turn into the square estimate `square_half_crossing_zero` and its translate
+`square_half_translate_zero`.
+-/
 
 open MeasureTheory Set Filter Topology
 open scoped ENNReal

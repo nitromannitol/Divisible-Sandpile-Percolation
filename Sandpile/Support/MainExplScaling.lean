@@ -1,9 +1,17 @@
-/-
-The finite-dimensional limit and compact tightness estimates for the
-multilinearly interpolated odometer, using the local central limit input
-and stability of continuum stopping values.
--/
 import Sandpile.Support.MainExplInterpolationNorm
+
+/-!
+# Finite-dimensional limit and tightness of the interpolated odometer
+
+The finite-dimensional limit and compact tightness estimates for the multilinearly
+interpolated, rescaled odometer, using the local central limit input and stability of
+continuum stopping values, are assembled into the single statement
+`Sandpile.brownian_scaling_limit_of_localCLT`: convergence in distribution of every finite
+family of point evaluations (from `Sandpile.brownian_scaling_fdd_of_localCLT`), a uniform
+norm bound on every compact set (from `Sandpile.exists_interpolation_norm_bound`), and a
+uniform modulus-of-continuity bound on every compact set (from
+`Sandpile.exists_interpolation_modulus`).
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
@@ -70,7 +78,8 @@ theorem Sandpile.brownian_scaling_limit_of_localCLT
     constructor
     · intro ε hε
       obtain ⟨M, _, hM⟩ := Sandpile.exists_interpolation_norm_bound hLocalCLT hStab d hd hd3 ν
-        hmean hvar hvar' θ₀ hθ₀ hexp Ω P W hW Z hZmod hZcont hZgrow Ω' P' B hB hBc hBm T hT K hK ε hε
+        hmean hvar hvar' θ₀ hθ₀ hexp Ω P W hW Z hZmod hZcont hZgrow Ω' P' B hB hBc hBm T hT K hK
+        ε hε
       exact ⟨M, hM⟩
     · intro ε η hε hη
       exact Sandpile.exists_interpolation_modulus hLocalCLT d hd hd3 ν

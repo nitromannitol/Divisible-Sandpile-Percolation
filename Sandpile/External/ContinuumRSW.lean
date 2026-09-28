@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.CrossField
+
+/-! # Continuum RSW for Symmetric Associated Fields
+
 The continuum specialization of Köhler-Schindler and Tassion,
 Crossing probabilities for planar percolation, Theorem 1 and Comment 1
 (arXiv 2011.04618v1, pages 1-2), cited at `sandpile.tex:2218` for the
@@ -35,7 +38,6 @@ left-right crossing of the tall rectangle to the BOTTOM-TOP crossing of the
 wide one, not to its left-right crossing, so the symmetry hypotheses do not
 make the two sides equal.
 -/
-import Sandpile.Support.CrossField
 
 open MeasureTheory Set
 

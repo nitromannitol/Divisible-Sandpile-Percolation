@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ABandLaw
+import Sandpile.Support.Dgt4ABandWeights
+import LatticeProb.Prob.Karamata
+
+/-!
+# The Integrated Band Profile
+
 The integrated band profile `eq:dgt4-band-integrated-profile` of Step 2 of
 `thm:dgt4-many-limits` (`sandpile.tex:6145-6161`).
 
@@ -8,7 +14,7 @@ upper isolation `eq:dgt4-band-upper-isolation` turns the tail profile
 `E(-ζ(0) - a_k + (1-ℓ_1)a_k z)_+ = ω_k(1-ℓ_1)a_k z^{ϑ_k+1}/(ϑ_k+1)(1+o(1))`.
 
 The estimate proved here is the additive one, uniform over the whole range
-`0 ≤ z ≤ 1`.  The paper's ratio form follows from it wherever `z^{ϑ_k+1}` is
+`0 ≤ z ≤ 1`. The paper's ratio form follows from it wherever `z^{ϑ_k+1}` is
 bounded below, which is what the index range `eq:dgt4-band-index-range` and the
 choice of `L_k` secure; the additive form does not mention `L_k`, which the
 paper chooses only afterwards.
@@ -17,9 +23,6 @@ The layer-cake identity `E(-ζ(0) - t)_+ = ∫_t^∞ P(-ζ(0) > r) dr` and the
 integrability that goes with it come from the shared probability library
 (`LatticeProb.integral_posPart_eq`).
 -/
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABandWeights
-import LatticeProb.Prob.Karamata
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal Interval

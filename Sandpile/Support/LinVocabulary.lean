@@ -1,15 +1,18 @@
-/-
+import Sandpile.Support.LinWeights
+import Sandpile.Frozen.DGT4LinearizationFromSurvival
+
+/-!
+# Reconciling the two frozen declarations of the survival vocabulary
+
 The survival indicator `S_{n,j}(X)` of `sandpile.tex:5448-5451` and the
 nearest-neighbour path condition are each declared twice, once in
 `Frozen/DGT4PathSurvival.lean` and once in
-`Frozen/DGT4LinearizationFromSurvival.lean`.  The two declarations of each are
-the same function.  They are recorded here rather than beside the time weight so
+`Frozen/DGT4LinearizationFromSurvival.lean`. The two declarations of each are
+the same function. They are recorded here rather than beside the time weight so
 that the estimates of Step 1, which are stated in the vocabulary of
 `Frozen/DGT4PathSurvival.lean`, may be imported by
 `Frozen/DGT4LinearizationFromSurvival.lean` when its proof is assembled.
 -/
-import Sandpile.Support.LinWeights
-import Sandpile.Frozen.DGT4LinearizationFromSurvival
 
 namespace Sandpile
 

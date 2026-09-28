@@ -1,16 +1,19 @@
-/-
-`eq:dgt4-tested-intersection-moments` (`sandpile.tex:5703-5709`) in the form Step
-1 of `lem:dgt4-linearization-from-survival` consumes it: the two tested moments
-of the REAL intersection count, integrated against the law of the two walks.
-
-`Support/LinTested.lean` proves the two displays with the count in `ℝ≥0∞` and the
-expectations as iterated lower integrals; `Support/LinJacobianInterMoments.lean`
-converts one weighted sum at a time.  The first moment is finite for every pair
-of starting points in `d ≥ 5`, which is what makes the real count a genuine
-majorant almost everywhere and both moments genuine Bochner integrals.
--/
 import Sandpile.Support.LinJacobianInterMoments
 import Sandpile.Support.LinTested
+
+/-!
+# The tested intersection moments, specialized to every starting pair
+
+`eq:dgt4-tested-intersection-moments` (`sandpile.tex:5703-5709`) in the form Step 1 of
+`lem:dgt4-linearization-from-survival` consumes it: the two tested moments of the REAL
+intersection count, integrated against the law of the two walks.
+
+`Support/LinTested.lean` proves the two displays with the count in `ℝ≥0∞` and the
+expectations as iterated lower integrals; `Support/LinJacobianInterMoments.lean` converts
+one weighted sum at a time. The first moment is finite for every pair of starting points
+in `d ≥ 5`, which is what makes the real count a genuine majorant almost everywhere and
+both moments genuine Bochner integrals.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

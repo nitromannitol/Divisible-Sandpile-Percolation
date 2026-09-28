@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ABandConcentration
+
+/-!
+# Strict Green Ratio for the Simple Random Walk
+
 The Green ratio of the simple random walk is STRICTLY less than one.
 
 `LatticeProb.greenRatioSup d` is the paper's `ℓ₀ = sup_{x ≠ 0} G(0,x)/G(0,0)`.
@@ -15,7 +19,6 @@ Green function at infinity.
 Stated in the `LatticeProb` namespace, mentioning no object of this paper, so it
 can move to the shared library unchanged when that library is next revised.
 -/
-import Sandpile.Support.Dgt4ABandConcentration
 
 open Filter
 open scoped Topology

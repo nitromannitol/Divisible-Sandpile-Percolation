@@ -1,11 +1,20 @@
-/-
-A uniform Gaussian comparison for sublevel events of finite fields with
-stable positive derivative bounds and a smooth bottleneck approximation.
--/
 import Sandpile.Support.FiniteLindeberg
 import Sandpile.Support.ScalarComposition
 import Sandpile.Support.SmoothCutoff
 import Sandpile.Support.ExponentialMoments
+
+/-!
+# Uniform Gaussian comparison for sublevel events
+
+A uniform Gaussian comparison for sublevel events of finite fields with stable positive
+derivative bounds and a smooth bottleneck approximation.  The chain of results moves from a
+Lindeberg-type comparison of smooth test-function expectations
+(`PositiveJet.Bounds.scalar_expectation_comparison`), through a shifted-cutoff sandwiching
+step (`sublevel_measure_comparison_of_cutoff`), to the packaged statement
+`exists_gaussian_sublevel_comparison_constant`: a Gaussian comparison for sublevel
+probabilities of a `PositiveJet`-approximated field, uniform in the interaction weights once
+they are small enough relative to the exponential-moment scale.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped BigOperators NNReal
@@ -14,6 +23,13 @@ noncomputable section
 
 namespace Sandpile
 
+/-- For a `PositiveJet` bounds datum `A.Bounds β n f` and a smooth bounded test function `ψ`
+with bounded first three derivatives, the expectations of `ψ (f (linearField W ·))` under the
+i.i.d. product measures `Measure.pi (fun _ => ν)` and `Measure.pi (fun _ => μ)` differ by at
+most an explicit multiple of the third-moment overlap bound `Q`, whenever `μ` and `ν` share
+their first three moments up to a Lindeberg-type error `T` (`MatchingThirdMoments`) and both
+put mass at least `p` on `[-R, R]`.  Proved by specializing `finite_product_lindeberg` to
+`ψ ∘ A.smooth`. -/
 lemma PositiveJet.Bounds.scalar_expectation_comparison
     {V I : Type*} [Fintype V] [Fintype I] [DecidableEq V] [DecidableEq I]
     {A : PositiveJet V} {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ} (hA : A.Bounds β n f)
@@ -40,13 +56,23 @@ lemma PositiveJet.Bounds.scalar_expectation_comparison
     (hA.scalarThird_stable hc₁ hc₂ hc₃) (hA.scalarThird_bound hψ h₁ h₂ h₃)
     (hA.sum_scalarThird_le hc₁ hc₂ hc₃) hW hoverlap hm hμsmall hνsmall
 
+/-- The composite `shiftedCutoff shift width ∘ f` is integrable against any finite measure
+`μ`, for measurable `f`, since `shiftedCutoff` is nonnegative and bounded above by `1`
+(`shiftedCutoff_nonneg`, `shiftedCutoff_le_one`). -/
 lemma integrable_shiftedCutoff_comp {Ω : Type*} [MeasurableSpace Ω]
     {μ : Measure Ω} [IsFiniteMeasure μ] {f : Ω → ℝ} (hf : Measurable f) (shift width : ℝ) :
     Integrable (fun x => shiftedCutoff shift width (f x)) μ := by
-  apply Integrable.of_bound ((contDiff_shiftedCutoff shift width).continuous.measurable.comp hf).aestronglyMeasurable 1
+  apply Integrable.of_bound
+    ((contDiff_shiftedCutoff shift width).continuous.measurable.comp hf).aestronglyMeasurable 1
   filter_upwards [] with x
-  simpa only [Function.comp_apply, Real.norm_eq_abs, abs_of_nonneg (shiftedCutoff_nonneg _ _ _)] using shiftedCutoff_le_one shift width (f x)
+  simpa only [Function.comp_apply, Real.norm_eq_abs,
+    abs_of_nonneg (shiftedCutoff_nonneg _ _ _)] using shiftedCutoff_le_one shift width (f x)
 
+/-- If a smooth approximation `smooth` of `value` (within `error`) has its shifted-cutoff
+expectations under `ν` and `μ` within `B` of each other, then the `μ`-probability of the
+sublevel set `{value ≤ -shift - error}` is at most the `ν`-probability of the slightly larger
+sublevel set `{value ≤ width - shift + error}` plus `B`.  Proved by sandwiching each
+indicator between shifted-cutoff bounds (`shiftedCutoff_indicator_bounds`) and integrating. -/
 lemma sublevel_measure_comparison_of_cutoff {Ω : Type*} [MeasurableSpace Ω]
     (μ ν : Measure Ω) [IsFiniteMeasure μ] [IsFiniteMeasure ν]
     {value smooth : Ω → ℝ} (hv : Measurable value) (hs : Measurable smooth)
@@ -56,7 +82,8 @@ lemma sublevel_measure_comparison_of_cutoff {Ω : Type*} [MeasurableSpace Ω]
     μ.real {x | value x ≤ -shift - error} ≤
       ν.real {x | value x ≤ width - shift + error} + B := by
   have hlo : MeasurableSet {x | value x ≤ -shift - error} := measurableSet_le hv measurable_const
-  have hhi : MeasurableSet {x | value x ≤ width - shift + error} := measurableSet_le hv measurable_const
+  have hhi : MeasurableSet {x | value x ≤ width - shift + error} :=
+    measurableSet_le hv measurable_const
   have hμphi := integrable_shiftedCutoff_comp (μ := μ) hs shift width
   have hνphi := integrable_shiftedCutoff_comp (μ := ν) hs shift width
   have hlower : μ.real {x | value x ≤ -shift - error} ≤
@@ -64,18 +91,30 @@ lemma sublevel_measure_comparison_of_cutoff {Ω : Type*} [MeasurableSpace Ω]
     calc
       _ = ∫ x, {y | value y ≤ -shift - error}.indicator (fun _ => (1 : ℝ)) x ∂μ := by simp [hlo]
       _ ≤ _ := integral_mono ((integrable_const (1 : ℝ)).indicator hlo) hμphi (fun x => by
-        simpa only [Set.indicator_apply, mem_setOf_eq] using (shiftedCutoff_indicator_bounds hw (happrox x)).1)
+        simpa only [Set.indicator_apply, mem_setOf_eq]
+          using (shiftedCutoff_indicator_bounds hw (happrox x)).1)
   have hupper : (∫ x, shiftedCutoff shift width (smooth x) ∂ν) ≤
       ν.real {x | value x ≤ width - shift + error} := by
     calc
       _ ≤ ∫ x, {y | value y ≤ width - shift + error}.indicator (fun _ => (1 : ℝ)) x ∂ν :=
         integral_mono hνphi ((integrable_const (1 : ℝ)).indicator hhi) (fun x => by
-          simpa only [Set.indicator_apply, mem_setOf_eq] using (shiftedCutoff_indicator_bounds hw (happrox x)).2)
+          simpa only [Set.indicator_apply, mem_setOf_eq]
+            using (shiftedCutoff_indicator_bounds hw (happrox x)).2)
       _ = _ := by simp [hhi]
   have hd := (neg_le_abs ((∫ x, shiftedCutoff shift width (smooth x) ∂ν) -
     (∫ x, shiftedCutoff shift width (smooth x) ∂μ))).trans hcompare
   linarith
 
+/-- The packaged Gaussian comparison for sublevel probabilities: for every exponential-moment
+threshold `θ` there is a constant `C` such that, whenever the one-site law `μ` has second
+moment `v` and exponential moment bounded by `K`, the interaction weights `W` are small
+enough relative to `θ` and the third-moment overlap `Q`, and `value` is approximated by the
+`PositiveJet` output `f` within `error`, the `Measure.pi (fun _ => μ)`-probability of the
+sublevel set `{value ∘ linearField W ≤ level}` is bounded by the corresponding Gaussian
+probability at level `level + 3 * error` plus an explicit `C * (…) * Q` error term.  Proved by
+combining `PositiveJet.Bounds.scalar_expectation_comparison` on a shifted-cutoff test function
+with `sublevel_measure_comparison_of_cutoff` and the derivative bounds of `shiftedCutoff`
+(`exists_shiftedCutoff_derivative_bounds`). -/
 lemma exists_gaussian_sublevel_comparison_constant (θ K : ℝ) (hθ : 0 < θ) :
     ∃ C > 0, ∀ (V I : Type) [Fintype V] [Fintype I] [DecidableEq V] [DecidableEq I],
       ∀ (A : PositiveJet V) (β : ℝ) (n : ℕ) (f value : (V → ℝ) → ℝ),
@@ -133,7 +172,8 @@ lemma exists_gaussian_sublevel_comparison_constant (θ K : ℝ) (hθ : 0 < θ) :
       mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right henv hQ) (by positivity)
     _ ≤ ((T / 3) * (Real.exp ((θ / 2) * R) / (1 / 2))) * ((6 * D * S) * Q) :=
       mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_right hexple (by norm_num)) (by positivity))
+        (mul_le_mul_of_nonneg_left
+          (div_le_div_of_nonneg_right hexple (by norm_num)) (by positivity))
         (by positivity)
     _ = _ := by dsimp only [C, S]; ring
 

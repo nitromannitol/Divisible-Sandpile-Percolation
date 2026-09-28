@@ -1,19 +1,23 @@
-/-
-**The comparison of Step 2 at the conditioned level** (`sandpile.tex:5125-5131`):
-"Comparing the conditional expectation at `b=\E u_n(0)+\Sigma^2y/\E u_n(0)` with its
-unconditional average, and bounding their difference by the Lipschitz constant times
-`\E|b+V_\infty(0)|`".
+import Sandpile.Support.Dgt4ACondTerminal
+import Sandpile.Support.Dgt4ACondCompare
+
+/-!
+# The comparison of Step 2 at the conditioned level
+
+**`sandpile.tex:5125-5131`**: "Comparing the conditional expectation at
+`b=\E u_n(0)+\Sigma^2y/\E u_n(0)` with its unconditional average, and bounding their
+difference by the Lipschitz constant times `\E|b+V_\infty(0)|`".
 
 The three inputs are now all in place: the Lipschitz bound in the level
 (`exists_avgIterate_abs_condScenery_deviation_le`), the integrability of the conditional
 expectation at every level and in the level (`Support/Dgt4ACondTerminal.lean` and
-`Support/Dgt4ACondIntegrable.lean`), and the identification of the unconditional average
-with the average over the level (`integral_iidLaw_gauss_shift`).  The conclusion is the
-display of `sandpile.tex:5124-5131` with the mean distance to the level written out as
-`|s|+\E|N(0,1)|`.
+`Support/Dgt4ACondIntegrable.lean`), and the identification of the unconditional average with
+the average over the level (`integral_iidLaw_gauss_shift`).
+`exists_abs_integral_condTerminal_sub_le` assembles them into the conclusion of the display of
+`sandpile.tex:5124-5131`, with the mean distance to the level written out as `|s|+\E|N(0,1)|`
+via the auxiliary integrability facts `integrable_abs_gaussianReal` and
+`integrable_const_mul_abs_sub_gaussianReal`.
 -/
-import Sandpile.Support.Dgt4ACondTerminal
-import Sandpile.Support.Dgt4ACondCompare
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

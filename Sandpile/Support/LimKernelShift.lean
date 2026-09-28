@@ -1,25 +1,21 @@
-/-
-The spatial modulus of the ball kernel in `L²`.
+import Sandpile.Support.LimKernelRate
+
+/-!
+# The spatial modulus of the ball kernel in `L²`
 
 The chaining estimate needs a quantitative modulus for the ball field
 `𝒳_s(u) = W(ballKernel d s u)`, whose increment variance is the `L²` norm of a
-translate difference of the kernel,
-
-  `E(𝒳_s(u) − 𝒳_s(v))² = ∫ |K(z) − K(z − w)|² dz`,  `w = p(u) − p(v)`,
-
-with `K = centredKernel d s` the plane-centred ball kernel.  The kernel has an
-integrable singularity but is not square integrable against a derivative, so the
-modulus is proved in two steps.  In `L¹` the singularity is harmless: away from the
-singularities the radial profile is Lipschitz with constant `‖w‖/r^{d−1}`, whose
-integral over the support is finite, and the two balls of radius `2‖w‖` around the
-singularities contribute `O(‖w‖)` because the kernel has a `5/2`-th moment
-(`LimKernelRate.lean`).  The same `5/2`-th moment then upgrades the `L¹` bound to
-`L²` by the interpolation `∫D² ≤ (∫D)^{1/3}(1 + ∫G^{5/2})` of `LimKernelRate.lean`.
-
-The resulting exponent is `‖K − K(· − w)‖_{L²} ≤ C‖w‖^{1/6}`, which is all a chaining
-estimate needs: the Kolmogorov moment condition asks for `p·α > k` with `p` free.
+translate difference of the kernel, `E(𝒳_s(u) − 𝒳_s(v))² = ∫ |K(z) − K(z − w)|² dz` with
+`w = p(u) − p(v)` and `K = centredKernel d s` the plane-centred ball kernel. The kernel
+has an integrable singularity but is not square integrable against a derivative, so the
+modulus is proved in two steps: in `L¹` the singularity is harmless, since away from the
+singularities the radial profile is Lipschitz with constant `‖w‖ / r^{d − 1}` and the two
+balls of radius `2‖w‖` around the singularities contribute `O(‖w‖)` from the kernel's
+`5/2`-th moment, and the same moment upgrades the `L¹` bound to `L²` by the interpolation
+`∫ D² ≤ (∫ D) ^ (1/3) * (1 + ∫ G ^ (5/2))`. The resulting exponent is
+`‖K − K(· − w)‖_{L²} ≤ C * ‖w‖ ^ (1/6)`, which is all a chaining estimate needs, since the
+Kolmogorov moment condition asks for `p * α > k` with `p` free.
 -/
-import Sandpile.Support.LimKernelRate
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -38,6 +34,7 @@ noncomputable def radialProfile (d : ℕ) (s r : ℝ) : ℝ :=
 noncomputable def profileLipConst (d : ℕ) : ℝ :=
   if d = 2 then 1 / (2 * Real.pi) else 1 / (4 * Real.pi)
 
+/-- `profileLipConst d` is positive, being `1 / (2π)` or `1 / (4π)`. -/
 theorem profileLipConst_pos (d : ℕ) : 0 < profileLipConst d := by
   unfold profileLipConst
   split <;> positivity
@@ -58,6 +55,8 @@ theorem centredKernel_eq_radialProfile {d : ℕ} {s : ℝ} {y : Space d} (hy : y
     · rw [if_neg hd2]
       ring
 
+/-- `|log b - log a| ≤ |a - b| / min a b`, from `log x ≤ x - 1` applied to the ratio of
+the larger to the smaller of `a` and `b`. -/
 theorem abs_log_sub_le {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
     |Real.log b - Real.log a| ≤ |a - b| / min a b := by
   rcases le_total a b with h | h
@@ -76,6 +75,8 @@ theorem abs_log_sub_le {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
     rw [h4]
     linarith
 
+/-- `|1 / a - 1 / b| ≤ |a - b| / (min a b) ^ 2`, from the algebraic identity
+`1 / a - 1 / b = (b - a) / (a * b)` and `(min a b) ^ 2 ≤ a * b`. -/
 theorem abs_inv_sub_le {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
     |1 / a - 1 / b| ≤ |a - b| / min a b ^ 2 := by
   have hmin : 0 < min a b := lt_min ha hb
@@ -135,6 +136,8 @@ theorem abs_radialProfile_sub_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s a b : ℝ}
 
 /-! ### The pointwise bound on a kernel increment -/
 
+/-- Capping two reals at a common ceiling `c` does not increase the distance between
+them: `|min a c - min b c| ≤ |a - b|`. -/
 theorem abs_min_sub_min_le (a b c : ℝ) : |min a c - min b c| ≤ |a - b| := by
   rcases le_total a c with h1 | h1 <;> rcases le_total b c with h2 | h2
   · rw [min_eq_left h1, min_eq_left h2]
@@ -147,6 +150,9 @@ theorem abs_min_sub_min_le (a b c : ℝ) : |min a c - min b c| ≤ |a - b| := by
   · rw [min_eq_right h1, min_eq_right h2]
     simp
 
+/-- The increment of the plane-centred kernel `centredKernel d s` between two nonzero
+points `y` and `z` is bounded via the Lipschitz constant of the radial profile applied to
+the capped norms `min ‖y‖ s` and `min ‖z‖ s`. -/
 theorem abs_centredKernel_sub_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s)
     {y z : Space d} (hy : y ≠ 0) (hz : z ≠ 0) :
     |centredKernel d s y - centredKernel d s z|
@@ -204,11 +210,14 @@ theorem abs_centredKernel_sub_shift_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ
 noncomputable def shellConst (d : ℕ) (s : ℝ) : ℝ :=
   ∫ y in Metric.ball (0 : Space d) (2 * s), ‖y‖ ^ (-((d : ℝ) - 1))
 
+/-- `y ↦ ‖y‖ ^ c` is measurable, for any fixed real exponent `c`. -/
 theorem measurable_norm_rpow {d : ℕ} (c : ℝ) :
     Measurable (fun y : Space d => ‖y‖ ^ c) := by
   have h : Measurable (fun y : Space d => ‖y‖) := measurable_norm
   fun_prop
 
+/-- `y ↦ ‖y‖ ^ (-(d - 1))` is integrable on any ball, since its exponent `d - 1` is below
+the dimension `d` of `Space d`. -/
 theorem integrableOn_norm_rpow_ball {d : ℕ} (hd : 1 ≤ d) (R : ℝ) :
     IntegrableOn (fun y : Space d => ‖y‖ ^ (-((d : ℝ) - 1)))
       (Metric.ball (0 : Space d) R) volume := by
@@ -223,6 +232,8 @@ theorem integrableOn_norm_rpow_ball {d : ℕ} (hd : 1 ≤ d) (R : ℝ) :
   filter_upwards with y
   rw [Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg y) _), one_mul]
 
+/-- The real-power negative norm `‖y‖ ^ (-(d - 1) : ℝ)` agrees with the natural-power
+reciprocal `1 / ‖y‖ ^ (d - 1)`. -/
 theorem norm_rpow_neg_eq {d : ℕ} (hd : 1 ≤ d) {y : Space d} (_hy : 0 < ‖y‖) :
     ‖y‖ ^ (-((d : ℝ) - 1)) = 1 / ‖y‖ ^ (d - 1) := by
   have hcast : ((d - 1 : ℕ) : ℝ) = (d : ℝ) - 1 := by
@@ -293,6 +304,8 @@ noncomputable def kernelShiftL1Const (d : ℕ) (s : ℝ) : ℝ :=
     + 2 * (2 ^ d * (volume (Metric.ball (0 : Space d) 1)).toReal
         + ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2))
 
+/-- The translate `y ↦ centredKernel d s (y - w)` is almost everywhere nonnegative, since
+the kernel is nonnegative away from the single point `y = w`. -/
 theorem ae_centredKernel_nonneg {d : ℕ} (hd : d = 2 ∨ d = 3) (s : ℝ) (w : Space d) :
     0 ≤ᵐ[(volume : Measure (Space d))] fun y => centredKernel d s (y - w) := by
   have hnull : (volume : Measure (Space d)) {w} = 0 := by
@@ -471,6 +484,7 @@ theorem integral_abs_centredKernel_shift_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s 
 
 /-! ### The `L²` modulus -/
 
+/-- The `5/2`-th moment `∫ centredKernel d s z ^ (5/2)` of the kernel is nonnegative. -/
 theorem centredKernel_rpow_nonneg_integral {d : ℕ} (hd : d = 2 ∨ d = 3) (s : ℝ) :
     (0 : ℝ) ≤ ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2) := by
   have hK0 : 0 ≤ᵐ[(volume : Measure (Space d))] centredKernel d s := by
@@ -481,10 +495,14 @@ theorem centredKernel_rpow_nonneg_integral {d : ℕ} (hd : d = 2 ∨ d = 3) (s :
   filter_upwards [hK0] with z hz
   simpa using Real.rpow_nonneg hz ((5 : ℝ) / 2)
 
+/-- `shellConst d s` is nonnegative, being the integral of a nonnegative power of the
+norm. -/
 theorem shellConst_nonneg {d : ℕ} (s : ℝ) : (0 : ℝ) ≤ shellConst d s := by
   refine integral_nonneg fun y => ?_
   exact Real.rpow_nonneg (norm_nonneg y) _
 
+/-- `kernelShiftL1Const d s` is nonnegative, being a sum of products of nonnegative
+constants and the nonnegative shell integral and moment. -/
 theorem kernelShiftL1Const_nonneg {d : ℕ} (hd : d = 2 ∨ d = 3) (s : ℝ) :
     0 ≤ kernelShiftL1Const d s := by
   have h1 : (0 : ℝ) ≤ profileLipConst d * 2 ^ (d - 1) * shellConst d s := by

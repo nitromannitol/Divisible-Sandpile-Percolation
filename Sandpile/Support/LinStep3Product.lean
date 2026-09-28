@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinStep2Split
+
+/-! # Step 3 threshold-product bookkeeping
+
 The deterministic core of Step 3 of `lem:dgt4-path-survival` (`sandpile.tex:5584-5610`).
 
 After the threshold replacement, the factorized approximation to
@@ -18,7 +21,6 @@ times realizing it, and that map is injective because the site is recovered from
 `abs_prod_joint_sub_prod_sep_le_count` is the combination, in the shape
 `eq:dgt4-positive-path-covariance` needs, with `2c=C/(\delta R^2)`.
 -/
-import Sandpile.Support.LinStep2Split
 
 open MeasureTheory Filter Topology
 

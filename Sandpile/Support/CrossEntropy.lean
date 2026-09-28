@@ -1,30 +1,34 @@
-/-
-The Cameron--Martin entropy bound of Step 3 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2300-2400`), on the coordinates the exploration reads.
-
-  "Since `\mathfrak T_M` determines `E_R(\theta)`, Pinsker's inequality gives
-   ... the relative entropy of the Cameron--Martin shift ..."
-
-The whole of the one-dimensional computation is here: the relative entropy
-between two Gaussians of the same variance `v` and means `0` and `m` is
-`m^2/(2v)`.  Mathlib has `InformationTheory.klDiv` and the Gaussian density but
-no relative entropy between Gaussians, so the computation is carried out from
-`rnDeriv_gaussianReal` and the two moment lemmas.  The chain rule Mathlib has
-turns this into the paper's `L^2 N / (2 m^2 R^2)` for the finite-dimensional
-shift of the coordinates the exploration reads.
--/
 import Mathlib
+
+/-!
+# The Cameron-Martin entropy bound between two Gaussians
+
+The Cameron-Martin entropy bound of Step 3 of `prop:fixed-scale-crossings`
+(`sandpile.tex:2300-2400`), on the coordinates the exploration reads: since `\mathfrak T_M`
+determines `E_R(\theta)`, Pinsker's inequality gives a bound in terms of the relative entropy
+of the Cameron-Martin shift. The whole of the one-dimensional computation is here: the
+relative entropy between two Gaussians of the same variance `v` and means `0` and `m` is
+`m^2/(2v)`. Mathlib has `InformationTheory.klDiv` and the Gaussian density but no relative
+entropy between Gaussians, so the computation is carried out from `rnDeriv_gaussianReal` and
+two moment lemmas. The chain rule Mathlib has turns this into the paper's
+`L^2 N / (2 m^2 R^2)` for the finite-dimensional shift of the coordinates the exploration reads.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
 
 namespace Sandpile.Support
 
+/-- For positive reals `a` and `b`, `((ENNReal.ofReal b)⁻¹ * ENNReal.ofReal a).toReal = a / b`. -/
 theorem toReal_inv_mul_ofReal {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
     ((ENNReal.ofReal b)⁻¹ * ENNReal.ofReal a).toReal = a / b := by
   rw [ENNReal.toReal_mul, ENNReal.toReal_inv, ENNReal.toReal_ofReal ha.le,
     ENNReal.toReal_ofReal hb.le, inv_mul_eq_div]
 
+/-- The log-likelihood ratio `MeasureTheory.llr` of `gaussianReal 0 v` against
+`gaussianReal m v` agrees almost everywhere with `x ↦ log (gaussianPDFReal 0 v x /
+gaussianPDFReal m v x)`, obtained by identifying the Radon-Nikodym derivative of the two
+density representations of each Gaussian measure. -/
 theorem llr_gaussianReal_eq {v : ℝ≥0} (hv : v ≠ 0) (m : ℝ) :
     MeasureTheory.llr (ProbabilityTheory.gaussianReal 0 v)
         (ProbabilityTheory.gaussianReal m v)
@@ -35,20 +39,27 @@ theorem llr_gaussianReal_eq {v : ℝ≥0} (hv : v ≠ 0) (m : ℝ) :
     ProbabilityTheory.gaussianReal_of_var_ne_zero m hv]
   haveI : SigmaFinite (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF 0 v)) :=
     SigmaFinite.withDensity_of_ne_top
-      (Filter.Eventually.of_forall fun x => (ProbabilityTheory.gaussianPDF_lt_top (μ := 0) (v := v)).ne)
+      (Filter.Eventually.of_forall fun x =>
+        (ProbabilityTheory.gaussianPDF_lt_top (μ := 0) (v := v)).ne)
   filter_upwards [MeasureTheory.Measure.rnDeriv_withDensity_right
       (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF 0 v)) MeasureTheory.volume
       (ProbabilityTheory.measurable_gaussianPDF m v).aemeasurable
       (Filter.Eventually.of_forall fun x => (ProbabilityTheory.gaussianPDF_pos m hv x).ne')
-      (Filter.Eventually.of_forall fun x => (ProbabilityTheory.gaussianPDF_lt_top (μ := m) (v := v)).ne),
+      (Filter.Eventually.of_forall fun x =>
+        (ProbabilityTheory.gaussianPDF_lt_top (μ := m) (v := v)).ne),
     MeasureTheory.Measure.rnDeriv_withDensity MeasureTheory.volume
       (ProbabilityTheory.measurable_gaussianPDF 0 v)] with x hx hx0
-  show Real.log ((MeasureTheory.Measure.rnDeriv (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF 0 v)) (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF m v)) x).toReal) = _
+  show Real.log
+      ((MeasureTheory.Measure.rnDeriv
+        (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF 0 v))
+        (MeasureTheory.volume.withDensity (ProbabilityTheory.gaussianPDF m v)) x).toReal) = _
   rw [hx, hx0]
   rw [ProbabilityTheory.gaussianPDF_def, ProbabilityTheory.gaussianPDF_def]
   rw [toReal_inv_mul_ofReal (ProbabilityTheory.gaussianPDFReal_pos 0 v x hv)
     (ProbabilityTheory.gaussianPDFReal_pos m v x hv)]
 
+/-- For a nondegenerate Gaussian variance `v`, the log ratio of the two densities
+`gaussianPDFReal 0 v x / gaussianPDFReal m v x` simplifies to `(m ^ 2 - 2 * m * x) / (2 * v)`. -/
 theorem log_gaussianPDFReal_div {v : ℝ≥0} (hv : v ≠ 0) (m x : ℝ) :
     Real.log (ProbabilityTheory.gaussianPDFReal 0 v x /
         ProbabilityTheory.gaussianPDFReal m v x) = (m ^ 2 - 2 * m * x) / (2 * v) := by
@@ -67,6 +78,8 @@ theorem log_gaussianPDFReal_div {v : ℝ≥0} (hv : v ≠ 0) (m x : ℝ) :
   field_simp
   ring
 
+/-- The `gaussianReal 0 v`-expectation of `x ↦ (m ^ 2 - 2 * m * x) / (2 * v)` equals
+`m ^ 2 / (2 * v)`, since `gaussianReal 0 v` has mean zero. -/
 theorem integral_llr_gaussianReal {v : ℝ≥0} (hv : v ≠ 0) (m : ℝ) :
     ∫ x, (m ^ 2 - 2 * m * x) / (2 * v) ∂(ProbabilityTheory.gaussianReal 0 v)
       = m ^ 2 / (2 * v) := by
@@ -87,6 +100,10 @@ theorem integral_llr_gaussianReal {v : ℝ≥0} (hv : v ≠ 0) (m : ℝ) :
     ProbabilityTheory.integral_id_gaussianReal (μ := 0) (v := v)]
   simp
 
+/-- **The Cameron-Martin relative entropy identity.** The Kullback-Leibler divergence
+`InformationTheory.klDiv (gaussianReal 0 v) (gaussianReal m v)` equals
+`ENNReal.ofReal (m ^ 2 / (2 * v))`, the relative entropy between two Gaussians of the same
+variance `v` and means `0` and `m`. -/
 theorem klDiv_gaussianReal_shift {v : ℝ≥0} (hv : v ≠ 0) (m : ℝ) :
     InformationTheory.klDiv (ProbabilityTheory.gaussianReal 0 v)
         (ProbabilityTheory.gaussianReal m v)

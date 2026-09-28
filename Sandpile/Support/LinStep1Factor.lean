@@ -1,12 +1,17 @@
-/-
+import Sandpile.Support.LinStep1Sum
+import Sandpile.Support.LinMills
+
+/-!
+# Step 1 of the path-survival lemma, Gaussian branch
+
 Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5499-5528`), the factorization of the
 threshold events, in the Gaussian branch.
 
 The paper fixes `\varepsilon\in(0,1)` and deterministic nearest-neighbour paths of at most
 `(1-\varepsilon)n_R` steps, lets `\Lambda` be the union of their ranges, and proves that
 `\P(\bigcap_{x\in\Lambda}\{J(x)\leq b_x\})` and `\prod_{x\in\Lambda}\P(J(0)\leq b_x)` differ
-by `o_R(1)`, uniformly over such paths.  In the independent branch the difference is zero
-(`Sandpile.centeredMassLaw_threshold_factorization`).  In the Gaussian branch the normal
+by `o_R(1)`, uniformly over such paths. In the independent branch the difference is zero
+(`Sandpile.centeredMassLaw_threshold_factorization`). In the Gaussian branch the normal
 comparison inequality bounds it by
 `C\sum_{\{x,y\}}|\rho_{xy}|\exp\{-(b_x^2+b_y^2)/(2\Var(J(0))(1+|\rho_{xy}|))\}`
 (`Sandpile.exists_gaussian_threshold_factorization`), and what is proved here is that this
@@ -15,19 +20,19 @@ sum tends to zero.
 The two inputs the paper names are already theorems:
 `Sandpile.exists_correlation_gap` (`Support/LinCorrGap.lean`) is `|\rho_{xy}|\leq\rho_*<1`
 at distinct sites, and the Green-function form of `eq:dgt4-intersection-first-moment` is
-`\sum_zG(x,z)G(y,z)\leq C(1+|x-y|)^{4-d}`.  What is added here is the three missing pieces:
+`\sum_zG(x,z)G(y,z)\leq C(1+|x-y|)^{4-d}`. What is added here is the three missing pieces:
 
-* the level, `sandpile.tex:5518-5521`.  A threshold whose Gaussian tail lies between
+* the level, `sandpile.tex:5518-5521`. A threshold whose Gaussian tail lies between
   `1/(KR^2)` and `K/R^2` has `b^2/\Var(J(0))\geq4\log R-\log\log R-C_0`
-  (`level_lower_bound_window`).  The lower bound on the tail is what caps the level
+  (`level_lower_bound_window`). The lower bound on the tail is what caps the level
   (`level_upper_bound`, Chernoff inverted), and the cap is what turns the `-\log b` of the
   Gaussian tail inversion into `-\log\log R`.
-* the two counts, `sandpile.tex:5522-5524`.  With the near radius
+* the two counts, `sandpile.tex:5522-5524`. With the near radius
   `L=(\log R)^{2/(d-4)}` the near pairs of an injective family of `m\leq AR^2` sites number
   at most `m(2L+1)^d\leq A3^dR^2(\log R)^{2d/(d-4)}` (`card_nearPairs_fin_le`,
   `near_count_bound`), and all pairs number at most `m^2\leq A^2R^4`
   (`card_pairs_lt_le`).
-* the far correlation, `sandpile.tex:5525-5526`.  Beyond the near radius the correlation is
+* the far correlation, `sandpile.tex:5525-5526`. Beyond the near radius the correlation is
   at most `C_f/(\log R)^2` (`greenGram_div_far_le`).
 
 `Sandpile.pair_sum_split_le` (`Support/LinStep1Sum.lean`) then splits the sum and
@@ -38,8 +43,6 @@ The conclusion is stated as `\forall\eta>0,\ \forall^\infty R,\ \forall` configu
 a supremum over configurations: a `sSup` over an empty or unbounded family carries a junk
 value, and the `\forall\eta` form is the paper's uniformity verbatim.
 -/
-import Sandpile.Support.LinStep1Sum
-import Sandpile.Support.LinMills
 
 open LatticeProb.Isonormal
 
@@ -52,6 +55,8 @@ variable {d : ℕ}
 
 /-! ### The Euclidean site distance, and the two pair counts -/
 
+/-- `External.latticeNorm` is symmetric: `latticeNorm (x - y) = latticeNorm (y - x)`, since
+negating each coordinate difference `(x - y) i = -(y - x) i` does not change its square. -/
 theorem latticeNorm_sub_comm (x y : Site d) :
     External.latticeNorm (x - y) = External.latticeNorm (y - x) := by
   unfold External.latticeNorm
@@ -65,6 +70,10 @@ theorem latticeNorm_sub_comm (x y : Site d) :
   ring
 
 open Classical in
+/-- **The near-pair count for an injective family.** For an injective family
+`xs : Fin m → Site d`, the ordered index pairs `i < j` with `latticeNorm (xs j - xs i) ≤ L`
+number at most `m * (2L+1)^d`; this pushes `card_nearPairs_le` through the injection from
+index pairs to a set of at most `m` distinct image points. -/
 theorem card_nearPairs_fin_le {m : ℕ} (xs : Fin m → Site d) (hxs : Function.Injective xs)
     (L : ℝ) (hL : 0 ≤ L) :
     ((((Finset.univ : Finset (Fin m × Fin m)).filter
@@ -93,6 +102,8 @@ theorem card_nearPairs_fin_le {m : ℕ} (xs : Fin m → Site d) (hxs : Function.
   exact_mod_cast hle
 
 open Classical in
+/-- **The trivial pair count.** All ordered index pairs `i < j` in `Fin m × Fin m` number at
+most `m^2`, from `Finset.card_filter_le` and `card (Fin m × Fin m) = m * m`. -/
 theorem card_pairs_lt_le (m : ℕ) :
     ((((Finset.univ : Finset (Fin m × Fin m)).filter (fun p => p.1 < p.2)).card : ℝ))
       ≤ (m : ℝ) ^ 2 := by
@@ -107,6 +118,10 @@ theorem card_pairs_lt_le (m : ℕ) :
 
 /-! ### The level forced by the two-sided tail bound -/
 
+/-- **The Chernoff-inverted upper bound on the level.** If the Gaussian tail probability
+`P(gaussianReal 0 w > a)` is at least `q > 0` with `a ≥ 0`, then `a/√w ≤ √(2 log(1/q))`: the
+Chernoff bound `gaussianReal_measure_ge_le` gives `q ≤ exp(-a²/(2w))`, and taking logs and
+inverting solves for `a`. -/
 theorem level_upper_bound {w : ℝ≥0} (hw : 0 < (w : ℝ)) {a q : ℝ} (ha : 0 ≤ a) (hq : 0 < q)
     (hlow : q ≤ ((gaussianReal 0 w).real (Set.Ioi a))) :
     a / Real.sqrt (w : ℝ) ≤ Real.sqrt (2 * Real.log (1 / q)) := by

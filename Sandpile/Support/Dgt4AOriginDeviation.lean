@@ -1,10 +1,13 @@
-/-
+import Sandpile.Support.Dgt4FieldRecursion
+
+/-!
+# The origin-coordinate Lipschitz bound for the centred deviation
+
 The origin-coordinate Lipschitz bound for the centred deviation `D_n` of
 `sandpile.tex:5050-5058`: the value at the origin changes by at most `G(0,z)` times the
-change of the scenery at `z`.  One application of the coordinatewise bound of
-`Support/Dgt4FieldRecursion.lean`.
+change of the scenery at `z`. This is the single-site case (`n = 0`, evaluated at `0`) of
+the coordinatewise bound proved in `Dgt4FieldRecursion.lean`.
 -/
-import Sandpile.Support.Dgt4FieldRecursion
 
 open MeasureTheory Filter Topology Set
 

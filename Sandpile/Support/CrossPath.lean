@@ -1,4 +1,9 @@
-/-
+import Mathlib.Analysis.Real.Cardinality
+import Sandpile.Support.CrossBasic
+
+/-!
+# Crossing events read along a countable set of points
+
 The crossing events of `sandpile.tex:2112-2118` read along a countable set of
 points, which is what makes them events.
 
@@ -37,8 +42,6 @@ of a preconnected set (`reflTransGen_of_isPreconnected`, which is where
 connectedness of the crossing is used), and the convexity of the rectangle,
 which is what keeps the chain inside it.
 -/
-import Mathlib.Analysis.Real.Cardinality
-import Sandpile.Support.CrossBasic
 
 open MeasureTheory Set
 
@@ -46,6 +49,10 @@ namespace Sandpile.Support
 
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
+/-- A finite chain of connected sets `K 0, …, K n`, each meeting the next, has connected
+union, proved by induction on `n`: the union up to `m` is connected by the induction
+hypothesis, and it meets `K (m + 1)` at the point supplied by `hmeet m`, so
+`IsPreconnected.union` joins them. -/
 theorem isConnected_biUnion_chain {X : Type*} [TopologicalSpace X] (n : ℕ) (K : ℕ → Set X)
     (hKc : ∀ j ≤ n, IsConnected (K j))
     (hmeet : ∀ j < n, (K j ∩ K (j + 1)).Nonempty) :
@@ -67,34 +74,46 @@ theorem isConnected_biUnion_chain {X : Type*} [TopologicalSpace X] (n : ℕ) (K 
       exact ⟨⟨x, Or.inl hxU⟩,
         IsPreconnected.union x hxU hx2 hprev.isPreconnected hlast.isPreconnected⟩
 
+/-- The point at parameter `t` on the line through `v` and `w`: `v` at `t = 0`, `w` at
+`t = 1`, and an affine combination in between. -/
 noncomputable def segPt (v w : Sandpile.Continuum.Space 2) (t : ℝ) : Sandpile.Continuum.Space 2 :=
   v + t • (w - v)
 
+/-- The closed segment from `v` to `w`, the image of `[0, 1]` under `segPt v w`. -/
 noncomputable def segSet (v w : Sandpile.Continuum.Space 2) : Set (Sandpile.Continuum.Space 2) :=
   segPt v w '' Set.Icc (0 : ℝ) 1
 
+/-- `segPt v w` is continuous in the parameter `t`. -/
 theorem continuous_segPt (v w : Sandpile.Continuum.Space 2) : Continuous (segPt v w) := by
   unfold segPt
   exact continuous_const.add (continuous_id.smul continuous_const)
 
+/-- The segment starts at `v`. -/
 theorem segPt_zero (v w : Sandpile.Continuum.Space 2) : segPt v w 0 = v := by
   simp [segPt]
 
+/-- The segment ends at `w`. -/
 theorem segPt_one (v w : Sandpile.Continuum.Space 2) : segPt v w 1 = w := by
   simp [segPt]
 
+/-- `segSet v w` is compact, the continuous image of the compact interval `[0, 1]`. -/
 theorem isCompact_segSet (v w : Sandpile.Continuum.Space 2) : IsCompact (segSet v w) :=
   isCompact_Icc.image (continuous_segPt v w)
 
+/-- `segSet v w` is connected, the continuous image of the connected interval `[0, 1]`. -/
 theorem isConnected_segSet (v w : Sandpile.Continuum.Space 2) : IsConnected (segSet v w) :=
   (isConnected_Icc (by norm_num : (0:ℝ) ≤ 1)).image _ (continuous_segPt v w).continuousOn
 
+/-- The left endpoint `v` lies in `segSet v w`. -/
 theorem left_mem_segSet (v w : Sandpile.Continuum.Space 2) : v ∈ segSet v w :=
   ⟨0, ⟨le_refl _, by norm_num⟩, segPt_zero v w⟩
 
+/-- The right endpoint `w` lies in `segSet v w`. -/
 theorem right_mem_segSet (v w : Sandpile.Continuum.Space 2) : w ∈ segSet v w :=
   ⟨1, ⟨by norm_num, le_refl _⟩, segPt_one v w⟩
 
+/-- A continuous function that is at least `l` at every rational is at least `l`
+everywhere, since `{f ≥ l}` is closed and `ℚ` is dense in `ℝ`. -/
 theorem le_of_le_on_rat {f : ℝ → ℝ} (hf : Continuous f) {l : ℝ}
     (h : ∀ q : ℚ, l ≤ f (q : ℝ)) (t : ℝ) : l ≤ f t := by
   have hclosed : IsClosed {x : ℝ | l ≤ f x} := isClosed_le continuous_const hf
@@ -106,6 +125,9 @@ theorem le_of_le_on_rat {f : ℝ → ℝ} (hf : Continuous f) {l : ℝ}
     exact hclosed.closure_subset_iff.mpr hrange
   exact huniv (Set.mem_univ t)
 
+/-- If `X` is continuous and at least `l` at every rational parameter of the segment
+`segSet v w`, it is at least `l` on the whole segment: clamp the parameter to `[0, 1]`
+and apply `le_of_le_on_rat`. -/
 theorem le_on_segSet {X : Sandpile.Continuum.Space 2 → ℝ} (hX : Continuous X)
     (v w : Sandpile.Continuum.Space 2) (l : ℝ)
     (h : ∀ q : ℚ, 0 ≤ q → q ≤ 1 → l ≤ X (segPt v w (q : ℝ))) :
@@ -123,28 +145,38 @@ theorem le_on_segSet {X : Sandpile.Continuum.Space 2 → ℝ} (hX : Continuous X
   have hval := le_of_le_on_rat hg hq t
   rwa [min_eq_right ht1, max_eq_right ht0] at hval
 
+/-- The polygonal chain through `v 0, …, v n`: the union of the `n` closed segments
+`segSet (v j) (v (j + 1))` for `j < n`. -/
 noncomputable def pathSet (n : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
     Set (Sandpile.Continuum.Space 2) :=
   ⋃ j ∈ Finset.range n, segSet (v j) (v (j + 1))
 
+/-- `pathSet n v` is compact, a finite union of compact segments. -/
 theorem isCompact_pathSet (n : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
     IsCompact (pathSet n v) :=
   (Finset.range n).finite_toSet.isCompact_biUnion fun _ _ => isCompact_segSet _ _
 
+/-- `pathSet (m + 1) v` is connected: consecutive segments share the vertex `v (j + 1)`,
+so `isConnected_biUnion_chain` applies. -/
 theorem isConnected_pathSet (m : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
     IsConnected (pathSet (m + 1) v) :=
   isConnected_biUnion_chain m (fun j => segSet (v j) (v (j + 1)))
     (fun _ _ => isConnected_segSet _ _)
     (fun j _ => ⟨v (j + 1), right_mem_segSet _ _, left_mem_segSet _ _⟩)
 
+/-- The first vertex of the chain lies on its path set. -/
 theorem start_mem_pathSet (m : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
     v 0 ∈ pathSet (m + 1) v :=
   Set.mem_biUnion (Finset.mem_range.mpr (Nat.succ_pos m)) (left_mem_segSet _ _)
 
+/-- The last vertex of the chain lies on its path set. -/
 theorem end_mem_pathSet (m : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
     v (m + 1) ∈ pathSet (m + 1) v :=
   Set.mem_biUnion (Finset.mem_range.mpr (Nat.lt_succ_self m)) (right_mem_segSet _ _)
 
+/-- A chain whose path set lies in `S ∩ rectSet a b` and that runs from the side `a i`
+to the side `b i` witnesses that `S` crosses the rectangle: `pathSet (m + 1) v` itself is
+the compact connected set of the `Crosses` definition. -/
 theorem crosses_of_pathSet {a b : Fin 2 → ℝ} {i : Fin 2}
     {S : Set (Sandpile.Continuum.Space 2)} (m : ℕ) (v : ℕ → Sandpile.Continuum.Space 2)
     (hsub : pathSet (m + 1) v ⊆ S ∩ rectSet a b)
@@ -161,6 +193,9 @@ def pathEvent {Ω : Type*} [MeasurableSpace Ω] (X : Sandpile.Continuum.Space 2 
   {ω | ∀ (j : ℕ) (q : ℚ), j < n → 0 ≤ q → q ≤ 1 →
     l ≤ X (segPt (v j) (v (j + 1)) (q : ℝ)) ω}
 
+/-- `pathEvent X l n v` is measurable: it is a countable intersection, over `j : ℕ` and
+`q : ℚ`, of sets that are either the measurable `{ω | l ≤ X (segPt ...) ω}` (when the
+side conditions `j < n`, `0 ≤ q ≤ 1` hold) or all of `Ω` (when they fail). -/
 theorem measurableSet_pathEvent {Ω : Type*} [MeasurableSpace Ω]
     {X : Sandpile.Continuum.Space 2 → Ω → ℝ} (hX : ∀ u, Measurable (X u))
     (l : ℝ) (n : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
@@ -231,12 +266,15 @@ theorem measure_pathEvent_le_crossing {Ω : Type*} [MeasurableSpace Ω] (P : Mea
 noncomputable def hSeg (c t : ℝ) : Sandpile.Continuum.Space 2 :=
   t • (EuclideanSpace.single (0 : Fin 2) (1 : ℝ)) + c • (EuclideanSpace.single (1 : Fin 2) (1 : ℝ))
 
+/-- The first coordinate of `hSeg c t` is the parameter `t`. -/
 theorem hSeg_apply_zero (c t : ℝ) : hSeg c t 0 = t := by
   simp [hSeg]
 
+/-- The second coordinate of `hSeg c t` is the fixed height `c`. -/
 theorem hSeg_apply_one (c t : ℝ) : hSeg c t 1 = c := by
   simp [hSeg]
 
+/-- `hSeg c` is continuous in the parameter `t`. -/
 theorem continuous_hSeg (c : ℝ) : Continuous (hSeg c) := by
   unfold hSeg
   exact (continuous_id.smul continuous_const).add continuous_const
@@ -296,6 +334,12 @@ theorem segSet_subset_thickening {δ : ℝ} {Γ : Set (Sandpile.Continuum.Space 
   have hdd : (0 : ℝ) ≤ dist v w := dist_nonneg
   nlinarith
 
+/-- In a preconnected set `Γ`, every point `y ∈ Γ` is reachable from a fixed `x ∈ Γ` by a
+`ReflTransGen` chain of steps that stay in `Γ` with consecutive distance less than `δ`.
+Proved by splitting `Γ` into the `δ`-neighborhood `U` of the reachable points and the
+`δ`-neighborhood `V` of the rest, showing `U`, `V` cannot both meet `Γ` (else a point of
+`U ∩ V ∩ Γ` would extend reachability into `V`), and using preconnectedness to rule out
+`Γ ∩ V` being nonempty while `Γ ∩ U` is. -/
 theorem reflTransGen_of_isPreconnected {X : Type*} [MetricSpace X] {Γ : Set X}
     (hconn : IsPreconnected Γ) {δ : ℝ} (hδ : 0 < δ) {x : X} (hx : x ∈ Γ) :
     ∀ y ∈ Γ, Relation.ReflTransGen (fun p q => q ∈ Γ ∧ dist p q < δ) x y := by
@@ -328,6 +372,9 @@ theorem reflTransGen_of_isPreconnected {X : Type*} [MetricSpace X] {Γ : Set X}
   · exact hyA.2
   · exact absurd ⟨y, hy, Set.mem_biUnion ⟨hy, hyA⟩ (Metric.mem_ball_self hδ)⟩ hVempty
 
+/-- Unwinds a `ReflTransGen` chain of `δ`-close steps from `x` to `y` into an explicit
+finite vertex sequence `v 0 = x, …, v (m + 1) = y`, all lying in `Γ`, with consecutive
+vertices at distance less than `δ`, by induction on the `ReflTransGen` derivation. -/
 theorem exists_vertices_of_reflTransGen {X : Type*} [MetricSpace X] {Γ : Set X} {δ : ℝ}
     (hδ : 0 < δ) {x y : X} (hx : x ∈ Γ)
     (h : Relation.ReflTransGen (fun p q => q ∈ Γ ∧ dist p q < δ) x y) :

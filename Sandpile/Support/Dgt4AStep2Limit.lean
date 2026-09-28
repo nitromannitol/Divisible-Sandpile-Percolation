@@ -1,9 +1,12 @@
-/-
+import Mathlib
+
+/-!
+# Step 2 of case (a): the rate `√(log n) · n^{-a} → 0`
+
 The two limits of Step 2 of case (a) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5082-5100`): with `j = ⌊n^{1/d}⌋`, the two terms of the bound
 `C j n^{-1/2}√(log(n+2)) + C j^{-(d-4)/4}` both tend to `0`.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology Asymptotics
 

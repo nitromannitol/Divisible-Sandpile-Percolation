@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.CrossExplore
+import Sandpile.Support.CrossTrace
+import Sandpile.Support.CrossEntropyPi
+import Sandpile.External.Pinsker
+
+/-!
+# The level loss from the Cameron-Martin shift
+
 Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2300-2400`): the level
 loss, from the relative entropy of the Cameron-Martin shift.
 
@@ -19,10 +26,6 @@ An event the trace determines is a preimage `tr ⁻¹' E` under the trace map, a
 the two laws are the pushforwards of the two measures along it; that is exactly
 the paper's `P_ℓ^{tr}`.
 -/
-import Sandpile.Support.CrossExplore
-import Sandpile.Support.CrossTrace
-import Sandpile.Support.CrossEntropyPi
-import Sandpile.External.Pinsker
 
 open MeasureTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -160,7 +163,8 @@ theorem level_loss_of_trace (hPin : Sandpile.External.Pinsker)
   have hkey : (n : ℝ) * (L ^ 2 / (2 * m ^ 2 * R ^ 2)) = L ^ 2 * (n : ℝ) / (2 * m ^ 2 * R ^ 2) := by
     ring
   rw [hkey] at hent
-  exact level_loss_of_exploration hPin P₀ P₁ tr htr E hE m L R (n : ℝ) Cn α₁ hm hL hR hN hCn hNb hent.le
+  exact level_loss_of_exploration hPin P₀ P₁ tr htr E hE m L R (n : ℝ) Cn α₁ hm hL hR hN hCn hNb
+    hent.le
 
 /-- The real comparison of two probabilities transports to the two measures, for
 two different probability measures.  This is `measure_le_add_ofReal` with the
@@ -191,7 +195,8 @@ theorem hloss_of_trace (hPin : Sandpile.External.Pinsker)
     (hCn : 0 ≤ Cn) (hNb : (n : ℝ) ≤ Cn * R ^ (2 - α₁))
     (hent : InformationTheory.klDiv (P₁.map tr) (P₀.map tr)
       = ENNReal.ofReal ((n : ℝ) * (L ^ 2 / (2 * m ^ 2 * R ^ 2)))) :
-    P₀ (tr ⁻¹' E) ≤ P₁ (tr ⁻¹' E) + ENNReal.ofReal (Real.sqrt Cn / (2 * m) * L * R ^ (-(α₁ / 2))) := by
+    P₀ (tr ⁻¹' E) ≤ P₁ (tr ⁻¹' E) +
+      ENNReal.ofReal (Real.sqrt Cn / (2 * m) * L * R ^ (-(α₁ / 2))) := by
   have hstep := level_loss_of_trace hPin P₁ P₀ tr htr E hE n m L R Cn α₁ hm hL hR hCn hNb hent
   have hc : (0 : ℝ) ≤ Real.sqrt Cn / (2 * m) * L * R ^ (-(α₁ / 2)) := by positivity
   exact measure_le_add_ofReal' P₀ P₁ (tr ⁻¹' E) (tr ⁻¹' E) _ hc (by linarith)
@@ -290,7 +295,8 @@ theorem hloss_ballField_of_exploration
       P₁ {ω | Crosses ![-(θ * R), 0] ![θ * R, 2 * R] 0 {u | L / R ≤ X u ω}} +
         ENNReal.ofReal (Real.sqrt Cn / (2 * m) * L * R ^ (-(α₁ / 2))) := by
   rw [hcross]
-  exact Sandpile.Support.hloss_of_exploration_data hPin P₀ P₁ hX q E hE m L R Cn α₁ hm hL hR hCn hNb h₀ h₁
+  exact Sandpile.Support.hloss_of_exploration_data hPin P₀ P₁ hX q E hE m L R Cn α₁ hm hL hR hCn
+    hNb h₀ h₁
 
 /-- The level loss of Steps 2-3 for the ball field, from the two shifted laws of
 the exploration trace: `Q₀` is the law of the trace under the shift by `L/R` and
@@ -330,7 +336,8 @@ theorem hloss_ballField_of_shift_laws
   have htr : Measurable fun ω => (fun i : Fin n =>
       W (fun y => (cubes i).indicator (fun _ => (1 : ℝ)) y) ω) :=
     measurable_pi_iff.mpr fun i =>
-      hW.meas _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ) (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
+      hW.meas _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ)
+        (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
   have h := Sandpile.Support.hloss_of_trace hPin Q₁ Q₀ _ htr E hE n m (L / R + ε) R Cn α₁ hm
     (by positivity) hR hCn hNb hent
   rw [h₀, h₁] at h

@@ -1,9 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ADeviationLip
+
+/-!
 The `j`-step triangle inequality for the neighbour average: the difference of the `j`-step
 averages is at most the `j`-step average of the absolute difference.  It is the induction
 step of the `j`-step Lipschitz bound of `sandpile.tex:5063-5065`.
 -/
-import Sandpile.Support.Dgt4ADeviationLip
 
 open MeasureTheory Filter Topology Set
 

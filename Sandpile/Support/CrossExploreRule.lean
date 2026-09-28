@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossSquare
+import Sandpile.Support.CrossExploreRec
+import Sandpile.Support.CrossUnion
+
+/-! # The exploration rule of Step 2
+
 The exploration rule of Step 2 of `prop:fixed-scale-crossings` (`sandpile.tex:2255-2262`),
 written as a recursion on the cells it has already revealed.
 
@@ -15,9 +20,6 @@ vertices, so the discovered set is a countable union of events about single fiel
 of which the cells of the square carrying it already decide.  That is what makes the rule
 admissible in the sense of `IsExplorationRule`, hence its revealed set a stopping set.
 -/
-import Sandpile.Support.CrossSquare
-import Sandpile.Support.CrossExploreRec
-import Sandpile.Support.CrossUnion
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -31,6 +33,8 @@ containing every point at which a chain event reads the field. -/
 def sampPts (a b : Fin 2 → ℝ) : Set (Space 2) :=
   {p | ∃ v w : Space 2, VertexOK a b v ∧ VertexOK a b w ∧ ∃ q : ℚ, p = segPt v w (q : ℝ)}
 
+/-- `sampPts a b` is countable, as the image of the countable set of pairs of admissible
+vertices and rationals under `segPt`. -/
 theorem countable_sampPts (a b : Fin 2 → ℝ) : (sampPts a b).Countable := by
   classical
   have hc : Countable {p : Space 2 // VertexOK a b p} := (countable_vertexOK a b).to_subtype
@@ -41,9 +45,12 @@ theorem countable_sampPts (a b : Fin 2 → ℝ) : (sampPts a b).Countable := by
     exact ⟨(⟨v, hv⟩, ⟨w, hw⟩, q), rfl⟩
   exact Set.Countable.mono hsub (Set.countable_range _)
 
+/-- The subtype `↥(sampPts a b)` is countable, transferred from `countable_sampPts`. -/
 instance countable_sampPts_coe (a b : Fin 2 → ℝ) : Countable ↥(sampPts a b) :=
   (countable_sampPts a b).to_subtype
 
+/-- Every rational-parameter point of a segment between two admissible vertices `v, w`
+lies in `sampPts a b`, directly from the definition. -/
 theorem segPt_mem_sampPts {a b : Fin 2 → ℝ} {v w : Space 2} (hv : VertexOK a b v)
     (hw : VertexOK a b w) (q : ℚ) : segPt v w (q : ℝ) ∈ sampPts a b :=
   ⟨v, w, hv, hw, q, rfl⟩
@@ -73,6 +80,8 @@ def reachedPt (a b : Fin 2 → ℝ) (lev : ℝ) (bf : Space 2 → Ω → ℝ)
     (v (Fin.last k) : Space 2) = p
 
 omit [MeasurableSpace Ω] in
+/-- `reachedPt` is monotone in the set `D` of processed squares: a point reached using
+only squares in `D` is still reached using any larger set `D'`. -/
 theorem reachedPt_mono {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → ℝ}
     {D D' : Finset (Sandpile.Site 2)} (hD : D ⊆ D') {ω : Ω} {p : Space 2}
     (h : reachedPt a b lev bf D ω p) : reachedPt a b lev bf D' ω p := by
@@ -88,6 +97,9 @@ noncomputable def reachSq (a b : Fin 2 → ℝ) (lev : ℝ) (bf : Space 2 → Ω
       reachedPt a b lev bf D ω (p : Space 2) ∧ sqAdj (sqOf (p : Space 2)) z)
 
 omit [MeasurableSpace Ω] in
+/-- Membership in `reachSq`, unfolded: `z` is discovered iff it lies among the squares of
+the rectangle and either sits on the starting side or neighbours an already-reached
+point. -/
 theorem mem_reachSq {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → ℝ}
     {D : Finset (Sandpile.Site 2)} {ω : Ω} {z : Sandpile.Site 2} :
     z ∈ reachSq a b lev bf D ω ↔ z ∈ rectSq a b ∧
@@ -96,11 +108,14 @@ theorem mem_reachSq {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → �
   rw [reachSq, Finset.mem_filter]
 
 omit [MeasurableSpace Ω] in
+/-- Every discovered square lies among the squares of the rectangle. -/
 theorem reachSq_subset {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → ℝ}
     {D : Finset (Sandpile.Site 2)} {ω : Ω} : reachSq a b lev bf D ω ⊆ rectSq a b :=
   fun _ hz => (mem_reachSq.mp hz).1
 
 omit [MeasurableSpace Ω] in
+/-- `reachSq` is monotone in the set of processed squares `D`, since `reachedPt` is
+(`reachedPt_mono`). -/
 theorem reachSq_mono {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → ℝ}
     {D D' : Finset (Sandpile.Site 2)} (hD : D ⊆ D') {ω : Ω} :
     reachSq a b lev bf D ω ⊆ reachSq a b lev bf D' ω := by
@@ -122,11 +137,15 @@ noncomputable def blockIdx (d : ℕ) (a b : Fin 2 → ℝ) (z : Sandpile.Site 2)
     Finset (cellIdx d a b) :=
   Finset.univ.filter (fun i => (i : Sandpile.Site d) ∈ blockSites d z)
 
+/-- Membership in `blockIdx d a b z`, unfolded: `i` indexes a cell of `blockSites d z`,
+the cells the square `z` carries. -/
 theorem mem_blockIdx {d : ℕ} {a b : Fin 2 → ℝ} {z : Sandpile.Site 2} {i : cellIdx d a b} :
     i ∈ blockIdx d a b z ↔ (i : Sandpile.Site d) ∈ blockSites d z := by
   rw [blockIdx, Finset.mem_filter]
   exact ⟨fun h => h.2, fun h => ⟨Finset.mem_univ _, h⟩⟩
 
+/-- Every cell `x` that a square `z` of the rectangle carries has an index in
+`blockIdx d a b z`, via `blockSites_subset_allSites`. -/
 theorem exists_mem_blockIdx {d : ℕ} {a b : Fin 2 → ℝ} {z : Sandpile.Site 2}
     (hz : z ∈ rectSq a b) {x : Sandpile.Site d} (hx : x ∈ blockSites d z) :
     ∃ i ∈ blockIdx d a b z, (i : Sandpile.Site d) = x :=
@@ -137,11 +156,14 @@ noncomputable def doneSq (d : ℕ) (a b : Fin 2 → ℝ) (A : Finset (cellIdx d 
     Finset (Sandpile.Site 2) :=
   (rectSq a b).filter (fun z => blockIdx d a b z ⊆ A)
 
+/-- Membership in `doneSq d a b A`, unfolded: `z` is processed iff it is a square of the
+rectangle whose cell indices all lie in `A`. -/
 theorem mem_doneSq {d : ℕ} {a b : Fin 2 → ℝ} {A : Finset (cellIdx d a b)}
     {z : Sandpile.Site 2} :
     z ∈ doneSq d a b A ↔ z ∈ rectSq a b ∧ blockIdx d a b z ⊆ A := by
   rw [doneSq, Finset.mem_filter]
 
+/-- `doneSq` is monotone in the set of revealed cells `A`. -/
 theorem doneSq_mono {d : ℕ} {a b : Fin 2 → ℝ} {A A' : Finset (cellIdx d a b)} (h : A ⊆ A') :
     doneSq d a b A ⊆ doneSq d a b A' := by
   intro z hz
@@ -155,6 +177,8 @@ noncomputable def pickIdx (d : ℕ) (a b : Fin 2 → ℝ) (A : Finset (cellIdx d
     (if h2 : (blockIdx d a b h.choose \ A).Nonempty then some h2.choose else none)
   else none
 
+/-- The cell `pickIdx` names next has not already been revealed, since it is drawn from
+`blockIdx d a b z \ A` for some `z`. -/
 theorem pickIdx_fresh {d : ℕ} {a b : Fin 2 → ℝ} {A : Finset (cellIdx d a b)}
     {T : Finset (Sandpile.Site 2)} {i : cellIdx d a b} (h : pickIdx d a b A T = some i) :
     i ∉ A := by
@@ -170,6 +194,8 @@ theorem pickIdx_fresh {d : ℕ} {a b : Fin 2 → ℝ} {A : Finset (cellIdx d a b
     · exact absurd h (by simp)
   · exact absurd h (by simp)
 
+/-- If `pickIdx` finds nothing left to reveal among the squares of `T`, then every square
+of `T` (that lies in the rectangle) is already processed. -/
 theorem subset_doneSq_of_pickIdx_none {d : ℕ} {a b : Fin 2 → ℝ} {A : Finset (cellIdx d a b)}
     {T : Finset (Sandpile.Site 2)} (hT : T ⊆ rectSq a b) (h : pickIdx d a b A T = none) :
     T ⊆ doneSq d a b A := by
@@ -195,6 +221,8 @@ noncomputable def exploreNext (d : ℕ) (a b : Fin 2 → ℝ) (lev : ℝ) (bf : 
   pickIdx d a b A (reachSq a b lev bf (doneSq d a b A) ω)
 
 omit [MeasurableSpace Ω] in
+/-- The cell `exploreNext` names next has not already been revealed, from
+`pickIdx_fresh`. -/
 theorem exploreNext_fresh {d : ℕ} {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → ℝ}
     (A : Finset (cellIdx d a b)) (ω : Ω) (i : cellIdx d a b)
     (h : exploreNext d a b lev bf A ω = some i) : i ∉ A :=
@@ -222,6 +250,9 @@ variable {d : ℕ} {a b : Fin 2 → ℝ} {lev : ℝ} {bf : Space 2 → Ω → �
   {G : cellIdx d a b → MeasurableSpace Ω}
 
 omit [MeasurableSpace Ω] in
+/-- The superlevel event `{ω | lev ≤ bf u ω}` at a point `u` of an already-processed
+square `z` is decided by the revealed cells `A`, via `BlockMeasurable` and monotonicity
+of `indepAlg`. -/
 theorem measurableSet_le_bf (hm : BlockMeasurable d a b G bf) {A : Finset (cellIdx d a b)}
     {z : Sandpile.Site 2} (hz : z ∈ doneSq d a b A) {u : Space 2} (hu : sqAdj (sqOf u) z) :
     MeasurableSet[indepAlg G (↑A : Set (cellIdx d a b))] {ω | lev ≤ bf u ω} := by
@@ -234,6 +265,9 @@ theorem measurableSet_le_bf (hm : BlockMeasurable d a b G bf) {A : Finset (cellI
   exact measurableSet_le measurable_const hmeas
 
 omit [MeasurableSpace Ω] in
+/-- The event that `p` and `p'` form one admissible step (`stepOK`) is decided by the
+revealed cells `A`: it splits on the geometric side conditions, and the level condition
+becomes a countable intersection over rationals, each decided by `measurableSet_le_bf`. -/
 theorem measurableSet_stepOK (hm : BlockMeasurable d a b G bf) {A : Finset (cellIdx d a b)}
     {p p' : Space 2} (hp : sqOf p ∈ doneSq d a b A) :
     MeasurableSet[indepAlg G (↑A : Set (cellIdx d a b))] {ω | stepOK a b lev bf ω p p'} := by
@@ -270,6 +304,10 @@ theorem measurableSet_stepOK (hm : BlockMeasurable d a b G bf) {A : Finset (cell
     exact @MeasurableSet.empty Ω (indepAlg G _)
 
 omit [MeasurableSpace Ω] in
+/-- The event that `p` is reached using the processed squares of `doneSq d a b A` is
+decided by the revealed cells `A`: it is a countable union over chain lengths and vertex
+choices of a finite intersection of `stepOK` events, each decided by
+`measurableSet_stepOK`. -/
 theorem measurableSet_reachedPt (hm : BlockMeasurable d a b G bf) {A : Finset (cellIdx d a b)}
     (p : Space 2) :
     MeasurableSet[indepAlg G (↑A : Set (cellIdx d a b))]
@@ -315,6 +353,9 @@ theorem measurableSet_reachedPt (hm : BlockMeasurable d a b G bf) {A : Finset (c
     exact @MeasurableSet.empty Ω (indepAlg G _)
 
 omit [MeasurableSpace Ω] in
+/-- Membership of a square `z` in the discovered set `reachSq a b lev bf (doneSq d a b A)`
+is decided by the revealed cells `A`: it is trivial if `z` sits on the starting side, and
+otherwise a countable union over sample points of `measurableSet_reachedPt` events. -/
 theorem measurableSet_mem_reachSq (hm : BlockMeasurable d a b G bf)
     {A : Finset (cellIdx d a b)} (z : Sandpile.Site 2) :
     MeasurableSet[indepAlg G (↑A : Set (cellIdx d a b))]
@@ -361,6 +402,9 @@ theorem measurableSet_mem_reachSq (hm : BlockMeasurable d a b G bf)
     exact @MeasurableSet.empty Ω (indepAlg G _)
 
 omit [MeasurableSpace Ω] in
+/-- The event that the discovered set equals a fixed finite set `T` is decided by the
+revealed cells `A`, as a finite intersection of the membership and non-membership events
+of `measurableSet_mem_reachSq`. -/
 theorem measurableSet_reachSq_eq (hm : BlockMeasurable d a b G bf)
     {A : Finset (cellIdx d a b)} (T : Finset (Sandpile.Site 2)) :
     MeasurableSet[indepAlg G (↑A : Set (cellIdx d a b))]

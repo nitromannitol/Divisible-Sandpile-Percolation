@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Kernel
+import Sandpile.Continuum.Kernel
+
+/-!
+# Local central limit theorem, parity form
+
 External input: the local central limit theorem in the parity form used in
 `ssec:green-estimates` of `sandpile.tex`.  The paper does not prove it; it
 records at `sandpile.tex:1117-1122` that
@@ -58,8 +63,6 @@ evaluated at the time `\ell/R^2 \geq δ > 0`, away from the junk value
 `heatKernelBM` takes at time zero.  The dimension carries `1 \leq d`, since at
 `d = 0` the recursion defining `heatKernel` divides by `2d = 0`.
 -/
-import Sandpile.Support.Kernel
-import Sandpile.Continuum.Kernel
 
 namespace Sandpile.External.Lclt
 

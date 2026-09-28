@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ABandHitting
+
+/-!
+# Scale, profile coordinate and hitting time for Step 2
+
 The bookkeeping of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6085-6135`):
 the scale `R_k`, the profile coordinate `z_{k,n}`, and the hitting time `τ_k`.
 
@@ -15,7 +19,6 @@ itself an instance of the elementary lower bound
 `E(ξ-w)_+ ≥ s·P(ξ > w+s)`, proved here as `integral_posPart_neg_ge`, at
 `w = E W_n` and `s = (1-ℓ_1)a_k/8`, so that lemma is proved here too.
 -/
-import Sandpile.Support.Dgt4ABandHitting
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -102,10 +105,14 @@ def bandScaleSq (G00 : ℝ) (L ω : ℕ → ℝ) (k : ℕ) : ℝ := G00 * L k / 
 /-- The scale `R_k` itself. -/
 def bandScale (G00 : ℝ) (L ω : ℕ → ℝ) (k : ℕ) : ℝ := Real.sqrt (bandScaleSq G00 L ω k)
 
+/-- `bandScaleSq G00 L ω k` is nonnegative when `G00` and `L k` are nonnegative and `ω k` is
+positive. -/
 theorem bandScaleSq_nonneg {G00 : ℝ} {L ω : ℕ → ℝ} {k : ℕ} (hG : 0 ≤ G00) (hL : 0 ≤ L k)
     (hω : 0 < ω k) : 0 ≤ bandScaleSq G00 L ω k :=
   div_nonneg (mul_nonneg hG hL) hω.le
 
+/-- `bandScale G00 L ω k` squares back to `bandScaleSq G00 L ω k`, since `bandScale` is
+defined as its square root. -/
 theorem bandScale_sq {G00 : ℝ} {L ω : ℕ → ℝ} {k : ℕ} (hG : 0 ≤ G00) (hL : 0 ≤ L k)
     (hω : 0 < ω k) : bandScale G00 L ω k ^ 2 = bandScaleSq G00 L ω k :=
   Real.sq_sqrt (bandScaleSq_nonneg hG hL hω)
@@ -121,6 +128,7 @@ theorem bandScale_sq_mul {G00 : ℝ} {L ω : ℕ → ℝ} {k : ℕ} (hG : 0 ≤ 
 def bandLevelCoord (l1 : ℝ) (a b : ℕ → ℝ) (k n : ℕ) : ℝ :=
   bandProfileCoord (a k) ((1 - l1) * a k) b n
 
+/-- Unfolds `bandLevelCoord` to its defining ratio `(a k - b n)/((1-l1)*a k)`. -/
 theorem bandLevelCoord_eq (l1 : ℝ) (a b : ℕ → ℝ) (k n : ℕ) :
     bandLevelCoord l1 a b k n = (a k - b n) / ((1 - l1) * a k) := rfl
 

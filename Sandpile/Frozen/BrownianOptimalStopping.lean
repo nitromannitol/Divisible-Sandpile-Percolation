@@ -1,4 +1,8 @@
-/-
+import Sandpile.External.ContinuumOptimalStopping
+
+/-!
+# Brownian optimal-stopping representation
+
 Proposition of Section 2 of sandpile.tex, frozen.  `sandpile.tex:1083-1099`
 (label `prop:brownian-os`):
 
@@ -79,7 +83,6 @@ gain of polynomial growth (`Sandpile.External.ContinuumOptimalStopping`).  The g
 with polynomial growth and translates the input's value, contact set and
 attainment into the paper's `𝒟_h`, `𝒰_h` and the two displayed identities.
 -/
-import Sandpile.External.ContinuumOptimalStopping
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

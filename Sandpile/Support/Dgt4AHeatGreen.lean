@@ -1,12 +1,13 @@
-/-
+import Sandpile.Support.Iterate
+import Sandpile.Support.ExitGreen
+
+/-!
 The semigroup identity for the Green function: the `j`-step heat kernel convolved with the
 Green function is the tail of the heat kernel from step `j` on,
 `\sum_z p_j(0,z)G(z,z')=\sum_{r\geq j}p_r(0,z')`.  It is the identification of the `j`-step
 average of the Green function with the tail kernel of `eq:dgt4-tail-kernel`
 (`sandpile.tex:1303-1306`).
 -/
-import Sandpile.Support.Iterate
-import Sandpile.Support.ExitGreen
 
 open MeasureTheory Filter Topology Set
 
@@ -27,7 +28,8 @@ theorem tsum_heatKernel_mul_green (hd : 3 ≤ d) (j : ℕ) (z' : Site d) :
   have hsumz : ∀ r : ℕ, Summable (fun z : Site d => heatKernel d j 0 z * heatKernel d r z z') :=
     fun r => summable_heatKernel_mul j 0 (fun z => heatKernel d r z z')
   have hsum : Summable (fun p : ℕ × Site d => heatKernel d j 0 p.2 * heatKernel d p.1 p.2 z') := by
-    rw [summable_prod_of_nonneg (fun p => mul_nonneg (heatKernel_nonneg _ _ _) (heatKernel_nonneg _ _ _))]
+    rw [summable_prod_of_nonneg
+      (fun p => mul_nonneg (heatKernel_nonneg _ _ _) (heatKernel_nonneg _ _ _))]
     refine ⟨hsumz, ?_⟩
     have : (fun r : ℕ => ∑' z : Site d, heatKernel d j 0 z * heatKernel d r z z')
         = fun r => heatKernel d (j + r) 0 z' := funext hinner

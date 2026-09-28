@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ExplBallLocal
+
+/-!
+# Horizon-freeness and monotonicity of the Brownian optimal-stopping value
+
 Two facts about the Brownian optimal-stopping value that the proof of
 Theorem 1.3(i)(b) and the localization lemma need, and which do not depend on any
 filtration: the gap between two values built from close rewards, and the
@@ -11,9 +15,9 @@ is the exact counterpart of `Sandpile.abs_stoppingSup_sub_le`.
 
 `brownianValue_mono_horizon` is the monotonicity `𝒰_h(t,z) ≤ 𝒰_h(T,z)` for `t ≤ T`
 that the right-hand side of `lem:brownian-ball-localization`
-(`sandpile.tex:1653-1657`) uses and that the paper never states.  In the lattice
-lemma the monotonicity is structural, because `u_t(x)` is a supremum over a family
-of stopping times that grows with `t`; in the continuum it is NOT, because
+(`sandpile.tex:1653-1657`) uses and that the paper never states.  In the lattice lemma
+the monotonicity is structural, because `u_t(x)` is a supremum over a family of
+stopping times that grows with `t`; in the continuum it is NOT, because
 `𝒰_h(t,x) = h(t,x) + sup_{τ ≤ t} E_x[-h(t-τ,B_τ)]` (`sandpile.tex:1071-1075`)
 changes both the family of `τ` and the time index of the field when `t` changes.
 What makes it true is that the PAYOFF of a fixed admissible `τ` does not depend on
@@ -30,7 +34,6 @@ it is the strong Markov property, which `Sandpile.Continuum.IsBrownian` does not
 supply.  So the hypothesis is stated and used, not assumed away: everything that
 does not need the strong Markov property is proved.
 -/
-import Sandpile.Support.ExplBallLocal
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.BlockPercolation
+import Sandpile.External.LSSDomination
+
+/-!
+# Good-Block Percolation
+
 Block percolation for a superlevel set in the coordinate plane: the
 Liggett-Schonmann-Stacey domination of `sandpile.tex:3991-3995` applied to the
 good-block process of a field, followed by the chaining of good blocks into an
 infinite nearest-neighbour component of the superlevel set.
 -/
-import Sandpile.Support.BlockPercolation
-import Sandpile.External.LSSDomination
 
 open MeasureTheory ProbabilityTheory
 

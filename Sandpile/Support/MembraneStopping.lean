@@ -1,12 +1,13 @@
-/-
-The membrane field is a competitor in the optimal-stopping problem.
-
-Stopping the walk at a deterministic time `n` collects exactly the membrane
-field `V_n`, so `V_n(x) ≤ u_t(x)` whenever `n ≤ t`.  This is the "deterministic
-stopping" step of the proof of `thm:critical-toppling`, which tests the odometer
-against the membrane field at a geometric sequence of times.
--/
 import Sandpile.Support.Localization
+
+/-!
+# The membrane field as a stopping-time competitor
+
+The membrane field is a competitor in the optimal-stopping problem. Stopping the walk at a
+deterministic time `n` collects exactly the membrane field `V_n`, so `V_n(x) ≤ u_t(x)` whenever
+`n ≤ t`. This is the deterministic-stopping step of the proof of `thm:critical-toppling`, which
+tests the odometer against the membrane field at a geometric sequence of times.
+-/
 
 open MeasureTheory
 
@@ -24,7 +25,8 @@ field: `E_x ∑_{k<n} ζ(X_k) = V_n(x)`. -/
 theorem integral_sceneryPartialSum_eq_membrane (hd : 1 ≤ d) (x : Site d)
     (ζ : Site d → ℝ) (n : ℕ) :
     ∫ X, sceneryPartialSum ζ n X ∂(walkLaw d x) = membrane ζ n x := by
-  have h := Sandpile.integral_neg_stoppedMembrane hd x ζ n (isWalkStopping_const n) (fun _ => le_refl n)
+  have h := Sandpile.integral_neg_stoppedMembrane hd x ζ n (isWalkStopping_const n)
+    (fun _ => le_refl n)
   simp only [Nat.sub_self, membrane_zero, neg_zero, integral_zero] at h
   linarith
 

@@ -1,16 +1,26 @@
-/-
-The exact logarithmic coefficient for doubled heat kernels in dimension four.
-The local limit remainder enters through the explicit paired estimate.
--/
 import Sandpile.Support.DoubleSum
 import Sandpile.Support.ExponentialHarmonic
 import Sandpile.External.PairedLocalCLTFour
 import Sandpile.External.VarianceScaleProved
 
+/-!
+# The doubled heat-kernel logarithmic coefficient in dimension four
+
+This file identifies the exact logarithmic coefficient `4/π²` in the asymptotics of the doubled
+heat kernel sum `∑_{a,b<t} heatKernel 4 (a+b) x y` in dimension four, up to an additive constant
+uniform in `t`, `x` and `y`. The local-limit remainder of the two-step sum enters through the
+explicit paired estimate `Sandpile.External.PairedLocalCLTFour`, which is combined with a
+telescoped comparison between the exponential-weighted harmonic sum and the target logarithm.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- The doubled heat-kernel sum `∑_{a,b<t} heatKernel 4 (a+b) x y`, for `t ≥ 2` and squared
+displacement `q = ∑ (x i - y i)^2` at most `t`, agrees with `4/π² * log(t/(1+q))` up to an
+additive constant `C` independent of `t`, `x` and `y`, given the paired local CLT input
+`hPaired`. -/
 theorem exists_double_heat_kernel_four_bound (hPaired : External.PairedLocalCLTFour) :
     ∃ C : ℝ, ∀ t : ℕ, 2 ≤ t → ∀ x y : Site 4,
       (∑ i : Fin 4, ((x i - y i : ℤ) : ℝ) ^ 2) ≤ (t : ℝ) →

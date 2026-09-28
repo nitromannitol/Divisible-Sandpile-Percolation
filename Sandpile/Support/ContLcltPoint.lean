@@ -1,17 +1,19 @@
-/-
-The two points of `ℝ^d` at which the local central limit theorem is applied.
-
-The double space sum of `prop:weighted-membrane-limit` is an integral over pairs
-`(u,v)` of points of space, and the sites the transition kernel is read at are
-the mesh sites `⌊Ru⌋` and `⌊Rv⌋`.  This file records what
-`Sandpile.Support.tendsto_scaled_time_sum_of_localCLT` asks of them: that the
-Euclidean distance between the two sites is `O(R)`, which it is because a test
-function is supported in a ball, and that the squared distance between their
-rescalings converges to the squared distance between `u` and `v`, which it does
-because the mesh point converges to the point.
--/
 import Sandpile.Support.ContLcltStep
 import Sandpile.Support.ContMeshPoint
+
+/-!
+# The two mesh sites the local central limit theorem is applied at
+
+The double space sum in the heat-potential limit is an integral over pairs `(u, v)` of points
+of space, and the transition kernel is read at the mesh sites `⌊Ru⌋` and `⌊Rv⌋`. This file
+verifies what `tendsto_scaled_time_sum_of_localCLT` requires of those sites: the lattice
+distance between them is `O(R)` (`latticeDist_floor_le`), because a test function is supported
+in a ball, and the squared Euclidean distance between their rescalings converges to the squared
+distance between `u` and `v` (`tendsto_norm_sq_meshPoint`), because each mesh site converges to
+its point. `tendsto_scaled_time_sum_meshSite` assembles these into the convergence of the
+scaled double time sum, read at these two sites, to the double time integral against the
+Brownian heat kernel.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -21,6 +23,8 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- The lattice distance between two sites equals `R` times the Euclidean norm of the
+difference of their `R`-rescalings `Sandpile.External.Lclt.scaledSite`. -/
 theorem latticeDist_eq_mul_norm {R : ℝ} (hR : 0 < R) (x y : Site d) :
     Sandpile.External.Lclt.latticeDist x y
       = R * ‖Sandpile.External.Lclt.scaledSite R x
@@ -49,12 +53,17 @@ theorem latticeDist_eq_mul_norm {R : ℝ} (hR : 0 < R) (x y : Site d) :
 theorem scaledSite_floor_eq_meshPoint (R : ℝ) (u : Space d) :
     Sandpile.External.Lclt.scaledSite R (fun i => ⌊R * u i⌋) = meshPoint R u := rfl
 
+/-- The squared distance between the mesh points `meshPoint R u` and `meshPoint R v` converges,
+as `R → ∞`, to the squared distance `‖u - v‖ ^ 2` between the points themselves. -/
 theorem tendsto_norm_sq_meshPoint (u v : Space d) :
     Tendsto (fun R : ℝ => ‖meshPoint R u - meshPoint R v‖ ^ 2) atTop (𝓝 (‖u - v‖ ^ 2)) := by
   have hsub : Tendsto (fun R : ℝ => meshPoint R u - meshPoint R v) atTop (𝓝 (u - v)) :=
     (tendsto_meshPoint u).sub (tendsto_meshPoint v)
   exact (hsub.norm).pow 2
 
+/-- The lattice distance between the floor mesh sites `⌊Ru⌋` and `⌊Rv⌋` of two points of norm
+at most `L` is at most `(2L + 2√d) R`, by comparing each mesh site to its point through
+`norm_meshPoint_sub_le` and the triangle inequality. -/
 theorem latticeDist_floor_le {R : ℝ} (hR : 1 ≤ R) {L : ℝ} {u v : Space d}
     (hu : ‖u‖ ≤ L) (hv : ‖v‖ ≤ L) :
     Sandpile.External.Lclt.latticeDist (fun i => ⌊R * u i⌋) (fun i => ⌊R * v i⌋)

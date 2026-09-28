@@ -1,17 +1,35 @@
 import Sandpile.Support.ExplHeatNoise
 import Sandpile.Support.ExplFieldEvent
+
+/-!
+# The time-integrated heat kernel and a uniform envelope for the Gaussian potential
+
+The positive-time heat kernel `(t, y) ↦ heatKernelBM d t x y` is jointly integrable in time
+and space on any compact interval `Set.Ioo 0 T`, which lets a jointly measurable version `Y`
+of white noise applied to the heat kernel be integrated in time: its integral over
+`Set.Ioo 0 T` agrees almost surely with white noise applied to the Green kernel
+`greenTimeBM d T x`. Combining this with continuity of the Gaussian potential `Z` produces,
+at each spatial point, one integrable envelope built from `Y` that bounds `‖Z t x ω‖`
+uniformly for `t` in the compact interval `Set.Icc 0 T`.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- The positive-time heat kernel, set to `0` at `t ≤ 0`, is jointly integrable in time and
+space on `Set.Ioo 0 T ×ˢ Space d`, since on each time slice `s ∈ Set.Ioo 0 T` it integrates
+in space to `1`. -/
 theorem integrable_positive_heat_time_space {d : ℕ} (hd : 1 ≤ d)
     (T : ℝ) (x : Space d) :
     Integrable (fun q : ℝ × Space d => if 0 < q.1 then heatKernelBM d q.1 x q.2 else 0)
       ((volume.restrict (Set.Ioo 0 T)).prod volume) := by
   rcases le_or_gt T 0 with hT | hT
-  · simp only [Set.Ioo_eq_empty (not_lt.mpr hT), Measure.restrict_empty, Measure.zero_prod, integrable_zero_measure]
-  have hm : Measurable (fun q : ℝ × Space d => if 0 < q.1 then heatKernelBM d q.1 x q.2 else 0) := by
+  · simp only [Set.Ioo_eq_empty (not_lt.mpr hT), Measure.restrict_empty,
+      Measure.zero_prod, integrable_zero_measure]
+  have hm : Measurable
+      (fun q : ℝ × Space d => if 0 < q.1 then heatKernelBM d q.1 x q.2 else 0) := by
     apply Measurable.ite (measurableSet_lt measurable_const measurable_fst)
     · unfold heatKernelBM
       fun_prop
@@ -48,7 +66,8 @@ theorem whiteNoise_heat_primitive_eq {Ω : Type*} [MeasurableSpace Ω]
     (fun s => (hf (s, x)).toLp (fun y => if 0 < s then heatKernelBM d s x y else 0)) hF
     (fun s y => if 0 < s then heatKernelBM d s x y else 0)
     (integrable_positive_heat_time_space hd T x) (fun s => (hf (s, x)).coeFn_toLp.symm)
-  have he (y : Space d) : (∫ s, (if 0 < s then heatKernelBM d s x y else 0) ∂μ) = greenTimeBM d T x y := by
+  have he (y : Space d) :
+      (∫ s, (if 0 < s then heatKernelBM d s x y else 0) ∂μ) = greenTimeBM d T x y := by
     calc (∫ s, (if 0 < s then heatKernelBM d s x y else 0) ∂μ)
         = ∫ s in Set.Ioo 0 T, heatKernelBM d s x y := by
           apply integral_congr_ae
@@ -58,7 +77,8 @@ theorem whiteNoise_heat_primitive_eq {Ω : Type*} [MeasurableSpace Ω]
           rw [greenTimeBM, intervalIntegral.integral_of_le hT, integral_Ioc_eq_integral_Ioo]
   have hidx := whiteNoise_index_congr hW (Lp.memLp _) (hrep.trans (Eventually.of_forall he))
   exact ⟨hmain.1, hidx.symm.trans hmain.2⟩
-/-- At each spatial point, one integrable envelope bounds the continuous potential on a compact time interval. -/
+/-- At each spatial point, one integrable envelope bounds the continuous potential on a
+compact time interval. -/
 theorem gaussianPotential_time_envelope {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)

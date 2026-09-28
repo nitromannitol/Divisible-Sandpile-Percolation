@@ -2,6 +2,23 @@ import Sandpile.Support.ExplBrownianSemigroup
 import Sandpile.Support.ExplHorizon
 import Sandpile.Support.StopMeasurable
 import Sandpile.Support.ExplGreenFubini
+
+/-!
+# Brownian Path-Radius Envelope
+
+This module builds an integrable dominating function for stopped Brownian payoffs
+with polynomial spatial growth. It defines `brownianPathRadius`, the maximum
+displacement of a Brownian path from its starting point over a compact time
+interval `[0, T]`, proves it is measurable and satisfies a Gaussian tail bound
+(via `LatticeProb.brownian_exit_tail_pos`), and deduces that every polynomial
+moment of `brownianPathRadius` is finite. The main payoff is
+`exists_brownian_envelope_of_polynomial_growth`, which converts a polynomial
+growth bound on a payoff function `h` into a single integrable envelope `D`
+dominating `h` along the path at every admissible stopping time, and
+`bddAbove_stoppingPayoffs_of_integrable_envelope`, which upgrades such an
+envelope into boundedness of the set of stopping payoffs.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
@@ -13,6 +30,9 @@ noncomputable def brownianPathRadius {Ω : Type*} {d : ℕ}
   sSup ((fun s : ℝ≥0 => ‖B s ω - x‖) '' Set.Icc 0 T)
 
 
+/-- `a < brownianPathRadius B x T ω` iff the path exceeds displacement `a` from `x`
+at some time `s ≤ T`: the defining `sSup` over a compact, continuous image is
+attained, so `lt_csSup_iff` reduces the strict inequality to this witness form. -/
 theorem lt_pathRadius {Ω : Type*} {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (hBc : ∀ ω, Continuous fun s => B s ω)
     (x : Space d) (T : ℝ≥0) (ω : Ω) (a : ℝ) :
@@ -28,6 +48,10 @@ theorem lt_pathRadius {Ω : Type*} {d : ℕ}
     exact ⟨s, hs.2, ha⟩
   · rintro ⟨s, hs, ha⟩
     exact ⟨_, ⟨s, ⟨zero_le, hs⟩, rfl⟩, ha⟩
+
+/-- The displacement `‖B s ω - x‖` at any time `s ≤ T` is bounded above by the
+path radius `brownianPathRadius B x T ω`, since the radius is the supremum of
+these displacements over `Set.Icc 0 T`. -/
 theorem norm_le_pathRadius {Ω : Type*} {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (hBc : ∀ ω, Continuous fun s => B s ω)
     (x : Space d) (T : ℝ≥0) (ω : Ω) {s : ℝ≥0} (hs : s ≤ T) :
@@ -37,6 +61,9 @@ theorem norm_le_pathRadius {Ω : Type*} {d : ℕ}
     (isCompact_Icc.image hc).bddAbove
   exact le_csSup hb ⟨s, ⟨zero_le, hs⟩, rfl⟩
 
+/-- `brownianPathRadius` is measurable, proved via `measurable_of_Ioi` by rewriting
+each preimage of `Set.Ioi a` as the existential set from `lt_pathRadius`, whose
+measurability comes from `LatticeProb.measurableSet_exists_le_lt_norm`. -/
 theorem measurable_pathRadius {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (hm : ∀ s, Measurable (B s))
     (hBc : ∀ ω, Continuous fun s => B s ω) (x : Space d) (T : ℝ≥0) :
@@ -50,6 +77,10 @@ theorem measurable_pathRadius {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
   rw [he]
   exact LatticeProb.measurableSet_exists_le_lt_norm B hm hBc x a T
 
+/-- A Gaussian tail bound for the path radius: `P(a < brownianPathRadius B x T) ≤
+C exp(-c a² / (T+1))` for constants `C, c > 0` independent of the Brownian motion,
+derived from `LatticeProb.brownian_exit_tail_pos` via the `hsub` inclusion into the
+exit event at time horizon `T + 1`. -/
 theorem brownian_pathRadius_tail (d : ℕ) :
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
       ∀ (Ω : Type*) [MeasurableSpace Ω] (P : Measure Ω), IsProbabilityMeasure P →
@@ -70,6 +101,9 @@ theorem brownian_pathRadius_tail (d : ℕ) :
   exact (measure_mono hsub).trans
     (ht x Ω P hP B (isBrownianSpace_of_isBrownian hB) a ha ((T : ℝ) + 1) (by positivity))
 
+/-- `∑ n, (n + 2)^p exp(-a n²)` converges for any polynomial degree `p` and any
+`a > 0`, by comparison with the shifted series `∑ n, (n + 2)^p exp(-a(n + 2))`,
+which is summable by `Real.summable_pow_mul_exp_neg_nat_mul`. -/
 theorem summable_polynomial_mul_gaussian (p : ℕ) {a : ℝ} (ha : 0 < a) :
     Summable (fun n : ℕ => ((n : ℝ) + 2) ^ p * Real.exp (-(a * (n : ℝ) ^ 2))) := by
   have hbase : Summable (fun n : ℕ => ((n : ℝ) + 2) ^ p * Real.exp (-a * ((n : ℝ) + 2))) := by
@@ -94,6 +128,10 @@ theorem summable_polynomial_mul_gaussian (p : ℕ) {a : ℝ} (ha : 0 < a) :
       congr 2
       ring
 
+/-- If the tail probabilities `P(n ≤ R)` decay fast enough that
+`∑ n, (n + 2)^p P(n ≤ R)` converges, then `(1 + R)^p` is integrable, by slicing
+`Ω` into the level sets `{n ≤ R ≤ n + 1}` and summing the resulting integral
+bounds via `integrableOn_iUnion_of_summable_integral_norm`. -/
 theorem integrable_polynomial_of_summable_tail {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) [IsFiniteMeasure P] (R : Ω → ℝ) (hm : Measurable R)
     (hn : ∀ ω, 0 ≤ R ω) (p : ℕ)
@@ -114,7 +152,8 @@ theorem integrable_polynomial_of_summable_tail {Ω : Type*} [MeasurableSpace Ω]
     apply Summable.of_nonneg_of_le (fun _ => integral_nonneg fun _ => norm_nonneg _) _ hs
     intro n
     calc (∫ ω in S n, ‖(1 + R ω) ^ p‖ ∂P)
-        ≤ ∫ _ in S n, ((n : ℝ) + 2) ^ p ∂P := integral_mono_ae (hi n).norm (integrable_const _) (hb n)
+        ≤ ∫ _ in S n, ((n : ℝ) + 2) ^ p ∂P :=
+          integral_mono_ae (hi n).norm (integrable_const _) (hb n)
       _ = ((n : ℝ) + 2) ^ p * P.real (S n) := by simp [integral_const, Measure.real, mul_comm]
       _ ≤ ((n : ℝ) + 2) ^ p * P.real {ω | (n : ℝ) ≤ R ω} := by
           apply mul_le_mul_of_nonneg_left (measureReal_mono (fun ω hω => hω.1))
@@ -185,6 +224,10 @@ end Sandpile.Support
 namespace Sandpile.Continuum
 open Sandpile.Continuum
 
+/-- The set of stopping payoffs `stoppingPayoffs B P h T` is bounded above by
+`∫ D dP` whenever `D` is an integrable dominating function: every payoff
+`-h(T - τ, B τ)` for an admissible stopping time `τ` is bounded a.e. by `D`, so
+its integral is bounded by `∫ D dP` via `integral_mono_ae`. -/
 theorem bddAbove_stoppingPayoffs_of_integrable_envelope {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P] {B : ℝ≥0 → Ω → Space d}
     {x : Space d} (hB : IsBrownian d x B P)

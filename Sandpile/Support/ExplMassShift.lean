@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Odometer
+import Sandpile.Law
+
+/-!
+# The Mass Shift of Theorem 1.1
+
 The mass shift of the proof of Theorem 1.1 (`sandpile.tex:317-342`).  The proof
 of `thm:main-nontriviality` from `thm:main-critical-level-percolation` raises
 every mass by `1-ρ`,
@@ -20,8 +25,6 @@ relaxation step by `2db` plus `2d` times the increment already accumulated in
 the neighbour sum, so the increment grows by exactly `b` per step; the positive
 part only helps, because `max 0 (A + c) ≤ max 0 A + c` for `c ≥ 0`.
 -/
-import Sandpile.Support.Odometer
-import Sandpile.Law
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal

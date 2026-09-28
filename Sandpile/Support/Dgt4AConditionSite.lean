@@ -1,24 +1,25 @@
-/-
-The conditioning of `Support/Dgt4ACondition.lean` at a GENERAL site, which is the
-linear regression formula of Step 3 (`sandpile.tex:5165-5175`).
+import Sandpile.Support.Dgt4ACovSuper
+import Sandpile.Support.Dgt4AConditionField
 
-At the conditioned level `s` the field at a site `x` splits as
+/-!
+# The linear regression formula at a general site
+
+The conditioning of `Support/Dgt4ACondition.lean` at a GENERAL site, which is the linear
+regression formula of Step 3 (`sandpile.tex:5165-5175`). At the conditioned level `s` the field
+at a site `x` splits as
 
   `V_\infty(x)=\sqrt v\,L_x(r)+\sqrt v\,s\,\|G(0,\cdot)\|^{-1}\sum_zG(x,z)G(0,z)`,
 
-a residual random variable plus a deterministic term.  Since the conditioned value is
+a residual random variable plus a deterministic term. Since the conditioned value is
 `V_\infty(0)=\sqrt v\,s\,\|G(0,\cdot)\|`, the deterministic term is
-`V_\infty(0)\Cov(V_\infty(x),V_\infty(0))/\Sigma^2`, which is exactly the paper's
-"conditional mean of the mean-zero Gaussian field is its linear regression on the
-conditioned value".  At `x=0` the residual limit is `0` and this is
-`Support/Dgt4AConditionField.lean`.
+`V_\infty(0)\Cov(V_\infty(x),V_\infty(0))/\Sigma^2`, which is exactly the paper's "conditional
+mean of the mean-zero Gaussian field is its linear regression on the conditioned value". At
+`x=0` the residual limit is `0` and this is `Support/Dgt4AConditionField.lean`.
 
-The residual limit exists almost surely; the statement is the one that transports
-along the law of the residual field, because the existence of a limit of measurable
-functions is a measurable condition even when the limit depends on the point.
+The residual limit exists almost surely; the statement is the one that transports along the law
+of the residual field, because the existence of a limit of measurable functions is a measurable
+condition even when the limit depends on the point.
 -/
-import Sandpile.Support.Dgt4ACovSuper
-import Sandpile.Support.Dgt4AConditionField
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -39,6 +40,9 @@ theorem tendsto_greenPartialSum_greenUnit_site (hd : 5 ≤ d) (x : Site d) :
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun z _ => by rw [coeFn_greenUnit hd z]; ring
 
+/-- The `n`-th partial sum of the Green field at a general site `x` equals the sum of
+`G(x,z)ζ(z)` over the box `boxFinset 0 n`, the general-site version of
+`infiniteGreenFieldPartial_boxFinset`. -/
 theorem infiniteGreenFieldPartial_boxFinset_site (n : ℕ) (ζ : Site d → ℝ) (x : Site d) :
     infiniteGreenFieldPartial n ζ x = ∑ z ∈ boxFinset (0 : Site d) n, green d x z * ζ z := by
   rw [infiniteGreenFieldPartial,

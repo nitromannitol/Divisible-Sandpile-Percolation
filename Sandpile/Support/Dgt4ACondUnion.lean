@@ -1,15 +1,16 @@
-/-
+import Sandpile.Support.Dgt4ACondMeas
+
+/-!
+# The union bound of Step 3
+
 The union bound of Step 3 (`sandpile.tex:5180-5189`): "A union bound and the Gaussian tail
 estimate `eq:dgt4-gaussian-height-order` therefore give
 `\P(\min_{0<|z|\leq k_n+1}(V_\infty(z)+\E u_n(0))\leq0\mid\cdot)\leq Ck_n^d
-\exp\{-c(\E u_n(0))^2\}`."
-
-The union bound itself is subadditivity over the punctured box, which needs no measurability;
-`Support/Dgt4ACorrGap.lean` supplies the conditional mean at each site of the box and
-`Support/Dgt4ACondMeas.lean` the measurability that makes each term a probability.  What is
-left for the successor is the Gaussian tail at a single site of the residual law.
+\exp\{-c(\E u_n(0))^2\}`." The union bound itself is subadditivity over the punctured box, which
+needs no measurability; `Support/Dgt4ACorrGap.lean` supplies the conditional mean at each site of
+the box and `Support/Dgt4ACondMeas.lean` the measurability that makes each term a probability.
+What is left for the successor is the Gaussian tail at a single site of the residual law.
 -/
-import Sandpile.Support.Dgt4ACondMeas
 
 open MeasureTheory Filter Topology Set
 open scoped ENNReal NNReal

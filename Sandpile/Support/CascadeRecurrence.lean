@@ -1,8 +1,21 @@
-/-
-Uniform probability recurrence and initial scale for annular crossings.
--/
 import Sandpile.Support.CascadeGeometry
 import Sandpile.Support.PointwiseConc
+
+/-!
+# Recurrence and initial-scale bounds for annular-crossing probabilities
+
+Uniform probability recurrence and initial scale for annular crossings. `annularProbability`
+takes the worst-case (over centers) probability of the paper's `lowCrossingEvent` at a given
+time, level, and radius under an i.i.d. field. `exists_annular_probability_step` proves the key
+recurrence: the probability at radius `64R` is bounded by a constant times the square of the
+probability at radius `R`, plus a stretched-exponential correction, by combining
+`exists_separated_subcrossings` with the frozen paper theorem
+`Frozen.dgt4_level_shift_decoupling` over the finitely many `separatedPairs` of grid centers.
+`exists_annular_probability_initial` supplies the base case at radius `1`, from pointwise
+odometer concentration (`exists_odometerOf_conc`) via a union bound over a bounded box of sites.
+`annularProbability_antitone_level` records that the probability decreases as the crossing level
+increases.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
@@ -11,12 +24,17 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The set of pairs `(x₁, x₂)` of grid centers from `coarseCenters x R` whose radius-`2R` boxes
+are at distance at least `4R` apart: the candidate separated pairs for splitting an annular
+crossing. -/
 noncomputable def separatedPairs (x : Site d) (R : ℕ) : Finset (Site d × Site d) := by
   classical
   exact ((coarseCenters x R).product (coarseCenters x R)).filter fun p =>
     ∀ z₁ : Site d, boxDist z₁ p.1 ≤ 2 * R →
       ∀ z₂ : Site d, boxDist z₂ p.2 ≤ 2 * R → 4 * R ≤ boxDist z₁ z₂
 
+/-- `separatedPairs x R` has at most `(259 ^ d) ^ 2` elements, from the product bound on
+`coarseCenters`. -/
 lemma card_separatedPairs_le (x : Site d) (R : ℕ) :
     (separatedPairs x R).card ≤ (259 ^ d) ^ 2 := by
   classical
@@ -26,6 +44,10 @@ lemma card_separatedPairs_le (x : Site d) (R : ℕ) :
     _ ≤ 259 ^ d * 259 ^ d := Nat.mul_le_mul (card_coarseCenters_le x R) (card_coarseCenters_le x R)
     _ = (259 ^ d) ^ 2 := (pow_two _).symm
 
+/-- The large-scale (`64R`) `lowCrossingEvent` is contained in the union, over `separatedPairs`,
+of the intersection of the two small-scale (`R`) `lowCrossingEvent`s at the pair's centers: the
+event-level translation of `exists_separated_subcrossings` via
+`hasStarAnnularCrossing_iff_lowCrossing`. -/
 lemma lowCrossing_subset_pair_union [NeZero d] (t : ℕ) (m : ℝ) (x : Site d) (R : ℕ)
     (hR : 1 ≤ R) (s : ℝ) :
     Frozen.DGT4LevelShiftDecoupling.lowCrossingEvent t m x ((64 * R : ℕ) : ℝ) s ⊆
@@ -43,14 +65,24 @@ lemma lowCrossing_subset_pair_union [NeZero d] (t : ℕ) (m : ℝ) (x : Site d) 
   exact ⟨(hasStarAnnularCrossing_iff_lowCrossing ω t m x₁ R s).mp h₁,
     (hasStarAnnularCrossing_iff_lowCrossing ω t m x₂ R s).mp h₂⟩
 
+/-- The worst-case, over all centers `x`, probability of the `lowCrossingEvent` at time `t`,
+mean `m`, radius `R` and level `s`, under the i.i.d. field with marginal `ν`. -/
 noncomputable def annularProbability (ν : Measure ℝ) (t : ℕ) (m : ℝ) (R : ℕ) (s : ℝ) : ℝ≥0∞ :=
   ⨆ x : Site d, (LatticeProb.iidLaw d ν)
     (Frozen.DGT4LevelShiftDecoupling.lowCrossingEvent t m x (R : ℝ) s)
 
+/-- `annularProbability` is at most `1`, since each `lowCrossingEvent` probability is and the
+supremum of values at most `1` is at most `1`. -/
 lemma annularProbability_le_one (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (t : ℕ) (m : ℝ) (R : ℕ) (s : ℝ) : annularProbability (d := d) ν t m R s ≤ 1 :=
   iSup_le fun _ => prob_le_one
 
+/-- The key uniform recurrence: for `d ≥ 5` and moment conditions on `ν`, the annular-crossing
+probability at radius `64R` is bounded by a constant times the square of the probability at
+radius `R`, plus a stretched-exponential correction term, uniformly in `ν`, `t`, `R` and the
+level split `s = (s - 2a) + 2a`. It follows from the frozen paper theorem
+`Frozen.dgt4_level_shift_decoupling` applied to each pair in `separatedPairs`, summed via
+`lowCrossing_subset_pair_union` and a union bound. -/
 lemma exists_annular_probability_step (_hGH : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
@@ -125,6 +157,10 @@ lemma exists_annular_probability_step (_hGH : External.GreenBoundsHigh)
       apply ENNReal.ofReal_le_ofReal
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hNC₀ (by positivity)) he
 
+/-- The base case at radius `1`: the annular-crossing probability with level `s = m / 4` (a
+quarter of the mean odometer `m`) is bounded by a stretched exponential in `m`. Obtained from the
+pointwise odometer concentration `exists_odometerOf_conc` by a union bound over the `5 ^ d`
+sites of the radius-`2` box about each center. -/
 lemma exists_annular_probability_initial (hGH : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →
@@ -133,7 +169,8 @@ lemma exists_annular_probability_initial (hGH : External.GreenBoundsHigh)
       1 ≤ Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t →
         annularProbability (d := d) ν t (Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t)
           1 (Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t / 4) ≤
-          ENNReal.ofReal (C * Real.exp (-(c * Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t))) := by
+          ENNReal.ofReal
+            (C * Real.exp (-(c * Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t))) := by
   classical
   obtain ⟨c, C, hc, hC, hconc⟩ := exists_odometerOf_conc hGH hd θ K hθ
   refine ⟨c / 16, (5 : ℝ) ^ d * C, by positivity, by positivity, ?_⟩
@@ -188,6 +225,9 @@ lemma exists_annular_probability_initial (hGH : External.GreenBoundsHigh)
       push_cast
       ring
 
+/-- `annularProbability` is antitone in the level: raising the crossing threshold from `s` to
+`u ≥ s` (a more negative deviation `-u ≤ -s`, hence a rarer event) can only decrease the
+probability. -/
 lemma annularProbability_antitone_level {d : ℕ} (ν : Measure ℝ)
     (t : ℕ) (m : ℝ) (R : ℕ) {s u : ℝ} (hsu : s ≤ u) :
     annularProbability (d := d) ν t m R u ≤ annularProbability (d := d) ν t m R s := by

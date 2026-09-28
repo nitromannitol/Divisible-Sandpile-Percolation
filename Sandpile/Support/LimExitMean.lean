@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LimExitTail
+import LatticeProb.Prob.BrownianExitTime
+
+/-!
+# Geometric decay of the mean ball-exit overshoot
+
 The mean overshoot of the ball exit time past a horizon decays geometrically,
 uniformly in the starting point and in the Brownian model.
 
@@ -20,8 +25,6 @@ the probability space into one whose horizon is chosen before it, and it is what
 chaining estimate needs, since a rate is what lets a growing modulus constant be
 beaten.
 -/
-import Sandpile.Support.LimExitTail
-import LatticeProb.Prob.BrownianExitTime
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -32,6 +35,7 @@ namespace Sandpile.Support
 /-- The block length `4ds²` of `LimExitTail.lean`. -/
 noncomputable def blockLen (d : ℕ) (s : ℝ) : ℝ≥0 := ⟨4 * d * s ^ 2, by positivity⟩
 
+/-- The block length is strictly positive whenever the dimension and the radius are. -/
 theorem blockLen_pos {d : ℕ} (hd : 0 < d) {s : ℝ} (hs : 0 < s) : 0 < blockLen d s := by
   rw [blockLen, ← NNReal.coe_lt_coe]
   have hd0 : (0 : ℝ) < d := by exact_mod_cast hd
@@ -41,10 +45,12 @@ theorem blockLen_pos {d : ℕ} (hd : 0 < d) {s : ℝ} (hs : 0 < s) : 0 < blockLe
 /-- The geometric ratio `1/√(2π)` of the block estimate. -/
 noncomputable def blockRatio : ℝ := 1 / Real.sqrt (2 * Real.pi)
 
+/-- The geometric ratio `1/√(2π)` is positive. -/
 theorem blockRatio_pos : 0 < blockRatio := by
   rw [blockRatio]
   positivity
 
+/-- The geometric ratio `1/√(2π)` is less than `1`, since `√(2π) > 1`. -/
 theorem blockRatio_lt_one : blockRatio < 1 := by
   rw [blockRatio, div_lt_one (by positivity)]
   have h2 : (2 : ℝ) < 2 * Real.pi := by nlinarith [Real.pi_gt_three]
@@ -105,10 +111,12 @@ noncomputable def exitOvershoot (B : ℝ≥0 → Ω → Space d) (y : Space d) (
   max ((LatticeProb.exitTime B y s ω).toReal - t) 0
 
 omit [MeasurableSpace Ω] in
+/-- The overshoot is nonnegative, directly from the outer `max` with `0`. -/
 theorem exitOvershoot_nonneg (B : ℝ≥0 → Ω → Space d) (y : Space d) (s t : ℝ) (ω : Ω) :
     0 ≤ exitOvershoot B y s t ω := le_max_right _ _
 
 omit [MeasurableSpace Ω] in
+/-- The overshoot past a later time is at most the overshoot past an earlier one. -/
 theorem exitOvershoot_antitone (B : ℝ≥0 → Ω → Space d) (y : Space d) (s : ℝ) {t t' : ℝ}
     (h : t ≤ t') (ω : Ω) : exitOvershoot B y s t' ω ≤ exitOvershoot B y s t ω := by
   unfold exitOvershoot
@@ -116,6 +124,9 @@ theorem exitOvershoot_antitone (B : ℝ≥0 → Ω → Space d) (y : Space d) (s
   linarith
 
 omit [MeasurableSpace Ω] in
+/-- **The one-step inequality** `(θ − t)⁺ ≤ T₀·1_{θ > t} + (θ − t − T₀)⁺` behind the geometric
+decay: casing on whether the exit time `θ` exceeds `t` and, if so, on whether it exceeds
+`t + T₀`, reduces the claim to elementary arithmetic on `max`. -/
 theorem exitOvershoot_le_step (B : ℝ≥0 → Ω → Space d) (y : Space d) (s t : ℝ) {T₀ : ℝ}
     (hT₀ : 0 ≤ T₀) (ω : Ω) :
     exitOvershoot B y s t ω
@@ -142,12 +153,16 @@ theorem exitOvershoot_le_step (B : ℝ≥0 → Ω → Space d) (y : Space d) (s 
     have h2 : (0 : ℝ) ≤ max (θ - (t + T₀)) 0 := le_max_right _ _
     linarith
 
+/-- The overshoot is measurable, as `max` of the (measurable, real-valued) exit time
+minus `t` and the constant `0`. -/
 theorem measurable_exitOvershoot (hm : ∀ t, StronglyMeasurable (B t))
     (hc : ∀ ω, Continuous fun t => B t ω) (y : Space d) (s t : ℝ) :
     Measurable (exitOvershoot B y s t) := by
   have h := (LatticeProb.measurable_exitTime hm hc y s).ennreal_toReal
   exact (h.sub measurable_const).max measurable_const
 
+/-- The overshoot is integrable whenever the exit time itself is, since it is dominated
+by `|exitTime| + |t|`. -/
 theorem integrable_exitOvershoot (hm : ∀ t, StronglyMeasurable (B t))
     (hc : ∀ ω, Continuous fun t => B t ω) (y : Space d) (s t : ℝ)
     (hint : Integrable (fun ω => (LatticeProb.exitTime B y s ω).toReal) P) :

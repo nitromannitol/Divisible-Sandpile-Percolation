@@ -1,24 +1,18 @@
-/-
-Step 2 of `lem:dgt4-path-survival` handed to the deterministic chain.
-
-`Sandpile.abs_prod_pow_sub_rpow_le` (`Support/LinProduct.lean`) already runs the paper's
-`sandpile.tex:5559-5571` in full: from `\prod_{r\leq j}(1-\pi_{R,r})^{I_{r,j}(X)}` through
-`\exp\{-\sum_rI_{r,j}(X)\pi_{R,r}\}` to the profile `(1-j/n_R)^\kappa`, with the two errors
-`2\sum_rI_{r,j}\pi_{R,r}^2` and `\kappa\eta+\varepsilon\kappa(\eta-L)`.  It takes the exponent
-as a NATURAL number.  `abs_survival_sub_prod_nat_le` produces exactly its left-hand side from
-the survival probability, using the replacement and factorization of
-`Support/LinStep2Replace.lean` and the two identifications of `Support/LinStep2Window.lean`.
-
-`measureReal_threshold_le_eq` is the one identification the chain still needs:
-`\P(J(0)\leq b_r)=1-\pi_{R,r}`.  The threshold event is only null measurable in the Gaussian
-branch (`Support/LinThresholdNull.lean`), so the complement is taken with `measure_compl₀`.
-
-`abs_survival_sub_rpow_le` is then the whole of Step 2 along one path: the four errors of the
-paper's argument added by two triangle inequalities.  What is left of the lemma's first
-conclusion is the integration over the walk, where the last two errors become the frozen
-`lem:dgt4-weighted-last-visits`, and the split of the sum over `j` at `(1-\varepsilon)n_R`.
--/
 import Sandpile.Support.LinStep2Window
+
+/-!
+# Step 2 of the path-survival estimate, assembled along one path
+
+The deterministic chain `abs_prod_pow_sub_rpow_le` bounds `∏_{r≤j} (1 - π_r) ^ I_{r,j}(X)` against
+the profile `x ^ κ` for a natural-number last-visit exponent. This file supplies the remaining
+pieces needed to apply it to the survival probability: `abs_survival_sub_prod_nat_le` produces the
+chain's left-hand side from the survival probability using a replacement and a factorization
+error, and `measureReal_threshold_le_eq` identifies `P (J(0) ≤ b_r)` with `1 - π_r` for a threshold
+event that is only null measurable. Combining these, `abs_survival_sub_rpow_le` bounds the survival
+probability along a single path against the profile `x ^ κ` by the sum of four errors: the
+replacement error, the factorization error, the product-to-exponential error, and the error of the
+weighted last-visit sum.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

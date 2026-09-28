@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossFieldTilt
+
+/-!
+# Field versions and the mass of the unit kernel
+
 Two facts the concrete exploration of Step 2 needs.
 
 **Versions.**  The exploration reads the field through the noise of the cubes it has revealed,
@@ -16,7 +20,6 @@ exploration evaluates").  `integral_ballKernel_mul_indicator_of_covers` is that 
 `integral_ballKernel_eq_centred` says the resulting mass is the same at every point, so the
 level is raised by the same amount everywhere.
 -/
-import Sandpile.Support.CrossFieldTilt
 
 open MeasureTheory ProbabilityTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -26,6 +29,8 @@ namespace Sandpile.Support
 
 /-! ### Versions of the field -/
 
+/-- Two fields agreeing almost surely at every point give almost surely the same `pathEvent`:
+the event reads the field only at the countably many rational points of the segment. -/
 theorem pathEvent_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (X Y : Space 2 → Ω → ℝ) (h : ∀ u, X u =ᵐ[P] Y u) (l : ℝ) (n : ℕ)
     (v : ℕ → Space 2) : pathEvent X l n v =ᵐ[P] pathEvent Y l n v := by
@@ -44,6 +49,8 @@ theorem pathEvent_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P : Measu
       (j < n → 0 ≤ q → q ≤ 1 → l ≤ Y (segPt (v j) (v (j + 1)) (q : ℝ)) ω)
   rw [hω]
 
+/-- Lifts `pathEvent_ae_eq_of_field_ae` through the countable union over admissible chains
+defining `crossApprox`, so field-agreement almost surely propagates to it. -/
 theorem crossApprox_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (X Y : Space 2 → Ω → ℝ) (h : ∀ u, X u =ᵐ[P] Y u) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     crossApprox X a b i l =ᵐ[P] crossApprox Y a b i l := by
@@ -112,11 +119,16 @@ nonnegative away from the origin, where in dimension three the reciprocal `1/‖
 junk value `0` and the kernel is negative; the origin is a null set, so the integral is
 unaffected. -/
 
+/-- Outside the unit ball at the origin the centred kernel vanishes, by the same case split as
+`ballKernel_eq_zero_of_one_le`. -/
 theorem centredKernel_eq_zero_of_one_le {d : ℕ} {y : Space d} (hy : 1 ≤ ‖y‖) :
     centredKernel d 1 y = 0 := by
   unfold centredKernel
   rw [if_neg (not_lt.mpr hy)]
 
+/-- Inside the punctured unit ball the centred kernel is strictly positive: in dimension `2` it
+is `log(1/‖y‖)/(2π)`, and in dimension `3` it is `(1/‖y‖ - 1)/(4π)`, both positive since
+`‖y‖ < 1`. -/
 theorem centredKernel_pos_of_lt_one {d : ℕ} {y : Space d} (hy : y ≠ 0) (h1 : ‖y‖ < 1) :
     0 < centredKernel d 1 y := by
   have hpos : 0 < ‖y‖ := norm_pos_iff.mpr hy
@@ -137,12 +149,18 @@ theorem centredKernel_pos_of_lt_one {d : ℕ} {y : Space d} (hy : y ≠ 0) (h1 :
       linarith
     exact mul_pos hpi hgap
 
+/-- Away from the origin the centred kernel is nonnegative, combining
+`centredKernel_pos_of_lt_one` inside the unit ball with `centredKernel_eq_zero_of_one_le`
+outside it. -/
 theorem centredKernel_nonneg_of_ne_zero {d : ℕ} {y : Space d} (hy : y ≠ 0) :
     0 ≤ centredKernel d 1 y := by
   by_cases h1 : ‖y‖ < 1
   · exact (centredKernel_pos_of_lt_one hy h1).le
   · rw [centredKernel_eq_zero_of_one_le (not_lt.mp h1)]
 
+/-- The centred kernel is integrable: it is in `L²` by `memLp_centredKernel`, vanishes outside
+the finite-measure unit ball by `centredKernel_eq_zero_of_one_le`, so `L²` on a finite-measure
+support gives `L¹`. -/
 theorem integrable_centredKernel {d : ℕ} (hd : d = 2 ∨ d = 3) :
     Integrable (centredKernel d 1) (volume : Measure (Space d)) := by
   have hmem : MemLp (centredKernel d 1) 2 (volume : Measure (Space d)) :=

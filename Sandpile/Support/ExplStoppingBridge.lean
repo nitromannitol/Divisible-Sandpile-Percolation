@@ -1,14 +1,17 @@
-/-
-Natural stopping times in the continuous heat-potential Fubini and horizon identities.
-
-Strongly measurable motion coordinates make every natural Brownian stopping time
-measurable in the ambient space. The stopped-field interchange therefore applies
-to every admissible bounded stop. The backward-martingale criterion uses exactly
-the same stopping class, with its analytic hypotheses retained.
--/
 import Sandpile.Support.ExplGreenFubini
 import Sandpile.Support.ExplHorizonMartingale
 import Sandpile.Support.StopMeasurable
+
+/-!
+# Natural stopping times in the continuous Fubini and horizon identities
+
+Natural stopping times in the continuous heat-potential Fubini and horizon identities.
+
+Strongly measurable motion coordinates make every natural Brownian stopping time measurable in
+the ambient space. The stopped-field interchange therefore applies to every admissible bounded
+stop. The backward-martingale criterion uses exactly the same stopping class, with its analytic
+hypotheses retained.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -17,7 +20,13 @@ namespace Sandpile.Continuum
 
 open Sandpile.Support
 
-theorem horizonFreeIncrement_of_natural_backward_martingale {Ω : Type*} [mΩ : MeasurableSpace Ω] {d : ℕ}
+/-- **The backward-martingale horizon-free increment, restricted to natural stopping times.**
+Specializes `horizonFreeIncrement_of_backward_martingale` to the natural filtration of `B`: every
+`IsBrownianStopping B τ` is measurable there and is a stopping time for it
+(`isBrownianStopping_iff_natFiltration`), so the martingale hypothesis need only be checked on
+this one class. -/
+theorem horizonFreeIncrement_of_natural_backward_martingale {Ω : Type*}
+    [mΩ : MeasurableSpace Ω] {d : ℕ}
     (P : Measure Ω) [IsProbabilityMeasure P] (B : ℝ≥0 → Ω → Space d)
     (hBc : ∀ ω, Continuous fun r => B r ω) (hBm : ∀ r, StronglyMeasurable (B r))
     (h : ℝ → Space d → ℝ) (hc : Continuous fun p : ℝ≥0 × Space d => h p.1 p.2)
@@ -33,6 +42,10 @@ theorem horizonFreeIncrement_of_natural_backward_martingale {Ω : Type*} [mΩ : 
     (fun τ hτ => ⟨hτ.measurable hBm, (isBrownianStopping_iff_natFiltration B hBm τ).1 hτ⟩)
     hM D hD hdom
 
+/-- **The pointwise stopped-field identity, for an `IsBrownianStopping` stop.** Restates
+`gaussianPotential_stopped_integral_comm_pointwise` with the hypothesis `IsBrownianStopping B τ`
+in place of bare measurability of `τ`, using that such a `τ` is measurable
+(`IsBrownianStopping.measurable`). -/
 theorem gaussianPotential_stopping_integral_comm_pointwise {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}

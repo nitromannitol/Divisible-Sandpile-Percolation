@@ -1,10 +1,12 @@
-/-
-The spatial modulus of the interpolated odometer at large scales. The lattice
-modulus controls the two lower corners, and the cell oscillation controls the
-interpolation error at each endpoint.
--/
 import Sandpile.Support.MainExplInterpolationLimit
 import Sandpile.Support.MainExplBoundedScale
+
+/-!
+# The spatial modulus of the interpolated odometer at large scales
+
+The lattice modulus controls the two lower corners, and the cell oscillation controls the
+interpolation error at each endpoint.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

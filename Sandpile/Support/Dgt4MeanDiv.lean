@@ -1,14 +1,14 @@
-/-
-Two facts about the scenery law and the mean odometer that both proofs of
-`prop:dgt4-contact-asymptotics` open with.
-
-Case (a) uses `E u_n(0) → ∞` through `eq:dgt4-gaussian-height-order`
-(`sandpile.tex:5033`), and case (b) states it outright: "By Part (i) of
-Corollary~\ref{cor:dgt4-mean-lower}, `E u_n(0) → ∞`" (`sandpile.tex:5309`).  The
-corollary is sealed, and its nondegeneracy hypothesis is supplied by the
-atomlessness of the scenery law.
--/
 import Sandpile.Support.OriginProfile
+
+/-!
+# Divergence of the mean odometer
+
+Two facts about the scenery law and the mean odometer that both proofs of
+`prop:dgt4-contact-asymptotics` open with. Case (a) uses `E u_n(0) → ∞` through
+`eq:dgt4-gaussian-height-order` (`sandpile.tex:5033`), and case (b) states it outright: "By Part
+(i) of Corollary~\ref{cor:dgt4-mean-lower}, `E u_n(0) → ∞`" (`sandpile.tex:5309`). The corollary
+is sealed, and its nondegeneracy hypothesis is supplied by the atomlessness of the scenery law.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

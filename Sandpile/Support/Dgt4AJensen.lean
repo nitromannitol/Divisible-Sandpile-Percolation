@@ -1,12 +1,15 @@
-/-
-The conditional Jensen step of the telescoping (`sandpile.tex:5074-5077`): `P^i` is an
-average against the `i`-step heat kernel, so the second moment of `P^iD_n(0)` is at most the
-average of the second moments of `D_n` over the sites the kernel charges, and by stationarity
-every one of those equals the second moment of `D_n(0)`.
--/
 import Sandpile.Support.Dgt4ADeviationField
 import Sandpile.Support.BlockIncrement
 import Sandpile.Support.D4Smoothed
+
+/-!
+# The conditional Jensen step of the telescoping
+
+The conditional Jensen step of the telescoping (`sandpile.tex:5074-5077`): `P^i` is an average
+against the `i`-step heat kernel, so the second moment of `P^iD_n(0)` is at most the average of
+the second moments of `D_n` over the sites the kernel charges, and by stationarity every one of
+those equals the second moment of `D_n(0)`.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -53,11 +56,16 @@ theorem integrable_sceneryDeviationField_sq (ν : Measure ℝ) [IsProbabilityMea
   refine h.congr (Filter.Eventually.of_forall fun ζ => ?_)
   simp only [sceneryDeviationField_shift]
 
+/-- `sceneryDeviationField d · n z` is measurable in the scenery, being built from the
+coordinate projection, `odometerOf` and the average of `odometerOf`, each measurable. -/
 theorem measurable_sceneryDeviationField (n : ℕ) (z : Site d) :
     Measurable fun ζ : Site d → ℝ => sceneryDeviationField d ζ n z :=
   (measurable_pi_apply z).sub ((measurable_odometerOf n z).sub
     (by simpa using Sandpile.measurable_avg_iterate_odometerOf (d := d) 1 n z))
 
+/-- The `i`-step average of the deviation field at the origin is measurable in the scenery, as
+a finite sum over the box weighted by the heat kernel of the measurable functions
+`sceneryDeviationField`. -/
 theorem measurable_avgIterate_sceneryDeviationField (n i : ℕ) :
     Measurable fun ζ : Site d → ℝ =>
       (avg^[i] (fun x => sceneryDeviationField d ζ n x)) 0 := by
@@ -69,6 +77,9 @@ theorem measurable_avgIterate_sceneryDeviationField (n i : ℕ) :
   exact Finset.measurable_sum _ fun z _ =>
     Measurable.const_mul (measurable_sceneryDeviationField n z) _
 
+/-- The squared `i`-step average of the deviation field is integrable, by Jensen's inequality
+`sq_sum_weighted_le` dominating it pointwise by the integrable heat-kernel-weighted sum of the
+squared coordinate deviations. -/
 theorem integrable_avgIterate_sceneryDeviationField_sq (hd : 1 ≤ d) (ν : Measure ℝ)
     [IsProbabilityMeasure ν] (n i : ℕ)
     (hint : Integrable (fun ζ : Site d → ℝ => sceneryDeviation d ζ n ^ 2)

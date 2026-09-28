@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ContFDFromContinuum
+
+/-!
+# The Continuum Double Time Limit
+
 The continuum half of the double time limit: the weighted double time integrals
 increase to the double time integral of `prop:dlt4-heat-potential-invariance`.
 
@@ -15,7 +19,6 @@ where Fubini for an integrable function turns the iterated integral of the
 statement into a single one, and the limit is the integral of the indicator of the
 rectangle, which is the double time integral of the proposition.
 -/
-import Sandpile.Support.ContFDFromContinuum
 
 open LatticeProb.TimeCut
 
@@ -27,6 +30,10 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- When the trapezoidal cutoffs `lowerCut n ρ s` and `lowerCut n ρ' u` are both
+nonzero, `s` and `u` are each at least `1 / (n + 1)`, so `s + u ≥ 2 / (n + 1)` and
+the `max` guarding the heat kernel's time argument against small times is inert:
+`heatKernelBM d (max (s + u) (2 / (n + 1))) = heatKernelBM d (s + u)`. -/
 theorem lowerCut_mul_kernel_max (n : ℕ) (ρ ρ' : ℝ) (w w' : Space d) (s u : ℝ) :
     lowerCut n ρ s * lowerCut n ρ' u *
         heatKernelBM d (max (s + u) (2 * (1 / ((n : ℝ) + 1)))) w w'
@@ -43,6 +50,10 @@ theorem lowerCut_mul_kernel_max (n : ℕ) (ρ ρ' : ℝ) (w w' : Space d) (s u :
     exact h2 (lowerCut_eq_zero_of_lt (not_le.mp hc))
   rw [max_eq_left (by linarith)]
 
+/-- The Brownian heat kernel `(s, u) ↦ heatKernelBM d (s + u) w w'` is integrable
+over the product of two bounded open time intervals, in dimension `1 ≤ d ≤ 3`,
+by Fubini and the finiteness of the time-square integral
+`lintegral_double_time_two_lt_top`. -/
 theorem integrable_double_time (hd : 1 ≤ d) (hd3 : d ≤ 3) (T T' : ℝ) (w w' : Space d) :
     Integrable (fun p : ℝ × ℝ => heatKernelBM d (p.1 + p.2) w w')
       ((volume.restrict (Set.Ioo (0 : ℝ) T)).prod (volume.restrict (Set.Ioo (0 : ℝ) T'))) := by
@@ -67,13 +78,23 @@ theorem integrable_double_time (hd : 1 ≤ d) (hd3 : d ≤ 3) (T T' : ℝ) (w w'
   rw [lintegral_congr_ae hinner]
   exact lintegral_double_time_two_lt_top hd hd3 w w'
 
+/-- The trapezoidally-cut double time integrand
+`lowerCut n r p.1 * lowerCut n r' p.2 * heatKernelBM d (p.1 + p.2) w w'` at a pair
+of times `p`, whose value at finite `n` truncates the heat kernel near the time
+axes and whose limit as `n → ∞` is `limKernel`. -/
 noncomputable def cutKernel (d : ℕ) (n : ℕ) (r r' : ℝ) (w w' : Space d) : ℝ × ℝ → ℝ :=
   fun p => lowerCut n r p.1 * lowerCut n r' p.2 * heatKernelBM d (p.1 + p.2) w w'
 
+/-- The double time integrand `heatKernelBM d (p.1 + p.2) w w'` restricted to the
+open rectangle `Set.Ioo 0 r ×ˢ Set.Ioo 0 r'` by a product of two indicator
+functions, the pointwise limit of `cutKernel` as `n → ∞`. -/
 noncomputable def limKernel (d : ℕ) (r r' : ℝ) (w w' : Space d) : ℝ × ℝ → ℝ :=
   fun p => Set.indicator (Set.Ioo 0 r) (fun _ => (1 : ℝ)) p.1 *
     Set.indicator (Set.Ioo 0 r') (fun _ => (1 : ℝ)) p.2 * heatKernelBM d (p.1 + p.2) w w'
 
+/-- `cutKernel d n r r' w w'` is measurable, being a product of the continuous
+trapezoidal weights `lowerCut n r`, `lowerCut n r'` and the (unfolded)
+Brownian heat kernel. -/
 theorem measurable_cutKernel (d n : ℕ) (r r' : ℝ) (w w' : Space d) :
     Measurable (cutKernel d n r r' w w') := by
   unfold cutKernel heatKernelBM
@@ -83,6 +104,9 @@ theorem measurable_cutKernel (d n : ℕ) (r r' : ℝ) (w w' : Space d) :
     (continuous_lowerCut n r').measurable.comp measurable_snd
   fun_prop
 
+/-- `limKernel d r r' w w'` is measurable, being a product of two indicator
+functions of the measurable intervals `Set.Ioo 0 r`, `Set.Ioo 0 r'` and the
+(unfolded) Brownian heat kernel. -/
 theorem measurable_limKernel (d : ℕ) (r r' : ℝ) (w w' : Space d) :
     Measurable (limKernel d r r' w w') := by
   unfold limKernel heatKernelBM
@@ -94,6 +118,8 @@ theorem measurable_limKernel (d : ℕ) (r r' : ℝ) (w w' : Space d) :
     ((measurable_const.indicator measurableSet_Ioo)).comp measurable_snd
   fun_prop
 
+/-- The indicator of the open interval `Set.Ioo 0 ρ` at any point of `ℝ` lies in
+`[0, 1]`. -/
 theorem indicator_mem_unit {ρ t : ℝ} :
     0 ≤ Set.indicator (Set.Ioo 0 ρ) (fun _ => (1 : ℝ)) t ∧
       Set.indicator (Set.Ioo 0 ρ) (fun _ => (1 : ℝ)) t ≤ 1 := by
@@ -101,11 +127,18 @@ theorem indicator_mem_unit {ρ t : ℝ} :
   · rw [Set.indicator_of_mem h]; norm_num
   · rw [Set.indicator_of_notMem h]; norm_num
 
+/-- The product of two copies of `volume` restricted to the same interval
+`Set.Ioo 0 T` equals the restriction of the product measure `volume.prod volume`
+to the square `Set.Ioo 0 T ×ˢ Set.Ioo 0 T`. -/
 theorem prod_restrict_eq (T : ℝ) :
     (volume.restrict (Set.Ioo (0 : ℝ) T)).prod (volume.restrict (Set.Ioo (0 : ℝ) T))
       = (volume.prod volume).restrict (Set.Ioo (0 : ℝ) T ×ˢ Set.Ioo (0 : ℝ) T) :=
   Measure.prod_restrict _ _
 
+/-- `cutKernel d n r r' w w'` is integrable on the time square
+`Set.Ioo 0 T ×ˢ Set.Ioo 0 T`, dominated by the integrable kernel of
+`integrable_double_time` since both trapezoidal weights `lowerCut` lie in
+`[0, 1]`. -/
 theorem integrable_cutKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) (n : ℕ) {T r r' : ℝ} (w w' : Space d) :
     Integrable (cutKernel d n r r' w w')
       ((volume.restrict (Set.Ioo (0 : ℝ) T)).prod (volume.restrict (Set.Ioo (0 : ℝ) T))) := by
@@ -127,6 +160,10 @@ theorem integrable_cutKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) (n : ℕ) {T r r' : 
       ≤ 1 * heatKernelBM d (p.1 + p.2) w w' := mul_le_mul_of_nonneg_right hprod hK
     _ = heatKernelBM d (p.1 + p.2) w w' := one_mul _
 
+/-- `limKernel d r r' w w'` is integrable on the time square
+`Set.Ioo 0 T ×ˢ Set.Ioo 0 T`, dominated by the integrable kernel of
+`integrable_double_time` since both indicator weights lie in `[0, 1]`
+(`indicator_mem_unit`). -/
 theorem integrable_limKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ} (w w' : Space d) :
     Integrable (limKernel d r r' w w')
       ((volume.restrict (Set.Ioo (0 : ℝ) T)).prod (volume.restrict (Set.Ioo (0 : ℝ) T))) := by
@@ -150,6 +187,10 @@ theorem integrable_limKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ} (w w'
       ≤ 1 * heatKernelBM d (p.1 + p.2) w w' := mul_le_mul_of_nonneg_right hprod hK
     _ = heatKernelBM d (p.1 + p.2) w w' := one_mul _
 
+/-- The integral of `cutKernel d n r r' w w'` over the time square tends, as
+`n → ∞`, to the integral of `limKernel d r r' w w'`. This is monotone
+convergence: the trapezoidal weights `lowerCut n r`, `lowerCut n r'` increase
+in `n` (`lowerCut_mono`) to the limiting indicators (`tendsto_lowerCut`). -/
 theorem tendsto_integral_cutKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ} (w w' : Space d) :
     Tendsto (fun n : ℕ => ∫ p, cutKernel d n r r' w w' p ∂((volume.restrict
         (Set.Ioo (0 : ℝ) T)).prod (volume.restrict (Set.Ioo (0 : ℝ) T)))) atTop
@@ -174,6 +215,9 @@ theorem tendsto_integral_cutKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ}
     have h2 := tendsto_lowerCut r' p.2
     exact (h1.mul h2).mul tendsto_const_nhds
 
+/-- `limKernel d r r' w w'` equals the indicator function of the open rectangle
+`Set.Ioo 0 r ×ˢ Set.Ioo 0 r'` applied to the heat kernel
+`p ↦ heatKernelBM d (p.1 + p.2) w w'`. -/
 theorem limKernel_eq_indicator (d : ℕ) (r r' : ℝ) (w w' : Space d) :
     limKernel d r r' w w'
       = (Set.Ioo (0 : ℝ) r ×ˢ Set.Ioo (0 : ℝ) r').indicator
@@ -182,6 +226,10 @@ theorem limKernel_eq_indicator (d : ℕ) (r r' : ℝ) (w w' : Space d) :
   by_cases h1 : p.1 ∈ Set.Ioo (0 : ℝ) r <;> by_cases h2 : p.2 ∈ Set.Ioo (0 : ℝ) r' <;>
     simp [limKernel, Set.mem_prod, h1, h2]
 
+/-- The integral of `limKernel d r r' w w'` over the time square
+`Set.Ioo 0 T ×ˢ Set.Ioo 0 T` (for `r, r' ≤ T`) equals the iterated integral of
+the heat kernel over the smaller rectangle `Set.Ioo 0 r ×ˢ Set.Ioo 0 r'`, by
+restricting the indicator via `limKernel_eq_indicator` and applying Fubini. -/
 theorem integral_limKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ}
     (hrT : r ≤ T) (hr'T : r' ≤ T) (w w' : Space d) :
     (∫ p, limKernel d r r' w w' p ∂((volume.restrict (Set.Ioo (0 : ℝ) T)).prod
@@ -204,11 +252,22 @@ theorem integral_limKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {T r r' : ℝ}
     integrable_double_time hd hd3 r r' w w'
   exact (integral_integral hint).symm
 
+/-- The integral of `F` over the open interval `Set.Ioo 0 ρ` (for `ρ ≥ 0`) equals
+the interval integral `∫ x in 0..ρ, F x`, since `Set.Ioo 0 ρ` and `Set.Ioc 0 ρ`
+agree almost everywhere. -/
 theorem setIntegral_Ioo_eq_intervalIntegral {ρ : ℝ} (hρ : 0 ≤ ρ) (F : ℝ → ℝ) :
     (∫ x in Set.Ioo (0 : ℝ) ρ, F x) = ∫ x in (0 : ℝ)..ρ, F x := by
   rw [intervalIntegral.integral_of_le hρ, Measure.restrict_congr_set Ioo_ae_eq_Ioc]
 
 set_option maxHeartbeats 1600000 in
+/-- **`ContinuumDoubleTimeLimit`.** The trapezoidally-weighted double time
+integral of the Brownian heat kernel over `Set.Ico 0 T ×ˢ Set.Ico 0 T` converges,
+as the trapezoid resolution `n → ∞`, to the iterated interval integral of the
+heat kernel over `(0, r) × (0, r')`. Proved by identifying the finite-`n`
+trapezoidal integrand with `cutKernel` (`lowerCut_mul_kernel_max`), passing to
+the limit by monotone convergence (`tendsto_integral_cutKernel`), and
+identifying that limit with the interval integral (`integral_limKernel`,
+`setIntegral_Ioo_eq_intervalIntegral`). -/
 theorem continuum_double_time_limit (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     ContinuumDoubleTimeLimit d := by
   intro r r' hr hr' w w'

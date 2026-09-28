@@ -1,23 +1,20 @@
-/-
-**The conclusion of Step 2** (`eq:dgt4-gaussian-conditional-terminal`,
-`sandpile.tex:5080-5131`):
-
-  `\E u_n(0)\,\E[P^{k_n+1}|V_\infty-u_{n-k_n}+\E u_n(0)|(0)\mid -V_\infty(0)=b]\to0`
-
-uniformly over the levels `b=\E u_n(0)+\Sigma^2y/\E u_n(0)` with `|y|\leq K`.  The
-unconditional statement is `tendsto_meanOdometer_mul_avgIterate_abs_centeredValue_horizon`;
-the comparison of `Support/Dgt4ACondStep2.lean` bounds the difference by the Lipschitz
-constant in the level times the mean distance to the level, and the two rate facts below say
-that what is left tends to zero: the Lipschitz constant carries `k_n^{-(d-4)/4}`, the level
-carries `\E u_n(0)`, and `(\E u_n(0))^2k_n^{-(d-4)/4}\to0` by the choice of the horizon.
-
-The levels are described here by the bound `|s|\leq(\E u_n(0)+K)/\Sigma`, which is what
-`-V_\infty(0)=\E u_n(0)+\Sigma^2y/\E u_n(0)` with `|y|\leq K` gives once `\E u_n(0)\geq1`.
--/
 import Sandpile.Support.Dgt4ACondStep2
 import Sandpile.Support.Dgt4AStep2LipHorizon
 import Sandpile.Support.Dgt4AStep2Horizon
 import Sandpile.Support.Dgt4CaseBPassage
+
+/-!
+# The conditional terminal quantity vanishes uniformly over the conditioning levels
+
+The mean odometer at the origin, times the conditional expectation of the terminal quantity
+`P^{k_n+1}|V_∞ - u_{n-k_n} + E u_n(0)|(0)` given `-V_∞(0) = b`, tends to zero as `n → ∞`,
+uniformly over levels `b = E u_n(0) + Σ²y / E u_n(0)` with `|y| ≤ K`. The unconditional
+statement is `tendsto_meanOdometer_mul_avgIterate_abs_centeredValue_horizon`; the comparison
+of `Sandpile.Support.Dgt4ACondStep2` bounds the conditional-unconditional difference by the
+Lipschitz constant in the level times the mean distance to the level, and two rate facts
+proved here, that the horizon beats its own exponent and that the mean odometer squared times
+the horizon exponent vanishes, show that this correction term also tends to zero.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

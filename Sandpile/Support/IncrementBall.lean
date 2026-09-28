@@ -1,4 +1,13 @@
-/-
+import Sandpile.Support.Barrier
+import Sandpile.Support.Increment
+import Sandpile.Support.Smoothed
+import Sandpile.Support.Concentration
+import Sandpile.Support.SceneryBridge
+import LatticeProb.Prob.HarrisVariants
+
+/-!
+# The increment bound from a finite negative ball
+
 The increment bound from a finite negative ball, `eq:dgt4-increment-finite-ball`
 of `sandpile.tex:4187-4230`, in the scenery language.
 
@@ -11,12 +20,6 @@ at the origin below half the negative level, so the reflected part is at least
 that half.  Counting the box gives the stretched exponential with exponent
 `d/2`.
 -/
-import Sandpile.Support.Barrier
-import Sandpile.Support.Increment
-import Sandpile.Support.Smoothed
-import Sandpile.Support.Concentration
-import Sandpile.Support.SceneryBridge
-import LatticeProb.Prob.HarrisVariants
 
 open LatticeProb
 
@@ -29,22 +32,31 @@ variable {d : ℕ}
 
 /-! ### Events of the scenery that are decreasing -/
 
+/-- The sublevel event `{ζ | odometerOf ζ t z ≤ c}` is a lower set in the pointwise order on
+scenery: since `odometerOf` is monotone in the scenery (`odometerOf_mono`), a scenery
+pointwise below one whose odometer already clears the bound `c` clears it as well. -/
 theorem isLowerSet_odometerOf_le (t : ℕ) (z : Site d) (c : ℝ) :
     IsLowerSet {ζ : Site d → ℝ | odometerOf ζ t z ≤ c} := by
   intro a b hle ha
   simp only [Set.mem_setOf_eq] at ha ⊢
   exact le_trans (odometerOf_mono t z fun w => hle w) ha
 
+/-- The coordinate sublevel event `{ζ | ζ z ≤ c}` is a lower set, since a pointwise-smaller
+scenery has a pointwise-smaller value at `z`. -/
 theorem isLowerSet_coord_le (z : Site d) (c : ℝ) :
     IsLowerSet {ζ : Site d → ℝ | ζ z ≤ c} := by
   intro a b hle ha
   simp only [Set.mem_setOf_eq] at ha ⊢
   exact le_trans (hle z) ha
 
+/-- The sublevel event `{ζ | odometerOf ζ t z ≤ c}` is measurable, as the preimage of
+`Set.Iic c` under the measurable function `odometerOf · t z`. -/
 theorem measurableSet_odometerOf_le (t : ℕ) (z : Site d) (c : ℝ) :
     MeasurableSet {ζ : Site d → ℝ | odometerOf ζ t z ≤ c} :=
   measurableSet_le (measurable_odometerOf t z) measurable_const
 
+/-- The coordinate sublevel event `{ζ | ζ z ≤ c}` is measurable, since evaluation at the
+fixed site `z` is a measurable function. -/
 theorem measurableSet_coord_le (z : Site d) (c : ℝ) :
     MeasurableSet {ζ : Site d → ℝ | ζ z ≤ c} :=
   measurableSet_le (measurable_pi_apply z) measurable_const
@@ -93,6 +105,9 @@ theorem integral_coord (ν : Measure ℝ) [IsProbabilityMeasure ν] (hint : Inte
   rw [hcoord] at h
   exact h.symm
 
+/-- The coordinate map `ζ ↦ ζ z` is integrable under the i.i.d. law `LatticeProb.iidLaw d ν`
+whenever the identity is integrable under `ν`, transported through the pushforward identity
+`Measure.infinitePi_map_eval`. -/
 theorem integrable_coord (ν : Measure ℝ) [IsProbabilityMeasure ν] (hint : Integrable id ν)
     (z : Site d) : Integrable (fun ζ : Site d → ℝ => ζ z) (LatticeProb.iidLaw d ν) := by
   have hcoord : (LatticeProb.iidLaw d ν).map (fun ζ : Site d → ℝ => ζ z) = ν :=
@@ -103,6 +118,10 @@ theorem integrable_coord (ν : Measure ℝ) [IsProbabilityMeasure ν] (hint : In
   refine (integrable_map_measure hasm (measurable_pi_apply z).aemeasurable).mp ?_
   rw [hcoord]; exact hint
 
+/-- The neighbour average `avg (odometerOf ζ t) 0` of the odometer at the origin is
+integrable under `LatticeProb.iidLaw d ν` whenever the positive part of `ν` is integrable,
+being a finite sum of `2d` integrable odometer values (`integrable_odometerOf`) divided by a
+constant. -/
 theorem integrable_avg_odometerOf' (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (t : ℕ) :
     Integrable (fun ζ : Site d → ℝ => avg (odometerOf ζ t) 0) (LatticeProb.iidLaw d ν) := by
@@ -115,6 +134,9 @@ theorem integrable_avg_odometerOf' (ν : Measure ℝ) [IsProbabilityMeasure ν]
   exact integrable_finsetSum _ fun i _ =>
     (integrable_odometerOf d ν hpos t _).add (integrable_odometerOf d ν hpos t _)
 
+/-- The odometer recursion at the origin, `odometerOf ζ (t + 1) 0 = max 0 (ζ 0 + avg
+(odometerOf ζ t) 0)`, rewrites via `max_zero_eq` as the raw update `ζ 0 + avg (odometerOf ζ
+t) 0` plus its reflected (nonnegative) part `max 0 (-(ζ 0) - avg (odometerOf ζ t) 0)`. -/
 theorem max_zero_reflected (ζ : Site d → ℝ) (t : ℕ) :
     odometerOf ζ (t + 1) 0
       = (ζ 0 + avg (odometerOf ζ t) 0) + max 0 (-(ζ 0) - avg (odometerOf ζ t) 0) := by
@@ -124,6 +146,10 @@ theorem max_zero_reflected (ζ : Site d → ℝ) (t : ℕ) :
   congr 2
   ring
 
+/-- The reflected part `max 0 (-(ζ 0) - avg (odometerOf ζ t) 0)` of the odometer step at the
+origin is integrable under `LatticeProb.iidLaw d ν`, obtained via `max_zero_reflected` as the
+difference of the integrable odometer value at time `t + 1` and the integrable raw update at
+time `t`. -/
 theorem integrable_reflected (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hpos : Integrable (fun z => max z 0) ν) (t : ℕ) :
     Integrable (fun ζ : Site d → ℝ => max 0 (-(ζ 0) - avg (odometerOf ζ t) 0))
@@ -168,6 +194,9 @@ theorem meanOdometerOf_succ_sub (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbability
 
 /-! ### The cardinality of a box -/
 
+/-- The finite box `boxFinset x r` of sites within sup-distance `r` of `x` has `(2r + 1) ^ d`
+elements, by a product over coordinates of the cardinality of each integer interval
+`Finset.Icc (x i - r) (x i + r)`. -/
 theorem card_boxFinset (x : Site d) (r : ℕ) : (boxFinset x r).card = (2 * r + 1) ^ d := by
   classical
   rw [boxFinset, Fintype.card_piFinset]
@@ -180,6 +209,10 @@ theorem card_boxFinset (x : Site d) (r : ℕ) : (boxFinset x r).card = (2 * r + 
 
 /-! ### Markov's inequality for the odometer -/
 
+/-- Markov's inequality for the odometer: the event that `odometerOf ζ t z` is at most
+twice its mean plus one has probability at least `1/2`, since the complementary event that
+it exceeds that threshold has probability at most `1/2` by
+`mul_meas_ge_le_integral_of_nonneg`. -/
 theorem half_le_measure_odometerOf_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (t : ℕ) (z : Site d) :
     (1 : ℝ) / 2 ≤ (LatticeProb.iidLaw d ν).real
@@ -432,6 +465,9 @@ theorem increment_finite_ball (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMe
     mul_le_mul_of_nonneg_left hexple (by positivity)
   linarith [hstep, hchain]
 
+/-- The increment bound of `increment_finite_ball` repackaged with a single explicit
+constant `C = (5 + 2√(6/a)) ^ d * log (2/q)`, absorbing the dimension- and tail-dependent
+factor into one existential witness. -/
 theorem exists_increment_finite_ball (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0)
     (hpos : Integrable (fun z => max z 0) ν)

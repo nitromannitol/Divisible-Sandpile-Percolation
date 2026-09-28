@@ -1,14 +1,22 @@
-/-
+import Mathlib
+import LatticeProb.Prob.BrownianExitTime
+import LatticeProb.Prob.BrownianExit
+
+/-!
+# Ball-survival estimates for Brownian motion
+
 A Brownian path which remains in a ball has one Gaussian coordinate in a
 bounded interval. The Gaussian density bound yields a survival estimate tending
 to zero, uniformly over the Brownian model, and almost-sure finiteness of exit.
 -/
-import Mathlib
-import LatticeProb.Prob.BrownianExitTime
-import LatticeProb.Prob.BrownianExit
+
 open MeasureTheory ProbabilityTheory Set Filter
 open scoped ENNReal NNReal
 
+/-- A bound on the mass a Gaussian law puts on an interval: `gaussianReal 0 v`
+gives the interval `Icc a b` mass at most its length divided by
+`√(2π v)`, using that the Gaussian density is bounded above by the value it
+takes at its mean. -/
 theorem Sandpile.Support.gaussianReal_Icc_le_length {v : ℝ≥0} (hv : v ≠ 0) (a b : ℝ) :
     gaussianReal 0 v (Set.Icc a b) ≤
       ENNReal.ofReal (max (b - a) 0 / Real.sqrt (2 * Real.pi * (v : ℝ)))  := by
@@ -29,6 +37,12 @@ theorem Sandpile.Support.gaussianReal_Icc_le_length {v : ℝ≥0} (hv : v ≠ 0)
   simp only [ENNReal.toReal_ofReal', smul_eq_mul, div_eq_mul_inv]
 
 
+/-- The probability that `d`-dimensional Brownian motion started at `u` has not
+yet exited the ball of radius `A` by time `T` decays like `1/√T`: it is at most
+`ENNReal.ofReal (2 √d A / √(2π T))`, obtained by restricting to the event that
+one coordinate stays within `√d · A` of its mean, using
+`Sandpile.Support.gaussianReal_Icc_le_length` on that coordinate's Gaussian
+marginal at time `T`. -/
 theorem Sandpile.Support.measure_ball_survival_le {Ω : Type*} [MeasurableSpace Ω]
     {P : Measure Ω} {d : ℕ} (hd : 0 < d)
     {B : ℝ≥0 → Ω → EuclideanSpace ℝ (Fin d)} {u : EuclideanSpace ℝ (Fin d)}
@@ -70,6 +84,10 @@ theorem Sandpile.Support.measure_ball_survival_le {Ω : Type*} [MeasurableSpace 
   simpa only [sub_neg_eq_add, ← two_mul, max_eq_left hCC] using hb
 
 
+/-- For every dimension `d`, radius `A`, and target `δ > 0`, there is a horizon
+`T₀` past which the ball-survival probability of `measure_ball_survival_le` is
+at most `δ`, uniformly over every Brownian model `(Ω, P, u, B)`: the bound
+`2 √d A / √(2π T)` of `measure_ball_survival_le` tends to `0` as `T → ∞`. -/
 theorem Sandpile.Support.exists_ball_survival_small_uniform (d : ℕ) (hd : 0 < d)
     (A : ℝ) (hA : 0 ≤ A) (δ : ℝ) (hδ : 0 < δ) :
     ∃ T₀ : ℝ≥0, 0 < T₀ ∧ ∀ T : ℝ≥0, T₀ ≤ T →
@@ -92,6 +110,9 @@ theorem Sandpile.Support.exists_ball_survival_small_uniform (d : ℕ) (hd : 0 < 
     (ENNReal.ofReal_le_ofReal (hT₀ T hT).1.le)
 
 
+/-- The exit time of Brownian motion from a ball is almost surely finite:
+letting `T → ∞` in `exists_ball_survival_small_uniform` drives the probability
+of not having exited by time `T` to zero, so the event `exitTime = ⊤` is null. -/
 theorem Sandpile.Support.ae_ball_exitTime_lt_top {Ω : Type*} [MeasurableSpace Ω]
     {P : Measure Ω} {d : ℕ} (hd : 0 < d)
     {B : ℝ≥0 → Ω → EuclideanSpace ℝ (Fin d)} {u : EuclideanSpace ℝ (Fin d)}

@@ -1,11 +1,16 @@
-/-
-Spatial regularity of the multilinear interpolation. A bounded lattice field
-has a Lipschitz interpolant, by the one-dimensional interpolation estimate
-applied to its coordinate slices.
--/
 import Sandpile.Support.ExplInterp
 import Sandpile.Support.ContInterpSpace
 import Sandpile.Support.ContCell
+
+/-!
+# Spatial regularity of the multilinear interpolation
+
+A bounded lattice field has a Lipschitz interpolant `multilinearInterp R f`, by the
+one-dimensional interpolation estimate applied to its coordinate slices. The Lipschitz constant
+`2 M d |R|` at scale `R` for a field bounded by `M` is obtained by reducing to the unit scale,
+where the interpolant changes in each coordinate by comparing the two slices that only differ
+in that coordinate.
+-/
 
 open LatticeProb
 

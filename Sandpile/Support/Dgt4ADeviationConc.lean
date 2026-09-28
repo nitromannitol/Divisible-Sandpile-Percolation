@@ -1,14 +1,17 @@
-/-
+import Sandpile.Support.Dgt4ADeviationL2Lip
+import Sandpile.Support.Dgt4ATwoSided
+import Sandpile.Support.Dgt4ACondition
+import Sandpile.External.GaussianLipschitzConcentration
+
+/-!
+# Gaussian concentration of the centred deviation
+
 The Gaussian concentration of the centred deviation `D_n` of `sandpile.tex:5059-5061`:
 `\P(|D_n|>t)\leq2e^{-ct^2}`, from the cited Gaussian concentration for a Lipschitz
 functional (`Sandpile.External.GaussianLipschitzConcentration`) at the `\ell^2` Lipschitz
 constant `2\|G(0,\cdot)\|` of `abs_centeredDeviation_sub_le_of_hasSum_sq`.  The two-sided
 bound is the union bound over the two one-sided tails.
 -/
-import Sandpile.Support.Dgt4ADeviationL2Lip
-import Sandpile.Support.Dgt4ATwoSided
-import Sandpile.Support.Dgt4ACondition
-import Sandpile.External.GaussianLipschitzConcentration
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

@@ -5,9 +5,9 @@ import Sandpile.Continuum.Kernel
 
 In dimension `0` the space `Space 0` is a single point, so the Brownian transition density
 `heatKernelBM` is identically `1` and the finite-time Green kernel `greenTimeBM` is the identity
-function of the time argument.  This is the elementary fact behind the samplewise growth
-residual `Sandpile.Continuum.ballGrowthResidual_zero` and, here, behind the exact affine
-structure of the Gaussian heat potential `Z` in dimension zero.
+function of the time argument. This is the elementary fact behind the samplewise growth residual
+`Sandpile.Continuum.ballGrowthResidual_zero` and, here, behind the exact affine structure of the
+Gaussian heat potential `Z` in dimension zero.
 -/
 
 namespace Sandpile.Continuum

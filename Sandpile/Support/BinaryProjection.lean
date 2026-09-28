@@ -1,25 +1,37 @@
-/-
-The bounded two-cell conditional projection of a real law. It preserves the
-mean and remains nondegenerate when one cell has positive mass strictly below
-zero. This removes exponential-moment assumptions from convex mean lower bounds.
--/
 import Mathlib
+
+/-!
+# The binary conditional projection of a real law
+
+`binaryProjection ν S` collapses a random variable to the conditional mean on `S` and on its
+complement, giving a two-valued function whose pushforward is the projection of `ν` onto the
+two-cell partition `{S, Sᶜ}`. It preserves the mean of `ν`, agrees `ν`-almost everywhere with the
+conditional expectation `ν[id | generateFrom {S}]`, and remains nondegenerate (positive variance,
+integrable exponential moments) whenever `S` carries positive mass strictly below `0`. This
+removes exponential-moment hypotheses from convex mean lower bounds, by replacing the original law
+with its bounded two-point projection.
+-/
 
 open MeasureTheory ProbabilityTheory MeasurableSpace
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- The conditional-mean projection of `ν` onto the two-cell partition `{S, Sᶜ}`: the piecewise
+function equal to the average `⨍ z in S, z ∂ν` on `S` and to `⨍ z in Sᶜ, z ∂ν` on `Sᶜ`. -/
 noncomputable def binaryProjection (ν : Measure ℝ) (S : Set ℝ) : ℝ → ℝ :=
   by
     classical
     exact S.piecewise (fun _ => ⨍ z in S, z ∂ν) (fun _ => ⨍ z in Sᶜ, z ∂ν)
 
+/-- `binaryProjection ν S` is measurable, being piecewise-constant on the measurable set `S`. -/
 theorem measurable_binaryProjection (ν : Measure ℝ) {S : Set ℝ} (hS : MeasurableSet S) :
     Measurable (binaryProjection ν S) := by
   classical
   exact measurable_const.piecewise hS measurable_const
 
+/-- `binaryProjection ν S` is bounded uniformly by the sum of the absolute values of the two cell
+averages `⨍ w in S, w ∂ν` and `⨍ w in Sᶜ, w ∂ν`. -/
 theorem binaryProjection_bound (ν : Measure ℝ) (S : Set ℝ) (z : ℝ) :
     |binaryProjection ν S z| ≤ |⨍ w in S, w ∂ν| + |⨍ w in Sᶜ, w ∂ν| := by
   classical
@@ -29,20 +41,29 @@ theorem binaryProjection_bound (ν : Measure ℝ) (S : Set ℝ) (z : ℝ) :
   · simp only [binaryProjection, Set.piecewise_eq_of_notMem S _ _ hz]
     exact le_add_of_nonneg_left (abs_nonneg _)
 
+/-- `binaryProjection ν S` is integrable against `ν`, since it takes only the two constant values
+`⨍ w in S, w ∂ν` and `⨍ w in Sᶜ, w ∂ν`. -/
 theorem integrable_binaryProjection (ν : Measure ℝ) [IsFiniteMeasure ν]
     {S : Set ℝ} (hS : MeasurableSet S) : Integrable (binaryProjection ν S) ν := by
   classical
   exact Integrable.piecewise hS (integrable_const _).integrableOn (integrable_const _).integrableOn
 
+/-- `binaryProjection ν S` has the same `ν`-integral as the identity: splitting the integral over
+`S` and `Sᶜ` and evaluating each constant piece with `measure_smul_average` recovers
+`∫ z, z ∂ν`. -/
 theorem integral_binaryProjection (ν : Measure ℝ) [IsFiniteMeasure ν]
     (hint : Integrable id ν) {S : Set ℝ} (hS : MeasurableSet S) :
     (∫ z, binaryProjection ν S z ∂ν) = ∫ z, z ∂ν := by
   classical
-  rw [binaryProjection, integral_piecewise hS (integrable_const _).integrableOn (integrable_const _).integrableOn]
+  rw [binaryProjection, integral_piecewise hS (integrable_const _).integrableOn
+    (integrable_const _).integrableOn]
   simp only [integral_const]
   rw [measure_smul_average, measure_smul_average]
   simpa using integral_add_compl hS hint
 
+/-- `binaryProjection ν S` agrees `ν`-almost everywhere with the conditional expectation
+`ν[id | generateFrom {S}]`, checked by matching set integrals on the four generators of
+`generateFrom {S}` (`∅`, `S`, `Sᶜ`, and `Set.univ`). -/
 theorem binaryProjection_ae_eq_condExp (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) {S : Set ℝ} (hS : MeasurableSet S) :
     binaryProjection ν S =ᵐ[ν] ν[id | generateFrom {S}] := by
@@ -72,6 +93,8 @@ theorem binaryProjection_ae_eq_condExp (ν : Measure ℝ) [IsProbabilityMeasure 
   · simpa [h] using integral_binaryProjection ν hint hS
 
 
+/-- If `Set.Iic (-a)` has positive `ν`-mass, its conditional average `⨍ z in Set.Iic (-a), z ∂ν`
+is at most `-a`, since every point of the set is at most `-a`. -/
 theorem average_Iic_neg_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (a : ℝ) (hpa : 0 < ν (Set.Iic (-a))) :
     (⨍ z in Set.Iic (-a), z ∂ν) ≤ -a := by
@@ -100,7 +123,8 @@ theorem integral_exp_abs_map_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
       integral_mono hi (integrable_const _) (fun z => Real.exp_le_exp.mpr (hM z))
     _ = Real.exp M := by simp
 
-/-- The projected law has a positive variance whenever one cell lies strictly to the left of zero. -/
+/-- The projected law has a positive variance whenever one cell lies strictly to the left of
+zero. -/
 theorem binaryProjection_law_properties (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0) (a : ℝ) (ha : 0 < a)
     (hpa : 0 < ν (Set.Iic (-a))) :

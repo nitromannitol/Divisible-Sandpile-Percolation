@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.ContCovKappa
+import Sandpile.Support.ContHighNonconvergence
+import Sandpile.Continuum.Membrane
+import Sandpile.Law
+
+/-!
+# `thm:dgt4-many-limits` from Subsequential Convergence
+
 `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`) granted its one remaining
 input, the subsequential convergence of the rescaled centred odometer along a
 single sequence of scales.
@@ -15,10 +22,6 @@ pairwise distinctness of the laws of the limit fields, is
 nonnegative test function is strictly decreasing in `κ`, so two distinct
 exponents give two covariances that already differ on the diagonal.
 -/
-import Sandpile.Support.ContCovKappa
-import Sandpile.Support.ContHighNonconvergence
-import Sandpile.Continuum.Membrane
-import Sandpile.Law
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,9 +1,14 @@
-/-
-Two further properties of the walk kernels used by the tightness chain: a
-transition probability is at most one, and the doubled Green kernel at two
-different times is the double time sum of transition probabilities.
--/
 import Sandpile.Support.TightSmallPower
+
+/-!
+# Kernel bounds used by the tightness chain
+
+Two further properties of the walk kernels used by the tightness chain: a transition
+probability is at most one (`heatKernel_le_one`, from summability of `heatKernel` and the
+normalization `tsum_heatKernel`), and the doubled Green kernel at two different times is the
+double time sum of transition probabilities (`tsum_greenTime_mul_greenTime'`, obtained by
+expanding both `greenTime` factors as finite sums of `heatKernel` and summing termwise).
+-/
 
 open MeasureTheory
 

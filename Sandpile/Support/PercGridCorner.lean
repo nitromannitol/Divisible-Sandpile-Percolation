@@ -1,21 +1,15 @@
-/-
-The grid-corner construction of `sandpile.tex:2645-2660`, the last planar step of
-the dimension-two and dimension-three percolation proof:
-
-  "It is then at least `3c/2` at every point of the grid in the plane that lies
-   inside the corresponding rectangle and within distance `2/R_n` of its
-   crossing.  These grid points contain the required nearest-neighbor crossings:
-   take the corners of the grid squares met by the continuum crossing and, at
-   the boundary, use the first grid row or column inside the rectangle."
-
-The continuum crossing is a compact connected set on which the field is at least
-`l`; `exists_lattice_walk_of_connected_superlevel` of
-`Sandpile/Support/CrossFixBlocking.lean` already turns it into a nearest-neighbour
-walk of a mesh-`t` grid whose grid points all carry the field at least `l - η`.
-This module records that step in the form the block-crossing argument consumes
-it: the walk starts on the left side of the square and ends on the right side.
--/
 import Sandpile.Support.CrossFixBlocking
+
+/-!
+# Grid points on a continuum crossing
+
+The last planar step of the percolation proof at `sandpile.tex:2645-2660`: a continuum
+left-right crossing at level `l` is a compact connected set on which the field is at least `l`,
+and `exists_lattice_walk_of_connected_superlevel` already turns it into a nearest-neighbour walk
+of a mesh-`t` grid whose vertices all carry the field at least `l - η`. This file records that
+walk in the form the block-crossing argument consumes it, starting on the left side of the
+square and ending on the right side.
+-/
 
 open MeasureTheory Set
 namespace Sandpile.Support

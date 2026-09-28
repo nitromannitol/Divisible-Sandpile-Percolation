@@ -1,12 +1,16 @@
-/-
+import Sandpile.Support.ExitTail
+import Sandpile.Support.D4CritCube
+
+/-!
+# Step 1a exit probability of the dimension-four random walk
+
 The exit probability of Step 1a (`sandpile.tex:4017-4018`): the walk started at
 `z` leaves the box `Q(z,r)` before time `A_ex r²` with probability at least
 `1 - C A_ex^{-2}`, uniformly in `z` and `r`.  The walk started at `z` is the
-walk started at the origin translated by `z`, so the bound is the one of
-`exists_exit_tail` at the origin.
+walk started at the origin translated by `z` (`walkLaw_translate`), and the box `Q(z,r)` seen
+from `z` is the box about the origin (`shift_eaCube`), so the bound `exists_exit_prob_cube`
+follows directly from `exists_exit_tail` at the origin.
 -/
-import Sandpile.Support.ExitTail
-import Sandpile.Support.D4CritCube
 
 open MeasureTheory
 

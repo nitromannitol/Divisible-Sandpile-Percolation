@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.Dgt4ADeviationAbs
+
+/-!
+# Integrated first-moment bound
+
 The integral form of the pointwise bound on the centred deviation `D_n` of
 `sandpile.tex:5050-5055`: integrating `|D_n|\leq I+E`, where `I` is the odometer increment at
 the origin and `E` the positive part of the excess of the averaged field over the field, gives
 the same bound for the expectations.  It is the first half of the first-moment bound
 `E|D_n|\leq2E u_n(0)/n`.
 -/
-import Sandpile.Support.Dgt4ADeviationAbs
 
 open MeasureTheory Filter Topology Set
 

@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Kernel
+
+/-!
+# The finite-time variance scale and correlation bounds
+
 External input: the finite-time variance scale, the membrane correlation bound,
 and the dimension-four window and tail bounds collected in
 `ssec:green-estimates` of `sandpile.tex`.  The paper does not prove them; it
@@ -107,7 +111,6 @@ powers `t^{3/2}`, `t^{1/2}` and `(m/n)^{1/4}` away from a zero base; the
 arguments `(n+2)/(m+2)`, `n/m` and `(1+\log m)/(1+\log n)` of the remaining
 logarithms and quotients have denominators at least one.
 -/
-import Sandpile.Support.Kernel
 
 namespace Sandpile.External.Variance
 

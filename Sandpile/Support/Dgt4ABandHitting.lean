@@ -1,17 +1,17 @@
-/-
-The hitting time `τ_k` of Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6106-6135`).
-
-`τ_k` is the first time the mean height reaches `a_k - (1-ℓ_1)a_k/2`.  The paper
-bounds it by summing the one-step lower bound
-`E u_{n+1}(0) - E u_n(0) ≥ cω_ka_k`, which holds before `τ_k`, and bounds the
-overshoot at `τ_k` by the crude one-step upper bound
-`eq:dgt4-one-step-mean-increment`.  Neither step uses anything about the
-sandpile, so both are stated here for an arbitrary nondecreasing sequence
-starting at zero, and `z_{k,n} ≤ 1/2` is recorded as the reading of the hitting
-condition in the profile coordinate.
--/
 import Mathlib
+
+/-!
+# The hitting time and profile coordinate of Step 2
+
+The hitting time `τ_k` of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6106-6135`). `τ_k` is
+the first time the mean height reaches `a_k - (1 - ℓ_1) a_k / 2`. The paper bounds it by summing
+the one-step lower bound `E u_{n+1}(0) - E u_n(0) ≥ c ω_k a_k`, which holds before `τ_k`
+(`le_of_increments`, `hitting_le`), and bounds the overshoot at `τ_k` by the crude one-step upper
+bound `eq:dgt4-one-step-mean-increment` (`hitting_value_le`). Neither step uses anything about
+the sandpile, so both are stated here for an arbitrary nondecreasing sequence starting at zero,
+and `z_{k,n} ≤ 1/2` is recorded (`bandProfileCoord_le_half_iff`) as the reading of the hitting
+condition in the profile coordinate `bandProfileCoord`.
+-/
 
 open Filter Topology
 
@@ -88,6 +88,7 @@ theorem le_hitting_value (u : ℕ → ℝ) (h : ℝ) (hex : ∃ n : ℕ, h ≤ u
 /-- The profile coordinate `z_{k,n} = (a - u_n)/W`. -/
 def bandProfileCoord (a W : ℝ) (u : ℕ → ℝ) (n : ℕ) : ℝ := (a - u n) / W
 
+/-- The profile coordinate starts at `a / W`, since `u` starts at zero. -/
 theorem bandProfileCoord_zero (a W : ℝ) (u : ℕ → ℝ) (hu0 : u 0 = 0) :
     bandProfileCoord a W u 0 = a / W := by
   rw [bandProfileCoord, hu0, sub_zero]

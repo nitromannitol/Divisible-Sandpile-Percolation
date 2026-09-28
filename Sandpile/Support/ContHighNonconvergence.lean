@@ -1,32 +1,32 @@
-/-
-Theorem 1.3(iii)(d) of `sandpile.tex` (`thm:main-explosion`, part (iii)(d),
-`sandpile.tex:290-296`) from the sharper `thm:dgt4-many-limits`
-(`sandpile.tex:5900-5928`), which is the paper's own derivation: the scenery,
-the sequence of scales and the family of subsequential limits are exactly the
-ones the sharper theorem produces, the index set is `[3/2,2]`, the assignment of
-a covariance to an index is injective because the covariances already differ on
-the diagonal, and convergence of the whole family is impossible because two of
-its subsequences converge to centred Gaussians with different variances.
-
-Two points need more than bookkeeping.
-
-The tightness clause of Theorem 1.3(iii)(d) is asked of the WHOLE family, over
-every scale `R ≥ 1`, whereas `thm:dgt4-many-limits` supplies it only along its
-subsequence.  It is therefore taken from the odometer's own tightness,
-`dgt4_odometer_tight'`, which needs two moments of the one-site law; both come
-from the exponential moment the scenery carries.
-
-Distinctness of the limit LAWS, which is what rules out convergence, is
-distinctness of the variances `Real.toNNReal (K κ φ φ)`, and `Real.toNNReal`
-identifies all nonpositive reals.  The diagonal of the covariance is
-nonnegative, being the limit of the sums of squares of the coefficients of the
-weighted field (`tendsto_sum_scaledCoeff_sq`), so distinct diagonal values stay
-distinct after `Real.toNNReal`.
--/
 import Sandpile.Support.ContNonconvergence
 import Sandpile.Support.ContDGT4Membrane
 import Sandpile.Support.ExponentialMoments
 import Sandpile.Support.ExplFluctuation
+
+/-!
+# Non-convergence of the fluctuation field in high dimension
+
+Theorem 1.3(iii)(d) of `sandpile.tex` (`thm:main-explosion`, part (iii)(d),
+`sandpile.tex:290-296`) from the sharper `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`), which
+is the paper's own derivation: the scenery, the sequence of scales and the family of
+subsequential limits are exactly the ones the sharper theorem produces, the index set is
+`[3/2,2]`, the assignment of a covariance to an index is injective because the covariances
+already differ on the diagonal, and convergence of the whole family is impossible because two of
+its subsequences converge to centred Gaussians with different variances.
+
+Two points need more than bookkeeping.
+
+The tightness clause of Theorem 1.3(iii)(d) is asked of the WHOLE family, over every scale
+`R ≥ 1`, whereas `thm:dgt4-many-limits` supplies it only along its subsequence. It is therefore
+taken from the odometer's own tightness, `dgt4_odometer_tight'`, which needs two moments of the
+one-site law; both come from the exponential moment the scenery carries.
+
+Distinctness of the limit LAWS, which is what rules out convergence, is distinctness of the
+variances `Real.toNNReal (K κ φ φ)`, and `Real.toNNReal` identifies all nonpositive reals. The
+diagonal of the covariance is nonnegative, being the limit of the sums of squares of the
+coefficients of the weighted field (`tendsto_sum_scaledCoeff_sq`), so distinct diagonal values
+stay distinct after `Real.toNNReal`.
+-/
 
 open LatticeProb
 

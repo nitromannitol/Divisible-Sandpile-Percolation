@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ContValueScaling
+import Sandpile.Support.MeanAValue
+
+/-! # Continuum value transfer lemmas
+
 The two transfers of `sandpile.tex:1985-1993` that the continuous modification of
 `prop:continuum-value-selfsimilar` buys, and the algebraic scaling of the value.
 
@@ -19,8 +23,6 @@ the Gaussian heat potential almost surely at each point is not enough; agreement
 almost surely as a function on `[0,T] × ℝ^d` is, and that is what the continuity
 clause of the modification supplies.
 -/
-import Sandpile.Support.ContValueScaling
-import Sandpile.Support.MeanAValue
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

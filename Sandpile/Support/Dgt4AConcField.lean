@@ -1,4 +1,14 @@
-/-
+import Sandpile.Support.Dgt4AConcLp
+import Sandpile.Support.Dgt4AIterateAbs
+import Sandpile.Support.Dgt4AIterateConst
+import Sandpile.Support.Dgt4AIterateSub
+import Sandpile.Support.Dgt4ACovStop
+import Sandpile.Support.Dgt4FieldRecursion
+import Sandpile.Support.LinGreenTail
+
+/-!
+# Lipschitz bound for the Green field
+
 The Green field is Lipschitz for the `\ell^2` distance between sceneries.
 
 Step 4 of case (a) needs a Lipschitz constant for `\Theta_n` in the `\ell^2` distance and
@@ -11,13 +21,6 @@ pairing, so the deviation `V_\infty-u_n` and each of its averages move by at mos
 `\|\sum_{j\geq k+1}p_j(0,\cdot)\|` is read off by approximation with finitely supported
 differences.
 -/
-import Sandpile.Support.Dgt4AConcLp
-import Sandpile.Support.Dgt4AIterateAbs
-import Sandpile.Support.Dgt4AIterateConst
-import Sandpile.Support.Dgt4AIterateSub
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.Dgt4FieldRecursion
-import Sandpile.Support.LinGreenTail
 
 open MeasureTheory Filter Topology
 
@@ -98,8 +101,10 @@ theorem abs_deviation_sub_le_of_hasSum_sq (hd : 5 ≤ d) (ξ η : Site d → ℝ
   obtain ⟨hη, hfield⟩ := exists_tendsto_infiniteGreenField_sub hd ξ η M h hξ
   refine abs_infiniteGreenField_sub_odometer_gap_le (by omega) ξ η hξ hη n x _ ?_
   intro τ hτ hτn
-  have hi1 := integrable_stopped_value (d := d) (by omega) x n (fun _ => infiniteGreenField ξ) hτ hτn
-  have hi2 := integrable_stopped_value (d := d) (by omega) x n (fun _ => infiniteGreenField η) hτ hτn
+  have hi1 := integrable_stopped_value (d := d) (by omega) x n
+    (fun _ => infiniteGreenField ξ) hτ hτn
+  have hi2 := integrable_stopped_value (d := d) (by omega) x n
+    (fun _ => infiniteGreenField η) hτ hτn
   rw [← integral_sub hi1 hi2]
   have hbd : ∀ X : ℕ → Site d,
       ‖infiniteGreenField ξ (X (τ X)) - infiniteGreenField η (X (τ X))‖

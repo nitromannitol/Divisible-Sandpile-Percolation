@@ -1,10 +1,17 @@
-/-
-The law identity in `prop:continuum-value-selfsimilar` from the parabolic limit.
-The discrete change of scale is exact at real scales: `R` becomes `R * sqrt T`.
-Translation invariance removes the starting site before taking the weak limit.
--/
 import Sandpile.Support.MeanAScale
 import Sandpile.Support.MeanAIndex
+
+/-!
+# The self-similarity law identity from the parabolic limit
+
+`map_rescaledOdometer_scale` is the exact discrete identity behind `prop:continuum-value-
+selfsimilar`: rescaling the centred odometer at scale `R` and time `T` has the same law as
+rescaling it at scale `R * √T` and time `1`, after multiplying by `T ^ ((4 - d) / 4)` and
+removing the starting site `x` by translation invariance. `selfsimilar_of_rescaled_limit` passes
+this discrete identity to the limit: any pointwise parabolic limit `U` of `rescaledOdometer`
+inherits the self-similarity exponent `(4 - d) / 4`, i.e. the law of `U(T,x)` equals the law of
+`T ^ ((4 - d) / 4) * U(1,0)`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

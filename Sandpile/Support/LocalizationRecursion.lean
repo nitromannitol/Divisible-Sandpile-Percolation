@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Localization
+import LatticeProb.Graph.ZdKilled
+
+/-! # The localized odometer's one-step recursion
+
 The one-step recursion for the localized odometer.
 
 `Sandpile/Support/Localization.lean` defines the localized odometer as the
@@ -11,8 +15,6 @@ programming principle for it, so the recursion
 follows by identifying the two.  This is the induction step of the first clause
 of the origin-frozen lemma.
 -/
-import Sandpile.Support.Localization
-import LatticeProb.Graph.ZdKilled
 
 open MeasureTheory
 
@@ -22,6 +24,9 @@ open scoped Classical
 
 variable {d : ℕ}
 
+/-- The localized odometer of `Support/Localization.lean` agrees pointwise with the
+killed-walk odometer `LatticeProb.Graph.Zd.zdKilledOdometer`: inside `D` both are the
+supremum of the same stopped scenery sums, and outside `D` both vanish by definition. -/
 theorem localizedOdometer_eq_zdKilled (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ)
     (t : ℕ) (x : Site d) :
     localizedOdometer D ζ t x = LatticeProb.Graph.Zd.zdKilledOdometer D ζ t x := by
@@ -43,6 +48,9 @@ theorem localizedOdometer_succ' (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d �
   rw [localizedOdometer_eq_zdKilled hd D ζ (n + 1) x, hfun, Sandpile.avg]
   exact LatticeProb.Graph.Zd.zdKilledOdometer_succ_of_mem D ζ hx n
 
+/-- `localizedOdometer_succ'` with the restriction to `D` folded explicitly into the
+averaging term rather than assumed of `localizedOdometer` itself, so the recursion applies
+verbatim to a bare function that need only agree with the localized odometer on `D`. -/
 theorem localizedOdometer_succ (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ)
     (n : ℕ) (x : Site d) (hx : x ∈ D) :
     localizedOdometer D ζ (n + 1) x

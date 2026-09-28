@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ExitValueSwap
+import Sandpile.Support.PayoffSplit
+import Sandpile.Support.D4CritCube
+
+/-!
+# Step 1a of the dimension-four critical-level percolation proof
+
 Step 1a of the dimension-four critical-level percolation proof
 (`sandpile.tex:4008-4020`): the mean of the localized exit value `Y_r(z)` is at
 least the localized mean odometer times the probability that the walk has left
@@ -7,9 +13,6 @@ are exchanged by the Fubini swap of `localizedExitAverage_expectation_swap`, and
 on the exit event the inner scenery average is the localized mean of
 `cor:mean-localization` at the exit site.
 -/
-import Sandpile.Support.ExitValueSwap
-import Sandpile.Support.PayoffSplit
-import Sandpile.Support.D4CritCube
 
 open MeasureTheory
 

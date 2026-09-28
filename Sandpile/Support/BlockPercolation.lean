@@ -29,10 +29,12 @@ theorem infinite_residue_class (C : Set (Site 2)) (hC : C.Infinite) :
   have hf : ∀ k ∈ (Set.Ico 0 3 ×ˢ Set.Ico 0 3 : Set (ℤ × ℤ)),
       (C ∩ {z : Site 2 | z 0 % 3 = k.1 ∧ z 1 % 3 = k.2}).Finite := fun k hk => h k hk
   have hfin : C.Finite :=
-    Set.Finite.subset (Set.Finite.biUnion (Set.toFinite (Set.Ico 0 3 ×ˢ Set.Ico 0 3 : Set (ℤ × ℤ))) hf) (by
+    Set.Finite.subset
+      (Set.Finite.biUnion (Set.toFinite (Set.Ico 0 3 ×ˢ Set.Ico 0 3 : Set (ℤ × ℤ))) hf) (by
       intro z hz
       simp only [Set.mem_iUnion]
-      refine ⟨(z 0 % 3, z 1 % 3), ⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩⟩, hz, by omega, by omega⟩)
+      refine ⟨(z 0 % 3, z 1 % 3), ⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩⟩, hz, by omega,
+        by omega⟩)
   exact Set.Finite.not_infinite hfin hC
 
 /-- Distinct coarse sites in the same residue class modulo three differ
@@ -55,7 +57,8 @@ theorem walk_of_induced_reachable {d : ℕ} (S : Set (Site d)) {x y : Site d}
     (h : ((lattice d).induce S).Reachable ⟨x, hx⟩ ⟨y, hy⟩) :
     ∃ p : (lattice d).Walk x y, ∀ w ∈ p.support, w ∈ S := by
   obtain ⟨p⟩ := h
-  refine ⟨p.map (SimpleGraph.Hom.comap (Function.Embedding.subtype (fun x => x ∈ S)) (lattice d)), ?_⟩
+  refine ⟨p.map (SimpleGraph.Hom.comap (Function.Embedding.subtype (fun x => x ∈ S)) (lattice d)),
+    ?_⟩
   intro w hw
   obtain ⟨w', hw', rfl⟩ := List.mem_map.mp ((SimpleGraph.Walk.support_map
     (SimpleGraph.Hom.comap (Function.Embedding.subtype (fun x => x ∈ S)) (lattice d)) p) ▸ hw)
@@ -83,11 +86,13 @@ theorem blockShift_injective_residue {r : ℕ} (hr : 1 ≤ r) (z z' : Site 2)
     have hm2 : 2*r*((v - u) - 1) = a - b - 2*r := by linarith
     exact abs_le.2 ⟨by nlinarith, by nlinarith⟩
   have e0 : z 0 = z' 0 := by
-    have habs := key (z 0) (z' 0) ((c : Site 2) 0) ((c' : Site 2) 0) hr h0' hc.1 hc.2.1 hc'.1 hc'.2.1
+    have habs := key (z 0) (z' 0) ((c : Site 2) 0) ((c' : Site 2) 0) hr h0'
+      hc.1 hc.2.1 hc'.1 hc'.2.1
     rcases abs_le.mp habs with ⟨ha, hb⟩
     omega
   have e1 : z 1 = z' 1 := by
-    have habs := key (z 1) (z' 1) ((c : Site 2) 1) ((c' : Site 2) 1) hr h1' hc.2.2.1 hc.2.2.2 hc'.2.2.1 hc'.2.2.2
+    have habs := key (z 1) (z' 1) ((c : Site 2) 1) ((c' : Site 2) 1) hr h1'
+      hc.2.2.1 hc.2.2.2 hc'.2.2.1 hc'.2.2.2
     rcases abs_le.mp habs with ⟨ha, hb⟩
     omega
   funext i
@@ -105,7 +110,10 @@ theorem induced_reachable_of_walk {d : ℕ} (S : Set (Site d)) {x y : Site d}
       ∃ (ha : a ∈ S) (hb : b ∈ S), ((lattice d).induce S).Reachable ⟨a, ha⟩ ⟨b, hb⟩ := by
     intro a b p
     induction p using SimpleGraph.Walk.rec with
-    | nil => intro hp; exact ⟨hp _ (by simp [SimpleGraph.Walk.support]), hp _ (by simp [SimpleGraph.Walk.support]), ⟨SimpleGraph.Walk.nil⟩⟩
+    | nil =>
+      intro hp
+      exact ⟨hp _ (by simp [SimpleGraph.Walk.support]), hp _ (by simp [SimpleGraph.Walk.support]),
+        ⟨SimpleGraph.Walk.nil⟩⟩
     | cons hAdj p IH =>
       intro hp
       rename_i u v w
@@ -116,8 +124,10 @@ theorem induced_reachable_of_walk {d : ℕ} (S : Set (Site d)) {x y : Site d}
       exact ⟨hu, hw, ⟨SimpleGraph.Walk.cons (SimpleGraph.induce_adj.mpr hAdj) q⟩⟩
   obtain ⟨ha, hb, q⟩ := key x y p hp
   exact q
--- The block-percolation lifting: an infinite component of good blocks
--- forces an infinite component of the fine superlevel set.
+/-- An infinite component of the good-block relation `BlockGood r F ℓ` forces an infinite
+component of the fine superlevel set `{u | ℓ ≤ F u}`: the coarse component is thinned to a
+residue-class-injective infinite family of coarse sites, each of which is chained by
+`block_chain` to a common fine witness `ws`. -/
 theorem block_component_infinite {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ)
     (h : HasInfiniteComponent {z : Site 2 | BlockGood r F ℓ z}) :
     HasInfiniteComponent {u : Site 2 | ℓ ≤ F u} := by
@@ -146,7 +156,8 @@ theorem block_component_infinite {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (
     simp only [componentIn, Set.mem_setOf_eq] at hzC
     obtain ⟨hxz, hyz, hreachz⟩ := hzC
     -- coarse walk from zs to z inside the good-block set
-    obtain ⟨Q1, hQ1⟩ := walk_of_induced_reachable {z : Site 2 | BlockGood r F ℓ z} hxzs hyzs hreachzs
+    obtain ⟨Q1, hQ1⟩ :=
+      walk_of_induced_reachable {z : Site 2 | BlockGood r F ℓ z} hxzs hyzs hreachzs
     obtain ⟨Q2, hQ2⟩ := walk_of_induced_reachable {z : Site 2 | BlockGood r F ℓ z} hxz hyz hreachz
     set Q := Q1.reverse.append Q2 with hQdef
     have hQgood : ∀ w ∈ Q.support, BlockGood r F ℓ w := by

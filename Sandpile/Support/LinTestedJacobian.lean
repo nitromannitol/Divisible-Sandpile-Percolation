@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinTestedField
+import Sandpile.Support.OdometerJacobian
+
+/-! # The tested field's derivative is its Jacobian
+
 `eq:odometer-derivative` for the tested field.
 
 The convex-linear bound is driven by the right derivative that convexity
@@ -7,8 +11,6 @@ supplies; the paper's Step 1 computes instead the Jacobian
 recursion is degenerate the two agree, so the derivative variances and mean
 gradients of Step 1 are exactly the ones Step 2 consumes.
 -/
-import Sandpile.Support.LinTestedField
-import Sandpile.Support.OdometerJacobian
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

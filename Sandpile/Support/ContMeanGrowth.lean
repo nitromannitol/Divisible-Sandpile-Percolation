@@ -1,34 +1,34 @@
-/-
-Theorem 1.3(i)(a) of `sandpile.tex` (`sandpile.tex:206-217`) as an immediate
-consequence of the mean clause of `cor:dlt4-mean-asymptotic`
-(`sandpile.tex:2034-2052`).
+import Mathlib
+
+/-!
+# The rescaled mean odometer converges to a positive limit
+
+Theorem 1.3(i)(a) of `sandpile.tex` (`sandpile.tex:206-217`) as an immediate consequence of the
+mean clause of `cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`).
 
 The corollary ends with the asymptotic
 
   `E u_t(0) ∼ E𝒰(1,0) t^{(4-d)/4)}`,
 
-which in Lean is `Tendsto (fun t => E u_t(0) / (E𝒰(1,0) · t^{(4-d)/4})) atTop (𝓝 1)`,
-and the proposition `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`)
-supplies `0 < E𝒰(1,0)^p` for every `p > 0`, hence at `p = 1` the positivity of the
-constant.  Theorem 1.3(i)(a) asks for the existence of
+which in Lean is `Tendsto (fun t => E u_t(0) / (E𝒰(1,0) · t^{(4-d)/4})) atTop (𝓝 1)`, and the
+proposition `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`) supplies
+`0 < E𝒰(1,0)^p` for every `p > 0`, hence at `p = 1` the positivity of the constant. Theorem
+1.3(i)(a) asks for the existence of
 
   `L = lim_t t^{-(4-d)/4} E u_t(0)`  with  `0 < L < ∞`,
 
 so it is exactly the two facts above with `L = E𝒰(1,0)`: the ratio limit says
-`t^{-(4-d)/4} E u_t(0) = L · (E u_t(0)/(L t^{(4-d)/4}))` converges to `L · 1`.
-The two lemmas below are that step, stated for a general exponent and a general
-sequence so that nothing about the odometer or the continuum value is used.
+`t^{-(4-d)/4} E u_t(0) = L · (E u_t(0)/(L t^{(4-d)/4}))` converges to `L · 1`. The two lemmas
+below are that step, stated for a general exponent and a general sequence so that nothing about
+the odometer or the continuum value is used.
 
-To close `Sandpile.Frozen.mean_growth_le_three` from the two frozen nodes:
-instantiate them at a white-noise space and a Brownian space produced by
-`Sandpile.Continuum.exists_isWhiteNoise` and
+To close `Sandpile.Frozen.mean_growth_le_three` from the two frozen nodes: instantiate them at a
+white-noise space and a Brownian space produced by `Sandpile.Continuum.exists_isWhiteNoise` and
 `Sandpile.Continuum.exists_isBrownian`, take `L` to be
-`∫ ω, continuumValue d (variance id ν) W B PB 1 0 ω ∂PW`, get `0 < L` from the
-third clause of `continuum_value_self_similar` at `p = 1` through
-`Real.rpow_one`, and apply `exists_growth_limit_of_ratio` at
-`a = (4 - d)/4` to the ninth clause of `dlt4_mean_asymptotic`.
+`∫ ω, continuumValue d (variance id ν) W B PB 1 0 ω ∂PW`, get `0 < L` from the third clause of
+`continuum_value_self_similar` at `p = 1` through `Real.rpow_one`, and apply
+`exists_growth_limit_of_ratio` at `a = (4 - d)/4` to the ninth clause of `dlt4_mean_asymptotic`.
 -/
-import Mathlib
 
 open Filter Topology
 

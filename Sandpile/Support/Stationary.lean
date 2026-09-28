@@ -1,26 +1,22 @@
-/-
-Stationarity of the odometer written in the scenery, and the integrability that
-`cor:mean-localization` needs.
-
-A scenery law is stationary (`IsStationary`) when it is invariant under every
-lattice translation, which is the paper's hypothesis on the scenery.  The i.i.d.
-law is stationary (`isStationary_iidLaw`).  The odometer commutes with a
-translation of the scenery, so under a stationary law the mean odometer does not
-depend on the site.  This is the stationarity the corollary's proof invokes, and
-it uses nothing but the translation invariance of the law.  Integrability comes
-from the crude bound `u_t(x) ≤ t ∑_{y ∈ Q(x,t)} ζ(y)^+`, which follows from the
-recursion alone: the reflection contributes only the positive part of the
-scenery at the site, and the neighbour average of a field bounded by `M` is
-bounded by `M`.  Under a stationary law the positive part of the scenery is
-integrable at every site as soon as it is at the origin, and then so is the
-odometer.  The statements for a general stationary law are proved first and the
-i.i.d. statements are their instances.
--/
 import Sandpile.Law
 import Sandpile.Support.Odometer
 import Sandpile.Support.Kernel
 import Sandpile.Support.Translation
 import LatticeProb.Prob.WeightedCLT
+
+/-!
+# Stationarity and integrability of the odometer in the scenery
+
+A scenery law `P` is stationary (`IsStationary`) when it is invariant under every lattice
+translation, and the i.i.d. law is an instance of this (`isStationary_iidLaw`). Since the
+odometer `odometerOf ζ t x` commutes with a translation of the scenery
+(`odometerOf_shiftField`), the mean odometer under a stationary law does not depend on the site.
+A crude bound `u_t(x) ≤ t * ∑_{y ∈ Q(x,t)} ζ(y)⁺` follows from the recursion alone, since the
+reflection contributes only the positive part of the scenery at the site and the neighbour
+average of a field bounded by `M` is itself bounded by `M`; this makes the odometer integrable
+under any stationary law whose scenery at the origin has integrable positive part. The
+statements are proved first for a general stationary law and then specialized to the i.i.d. law.
+-/
 
 open MeasureTheory
 
@@ -30,6 +26,7 @@ variable {d : ℕ} {x : Site d}
 
 /-! ### The odometer in the scenery, as a function of the scenery -/
 
+/-- The map `ζ ↦ odometerOf ζ t x` is measurable, for fixed `t` and `x`. -/
 theorem measurable_odometerOf (t : ℕ) (x : Site d) :
     Measurable fun ζ : Site d → ℝ => odometerOf ζ t x := by
   induction t generalizing x with
@@ -61,6 +58,7 @@ theorem odometerOf_shiftField (ζ : Site d → ℝ) (y : Site d) :
       rw [hnb]
       rfl
 
+/-- The i.i.d. scenery law `LatticeProb.iidLaw d ν` is definitionally `massLaw d ν`. -/
 theorem iidLaw_eq_massLaw (d : ℕ) (ν : Measure ℝ) : LatticeProb.iidLaw d ν = massLaw d ν := rfl
 
 /-! ### Stationary scenery laws -/
@@ -94,12 +92,15 @@ theorem integral_odometerOf_eq_of_stationary {P : Measure (Site d → ℝ)}
 
 /-! ### A crude bound on the odometer -/
 
+/-- `y` lies in `boxFinset x r` iff `boxDist x y ≤ r`. -/
 theorem mem_boxFinset_iff {x y : Site d} {r : ℕ} : y ∈ boxFinset x r ↔ boxDist x y ≤ r := by
   refine ⟨fun h => ?_, mem_boxFinset⟩
   refine Finset.sup_le fun i _ => ?_
   have := Finset.mem_Icc.mp (Fintype.mem_piFinset.mp h i)
   omega
 
+/-- `boxFinset y s ⊆ boxFinset x u` whenever `boxDist x y + s ≤ u`, by the triangle inequality
+for `boxDist`. -/
 theorem boxFinset_subset {x y : Site d} {s u : ℕ} (h : boxDist x y + s ≤ u) :
     boxFinset y s ⊆ boxFinset x u := by
   intro z hz
@@ -107,6 +108,8 @@ theorem boxFinset_subset {x y : Site d} {s u : ℕ} (h : boxDist x y + s ≤ u) 
   have := mem_boxFinset_iff.mp hz
   omega
 
+/-- Adding a unit vector moves the box distance from `x` by at most one:
+`boxDist x (x + unit i) ≤ 1`. -/
 theorem boxDist_add_unit (x : Site d) (i : Fin d) : boxDist x (x + unit i) ≤ 1 := by
   refine Finset.sup_le fun j _ => ?_
   have hu : unit i j = 0 ∨ unit i j = 1 := by
@@ -116,6 +119,8 @@ theorem boxDist_add_unit (x : Site d) (i : Fin d) : boxDist x (x + unit i) ≤ 1
   show (x j - (x j + unit i j)).natAbs ≤ 1
   rcases hu with hu | hu <;> rw [hu] <;> omega
 
+/-- Subtracting a unit vector moves the box distance from `x` by at most one:
+`boxDist x (x - unit i) ≤ 1`. -/
 theorem boxDist_sub_unit (x : Site d) (i : Fin d) : boxDist x (x - unit i) ≤ 1 := by
   refine Finset.sup_le fun j _ => ?_
   have hu : unit i j = 0 ∨ unit i j = 1 := by
@@ -149,10 +154,14 @@ theorem avg_le_of_nbr_le {f : Site d → ℝ} {M : ℝ}
 noncomputable def sceneryPosBound (x : Site d) (t : ℕ) (ζ : Site d → ℝ) : ℝ :=
   ∑ y ∈ boxFinset x t, max (ζ y) 0
 
+/-- `sceneryPosBound x t ζ` is nonnegative, being a sum of the nonnegative terms
+`max (ζ y) 0`. -/
 theorem sceneryPosBound_nonneg (x : Site d) (t : ℕ) (ζ : Site d → ℝ) :
     0 ≤ sceneryPosBound x t ζ :=
   Finset.sum_nonneg fun _ _ => le_max_right _ _
 
+/-- `sceneryPosBound` is monotone under box inclusion: `sceneryPosBound y s ζ ≤
+sceneryPosBound x u ζ` whenever `boxDist x y + s ≤ u`. -/
 theorem sceneryPosBound_mono {x y : Site d} {s u : ℕ} (h : boxDist x y + s ≤ u)
     (ζ : Site d → ℝ) : sceneryPosBound y s ζ ≤ sceneryPosBound x u ζ :=
   Finset.sum_le_sum_of_subset_of_nonneg (boxFinset_subset h)
@@ -221,6 +230,9 @@ theorem integrable_coord_pos_of_stationary {P : Measure (Site d → ℝ)}
   show max (ζ (0 + y)) 0 = max (ζ y) 0
   rw [zero_add]
 
+/-- Under a stationary scenery law whose positive part at the origin is integrable,
+`sceneryPosBound x t` is integrable, as a finite sum of the integrable coordinates
+of `integrable_coord_pos_of_stationary`. -/
 theorem integrable_sceneryPosBound_of_stationary {P : Measure (Site d → ℝ)}
     (hstat : IsStationary d P) (hpos : Integrable (fun ζ : Site d → ℝ => max (ζ 0) 0) P)
     (x : Site d) (t : ℕ) : Integrable (fun ζ : Site d → ℝ => sceneryPosBound x t ζ) P :=
@@ -238,6 +250,8 @@ theorem integrable_odometerOf_of_stationary {P : Measure (Site d → ℝ)}
   rw [Real.norm_eq_abs, abs_of_nonneg (odometerOf_nonneg ζ t x)]
   exact odometerOf_le_bound ζ t x
 
+/-- Under the i.i.d. law with one-site law `ν` whose positive part is integrable, the coordinate
+`ζ ↦ max (ζ y) 0` at any site `y` is integrable, pushed forward along evaluation at `y`. -/
 theorem integrable_coord_pos (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (y : Site d) :
     Integrable (fun ζ : Site d → ℝ => max (ζ y) 0) (LatticeProb.iidLaw d ν) := by
@@ -252,6 +266,8 @@ theorem integrable_coord_pos (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure 
   rw [hmap]
   exact hpos
 
+/-- Under the i.i.d. law with integrable positive one-site part, `sceneryPosBound x t` is
+integrable, as a finite sum of the integrable coordinates of `integrable_coord_pos`. -/
 theorem integrable_sceneryPosBound (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (x : Site d) (t : ℕ) :
     Integrable (fun ζ : Site d → ℝ => sceneryPosBound x t ζ) (LatticeProb.iidLaw d ν) :=
@@ -272,6 +288,8 @@ theorem integral_odometerOf_eq (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasur
       = ∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν) :=
   integral_odometerOf_eq_of_stationary (isStationary_iidLaw d ν) t y
 
+/-- The mean odometer `∫ odometerOf ζ t x ∂(LatticeProb.iidLaw d ν)` is nonnegative, since the
+odometer itself is nonnegative at every scenery. -/
 theorem integral_odometerOf_nonneg (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure ν] (t : ℕ)
     (x : Site d) : 0 ≤ ∫ ζ, odometerOf ζ t x ∂(LatticeProb.iidLaw d ν) :=
   integral_nonneg fun ζ => odometerOf_nonneg ζ t x

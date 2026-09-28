@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossBall
+import Sandpile.External.PittGaussianFKG
+import Sandpile.Continuum.WhiteNoise
+
+/-! # Ball field Gaussian association
+
 The ball field of `sandpile.tex:2076-2088` as a Gaussian process, and its
 positive association.
 
@@ -24,9 +29,6 @@ clause of `IsWhiteNoise` asks for before it says anything, is carried here as
 the hypothesis `hmem`; it is proved in `Sandpile/Support/CrossBallMemLp.lean`,
 where `isAssociatedField_ballField_of_whiteNoise` discharges it.
 -/
-import Sandpile.Support.CrossBall
-import Sandpile.External.PittGaussianFKG
-import Sandpile.Continuum.WhiteNoise
 
 open MeasureTheory ProbabilityTheory Set
 

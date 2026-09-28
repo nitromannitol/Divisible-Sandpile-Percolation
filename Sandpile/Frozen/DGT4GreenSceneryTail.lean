@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.Support.GreenSceneryTail
+
+/-!
+# Lower tail of a finite Green average of the scenery
+
 Lemma (lower tail of a finite Green average of the scenery) of sandpile.tex,
 frozen.  `sandpile.tex:4412-4429`
 (label `lem:dgt4-stretched-green-scenery-tail`):
@@ -28,8 +33,6 @@ supported.  The probability itself is compared in `ℝ≥0∞` against
 `ENNReal.ofReal` of the right side, so no `toReal` junk enters.  The standing
 hypotheses of the section, `E ζ(0) = 0` and `0 < Var(ζ(0)) < ∞`, are listed.
 -/
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.GreenSceneryTail
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,18 +1,21 @@
-/-
+import Sandpile.Support.D4SStep2Second
+
+/-!
+# The pairing form of Step 2 at a fixed test function
+
 The pairing form of the two displays of Step 2, at a FIXED test function
 (`sandpile.tex:3368-3382`).
 
-The frozen statement of `prop:d4-superdiffusive-limit` has two clauses: a
-convergence in distribution of the pairing with each test function, and
-tightness of the `H^{-s}(D)` norms.  The norm is a supremum over the `H^s` unit
-ball, so a bound uniform on that ball serves the second clause but says nothing
-about a test function of large `H^s` norm.  For the first clause the bounds are
-therefore repeated at one fixed test function, where they are in fact easier: a
-fixed test function is Lipschitz, so its modulus of continuity at scale `1/R` is
-`R^{-1}` with no Fourier weight, and the rate of the second display improves
-from `R^{-\min\{s,1\}}` to `R^{-1}`.
+The frozen statement of `prop:d4-superdiffusive-limit` has two clauses: a convergence in
+distribution of the pairing with each test function, and tightness of the `H^{-s}(D)` norms.
+The norm is a supremum over the `H^s` unit ball, so a bound uniform on that ball serves the
+second clause but says nothing about a test function of large `H^s` norm. For the first
+clause the bounds are therefore repeated at one fixed test function, where they are in fact
+easier: a fixed test function is Lipschitz, so its modulus of continuity at scale `1/R` is
+`R^{-1}` with no Fourier weight, and the rate of the second display improves from
+`R^{-\min\{s,1\}}` to `R^{-1}`. The two main results are `exists_abs_pairing_omegaRep_le`
+and `exists_abs_pairing_parityConst_le`.
 -/
-import Sandpile.Support.D4SStep2Second
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.LimNoiseCoordinates
+import Sandpile.Support.ContWhiteNoise
+import Sandpile.Support.CrossBallMemLp
+import Sandpile.Support.CrossLevelLoss
+import Sandpile.Support.CrossFixedScaleBall
+
+/-!
+# The trace laws of Step 3
+
 The trace laws of Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2350-2382`).
 
   "Let `z_1,\ldots,z_M` be the processed square centers ... and let `\P_\ell^{\rm tr}`
@@ -10,11 +18,6 @@ Gaussians, so the trace law is the standard Gaussian product.  This is the
 unshifted law `\P_0^{\rm tr}` of the level loss; the shifted law `\P_{L/R}^{\rm tr}`
 is the same product with the Cameron--Martin means.
 -/
-import Sandpile.Support.LimNoiseCoordinates
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.Support.CrossLevelLoss
-import Sandpile.Support.CrossFixedScaleBall
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum
@@ -85,7 +88,8 @@ theorem whiteNoise_toLp_ae {Ω : Type} [MeasurableSpace Ω] {d : ℕ}
     MemLp.coeFn_toLp hf
   have hsub : MemLp (fun y => (hf.toLp f : Space d → ℝ) y - f y) 2 (volume : Measure (Space d)) :=
     (Lp.memLp (hf.toLp f)).sub hf
-  have hzero : ∫ y : Space d, ((hf.toLp f : Space d → ℝ) y - f y) * ((hf.toLp f : Space d → ℝ) y - f y) = 0 := by
+  have hzero : ∫ y : Space d,
+      ((hf.toLp f : Space d → ℝ) y - f y) * ((hf.toLp f : Space d → ℝ) y - f y) = 0 := by
     rw [← integral_eq_zero_of_ae]
     filter_upwards [hcoe] with y hy
     rw [hy]
@@ -124,20 +128,21 @@ theorem whiteNoise_toLp_ae {Ω : Type} [MeasurableSpace Ω] {d : ℕ}
 
 
 /-
-Vacuity check: everything past this point in an earlier version of this file (`exploration_supplies_orthonormal`
-and its descendants, down to `fixed_scale_crossings_of_exploration_data_red`) built the trace law
-on `hdata`/`horth`, an `Orthonormal ℝ` hypothesis on the BALL KERNELS `ballKernel d 1 (q i)` at
-finitely many distinct points `q i`.  That hypothesis is unsatisfiable for `n ≥ 1` (the ball kernel
-is a log/Newtonian kernel, not of unit `L²` norm, and is not orthogonal to its translates), so those
-theorems could never be instantiated at real exploration data; the deleted material is dead code, not
-a working reduction.  The corrected trace law uses the indicators of the exploration's DISJOINT
-UNIT CUBES, which genuinely are orthonormal in `L²`: see `Sandpile/Support/CrossCubeLaw.lean`
+Vacuity check: everything past this point in an earlier version of this file
+(`exploration_supplies_orthonormal` and its descendants, down to
+`fixed_scale_crossings_of_exploration_data_red`) built the trace law on `hdata`/`horth`, an
+`Orthonormal ℝ` hypothesis on the BALL KERNELS `ballKernel d 1 (q i)` at finitely many distinct
+points `q i`.  That hypothesis is unsatisfiable for `n ≥ 1` (the ball kernel is a log/Newtonian
+kernel, not of unit `L²` norm, and is not orthogonal to its translates), so those theorems could
+never be instantiated at real exploration data; the deleted material is dead code, not a working
+reduction.  The corrected trace law uses the indicators of the exploration's DISJOINT UNIT CUBES,
+which genuinely are orthonormal in `L²`: see `Sandpile/Support/CrossCubeLaw.lean`
 (`map_whiteNoise_cubeIndicators`, `exploration_supplies_cube_data`), which is what
 `Sandpile/Support/CrossLevelLoss.lean`'s `hloss_ballField_of_shift_laws` and
 `Sandpile/Support/CrossCubeLaw.lean`'s `hloss_ballField_of_cube_data` consume.  The three lemmas
 kept above this note (`map_whiteNoise_orthonormal`, `map_whiteNoise_orthonormal_shift`,
-`whiteNoise_toLp_ae`) are the general facts the cube-indicator route itself uses and are not part of
-the deleted, ball-kernel-specific material.
+`whiteNoise_toLp_ae`) are the general facts the cube-indicator route itself uses and are not part
+of the deleted, ball-kernel-specific material.
 -/
 
 end Sandpile.Support

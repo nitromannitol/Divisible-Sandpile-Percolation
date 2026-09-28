@@ -1,10 +1,17 @@
-/-
-Continuity of the reward on a compact cylinder bounds every ball-localized payoff.
-This supplies the boundedness required by the real supremum and makes the capped
-exit rule admissible as a lower bound for the localized value.
--/
 import Sandpile.Support.LimBallBounds
 import Sandpile.Support.LimBallRule
+
+/-!
+# Continuity of the reward bounds the ball-localized value
+
+Continuity of the reward on a compact cylinder bounds every ball-localized payoff
+(`exists_bound_continuous_cylinder` extracts the bound; `bddAbove_ball_payoffs_of_bound_ae` and its
+almost-everywhere-free specialization `bddAbove_ball_payoffs_of_bound` turn it into boundedness of
+`ballStoppingPayoffs`). This supplies the boundedness required by the real supremum defining
+`brownianDiscountBall` (`brownianValueBall_le_initial_add_bound`) and makes the capped exit rule
+`LatticeProb.exitTimeTrunc` admissible as a lower bound for the localized value
+`brownianValueBall` (`ballStopped_payoff_le_of_continuous`).
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter
 open Sandpile.Continuum Sandpile.Support
@@ -34,6 +41,8 @@ theorem Sandpile.Support.bddAbove_ball_payoffs_of_bound_ae {Ω : Type*} [Measura
   have hi' : |∫ ω, -h (T - τ ω) (B (τ ω) ω) ∂P| ≤ M := by simpa using hi
   exact (le_abs_self _).trans hi'
 
+/-- The same bound as `bddAbove_ball_payoffs_of_bound_ae`, stated for stopping times confined to
+the ball everywhere rather than only almost everywhere. -/
 theorem Sandpile.Support.bddAbove_ball_payoffs_of_bound {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (P : Measure Ω) [IsProbabilityMeasure P]
     (h : ℝ → Space d → ℝ) (T A M : ℝ) (u : Space d)
@@ -49,6 +58,8 @@ theorem Sandpile.Support.bddAbove_ball_payoffs_of_bound {Ω : Type*} [Measurable
   rintro a ⟨τ, hτ, hτT, hball, ha⟩
   exact ⟨τ, hτ, hτT, Filter.Eventually.of_forall hball, ha⟩
 
+/-- A function continuous on the compact cylinder `[0,T] × closedBall u A` is bounded there in
+absolute value, by compactness. -/
 theorem Sandpile.Support.exists_bound_continuous_cylinder {d : ℕ}
     {h : ℝ → Space d → ℝ} {T A : ℝ} {u : Space d}
     (hc : ContinuousOn (fun p : ℝ × Space d => h p.1 p.2)
@@ -60,7 +71,11 @@ theorem Sandpile.Support.exists_bound_continuous_cylinder {d : ℕ}
   intro t ht z hz
   exact (hM ⟨(t,z), ⟨ht,hz⟩, rfl⟩).trans (le_max_left _ _)
 
-theorem Sandpile.Support.brownianValueBall_le_initial_add_bound {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+/-- **An upper bound on the ball-localized value from a bound on the reward.** If `h` is bounded
+by `M` on `[0,T]` times the closed ball of radius `A` about `u`, then
+`brownianValueBall B P h T A u ≤ h T u + M`. -/
+theorem Sandpile.Support.brownianValueBall_le_initial_add_bound {Ω : Type*} [MeasurableSpace Ω]
+    {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (P : Measure Ω) [IsProbabilityMeasure P]
     (h : ℝ → Space d → ℝ) (T A M : ℝ) (u : Space d)
     (hA : 0 ≤ A) (hstart : ∀ᵐ ω ∂P, B 0 ω = u)
@@ -91,6 +106,10 @@ theorem Sandpile.Support.brownianValueBall_le_initial_add_bound {Ω : Type*} [Me
   unfold brownianValueBall
   exact add_le_add_right hsup _
 
+/-- The capped exit-time stopping rule `LatticeProb.exitTimeTrunc` gives a lower bound on the
+ball-localized value `brownianValueBall`, once continuity of `h` on the relevant compact cylinder
+supplies the boundedness that `Sandpile.Support.ballStopped_payoff_le` needs, via
+`exists_bound_continuous_cylinder` and `bddAbove_ball_payoffs_of_bound_ae`. -/
 theorem Sandpile.Support.ballStopped_payoff_le_of_continuous {Ω : Type*}
     [MeasurableSpace Ω] {d : ℕ} (B : ℝ≥0 → Ω → Space d) (P : Measure Ω)
     [IsProbabilityMeasure P] (h : ℝ → Space d → ℝ) (T s A : ℝ) (u : Space d)

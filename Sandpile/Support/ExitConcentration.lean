@@ -1,11 +1,13 @@
-/-
+import LatticeProb.Prob.WeightedConc
+import Sandpile.Support.Norms
+import Sandpile.Support.ExitAverage
+
+/-! # Exit-Averaged Concentration in Dimension Four
+
 The concentration inequality for an exit-averaged localized odometer in
 dimension four.  The influence square sum is uniformly bounded and its
 largest coefficient is of order r⁻², giving Gaussian and exponential regimes.
 -/
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
-import Sandpile.Support.ExitAverage
 
 open LatticeProb
 
@@ -24,7 +26,8 @@ theorem weighted_tail_of_norm_bounds (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) 
         (∀ ξ i v, |F ξ - F (Function.update ξ i v)| ≤ ℓ i * |ξ i - v|) →
         (∑ i, ℓ i ^ 2) ≤ B → ∀ H : ℝ, 0 < H → (∀ i, ℓ i ≤ B / H) →
         ∀ s : ℝ, 0 ≤ s →
-          (Measure.pi fun _ : Fin N => ν) {ξ | s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|} ≤
+          (Measure.pi fun _ : Fin N => ν)
+              {ξ | s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|} ≤
             ENNReal.ofReal (C * Real.exp (-(c * min (s ^ 2) (s * H)))) := by
   obtain ⟨c₀, C, hc₀, hC, htail⟩ := weighted_exp_conc_tail θ K hθ
   refine ⟨c₀ / B, C, div_pos hc₀ hB, hC, ?_⟩
@@ -46,7 +49,8 @@ theorem weighted_tail_of_norm_bounds (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) 
       · rw [show c₀ / B * (s * H) = c₀ * (s / (B / H)) by field_simp]
         exact mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_left hs hInf0 hInf) hc₀.le
     have ht := htail N ν hν hexp hK F hFm ℓ hℓ hne hLip s hs
-    refine (measure_mono (fun ξ (hξ : s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|) => hξ.le)).trans
+    refine (measure_mono
+      (fun ξ (hξ : s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|) => hξ.le)).trans
       (ht.trans ?_)
     apply ENNReal.ofReal_le_ofReal
     exact mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by linarith)) hC.le
@@ -70,20 +74,32 @@ theorem weighted_tail_of_norm_bounds (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) 
 
 variable {d : ℕ}
 
+/-- `localizedExitAverage D N E m ζ x` repackaged as a function of the finitely many
+coordinates `ξ` of the scenery on the box of radius `N + m` around `x`, via `siteExtend`, so
+that it can be fed to the finite-coordinate concentration inequality
+`weighted_tail_of_norm_bounds`. -/
 noncomputable def boxExitAverage (D : Set (Site d)) (N : ℕ) (E : Site d → Set (Site d))
     (m : ℕ) (x : Site d) (ξ : Fin (boxFinset x (N + m)).card → ℝ) : ℝ :=
   localizedExitAverage D N E m (siteExtend (boxFinset x (N + m)) ξ) x
 
+/-- `boxExitAverage D N E m x` is measurable in its finite coordinate vector, since
+`localizedExitAverage` is measurable in the scenery and `siteExtend` is measurable. -/
 theorem measurable_boxExitAverage (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (x : Site d) : Measurable (boxExitAverage D N E m x) :=
   (measurable_localizedExitAverage hd D N E m x).comp (measurable_siteExtend _)
 
+/-- `boxExitAverage` evaluated at the coordinates of a scenery `ζ` picked out on the box
+recovers `localizedExitAverage D N E m ζ x`, since `localizedExitAverage` only reads `ζ` on
+that box. -/
 theorem boxExitAverage_pick (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (x : Site d) (ζ : Site d → ℝ) :
     boxExitAverage D N E m x (fun i => ζ (siteEnum (boxFinset x (N + m)) i)) =
       localizedExitAverage D N E m ζ x :=
   localizedExitAverage_congr_box hd D N E m x _ ζ (fun _ hz => siteExtend_siteEnum _ ζ hz)
 
+/-- `boxExitAverage`'s coordinate Lipschitz bound: `exitInfluence D N m x` at the site enumerated
+by `i` bounds the effect of changing that coordinate, transported from
+`abs_localizedExitAverage_update_le` through `siteExtend`. -/
 theorem abs_boxExitAverage_update_le (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (x : Site d)
     (ξ : Fin (boxFinset x (N + m)).card → ℝ) (i : Fin (boxFinset x (N + m)).card) (v : ℝ) :
@@ -150,12 +166,15 @@ theorem exists_cube_exit_concentration (hBallGreen : External.BallGreenBounds)
       (fun ζ : Site 4 → ℝ => fun i => ζ (siteEnum S i)) ⁻¹'
         {ξ | a < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin S.card => ν)|} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, hm, F, S, boxExitAverage_pick (d := 4) (by norm_num)]
-  have hme : MeasurableSet {ξ : Fin S.card → ℝ | a < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin S.card => ν)|} :=
+    simp only [Set.mem_setOf_eq, Set.mem_preimage, hm, F, S,
+      boxExitAverage_pick (d := 4) (by norm_num)]
+  have hme : MeasurableSet
+      {ξ : Fin S.card → ℝ | a < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin S.card => ν)|} :=
     measurableSet_lt measurable_const (hFm.sub measurable_const).abs
   change LatticeProb.iidLaw 4 ν {ζ | a < |localizedExitAverage D N E (r ^ 2) ζ x -
     ∫ η, localizedExitAverage D N E (r ^ 2) η x ∂LatticeProb.iidLaw 4 ν|} ≤ _
-  rw [he, (LatticeProb.measurePreserving_pick _ ν (siteEnum S) (siteEnum_injective S)).measure_preimage hme.nullMeasurableSet]
+  rw [he, (LatticeProb.measurePreserving_pick _ ν (siteEnum S)
+    (siteEnum_injective S)).measure_preimage hme.nullMeasurableSet]
   exact ht
 
 end Sandpile

@@ -1,12 +1,20 @@
-/-
+import Sandpile.Support.D4Scale
+import Sandpile.Support.D4SmoothedTail
+import Sandpile.Support.D4Reflection
+
+/-!
+# Step 4 pointwise linearization tail in dimension four
+
 Step 4 of `prop:d4-pointwise-linearization` (`sandpile.tex:3188-3231`).
 The backward decomposition splits the centered difference into a smoothed
 term and a centered reflection window.  A short window has a small mean;
 above a fixed multiple of `log(t+2)` the exponential reflection bound applies.
+`diffField_centered_decomp` records this backward decomposition, and
+`exists_pointwise_linearization_four` assembles it with the smoothed-difference tail
+`exists_smoothed_difference_tail_four` and the reflection-sum tail
+`measure_reflectionSum_tail_four`, splitting on the size of the deviation `lam` relative to
+`B * log(t+2)`, to obtain the final tail bound with variance scale `1 + log log t`.
 -/
-import Sandpile.Support.D4Scale
-import Sandpile.Support.D4SmoothedTail
-import Sandpile.Support.D4Reflection
 
 open LatticeProb
 
@@ -15,6 +23,10 @@ open scoped ENNReal
 
 namespace Sandpile
 
+/-- The backward decomposition of the centered odometer difference: subtracting the mean and the
+membrane splits as the centered `n`-step backward-averaged difference field `diffField` plus the
+centered `reflectionSum` window, combining the pointwise identity `diffField_decomp` with the
+mean identity `integral_reflectionSum`. -/
 theorem diffField_centered_decomp {d : ℕ} (hd : 1 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0)

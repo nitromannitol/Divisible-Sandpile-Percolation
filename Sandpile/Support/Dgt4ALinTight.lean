@@ -1,4 +1,6 @@
-/-
+import Sandpile.Support.TightWeightedMembrane
+
+/-!
 Tightness of the time-weighted membrane field for a fully general deterministic
 array `q : ℝ → ℕ → ℝ`, transposed from `Sandpile.Support.weighted_membrane_tight`
 (`Sandpile/Support/TightWeightedMembrane.lean`), which only allows a weight of
@@ -9,7 +11,6 @@ repeats that proof with the weight sequence `fun j => q R j` in place of
 bound on the weights on the summed range, which `q_{R,j} ∈ [0,1]` supplies
 directly.
 -/
-import Sandpile.Support.TightWeightedMembrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

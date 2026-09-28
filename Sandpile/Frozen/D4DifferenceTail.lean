@@ -1,26 +1,16 @@
-/-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3029-3042`
-(label `lem:d4-difference-tail`):
-
-  "There are constants $A_0,c,C\in(0,\infty)$ such that, for all $t\geq2$ and
-   all $x\in\Z^4$,
-   $\E[\exp\{c(u_t(x)-V_t(x)-A_0\log(t+2))_+\}-1]\leq C(t+2)^{-2}$."
-
-The standing hypotheses of `sec:dim4-regime` are in force in
-`ssec:d4-linearization` (`sandpile.tex:2676-2679`): the scenery is mean-zero
-i.i.d.\ with `0 < Var(ζ(0)) < ∞` and `E e^{θ|ζ(0)|} < ∞` for some `θ > 0`.
-They are transcribed as hypotheses on the one-site law `ν`, and the field is
-the i.i.d.\ field `LatticeProb.iidLaw 4 ν` on `ℤ⁴`, so that the odometer
-`u_t` is `odometerOf ζ t` and the membrane field `V_t` of
-`eq:membrane-recursion` is `membrane ζ t` in the same variable `ζ`.  The
-constants come after the law, since the paper fixes the field first.  The
-positive part is `max 0`, so the integrand is nonnegative; it is integrated as
-a lower Lebesgue integral in `ℝ≥0∞`, which makes the bound FALSE rather than
-vacuously true when the exponential moment fails to exist.
--/
 import Sandpile.Walk
 import Sandpile.External.VarianceScale
 import Sandpile.Support.D4Difference
+
+/-!
+# Exponential concentration of the odometer-membrane difference in dimension four
+
+`Sandpile.Frozen.d4_difference_tail` is `lem:d4-difference-tail`: for a mean-zero i.i.d. scenery
+on `ℤ⁴` with a finite exponential moment, there are constants `A₀, c, C > 0` such that the
+exponential moment of the positive part of `u_t(x) - V_t(x) - A₀\log(t+2)` is at most
+`C(t+2)^{-2}`, uniformly over `t ≥ 2` and `x`, where `u_t` is the odometer and `V_t` is the
+membrane field of `eq:membrane-recursion`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

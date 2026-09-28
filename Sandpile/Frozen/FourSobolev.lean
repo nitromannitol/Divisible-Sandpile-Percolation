@@ -1,5 +1,15 @@
-/-
-Theorem 1.3(ii)(c) of sandpile.tex, frozen.  `sandpile.tex:254-258`
+import Sandpile.Law
+import Sandpile.Continuum.Membrane
+import Sandpile.External.ContinuumBesovTightness
+import Sandpile.External.HeatKernelBoundsProved
+import Sandpile.External.MembraneScalingFour
+import Sandpile.External.VarianceScaleProved
+import Sandpile.Support.ExplFourSobolev
+
+/-!
+# The frozen four-dimensional Sobolev tightness and scaling limit
+
+This module states and proves Theorem 1.3(ii)(c) of `sandpile.tex:254-258`
 (label `thm:main-explosion`, part (ii)(c)):
 
   "For every $T>0$ and $s>0$, the fields
@@ -40,13 +50,6 @@ proved unconditionally in this repository (`Sandpile.External.heatKernelBounds`,
 hypothesis.  `hMembrane`, the scaling limit of the four-dimensional discrete
 membrane field cited in Step 1 of `prop:d4-superdiffusive-limit`, remains one.
 -/
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.External.MembraneScalingFour
-import Sandpile.External.VarianceScaleProved
-import Sandpile.Support.ExplFourSobolev
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

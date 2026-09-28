@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.ContinuumPlanar
+
+/-! # Basic crossing geometry
+
 The geometry of the planar crossings of `sandpile.tex:2112-2118`:
 
   "For a rectangle `𝓡` in the plane, write `H_𝓡(ℓ)` for the event that
@@ -14,7 +17,6 @@ the rectangle.  The last of these is the deterministic step of
 `sandpile.tex:2549-2556`, where a crossing of `{max_i 𝒳_{s_i} ≥ 4c}` is turned
 into a crossing of `{𝒰_{Z,1}(T,·) > 5dc}`.
 -/
-import Sandpile.Support.ContinuumPlanar
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

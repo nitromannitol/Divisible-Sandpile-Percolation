@@ -1,15 +1,21 @@
-/-
-The Step-1 lower isolation estimate `eq:dgt4-band-lower-isolation` of
-`thm:dgt4-many-limits` (`sandpile.tex:5930-6055`) for the constructed one-site
-law.
-
-Below the `k`th band level the `k`th component and every band above it
-contribute nothing at all, since they are carried strictly below that level.
-What is left is the positive summand, whose exponential moment is finite, and
-the finitely many bands below, each of which is damped by the parameter
-inequality `1 - λ₀ℓ₁ + (λ₀-1)/A < 0`.
--/
 import Sandpile.Support.Dgt4ABandLawUpper
+
+/-!
+# The Step-1 lower isolation estimate for the constructed law
+
+The Step-1 lower isolation estimate `eq:dgt4-band-lower-isolation` of `thm:dgt4-many-limits`
+(`sandpile.tex:5930-6055`) for the constructed one-site law, proved as
+`bandLowerIsolation_law` and bundled with the rest of Step 1 as `bandLawProfile_law`.
+
+Below the `k`th band level the `k`th component and every band above it contribute nothing at
+all, since they are carried strictly below that level
+(`integral_bandComponent_lowerTail_eq_zero`, `bandComponent_mul_lowerTail_eq_zero`). What is
+left is the positive summand, whose exponential moment is finite
+(`integral_gauss_lowerTail_le`), and the finitely many bands below, each bounded via
+`integral_bandComponent_lowerTail_le` and damped by the parameter inequality
+`1 - λ₀ℓ₁ + (λ₀-1)/A < 0`; these two pieces are combined in `integral_lowerTail_bandLaw_le`,
+and `tendsto_nat_mul_exp_neg_pow` handles the resulting `k e^{-cA^k} → 0` limit.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -32,6 +38,9 @@ theorem exp_neg_lam_mul_gaussianPDFReal (hv : v ≠ 0) (lam x : ℝ) :
   field_simp
   ring_nf
 
+/-- The exponentially tilted Gaussian density is integrable: `exp_neg_lam_mul_gaussianPDFReal`
+rewrites it as a constant multiple of the Gaussian density with shifted mean `mu - lam * v`,
+which is integrable. -/
 theorem integrable_exp_neg_lam_mul_gaussianPDFReal (hv : v ≠ 0) (lam : ℝ) :
     Integrable fun x : ℝ => Real.exp (-(lam * x)) * gaussianPDFReal mu v x := by
   have h := (integrable_gaussianPDFReal (mu - lam * (v : ℝ)) v).const_mul
@@ -39,6 +48,9 @@ theorem integrable_exp_neg_lam_mul_gaussianPDFReal (hv : v ≠ 0) (lam : ℝ) :
   exact h.congr (Filter.Eventually.of_forall fun x =>
     (exp_neg_lam_mul_gaussianPDFReal (mu := mu) hv lam x).symm)
 
+/-- The integral of the exponentially tilted Gaussian density: `exp_neg_lam_mul_gaussianPDFReal`
+reduces it to the total mass of the shifted Gaussian density, which is `1`
+(`integral_gaussianPDFReal_eq_one`). -/
 theorem integral_exp_neg_lam_mul_gaussianPDFReal (hv : v ≠ 0) (lam : ℝ) :
     ∫ x : ℝ, Real.exp (-(lam * x)) * gaussianPDFReal mu v x
       = Real.exp (-(lam * mu) + lam ^ 2 * (v : ℝ) / 2) := by
@@ -50,9 +62,13 @@ theorem integral_exp_neg_lam_mul_gaussianPDFReal (hv : v ≠ 0) (lam : ℝ) :
 def lowerTail (lam c z : ℝ) : ℝ :=
   Real.exp (-(lam * z)) * Set.indicator {z : ℝ | -z ≤ c} (fun _ => (1 : ℝ)) z
 
+/-- `lowerTail` is nonnegative, being a product of a positive exponential and an
+`{0, 1}`-valued indicator. -/
 lemma lowerTail_nonneg (lam c z : ℝ) : 0 ≤ lowerTail lam c z :=
   mul_nonneg (Real.exp_pos _).le (Set.indicator_nonneg (fun _ _ => zero_le_one) _)
 
+/-- `lowerTail` is dominated by the bare exponential weight `Real.exp (-(lam * z))`, since the
+indicator factor is at most `1`. -/
 lemma lowerTail_le (lam c z : ℝ) : lowerTail lam c z ≤ Real.exp (-(lam * z)) := by
   rw [lowerTail]
   nth_rewrite 2 [← mul_one (Real.exp (-(lam * z)))]
@@ -62,9 +78,13 @@ lemma lowerTail_le (lam c z : ℝ) : lowerTail lam c z ≤ Real.exp (-(lam * z))
   · rw [Set.indicator_of_notMem h]
     norm_num
 
+/-- `lowerTail lam c z` vanishes once `z` lies below the threshold `-c`, i.e. `c < -z`, since
+the indicator is then zero. -/
 lemma lowerTail_eq_zero {lam c z : ℝ} (h : c < -z) : lowerTail lam c z = 0 := by
   rw [lowerTail, Set.indicator_of_notMem (by simpa using not_le.mpr h), mul_zero]
 
+/-- `lowerTail lam c` is measurable, being a product of the measurable exponential map and the
+indicator of the measurable set `{z | -z ≤ c}`. -/
 lemma measurable_lowerTail (lam c : ℝ) : Measurable (lowerTail lam c) := by
   unfold lowerTail
   refine Measurable.mul ?_ ?_
@@ -85,6 +105,9 @@ theorem integrable_gauss_lowerTail (hv : v ≠ 0) (lam c : ℝ) :
         mul_le_mul_of_nonneg_left (lowerTail_le lam c x) (gaussianPDFReal_nonneg mu v x)
     _ = Real.exp (-(lam * x)) * gaussianPDFReal mu v x := mul_comm _ _
 
+/-- The exponential-moment bound on the positive summand's lower-tail contribution: the
+pointwise bound `lowerTail_le` and `integral_exp_neg_lam_mul_gaussianPDFReal` give the same
+exponential-moment bound as `integrable_gauss_lowerTail` establishes integrability for. -/
 theorem integral_gauss_lowerTail_le (hv : v ≠ 0) (lam c : ℝ) :
     ∫ x : ℝ, gaussianPDFReal mu v x * lowerTail lam c x
       ≤ Real.exp (-(lam * mu) + lam ^ 2 * (v : ℝ) / 2) := by
@@ -143,6 +166,9 @@ theorem integral_bandComponent_lowerTail_le {a' θ' : ℝ} {m' : ℕ} (hθ : 0 <
   rw [integral_mul_const, integral_bandComponent_eq_one hθ hm hl0 hl1 ha, one_mul]
 
 
+/-- The pointwise, non-integral form of `integral_bandComponent_lowerTail_eq_zero`: a band
+component supported at or above the level `l1 * a'` and the lower-tail weight below the
+threshold `c ≤ l1 * a'` never overlap, so their product vanishes at every point. -/
 lemma bandComponent_mul_lowerTail_eq_zero {a' θ' : ℝ} {m' : ℕ} (hm : 0 < m')
     (hl1 : l1 < 1) (ha : 0 < a') {lam c : ℝ} (hc : c ≤ l1 * a') (x : ℝ) :
     bandComponent l1 a' θ' m' x * lowerTail lam c x = 0 := by

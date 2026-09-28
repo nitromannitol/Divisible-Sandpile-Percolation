@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.HeatKernelGradient
+
+/-!
+# The heat-kernel estimates are proved
+
 The three heat-kernel estimates of `sandpile.tex:1126-1140` are proved.
 The existing input proposition and all dependent statements remain unchanged;
 this theorem supplies a witness of that proposition.
 -/
-import Sandpile.Support.HeatKernelGradient
 
 -- FROZEN-STATEMENT-BEGIN
 /-- The three heat-kernel estimates in `sandpile.tex:1126-1140`

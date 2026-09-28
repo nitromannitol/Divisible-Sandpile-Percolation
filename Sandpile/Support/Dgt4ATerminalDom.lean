@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Dgt4AStopCompare
+import Sandpile.Support.Smoothed
+
+/-!
 **Terminal domination** (`eq:dgt4-gaussian-terminal-domination`, `sandpile.tex:5241-5245`):
 "iterate `u_{r+1}\geq\zeta+Pu_r` over the final `k_n` updates.  Conditionally on
 `-V_\infty(0)=b`,
@@ -9,8 +12,6 @@ With `V_\infty-PV_\infty=\zeta` the left side is `-V_\infty(0)+P(V_\infty-u_n)(0
 iteration is the monotonicity `V_\infty-u_{m+j}\leq P^j(V_\infty-u_m)` of the
 dynamic-programming recursion, which is `dpValue_le_avgIterate` at the payoff `V_\infty`.
 -/
-import Sandpile.Support.Dgt4AStopCompare
-import Sandpile.Support.Smoothed
 
 open MeasureTheory Filter Topology
 

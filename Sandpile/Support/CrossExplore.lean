@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossFixedScale
+
+/-!
+# Subquadratic count for the fixed-scale exploration
+
 Step 2 of `prop:fixed-scale-crossings` (`sandpile.tex:2262-2296`): the number of
 unit cubes the bottom-cluster exploration reveals is subquadratic on average.
 
@@ -29,7 +33,6 @@ balance because `1 - α/(1+α) = 1/(1+α)`.  The paper's `α₁` is any positive
 exponent for which the display holds, and it says "after decreasing `α₁` if
 necessary"; this is one such choice, written explicitly.
 -/
-import Sandpile.Support.CrossFixedScale
 
 open MeasureTheory Set Finset
 

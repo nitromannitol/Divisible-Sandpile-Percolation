@@ -1,15 +1,16 @@
-/-
-The variance split of `eq:dgt4-derivative-variance-limit` (`sandpile.tex:5769-5773`).
+import Mathlib
 
-The paper combines the early and late parts of the coordinate derivative of the
-tested odometer by
+/-!
+# The variance split for the tested-odometer derivative
+
+The variance split of `eq:dgt4-derivative-variance-limit` (`sandpile.tex:5769-5773`). The paper
+combines the early and late parts of the coordinate derivative of the tested odometer by
 
   "`Var(D^{≤}_{R,z}+D^{>}_{R,z}) ≤ 2 Var(D^{≤}_{R,z}) + 2 E[(D^{>}_{R,z})²]`",
 
 which is the elementary inequality `Var(X+Y) ≤ 2 Var X + 2 Var Y` together with
-`Var Y ≤ E[Y²]`.  Both are recorded here in the form the assembly uses.
+`Var Y ≤ E[Y²]`. Both are recorded here in the form the assembly uses.
 -/
-import Mathlib
 
 open MeasureTheory ProbabilityTheory
 

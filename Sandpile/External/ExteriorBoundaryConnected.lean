@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ExteriorBoundary
+
+/-!
+# Timár's exterior-boundary connectivity theorem
+
 External input from Timár, Boundary-connectivity via graph theory,
 Theorem 3 (arXiv 0711.1713v2, page 5), cited at `sandpile.tex:6600` in
 `lem:dgt4-blocking-to-crossing`.
@@ -10,7 +14,6 @@ boundary definition on page 2. Both induced-graph connectivity predicates
 include nonemptiness. The diameter and annular crossing consequences are
 proved separately and are not part of this input.
 -/
-import Sandpile.Support.ExteriorBoundary
 
 -- FROZEN-STATEMENT-BEGIN
 /-- Timár's exterior-boundary connectivity theorem on the lattice.

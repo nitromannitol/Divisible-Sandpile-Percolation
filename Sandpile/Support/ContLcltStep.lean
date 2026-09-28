@@ -1,31 +1,30 @@
-/-
-The local central limit theorem applied to the double time sum of
-`prop:weighted-membrane-limit`.
-
-This is the one place in the chain where `Sandpile.External.LocalCLT`, the
-statement quoted at `sandpile.tex:1145-1161`, is used.  Fix two points `u` and
-`v` of `ℝ^d` and lattice sites `X R` and `Y R` whose rescalings converge to them.
-The weight `g` vanishes below `δ`, so only the times `a,b ≥ δR²` contribute and
-the total time `a+b` lies between `2δR²` and `2TR²`, which is the range the
-theorem covers at horizon `2T`.  The theorem is a statement about the triples
-with `p_ℓ(x,y) > 0`; on the parity class of the total time that hypothesis holds
-once `ℓ` exceeds the path distance, which is `O(R)` against `ℓ ≥ 2δR²`, and the
-criterion is `Sandpile.heatKernel_pos_of_sameParity`.  What the theorem then
-gives is the double time sum with the FIXED integrand
-`2 q(r)q(r')p^{BM}_{r+r'}(u,v)`, up to an error uniform over the admissible
-pairs, and the parity-restricted Riemann sums of
-`Sandpile.Support.ContMeshParity` turn that into HALF the double time integral.
-The factor two of the local central limit theorem, which the paper attributes to
-the density `1/2` of the parity class, cancels that half.
-
-The Brownian kernel is read at `max (r+r') (2δ)` so that the integrand is
-bounded and continuous on the whole plane, which the Riemann-sum theorems
-require; on the support of the weight the two agree, since there `r+r' ≥ 2δ`.
--/
 import Sandpile.Support.KernelPositive
 import Sandpile.Support.ContMeshParity
 import Sandpile.Support.ContBMSpace
 import Sandpile.External.LocalCLT
+
+/-!
+# The local central limit theorem applied to the double time sum
+
+The local central limit theorem applied to the double time sum of `prop:weighted-membrane-limit`.
+
+This is the one place in the chain where `Sandpile.External.LocalCLT`, the statement quoted at
+`sandpile.tex:1145-1161`, is used. Fix two points `u` and `v` of `ℝ^d` and lattice sites `X R` and
+`Y R` whose rescalings converge to them. The weight `g` vanishes below `δ`, so only the times
+`a,b ≥ δR²` contribute and the total time `a+b` lies between `2δR²` and `2TR²`, which is the range
+the theorem covers at horizon `2T`. The theorem is a statement about the triples with
+`p_ℓ(x,y) > 0`; on the parity class of the total time that hypothesis holds once `ℓ` exceeds the
+path distance, which is `O(R)` against `ℓ ≥ 2δR²`, and the criterion is
+`Sandpile.heatKernel_pos_of_sameParity`. What the theorem then gives is the double time sum with
+the FIXED integrand `2 q(r)q(r')p^{BM}_{r+r'}(u,v)`, up to an error uniform over the admissible
+pairs, and the parity-restricted Riemann sums of `Sandpile.Support.ContMeshParity` turn that into
+HALF the double time integral. The factor two of the local central limit theorem, which the paper
+attributes to the density `1/2` of the parity class, cancels that half.
+
+The Brownian kernel is read at `max (r+r') (2δ)` so that the integrand is bounded and continuous
+on the whole plane, which the Riemann-sum theorems require; on the support of the weight the two
+agree, since there `r+r' ≥ 2δ`.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -35,6 +34,9 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- The box (sup) distance between two sites is bounded by the Euclidean `latticeDist` of
+`Sandpile.External.Lclt`: the sup of the coordinate differences is at most the square root of
+the sum of their squares. -/
 theorem boxDist_le_latticeDist (hd : 1 ≤ d) (x y : Site d) :
     ((boxDist x y : ℕ) : ℝ) ≤ Sandpile.External.Lclt.latticeDist x y := by
   classical
@@ -58,6 +60,8 @@ theorem boxDist_le_latticeDist (hd : 1 ≤ d) (x y : Site d) :
       = Real.sqrt ((((x i - y i).natAbs : ℕ) : ℝ) ^ 2) := (Real.sqrt_sq (Nat.cast_nonneg _)).symm
     _ ≤ Real.sqrt (∑ j : Fin d, ((x j - y j : ℤ) : ℝ) ^ 2) := Real.sqrt_le_sqrt hle
 
+/-- The lattice path distance is bounded by `d` times the Euclidean `latticeDist`, combining
+`pathDist_le_mul_boxDist` with `boxDist_le_latticeDist`. -/
 theorem pathDist_le_latticeDist (hd : 1 ≤ d) (x y : Site d) :
     ((pathDist x y : ℕ) : ℝ) ≤ (d : ℝ) * Sandpile.External.Lclt.latticeDist x y := by
   have h1 : ((pathDist x y : ℕ) : ℝ) ≤ (d : ℝ) * ((boxDist x y : ℕ) : ℝ) := by
@@ -70,6 +74,9 @@ theorem pathDist_le_latticeDist (hd : 1 ≤ d) (x y : Site d) :
     _ ≤ (d : ℝ) * Sandpile.External.Lclt.latticeDist x y :=
         mul_le_mul_of_nonneg_left h2 hd0
 
+/-- The scaled double time sum, with prefactor `R^{d-4}` split as `R^d (R^2)⁻¹ (R^2)⁻¹` to match
+the two `g`-rescalings, rewritten via `sum_time_double_eq_filter` as a sum over only the pairs
+`(a, b)` of the same parity as `x - y`, the pairs where the heat kernel term can be nonzero. -/
 theorem scaled_time_sum_eq_filter {R : ℝ} (hR : 0 < R) (T : ℝ) (g : ℝ → ℝ)
     (x y : Site d) :
     R ^ ((d : ℝ) - 4) *

@@ -1,9 +1,10 @@
-/-
+import Mathlib
+
+/-!
 The floor scale `j_n = ⌊n^{1/d}⌋` of Step 2 of case (a) of
 `prop:dgt4-contact-asymptotics` (`sandpile.tex:5083`): it tends to infinity, and so does
 `j_n^{(d-4)/4}`, so the second term of the Step-2 bound vanishes.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology Asymptotics
 

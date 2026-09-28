@@ -1,10 +1,20 @@
-/-
-Short-distance oscillations of the far Green field on finite pair families
-and fixed-aspect plane rectangles have superpolynomially small probability.
--/
 import Sandpile.Support.FiniteKernelTail
 import Sandpile.Support.FarComparison
 import Sandpile.Support.PlaneRectangle
+
+/-!
+# Superpolynomial short-distance oscillation bounds for the far Green field
+
+Short-distance oscillations of the far Green field on finite pair families and fixed-aspect plane
+rectangles have superpolynomially small probability. `exists_far_pair_union_tail` unions the
+two-point far-increment tail over a finite family of pairs; `exists_far_oscillation_bound` feeds
+in a family growing polynomially in `r` and a separation scale `⌊r^α⌋` to get decay `C r^{-p}`;
+`exists_aspect_rectangle_far_oscillation` and its box variant specialize this to pairs drawn from
+a fixed-aspect-ratio plane rectangle. Two purely analytic lemmas support the polynomial-versus-
+Gaussian comparison (`eventually_log_le_floor_rpow_sq`, `polynomial_exp_log_sq_le`), and
+`latticeNorm_planeTranslate_sub_le` converts a coordinatewise separation bound into a lattice-norm
+one.
+-/
 
 open MeasureTheory Filter Set
 open scoped BigOperators Topology
@@ -13,6 +23,11 @@ noncomputable section
 
 namespace Sandpile
 
+/-- **A union bound over a finite family of pairs, from the two-point far-increment tail.**
+Given the two-point exponential tail `exists_far_increment_tail` for the far Green field's
+increment between two points at lattice-norm separation at most `M * L`, a union bound over a
+finite family `S` of such pairs bounds the probability that some pair's increment exceeds `t` by
+`S.card` times the two-point tail. -/
 lemma exists_far_pair_union_tail (hBall : External.BallGreenBounds)
     (θ K M : ℝ) (hθ : 0 < θ) (hM : 1 ≤ M) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -22,29 +37,38 @@ lemma exists_far_pair_union_tail (hBall : External.BallGreenBounds)
       ∀ S : Finset (Site 4 × Site 4),
         (∀ p ∈ S, External.BallGreen.latticeNorm (p.2 - p.1) ≤ M * L) →
       ∀ t : ℝ, 0 ≤ t →
-        (LatticeProb.iidLaw 4 μ) {ζ | ∃ p ∈ S, t < |finiteKernelField (External.BallGreen.cutField r L φ) ζ p.1 -
-          finiteKernelField (External.BallGreen.cutField r L φ) ζ p.2|} ≤
+        (LatticeProb.iidLaw 4 μ)
+            {ζ | ∃ p ∈ S, t < |finiteKernelField (External.BallGreen.cutField r L φ) ζ p.1 -
+              finiteKernelField (External.BallGreen.cutField r L φ) ζ p.2|} ≤
         ENNReal.ofReal ((S.card : ℝ) * C * Real.exp (-(c * min (t ^ 2) (t * (L : ℝ) ^ 2)))) := by
   obtain ⟨c, C, hc, hC, htail⟩ := exists_far_increment_tail hBall θ K M hθ hM
   refine ⟨c, C, hc, hC, ?_⟩
   intro μ hμ hexp hK hmean r L hr hL φ hφ S hS t ht
-  let E (p : Site 4 × Site 4) := {ζ | t < |finiteKernelField (External.BallGreen.cutField r L φ) ζ p.1 -
-    finiteKernelField (External.BallGreen.cutField r L φ) ζ p.2|}
+  let E (p : Site 4 × Site 4) :=
+    {ζ | t < |finiteKernelField (External.BallGreen.cutField r L φ) ζ p.1 -
+      finiteKernelField (External.BallGreen.cutField r L φ) ζ p.2|}
   have he : {ζ | ∃ p ∈ S, ζ ∈ E p} = ⋃ p ∈ S, E p := by ext ζ; simp
   rw [show {ζ | ∃ p ∈ S, t < |finiteKernelField (External.BallGreen.cutField r L φ) ζ p.1 -
       finiteKernelField (External.BallGreen.cutField r L φ) ζ p.2|} = ⋃ p ∈ S, E p from he]
   calc
     _ ≤ ∑ p ∈ S, (LatticeProb.iidLaw 4 μ) (E p) := measure_biUnion_finset_le _ _
     _ ≤ ∑ _p ∈ S, ENNReal.ofReal (C * Real.exp (-(c * min (t ^ 2) (t * (L : ℝ) ^ 2)))) :=
-      Finset.sum_le_sum (fun p hp => htail μ hμ hexp hK hmean r L hr hL φ hφ p.1 p.2 (hS p hp) t ht)
-    _ = _ := by simp only [Finset.sum_const, nsmul_eq_mul, ENNReal.ofReal_mul (Nat.cast_nonneg S.card),
-      ENNReal.ofReal_natCast, mul_assoc]
+      Finset.sum_le_sum
+        (fun p hp => htail μ hμ hexp hK hmean r L hr hL φ hφ p.1 p.2 (hS p hp) t ht)
+    _ = _ := by
+        simp only [Finset.sum_const, nsmul_eq_mul, ENNReal.ofReal_mul (Nat.cast_nonneg S.card),
+          ENNReal.ofReal_natCast, mul_assoc]
 
+/-- **The floor of `r^α` eventually squares to more than `η log r`.** For large `r`, `⌊r^α⌋ ≥ 2`
+and `η * log r ≤ ⌊r^α⌋ ^ 2`, since `log r = o(r^{2α})`. This is the scale comparison
+`exists_far_oscillation_bound` needs to feed `L = ⌊r^α⌋` and `t = η log r` into
+`exists_far_pair_union_tail`. -/
 lemma eventually_log_le_floor_rpow_sq {α η : ℝ} (hα : 0 < α) (_hη : 0 < η) :
     ∀ᶠ r : ℕ in atTop, 2 ≤ r ∧ 2 ≤ ⌊(r : ℝ) ^ α⌋₊ ∧ η * Real.log r ≤ (⌊(r : ℝ) ^ α⌋₊ : ℝ) ^ 2 := by
   have hpowlim : Tendsto (fun r : ℕ => (r : ℝ) ^ α) atTop atTop :=
     (tendsto_rpow_atTop hα).comp tendsto_natCast_atTop_atTop
-  have hlim : Tendsto (fun r : ℕ => 4 * η * (Real.log (r : ℝ) / (r : ℝ) ^ (2 * α))) atTop (𝓝 0) := by
+  have hlim :
+      Tendsto (fun r : ℕ => 4 * η * (Real.log (r : ℝ) / (r : ℝ) ^ (2 * α))) atTop (𝓝 0) := by
     have hh := ((isLittleO_log_rpow_atTop (by positivity : 0 < 2 * α)).tendsto_div_nhds_zero).comp
       tendsto_natCast_atTop_atTop
     simpa only [Function.comp_apply, mul_zero] using hh.const_mul (4 * η)
@@ -62,13 +86,21 @@ lemma eventually_log_le_floor_rpow_sq {α η : ℝ} (hα : 0 < α) (_hη : 0 < �
     norm_num
     ring
   have hsmall : 4 * η * Real.log (r : ℝ) ≤ (r : ℝ) ^ (2 * α) := by
-    have hh : (4 * η * Real.log (r : ℝ)) / (r : ℝ) ^ (2 * α) < 1 := by simpa only [mul_div_assoc] using hs
+    have hh : (4 * η * Real.log (r : ℝ)) / (r : ℝ) ^ (2 * α) < 1 := by
+      simpa only [mul_div_assoc] using hs
     exact ((div_lt_iff₀ (Real.rpow_pos_of_pos hrpos _)).mp hh).le.trans_eq (one_mul _)
-  refine ⟨hr, (Nat.le_floor_iff (Real.rpow_nonneg hrpos.le α)).mpr (by simpa only [Nat.cast_ofNat] using hp), ?_⟩
+  refine ⟨hr,
+    (Nat.le_floor_iff (Real.rpow_nonneg hrpos.le α)).mpr
+      (by simpa only [Nat.cast_ofNat] using hp), ?_⟩
   have hh : ((r : ℝ) ^ α) ^ (2 : ℕ) ≤ 4 * (⌊(r : ℝ) ^ α⌋₊ : ℝ) ^ 2 := by nlinarith [hf2]
   rw [he] at hh
   nlinarith
 
+/-- **A polynomial factor is beaten by Gaussian decay once `log r` clears a threshold.** For
+`r ≥ 2` with `(m + p) / (c η²) ≤ log r`, the polynomial `r^m` times the Gaussian-type decay
+`exp(-c(η log r)²)` is at most the power `r^{-p}`. This is the analytic core turning the
+two-point tail's Gaussian decay in `L` into a power-law bound in `r` once `L = ⌊r^α⌋` and the
+threshold `t = η log r` are substituted in. -/
 lemma polynomial_exp_log_sq_le {c η p : ℝ} (hc : 0 < c) (hη : 0 < η) (m : ℕ)
     {r : ℕ} (hr : 2 ≤ r) (hlog : ((m : ℝ) + p) / (c * η ^ 2) ≤ Real.log r) :
     (r : ℝ) ^ m * Real.exp (-(c * (η * Real.log r) ^ 2)) ≤ (r : ℝ) ^ (-p) := by
@@ -88,6 +120,13 @@ lemma polynomial_exp_log_sq_le {c η p : ℝ} (hc : 0 < c) (hη : 0 < η) (m : �
       congr 1
       ring
 
+/-- **Short-distance oscillation over a family growing polynomially in `r`, at separation scale
+`⌊r^α⌋`.** For a family `S` of at most `r^m` pairs, each at lattice-norm separation at most
+`M * ⌊r^α⌋`, the probability that some pair's far-field increment exceeds `η log r` is at most
+`C r^{-p}`, for `r` beyond an explicit threshold `r₀`. Combines the union tail
+`exists_far_pair_union_tail` at `L = ⌊r^α⌋`, `t = η log r` with the scale comparison
+`eventually_log_le_floor_rpow_sq` and the polynomial-versus-Gaussian estimate
+`polynomial_exp_log_sq_le`. -/
 lemma exists_far_oscillation_bound (hBall : External.BallGreenBounds)
     (θ K M α η p : ℝ) (hθ : 0 < θ) (hM : 1 ≤ M) (hα : 0 < α) (hη : 0 < η) (m : ℕ) :
     ∃ C > 0, ∃ r₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -96,9 +135,12 @@ lemma exists_far_oscillation_bound (hBall : External.BallGreenBounds)
       ∀ r : ℕ, r₀ ≤ r → ∀ φ : ℝ → ℝ, External.BallGreen.IsCutoff φ →
       ∀ S : Finset (Site 4 × Site 4), S.card ≤ r ^ m →
         (∀ q ∈ S, External.BallGreen.latticeNorm (q.2 - q.1) ≤ M * ⌊(r : ℝ) ^ α⌋₊) →
-        (LatticeProb.iidLaw 4 μ) {ζ | ∃ q ∈ S,
-          η * Real.log r < |finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ q.1 -
-            finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ q.2|} ≤
+        (LatticeProb.iidLaw 4 μ)
+            {ζ | ∃ q ∈ S,
+              η * Real.log r <
+                |finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ q.1 -
+                  finiteKernelField
+                    (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ q.2|} ≤
           ENNReal.ofReal (C * (r : ℝ) ^ (-p)) := by
   obtain ⟨c, C, hc, hC, htail⟩ := exists_far_pair_union_tail hBall θ K M hθ hM
   have hloglim : Tendsto (fun r : ℕ => Real.log (r : ℝ)) atTop atTop :=
@@ -125,16 +167,29 @@ lemma exists_far_oscillation_bound (hBall : External.BallGreenBounds)
     _ = C * ((r : ℝ) ^ m * Real.exp (-(c * (η * Real.log r) ^ 2))) := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_left (polynomial_exp_log_sq_le hc hη m hr2 hlog) hC.le
 
+/-- **Short-distance oscillation over pairs drawn from a fixed-aspect-ratio plane rectangle.**
+For a plane rectangle of aspect ratio `ϑ ≥ 1` and side `r` (`planeRectangle ⌊ϑ r⌋ r`) translated
+near a base point `x`, the probability that some pair `z, w` in it, at lattice-norm separation at
+most `M ⌊r^α⌋`, has far-field increment exceeding `η log r` is at most `C r^{-p}`. Reduces to
+`exists_far_oscillation_bound` at exponent `m = 6`, since a rectangle of at most `r^3` cells
+(`card_planeRectangle_aspect_le_cube`) has at most `(r^3)^2 = r^6` pairs. -/
 lemma exists_aspect_rectangle_far_oscillation (hBall : External.BallGreenBounds)
     (θ K M α η p ϑ : ℝ) (hθ : 0 < θ) (hM : 1 ≤ M) (hα : 0 < α) (hη : 0 < η) (hϑ : 1 ≤ ϑ) :
     ∃ C > 0, ∃ r₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →
       (∫ x : ℝ, Real.exp (θ * |x|) ∂μ) ≤ K → (∫ x : ℝ, x ∂μ) = 0 →
       ∀ r : ℕ, r₀ ≤ r → ∀ x : Site 4,
-        (LatticeProb.iidLaw 4 μ) {ζ | ∃ z w : planeRectangle ⌊ϑ * r⌋₊ r,
-          External.BallGreen.latticeNorm (planeTranslate x w - planeTranslate x z) ≤ M * ⌊(r : ℝ) ^ α⌋₊ ∧
-          η * Real.log r < |finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ (planeTranslate x z) -
-            finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ (planeTranslate x w)|} ≤
+        (LatticeProb.iidLaw 4 μ)
+            {ζ | ∃ z w : planeRectangle ⌊ϑ * r⌋₊ r,
+              External.BallGreen.latticeNorm
+                  (planeTranslate x w - planeTranslate x z) ≤ M * ⌊(r : ℝ) ^ α⌋₊ ∧
+              η * Real.log r <
+                |finiteKernelField
+                    (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ
+                    (planeTranslate x z) -
+                  finiteKernelField
+                    (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ
+                    (planeTranslate x w)|} ≤
           ENNReal.ofReal (C * (r : ℝ) ^ (-p)) := by
   classical
   obtain ⟨C, hC, r₀, hosc⟩ := exists_far_oscillation_bound hBall θ K M α η p hθ hM hα hη 6
@@ -142,7 +197,8 @@ lemma exists_aspect_rectangle_far_oscillation (hBall : External.BallGreenBounds)
   intro μ hμ hexp hK hmean r hr x
   let Q := planeRectangle ⌊ϑ * r⌋₊ r
   let P := (Finset.univ : Finset (Q × Q)).filter (fun q =>
-    External.BallGreen.latticeNorm (planeTranslate x q.2 - planeTranslate x q.1) ≤ M * ⌊(r : ℝ) ^ α⌋₊)
+    External.BallGreen.latticeNorm
+      (planeTranslate x q.2 - planeTranslate x q.1) ≤ M * ⌊(r : ℝ) ^ α⌋₊)
   let S := P.image (fun q => (planeTranslate x q.1, planeTranslate x q.2))
   have hS : ∀ q ∈ S, External.BallGreen.latticeNorm (q.2 - q.1) ≤ M * ⌊(r : ℝ) ^ α⌋₊ := by
     intro q hq
@@ -158,13 +214,19 @@ lemma exists_aspect_rectangle_far_oscillation (hBall : External.BallGreenBounds)
       _ = Q.card ^ 2 := by simp [pow_two]
       _ ≤ (r ^ 3) ^ 2 := Nat.pow_le_pow_left hQ 2
       _ = _ := by ring
-  have hh := hosc μ hμ hexp hK hmean r ((le_max_left _ _).trans hr) farCutoff isCutoff_farCutoff S hcard hS
+  have hh :=
+    hosc μ hμ hexp hK hmean r ((le_max_left _ _).trans hr) farCutoff isCutoff_farCutoff S hcard hS
   apply (measure_mono ?_).trans hh
   intro ζ hζ
   obtain ⟨z, w, hdist, hinc⟩ := hζ
   refine ⟨(planeTranslate x z, planeTranslate x w), ?_, hinc⟩
   exact Finset.mem_image.mpr ⟨(z, w), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdist⟩, rfl⟩
 
+/-- **A coordinatewise separation bound gives a lattice-norm bound, up to a factor of two.**
+If two points of `Site 2`, translated into `Site 4` at a base point `x`, differ coordinatewise
+by at most `R`, their images differ in lattice norm by at most `2R`: only two of the four
+coordinates of the difference are nonzero, each bounded by `R`, so the Euclidean norm is at most
+`√(2R²) ≤ 2R`. -/
 lemma latticeNorm_planeTranslate_sub_le (x : Site 4) (z w : Site 2) {R : ℝ}
     (hR : 0 ≤ R) (hcoord : ∀ i : Fin 2, |(w i : ℝ) - (z i : ℝ)| ≤ R) :
     External.BallGreen.latticeNorm (planeTranslate x w - planeTranslate x z) ≤ 2 * R := by
@@ -185,18 +247,31 @@ lemma latticeNorm_planeTranslate_sub_le (x : Site 4) (z w : Site 2) {R : ℝ}
     _ ≤ ∑ _i : Fin 4, R ^ 2 := Finset.sum_le_sum (fun i _ => hs i)
     _ = _ := by simp; ring
 
+/-- **`exists_aspect_rectangle_far_oscillation`, with a coordinatewise box separation bound in
+place of the lattice-norm one.** The same conclusion, but the hypothesis on the pair `z, w` is
+that each coordinate differs by at most `A * ⌊r^α⌋`, rather than a bound on the lattice norm of
+the difference. Reduces to the lattice-norm form at `M = 2A` via
+`latticeNorm_planeTranslate_sub_le`. -/
 lemma exists_aspect_rectangle_far_oscillation_box (hBall : External.BallGreenBounds)
     (θ K A α η p ϑ : ℝ) (hθ : 0 < θ) (hA : 1 ≤ A) (hα : 0 < α) (hη : 0 < η) (hϑ : 1 ≤ ϑ) :
     ∃ C > 0, ∃ r₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →
       (∫ x : ℝ, Real.exp (θ * |x|) ∂μ) ≤ K → (∫ x : ℝ, x ∂μ) = 0 →
       ∀ r : ℕ, r₀ ≤ r → ∀ x : Site 4,
-        (LatticeProb.iidLaw 4 μ) {ζ | ∃ z w : planeRectangle ⌊ϑ * r⌋₊ r,
-          (∀ i : Fin 2, |((w : Site 2) i : ℝ) - ((z : Site 2) i : ℝ)| ≤ A * ⌊(r : ℝ) ^ α⌋₊) ∧
-          η * Real.log r < |finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ (planeTranslate x z) -
-            finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ (planeTranslate x w)|} ≤
+        (LatticeProb.iidLaw 4 μ)
+            {ζ | ∃ z w : planeRectangle ⌊ϑ * r⌋₊ r,
+              (∀ i : Fin 2,
+                  |((w : Site 2) i : ℝ) - ((z : Site 2) i : ℝ)| ≤ A * ⌊(r : ℝ) ^ α⌋₊) ∧
+              η * Real.log r <
+                |finiteKernelField
+                    (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ
+                    (planeTranslate x z) -
+                  finiteKernelField
+                    (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ
+                    (planeTranslate x w)|} ≤
           ENNReal.ofReal (C * (r : ℝ) ^ (-p)) := by
-  obtain ⟨C, hC, r₀, hosc⟩ := exists_aspect_rectangle_far_oscillation hBall θ K (2 * A) α η p ϑ hθ (by linarith) hα hη hϑ
+  obtain ⟨C, hC, r₀, hosc⟩ :=
+    exists_aspect_rectangle_far_oscillation hBall θ K (2 * A) α η p ϑ hθ (by linarith) hα hη hϑ
   refine ⟨C, hC, r₀, ?_⟩
   intro μ hμ hexp hK hmean r hr x
   apply (measure_mono ?_).trans (hosc μ hμ hexp hK hmean r hr x)

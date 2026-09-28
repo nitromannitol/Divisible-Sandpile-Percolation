@@ -1,9 +1,15 @@
-/-
-Compactness of connected crossing witnesses and passage to an increasing limit
-of closed superlevel sets.
--/
 import Mathlib.Topology.Sets.VietorisTopology
 import Mathlib.Topology.Separation.Regular
+
+/-!
+# Compactness of connected crossing witnesses
+
+Preconnected compact subsets of a normal Hausdorff space form a closed subset of the
+Vietoris space of compact sets. Consequently, a decreasing sequence of closed sets each
+containing a connected compact witness meeting two fixed closed sets `A` and `B` inside a
+fixed compact set `K` has, in the limit, a connected compact witness inside the intersection
+that still meets both `A` and `B`.
+-/
 
 open Set Topology TopologicalSpace
 

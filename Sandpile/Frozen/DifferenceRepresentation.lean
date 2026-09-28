@@ -1,31 +1,17 @@
-/-
-Lemma of sandpile.tex representing the odometer minus the membrane field as an
-optimal-stopping value, frozen.  `sandpile.tex:928-936`
-(label `lem:difference-representation`):
-
-  "For every $x\in\Z^d$ and every integer $t\geq0$,
-   $u_t(x)-V_t(x) = \sup_{\tau\leq t}\mathbf E_x[-V_{t-\tau}(X_\tau)\mid\zeta]$,
-   where the supremum is over stopping times of the walk."
-
-The conditioning on `ζ` in the paper means that the identity holds for each
-fixed scenery, so `ζ` is a deterministic real field bound before `t` and `x`,
-and no measure on sceneries appears.  The paper's `u_t` is
-`Sandpile.odometerOf ζ t`, its `V_t` is `Sandpile.membrane ζ t`, and the
-supremum over stopping times bounded by `t` of `E_x` of a path functional is
-`Sandpile.stoppingSup t x`, whose payoff sees both the stopping time and the
-path, here `(k, X) ↦ -V_{t-k}(X_k)`.  The index `t - k` is a truncated
-subtraction, which agrees with the paper because the supremum ranges only over
-stopping times bounded by `t`.  The dimension carries `1 ≤ d` because at `d = 0`
-the averaging operator behind `odometerOf` and `membrane` is a junk zero.
-
-The paper's proof starts from the optimal-stopping representation, which is a
-cited result rather than a theorem of the paper.  It is proved unconditionally
-in this repository, `Sandpile.External.optimalStopping`
-(`Sandpile/External/BPSHProved.lean`), so it is no longer carried here as an
-explicit hypothesis, exactly as in the frozen `thm:RW`.
--/
 import Sandpile.External.BPSHProved
 import Sandpile.Support.Stopped
+
+/-!
+# The odometer minus the membrane as an optimal-stopping value
+
+This file proves the frozen statement of `lem:difference-representation` (`sandpile.tex:928-936`):
+for every fixed scenery `ζ`, dimension `d ≥ 1`, time `t`, and site `x`, the difference
+`u_t(x) - V_t(x)` between the odometer and the membrane field equals the supremum over stopping
+times `τ ≤ t` of the walk of `E_x[-V_{t-τ}(X_τ)]`, written here as `Sandpile.stoppingSup t x` for
+the payoff `(k, X) ↦ -V_{t-k}(X_k)`. The proof rewrites both sides through the optimal-stopping
+representation of the odometer itself, `Sandpile.External.optimalStopping`, which this repository
+proves unconditionally rather than carrying as a cited hypothesis.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

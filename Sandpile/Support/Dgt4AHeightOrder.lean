@@ -1,20 +1,22 @@
-/-
+import Sandpile.Support.Dgt4AStep1Gaussian
+import Sandpile.Frozen.DGT4HeightLowerStretched
+
+/-!
+# The lower half of the Gaussian height-order estimate
+
 **The lower half of `eq:dgt4-gaussian-height-order`** (`sandpile.tex:5035-5037`):
 `c\sqrt{\log(n+2)}\leq\E u_n(0)` in the Gaussian case.
 
 `Support/Dgt4AStep1Gaussian.lean` has the upper half, `thm:dgt4-height-upper-tail` at the
-sub-Gaussian exponent `\gamma=2`.  The lower half is `prop:dgt4-height-lower-stretched` at
-the same exponent, and its hypothesis is a lower bound on the Gaussian lower tail, which the
-Mills bound `mills_le_upperTail` supplies: for `s\geq\max(\sqrt{2v},1)`,
+sub-Gaussian exponent `\gamma=2`. The lower half is `prop:dgt4-height-lower-stretched` at the
+same exponent, and its hypothesis is a lower bound on the Gaussian lower tail, which the Mills
+bound `mills_le_upperTail` supplies: for `s\geq\max(\sqrt{2v},1)`,
 
   `\P(N(0,v)>s)\geq\frac{v}{2s}\varphi_v(s)\geq\frac{\varphi_v(1)}{4}e^{-s^2/v}` ,
 
-where the last step uses `e^{-s^2/(2v)}\leq 2v/s^2\leq 2v/s`, itself `e^x\geq x`.  The
-exponent `1/v` is twice the true one, which costs nothing: the proposition only needs SOME
-exponent.
+where the last step uses `e^{-s^2/(2v)}\leq 2v/s^2\leq 2v/s`, itself `e^x\geq x`. The exponent
+`1/v` is twice the true one, which costs nothing: the proposition only needs SOME exponent.
 -/
-import Sandpile.Support.Dgt4AStep1Gaussian
-import Sandpile.Frozen.DGT4HeightLowerStretched
 
 open LatticeProb
 

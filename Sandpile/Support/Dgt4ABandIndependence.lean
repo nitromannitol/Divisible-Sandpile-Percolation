@@ -1,17 +1,20 @@
-/-
-"Since `Pw_n(0)` is independent of `ζ(0)`" (`sandpile.tex:6118`, `sandpile.tex:6169`),
-for the contact error of Step 2 of `thm:dgt4-many-limits`.
-
-`Pw_n(0)` never reads the scenery at the origin, so `ζ(0)` integrates out against
-`ν` alone: the mass of the symmetric difference of the two threshold events is
-the expectation, over the random level `Pw_n(0)`, of the scenery-side mass of the
-band between that level and the deterministic one.  That is the form
-`integral_measure_symmDiff_le` bounds.
--/
 import Sandpile.Support.Dgt4ABandRandomLevel
 import Sandpile.Support.Dgt4CaseBSplit
 import Sandpile.Support.HeightLower
 import Sandpile.Support.SceneryBridge
+
+/-!
+# The independence of the random level from the scenery at the origin
+
+`Pw_n(0)`, the average origin-frozen odometer, never reads the scenery value at the origin, so
+`ζ(0)` integrates out against `ν` alone, by Fubini's theorem for the i.i.d. field split at the
+origin. Consequently the mass of the symmetric difference of the two threshold events
+`{-ζ(0) > Pw_n(0)}` and `{-ζ(0) > b}` is the expectation, over the random level `Pw_n(0)`, of the
+scenery-side mass of the band `bandGap` between that level and the deterministic one, and the
+analogous mean-increment identity holds for the unbounded integrand `(-ζ(0) - Pw_n(0))₊`. Both
+identities are also stated in the mass coordinates in which Step 2 of the many-limits argument
+works.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -47,12 +50,16 @@ theorem symmDiff_gt_eq {α : Type*} (F s t : α → ℝ) :
 plane. -/
 def bandGap (b : ℝ) : Set (ℝ × ℝ) := {q : ℝ × ℝ | min q.2 b < -q.1 ∧ -q.1 ≤ max q.2 b}
 
+/-- `bandGap b` is measurable, being cut out by a strict and a non-strict inequality between
+the measurable functions `q ↦ min q.2 b`, `q ↦ -q.1` and `q ↦ max q.2 b`. -/
 theorem measurableSet_bandGap (b : ℝ) : MeasurableSet (bandGap b) := by
   have h1 : Measurable fun q : ℝ × ℝ => min q.2 b := measurable_snd.min measurable_const
   have h2 : Measurable fun q : ℝ × ℝ => -q.1 := measurable_fst.neg
   have h3 : Measurable fun q : ℝ × ℝ => max q.2 b := measurable_snd.max measurable_const
   exact (measurableSet_lt h1 h2).inter (measurableSet_le h2 h3)
 
+/-- The `w`-slice of `bandGap b` is the symmetric difference of the two threshold events
+`{z | -z > w}` and `{z | -z > b}`, an instance of `symmDiff_gt_eq`. -/
 theorem slice_bandGap (b w : ℝ) :
     {z : ℝ | (z, w) ∈ bandGap b}
       = symmDiff {z : ℝ | -(z) > w} {z : ℝ | -(z) > b} := by

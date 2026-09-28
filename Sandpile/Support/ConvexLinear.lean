@@ -1,9 +1,12 @@
-/-
-The convexity step of `lem:convex-linear-bound` (`sandpile.tex:1547-1569`): the
-resampling quotient of a coordinatewise convex function lies between the right
-derivatives at the two endpoints.
--/
 import LatticeProb.Prob.LpSmooth
+
+/-!
+# Convexity bound on the resampling quotient
+
+The convexity step of `lem:convex-linear-bound` (`sandpile.tex:1547-1569`): the resampling
+quotient of a coordinatewise convex function lies between the right derivatives at the two
+endpoints.
+-/
 
 open MeasureTheory Set
 

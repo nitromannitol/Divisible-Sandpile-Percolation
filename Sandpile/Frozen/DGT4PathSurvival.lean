@@ -1,79 +1,25 @@
-/-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:5540-5557`
-(label `lem:dgt4-path-survival`):
-
-  "Let $T>0$, $\kappa>0$, and $n_R\coloneqq\lfloor R^2T\rfloor$, and suppose
-   that for every $\varepsilon\in(0,1)$, as $R\to\infty$,
-     $\max_{\lceil\varepsilon n_R\rceil\leq m\leq n_R}
-      \left\{\left|\frac{m\P(J(0)>\E u_{m-1}(0))}{G(0,0)\kappa}-1\right|
-      +m\P\bigl(\{u_m(0)=0\}\mathbin{\triangle}\{J(0)>\E u_{m-1}(0)\}\bigr)\right\}
-      \longrightarrow0$.
-   Then
-     $R^{-2}\sum_{j=0}^{n_R-1}\mathbf E_0\left|\P(S_{n_R,j}(X)=1\mid X)
-      -\left(1-\frac{j}{R^2T}\right)^\kappa\right|\longrightarrow0$.
-   Moreover, there is $C<\infty$ so that for each $\delta\in(0,T)$ there are
-   $\varepsilon_R(\delta)\geq0$ with $\varepsilon_R(\delta)\to0$ as
-   $R\to\infty$ and, uniformly over $0\leq i,j\leq n_R-\delta R^2$ and all
-   deterministic nearest-neighbor paths $X=(X_0,\ldots,X_i)$ and
-   $Y=(Y_0,\ldots,Y_j)$,
-     $\bigl|\Cov(S_{n_R,i}(X),S_{n_R,j}(Y)\mid X,Y)\bigr|
-      \leq\frac{C}{\delta R^2}\sum_{r=0}^i\sum_{h=0}^j\one_{\{X_r=Y_h\}}
-      +\varepsilon_R(\delta)$."
-
-Modelling decisions.
-
-`S_{n,j}(X)` is defined at `sandpile.tex:5448-5451`: "$S_{n,j}(X)\coloneqq
-\one_{\{u_{n-r}(X_r)>0\text{ for every }0\leq r\leq j\}}$, the indicator that
-the odometer stays positive along the first $j$ steps of $X$"; it is `survival`
-below, real valued and written with `Set.indicator` so that no decidability
-instance is needed.  `n - r` is truncated subtraction in `ℕ`, and the lemma is
-only ever used with `r ≤ j < n`, where it agrees with the paper.
-
-`J` is defined at `sandpile.tex:5454-5455`: "Set $J=-V_\infty$ in
-case~\textup{(a)} and $J=-G(0,0)\zeta$ in case~\textup{(b)}", with
-`V_∞(x) = ∑_z G(x,z)ζ(z)` of `sandpile.tex:4834-4836`.  It is quantified over,
-subject to `IsThresholdField`, which is exactly that disjunction; the Gaussian
-branch also records that the one-site law is Gaussian, since that is what makes
-`J = -V_∞` a Gaussian field with the correlation gap the proof uses.  The
-lemma is stated for a general `J` of this shape rather than under the
-subsection's case dichotomy because `sandpile.tex:6310-6315` applies it to a law
-in neither case, with `J(x) = -G(0,0)ζ(x)`.
-
-`P(S_{n,j}(X)=1 | X)` conditions on the walk, which is independent of the
-scenery, so it is the scenery integral with the path held fixed; `E_0` is then
-an integral over path space against `Sandpile.walkLaw d 0`.  Likewise
-`Cov(·,· | X,Y)` for deterministic paths `X, Y` is the covariance over the
-scenery alone, written as `E[fg] - E[f]E[g]`.
-
-Both "max over a finite range tends to zero" statements are unfolded into
-`∀ η > 0, ∀ᶠ R, ∀ m in the range, … ≤ η`, since a `sSup` or `Finset.sup'` over a
-range carries a junk value; this preserves the paper's quantifier order, `ε`
-fixed first and then the limit in `R`.  The two summands of the hypothesis are
-nonnegative, so bounding their sum by `η` is exactly the paper's statement.
-
-"Deterministic nearest-neighbor path `X = (X_0,…,X_i)`" is `IsNNPath i X`, a
-condition on the first `i` steps only; the values of `X` beyond time `i` are
-unconstrained and unused, since `survival σ n i X` looks only at `X_0,…,X_i`.
-
-The proof of Step 1 in the Gaussian branch of `IsThresholdField` cites the
-normal comparison inequality of Li and Shao (`sandpile.tex:5512`), so the
-statement carries that cited result as the explicit hypothesis `hNormal`; in the
-independent branch the factorization is exact and needs nothing
-(`Sandpile.centeredMassLaw_threshold_factorization`).  The covariance decay
-`eq:dgt4-intersection-first-moment` the same step uses is the already present
-`hGreenHigh`.
-
-The scenery is written in the mass normalization: the integration variable is
-`σ` with law `Sandpile.centeredMassLaw d ν`, so `ζ = Sandpile.scenery d σ` has
-one-site law `ν` and `u_n` is `Sandpile.odometer σ n`.  `E u_m(0)` is
-`Sandpile.meanOdometer`, and the symmetric difference is `symmDiff`.
--/
 import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Support.InfiniteGreenField
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.NormalComparison
 import Sandpile.Support.LinStep3Core
+
+/-!
+# The path-survival lemma, frozen
+
+Lemma of `sandpile.tex`, frozen (`sandpile.tex:5540-5557`, label `lem:dgt4-path-survival`): given
+that a certain maximum over a range of times tends to zero as `R → ∞` (matching the survival
+probability `P(J(0) > E u_{m-1}(0))` to `G(0,0)κ/m` and the event `{u_m(0) = 0}` to `{J(0) >
+E u_{m-1}(0)}`), the averaged path-survival probability converges to the power-law profile
+`(1 - j/(R²T))^κ`, and the survival indicators along two deterministic paths have a covariance
+bound decaying like `C/(δR²)` away from their overlap, up to a vanishing error. `survival` is the
+indicator `S_{n,j}(X)` that the odometer stays positive along the first `j` steps of a path,
+`IsThresholdField` transcribes the disjunction defining `J` (either `-V_∞`, the infinite Green
+field, or `-G(0,0)ζ` in the Gaussian branch), and `IsNNPath` is a deterministic nearest-neighbor
+path condition on its first steps. The Gaussian branch of the proof cites the normal comparison
+inequality of Li and Shao, carried as the hypothesis `hNormal`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

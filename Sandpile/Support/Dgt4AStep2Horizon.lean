@@ -1,4 +1,6 @@
-/-
+import Sandpile.Support.Dgt4AStep2First
+
+/-!
 The horizon of Step 2 of case (a) (`sandpile.tex:5092`): `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil`.
 
 The first display of Step 2 holds for any horizon with `2k_n\leq n` and `k_n\log n/n\to0`
@@ -8,13 +10,14 @@ The first display of Step 2 holds for any horizon with `2k_n\leq n` and `k_n\log
 exponent `6/(d-4)` itself is not used until Step 4, where `k_n^{(d-4)/2}=(\log(n+2))^3`
 has to beat `(\E u_n(0))^2\asymp\log n`.
 -/
-import Sandpile.Support.Dgt4AStep2First
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 
 namespace Sandpile
 
+/-- `\log n/n^{1/2}\to0`: the standard growth comparison between `log` and any positive
+power of `n`, proved by bounding `\log n` by `4n^{1/4}` via `Real.log_le_rpow_div`. -/
 theorem tendsto_log_div_rpow_half :
     Tendsto (fun n : ℕ => Real.log n / (n : ℝ) ^ (1 / 2 : ℝ)) atTop (𝓝 0) := by
   have h4 : (0 : ℝ) < 1 / 4 := by norm_num
@@ -45,6 +48,9 @@ theorem tendsto_log_div_rpow_half :
       _ = 4 * (n : ℝ) ^ (-(1 / 4 : ℝ)) * (n : ℝ) ^ (1 / 2 : ℝ) := by ring
 
 
+/-- There is a constant `C>0` such that eventually `⌈(\log(n+2))^p⌉ ≤ C\,n^{1/2}`, for any
+exponent `p>0`: the same `\log x\leq x^{\varepsilon}/\varepsilon` bound as
+`tendsto_log_div_rpow_half`, applied with `\varepsilon=1/(2p)`. -/
 theorem exists_ceil_log_rpow_le (p : ℝ) (hp : 0 < p) :
     ∃ C : ℝ, 0 < C ∧ ∀ᶠ n : ℕ in atTop,
       (⌈(Real.log ((n : ℝ) + 2)) ^ p⌉₊ : ℝ) ≤ C * (n : ℝ) ^ (1 / 2 : ℝ) := by
@@ -65,7 +71,8 @@ theorem exists_ceil_log_rpow_le (p : ℝ) (hp : 0 < p) :
   have hstep : (Real.log ((n : ℝ) + 2)) ^ p ≤ (2 * p) ^ p * ((n : ℝ) + 2) ^ (1 / 2 : ℝ) := by
     calc (Real.log ((n : ℝ) + 2)) ^ p
         ≤ ((2 * p) * ((n : ℝ) + 2) ^ (1 / (2 * p))) ^ p := Real.rpow_le_rpow hlognn hlog hp.le
-      _ = (2 * p) ^ p * (((n : ℝ) + 2) ^ (1 / (2 * p))) ^ p := Real.mul_rpow (by positivity) (by positivity)
+      _ = (2 * p) ^ p * (((n : ℝ) + 2) ^ (1 / (2 * p))) ^ p :=
+          Real.mul_rpow (by positivity) (by positivity)
       _ = (2 * p) ^ p * ((n : ℝ) + 2) ^ (1 / 2 : ℝ) := by
           rw [← Real.rpow_mul h2pos.le, hexp]
   have h3 : ((n : ℝ) + 2) ^ (1 / 2 : ℝ) ≤ (3 : ℝ) ^ (1 / 2 : ℝ) * (n : ℝ) ^ (1 / 2 : ℝ) := by
@@ -80,6 +87,9 @@ theorem exists_ceil_log_rpow_le (p : ℝ) (hp : 0 < p) :
   nlinarith [hceil, hstep, h3, hone, hpp, Real.rpow_nonneg hnpos.le (1 / 2 : ℝ)]
 
 
+/-- **`2\lceil(\log(n+2))^p\rceil\leq n` eventually**, for any `p>0`: since
+`exists_ceil_log_rpow_le` bounds the ceiling by `C\,n^{1/2}`, doubling it stays below `n` once
+`n^{1/2}\geq2C`. -/
 theorem eventually_two_mul_ceil_log_rpow_le (p : ℝ) (hp : 0 < p) :
     ∀ᶠ n : ℕ in atTop, 2 * ⌈(Real.log ((n : ℝ) + 2)) ^ p⌉₊ ≤ n := by
   obtain ⟨C, hC, hbnd⟩ := exists_ceil_log_rpow_le p hp
@@ -101,6 +111,9 @@ theorem eventually_two_mul_ceil_log_rpow_le (p : ℝ) (hp : 0 < p) :
       _ = (n : ℝ) := hsq
   exact_mod_cast hkey
 
+/-- **`\lceil(\log(n+2))^p\rceil\log n/n\to0`**, for any `p>0`: combines the
+`C\,n^{1/2}` bound of `exists_ceil_log_rpow_le` with `tendsto_log_div_rpow_half` via a
+squeeze argument. -/
 theorem tendsto_ceil_log_rpow_mul_log_div (p : ℝ) (hp : 0 < p) :
     Tendsto (fun n : ℕ => ((⌈(Real.log ((n : ℝ) + 2)) ^ p⌉₊ : ℕ) : ℝ) * Real.log n / n)
       atTop (𝓝 0) := by

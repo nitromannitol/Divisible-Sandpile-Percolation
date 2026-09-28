@@ -1,13 +1,16 @@
-/-
-Interpolation between the first and the fourth moment.  For every `T>0` the pointwise
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+
+/-!
+# Interpolating the second moment between the first and fourth moments
+
+Interpolation between the first and the fourth moment. For every `T>0` the pointwise
 inequality `a^2\leq Ta+a^4/T^2` holds on `[0,\infty)`, by the two cases `a\leq T` and
 `a>T`; integrating it bounds the second moment of a variable by its first moment times
-`T` plus its fourth moment over `T^2`.  Optimizing `T` turns a small first moment and a
+`T` plus its fourth moment over `T^2`. Optimizing `T` turns a small first moment and a
 bounded fourth moment into a small second moment, which is how Step 1 of case (a) of
 `prop:dgt4-contact-asymptotics` passes from `\E|D_n|\leq2\E u_n(0)/n` to the bound on
 `(\E[D_n^2])^{1/2}` (`sandpile.tex:5053-5057`).
 -/
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
 
 open MeasureTheory
 

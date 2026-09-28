@@ -1,11 +1,15 @@
-/-
-Two facts the successor on either case will want first: the hypothesis pair of
-`lem:dgt4-linearization-from-survival` from an unnamed threshold field, which is
-the form Step 3 of `thm:dgt4-many-limits` uses at `sandpile.tex:6309-6315` (it
-applies `lem:dgt4-path-survival` to a law in neither case (a) nor case (b), with
-`J(x) = -G(0,0)ζ(x)`), and the vanishing of the one-site lower tail.
--/
 import Sandpile.Support.Dgt4LinInputs
+
+/-!
+# Uniform-threshold survival inputs and the one-site lower tail
+
+Two facts the successor on either case will want first: the hypothesis pair of
+`lem:dgt4-linearization-from-survival` from an unnamed threshold field, which is the form Step 3
+of `thm:dgt4-many-limits` uses at `sandpile.tex:6309-6315` (it applies `lem:dgt4-path-survival`
+to a law in neither case (a) nor case (b), with `J(x) = -G(0,0)ζ(x)`, via
+`dgt4_survival_inputs_of_exists`), and the vanishing of the one-site lower tail
+(`tendsto_lowerTail_zero`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

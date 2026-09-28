@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ABandPointwiseBound
+import Sandpile.Support.Dgt4ABandSupConv
+import Sandpile.Support.Dgt4ABandBoundTendsto
+
+/-!
+# Summed profile of Step 2
+
 The summed profile `eq:dgt4-band-scaled-profile` of Step 2 of
 `thm:dgt4-many-limits` (`sandpile.tex:6223-6250`), assembled from the summation
 of the one-step increment bound, the pointwise arithmetic bound, the vanishing
@@ -18,9 +24,6 @@ zero offset: the sequence-indexed exponents `scaledProfile_of_increments_seq`,
 and the fixed exponent `scaledProfile_of_increments`, so nothing already proved
 is lost.
 -/
-import Sandpile.Support.Dgt4ABandPointwiseBound
-import Sandpile.Support.Dgt4ABandSupConv
-import Sandpile.Support.Dgt4ABandBoundTendsto
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

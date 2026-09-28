@@ -1,31 +1,35 @@
-/-
+import Sandpile.Support.TailSquare
+import Mathlib.MeasureTheory.Integral.Gamma
+
+/-!
+# Sub-Gaussian Second-Moment Bound
+
 A sub-Gaussian second-moment bound, and the two elementary integrals it rests on.
 
 Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3371-3387`) needs
-`sup_x E E_{t-n}(x)^2 ≤ C(1 + log log t)`, LINEAR in `ℓ := 1 + log log t`.  What
+`sup_x E E_{t-n}(x)^2 ≤ C(1 + log log t)`, LINEAR in `ℓ := 1 + log log t`. What
 `prop:d4-pointwise-linearization` supplies is the tail
 `P(|E_t(x)| > λ) ≤ C exp(-c min(λ^2/ℓ, λ))`, and the existing
 `exists_square_bound_of_exponential_tail` of `Support/TailSquare.lean` is the
 wrong tool for it: fed only the exponential branch, from the level `ℓ` upwards,
-it returns `ℓ^2`, which is a whole logarithm too weak.  The linear bound comes
+it returns `ℓ^2`, which is a whole logarithm too weak. The linear bound comes
 from the Gaussian branch BELOW the crossover `λ = ℓ`.
 
 The proof keeps the layer cake of `Support/TailSquare.lean` and changes only the
 majorant: `exp(-c min(a, b)) ≤ exp(-c a) + exp(-c b)`, so the tail is dominated
 by the sum of the two pure branches, and each branch integrates in closed form
 against `2r dr` through the Gamma integral: `∫_0^∞ 2Cr e^{-(c/ℓ)r^2} dr = Cℓ/c`
-and `∫_0^∞ 2Cr e^{-cr} dr = 2C/c^2`.  Only the first carries `ℓ`, which is why
+and `∫_0^∞ 2Cr e^{-cr} dr = 2C/c^2`. Only the first carries `ℓ`, which is why
 the bound is linear; the second is absorbed using `ℓ ≥ 1`.
 -/
-import Sandpile.Support.TailSquare
-import Mathlib.MeasureTheory.Integral.Gamma
 
 open MeasureTheory Filter Topology Set Real
 open scoped ENNReal
 
 namespace Sandpile
 
-
+/-- `∫_{r > 0} r · exp(-a r²) dr = 1 / (2a)`, via the Gamma integral with exponent
+parameters `p = 2`, `q = 1`. -/
 theorem integral_lin_exp_sq (a : ℝ) (ha : 0 < a) :
     ∫ r in Ioi (0 : ℝ), r * Real.exp (-a * r ^ 2) = 1 / (2 * a) := by
   have h := integral_rpow_mul_exp_neg_mul_rpow (p := (2 : ℝ)) (q := (1 : ℝ)) (b := a)
@@ -39,6 +43,7 @@ theorem integral_lin_exp_sq (a : ℝ) (ha : 0 < a) :
   rw [h]
   norm_num [Real.Gamma_one, Real.rpow_neg_one]
 
+/-- `∫_{r > 0} r · exp(-a r) dr = 1 / a²`, via the Gamma integral and `Γ(2) = 1`. -/
 theorem integral_lin_exp (a : ℝ) (ha : 0 < a) :
     ∫ r in Ioi (0 : ℝ), r * Real.exp (-a * r) = 1 / a ^ 2 := by
   have h := integral_rpow_mul_exp_neg_mul_rpow (p := (1 : ℝ)) (q := (1 : ℝ)) (b := a)
@@ -57,6 +62,7 @@ theorem integral_lin_exp (a : ℝ) (ha : 0 < a) :
     Real.rpow_neg ha.le, show ((2 : ℝ)) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
   ring
 
+/-- `r ↦ r · exp(-a r²)` is integrable on `(0, ∞)`. -/
 theorem integrableOn_lin_exp_sq (a : ℝ) (ha : 0 < a) :
     IntegrableOn (fun r : ℝ => r * Real.exp (-a * r ^ 2)) (Ioi 0) := by
   have h := integrableOn_rpow_mul_exp_neg_mul_rpow (s := (1 : ℝ)) (p := (2 : ℝ))
@@ -65,6 +71,7 @@ theorem integrableOn_lin_exp_sq (a : ℝ) (ha : 0 < a) :
   show r ^ (1 : ℝ) * Real.exp (-a * r ^ (2 : ℝ)) = r * Real.exp (-a * r ^ 2)
   rw [Real.rpow_one, show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
 
+/-- `r ↦ r · exp(-a r)` is integrable on `(0, ∞)`. -/
 theorem integrableOn_lin_exp (a : ℝ) (ha : 0 < a) :
     IntegrableOn (fun r : ℝ => r * Real.exp (-a * r)) (Ioi 0) := by
   have h := integrableOn_rpow_mul_exp_neg_mul_rpow (s := (1 : ℝ)) (p := (1 : ℝ))
@@ -135,11 +142,13 @@ theorem exists_square_bound_of_subgaussian_tail {Ω : Type*} [MeasurableSpace Ω
     rw [hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun ω => sq_nonneg (F ω))]
     exact lt_of_le_of_lt hlin ENNReal.ofReal_lt_top
   refine ⟨hFi, ?_⟩
-  rw [← ofReal_integral_eq_lintegral_ofReal hFi (Eventually.of_forall fun ω => sq_nonneg (F ω))] at hlin
+  rw [← ofReal_integral_eq_lintegral_ofReal hFi
+    (Eventually.of_forall fun ω => sq_nonneg (F ω))] at hlin
   have hle := (ENNReal.ofReal_le_ofReal_iff (integral_nonneg_of_ae hB0)).mp hlin
   rw [hBint] at hle
   have hfin : C * ell / c + 2 * C / c ^ 2 ≤ (C / c + 2 * C / c ^ 2) * ell := by
-    have h1 : 2 * C / c ^ 2 ≤ 2 * C / c ^ 2 * ell := by nlinarith [div_nonneg (by linarith : (0:ℝ) ≤ 2*C) (by positivity : (0:ℝ) ≤ c^2)]
+    have h1 : 2 * C / c ^ 2 ≤ 2 * C / c ^ 2 * ell := by
+      nlinarith [div_nonneg (by linarith : (0:ℝ) ≤ 2*C) (by positivity : (0:ℝ) ≤ c^2)]
     have h2 : C * ell / c = C / c * ell := by ring
     nlinarith [h1]
   linarith

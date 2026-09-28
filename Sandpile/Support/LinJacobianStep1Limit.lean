@@ -1,14 +1,17 @@
-/-
+import Sandpile.Support.LinJacobianStep1
+
+/-!
+# Step 1, assembled from its early and late halves
+
 Step 1 of `lem:dgt4-linearization-from-survival` (`eq:dgt4-derivative-variance-limit`,
 `sandpile.tex:5710-5783`) assembled from its early and late halves.
 
-The paper fixes `δ ∈ (0,T)` and splits the time sum of `eq:odometer-derivative`
-at `n_R-δR²`.  The early times are those the covariance hypothesis covers and
-the late times are the remaining at most `δR²+1` of them.  The late half is
-bounded here from `eq:dgt4-tested-cell-l2` and the contraction bound; the early
-half is the hypothesis `hearly`, which is `eq:dgt4-early-derivative-variance`.
+The paper fixes `δ ∈ (0,T)` and splits the time sum of `eq:odometer-derivative` at
+`n_R-δR²`. The early times are those the covariance hypothesis covers and the late times
+are the remaining at most `δR²+1` of them. The late half is bounded here from
+`eq:dgt4-tested-cell-l2` and the contraction bound; the early half is the hypothesis
+`hearly`, which is `eq:dgt4-early-derivative-variance`.
 -/
-import Sandpile.Support.LinJacobianStep1
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -25,16 +28,20 @@ noncomputable def earlyTimes (n : ℕ) (δ R : ℝ) : Finset ℕ :=
 noncomputable def lateTimes (n : ℕ) (δ R : ℝ) : Finset ℕ :=
   (Finset.range n).filter fun i => ¬((i : ℝ) ≤ (n : ℝ) - δ * R ^ 2)
 
+/-- `earlyTimes` and `lateTimes` are disjoint: they filter `Finset.range n` by a
+predicate and its negation. -/
 theorem earlyTimes_disjoint_lateTimes (n : ℕ) (δ R : ℝ) :
     Disjoint (earlyTimes n δ R) (lateTimes n δ R) := by
   classical
   exact Finset.disjoint_filter_filter_not _ _ _
 
+/-- `earlyTimes` and `lateTimes` together recover the full range `Finset.range n`. -/
 theorem earlyTimes_union_lateTimes (n : ℕ) (δ R : ℝ) :
     earlyTimes n δ R ∪ lateTimes n δ R = Finset.range n := by
   classical
   exact Finset.filter_union_filter_not_eq _ _
 
+/-- An early time satisfies the defining inequality `i ≤ n - δR²`. -/
 theorem mem_earlyTimes (n : ℕ) (δ R : ℝ) {i : ℕ} (hi : i ∈ earlyTimes n δ R) :
     (i : ℝ) ≤ (n : ℝ) - δ * R ^ 2 := by
   classical

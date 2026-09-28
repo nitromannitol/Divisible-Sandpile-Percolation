@@ -1,9 +1,34 @@
 import Sandpile.Support.ExplSpatialEnvelope
+
+/-!
+# Domination of the Brownian heat kernel and the common-event heat semigroup
+
+`exists_heatKernelBM_dom_bounded` shows that on a bounded window of times `[a,b]` and a
+bounded ball of centres, the Brownian heat kernel `heatKernelBM d r x y` is dominated,
+uniformly in `r` and `x`, by a constant multiple of the kernel at the fixed time `2b` and
+centre `0`: the Gaussian tail in `y` only improves when the centre `x` is confined to a
+ball, so the dominating function is a single centred kernel with a doubled time horizon.
+This gives, for every fixed `ω`, a single dominating function that works for every `(r,x)`
+in a compact box, which is exactly what is needed to justify differentiating or integrating
+the Gaussian heat potential `Z` under the integral sign. `gaussianPotential_heat_semigroup_common`
+uses this domination to promote the heat-semigroup identity for `Z` from an a.e.-in-`ω`
+statement to a single event of full probability on which the identity holds simultaneously
+for every rational and irrational time and space argument, by exhausting `(r,x,s)` through
+an increasing sequence of compact windows and applying dominated convergence on each one.
+`gaussianPotential_increment_semigroup_common` then restates the same common event for
+increments `Z(s+δ) - Z(s)` rather than raw values of `Z`.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- On a compact time window `[a,b]` and ball of centres of radius `R`, the Brownian heat
+kernel `heatKernelBM d r x y` is bounded by a constant (depending only on `a,b,R,d`) times
+the kernel `heatKernelBM d (2b) 0 y` evaluated at the doubled time horizon and the origin;
+this follows from comparing the Gaussian prefactors and completing the square in the
+exponent using `‖y‖ ≤ ‖x-y‖ + R`. -/
 theorem exists_heatKernelBM_dom_bounded {d : ℕ} (hd : 1 ≤ d)
     {a b R : ℝ} (ha : 0 < a) (hab : a ≤ b) (hR : 0 ≤ R) :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℝ, a ≤ r → r ≤ b → ∀ x : Space d, ‖x‖ ≤ R →
@@ -43,7 +68,8 @@ theorem exists_heatKernelBM_dom_bounded {d : ℕ} (hd : 1 ≤ d)
   rw [zero_sub, norm_neg, show (2 : ℝ) * (2 * b) = 4 * b by ring]
   change A r * _ ≤ _
   calc A r * Real.exp (-(d : ℝ) * ‖x - y‖ ^ 2 / (2 * r))
-      ≤ A a * Real.exp (-(d : ℝ) * ‖x - y‖ ^ 2 / (2 * r)) := mul_le_mul_of_nonneg_right hAr (Real.exp_nonneg _)
+      ≤ A a * Real.exp (-(d : ℝ) * ‖x - y‖ ^ 2 / (2 * r)) :=
+        mul_le_mul_of_nonneg_right hAr (Real.exp_nonneg _)
     _ ≤ A a * (Real.exp ((d : ℝ) * R ^ 2 / (2 * a)) * Real.exp (-(d : ℝ) * ‖y‖ ^ 2 / (4 * b))) :=
       mul_le_mul_of_nonneg_left he hAa.le
     _ = _ := by
@@ -70,7 +96,8 @@ theorem gaussianPotential_heat_semigroup_common {Ω : Type*} [MeasurableSpace Ω
     apply ae_all_iff.mpr
     intro n
     letI := hμ n
-    exact gaussianPotential_integrable_space_time_envelope hd hd3 hW ν2 Z hmod hc (μ n) (by positivity)
+    exact gaussianPotential_integrable_space_time_envelope hd hd3 hW ν2 Z hmod hc (μ n)
+      (by positivity)
   apply gaussianPotential_heat_semigroup_common_of_local_envelopes hd hd3 hW ν2 Z hmod hc
   filter_upwards [hEnv] with ω hω
   intro q
@@ -100,11 +127,13 @@ theorem gaussianPotential_heat_semigroup_common {Ω : Type*} [MeasurableSpace Ω
     dsimp [w]
     unfold heatKernelBM
     fun_prop
-  change Integrable D ((volume : Measure (Space d)).withDensity (fun y => ENNReal.ofReal (w y))) at hD
+  change Integrable D ((volume : Measure (Space d)).withDensity (fun y => ENNReal.ofReal (w y)))
+    at hD
   change ∀ᵐ y ∂(volume : Measure (Space d)).withDensity (fun y => ENNReal.ofReal (w y)),
     ∀ t ∈ Set.Icc 0 N, ‖Z t y ω‖ ≤ D y at hb
   have hbv : ∀ᵐ y ∂(volume : Measure (Space d)), ∀ t ∈ Set.Icc 0 N, ‖Z t y ω‖ ≤ D y := by
-    exact ((ae_withDensity_iff hwm).mp hb).mono fun y hy => hy (ne_of_gt (ENNReal.ofReal_pos.mpr (hw y)))
+    exact ((ae_withDensity_iff hwm).mp hb).mono fun y hy =>
+      hy (ne_of_gt (ENNReal.ofReal_pos.mpr (hw y)))
   have hiw : Integrable (fun y => w y * |D y|) (volume : Measure (Space d)) := by
     have hh := (integrable_withDensity_iff_integrable_smul' (μ := (volume : Measure (Space d)))
       (g := fun y => |D y|) hwm (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)).mp hD.abs
@@ -124,7 +153,8 @@ theorem gaussianPotential_heat_semigroup_common {Ω : Type*} [MeasurableSpace Ω
       ≤ heatKernelBM d p.1.1 p.2.2 y * |D y| :=
         mul_le_mul_of_nonneg_left ((hy p.2.1 ⟨p.2.1.property, hps.le⟩).trans (le_abs_self _))
           (heatKernelBM_nonneg d p.1.property.le p.2.2 y)
-    _ ≤ (C * w y) * |D y| := mul_le_mul_of_nonneg_right (hK p.1.1 hpa.le hpr.le p.2.2 hpx.le y) (abs_nonneg _)
+    _ ≤ (C * w y) * |D y| :=
+        mul_le_mul_of_nonneg_right (hK p.1.1 hpa.le hpr.le p.2.2 hpx.le y) (abs_nonneg _)
     _ = C * (w y * |D y|) := by ring
 /-- Heat increments satisfy the homogeneous semigroup on the same common noise event. -/
 theorem gaussianPotential_increment_semigroup_common {Ω : Type*} [MeasurableSpace Ω]

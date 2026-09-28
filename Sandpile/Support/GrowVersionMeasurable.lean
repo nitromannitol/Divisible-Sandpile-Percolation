@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MeanAKolmogorov
+
+/-!
+# Measurable Continuous Version of the Gaussian Heat Potential
+
 The continuous version of the Gaussian heat potential on a fixed strip, with the
 per-point measurability of the version recorded.
 
@@ -9,7 +13,6 @@ consumers need.  The polynomial-growth argument needs the measurability too, to
 form the events `{ω | ∃ u ∈ box, level < |Y u ω|}` and apply the quantitative
 Kolmogorov criterion, so this module reruns the same construction and keeps it.
 -/
-import Sandpile.Support.MeanAKolmogorov
 
 open MeasureTheory ProbabilityTheory
 

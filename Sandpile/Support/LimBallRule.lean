@@ -1,15 +1,24 @@
-/-
-The payoff of Brownian motion stopped at a deterministic horizon or the first
-exit from a smaller ball bounds the localized value from below.
-Continuity of all paths and boundedness of the attainable payoffs are explicit;
-the occupation-density identity and its limiting approximation are separate.
--/
 import Sandpile.Support.LimBallValue
 import Sandpile.Support.ExplBallLocal
+
+/-!
+# A ball-exit stopping rule lower-bounds the localized Brownian value
+
+Shows that stopping Brownian motion at the first exit from an inner ball of radius `s ≤ A`,
+truncated at a deterministic horizon `T`, is a legitimate stopping rule whose payoff bounds the
+ball-localized value `brownianValueBall` from below, using only continuity of the paths and
+boundedness of the attainable payoffs. The occupation-density identity behind the reward's exact
+value and its limiting approximation are proved elsewhere.
+-/
+
 open MeasureTheory ProbabilityTheory Set Filter
 open Sandpile.Continuum Sandpile.Support
 open scoped ENNReal NNReal
 
+/-- **Stopping at the first exit from an inner ball of radius `s`, truncated at the horizon
+`T`, lower-bounds the ball-localized Brownian value.** For continuous paths and a reward `h`
+with bounded attainable payoffs, `h T u` plus the expected reward collected at that stopping
+time is at most `brownianValueBall B P h T A u`. -/
 theorem Sandpile.Support.ballStopped_payoff_le {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (P : Measure Ω) (h : ℝ → Space d → ℝ)
     (T s A : ℝ) (u : Space d) (hT : 0 ≤ T) (hsA : s ≤ A)

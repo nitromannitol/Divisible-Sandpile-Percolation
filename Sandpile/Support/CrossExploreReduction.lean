@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossExploreLoss
+import Sandpile.Support.CrossFieldVersion
+import Sandpile.Support.CrossFixedScaleZero
+
+/-! # Fixed-scale crossings via exploration
+
 `prop:fixed-scale-crossings` (`sandpile.tex:2119-2135`) reduced to the exploration of Step 2
 alone.
 
@@ -12,9 +17,6 @@ time on the strength of the cells already revealed, decides the crossing when it
 point of the rectangle.  `CrossExploreRec` builds such rules from a recursion and proves the
 first of these clauses from the recursion's own measurability.
 -/
-import Sandpile.Support.CrossExploreLoss
-import Sandpile.Support.CrossFieldVersion
-import Sandpile.Support.CrossFixedScaleZero
 
 open MeasureTheory ProbabilityTheory Set Filter
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -179,7 +181,8 @@ theorem fixed_scale_crossings_of_cell_exploration
   obtain ⟨ι, hfin, hdec, z, S, X, hz, hcard, hS, hN, hX, hE, hcov⟩ :=
     hexp Ω P W hW hcont L hLpos R hR
   have hR1 : (1 : ℝ) ≤ R := le_trans (le_max_left _ _) hR
-  exact cross_zero_level_loss_of_cell_exploration_version hPin hd hW (hcont 1 one_pos le_rfl) z hz hcard
+  exact cross_zero_level_loss_of_cell_exploration_version hPin hd hW
+    (hcont 1 one_pos le_rfl) z hz hcard
     hS _ L R (Cn * R ^ (2 - α₁)) Cn α₁ hmass hL hR1 hCn le_rfl hN
     ![-(θ * R), 0] ![θ * R, 2 * R] (crossing_rect_lt hθ hR) 0 X hX hE
     (fun u hu => mass_of_covering z u (hcov u hu))

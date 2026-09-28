@@ -1,4 +1,9 @@
-/-
+import Sandpile.Basic
+import Mathlib
+
+/-!
+# The Logistic Scenery Law
+
 The one-site law of the scenery produced by `thm:dgt4-many-limits`
 (`sandpile.tex:5900-5928`): a law on the line with mean zero, variance one, a
 strictly positive `C^∞` density, an exponential moment, and a two-sided linear
@@ -18,8 +23,6 @@ finiteness of the second moment.  The scale `a` is then fixed by the variance:
 the second moment of `f_a` is that of `f_1` divided by `a^2`, so `a` is the
 square root of the second moment of `f_1`.
 -/
-import Sandpile.Basic
-import Mathlib
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal Real ENNReal
@@ -33,16 +36,22 @@ noncomputable def logisticCDF (a z : ℝ) : ℝ := (1 + Real.exp (-(a * z)))⁻�
 noncomputable def logisticPDF (a z : ℝ) : ℝ :=
   a * (Real.exp (-(a * z)) / (1 + Real.exp (-(a * z))) ^ 2)
 
+/-- `1 + e^u` is positive for every real `u`. -/
 theorem one_add_exp_pos (u : ℝ) : (0 : ℝ) < 1 + Real.exp u := by positivity
 
+/-- The logistic density `logisticPDF a` is strictly positive everywhere, being
+`a` times a positive fraction. -/
 theorem logisticPDF_pos {a : ℝ} (ha : 0 < a) (z : ℝ) : 0 < logisticPDF a z := by
   rw [logisticPDF]
   have := one_add_exp_pos (-(a * z))
   positivity
 
+/-- The logistic density is nonnegative, from `logisticPDF_pos`. -/
 theorem logisticPDF_nonneg {a : ℝ} (ha : 0 < a) (z : ℝ) : 0 ≤ logisticPDF a z :=
   (logisticPDF_pos ha z).le
 
+/-- The logistic density is symmetric, `logisticPDF a (-z) = logisticPDF a z`,
+since negating `z` inverts the exponential factor. -/
 theorem logisticPDF_symm (a z : ℝ) : logisticPDF a (-z) = logisticPDF a z := by
   have h : Real.exp (-(a * -z)) = (Real.exp (-(a * z)))⁻¹ := by
     rw [← Real.exp_neg]
@@ -52,6 +61,8 @@ theorem logisticPDF_symm (a z : ℝ) : logisticPDF a (-z) = logisticPDF a z := b
   field_simp
   ring
 
+/-- The logistic density is `C^∞`, being a quotient of smooth functions with the
+nowhere-vanishing denominator `(1 + e^{-az})²`. -/
 theorem contDiff_logisticPDF (a : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (logisticPDF a) := by
   unfold logisticPDF
   have hden : ContDiff ℝ (⊤ : ℕ∞) fun z : ℝ => (1 + Real.exp (-(a * z))) ^ 2 := by
@@ -62,6 +73,8 @@ theorem contDiff_logisticPDF (a : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (logisticPD
   have h := hnum.div hden hne
   exact contDiff_const.mul h
 
+/-- The logistic distribution function has derivative `logisticPDF a z` at every
+`z`, by differentiating `(1 + e^{-az})⁻¹` directly. -/
 theorem hasDerivAt_logisticCDF (a z : ℝ) :
     HasDerivAt (logisticCDF a) (logisticPDF a z) z := by
   have h1 : HasDerivAt (fun z : ℝ => -(a * z)) (-a) z := by
@@ -77,6 +90,7 @@ theorem hasDerivAt_logisticCDF (a z : ℝ) :
   show HasDerivAt (fun z : ℝ => (1 + Real.exp (-(a * z)))⁻¹) (logisticPDF a z) z
   exact heq ▸ hinv
 
+/-- `logisticCDF a z → 0` as `z → -∞`, since `1 + e^{-az} → ∞`. -/
 theorem tendsto_logisticCDF_atBot {a : ℝ} (ha : 0 < a) :
     Tendsto (logisticCDF a) atBot (𝓝 0) := by
   have hlin : Tendsto (fun z : ℝ => a * z) atBot atBot :=
@@ -87,6 +101,7 @@ theorem tendsto_logisticCDF_atBot {a : ℝ} (ha : 0 < a) :
   show Tendsto (fun z : ℝ => (1 + Real.exp (-(a * z)))⁻¹) atBot (𝓝 0)
   simpa [Pi.inv_def] using h2.inv_tendsto_atTop
 
+/-- `logisticCDF a z → 1` as `z → ∞`, since `1 + e^{-az} → 1`. -/
 theorem tendsto_logisticCDF_atTop {a : ℝ} (ha : 0 < a) :
     Tendsto (logisticCDF a) atTop (𝓝 1) := by
   have hlin : Tendsto (fun z : ℝ => a * z) atTop atTop :=
@@ -99,13 +114,18 @@ theorem tendsto_logisticCDF_atTop {a : ℝ} (ha : 0 < a) :
   show Tendsto (fun z : ℝ => (1 + Real.exp (-(a * z)))⁻¹) atTop (𝓝 1)
   simpa using h3
 
+/-- The logistic density is continuous, being `C^∞` (`contDiff_logisticPDF`). -/
 theorem continuous_logisticPDF (a : ℝ) : Continuous (logisticPDF a) :=
   (contDiff_logisticPDF a).continuous
 
+/-- The logistic distribution function is strictly positive everywhere, being
+the inverse of the positive quantity `1 + e^{-az}`. -/
 theorem logisticCDF_pos (a z : ℝ) : 0 < logisticCDF a z := by
   rw [logisticCDF]
   exact inv_pos.mpr (one_add_exp_pos _)
 
+/-- The logistic distribution function is strictly less than `1` everywhere,
+since `1 + e^{-az} > 1`. -/
 theorem logisticCDF_lt_one (a z : ℝ) : logisticCDF a z < 1 := by
   rw [logisticCDF]
   have h : (1 : ℝ) < 1 + Real.exp (-(a * z)) := by
@@ -114,6 +134,8 @@ theorem logisticCDF_lt_one (a z : ℝ) : logisticCDF a z < 1 := by
         exact inv_strictAnti₀ (by norm_num) h
     _ = 1 := inv_one
 
+/-- The logistic density is bounded above by the exponential envelope
+`a * e^{-a|z|}`, splitting the argument on the sign of `z`. -/
 theorem logisticPDF_le {a : ℝ} (ha : 0 < a) (z : ℝ) :
     logisticPDF a z ≤ a * Real.exp (-(a * |z|)) := by
   have hu : (0 : ℝ) < Real.exp (-(a * z)) := Real.exp_pos _
@@ -134,11 +156,16 @@ theorem logisticPDF_le {a : ℝ} (ha : 0 < a) (z : ℝ) :
     rw [hrw, le_div_iff₀ hu]
     nlinarith [hu]
 
+/-- The interval integral of the logistic density is the increment of its
+distribution function, by the fundamental theorem of calculus via
+`hasDerivAt_logisticCDF`. -/
 theorem intervalIntegral_logisticPDF (a b c : ℝ) :
     ∫ z in b..c, logisticPDF a z = logisticCDF a c - logisticCDF a b :=
   intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hasDerivAt_logisticCDF a x)
     ((continuous_logisticPDF a).intervalIntegrable b c)
 
+/-- The logistic density is integrable on `ℝ`: its interval integrals over
+`[-n, n]` are bounded by `1`, since `logisticCDF a` takes values in `[0, 1]`. -/
 theorem integrable_logisticPDF {a : ℝ} (ha : 0 < a) : Integrable (logisticPDF a) := by
   refine integrable_of_intervalIntegral_norm_bounded (l := (atTop : Filter ℕ))
     (a := fun n : ℕ => -(n : ℝ)) (b := fun n : ℕ => (n : ℝ)) 1
@@ -155,11 +182,15 @@ theorem integrable_logisticPDF {a : ℝ} (ha : 0 < a) : Integrable (logisticPDF 
   have h2 := (logisticCDF_pos a (-(n : ℝ))).le
   linarith
 
+/-- The logistic density integrates to `1` over `ℝ`, from the limits
+`logisticCDF a → 0, 1` at `±∞`. -/
 theorem integral_logisticPDF {a : ℝ} (ha : 0 < a) : ∫ z, logisticPDF a z = 1 := by
   have h := integral_of_hasDerivAt_of_tendsto (fun x => hasDerivAt_logisticCDF a x)
     (integrable_logisticPDF ha) (tendsto_logisticCDF_atBot ha) (tendsto_logisticCDF_atTop ha)
   simpa using h
 
+/-- The mass of the logistic density on `(-∞, b]` equals `logisticCDF a b`, again
+via the fundamental theorem of calculus. -/
 theorem integral_Iic_logisticPDF {a : ℝ} (ha : 0 < a) (b : ℝ) :
     ∫ z in Set.Iic b, logisticPDF a z = logisticCDF a b := by
   have h := integral_Iic_of_hasDerivAt_of_tendsto' (a := b) (f := logisticCDF a)
@@ -167,6 +198,8 @@ theorem integral_Iic_logisticPDF {a : ℝ} (ha : 0 < a) (b : ℝ) :
     ((integrable_logisticPDF ha).integrableOn) (tendsto_logisticCDF_atBot ha)
   simpa using h
 
+/-- The logistic density is bounded below by `a / 4 * e^{-a|z|}`, matching the
+upper envelope of `logisticPDF_le` up to a constant factor of `4`. -/
 theorem logisticPDF_ge {a : ℝ} (ha : 0 < a) (z : ℝ) :
     a / 4 * Real.exp (-(a * |z|)) ≤ logisticPDF a z := by
   have hu : (0 : ℝ) < Real.exp (-(a * z)) := Real.exp_pos _
@@ -201,6 +234,8 @@ theorem logisticPDF_ge {a : ℝ} (ha : 0 < a) (z : ℝ) :
         mul_le_mul_of_nonneg_left key ha.le
     _ = logisticPDF a z := by rw [logisticPDF]
 
+/-- `u ^ 2 ≤ 4 * e ^ u` for `u ≥ 0`, from the elementary bound `u / 2 ≤ e ^ (u / 2)`
+squared. -/
 theorem sq_le_four_mul_exp {u : ℝ} (hu : 0 ≤ u) : u ^ 2 ≤ 4 * Real.exp u := by
   have h1 : u / 2 + 1 ≤ Real.exp (u / 2) := Real.add_one_le_exp (u / 2)
   have h3 : u / 2 ≤ Real.exp (u / 2) := by linarith
@@ -209,6 +244,9 @@ theorem sq_le_four_mul_exp {u : ℝ} (hu : 0 ≤ u) : u ^ 2 ≤ 4 * Real.exp u :
     ring_nf
   nlinarith [h3, hu, Real.exp_pos (u / 2), h4]
 
+/-- For `θ < a`, `z ↦ e ^ (θ|z|) * logisticPDF a z` is integrable, dominated up to a
+constant by the integrable density `logisticPDF (a - θ)`, via the two-sided
+envelopes `logisticPDF_le` and `logisticPDF_ge`. -/
 theorem integrable_exp_abs_mul_logisticPDF {a θ : ℝ} (ha : 0 < a) (hθa : θ < a) :
     Integrable (fun z => Real.exp (θ * |z|) * logisticPDF a z) := by
   have hb : (0 : ℝ) < a - θ := by linarith
@@ -237,6 +275,9 @@ theorem integrable_exp_abs_mul_logisticPDF {a θ : ℝ} (ha : 0 < a) (hθa : θ 
     rw [Real.norm_of_nonneg (mul_nonneg (Real.exp_pos _).le (logisticPDF_nonneg ha z))]
     linarith
 
+/-- `z ↦ z ^ 2 * logisticPDF a z` is integrable, dominated by a constant multiple
+of `e ^ (a|z|/2) * logisticPDF a z` (integrable by
+`integrable_exp_abs_mul_logisticPDF`) using `sq_le_four_mul_exp`. -/
 theorem integrable_sq_mul_logisticPDF {a : ℝ} (ha : 0 < a) :
     Integrable (fun z : ℝ => z ^ 2 * logisticPDF a z) := by
   have hθa : a / 2 < a := by linarith
@@ -266,10 +307,15 @@ theorem integrable_sq_mul_logisticPDF {a : ℝ} (ha : 0 < a) :
           mul_le_mul_of_nonneg_right hz2 (logisticPDF_nonneg ha z)
       _ = 16 / a ^ 2 * (Real.exp (a / 2 * |z|) * logisticPDF a z) := by ring
 
+/-- The logistic density of scale `a` is the rescaling of the standard one:
+`logisticPDF a z = a * logisticPDF 1 (a * z)`. -/
 theorem logisticPDF_scale (a z : ℝ) : logisticPDF a z = a * logisticPDF 1 (a * z) := by
   rw [logisticPDF, logisticPDF]
   norm_num
 
+/-- The first moment of the logistic law vanishes: `z * logisticPDF a z` is an
+odd function, so the change of variables `z ↦ -z` negates its integral while
+leaving it unchanged. -/
 theorem integral_id_mul_logisticPDF (a : ℝ) : ∫ z : ℝ, z * logisticPDF a z = 0 := by
   set g : ℝ → ℝ := fun z => z * logisticPDF a z with hg
   have hodd : ∀ z : ℝ, g (-1 * z) = -g z := by
@@ -289,6 +335,8 @@ theorem integral_id_mul_logisticPDF (a : ℝ) : ∫ z : ℝ, z * logisticPDF a z
 /-- The second moment of the logistic law of scale `a`. -/
 noncomputable def logisticSecondMoment (a : ℝ) : ℝ := ∫ z : ℝ, z ^ 2 * logisticPDF a z
 
+/-- The second moment scales as `logisticSecondMoment a = logisticSecondMoment 1 / a ^ 2`,
+via the change of variables `logisticPDF_scale`. -/
 theorem logisticSecondMoment_eq {a : ℝ} (ha : 0 < a) :
     logisticSecondMoment a = logisticSecondMoment 1 / a ^ 2 := by
   have ha0 : a ≠ 0 := ne_of_gt ha
@@ -302,6 +350,9 @@ theorem logisticSecondMoment_eq {a : ℝ} (ha : 0 < a) :
     integral_const_mul, hstep, abs_of_pos (inv_pos.mpr ha), smul_eq_mul, logisticSecondMoment]
   field_simp
 
+/-- The second moment of the logistic law is strictly positive, since the
+nonnegative integrand `z ^ 2 * logisticPDF a z` is positive on a set of positive
+measure. -/
 theorem logisticSecondMoment_pos {a : ℝ} (ha : 0 < a) : 0 < logisticSecondMoment a := by
   rw [logisticSecondMoment, integral_pos_iff_support_of_nonneg
     (fun z => mul_nonneg (sq_nonneg z) (logisticPDF_nonneg ha z))
@@ -323,15 +374,22 @@ theorem logisticSecondMoment_pos {a : ℝ} (ha : 0 < a) : 0 < logisticSecondMome
 noncomputable def logisticMeasure (a : ℝ) : Measure ℝ :=
   (volume : Measure ℝ).withDensity fun z => ENNReal.ofReal (logisticPDF a z)
 
+/-- `z ↦ (logisticPDF a z).toNNReal` is measurable, being the continuous density
+composed with `Real.toNNReal`. -/
 theorem measurable_toNNReal_logisticPDF (a : ℝ) :
     Measurable fun z : ℝ => Real.toNNReal (logisticPDF a z) :=
   (continuous_logisticPDF a).measurable.real_toNNReal
 
+/-- `logisticMeasure a`'s defining density, rewritten through the coercion
+`(Real.toNNReal (logisticPDF a z) : ℝ≥0∞)`. -/
 theorem logisticMeasure_eq (a : ℝ) :
     logisticMeasure a
       = (volume : Measure ℝ).withDensity
           fun z => ((Real.toNNReal (logisticPDF a z) : ℝ≥0) : ℝ≥0∞) := rfl
 
+/-- Integration against `logisticMeasure a` is integration against Lebesgue
+measure weighted by the density:
+`∫ g ∂(logisticMeasure a) = ∫ logisticPDF a z * g z`. -/
 theorem integral_logisticMeasure {a : ℝ} (ha : 0 < a) (g : ℝ → ℝ) :
     ∫ z, g z ∂(logisticMeasure a) = ∫ z, logisticPDF a z * g z := by
   rw [logisticMeasure_eq,
@@ -340,6 +398,9 @@ theorem integral_logisticMeasure {a : ℝ} (ha : 0 < a) (g : ℝ → ℝ) :
   show (Real.toNNReal (logisticPDF a z)) • g z = logisticPDF a z * g z
   rw [NNReal.smul_def, Real.coe_toNNReal _ (logisticPDF_nonneg ha z), smul_eq_mul]
 
+/-- `g` is integrable against `logisticMeasure a` iff `z ↦ logisticPDF a z * g z`
+is integrable against Lebesgue measure, by the general density-integrability
+criterion. -/
 theorem integrable_logisticMeasure_iff {a : ℝ} (ha : 0 < a) (g : ℝ → ℝ) :
     Integrable g (logisticMeasure a) ↔ Integrable (fun z => logisticPDF a z * g z) volume := by
   have hfun : (fun z : ℝ => ((Real.toNNReal (logisticPDF a z) : ℝ≥0) : ℝ) • g z)
@@ -349,22 +410,30 @@ theorem integrable_logisticMeasure_iff {a : ℝ} (ha : 0 < a) (g : ℝ → ℝ) 
   rw [logisticMeasure_eq, integrable_withDensity_iff_integrable_coe_smul
     (measurable_toNNReal_logisticPDF a), hfun]
 
+/-- `logisticMeasure a` of a measurable set `s` is `ENNReal.ofReal` of the
+Lebesgue integral of the density over `s`. -/
 theorem logisticMeasure_apply {a : ℝ} (ha : 0 < a) {s : Set ℝ} (hs : MeasurableSet s) :
     logisticMeasure a s = ENNReal.ofReal (∫ z in s, logisticPDF a z) := by
   rw [logisticMeasure, MeasureTheory.withDensity_apply _ hs,
     ← MeasureTheory.ofReal_integral_eq_lintegral_ofReal ((integrable_logisticPDF ha).integrableOn)
       (Filter.Eventually.of_forall fun z => logisticPDF_nonneg ha z)]
 
+/-- `logisticMeasure a` is a probability measure, since its density integrates
+to `1` (`integral_logisticPDF`). -/
 theorem isProbabilityMeasure_logisticMeasure {a : ℝ} (ha : 0 < a) :
     IsProbabilityMeasure (logisticMeasure a) := by
   constructor
   rw [logisticMeasure_apply ha MeasurableSet.univ, MeasureTheory.setIntegral_univ,
     integral_logisticPDF ha, ENNReal.ofReal_one]
 
+/-- `logisticMeasure a (Set.Iic b) = ENNReal.ofReal (logisticCDF a b)`, from
+`logisticMeasure_apply` and `integral_Iic_logisticPDF`. -/
 theorem logisticMeasure_Iic {a : ℝ} (ha : 0 < a) (b : ℝ) :
     logisticMeasure a (Set.Iic b) = ENNReal.ofReal (logisticCDF a b) := by
   rw [logisticMeasure_apply ha measurableSet_Iic, integral_Iic_logisticPDF ha]
 
+/-- The mean of `logisticMeasure a` is zero, transferring
+`integral_id_mul_logisticPDF` through `integral_logisticMeasure`. -/
 theorem integral_id_logisticMeasure {a : ℝ} (ha : 0 < a) :
     ∫ z, z ∂(logisticMeasure a) = 0 := by
   rw [integral_logisticMeasure ha (fun z => z),
@@ -372,6 +441,9 @@ theorem integral_id_logisticMeasure {a : ℝ} (ha : 0 < a) :
       (Filter.Eventually.of_forall fun z : ℝ => mul_comm (logisticPDF a z) z),
     integral_id_mul_logisticPDF]
 
+/-- The identity function lies in `L²(logisticMeasure a)`, since `z ↦ z ^ 2` is
+integrable against it (`integrable_sq_mul_logisticPDF` transferred through
+`integrable_logisticMeasure_iff`). -/
 theorem memLp_id_logisticMeasure {a : ℝ} (ha : 0 < a) :
     MemLp (id : ℝ → ℝ) 2 (logisticMeasure a) := by
   have hsm : AEStronglyMeasurable (id : ℝ → ℝ) (logisticMeasure a) := aestronglyMeasurable_id
@@ -381,6 +453,9 @@ theorem memLp_id_logisticMeasure {a : ℝ} (ha : 0 < a) :
   exact (integrable_sq_mul_logisticPDF ha).congr
     (Filter.Eventually.of_forall fun z : ℝ => mul_comm (z ^ 2) (logisticPDF a z))
 
+/-- The variance of `logisticMeasure a` equals `logisticSecondMoment a`,
+combining the vanishing mean (`integral_id_logisticMeasure`) with the
+second-moment formula for variance. -/
 theorem variance_logisticMeasure {a : ℝ} (ha : 0 < a) :
     variance (id : ℝ → ℝ) (logisticMeasure a) = logisticSecondMoment a := by
   haveI := isProbabilityMeasure_logisticMeasure ha
@@ -394,6 +469,9 @@ theorem variance_logisticMeasure {a : ℝ} (ha : 0 < a) :
   rw [h1, h2]
   ring
 
+/-- For `θ < a`, `z ↦ e ^ (θ|z|)` is integrable against `logisticMeasure a`,
+transferring `integrable_exp_abs_mul_logisticPDF` through
+`integrable_logisticMeasure_iff`. -/
 theorem integrable_exp_logisticMeasure {a θ : ℝ} (ha : 0 < a) (hθa : θ < a) :
     Integrable (fun z => Real.exp (θ * |z|)) (logisticMeasure a) := by
   rw [integrable_logisticMeasure_iff ha]

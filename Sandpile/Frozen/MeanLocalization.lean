@@ -1,6 +1,14 @@
-/-
-Corollary "Mean localization" of sandpile.tex, frozen.  `sandpile.tex:1624-1634`
-(label `cor:mean-localization`):
+import Sandpile.Walk
+import Sandpile.External.HeatKernelBounds
+import Sandpile.External.HeatKernelBoundsProved
+import Sandpile.Support.Stationary
+import Sandpile.Support.MeanLocalization
+
+/-!
+# The frozen mean-localization corollary
+
+This module states and proves the corollary "Mean localization" of
+`sandpile.tex:1624-1634` (label `cor:mean-localization`):
 
   "Suppose that the scenery is stationary and $\E\zeta(0)^+<\infty$.  For every
    $0<T<\infty$ there are $C<\infty$ and $c>0$ such that, for all $A\geq1$, all
@@ -35,11 +43,6 @@ standing hypotheses of the corollary and precede `T`.  The constraint
 
 The dimension hypothesis `1 ≤ d` is the paper's standing assumption.
 -/
-import Sandpile.Walk
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Support.Stationary
-import Sandpile.Support.MeanLocalization
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

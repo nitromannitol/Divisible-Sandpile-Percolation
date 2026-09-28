@@ -1,22 +1,23 @@
-/-
-White-noise scaling of the ball field, `sandpile.tex:2103` and
-`eq:cont-field-scaling` at `sandpile.tex:2093-2099`:
-
-  "The change of variables `z = sw` and white-noise scaling give
-   `{𝒳_s(su)} = {s 𝒳_1(u)}` in law for `d = 2` and `{√s 𝒳_1(u)}` for `d = 3`."
-
-The kernel half of that identity is here.  The ball kernel sees the point of the
-plane and the integration variable only through `planePoint u - z`, and dilating
-both by `a` dilates that vector by `a`; the radius dilates with it.  In
-dimension two the kernel is a logarithm of the ratio of the radius to that
-length, so it is unchanged; in dimension three it is a difference of
-reciprocals, so it picks up the factor `1/a`.  The covariance of the ball field
-is the `L²` inner product of two kernels, so the change of variables in the
-integral will multiply it by `a^d` and by the square of that factor, giving
-`a²` in dimension two and `a` in dimension three, which is the paper's `s` and
-`√s`.  That last step is not taken here.
--/
 import Sandpile.Support.CrossBall
+
+/-!
+# White-noise scaling of the ball kernel
+
+White-noise scaling of the ball field, `sandpile.tex:2103` and `eq:cont-field-scaling` at
+`sandpile.tex:2093-2099`:
+
+  "The change of variables `z = sw` and white-noise scaling give `{𝒳_s(su)} = {s 𝒳_1(u)}` in law
+   for `d = 2` and `{√s 𝒳_1(u)}` for `d = 3`."
+
+The kernel half of that identity is `ballKernel_smul`. The ball kernel sees the point of the
+plane and the integration variable only through `planePoint u - z`, and dilating both by `a`
+dilates that vector by `a` (`planePoint_smul`); the radius dilates with it. In dimension two the
+kernel is a logarithm of the ratio of the radius to that length, so it is unchanged; in dimension
+three it is a difference of reciprocals, so it picks up the factor `1/a`. The covariance of the
+ball field is the `L²` inner product of two kernels, so the change of variables in the integral
+will multiply it by `a^d` and by the square of that factor, giving `a²` in dimension two and `a`
+in dimension three, which is the paper's `s` and `√s`. That last step is not taken here.
+-/
 
 open MeasureTheory Set
 

@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.Dgt4ABandTauProps
+import Sandpile.Support.Dgt4ABandOneStep
+import Sandpile.Support.Dgt4ABandIntegrated
+import Sandpile.Support.Dgt4ABandSideConditions
+
+/-!
+# One-step profile increment at the sandpile law
+
 The one-step profile at the sandpile law.
 
 `scaledProfile_bound_family` consumes a single hypothesis about increments: past
@@ -10,10 +17,6 @@ above the frozen level, which the integrated profile evaluates; that is the
 relative-error hypothesis of `abs_oneStep_increment_le'`.  Then that lemma turns
 it into the increment of the profile itself.
 -/
-import Sandpile.Support.Dgt4ABandTauProps
-import Sandpile.Support.Dgt4ABandOneStep
-import Sandpile.Support.Dgt4ABandIntegrated
-import Sandpile.Support.Dgt4ABandSideConditions
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

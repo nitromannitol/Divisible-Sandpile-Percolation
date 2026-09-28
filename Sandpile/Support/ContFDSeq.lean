@@ -1,26 +1,25 @@
-/-
-The finite-dimensional heat-potential limit along a SEQUENCE of laws.
-
-Every finite-dimensional convergence in this development fixes one law:
-`heat_potential_fd_of_continuum`, `heat_potential_fd_of`,
-`tendstoInDistribution_vector_pick_mass` and `weighted_iid_central_limit_pick` all
-conclude at `fun _ => centeredMassLaw d ν`.  The sequential step of the dimension
-two and three percolation theorem needs the same limit along laws `ν n` that vary
-with the scale, and the Lindeberg step underneath does not uniformise: it goes
-through a characteristic-function estimate that is a little-o at a single law.
-
-This is the paper's own statement along a sequence, not a result from the
-literature, so it is ordinary support.  What makes it available is the common
-exponential moment: the sequence is assumed to carry one bound `K₀` at one rate
-`θ₀`, which gives a cubic remainder in the characteristic function uniform in `n`,
-and that is exactly what the single-law estimate lacks.
-
-The coefficient inputs do not depend on the law.  They should be reused from the
-fixed-law proof rather than rebuilt: only the Lindeberg step changes.
--/
 import Sandpile.Support.ContFDFromContinuum
 import Sandpile.Support.ExponentialMoments
 import Sandpile.Support.ExpMomentRpow
+
+/-!
+# The finite-dimensional heat-potential limit along a sequence of laws
+
+Every finite-dimensional convergence elsewhere in this development fixes one one-site law and
+proves convergence to `Sandpile.centeredMassLaw d ν`; the sequential step of the dimension-two
+and dimension-three percolation theorem instead needs the limit along a SEQUENCE of laws `ν n`
+whose variances converge, which is the paper's own statement and not one taken from the
+literature. `heat_potential_fd_seq` proves this: given a common exponential moment (`K₀` at rate
+`θ₀`) shared by every `ν n`, the rescaled interpolated potential read at finitely many times and
+places converges to the Gaussian potential at the LIMIT variance. The route runs through a
+scalar Lindeberg step uniform in `n` (`charFun_cubic_bound` and `charFun_gaussian_uniform_littleO`
+give a characteristic-function remainder that is cubic and uniform over the whole sequence, where
+the fixed-law estimate is only a little-o at one law), then `tendsto_prod_charFun_seq` and
+`tendstoInDistribution_linear_pick_mass_seq` for the scalar limit, and
+`tendstoInDistribution_vector_pick_mass_seq` lifts it to the vector case by Cramér-Wold. The
+coefficient inputs (the interpolation weights and their limiting covariance `Q`) do not depend on
+the law and are reused unchanged from the fixed-law proof.
+-/
 
 open LatticeProb.CramerWold
 

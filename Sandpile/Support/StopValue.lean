@@ -1,18 +1,31 @@
-/-
-Reward comparisons for the natural Brownian stopping class. Bounded continuous
-rewards have integrable payoffs at every admissible time. The full, ball and
-cube discounts are 1-Lipschitz; adding the initial reward gives the corresponding
-2-Lipschitz value estimate.
--/
 import Sandpile.Support.StopMeasurable
 import Sandpile.Support.KillLip
 import Sandpile.Support.LimBallBounds
+
+/-!
+# Lipschitz reward comparisons for Brownian stopping values
+
+Reward comparisons for the natural Brownian stopping class. Bounded continuous rewards have
+integrable payoffs at every admissible time. The full, ball and cube discounts are 1-Lipschitz;
+adding the initial reward gives the corresponding 2-Lipschitz value estimate. The comparisons all
+factor through the abstract supremum-difference bound `abs_sSup_attainable_sub_le` (two
+suprema over a common index set with bounded and close-in-value payoffs are themselves close)
+applied to `abs_constrained_brownianDiscount_sub_le`, and are specialized to the full time strip
+(`abs_brownianDiscount_sub_le_of_continuousOn`), a closed ball
+(`abs_brownianDiscountBall_sub_le_of_continuousOn`), and a closed cube
+(`abs_brownianDiscountCube_sub_le_of_continuousOn`) by restricting the admissible stopping times
+with the constraint predicate `C`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
 open Sandpile.Continuum
 
 
+/-- If `f` and `g` are two payoff functions on a common nonempty index set `A`, each bounded
+(by `M` and `N` respectively) and pointwise close (`|f i - g i| ≤ E`), then their suprema over
+`A` are within `E` of each other: bounding each supremum by the other's value plus `E` via
+`csSup_le` and `le_csSup` on both sides. -/
 theorem Sandpile.Continuum.abs_sSup_attainable_sub_le {ι : Type*} (A : ι → Prop)
     (hne : ∃ i, A i) (f g : ι → ℝ) (M N E : ℝ)
     (hf : ∀ i, A i → |f i| ≤ M) (hg : ∀ i, A i → |g i| ≤ N)
@@ -43,6 +56,14 @@ theorem Sandpile.Continuum.abs_sSup_attainable_sub_le {ι : Type*} (A : ι → P
     linarith
 
 
+/-- The general reward-comparison lemma behind the Lipschitz bounds of this file: for rewards
+`h`, `g` continuous on the time strip and bounded (by `M`, `N`) and close (within `E`) almost
+surely at every stopping time `τ` satisfying a constraint `C` (with `C` satisfied by the constant
+zero stopping time), the suprema of the discounted payoffs `∫ -h(T - τ, B τ)` and
+`∫ -g(T - τ, B τ)` over such `τ` differ by at most `E`. Combines
+`Sandpile.Continuum.integrable_brownian_payoff_of_continuousOn` for integrability, a bound on
+`∫ -h - ∫ -g` via `norm_integral_le_of_norm_le_const`, and `abs_sSup_attainable_sub_le` to pass
+from pointwise closeness to closeness of the suprema. -/
 theorem Sandpile.Continuum.abs_constrained_brownianDiscount_sub_le
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} {x : Sandpile.Continuum.Space d}
     {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d} {P : Measure Ω} [IsProbabilityMeasure P]
@@ -131,7 +152,9 @@ theorem abs_brownianDiscountBall_sub_le_of_continuousOn (hB : IsBrownian d u B P
     (hgap : ∀ s ∈ Set.Icc 0 T, ∀ y, ‖y - u‖ ≤ A → |h s y - g s y| ≤ E) :
     |brownianDiscountBall B P h T A u - brownianDiscountBall B P g T A u| ≤ E := by
   let C := fun τ : Ω → ℝ≥0 => ∀ᵐ ω ∂P, ∀ s : ℝ≥0, s < τ ω → ‖B s ω - u‖ ≤ A
-  have hC : C (fun _ => 0) := Filter.Eventually.of_forall (fun _ s hs => False.elim (not_lt_of_ge (show (0 : ℝ≥0) ≤ s from zero_le) hs))
+  have hC : C (fun _ => 0) :=
+    Filter.Eventually.of_forall (fun _ s hs =>
+      False.elim (not_lt_of_ge (show (0 : ℝ≥0) ≤ s from zero_le) hs))
   have hB' : LatticeProb.IsBrownianSpace d u B P := ⟨hB.start, hB.coord, hB.indep⟩
   have hm : ∀ τ : Ω → ℝ≥0, (∀ ω, (τ ω : ℝ) ≤ T) → C τ →
       ∀ᵐ ω ∂P, T - (τ ω : ℝ) ∈ Set.Icc 0 T ∧ ‖B (τ ω) ω - u‖ ≤ A := by
@@ -155,7 +178,9 @@ theorem abs_brownianDiscountCube_sub_le_of_continuousOn (hB : IsBrownian d u B P
     (hgap : ∀ s ∈ Set.Icc 0 T, ∀ y, (∀ i, |y i - u i| ≤ L) → |h s y - g s y| ≤ E) :
     |brownianDiscountCube B P h T L u - brownianDiscountCube B P g T L u| ≤ E := by
   let C := fun τ : Ω → ℝ≥0 => ∀ᵐ ω ∂P, ∀ s : ℝ≥0, s < τ ω → ∀ i, |B s ω i - u i| ≤ L
-  have hC : C (fun _ => 0) := Filter.Eventually.of_forall (fun _ s hs => False.elim (not_lt_of_ge (show (0 : ℝ≥0) ≤ s from zero_le) hs))
+  have hC : C (fun _ => 0) :=
+    Filter.Eventually.of_forall (fun _ s hs =>
+      False.elim (not_lt_of_ge (show (0 : ℝ≥0) ≤ s from zero_le) hs))
   have hB' : LatticeProb.IsBrownianSpace d u B P := ⟨hB.start, hB.coord, hB.indep⟩
   have hm : ∀ τ : Ω → ℝ≥0, (∀ ω, (τ ω : ℝ) ≤ T) → C τ →
       ∀ᵐ ω ∂P, T - (τ ω : ℝ) ∈ Set.Icc 0 T ∧ ∀ i, |B (τ ω) ω i - u i| ≤ L := by

@@ -1,21 +1,25 @@
-/-
-The mean of the rescaled odometer is bounded uniformly in the scale.
-
-`sandpile.tex:1995-2007` reads the uniform exponential moment of
-`prop:continuum-value-selfsimilar` off the centred variable
-`𝒰_R(1,0) - E𝒰_R(1,0)`, so it becomes a statement about `𝒰_R(1,0)` itself only
-once the means are bounded.  They are, and the argument needs no exponential
-input: the tightness of the family at the origin gives one level `M` that the
-variable exceeds with probability at most one half at every scale, the variance
-of `𝒰_R(1,0)` is bounded uniformly in `R` because the square sum of the Green
-weights at the parabolic scale is (`eq:Qt-table` at `t = ⌊R²⌋`), and Chebyshev
-at a deviation larger than twice that variance forbids the mean from standing
-more than that deviation above the level.
--/
 import Sandpile.Support.MeanAMgf
 import Sandpile.Support.MeanAScale
 import Sandpile.Support.ContMeanAsymptotic
 import Sandpile.Support.MeanAInterp
+
+/-!
+# Uniform mean and variance bounds for the rescaled odometer
+
+The mean of the rescaled odometer is bounded uniformly in the scale. `sandpile.tex:1995-2007`
+reads the uniform exponential moment of `prop:continuum-value-selfsimilar` off the centred
+variable `𝒰_R(1,0) - E𝒰_R(1,0)`, so it becomes a statement about `𝒰_R(1,0)` itself only once
+the means are bounded. They are, and the argument needs no exponential input
+(`exists_uniform_mean_rescaled_of_tail`, `exists_uniform_mean_rescaled_of_tightness`): the
+tightness of the family at the origin gives one level `M` that the variable exceeds with
+probability at most one half at every scale, the variance of `𝒰_R(1,0)` is bounded uniformly
+in `R` (`exists_uniform_variance_rescaled_mass`) because the square sum of the Green weights
+at the parabolic scale is (`eq:Qt-table` at `t = ⌊R²⌋`), and Chebyshev at a deviation larger
+than twice that variance forbids the mean from standing more than that deviation above the
+level (`mean_le_of_tail_and_variance`). `exists_uniform_exp_moment_rescaled_mass` then
+combines the mean bound with the exponential moment of the centred variable to give the
+uniform exponential moment of the rescaled odometer itself.
+-/
 
 open MeasureTheory ProbabilityTheory
 

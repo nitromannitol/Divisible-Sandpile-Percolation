@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.FiniteCoord
+import LatticeProb.Prob.LpSmooth
+import LatticeProb.Prob.EfronSteinInequality
+import LatticeProb.Prob.Harris
+import LatticeProb.Prob.EfronSteinCov
+
+/-!
+# Concentration of the odometer at the fluctuation scale
+
 Concentration of the odometer at the fluctuation scale.
 
 `prop:finite-time-concentration-scale` (`sandpile.tex:1461-1486`) reads the
@@ -13,11 +21,6 @@ The moment constant is `C = C(p, L(ζ(0)))` in the paper, with no dimension.  Th
 say this; the statements without the suffix fix the dimension `d` of the section
 first and are read off from them.
 -/
-import Sandpile.Support.FiniteCoord
-import LatticeProb.Prob.LpSmooth
-import LatticeProb.Prob.EfronSteinInequality
-import LatticeProb.Prob.Harris
-import LatticeProb.Prob.EfronSteinCov
 
 open LatticeProb
 
@@ -270,10 +273,14 @@ theorem odometerOf_mono : ∀ (t : ℕ) (x : Site d) {ζ η : Site d → ℝ}, (
       show max 0 (ζ x + avg (odometerOf ζ n) x) ≤ max 0 (η x + avg (odometerOf η n) x)
       exact max_le_max (le_refl 0) (add_le_add (h x) havg)
 
+/-- `odometerOf_mono` repackaged as a `Monotone` statement: `ζ ↦ odometerOf ζ t x` is monotone
+in the pointwise order on scenery configurations. -/
 theorem monotone_odometerOf (t : ℕ) (x : Site d) :
     Monotone fun ζ : Site d → ℝ => odometerOf ζ t x :=
   fun _ _ h => odometerOf_mono t x fun z => h z
 
+/-- The odometer at time `t` and site `x` depends only on the scenery values inside the box
+`boxFinset x t`, proved by `odometerOf_congr_box`. -/
 theorem dependsOn_odometerOf (t : ℕ) (x : Site d) :
     DependsOn (fun ζ : Site d → ℝ => odometerOf ζ t x) ↑(boxFinset x t) := by
   intro ζ η h
@@ -299,8 +306,8 @@ theorem memLp_two_odometerOf (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (fun ξ i y => abs_boxOdometer_update_le t x ξ i y)
   have hmem : MemLp (boxOdometer t x) 2
       (Measure.pi fun _ : Fin (boxFinset x t).card => ν) := by
-    rw [← integrable_norm_rpow_iff (p := (2 : ℝ≥0∞)) (measurable_boxOdometer t x).aestronglyMeasurable
-      (by simp) (by simp)]
+    rw [← integrable_norm_rpow_iff (p := (2 : ℝ≥0∞))
+      (measurable_boxOdometer t x).aestronglyMeasurable (by simp) (by simp)]
     simpa [Real.norm_eq_abs] using hint
   have := hmem.comp_measurePreserving
     (LatticeProb.measurePreserving_pick _ ν (boxEnum x t) (boxEnum_injective x t))
@@ -404,6 +411,8 @@ theorem covariance_odometerOf_nonneg (ν : Measure ℝ) [IsProbabilityMeasure ν
 
 /-! ### The covariance form of Efron-Stein applied to two odometers -/
 
+/-- The identity function is integrable whenever its square is, proved by comparing
+`Integrable` norms with `integrable_abs_of_sq`. -/
 theorem integrable_id_of_sq (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hsq : Integrable (fun z => z ^ 2) ν) : Integrable (fun z : ℝ => z) ν :=
   (integrable_norm_iff (f := fun z : ℝ => z) measurable_id.aestronglyMeasurable).mp
@@ -441,7 +450,8 @@ theorem integrable_resample_prod (ν : Measure ℝ) [IsProbabilityMeasure ν]
     simp only [Pi.add_apply, Pi.sub_apply]
     ring
   refine Integrable.mono' (hpair.const_mul (ℓ i ^ 2))
-    (((hFm.comp measurable_fst).sub (hFm.comp (measurable_update_pair i))).pow_const 2).aestronglyMeasurable
+    (((hFm.comp measurable_fst).sub
+      (hFm.comp (measurable_update_pair i))).pow_const 2).aestronglyMeasurable
     (Filter.Eventually.of_forall fun q => ?_)
   rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
   have h := hLip q.1 i q.2
@@ -487,7 +497,9 @@ theorem resampleEnergy_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
       have hmapped := integral_map (μ := (Measure.pi fun _ : Fin M => ν).prod ν)
         (φ := fun q : (Fin M → ℝ) × ℝ => (q.1 i, q.2))
         (f := fun p : ℝ × ℝ => (p.1 - p.2) ^ 2) hmp.measurable.aemeasurable
-        (by rw [hmp.map_eq]; exact ((measurable_fst.sub measurable_snd).pow_const 2).aestronglyMeasurable)
+        (by
+          rw [hmp.map_eq]
+          exact ((measurable_fst.sub measurable_snd).pow_const 2).aestronglyMeasurable)
       rw [hmp.map_eq] at hmapped
       exact hmapped.symm
     rw [hcomp, integral_prod _ (by

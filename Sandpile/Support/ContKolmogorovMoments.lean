@@ -1,21 +1,22 @@
-/-
-Measurability and integrability of the interpolated rescaled field, the two
-hypotheses the corrected quantitative Kolmogorov criterion asks of a process.
-
-The criterion of `ContKolmogorovAssembly` is stated for a process indexed by a
-compact box of `ℝ^k`; its two statements ask that every coordinate be measurable
-and that the `p`-th moment of every increment be integrable, because a Bochner
-integral of a non-integrable function is the junk value zero and the moment
-bound would otherwise be vacuous.  This module supplies both for the
-interpolated field `piField` of `ContKolmogorovAssembly`, uniformly in the
-scale: the field is a finite linear functional of the scenery on a box
-(`linInterp_eq_sum`), so it is measurable, and its `p`-th moment is integrable
-as soon as the one-site law has a `p`-th moment, by the coordinate-Lipschitz
-moment lemma `integrable_rpow_of_lip_fam` transported along the reading of the
-sites (`measurePreserving_scenery_pick`).
--/
 import Sandpile.Support.ContLinMoment
 import Sandpile.Support.ContHeatPotentialFD
+
+/-!
+# Measurability and integrability of the interpolated field
+
+Measurability and integrability of the interpolated rescaled field, the two hypotheses the
+corrected quantitative Kolmogorov criterion asks of a process.
+
+The criterion of `ContKolmogorovAssembly` is stated for a process indexed by a compact box of
+`ℝ^k`; its two statements ask that every coordinate be measurable and that the `p`-th moment of
+every increment be integrable, because a Bochner integral of a non-integrable function is the
+junk value zero and the moment bound would otherwise be vacuous. This module supplies both for
+the interpolated field `piField` of `ContKolmogorovAssembly`, uniformly in the scale: the field
+is a finite linear functional of the scenery on a box (`linInterp_eq_sum`), so it is measurable,
+and its `p`-th moment is integrable as soon as the one-site law has a `p`-th moment, by the
+coordinate-Lipschitz moment lemma `integrable_rpow_of_lip_fam` transported along the reading of
+the sites (`measurePreserving_scenery_pick`).
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Frozen.HeatPotentialInvariance

@@ -1,23 +1,24 @@
-/-
-From the double time limit at one pair of mesh sites to the hypothesis of
-`Sandpile.Support.heat_potential_fd_of_double_time`.
-
-The doubled coefficient sum of the rescaled linear field is a convex combination,
-over the `2^d` corners of the mesh cell of each of the two points of space and the
-two mesh times of each of the two times, of the rescaled double time sums of
-transition probabilities read at those corners and horizons.  The weights depend on
-the scale and do not converge, but they are nonnegative and sum to one, so the
-combination converges as soon as every term does.
-
-Each term is `Sandpile.Support.tendsto_double_time_sum` at the corner sites: the
-corners of the mesh cell of a point rescale to that point, so their Euclidean
-distance is `O(R)` and the squared distance of the rescalings converges, and the two
-mesh times are within one step of `R^2 r`.
--/
 import Sandpile.Support.ContDoubleTimeLimit
 import Sandpile.Support.ContLcltPoint
 import Sandpile.Support.ContGreenFubini
 import Sandpile.Support.ContHeatPotentialDoubleTime
+
+/-!
+# From the double time limit at one mesh corner to the full interpolated sum
+
+From the double time limit at one pair of mesh sites to the hypothesis of
+`Sandpile.Support.heat_potential_fd_of_double_time`.
+
+The doubled coefficient sum of the rescaled linear field is a convex combination, over the `2^d`
+corners of the mesh cell of each of the two points of space and the two mesh times of each of the
+two times, of the rescaled double time sums of transition probabilities read at those corners and
+horizons. The weights depend on the scale and do not converge, but they are nonnegative and sum
+to one, so the combination converges as soon as every term does.
+
+Each term is `Sandpile.Support.tendsto_double_time_sum` at the corner sites: the corners of the
+mesh cell of a point rescale to that point, so their Euclidean distance is `O(R)` and the squared
+distance of the rescalings converges, and the two mesh times are within one step of `R^2 r`.
+-/
 
 open LatticeProb.TimeCut
 
@@ -29,6 +30,8 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- The later and earlier mesh time indices `timeIndex R r b` each lie within `1` of `R^2 r`,
+since one is `⌊R^2 r⌋` and the other is `⌊R^2 r⌋ + 1`. -/
 theorem abs_timeIndex_sub_le {R r : ℝ} (hR : 0 < R) (hr : 0 ≤ r) (b : Bool) :
     |((timeIndex R r b : ℕ) : ℝ) - R ^ 2 * r| ≤ 1 := by
   have hnn : (0:ℝ) ≤ R ^ 2 * r := by positivity
@@ -43,6 +46,9 @@ theorem abs_timeIndex_sub_le {R r : ℝ} (hR : 0 < R) (hr : 0 ≤ r) (b : Bool) 
     rw [abs_le]
     constructor <;> linarith
 
+/-- The rescaling of a mesh corner `cornerSite d R w ε` differs from the mesh point `meshPoint R w`
+by at most `√d / R` in norm: each coordinate differs by at most `1/R`, since the corner shift is
+`0` or `1`. -/
 theorem norm_scaledSite_cornerSite_sub_le {R : ℝ} (hR : 0 < R) (w : Space d)
     (ε : Fin d → Bool) :
     ‖Sandpile.External.Lclt.scaledSite R (cornerSite d R w ε) - meshPoint R w‖
@@ -81,6 +87,9 @@ theorem norm_scaledSite_cornerSite_sub_le {R : ℝ} (hR : 0 < R) (w : Space d)
       ≤ Real.sqrt ((d : ℝ) * (1 / R) ^ 2) := Real.sqrt_le_sqrt hsq
     _ = Real.sqrt d / R := hrhs
 
+/-- The rescaling of a mesh corner of `w` converges to `w` itself, since by
+`norm_scaledSite_cornerSite_sub_le` it differs from `meshPoint R w` by `O(1/R)`, and `meshPoint`
+itself converges to `w`. -/
 theorem tendsto_scaledSite_cornerSite (w : Space d) (ε : Fin d → Bool) :
     Tendsto (fun R : ℝ => Sandpile.External.Lclt.scaledSite R (cornerSite d R w ε))
       atTop (𝓝 w) := by
@@ -94,12 +103,16 @@ theorem tendsto_scaledSite_cornerSite (w : Space d) (ε : Fin d → Bool) :
   have := h0.add (tendsto_meshPoint w)
   simpa using this
 
+/-- The squared distance between the rescalings of two mesh corners converges to `‖w - w'‖^2`,
+from `tendsto_scaledSite_cornerSite` at each corner. -/
 theorem tendsto_norm_sq_cornerSite (w w' : Space d) (ε ε' : Fin d → Bool) :
     Tendsto (fun R : ℝ => ‖Sandpile.External.Lclt.scaledSite R (cornerSite d R w ε)
         - Sandpile.External.Lclt.scaledSite R (cornerSite d R w' ε')‖ ^ 2)
       atTop (𝓝 (‖w - w'‖ ^ 2)) :=
   (((tendsto_scaledSite_cornerSite w ε).sub (tendsto_scaledSite_cornerSite w' ε')).norm).pow 2
 
+/-- Eventually in `R`, the Euclidean lattice distance between two mesh corners is at most
+`(‖w - w'‖ + 1) R`, since their rescaled distance converges to `‖w - w'‖`. -/
 theorem eventually_latticeDist_cornerSite (w w' : Space d) (ε ε' : Fin d → Bool) :
     ∀ᶠ R : ℝ in atTop, Sandpile.External.Lclt.latticeDist
         (cornerSite d R w ε) (cornerSite d R w' ε') ≤ (‖w - w'‖ + 1) * R := by
@@ -114,6 +127,10 @@ theorem eventually_latticeDist_cornerSite (w w' : Space d) (ε ε' : Fin d → B
   nlinarith [norm_nonneg (Sandpile.External.Lclt.scaledSite R (cornerSite d R w ε)
       - Sandpile.External.Lclt.scaledSite R (cornerSite d R w' ε'))]
 
+/-- **A convex combination of finitely many families, each converging to the same limit `L`,
+converges to `L`**, provided the weights are eventually nonnegative and eventually sum to one.
+This is the general mechanism turning a per-corner double time limit into a limit of the whole
+interpolated sum. -/
 theorem tendsto_convex_comb {ι : Type*} [Fintype ι] {W : ℝ → ι → ℝ} {S : ι → ℝ → ℝ} {L : ℝ}
     (hW0 : ∀ᶠ R : ℝ in atTop, ∀ i, 0 ≤ W R i)
     (hW1 : ∀ᶠ R : ℝ in atTop, ∑ i, W R i = 1)
@@ -144,6 +161,13 @@ theorem tendsto_convex_comb {ι : Type*} [Fintype ι] {W : ℝ → ι → ℝ} {
   exact ⟨N, hN⟩
 
 set_option maxHeartbeats 1600000 in
+
+/-- **The interpolated double time sum converges to the double time integral `I`.** Written via
+`tendsto_convex_comb` as a convex combination over the `2^d × 2` corner-time pairs of each of the
+two points, whose weights are `interpTermWeight` (nonnegative, summing to one), and whose terms
+each converge to `I` by `tendsto_double_time_sum` applied at the corner sites and time indices,
+using `tendsto_norm_sq_cornerSite`, `eventually_latticeDist_cornerSite` and
+`abs_timeIndex_sub_le`. -/
 theorem tendsto_interpDoubleTimeSum
     (hLCLT : Sandpile.External.LocalCLT) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {r r' I : ℝ} (hr : 0 < r) (hr' : 0 < r') (w w' : Space d)
@@ -202,6 +226,10 @@ At a time horizon zero the double time sum has at most one term in that variable
 the near-diagonal bound alone sends it to zero, which is the value of the double time
 integral there. -/
 
+/-- **A double time sum with at most one term in the first time variable vanishes in the limit.**
+When `k R ≤ 1`, the near-diagonal small-time bound `exists_smallTime_bound` alone forces the
+rescaled sum to zero, since its error term `Csm (1+T) δ^{1/4}` can be made arbitrarily small by
+shrinking `δ`. -/
 theorem tendsto_double_time_sum_of_small (hd : 1 ≤ d) (hd3 : d ≤ 3) {ρ : ℝ} (hρ : 0 ≤ ρ)
     (X Y : ℝ → Site d) (k k' : ℝ → ℕ)
     (hk : ∀ᶠ R : ℝ in atTop, ((k R : ℕ) : ℝ) ≤ 1)
@@ -252,6 +280,8 @@ theorem tendsto_double_time_sum_of_small (hd : 1 ≤ d) (hd3 : d ≤ 3) {ρ : �
   obtain ⟨N, hN⟩ := eventually_atTop.mp hev
   exact ⟨N, hN⟩
 
+/-- Both mesh time indices at the degenerate horizon `r = 0` are at most `1`, since
+`⌊R^2 · 0⌋ = 0`. -/
 theorem timeIndex_zero_le (R : ℝ) (b : Bool) : ((timeIndex R 0 b : ℕ) : ℝ) ≤ 1 := by
   cases b
   · show ((⌊R ^ 2 * 0⌋₊ : ℕ) : ℝ) ≤ 1
@@ -261,6 +291,7 @@ theorem timeIndex_zero_le (R : ℝ) (b : Bool) : ((timeIndex R 0 b : ℕ) : ℝ)
     rw [mul_zero, Nat.floor_zero]
     norm_num
 
+/-- Both mesh time indices at horizon `ρ` and scale `R ≥ 1` are at most `(ρ + 1) R^2`. -/
 theorem timeIndex_le_mul {R ρ : ℝ} (hR : 1 ≤ R) (hρ : 0 ≤ ρ) (b : Bool) :
     ((timeIndex R ρ b : ℕ) : ℝ) ≤ (ρ + 1) * R ^ 2 := by
   have hR0 : (0:ℝ) < R := lt_of_lt_of_le one_pos hR
@@ -275,6 +306,11 @@ theorem timeIndex_le_mul {R ρ : ℝ} (hR : 1 ≤ R) (hρ : 0 ≤ ρ) (b : Bool)
     nlinarith
 
 set_option maxHeartbeats 800000 in
+
+/-- **At the degenerate horizon `r = 0` the interpolated double time sum vanishes in the limit.**
+As in `tendsto_interpDoubleTimeSum`, this is `tendsto_convex_comb` applied to the corner-time
+terms, but each term now converges to `0` by `tendsto_double_time_sum_of_small`, using
+`timeIndex_zero_le` for the degenerate variable and `timeIndex_le_mul` for the other. -/
 theorem tendsto_interpDoubleTimeSum_zero_left (hd : 1 ≤ d) (hd3 : d ≤ 3) {ρ : ℝ} (hρ : 0 ≤ ρ)
     (w w' : Space d) :
     Tendsto (fun R : ℝ => interpDoubleTimeSum d R 0 ρ w w') atTop (𝓝 0) := by
@@ -320,6 +356,8 @@ theorem tendsto_interpDoubleTimeSum_zero_left (hd : 1 ≤ d) (hd3 : d ≤ 3) {ρ
   have := tendsto_convex_comb hW0 hW1 hS
   exact this.congr fun R => (hrw R).symm
 
+/-- Swapping the two horizons of a double time sum leaves it unchanged, since `heatKernel` at
+`a + b` is symmetric in `a, b` and `Finset.sum_comm` swaps the summation order. -/
 theorem doubleTimeSum_swap (k k' : ℕ) (x y : Site d) :
     ∑ a ∈ Finset.range k, ∑ b ∈ Finset.range k', Sandpile.heatKernel d (a + b) x y
       = ∑ a ∈ Finset.range k', ∑ b ∈ Finset.range k, Sandpile.heatKernel d (a + b) x y := by
@@ -327,6 +365,11 @@ theorem doubleTimeSum_swap (k k' : ℕ) (x y : Site d) :
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [Nat.add_comm]
 
 set_option maxHeartbeats 800000 in
+
+/-- **At the degenerate horizon `r' = 0` the interpolated double time sum vanishes in the limit.**
+The mirror image of `tendsto_interpDoubleTimeSum_zero_left`: each corner-time term is reduced to
+the already-handled case by `doubleTimeSum_swap`, which exchanges the roles of the two
+horizons. -/
 theorem tendsto_interpDoubleTimeSum_zero_right (hd : 1 ≤ d) (hd3 : d ≤ 3) {ρ : ℝ} (hρ : 0 ≤ ρ)
     (w w' : Space d) :
     Tendsto (fun R : ℝ => interpDoubleTimeSum d R ρ 0 w w') atTop (𝓝 0) := by

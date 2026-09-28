@@ -1,4 +1,11 @@
-/-
+import Sandpile.Law
+import Sandpile.External.VarianceScale
+import Sandpile.Support.D4Convergence
+import Sandpile.Support.D4Mean
+
+/-!
+# The critical dimension-four toppling law of large numbers
+
 Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:2719-2748`
 (label `thm:critical-toppling-d4`):
 
@@ -31,10 +38,6 @@ exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
 non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
-import Sandpile.Law
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4Convergence
-import Sandpile.Support.D4Mean
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -99,11 +102,14 @@ theorem Sandpile.Frozen.critical_toppling_d4
   · intro x t ht s hs
     have hsub : {σ : Sandpile.Site 4 → ℝ | s < |Sandpile.odometer σ t x -
         Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t|} ⊆
-        {σ | s ≤ |Sandpile.odometer σ t x - Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t|} :=
+        {σ | s ≤ |Sandpile.odometer σ t x -
+            Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t|} :=
       by
         intro σ h
-        change s < |Sandpile.odometer σ t x - Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t| at h
-        change s ≤ |Sandpile.odometer σ t x - Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t|
+        change s < |Sandpile.odometer σ t x -
+            Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t| at h
+        change s ≤ |Sandpile.odometer σ t x -
+            Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t|
         exact h.le
     refine (measure_mono hsub).trans ((hc x t ht s hs).trans ?_)
     refine ENNReal.ofReal_le_ofReal ?_

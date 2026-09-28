@@ -3,26 +3,52 @@ import Sandpile.External.LocalCLTProved
 import Sandpile.External.GaussianFourierProved
 import Sandpile.Support.TightKernel
 
+/-!
+# The dimension-four paired local limit theorem is proved
+
+`Sandpile.External.PairedLocalCLTFour` is discharged: the sum of the walk's Fourier torus
+integrals at consecutive times `n` and `n+1` is shown to differ from the corresponding sum of
+Gaussian densities by an explicit `O(n^{-3})` error. The torus is split into a near-origin box
+`nearOriginBox`, its antipodal corner regions, and the residual, and each Fourier step integrand
+`fourierStepIntegrand`/`gaussianStepIntegrand` is compared with its Gaussian model on the origin
+piece (`fourier_gaussian_core_error_le`), summed over the corners by an antipodal symmetry
+(`antipode_corner_integral_sum_eq`), and bounded on the residual and tail regions
+(`residual_integral_norm_le`, `gaussianStepIntegrand_tail_le`). These pieces are assembled into
+the single estimate `torusIntegral_pair_gaussian_approx_le`, whose specialization at `z = x - y`
+is exactly the frozen proposition.
+-/
+
 open MeasureTheory
 
 noncomputable section
 
-def aux_paired_gaussRegion : Set (Fin 4 → ℝ) :=
+/-- The box `{θ | ∀ i, |θ i| ≤ π/4}` in `Fin 4 → ℝ` centered at the origin, used to separate the
+near-identity Fourier region from the antipodal corner regions in the dimension-four paired
+local limit theorem. -/
+def nearOriginBox : Set (Fin 4 → ℝ) :=
   {θ | ∀ i, |θ i| ≤ Real.pi / 4}
 
-def aux_paired_character (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
+/-- The plane-wave character `θ ↦ ∏k exp(i θk zk)` on `Fin 4 → ℝ` associated to a lattice
+point `z`. -/
+def latticeCharacter (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
   fun θ => ∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)
 
-def aux_paired_fourierIntegrand (l : ℕ) (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
+/-- The Fourier-transform integrand of the `l`-step lazy walk: `latticeCharacter` at `z` multiplied
+by the `l`-th power of the walk's characteristic function `(∑ cos θi)/4`. -/
+def fourierStepIntegrand (l : ℕ) (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
   fun θ =>
-    aux_paired_character z θ *
+    latticeCharacter z θ *
       (((∑ i : Fin 4, Real.cos (θ i)) / 4 : ℝ) ^ l : ℂ)
 
-def aux_paired_gaussianIntegrand (l : ℕ) (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
+/-- The Gaussian-approximation counterpart of `fourierStepIntegrand`: `latticeCharacter` at `z`
+multiplied by the heat-kernel exponential `exp(-l‖θ‖^2/8)`. -/
+def gaussianStepIntegrand (l : ℕ) (z : Fin 4 → ℤ) : (Fin 4 → ℝ) → ℂ :=
   fun θ =>
-    (Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) : ℂ) * aux_paired_character z θ
+    (Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) : ℂ) * latticeCharacter z θ
 
-theorem aux_paired_exp_neg_le_inv_cube {u : ℝ} (hu : 0 < u) :
+/-- For `u > 0`, `exp(-u) ≤ 27 / u^3`, proved by cubing the linear bound `u ≤ 3 exp(u/3)` obtained
+from `Real.add_one_le_exp`. -/
+theorem exp_neg_le_inv_cube {u : ℝ} (hu : 0 < u) :
     Real.exp (-u) ≤ 27 / u ^ 3 := by
   have hlin : u ≤ 3 * Real.exp (u / 3) := by
     have h := Real.add_one_le_exp (u / 3)
@@ -46,10 +72,12 @@ theorem aux_paired_exp_neg_le_inv_cube {u : ℝ} (hu : 0 < u) :
   apply (le_div_iff₀ (by positivity : (0 : ℝ) < u ^ 3)).2
   simpa [mul_comm] using hm
 
-theorem aux_paired_fourier_integrand_norm (l : ℕ) (z : Fin 4 → ℤ)
+/-- The norm of `fourierStepIntegrand l z θ` equals `|charFn 4 θ|^l`, since the character factor has
+unit modulus. -/
+theorem fourierStepIntegrand_norm_eq (l : ℕ) (z : Fin 4 → ℤ)
     (θ : Fin 4 → ℝ) :
-    ‖aux_paired_fourierIntegrand l z θ‖ = |LatticeProb.charFn 4 θ| ^ l := by
-  dsimp [aux_paired_fourierIntegrand, aux_paired_character]
+    ‖fourierStepIntegrand l z θ‖ = |LatticeProb.charFn 4 θ| ^ l := by
+  dsimp [fourierStepIntegrand, latticeCharacter]
   rw [norm_mul, norm_prod]
   simp only [Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs, norm_pow]
   simp only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re,
@@ -57,56 +85,65 @@ theorem aux_paired_fourier_integrand_norm (l : ℕ) (z : Fin 4 → ℤ)
     Finset.prod_const_one, one_mul]
   rfl
 
-theorem aux_paired_character_norm (z : Fin 4 → ℤ) (θ : Fin 4 → ℝ) :
-    ‖aux_paired_character z θ‖ = 1 := by
-  dsimp [aux_paired_character]
+/-- `latticeCharacter` has unit norm at every point, being a finite product of unit complex
+exponentials. -/
+theorem latticeCharacter_norm_eq_one (z : Fin 4 → ℤ) (θ : Fin 4 → ℝ) :
+    ‖latticeCharacter z θ‖ = 1 := by
+  dsimp [latticeCharacter]
   rw [norm_prod]
   simp [Complex.norm_exp]
 
-theorem aux_paired_fourier_integrable (l : ℕ) (z : Fin 4 → ℤ) :
-    IntegrableOn (aux_paired_fourierIntegrand l z)
+/-- `fourierStepIntegrand l z` is integrable on the torus box `LatticeProb.LocalCLT.torusBox 4`,
+transported from the library's `fourier_integrand_integrable`. -/
+theorem fourierStepIntegrand_integrableOn_torusBox (l : ℕ) (z : Fin 4 → ℤ) :
+    IntegrableOn (fourierStepIntegrand l z)
       (LatticeProb.LocalCLT.torusBox 4) volume := by
-  change Integrable (aux_paired_fourierIntegrand l z)
+  change Integrable (fourierStepIntegrand l z)
     (volume.restrict (LatticeProb.LocalCLT.torusBox 4))
   have h := LatticeProb.LocalCLT.fourier_integrand_integrable 4 l z
   refine h.congr ?_
   filter_upwards with θ
-  dsimp [aux_paired_fourierIntegrand, aux_paired_character]
+  dsimp [fourierStepIntegrand, latticeCharacter]
   simp only [Complex.ofReal_mul, Complex.ofReal_div]
   push_cast
   rfl
 
-theorem aux_paired_gaussian_integrable {l : ℕ} (hl : 0 < l) (z : Fin 4 → ℤ) :
-    Integrable (aux_paired_gaussianIntegrand l z) := by
+/-- `gaussianStepIntegrand l z` is integrable on all of `Fin 4 → ℝ` for `l > 0`, combining
+integrability of the Gaussian factor with the bounded unit-modulus character. -/
+theorem gaussianStepIntegrand_integrable {l : ℕ} (hl : 0 < l) (z : Fin 4 → ℤ) :
+    Integrable (gaussianStepIntegrand l z) := by
   have hlr : 0 < (l : ℝ) := by exact_mod_cast hl
   have hbase : Integrable (fun θ : Fin 4 → ℝ =>
       (Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) : ℂ)) := by
-    have h := aux_lclt_full_gaussian_integrable (d := 4) ((l : ℝ) / 8) (by positivity)
+    have h := full_gaussian_integrable (d := 4) ((l : ℝ) / 8) (by positivity)
     exact h.ofReal.congr (Filter.Eventually.of_forall (fun θ => by
       ring_nf
       rfl))
-  have hchar : AEStronglyMeasurable (aux_paired_character z) := by
+  have hchar : AEStronglyMeasurable (latticeCharacter z) := by
     apply Measurable.aestronglyMeasurable
     change Measurable (fun θ : Fin 4 → ℝ =>
       ∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I))
     measurability
-  have hb : ∀ᵐ θ : Fin 4 → ℝ, ‖aux_paired_character z θ‖ ≤ (1 : ℝ) :=
+  have hb : ∀ᵐ θ : Fin 4 → ℝ, ‖latticeCharacter z θ‖ ≤ (1 : ℝ) :=
     Filter.Eventually.of_forall (fun θ => by
-      rw [aux_paired_character_norm z θ])
+      rw [latticeCharacter_norm_eq_one z θ])
   change Integrable (fun θ : Fin 4 → ℝ =>
     (Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) : ℂ) *
-      aux_paired_character z θ)
+      latticeCharacter z θ)
   exact hbase.mul_bdd hchar hb
 
-theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
-    ‖∫ θ in aux_paired_gaussRegion,
-        aux_paired_fourierIntegrand l z θ - aux_paired_gaussianIntegrand l z θ‖ ≤
+/-- Bounds the `L¹` distance between `fourierStepIntegrand` and `gaussianStepIntegrand` over
+`nearOriginBox` by `9216/l * (π/(l/192))^2`, by integrating a pointwise second-order comparison
+between the walk's characteristic function and its Gaussian approximation. -/
+theorem fourier_gaussian_core_error_le {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
+    ‖∫ θ in nearOriginBox,
+        fourierStepIntegrand l z θ - gaussianStepIntegrand l z θ‖ ≤
       9216 / (l : ℝ) * (Real.pi / ((l : ℝ) / 192)) ^ 2 := by
-  let G := aux_paired_gaussRegion
-  let f := aux_paired_fourierIntegrand l z
-  let g := aux_paired_gaussianIntegrand l z
+  let G := nearOriginBox
+  let f := fourierStepIntegrand l z
+  let g := gaussianStepIntegrand l z
   have hG : MeasurableSet G := by
-    dsimp [G, aux_paired_gaussRegion]
+    dsimp [G, nearOriginBox]
     change MeasurableSet {θ : Fin 4 → ℝ | ∀ i, |θ i| ≤ Real.pi / 4}
     measurability
   have hnorm :
@@ -139,18 +176,18 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
           have hprod : 0 ≤ (4 - Real.pi) * (4 + Real.pi) :=
             mul_nonneg (sub_nonneg.mpr hpi) (by linarith)
           nlinarith
-    have hc := aux_lclt_gaussian_power_comparison (d := 4) (n := l) (by omega) hl θ
+    have hc := charFn_pow_sub_gaussian_le (d := 4) (n := l) (by omega) hl θ
       htheta hS
-    have heq : f θ - g θ = aux_paired_character z θ *
+    have heq : f θ - g θ = latticeCharacter z θ *
         (((LatticeProb.charFn 4 θ) ^ l : ℂ) -
           (Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) : ℂ)) := by
-      dsimp [f, g, aux_paired_fourierIntegrand, aux_paired_gaussianIntegrand,
-        aux_paired_character]
+      dsimp [f, g, fourierStepIntegrand, gaussianStepIntegrand,
+        latticeCharacter]
       simp only [LatticeProb.charFn]
       rw [Complex.ofReal_div]
       norm_num
       ring1
-    rw [heq, norm_mul, aux_paired_character_norm]
+    rw [heq, norm_mul, latticeCharacter_norm_eq_one]
     convert hc using 1 <;> norm_num
   have hpoint' : ∀ θ ∈ G, ‖f θ - g θ‖ ≤
       9216 / (l : ℝ) * Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) := by
@@ -158,7 +195,7 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
     have h := hpoint θ hθ
     have hS0 : 0 ≤ ∑ i : Fin 4, θ i ^ 2 :=
       Finset.sum_nonneg fun i _ => sq_nonneg _
-    have hq := aux_lclt_comparison_pointwise (d := 4) (n := l) (by norm_num)
+    have hq := polynomial_gaussian_term_le (d := 4) (n := l) (by norm_num)
       (by omega) (∑ i : Fin 4, θ i ^ 2) hS0
     have hq' :
         (l : ℝ) *
@@ -177,7 +214,7 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
   have hl0 : 0 < (l : ℝ) := by exact_mod_cast (show 0 < l by omega)
   have hgi : Integrable (fun θ : Fin 4 → ℝ =>
       Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192)) := by
-    have h := aux_lclt_full_gaussian_integrable (d := 4) ((l : ℝ) / 192) (by positivity)
+    have h := full_gaussian_integrable (d := 4) ((l : ℝ) / 192) (by positivity)
     refine h.congr (Filter.Eventually.of_forall (fun θ => ?_))
     ring_nf
   have hset : ∫ θ in G, Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) ≤
@@ -191,14 +228,14 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
         Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) := by
     rw [integral_const_mul]
   have hfiG : IntegrableOn f G volume := by
-    apply (aux_paired_fourier_integrable l z).mono_set
+    apply (fourierStepIntegrand_integrableOn_torusBox l z).mono_set
     intro θ hθ
     change ∀ i, |θ i| ≤ Real.pi / 4 at hθ
     simp only [LatticeProb.LocalCLT.torusBox, Set.mem_Icc, Pi.le_def]
     exact ⟨fun i => by linarith [(abs_le.mp (hθ i)).1, Real.pi_pos],
       fun i => by linarith [(abs_le.mp (hθ i)).2, Real.pi_pos]⟩
   have hgiG : IntegrableOn g G volume := by
-    simpa [g] using (aux_paired_gaussian_integrable (l := l) (by omega) z).integrableOn.mono_set
+    simpa [g] using (gaussianStepIntegrand_integrable (l := l) (by omega) z).integrableOn.mono_set
       (Set.subset_univ G)
   have hdiff : IntegrableOn (fun θ => ‖f θ - g θ‖) G volume :=
     (hfiG.sub hgiG).norm
@@ -216,7 +253,7 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
           Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) := by
       gcongr
     _ = 9216 / (l : ℝ) * (Real.pi / ((l : ℝ) / 192)) ^ 2 := by
-      have hfull := aux_lclt_full_gaussian (d := 4) ((l : ℝ) / 192) (by positivity)
+      have hfull := full_gaussian_integral_eq (d := 4) ((l : ℝ) / 192) (by positivity)
       have hfull' : ∫ θ : Fin 4 → ℝ,
           Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) =
           (Real.pi / ((l : ℝ) / 192)) ^ 2 := by
@@ -231,7 +268,10 @@ theorem aux_paired_core_error {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → ℤ) :
           _ = (Real.pi / ((l : ℝ) / 192)) ^ 2 := by norm_num
       rw [hfull']
 
-theorem aux_paired_bool_corner_union {d : ℕ} {η : ℝ}
+/-- The union over sign choices `b : Fin d → Bool` of half-open corner boxes (`Ioo` on the `π`-side
+coordinates, `Icc` on the others) equals the single corner annulus `{u | ∀ i, u i ∈ Ioc (π-η)
+(π+η)}`. -/
+theorem corner_box_iUnion_eq {d : ℕ} {η : ℝ}
     (hη0 : 0 < η) (_hηp : η ≤ Real.pi / 2) :
     (⋃ b : Fin d → Bool, {u : Fin d → ℝ |
       ∀ i, if b i then u i ∈ Set.Ioo (Real.pi - η) Real.pi
@@ -259,7 +299,9 @@ theorem aux_paired_bool_corner_union {d : ℕ} {η : ℝ}
     · simp only [b, hi, decide_false]
       exact ⟨le_of_not_gt hi, hu i |>.2⟩
 
-theorem aux_paired_bool_corner_union_ae {d : ℕ} {η : ℝ} :
+/-- The corner annulus `{u | ∀ i, u i ∈ Ioc (π-η) (π+η)}` agrees almost everywhere with the ball `{u
+| ∀ i, |u i - π| ≤ η}`, via `Measure.univ_pi_Ioc_ae_eq_Icc`. -/
+theorem corner_box_ae_eq_abs_ball {d : ℕ} {η : ℝ} :
     {u : Fin d → ℝ | ∀ i, u i ∈ Set.Ioc (Real.pi - η) (Real.pi + η)} =ᵐ[volume]
       {u : Fin d → ℝ | ∀ i, |u i - Real.pi| ≤ η} := by
   have h := Measure.univ_pi_Ioc_ae_eq_Icc
@@ -285,7 +327,10 @@ theorem aux_paired_bool_corner_union_ae {d : ℕ} {η : ℝ} :
     · intro hu i
       exact abs_le.mpr ⟨by linarith [hu.1 i], by linarith [hu.2 i]⟩
 
-theorem aux_paired_antipode_corner_assembly {d n : ℕ} (η : ℝ)
+/-- Summing the integral of the walk's Fourier integrand over each sign-indexed corner box `C b`
+(built from pieces near `π` and near `-π`) equals the integral over the single ball `{θ | ∀ i,
+|θ i - π| ≤ η}`, using `2π`-periodicity to identify the `-π` pieces with the `π` side. -/
+theorem antipode_corner_integral_sum_eq {d n : ℕ} (η : ℝ)
     (hη0 : 0 < η) (hηp : η ≤ Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -427,7 +472,7 @@ theorem aux_paired_antipode_corner_assembly {d n : ℕ} (η : ℝ)
           simp [hbval, m]
           exact ⟨hi.1, hi.2⟩
     rw [← hpre]
-    simpa [f] using (aux_lclt_periodic_setIntegral z m (Q b))
+    simpa [f] using (fourier_integrand_setIntegral_shift_eq z m (Q b))
   have hsumC := integral_iUnion_fintype (f := f) hCmeas hCpair hfiC
   have hsumQ := integral_iUnion_fintype (f := f) hQmeas hQpair (fun b =>
     hfiB.mono_set (by
@@ -452,11 +497,13 @@ theorem aux_paired_antipode_corner_assembly {d n : ℕ} (η : ℝ)
     _ = ∫ θ in B, f θ := by
       have hQunion : (⋃ b, Q b) =
           {u : Fin d → ℝ | ∀ i, u i ∈ Set.Ioc (Real.pi - η) (Real.pi + η)} := by
-        simpa [Q] using (aux_paired_bool_corner_union hη0 hηp)
+        simpa [Q] using (corner_box_iUnion_eq hη0 hηp)
       rw [hQunion]
-      exact setIntegral_congr_set (aux_paired_bool_corner_union_ae (d := d) (η := η))
+      exact setIntegral_congr_set (corner_box_ae_eq_abs_ball (d := d) (η := η))
 
-theorem aux_paired_corner_split {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Splits the integral of the walk's Fourier integrand over the torus box into its integral over
+the origin box `G`, the corner boxes `∑ b, C b`, and the residual `R = T \ (G ∪ ⋃ b, C b)`. -/
+theorem torusIntegral_eq_origin_add_corner_add_residual {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -580,7 +627,10 @@ theorem aux_paired_corner_split {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     _ = ((∫ θ in G, f θ) + (∫ θ in ⋃ b, C b, f θ)) + (∫ θ in R, f θ) := by rw [hUC]
     _ = (∫ θ in G, f θ) + (∑ b, ∫ θ in C b, f θ) + (∫ θ in R, f θ) := by rw [hsum]
 
-theorem aux_paired_corner_boundary_ae {d : ℕ} {η : ℝ} (b : Fin d → Bool) :
+/-- For fixed `b`, the corner box with a closed `Ioc` boundary on the `π`-side coordinates agrees
+almost everywhere with the same box using the open `Ioo` boundary, since the coordinate
+hyperplanes `θ i = π` have measure zero. -/
+theorem corner_box_ae_eq_open {d : ℕ} {η : ℝ} (b : Fin d → Bool) :
     {θ : Fin d → ℝ | ∀ i, if b i then θ i ∈ Set.Ioc (Real.pi - η) Real.pi
       else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + η)} =ᵐ[volume]
     {θ : Fin d → ℝ | ∀ i, if b i then θ i ∈ Set.Ioo (Real.pi - η) Real.pi
@@ -611,7 +661,9 @@ theorem aux_paired_corner_boundary_ae {d : ℕ} {η : ℝ} (b : Fin d → Bool) 
   · have hi := h i
     simpa [hb] using hi
 
-theorem aux_paired_pi_exp (m : ℤ) :
+/-- `exp(iπm) = (-1)^|m|` for every integer `m`, proved by splitting into the nonnegative and
+negative cases of `m` and reducing to `Complex.exp_pi_mul_I`. -/
+theorem exp_int_mul_pi_eq_neg_one_pow (m : ℤ) :
     Complex.exp (Complex.ofReal (Real.pi * (m : ℝ)) * Complex.I) =
       (-1 : ℂ) ^ m.natAbs := by
   cases m with
@@ -637,16 +689,18 @@ theorem aux_paired_pi_exp (m : ℤ) :
         ring_nf
       · rw [Int.natAbs_negSucc, pow_succ]
 
-theorem aux_paired_pi_shift_fourier {l : ℕ} (z : Fin 4 → ℤ)
+/-- Shifting every coordinate of `θ` by `π` multiplies `fourierStepIntegrand l z θ` by the sign
+factor `(-1)^l * ∏k exp(iπ zk)`, from additivity of the character and `Real.cos_add`. -/
+theorem fourierStepIntegrand_shift_pi_eq {l : ℕ} (z : Fin 4 → ℤ)
     (θ : Fin 4 → ℝ) :
-    aux_paired_fourierIntegrand l z (θ + fun _ => Real.pi) =
+    fourierStepIntegrand l z (θ + fun _ => Real.pi) =
       ((-1 : ℂ) ^ l * ∏ k, Complex.exp
         (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) *
-        aux_paired_fourierIntegrand l z θ := by
-  have hchar : aux_paired_character z (θ + fun _ => Real.pi) =
+        fourierStepIntegrand l z θ := by
+  have hchar : latticeCharacter z (θ + fun _ => Real.pi) =
       (∏ k, Complex.exp (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) *
-        aux_paired_character z θ := by
-    dsimp [aux_paired_character]
+        latticeCharacter z θ := by
+    dsimp [latticeCharacter]
     calc
       (∏ k, Complex.exp (Complex.ofReal ((θ k + Real.pi) * ((z k : ℤ) : ℝ)) * Complex.I)) =
           ∏ k, (Complex.exp (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I) *
@@ -671,7 +725,7 @@ theorem aux_paired_pi_shift_fourier {l : ℕ} (z : Fin 4 → ℤ)
         ring_nf
       _ = -(∑ i : Fin 4, Real.cos (θ i)) := by
         rw [Finset.sum_neg_distrib]
-  dsimp [aux_paired_fourierIntegrand]
+  dsimp [fourierStepIntegrand]
   rw [hchar, hcos]
   rw [show ((-(∑ i : Fin 4, Real.cos (θ i)) / 4 : ℝ) ^ l : ℂ) =
       ((-1 : ℂ) ^ l) * (((∑ i : Fin 4, Real.cos (θ i)) / 4 : ℝ) ^ l : ℂ) by
@@ -690,16 +744,19 @@ theorem aux_paired_pi_shift_fourier {l : ℕ} (z : Fin 4 → ℤ)
             norm_num [Complex.ofReal_mul, Complex.ofReal_pow]]
   ring1
 
-theorem aux_paired_pi_shift_integral {l : ℕ} (z : Fin 4 → ℤ) :
+/-- The integral of `fourierStepIntegrand l z` over the ball around `π` equals the sign factor from
+`fourierStepIntegrand_shift_pi_eq` times its integral over `nearOriginBox`, via the
+measure-preserving translation by `π`. -/
+theorem fourierStepIntegrand_integral_shift_pi_eq {l : ℕ} (z : Fin 4 → ℤ) :
     (∫ θ in {θ : Fin 4 → ℝ | ∀ i, |θ i - Real.pi| ≤ Real.pi / 4},
-        aux_paired_fourierIntegrand l z θ) =
+        fourierStepIntegrand l z θ) =
       ((-1 : ℂ) ^ l * ∏ k, Complex.exp
         (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) *
-        (∫ θ in aux_paired_gaussRegion, aux_paired_fourierIntegrand l z θ) := by
+        (∫ θ in nearOriginBox, fourierStepIntegrand l z θ) := by
   let p : Fin 4 → ℝ := fun _ => Real.pi
   let B : Set (Fin 4 → ℝ) := {θ | ∀ i, |θ i - Real.pi| ≤ Real.pi / 4}
-  let G : Set (Fin 4 → ℝ) := aux_paired_gaussRegion
-  let f : (Fin 4 → ℝ) → ℂ := aux_paired_fourierIntegrand l z
+  let G : Set (Fin 4 → ℝ) := nearOriginBox
+  let f : (Fin 4 → ℝ) → ℂ := fourierStepIntegrand l z
   let tr : (Fin 4 → ℝ) → Fin 4 → ℝ := fun u => u + p
   have hmp : MeasurePreserving tr volume volume := by
     have h := measurePreserving_add_left volume p
@@ -709,7 +766,7 @@ theorem aux_paired_pi_shift_integral {l : ℕ} (z : Fin 4 → ℤ) :
     simpa [tr, add_comm] using h
   have hpre : tr ⁻¹' B = G := by
     ext u
-    simp only [B, G, aux_paired_gaussRegion, tr, Set.mem_preimage, Set.mem_setOf_eq,
+    simp only [B, G, nearOriginBox, tr, Set.mem_preimage, Set.mem_setOf_eq,
       Pi.add_apply]
     constructor
     · intro h i
@@ -723,7 +780,7 @@ theorem aux_paired_pi_shift_integral {l : ℕ} (z : Fin 4 → ℤ) :
       ((-1 : ℂ) ^ l * ∏ k, Complex.exp
         (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) * f u := by
     intro u
-    exact aux_paired_pi_shift_fourier z u
+    exact fourierStepIntegrand_shift_pi_eq z u
   change (∫ θ in B, f θ) = _
   calc
     (∫ θ in B, f θ) = ∫ θ in tr ⁻¹' B, f (tr θ) := hchange.symm
@@ -737,7 +794,10 @@ theorem aux_paired_pi_shift_integral {l : ℕ} (z : Fin 4 → ℤ) :
           (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) *
         ∫ θ in G, f θ := by rw [integral_const_mul]
 
-theorem aux_paired_mixed_pointwise {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- If one coordinate of `θ` lies within `η` of `0` and another lies within `η` of `π`, the walk's
+characteristic-function power is bounded by `exp(-n/d)`, from a two-sided bound on `∑ cos θi`
+coming from those two coordinates. -/
+theorem mixed_coordinate_bound_le {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (θ : Fin d → ℝ)
     (z : LatticeProb.Site d)
     (hθT : θ ∈ LatticeProb.LocalCLT.torusBox d)
@@ -851,20 +911,23 @@ theorem aux_paired_mixed_pointwise {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
       congr 1
       ring_nf
 
-theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
+/-- Bounds `‖∫_R fourierStepIntegrand l z‖` by `2×10^13/l^3` on the residual region `R` left after
+removing the origin and corner boxes, by covering `R` with a far-region piece and a
+mixed-coordinate piece handled by `mixed_coordinate_bound_le`. -/
+theorem residual_integral_norm_le {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
     let T : Set (Fin 4 → ℝ) := LatticeProb.LocalCLT.torusBox 4
-    let G : Set (Fin 4 → ℝ) := aux_paired_gaussRegion
+    let G : Set (Fin 4 → ℝ) := nearOriginBox
     let C : (Fin 4 → Bool) → Set (Fin 4 → ℝ) := fun b =>
       {θ | ∀ i, if b i then θ i ∈ Set.Ioo (Real.pi - Real.pi / 4) Real.pi
         else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + Real.pi / 4)}
     let R : Set (Fin 4 → ℝ) := T \ (G ∪ ⋃ b, C b)
-    ‖∫ θ in R, aux_paired_fourierIntegrand l z θ‖ ≤
+    ‖∫ θ in R, fourierStepIntegrand l z θ‖ ≤
       20000000000000 / (l : ℝ) ^ 3 := by
   classical
   dsimp
   let η : ℝ := Real.pi / 4
   let T : Set (Fin 4 → ℝ) := LatticeProb.LocalCLT.torusBox 4
-  let G : Set (Fin 4 → ℝ) := aux_paired_gaussRegion
+  let G : Set (Fin 4 → ℝ) := nearOriginBox
   let C : (Fin 4 → Bool) → Set (Fin 4 → ℝ) := fun b =>
     {θ | ∀ i, if b i then θ i ∈ Set.Ioo (Real.pi - η) Real.pi
       else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + η)}
@@ -875,7 +938,7 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
   have hT : MeasurableSet T := by
     exact LatticeProb.LocalCLT.torusBox_measurable 4
   have hG : MeasurableSet G := by
-    dsimp [G, aux_paired_gaussRegion]
+    dsimp [G, nearOriginBox]
     measurability
   have hC : ∀ b, MeasurableSet (C b) := by
     intro b
@@ -890,8 +953,8 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
   have hRmeas : MeasurableSet R := by
     dsimp [R]
     exact hT.diff (hG.union (MeasurableSet.iUnion hC))
-  have hRint : IntegrableOn (aux_paired_fourierIntegrand l z) R volume := by
-    apply (aux_paired_fourier_integrable l z).mono_set
+  have hRint : IntegrableOn (fourierStepIntegrand l z) R volume := by
+    apply (fourierStepIntegrand_integrableOn_torusBox l z).mono_set
     intro θ hθ
     exact hθ.1
   have hFsub : F ⊆ T := by
@@ -901,9 +964,9 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
     intro θ hθ
     exact hθ.1
   have hMixBound : ∀ θ ∈ M,
-      ‖aux_paired_fourierIntegrand l z θ‖ ≤ Real.exp (-(l : ℝ) / 4) := by
+      ‖fourierStepIntegrand l z θ‖ ≤ Real.exp (-(l : ℝ) / 4) := by
     intro θ hθ
-    exact aux_paired_mixed_pointwise (d := 4) (n := l) (by omega) η
+    exact mixed_coordinate_bound_le (d := 4) (n := l) (by omega) η
       (by dsimp [η]; positivity) (by dsimp [η]; linarith [Real.pi_pos]) θ z hθ.1
       hθ.2.2.1 hθ.2.2.2
   have hpi : 0 < Real.pi := Real.pi_pos
@@ -970,16 +1033,16 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
           intro hf
           exact hFar ⟨hθR.1, ⟨i, hf.1, hf.2⟩⟩
         exact le_of_not_ge (fun hle => hnotfar ⟨hi'.le, hle⟩)
-  have hfiT : IntegrableOn (fun θ => ‖aux_paired_fourierIntegrand l z θ‖) T volume := by
-    exact (aux_paired_fourier_integrable l z).norm
-  have hfiU : IntegrableOn (fun θ => ‖aux_paired_fourierIntegrand l z θ‖) (F ∪ M) volume :=
+  have hfiT : IntegrableOn (fun θ => ‖fourierStepIntegrand l z θ‖) T volume := by
+    exact (fourierStepIntegrand_integrableOn_torusBox l z).norm
+  have hfiU : IntegrableOn (fun θ => ‖fourierStepIntegrand l z θ‖) (F ∪ M) volume :=
     hfiT.mono_set (Set.union_subset hFsub hMsub)
-  have hmono : ∫ θ in R, ‖aux_paired_fourierIntegrand l z θ‖ ≤
-      ∫ θ in F ∪ M, ‖aux_paired_fourierIntegrand l z θ‖ :=
+  have hmono : ∫ θ in R, ‖fourierStepIntegrand l z θ‖ ≤
+      ∫ θ in F ∪ M, ‖fourierStepIntegrand l z θ‖ :=
     setIntegral_mono_set hfiU (Filter.Eventually.of_forall (fun θ => norm_nonneg _)) hRcover
-  have hFbound : ∫ θ in F, ‖aux_paired_fourierIntegrand l z θ‖ ≤
+  have hFbound : ∫ θ in F, ‖fourierStepIntegrand l z θ‖ ≤
       (2 * Real.pi) ^ 4 * Real.exp (-(l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) := by
-    exact aux_lclt_far_region_integral_norm (d := 4) (n := l) (by omega) η hη0 hηp.le z
+    exact far_region_integral_norm_le (d := 4) (n := l) (by omega) η hη0 hηp.le z
   have hvolT : volume.real T = (2 * Real.pi) ^ 4 := by
     rw [Measure.real_def]
     dsimp [T, LatticeProb.LocalCLT.torusBox]
@@ -996,14 +1059,14 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
     calc
       volume.real M ≤ volume.real T := measureReal_mono hMsub (ne_of_lt (by finiteness))
       _ = (2 * Real.pi) ^ 4 := hvolT
-  have hMbound : ∫ θ in M, ‖aux_paired_fourierIntegrand l z θ‖ ≤
+  have hMbound : ∫ θ in M, ‖fourierStepIntegrand l z θ‖ ≤
       Real.exp (-(l : ℝ) / 4) * (2 * Real.pi) ^ 4 := by
     have hconst : IntegrableOn (fun _ : Fin 4 → ℝ => Real.exp (-(l : ℝ) / 4)) M volume :=
       integrableOn_const hMfinite.ne (by finiteness)
     have hle := setIntegral_mono_on
       (hfiT.mono_set hMsub) hconst hM (fun θ hθ => hMixBound θ hθ)
     rw [setIntegral_const] at hle
-    have hle' : (∫ θ in M, ‖aux_paired_fourierIntegrand l z θ‖) ≤
+    have hle' : (∫ θ in M, ‖fourierStepIntegrand l z θ‖) ≤
         volume.real M * Real.exp (-(l : ℝ) / 4) := by
       simpa [smul_eq_mul] using hle
     calc
@@ -1011,16 +1074,16 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
       _ = Real.exp (-(l : ℝ) / 4) * volume.real M := by ring_nf
       _ ≤ Real.exp (-(l : ℝ) / 4) * (2 * Real.pi) ^ 4 :=
         mul_le_mul_of_nonneg_left hMvol (Real.exp_nonneg _)
-  have hUM : (∫ θ in F ∪ M, ‖aux_paired_fourierIntegrand l z θ‖) ≤
+  have hUM : (∫ θ in F ∪ M, ‖fourierStepIntegrand l z θ‖) ≤
       (2 * Real.pi) ^ 4 * Real.exp (-(l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) +
         Real.exp (-(l : ℝ) / 4) * (2 * Real.pi) ^ 4 := by
     have hdis : Disjoint F M := by
       refine Set.disjoint_right.mpr ?_
       intro θ hθM hθF
       exact hθM.2.1 hθF
-    have hfiF : IntegrableOn (fun θ => ‖aux_paired_fourierIntegrand l z θ‖) F volume :=
+    have hfiF : IntegrableOn (fun θ => ‖fourierStepIntegrand l z θ‖) F volume :=
       hfiT.mono_set hFsub
-    have hfiM : IntegrableOn (fun θ => ‖aux_paired_fourierIntegrand l z θ‖) M volume :=
+    have hfiM : IntegrableOn (fun θ => ‖fourierStepIntegrand l z θ‖) M volume :=
       hfiT.mono_set hMsub
     rw [setIntegral_union hdis hM hfiF hfiM]
     linarith
@@ -1028,7 +1091,7 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
   have hexpF : (2 * Real.pi) ^ 4 * Real.exp (-(l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) ≤
       10000000000000 / (l : ℝ) ^ 3 := by
     have hu : 0 < (l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2 := by positivity
-    have he := aux_paired_exp_neg_le_inv_cube hu
+    have he := exp_neg_le_inv_cube hu
     have he' : Real.exp (-(l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) ≤
         27 / ((l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) ^ 3 := by
       convert he using 1; ring_nf
@@ -1046,7 +1109,7 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
   have hexpM : Real.exp (-(l : ℝ) / 4) * (2 * Real.pi) ^ 4 ≤
       10000000000000 / (l : ℝ) ^ 3 := by
     have hu : 0 < (l : ℝ) / 4 := by positivity
-    have he := aux_paired_exp_neg_le_inv_cube hu
+    have he := exp_neg_le_inv_cube hu
     have he' : Real.exp (-(l : ℝ) / 4) ≤ 27 / ((l : ℝ) / 4) ^ 3 := by
       convert he using 1; ring_nf
     calc
@@ -1058,11 +1121,11 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
           pow_le_pow_left₀ Real.pi_pos.le Real.pi_le_four 4
         nlinarith [hpi4]
   calc
-    ‖∫ θ in R, aux_paired_fourierIntegrand l z θ‖ ≤
-        ∫ θ in R, ‖aux_paired_fourierIntegrand l z θ‖ :=
+    ‖∫ θ in R, fourierStepIntegrand l z θ‖ ≤
+        ∫ θ in R, ‖fourierStepIntegrand l z θ‖ :=
       norm_integral_le_integral_norm (μ := volume.restrict R)
-        (fun θ => aux_paired_fourierIntegrand l z θ)
-    _ ≤ ∫ θ in F ∪ M, ‖aux_paired_fourierIntegrand l z θ‖ := hmono
+        (fun θ => fourierStepIntegrand l z θ)
+    _ ≤ ∫ θ in F ∪ M, ‖fourierStepIntegrand l z θ‖ := hmono
     _ ≤ 20000000000000 / (l : ℝ) ^ 3 := by
       calc
         _ ≤ (2 * Real.pi) ^ 4 * Real.exp (-(l : ℝ) * (2 / 4) * η ^ 2 / Real.pi ^ 2) +
@@ -1071,7 +1134,10 @@ theorem aux_paired_residual_integral {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ
             10000000000000 / (l : ℝ) ^ 3 := add_le_add hexpF hexpM
         _ = 20000000000000 / (l : ℝ) ^ 3 := by ring_nf
 
-theorem aux_paired_scalar_main {n : ℕ} (hn : 1 ≤ n) (S : ℝ) (hS : 0 ≤ S) :
+/-- For `S ≥ 0`, bounds `|4/(π^2n^2) e^{-2S/n} + 4/(π^2(n+1)^2) e^{-2S/(n+1)} - 8/(π^2n^2)
+e^{-2S/n}| ≤ 1000/n^3`, by separately estimating the coefficient difference and the exponential
+difference between consecutive `n`. -/
+theorem gaussian_weight_difference_le {n : ℕ} (hn : 1 ≤ n) (S : ℝ) (hS : 0 ≤ S) :
     |4 / (Real.pi ^ 2 * (n : ℝ) ^ 2) * Real.exp (-2 * S / n) +
         4 / (Real.pi ^ 2 * (n + 1 : ℝ) ^ 2) * Real.exp (-2 * S / (n + 1)) -
         8 / (Real.pi ^ 2 * (n : ℝ) ^ 2) * Real.exp (-2 * S / n)| ≤
@@ -1184,16 +1250,18 @@ theorem aux_paired_scalar_main {n : ℕ} (hn : 1 ≤ n) (S : ℝ) (hS : 0 ≤ S)
       field_simp [ne_of_gt hn0]
       nlinarith
 
-theorem aux_paired_gaussian_tail {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
-    ‖(∫ θ in aux_paired_gaussRegion, aux_paired_gaussianIntegrand l z θ) -
-        ∫ θ : Fin 4 → ℝ, aux_paired_gaussianIntegrand l z θ‖ ≤
+/-- Bounds `‖∫_{nearOriginBox} gaussianStepIntegrand - ∫_{Fin 4 → ℝ} gaussianStepIntegrand‖` by
+`10^13/l^3`, from the Gaussian tail estimate outside the box. -/
+theorem gaussianStepIntegrand_tail_le {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
+    ‖(∫ θ in nearOriginBox, gaussianStepIntegrand l z θ) -
+        ∫ θ : Fin 4 → ℝ, gaussianStepIntegrand l z θ‖ ≤
       10000000000000 / (l : ℝ) ^ 3 := by
-  let G := aux_paired_gaussRegion
-  let g := aux_paired_gaussianIntegrand l z
+  let G := nearOriginBox
+  let g := gaussianStepIntegrand l z
   have hG : MeasurableSet G := by
-    dsimp [G, aux_paired_gaussRegion]
+    dsimp [G, nearOriginBox]
     measurability
-  have hgi : Integrable g := aux_paired_gaussian_integrable (by omega) z
+  have hgi : Integrable g := gaussianStepIntegrand_integrable (by omega) z
   have hgiG : IntegrableOn g G volume := hgi.integrableOn
   have hgiGc : IntegrableOn g Gᶜ volume := hgi.integrableOn
   have hsplit : (∫ θ : Fin 4 → ℝ, g θ) =
@@ -1205,17 +1273,17 @@ theorem aux_paired_gaussian_tail {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
   have hgnorm : ∀ θ, ‖g θ‖ =
       Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 8) := by
     intro θ
-    dsimp [g, aux_paired_gaussianIntegrand]
+    dsimp [g, gaussianStepIntegrand]
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _),
-      aux_paired_character_norm]
+      latticeCharacter_norm_eq_one]
     ring_nf
-  have htail := aux_lclt_gaussian_tail (d := 4) ((l : ℝ) / 8) (Real.pi / 4)
+  have htail := gaussian_tail_integral_le (d := 4) ((l : ℝ) / 8) (Real.pi / 4)
     (by positivity) (by positivity)
   have htail' : (∫ θ in Gᶜ, ‖g θ‖) ≤
       (Real.pi / ((l : ℝ) / 8 / 2)) ^ 2 *
         Real.exp (-((l : ℝ) / 8) * (Real.pi / 4) ^ 2 / 2) := by
     rw [show Gᶜ = {θ : Fin 4 → ℝ | ¬ ∀ i, |θ i| ≤ Real.pi / 4} by
-      ext θ; simp [G, aux_paired_gaussRegion]]
+      ext θ; simp [G, nearOriginBox]]
     simp_rw [hgnorm]
     convert htail using 1
     all_goals norm_num
@@ -1225,7 +1293,7 @@ theorem aux_paired_gaussian_tail {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
         Real.exp (-((l : ℝ) / 8) * (Real.pi / 4) ^ 2 / 2) ≤
       10000000000000 / (l : ℝ) ^ 3 := by
     have hu : 0 < ((l : ℝ) / 8) * (Real.pi / 4) ^ 2 / 2 := by positivity
-    have he := aux_paired_exp_neg_le_inv_cube hu
+    have he := exp_neg_le_inv_cube hu
     have he' : Real.exp (-((l : ℝ) / 8) * (Real.pi / 4) ^ 2 / 2) ≤
         27 / (((l : ℝ) / 8) * (Real.pi / 4) ^ 2 / 2) ^ 3 := by
       convert he using 1; ring_nf
@@ -1259,15 +1327,17 @@ theorem aux_paired_gaussian_tail {l : ℕ} (hl : 1 ≤ l) (z : Fin 4 → ℤ) :
     _ ≤ ∫ θ in Gᶜ, ‖g θ‖ := hnorm
     _ ≤ 10000000000000 / (l : ℝ) ^ 3 := htail'.trans hexp
 
-theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → ℤ) :
-    ‖(∫ θ in aux_paired_gaussRegion,
-        aux_paired_gaussianIntegrand n z θ -
-          aux_paired_gaussianIntegrand (n + 1) z θ)‖ ≤
+/-- Bounds `‖∫_{nearOriginBox} (gaussianStepIntegrand n - gaussianStepIntegrand (n+1))‖` by
+`10^4/n^3`, from a pointwise bound on the difference of the two exponential weights. -/
+theorem gaussianStepIntegrand_succ_diff_le {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → ℤ) :
+    ‖(∫ θ in nearOriginBox,
+        gaussianStepIntegrand n z θ -
+          gaussianStepIntegrand (n + 1) z θ)‖ ≤
       10000 / (n : ℝ) ^ 3 := by
-  let G := aux_paired_gaussRegion
-  let g := fun l : ℕ => aux_paired_gaussianIntegrand l z
+  let G := nearOriginBox
+  let g := fun l : ℕ => gaussianStepIntegrand l z
   have hG : MeasurableSet G := by
-    dsimp [G, aux_paired_gaussRegion]
+    dsimp [G, nearOriginBox]
     measurability
   have hn0 : 0 < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
   have hS : ∀ θ : Fin 4 → ℝ, 0 ≤ ∑ i : Fin 4, θ i ^ 2 := fun θ =>
@@ -1307,14 +1377,14 @@ theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → �
     have hnorm : ‖g n θ - g (n + 1) θ‖ =
         Real.exp (-(n : ℝ) * S / 8) -
           Real.exp (-((n + 1 : ℕ) : ℝ) * S / 8) := by
-      dsimp [g, aux_paired_gaussianIntegrand, S]
+      dsimp [g, gaussianStepIntegrand, S]
       rw [show ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 by norm_num]
       rw [← sub_mul]
       have hnonneg' : 0 ≤ Real.exp ((-↑n * ∑ i : Fin 4, θ i ^ 2) / 8) -
           Real.exp ((-(↑n + 1) * ∑ i : Fin 4, θ i ^ 2) / 8) := by
         simpa [S] using hnonneg
       rw [← Complex.ofReal_sub, norm_mul, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg hnonneg', aux_paired_character_norm]
+        abs_of_nonneg hnonneg', latticeCharacter_norm_eq_one]
       simp
     rw [hnorm]
     have hu : 0 ≤ (n : ℝ) * S / 16 := by positivity
@@ -1349,7 +1419,7 @@ theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → �
         nlinarith
   have hbound : IntegrableOn (fun θ : Fin 4 → ℝ =>
       2 / (n : ℝ) * Real.exp (-(n : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 16)) G volume := by
-    have hi := aux_lclt_full_gaussian_integrable (d := 4) ((n : ℝ) / 16) (by positivity)
+    have hi := full_gaussian_integrable (d := 4) ((n : ℝ) / 16) (by positivity)
     have hi' : Integrable (fun θ : Fin 4 → ℝ =>
         2 / (n : ℝ) * Real.exp (-(n : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 16)) := by
       refine (hi.const_mul (2 / (n : ℝ))).congr ?_
@@ -1362,10 +1432,10 @@ theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → �
     norm_integral_le_integral_norm (μ := volume.restrict G)
       (fun θ => g n θ - g (n + 1) θ)
   have hle := setIntegral_mono_on
-    ((aux_paired_gaussian_integrable (l := n) (by omega) z).integrableOn.sub
-      (aux_paired_gaussian_integrable (l := n + 1) (by omega) z).integrableOn).norm
+    ((gaussianStepIntegrand_integrable (l := n) (by omega) z).integrableOn.sub
+      (gaussianStepIntegrand_integrable (l := n + 1) (by omega) z).integrableOn).norm
     hbound hG hpoint
-  have hfull := aux_lclt_full_gaussian (d := 4) ((n : ℝ) / 16) (by positivity)
+  have hfull := full_gaussian_integral_eq (d := 4) ((n : ℝ) / 16) (by positivity)
   calc
     ‖∫ θ in G, g n θ - g (n + 1) θ‖ ≤
         ∫ θ in G, ‖g n θ - g (n + 1) θ‖ := hnorm
@@ -1376,7 +1446,7 @@ theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → �
       rw [integral_const_mul]
       have hbase : Integrable (fun θ : Fin 4 → ℝ =>
           Real.exp (-(n : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 16)) := by
-        exact (aux_lclt_full_gaussian_integrable (d := 4) ((n : ℝ) / 16) (by positivity)).congr
+        exact (full_gaussian_integrable (d := 4) ((n : ℝ) / 16) (by positivity)).congr
           (Filter.Eventually.of_forall (fun θ => by ring_nf))
       exact mul_le_mul_of_nonneg_left
         (setIntegral_le_integral hbase (by
@@ -1403,48 +1473,52 @@ theorem aux_paired_gaussian_difference {n : ℕ} (hn : 1 ≤ n) (z : Fin 4 → �
       field_simp [ne_of_gt hn0]
       nlinarith [hpi2]
 
-theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
+/-- The dimension-four paired local-limit estimate: the sum of the walk's Fourier integrals at `n`
+and `n+1` over the full torus differs from the Gaussian sum `64π^2/n^2 e^{-2S/n} + 64π^2/(n+1)^2
+e^{-2S/(n+1)}` by at most `10^14/n^3`, assembled from the origin, corner, residual and tail
+estimates above. -/
+theorem torusIntegral_pair_gaussian_approx_le {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
     ‖((∫ θ in LatticeProb.LocalCLT.torusBox 4,
-          aux_paired_fourierIntegrand n z θ) +
+          fourierStepIntegrand n z θ) +
         (∫ θ in LatticeProb.LocalCLT.torusBox 4,
-          aux_paired_fourierIntegrand (n + 1) z θ)) -
+          fourierStepIntegrand (n + 1) z θ)) -
       (((64 * Real.pi ^ 2 / (n : ℝ) ^ 2) *
           Real.exp (-2 * (∑ i : Fin 4, (z i : ℝ) ^ 2) / n) +
         64 * Real.pi ^ 2 / (n + 1 : ℝ) ^ 2 *
           Real.exp (-2 * (∑ i : Fin 4, (z i : ℝ) ^ 2) / (n + 1)) : ℝ) : ℂ)‖ ≤
       100000000000000 / (n : ℝ) ^ 3 := by
-  let G : Set (Fin 4 → ℝ) := aux_paired_gaussRegion
+  let G : Set (Fin 4 → ℝ) := nearOriginBox
   let T : Set (Fin 4 → ℝ) := LatticeProb.LocalCLT.torusBox 4
   let B : Set (Fin 4 → ℝ) := {θ | ∀ i, |θ i - Real.pi| ≤ Real.pi / 4}
   let C : (Fin 4 → Bool) → Set (Fin 4 → ℝ) := fun b =>
     {θ | ∀ i, if b i then θ i ∈ Set.Ioo (Real.pi - Real.pi / 4) Real.pi
       else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + Real.pi / 4)}
   let R : Set (Fin 4 → ℝ) := T \ (G ∪ ⋃ b, C b)
-  let IF : ℕ → ℂ := fun l => ∫ θ in G, aux_paired_fourierIntegrand l z θ
-  let IC : ℕ → ℂ := fun l => ∑ b, ∫ θ in C b, aux_paired_fourierIntegrand l z θ
-  let IR : ℕ → ℂ := fun l => ∫ θ in R, aux_paired_fourierIntegrand l z θ
-  let JG : ℕ → ℂ := fun l => ∫ θ in G, aux_paired_gaussianIntegrand l z θ
-  let JU : ℕ → ℂ := fun l => ∫ θ : Fin 4 → ℝ, aux_paired_gaussianIntegrand l z θ
+  let IF : ℕ → ℂ := fun l => ∫ θ in G, fourierStepIntegrand l z θ
+  let IC : ℕ → ℂ := fun l => ∑ b, ∫ θ in C b, fourierStepIntegrand l z θ
+  let IR : ℕ → ℂ := fun l => ∫ θ in R, fourierStepIntegrand l z θ
+  let JG : ℕ → ℂ := fun l => ∫ θ in G, gaussianStepIntegrand l z θ
+  let JU : ℕ → ℂ := fun l => ∫ θ : Fin 4 → ℝ, gaussianStepIntegrand l z θ
   let σ : ℕ → ℂ := fun l =>
     (-1 : ℂ) ^ l * ∏ k, Complex.exp
       (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)
   have hsplit : ∀ l : ℕ, 1 ≤ l →
-      (∫ θ in T, aux_paired_fourierIntegrand l z θ) =
+      (∫ θ in T, fourierStepIntegrand l z θ) =
         IF l + IC l + IR l := by
     intro l hl
-    dsimp [IF, IC, IR, G, T, C, R, aux_paired_fourierIntegrand,
-      aux_paired_character]
-    exact aux_paired_corner_split (d := 4) (n := l) (by norm_num) (Real.pi / 4)
-      (by positivity) (by linarith [Real.pi_pos]) z
+    dsimp [IF, IC, IR, G, T, C, R, fourierStepIntegrand,
+      latticeCharacter]
+    exact torusIntegral_eq_origin_add_corner_add_residual (d := 4) (n := l) (by norm_num)
+      (Real.pi / 4) (by positivity) (by linarith [Real.pi_pos]) z
   have hcorner : ∀ l : ℕ, IC l = σ l * IF l := by
     intro l
-    have ha := aux_paired_antipode_corner_assembly (d := 4) (n := l) (Real.pi / 4)
+    have ha := antipode_corner_integral_sum_eq (d := 4) (n := l) (Real.pi / 4)
       (by positivity) (by linarith [Real.pi_pos]) z
     calc
-      IC l = ∫ θ in B, aux_paired_fourierIntegrand l z θ := by
-        simpa [IC, C, B, aux_paired_fourierIntegrand, aux_paired_character] using ha
+      IC l = ∫ θ in B, fourierStepIntegrand l z θ := by
+        simpa [IC, C, B, fourierStepIntegrand, latticeCharacter] using ha
       _ = σ l * IF l := by
-        simpa [σ, IF] using (aux_paired_pi_shift_integral (l := l) z)
+        simpa [σ, IF] using (fourierStepIntegrand_integral_shift_pi_eq (l := l) z)
   have hσ : σ (n + 1) = -σ n := by
     dsimp [σ]
     rw [pow_succ]
@@ -1456,13 +1530,13 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
   have hcore_num : ∀ {l : ℕ}, 2 ≤ l →
       ‖IF l - JG l‖ ≤ 1000000000000 / (l : ℝ) ^ 3 := by
     intro l hl
-    have h := aux_paired_core_error hl z
+    have h := fourier_gaussian_core_error_le hl z
     have hlr : 0 < (l : ℝ) := by exact_mod_cast (show 0 < l by omega)
     have hpi2 : Real.pi ^ 2 ≤ (4 : ℝ) ^ 2 :=
       pow_le_pow_left₀ Real.pi_pos.le Real.pi_le_four 2
-    have hfi : IntegrableOn (aux_paired_fourierIntegrand l z)
-        aux_paired_gaussRegion volume := by
-      apply (aux_paired_fourier_integrable l z).mono_set
+    have hfi : IntegrableOn (fourierStepIntegrand l z)
+        nearOriginBox volume := by
+      apply (fourierStepIntegrand_integrableOn_torusBox l z).mono_set
       intro θ hθ
       simp only [LatticeProb.LocalCLT.torusBox, Set.mem_Icc, Pi.le_def]
       constructor
@@ -1470,19 +1544,19 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
         linarith [(abs_le.mp (hθ i)).1, Real.pi_pos]
       · intro i
         linarith [(abs_le.mp (hθ i)).2, Real.pi_pos]
-    have hgi : IntegrableOn (aux_paired_gaussianIntegrand l z)
-        aux_paired_gaussRegion volume :=
-      (aux_paired_gaussian_integrable (l := l) (by omega) z).integrableOn
+    have hgi : IntegrableOn (gaussianStepIntegrand l z)
+        nearOriginBox volume :=
+      (gaussianStepIntegrand_integrable (l := l) (by omega) z).integrableOn
     have heq : IF l - JG l =
-        ∫ θ in aux_paired_gaussRegion,
-          aux_paired_fourierIntegrand l z θ -
-            aux_paired_gaussianIntegrand l z θ := by
+        ∫ θ in nearOriginBox,
+          fourierStepIntegrand l z θ -
+            gaussianStepIntegrand l z θ := by
       rw [integral_sub hfi hgi]
     rw [heq]
     calc
-      ‖∫ θ in aux_paired_gaussRegion,
-          aux_paired_fourierIntegrand l z θ -
-            aux_paired_gaussianIntegrand l z θ‖ ≤
+      ‖∫ θ in nearOriginBox,
+          fourierStepIntegrand l z θ -
+            gaussianStepIntegrand l z θ‖ ≤
           9216 / (l : ℝ) * (Real.pi / ((l : ℝ) / 192)) ^ 2 := h
       _ ≤ 1000000000000 / (l : ℝ) ^ 3 := by
         field_simp [ne_of_gt hlr]
@@ -1496,7 +1570,7 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
     exact one_div_le_one_div_of_le (by positivity) hpow
   have hcentral : ‖(IF n + IF (n + 1)) - (JG n + JG (n + 1))‖ ≤
       2000000000000 / (n : ℝ) ^ 3 := by
-    have hGsub : aux_paired_gaussRegion ⊆ LatticeProb.LocalCLT.torusBox 4 := by
+    have hGsub : nearOriginBox ⊆ LatticeProb.LocalCLT.torusBox 4 := by
       intro θ hθ
       simp only [LatticeProb.LocalCLT.torusBox, Set.mem_Icc, Pi.le_def]
       constructor
@@ -1504,18 +1578,18 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
         linarith [(abs_le.mp (hθ i)).1, Real.pi_pos]
       · intro i
         linarith [(abs_le.mp (hθ i)).2, Real.pi_pos]
-    have hfiN : IntegrableOn (aux_paired_fourierIntegrand n z) G := by
-      apply (aux_paired_fourier_integrable n z).mono_set
+    have hfiN : IntegrableOn (fourierStepIntegrand n z) G := by
+      apply (fourierStepIntegrand_integrableOn_torusBox n z).mono_set
       simpa [G] using hGsub
-    have hfiN1 : IntegrableOn (aux_paired_fourierIntegrand (n + 1) z) G := by
-      apply (aux_paired_fourier_integrable (n + 1) z).mono_set
+    have hfiN1 : IntegrableOn (fourierStepIntegrand (n + 1) z) G := by
+      apply (fourierStepIntegrand_integrableOn_torusBox (n + 1) z).mono_set
       simpa [G] using hGsub
-    have hgiN : IntegrableOn (aux_paired_gaussianIntegrand n z) G := by
+    have hgiN : IntegrableOn (gaussianStepIntegrand n z) G := by
       simpa [G] using
-        (aux_paired_gaussian_integrable (l := n) (by omega) z).integrableOn
-    have hgiN1 : IntegrableOn (aux_paired_gaussianIntegrand (n + 1) z) G := by
+        (gaussianStepIntegrand_integrable (l := n) (by omega) z).integrableOn
+    have hgiN1 : IntegrableOn (gaussianStepIntegrand (n + 1) z) G := by
       simpa [G] using
-        (aux_paired_gaussian_integrable (l := n + 1) (by omega) z).integrableOn
+        (gaussianStepIntegrand_integrable (l := n + 1) (by omega) z).integrableOn
     have heq : (IF n + IF (n + 1)) - (JG n + JG (n + 1)) =
         (IF n - JG n) + (IF (n + 1) - JG (n + 1)) := by
       ring_nf
@@ -1535,7 +1609,7 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
     have hdiff : ‖IF n - IF (n + 1)‖ ≤
         2000000000000 / (n : ℝ) ^ 3 + 10000 / (n : ℝ) ^ 3 := by
       have hn1 : 1 ≤ n := by omega
-      have hgd := aux_paired_gaussian_difference hn1 z
+      have hgd := gaussianStepIntegrand_succ_diff_le hn1 z
       have heq : IF n - IF (n + 1) =
           (IF n - JG n) + (JG n - JG (n + 1)) +
             (JG (n + 1) - IF (n + 1)) := by ring_nf
@@ -1557,15 +1631,15 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
           gcongr
           · exact hcore_num hn
           · have hgd' : ‖JG n - JG (n + 1)‖ ≤ 10000 / (n : ℝ) ^ 3 := by
-              have hfi : IntegrableOn (aux_paired_gaussianIntegrand n z) G := by
+              have hfi : IntegrableOn (gaussianStepIntegrand n z) G := by
                 simpa [G] using
-                  (aux_paired_gaussian_integrable (l := n) (by omega) z).integrableOn
-              have hfi1 : IntegrableOn (aux_paired_gaussianIntegrand (n + 1) z) G := by
+                  (gaussianStepIntegrand_integrable (l := n) (by omega) z).integrableOn
+              have hfi1 : IntegrableOn (gaussianStepIntegrand (n + 1) z) G := by
                 simpa [G] using
-                  (aux_paired_gaussian_integrable (l := n + 1) (by omega) z).integrableOn
+                  (gaussianStepIntegrand_integrable (l := n + 1) (by omega) z).integrableOn
               rw [show JG n - JG (n + 1) =
-                ∫ θ in G, aux_paired_gaussianIntegrand n z θ -
-                  aux_paired_gaussianIntegrand (n + 1) z θ by
+                ∫ θ in G, gaussianStepIntegrand n z θ -
+                  gaussianStepIntegrand (n + 1) z θ by
                 rw [integral_sub hfi hfi1]]
               exact hgd
             exact hgd'
@@ -1585,8 +1659,8 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
           20000000000000 / (n : ℝ) ^ 3 := by
         gcongr
         · have hn1 : 1 ≤ n := by omega
-          exact aux_paired_residual_integral (l := n) hn1 z
-        · exact (aux_paired_residual_integral (l := n + 1) (by omega) z).trans
+          exact residual_integral_norm_le (l := n) hn1 z
+        · exact (residual_integral_norm_le (l := n + 1) (by omega) z).trans
             (by gcongr; omega)
       _ = 40000000000000 / (n : ℝ) ^ 3 := by ring_nf
   have htail : ‖(JG n - JU n) + (JG (n + 1) - JU (n + 1))‖ ≤
@@ -1598,23 +1672,23 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
           10000000000000 / (n : ℝ) ^ 3 := by
         gcongr
         · have hn1 : 1 ≤ n := by omega
-          exact aux_paired_gaussian_tail hn1 z
-        · exact (aux_paired_gaussian_tail (l := n + 1) (by omega) z).trans
+          exact gaussianStepIntegrand_tail_le hn1 z
+        · exact (gaussianStepIntegrand_tail_le (l := n + 1) (by omega) z).trans
             (by gcongr; omega)
       _ = 20000000000000 / (n : ℝ) ^ 3 := by ring_nf
   have hJU : ∀ {l : ℕ}, 1 ≤ l → JU l =
       (((64 * Real.pi ^ 2 / (l : ℝ) ^ 2) *
           Real.exp (-2 * (∑ i : Fin 4, (z i : ℝ) ^ 2) / l) : ℝ) : ℂ) := by
     intro l hl
-    have h := aux_lclt_gaussian_fourier_integral (d := 4) (by norm_num) l
+    have h := gaussian_fourier_integral_eq (d := 4) (by norm_num) l
       (by omega) z
-    dsimp [JU, aux_paired_gaussianIntegrand, aux_paired_character]
+    dsimp [JU, gaussianStepIntegrand, latticeCharacter]
     convert h using 1
     all_goals norm_num
     all_goals ring_nf
   have hdecomp :
-      ((∫ θ in T, aux_paired_fourierIntegrand n z θ) +
-        (∫ θ in T, aux_paired_fourierIntegrand (n + 1) z θ)) -
+      ((∫ θ in T, fourierStepIntegrand n z θ) +
+        (∫ θ in T, fourierStepIntegrand (n + 1) z θ)) -
       (JU n + JU (n + 1)) =
         ((IF n + IF (n + 1)) - (JG n + JG (n + 1))) +
           (IC n + IC (n + 1)) + (IR n + IR (n + 1)) +
@@ -1633,8 +1707,8 @@ theorem aux_paired_integral_pair {n : ℕ} (hn : 2 ≤ n) (z : Fin 4 → ℤ) :
     congr 1
     norm_num
   rw [hmain]
-  change ‖((∫ θ in T, aux_paired_fourierIntegrand n z θ) +
-    (∫ θ in T, aux_paired_fourierIntegrand (n + 1) z θ)) -
+  change ‖((∫ θ in T, fourierStepIntegrand n z θ) +
+    (∫ θ in T, fourierStepIntegrand (n + 1) z θ)) -
     (JU n + JU (n + 1))‖ ≤ _
   rw [hdecomp]
   calc
@@ -1683,26 +1757,26 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
     have hS : 0 ≤ S := by
       dsimp [S]
       exact Finset.sum_nonneg (fun i _ => sq_nonneg _)
-    have hp := aux_paired_integral_pair hn2 z
-    have hinvN := aux_lclt_fourier_inversion (d := 4) (by norm_num) n x y
-    have hinvN1 := aux_lclt_fourier_inversion (d := 4) (by norm_num) (n + 1) x y
+    have hp := torusIntegral_pair_gaussian_approx_le hn2 z
+    have hinvN := heatKernel_eq_fourierIntegral (d := 4) (by norm_num) n x y
+    have hinvN1 := heatKernel_eq_fourierIntegral (d := 4) (by norm_num) (n + 1) x y
     have hInt : ∀ l : ℕ,
         (∫ θ in LatticeProb.LocalCLT.torusBox 4,
             (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
               ((∑ i : Fin 4, Real.cos (θ i)) / 4) ^ l) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand l z θ := by
+            fourierStepIntegrand l z θ := by
       intro l
       apply integral_congr_ae
       filter_upwards with θ
-      dsimp [aux_paired_fourierIntegrand, aux_paired_character]
+      dsimp [fourierStepIntegrand, latticeCharacter]
       norm_num [Complex.ofReal_div, Complex.ofReal_pow]
     have hInt' : ∀ l : ℕ,
         (∫ θ in LatticeProb.LocalCLT.torusBox 4,
             (∏ k, Complex.exp (Complex.ofReal (θ k * (((x - y) k : ℤ) : ℝ)) * Complex.I)) *
               ((∑ i : Fin 4, Real.cos (θ i)) / 4) ^ l) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand l z θ := by
+            fourierStepIntegrand l z θ := by
       intro l
       simpa [z] using hInt l
     have hInt'' : ∀ l : ℕ,
@@ -1710,7 +1784,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp (Complex.ofReal (θ k * (((x - y) k : ℤ) : ℝ)) * Complex.I)) *
               ((∑ i : Fin 4, Real.cos (θ i)) / (4 : ℂ)) ^ l) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand l z θ := by
+            fourierStepIntegrand l z θ := by
       intro l
       convert hInt' l using 1
     have hN :
@@ -1718,7 +1792,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               (((∑ i : Fin 4, Real.cos (θ i)) / 4 : ℝ) : ℂ) ^ n) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand n z θ := by
+            fourierStepIntegrand n z θ := by
       convert hInt' n using 1
       all_goals norm_num
     have hN1 :
@@ -1726,7 +1800,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               (((∑ i : Fin 4, Real.cos (θ i)) / 4 : ℝ) : ℂ) ^ (n + 1)) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand (n + 1) z θ := by
+            fourierStepIntegrand (n + 1) z θ := by
       convert hInt' (n + 1) using 1
       all_goals norm_num
     have hN2 :
@@ -1734,7 +1808,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               ((∑ i : Fin 4, Real.cos (θ i) : ℂ) / 4) ^ n) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand n z θ := by
+            fourierStepIntegrand n z θ := by
       convert hN using 1
       all_goals norm_num
     have hN12 :
@@ -1742,7 +1816,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               ((∑ i : Fin 4, Real.cos (θ i) : ℂ) / 4) ^ (n + 1)) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand (n + 1) z θ := by
+            fourierStepIntegrand (n + 1) z θ := by
       convert hN1 using 1
       all_goals norm_num
     have hN3 :
@@ -1750,14 +1824,14 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               ((∑ i : Fin 4, Complex.cos (θ i)) / 4) ^ n) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand n z θ := by
+            fourierStepIntegrand n z θ := by
       simpa only [Complex.ofReal_cos] using hN2
     have hN13 :
         (∫ θ in LatticeProb.LocalCLT.torusBox 4,
             (∏ k, Complex.exp ((θ k : ℂ) * ((x k : ℂ) - (y k : ℂ)) * Complex.I)) *
               ((∑ i : Fin 4, Complex.cos (θ i)) / 4) ^ (n + 1)) =
           ∫ θ in LatticeProb.LocalCLT.torusBox 4,
-            aux_paired_fourierIntegrand (n + 1) z θ := by
+            fourierStepIntegrand (n + 1) z θ := by
       simpa only [Complex.ofReal_cos] using hN12
     have hcoef :
         (((4 / (Real.pi ^ 2 * (n : ℝ) ^ 2) * Real.exp (-2 * S / n) +
@@ -1776,9 +1850,9 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
               4 / (Real.pi ^ 2 * (n + 1 : ℝ) ^ 2) *
                 Real.exp (-2 * S / (n + 1)) : ℝ) : ℂ)) =
           (((∫ θ in LatticeProb.LocalCLT.torusBox 4,
-              aux_paired_fourierIntegrand n z θ) +
+              fourierStepIntegrand n z θ) +
             (∫ θ in LatticeProb.LocalCLT.torusBox 4,
-              aux_paired_fourierIntegrand (n + 1) z θ)) -
+              fourierStepIntegrand (n + 1) z θ)) -
             (((64 * Real.pi ^ 2 / (n : ℝ) ^ 2) *
                 Real.exp (-2 * S / n) +
               64 * Real.pi ^ 2 / (n + 1 : ℝ) ^ 2 *
@@ -1807,9 +1881,9 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
           have := hp
           calc
             ‖((∫ θ in LatticeProb.LocalCLT.torusBox 4,
-                aux_paired_fourierIntegrand n z θ) +
+                fourierStepIntegrand n z θ) +
               (∫ θ in LatticeProb.LocalCLT.torusBox 4,
-                aux_paired_fourierIntegrand (n + 1) z θ)) -
+                fourierStepIntegrand (n + 1) z θ)) -
               (((64 * Real.pi ^ 2 / (n : ℝ) ^ 2) * Real.exp (-2 * S / n) +
                 64 * Real.pi ^ 2 / (n + 1 : ℝ) ^ 2 *
                   Real.exp (-2 * S / (n + 1)) : ℝ) : ℂ)‖ ≤
@@ -1818,7 +1892,7 @@ theorem Sandpile.External.pairedLocalCLTFour : Sandpile.External.PairedLocalCLTF
             _ ≤ 100000000000000 / (n : ℝ) ^ 3 *
                 ‖((2 * Real.pi) ^ 4 : ℂ)‖ := by
               exact le_mul_of_one_le_right (by positivity) hden)
-    have hscalar := aux_paired_scalar_main (n := n) (by omega) S hS
+    have hscalar := gaussian_weight_difference_le (n := n) (by omega) S hS
     have htotal :
         |Sandpile.heatKernel 4 n x y + Sandpile.heatKernel 4 (n + 1) x y -
             8 / (Real.pi ^ 2 * (n : ℝ) ^ 2) * Real.exp (-2 * S / n)| ≤

@@ -1,19 +1,21 @@
-/-
-Positivity of the lattice transition kernel: the walk reaches `y` from `x` in `n`
-steps with positive probability exactly when `n` is at least the path distance
-`∑_i|x_i-y_i|` and has its parity.
-
-This is the criterion the local central limit theorem of `sandpile.tex:1145-1161`
-needs in order to be applied.  That statement is a bound on the admissible
-triples, those with `p_ℓ(x,y)>0`, and the double time sum of
-`prop:weighted-membrane-limit` runs instead over the parity class of the total
-time, which is where `p_ℓ(x,y)` CAN be positive.  The two agree once `ℓ` exceeds
-the path distance, and in the application `ℓ ≥ δR²` while the path distance is
-`O(R)`, so they agree for every large scale.  The paper does not record the
-criterion; it is the standard fact that the simple random walk on `ℤ^d` connects
-two sites in any admissible number of steps.
--/
 import Sandpile.Support.ContParity
+
+/-!
+# Positivity of the lattice transition kernel
+
+Positivity of the lattice transition kernel: the walk reaches `y` from `x` in `n` steps with
+positive probability (`heatKernel_pos`) exactly when `n` is at least the path distance
+`pathDist x y = ∑_i|x_i-y_i|` and has its parity (`sameParity_iff_pathDist`).
+
+This is the criterion the local central limit theorem of `sandpile.tex:1145-1161` needs in order
+to be applied. That statement is a bound on the admissible triples, those with `p_ℓ(x,y)>0`, and
+the double time sum of `prop:weighted-membrane-limit` runs instead over the parity class of the
+total time, which is where `p_ℓ(x,y)` can be positive. The two agree once `ℓ` exceeds the path
+distance, and in the application `ℓ ≥ δR²` while the path distance is `O(R)`, so they agree for
+every large scale (`heatKernel_pos_of_sameParity`). The paper does not record the criterion; it is
+the standard fact that the simple random walk on `ℤ^d` connects two sites in any admissible number
+of steps.
+-/
 
 open Filter Topology
 
@@ -27,14 +29,19 @@ variable {d : ℕ}
 joining `x` to `y`. -/
 def pathDist (x y : Site d) : ℕ := ∑ i, (x i - y i).natAbs
 
+/-- The path distance from a site to itself is `0`. -/
 theorem pathDist_self (x : Site d) : pathDist x x = 0 := by simp [pathDist]
 
+/-- A vanishing path distance forces the two sites to be equal, since each coordinate's
+absolute difference is then `0`. -/
 theorem eq_of_pathDist_eq_zero {x y : Site d} (h : pathDist x y = 0) : x = y := by
   funext i
   have hi : (x i - y i).natAbs = 0 :=
     (Finset.sum_eq_zero_iff.mp h) i (Finset.mem_univ i)
   omega
 
+/-- Stepping `x` one unit towards `y` along a coordinate `i` where `x i > y i` decreases the
+path distance to `y` by exactly `1`. -/
 theorem pathDist_sub_unit {x y : Site d} {i : Fin d} (h : y i < x i) :
     pathDist (x - Sandpile.unit i) y + 1 = pathDist x y := by
   classical
@@ -55,6 +62,8 @@ theorem pathDist_sub_unit {x y : Site d} {i : Fin d} (h : y i < x i) :
     rw [hx]
   omega
 
+/-- Stepping `x` one unit towards `y` along a coordinate `i` where `x i < y i` decreases the
+path distance to `y` by exactly `1`. -/
 theorem pathDist_add_unit {x y : Site d} {i : Fin d} (h : x i < y i) :
     pathDist (x + Sandpile.unit i) y + 1 = pathDist x y := by
   classical
@@ -75,6 +84,7 @@ theorem pathDist_add_unit {x y : Site d} {i : Fin d} (h : x i < y i) :
     rw [hx]
   omega
 
+/-- The path distance from `x` to a neighbour obtained by adding a unit vector is `1`. -/
 theorem pathDist_add_unit_eq_one (x : Site d) (i : Fin d) :
     pathDist (x + Sandpile.unit i) x = 1 := by
   classical
@@ -94,6 +104,7 @@ theorem pathDist_add_unit_eq_one (x : Site d) (i : Fin d) :
 
 /-! ### The parity of the path distance -/
 
+/-- Two integer-valued families agreeing coordinatewise mod `2` have sums agreeing mod `2`. -/
 theorem sum_emod_two (f g : Fin d → ℤ) (h : ∀ i, f i % 2 = g i % 2) :
     (∑ i, f i) % 2 = (∑ i, g i) % 2 := by
   have hex : ∀ i, ∃ k : ℤ, f i = g i + 2 * k := by
@@ -108,6 +119,8 @@ theorem sum_emod_two (f g : Fin d → ℤ) (h : ∀ i, f i % 2 = g i % 2) :
     exact Finset.sum_congr rfl fun i _ => hk i
   omega
 
+/-- The path distance's parity is the parity of the difference of coordinate sums, since
+`sum_emod_two` transfers the coordinatewise identity `|x_i - y_i| ≡ x_i - y_i (mod 2)`. -/
 theorem pathDist_emod_two (x y : Site d) :
     ((pathDist x y : ℕ) : ℤ) % 2 = ((∑ i, x i) - (∑ i, y i)) % 2 := by
   have hcast : ((pathDist x y : ℕ) : ℤ) = ∑ i, (((x i - y i).natAbs : ℕ) : ℤ) := by
@@ -122,6 +135,8 @@ theorem pathDist_emod_two (x y : Site d) :
 
 /-! ### One step of the kernel -/
 
+/-- One step of the kernel towards `x + unit i` dominates `1/(2d)` of the `n`-step kernel value
+there, by isolating that term from the transition-kernel averaging sum. -/
 theorem heatKernel_succ_ge_add (hd : 1 ≤ d) (n : ℕ) (x y : Site d) (i : Fin d) :
     Sandpile.heatKernel d n (x + unit i) y / (2 * d) ≤ Sandpile.heatKernel d (n + 1) x y := by
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
@@ -141,6 +156,8 @@ theorem heatKernel_succ_ge_add (hd : 1 ≤ d) (n : ℕ) (x y : Site d) (i : Fin 
   show Sandpile.heatKernel d n (x + unit i) y / (2 * d) ≤ _ / (2 * (d : ℝ))
   gcongr
 
+/-- One step of the kernel towards `x - unit i` dominates `1/(2d)` of the `n`-step kernel value
+there, the mirror image of `heatKernel_succ_ge_add`. -/
 theorem heatKernel_succ_ge_sub (hd : 1 ≤ d) (n : ℕ) (x y : Site d) (i : Fin d) :
     Sandpile.heatKernel d n (x - unit i) y / (2 * d) ≤ Sandpile.heatKernel d (n + 1) x y := by
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd

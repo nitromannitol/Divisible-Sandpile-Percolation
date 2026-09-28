@@ -1,18 +1,17 @@
-/-
-Brownian transition expectations and backward semigroup martingales.
-
-The product law at a deterministic stopping time extends the strong Markov
-restart identity to an integrable terminal observable. A field satisfying the
-backward semigroup identity is therefore a martingale along the motion, stopped
-at its deterministic horizon. The Brownian corollary constructs the restart from
-continuous paths and strongly measurable time slices.
-
-The field semigroup identity is an explicit hypothesis. For Gaussian heat
-increments it must be proved on a common event for all time-space parameters;
-coordinatewise stochastic Fubini alone is insufficient for that assertion.
--/
 import Sandpile.Support.ExplOptionalSampling
 import Sandpile.Support.ExplBallExit
+
+/-!
+# Backward semigroup martingales from the strong Markov restart
+
+The product law at a deterministic stopping time extends the strong Markov restart identity
+of `HasStrongMarkovRestart` to an integrable terminal observable, giving a set-integral
+transition identity. A field satisfying the resulting backward semigroup identity is then a
+martingale along the motion when stopped at a deterministic horizon. The Brownian corollary
+builds the restart hypothesis from continuous paths and strongly measurable time slices, so
+that any field solving the semigroup identity along Brownian motion is automatically such a
+martingale.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology LatticeProb
 open scoped ENNReal NNReal
@@ -21,6 +20,10 @@ namespace Sandpile.Support
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
 
+/-- For a strong Markov restart `h` and a set `E` measurable at time `s ≤ u`, the set integral
+of `f (B u)` over `E` equals the set integral over `E` of the transition expectation
+`∫ b, f (B s ω + (B (u - s) b - B 0 b))`, obtained from the restart law together with
+integrability of `f (B u)`. -/
 theorem setIntegral_transition_of_restart [IsProbabilityMeasure P] {d : ℕ}
     {B : ℝ≥0 → Ω → EuclideanSpace ℝ (Fin d)}
     {𝔽 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω)}
@@ -67,6 +70,10 @@ theorem setIntegral_transition_of_restart [IsProbabilityMeasure P] {d : ℕ}
   simpa only [he, hemap] using hr
 
 
+/-- If `H` satisfies the backward transition identity `hS` (transporting its value at time
+`t - u` forward under the restart law recovers its value at time `t - r`) and is integrable
+along the motion up to horizon `t`, then `r ↦ H (t - min r t) (B (min r t))` is a martingale
+for the filtration `𝔽`, stopped at `t`. -/
 theorem backward_semigroup_martingale [IsProbabilityMeasure P] {d : ℕ}
     {B : ℝ≥0 → Ω → EuclideanSpace ℝ (Fin d)}
     {𝔽 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω)}
@@ -99,6 +106,10 @@ theorem backward_semigroup_martingale [IsProbabilityMeasure P] {d : ℕ}
     exact he.symm
 
 
+/-- The Brownian corollary of `backward_semigroup_martingale`: for a Brownian motion `B` with
+continuous paths and strongly measurable time slices, any field `H` satisfying the same
+backward transition identity `hS` gives a martingale `r ↦ H (t - min r t) (B (min r t))` for
+the natural filtration of `B`. -/
 theorem brownian_backward_semigroup_martingale [IsProbabilityMeasure P] {d : ℕ}
     {x : Sandpile.Continuum.Space d} {B : ℝ≥0 → Ω → Sandpile.Continuum.Space d}
     (hB : Sandpile.Continuum.IsBrownian d x B P)

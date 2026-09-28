@@ -1,9 +1,16 @@
-/-
-Uniform resampling moments under the common exponential-moment bound of
-`sandpile.tex:1950-1955,2630-2647`. All constants precede the scenery law.+-/
 import Sandpile.Support.ExpMomentRpow
 import LatticeProb.Prob.LpSmooth
 import Sandpile.Support.Norms
+
+/-!
+# Uniform resampling moments under a common exponential-moment bound
+
+This file bounds the `p`-th resampling moment `resampleMoment ν p` of a real law `ν` uniformly
+over the class of laws satisfying a common exponential-moment bound, as needed at
+`sandpile.tex:1950-1955,2630-2647`. The constant in the bound depends only on the exponential
+rate `θ`, the exponent `p`, and the moment bound `K`, and is fixed before any particular scenery
+law is chosen.
+-/
 
 open LatticeProb
 

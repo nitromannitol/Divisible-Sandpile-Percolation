@@ -1,9 +1,16 @@
-/-
-The fixed-scale crossing reduction using the paper's level loss from zero to
-`L/R`. The rectangle lower bound at level zero is uniform over realizations.
--/
 import Sandpile.Support.CrossZeroLimit
 import Sandpile.Support.CrossFixedScaleBall
+
+/-!
+# The fixed-scale crossing reduction from the zero level
+
+The rectangle crossing probability at level zero for the unit ball field, in dimensions two
+and three, is bounded below by a positive constant depending only on the aspect ratio, using
+RSW and the FKG-type Pitt inequality. Combined with a hypothesised level loss bounding the
+level-zero crossing probability above by the level-`L/R` crossing probability plus an error
+term decaying polynomially in `R`, this gives a positive lower bound on the `liminf` of the
+level-`L/R` crossing probability as `R → ∞`, matching the two levels used in the paper.
+-/
 
 open MeasureTheory Set Filter Topology
 open scoped ENNReal

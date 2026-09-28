@@ -1,46 +1,24 @@
-/-
-Level-shift decoupling lemma of sandpile.tex, frozen.  `sandpile.tex:6499-6513`
-(label `lem:dgt4-level-shift-decoupling`):
-
-  "There are $c>0$ and $C<\infty$ such that the following holds. Let
-   $x_1,x_2\in\Z^d$, let $L,r\geq1$, and suppose
-   \[
-     \min_{\substack{z_1\in Q(x_1,2L)\\ z_2\in Q(x_2,2L)}} |z_1-z_2|\geq4r\, .
-   \]
-   Then, for every $s>2a>0$,
-   \[
-     \P\bigl(A(x_1,L,s)\cap A(x_2,L,s)\bigr)\leq
-     \left[\sup_{z\in\Z^d}\P\bigl(A(z,L,s-2a)\bigr)\right]^2
-     +CL^d\exp\{-c\min(a^2r^{d-4}, ar^{d-2})\}\, ."
-
-The standing hypotheses of Section `sec:dim5plus` (`sandpile.tex:4079`,
-`sandpile.tex:4096-4108`) are in force: `d ≥ 5`, the scenery is i.i.d. with
-`E ζ(0) = 0` and `0 < Var(ζ(0)) < ∞`, and `E e^{θ₀|ζ(0)|} ≤ K₀`.  The constants
-`c` and `C` come from `lem:dgt4-localization` and a count of the sites of a box,
-so they depend only on `d, θ₀, K₀`; they are bound after those and before the
-law `ν`.
-The event `A(x, L, s)` of `sandpile.tex:6416-6422` is transcribed below as
-`lowCrossingEvent`.  It depends on the time `t` and on the number `E u_t(0)`;
-`t` is bound before `x₁, x₂` and the mean is supplied as `meanOdometerOf d ν t`,
-so that the definition itself mentions no measure.
-The minimum over the two boxes is written as a universally quantified lower
-bound, which is the same statement and avoids the junk value of an infimum over
-an empty set.
-Probabilities are the `ℝ≥0∞`-valued measure of the event, so the supremum over
-`z` is a supremum in a complete lattice and carries no junk value; the additive
-error term is nonnegative, so `ENNReal.ofReal` is exact.  Each event is
-measurable: `u_t` depends on finitely many coordinates and the crossing set may
-be taken inside the finite box `Q(x, 2L)`.
-
-The exponential-moment bound is stated together with the integrability of the
-exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
-non-integrable nonnegative function is zero, so the bound alone would hold for
-every law with no exponential moment.
--/
 import Sandpile.Walk
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.Support.LevelShift
 import Sandpile.Support.RealBoxes
+
+/-!
+# The level-shift decoupling lemma, frozen
+
+Level-shift decoupling lemma of `sandpile.tex`, frozen (`sandpile.tex:6499-6513`, label
+`lem:dgt4-level-shift-decoupling`), under the standing hypotheses of `sec:dim5plus` (`d ≥ 5`,
+mean-zero finite-variance i.i.d. scenery, exponential moment at most `K₀`): for boxes `Q(x₁,2L)`
+and `Q(x₂,2L)` separated by at least `4r`, the probability that both low-crossing events
+`A(x₁,L,s)` and `A(x₂,L,s)` occur is bounded by the square of the worst-case single-event
+probability at the reduced level `s - 2a`, plus a decoupling error `C L^d exp(-c
+min(a²r^{d-4}, a r^{d-2}))`. `boxDist`, `boxAt` and `starLattice` transcribe the box metric,
+box and `∗`-lattice of `sandpile.tex:680` and `6366-6369`; `meanOdometerOf` is `E u_t(0)` for a
+one-site law `ν`, and `lowCrossingEvent` transcribes the event `A(x,L,s)` of
+`sandpile.tex:6411-6417` that a `∗`-connected sublevel set meets both `Q(x,L)` and the inner
+boundary of `Q(x,2L)`. The constants `c` and `C` come from `lem:dgt4-localization` and a count of
+the sites of a box, and depend only on `d, θ₀, K₀`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

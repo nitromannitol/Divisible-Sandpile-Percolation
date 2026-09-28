@@ -1,14 +1,15 @@
-/-
-The centring change of variables of the main critical level-set theorem
-(`sandpile.tex:130-142`): the mass field `σ` of the main theorem and the
-centred scenery `ζ` of the regime theorems are related by `σ = 1 + 2dζ`, so the
-mass law of `μ` is the centred mass law of the law of `(s-1)/(2d)`, and the
-hypotheses of the main theorem on `μ` become the hypotheses of the regime
-theorems on that law.  This is the general-`d` form of
-`Sandpile/Support/D4Centering.lean`.
--/
 import Sandpile.Law
 import Sandpile.Support.Crit23Scale
+
+/-!
+# Centring change of variables for the critical level-set theorem
+
+The centring change of variables of the main critical level-set theorem (`sandpile.tex:130-142`):
+the mass field `σ` of the main theorem and the centred scenery `ζ` of the regime theorems are
+related by `σ = 1 + 2dζ`, so the mass law of `μ` is the centred mass law of the law of
+`(s-1)/(2d)`, and the hypotheses of the main theorem on `μ` become the hypotheses of the regime
+theorems on that law. This is the general-`d` form of `Sandpile/Support/D4Centering.lean`.
+-/
 
 open MeasureTheory ProbabilityTheory
 

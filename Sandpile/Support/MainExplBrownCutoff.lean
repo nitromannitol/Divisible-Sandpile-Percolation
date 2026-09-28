@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ExplDyadic
+import Sandpile.Support.ExplBallExit
+import Sandpile.Support.StopMeasurable
+
+/-! # The Brownian dyadic-annulus cutoff error
+
 The Brownian half of the cutoff error of `sandpile.tex:1908-1921`, which the
 paper records in one sentence ("The analogous Brownian estimate holds",
 `sandpile.tex:1922`).
@@ -20,9 +25,6 @@ The estimate is uniform in the starting point of scaled norm at most `ρ`, in th
 stopping time below the horizon, and in the probability space, because the
 ball-exit estimate is.
 -/
-import Sandpile.Support.ExplDyadic
-import Sandpile.Support.ExplBallExit
-import Sandpile.Support.StopMeasurable
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal

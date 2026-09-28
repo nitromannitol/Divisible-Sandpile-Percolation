@@ -1,29 +1,29 @@
-/-
-The two estimates on the Brownian heat kernel of `eq:brownian-heat-green-kernels`
-(`sandpile.tex:963-968`) that the Riemann-sum argument of
-`prop:weighted-membrane-limit` (`sandpile.tex:4724-4729`) consumes.
+import Sandpile.Support.ContBMMass
 
-The first is the space estimate.  The kernel is integrable in its second
-variable with total mass one, so a double space integral against it is bounded
-by the sup-norm times the `L¹` norm of the test function,
+/-!
+# Two estimates on the Brownian heat kernel
+
+The two estimates on the Brownian heat kernel of `eq:brownian-heat-green-kernels`
+(`sandpile.tex:963-968`) that the Riemann-sum argument of `prop:weighted-membrane-limit`
+(`sandpile.tex:4724-4729`) consumes.
+
+The first is the space estimate. The kernel is integrable in its second variable with total mass
+one, so a double space integral against it is bounded by the sup-norm times the `L¹` norm of the
+test function,
 
   `|∫∫ p^{BM}_t(u,v) φ(v) φ(u)| ≤ ‖φ‖_∞ ‖φ‖_1`,
 
-UNIFORMLY in the time.  This is what removes the small times from the double
-time integral: the strip of times removed has area `O(δ)` and the integrand is
-bounded there by this estimate, with no Gaussian bound and no diagonal
-singularity.
+UNIFORMLY in the time. This is what removes the small times from the double time integral: the
+strip of times removed has area `O(δ)` and the integrand is bounded there by this estimate, with
+no Gaussian bound and no diagonal singularity.
 
-The second is the space regularity.  The kernel depends on its two space
-arguments only through the squared distance, and the exponential is
-one-Lipschitz, so on times bounded below by `t₀` it is Lipschitz in the squared
-distance with a constant depending only on `t₀` and `d`.  This is what replaces
-the mesh points by the points themselves in the integrand of the double time
-sum: the limit theorems of `Sandpile.Support.ContMeshIntegral` take a FIXED
-integrand, while the integrand the local central limit theorem produces depends
-on `R` through the mesh.
+The second is the space regularity. The kernel depends on its two space arguments only through
+the squared distance, and the exponential is one-Lipschitz, so on times bounded below by `t₀` it
+is Lipschitz in the squared distance with a constant depending only on `t₀` and `d`. This is what
+replaces the mesh points by the points themselves in the integrand of the double time sum: the
+limit theorems of `Sandpile.Support.ContMeshIntegral` take a FIXED integrand, while the integrand
+the local central limit theorem produces depends on `R` through the mesh.
 -/
-import Sandpile.Support.ContBMMass
 
 open MeasureTheory Filter Topology
 open scoped NNReal
@@ -106,6 +106,8 @@ theorem abs_integral2_heatKernelBM_le {d : ℕ} (hd : 1 ≤ d) {t : ℝ} (ht : 0
 
 /-! ### The space regularity -/
 
+/-- `x ↦ Real.exp (-x)` is `1`-Lipschitz on the nonnegative reals: for `a, b ≥ 0`,
+`|exp(-a) - exp(-b)| ≤ |a - b|`, via the elementary bound `-x + 1 ≤ exp(-x)`. -/
 theorem abs_exp_neg_sub_le {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     |Real.exp (-a) - Real.exp (-b)| ≤ |a - b| := by
   have key : ∀ c e : ℝ, 0 ≤ c → c ≤ e → Real.exp (-c) - Real.exp (-e) ≤ e - c := by

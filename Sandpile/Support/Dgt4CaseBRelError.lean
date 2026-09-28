@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.Dgt4CaseBMeanId
+import Sandpile.Support.Dgt4CaseBReplace
+import Sandpile.Support.Dgt4Killed
+import Sandpile.Support.Dgt4CaseB
+
+/-!
+# The relative-error half of case (b) of the contact asymptotics
+
 The relative-error half of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5410-5417`):
 "$\P(\{u_{n+1}(0)=0\}\triangle\{-G(0,0)\zeta(0)>\E u_n(0)\})
@@ -6,19 +13,15 @@ The relative-error half of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
 followed by `eq:dgt4-rv-contact-tail-replacement`.
 
 The identity is the set identity that the two threshold events
-`\{-\zeta(0)>Pw_n(0)\}` and `\{-\zeta(0)>\E u_n(0)/G(0,0)\}` are NESTED for every
+`\{-\zeta(0)>Pw_n(0)\}` and `\{-\zeta(0)>\E u_n(0)/G(0,0)\}` are nested for every
 value of the neighbour average: whichever of the two levels is the smaller, its
 event contains the other, so the indicator of the symmetric difference is the
 absolute difference of the two indicators and its `\nu`-integral in the scenery at
-the origin is the absolute difference of the two lower tails.  The split of
-`Support/Dgt4CaseBSplit.lean` then integrates the origin out, and the replacement
-theorem of `Support/Dgt4CaseBReplace.lean` finishes, exactly as
-`linearMeanIncrement_of_small` finishes the mean-increment half.
+the origin is the absolute difference of the two lower tails. The split of
+`Support/Dgt4CaseBSplit.lean` then integrates the origin out, and the replacement result
+of `Support/Dgt4CaseBReplace.lean` finishes, exactly as `linearMeanIncrement_of_small`
+finishes the mean-increment half.
 -/
-import Sandpile.Support.Dgt4CaseBMeanId
-import Sandpile.Support.Dgt4CaseBReplace
-import Sandpile.Support.Dgt4Killed
-import Sandpile.Support.Dgt4CaseB
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 
@@ -45,6 +48,8 @@ theorem integral_thrInd (ν : Measure ℝ) [IsProbabilityMeasure ν] (w : ℝ) :
   rw [thrInd_eq_indicator w, integral_indicator_const (1 : ℝ) measurableSet_Iio]
   simp [LatticeProb.lowerTail, measureReal_def]
 
+/-- The threshold indicator is integrable: by `thrInd_eq_indicator` it is the indicator of the
+measurable set `Iio (-w)` against the probability measure `ν`. -/
 theorem integrable_thrInd (ν : Measure ℝ) [IsProbabilityMeasure ν] (w : ℝ) :
     Integrable (fun z : ℝ => if w < -z then (1 : ℝ) else 0) ν := by
   rw [thrInd_eq_indicator w]

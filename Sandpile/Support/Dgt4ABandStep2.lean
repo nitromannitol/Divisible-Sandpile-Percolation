@@ -1,16 +1,22 @@
-/-
-Step 2 of the many-limits theorem, stated end to end.
+import Sandpile.Support.Dgt4ABandOneStepLaw
+import Sandpile.Support.Dgt4ABandIndex
+import Sandpile.Support.Dgt4ABandSlowWeights
+import Sandpile.Support.Dgt4ABandInvert
+import Sandpile.Support.Dgt4AStep2Output
+import Sandpile.Support.GreenRatioStrict
 
-Step 1 builds the one-site law and its band estimates; Step 3 turns Step 2's
-output into the field limits.  Both are proved.  This file is Step 2: from the
-band estimates to `Dgt4AStep2Output`, together with the scale the theorem needs.
+/-!
+# Step 2 of the many-limits theorem, stated end to end
 
-This is the second statement of Step 2.  The first was audited before any proof
-was written and six defects were found; the corrections are recorded where they
-bite.  In particular the scale is CONSTRUCTED here rather than taken as given:
-the paper's auxiliary sequence grows slowly enough that the band errors times its
-square still vanish, and a vacuity check showed that for a fast sequence the
-one-step hypotheses are outright false, so the choice is what keeps Step 2
+Step 1 builds the one-site law and its band estimates; Step 3 turns Step 2's output into the
+field limits. Both are proved. This file is Step 2: from the band estimates to
+`Dgt4AStep2Output`, together with the scale the theorem needs.
+
+This is the second statement of Step 2. The first was audited before any proof was written and
+six defects were found; the corrections are recorded where they bite. In particular the scale
+is CONSTRUCTED here rather than taken as given: the paper's auxiliary sequence grows slowly
+enough that the band errors times its square still vanish, and a vacuity check showed that for
+a fast sequence the one-step hypotheses are outright false, so the choice is what keeps Step 2
 meaningful rather than merely convenient.
 
   (a) the band errors as one sequence            `bandErrorSeq`
@@ -22,12 +28,6 @@ meaningful rather than merely convenient.
   (g) the contact comparison                     `bandContactComparison_of_band`
   (h) Step 2's output, with its scale            `exists_dgt4AStep2Output`
 -/
-import Sandpile.Support.Dgt4ABandOneStepLaw
-import Sandpile.Support.Dgt4ABandIndex
-import Sandpile.Support.Dgt4ABandSlowWeights
-import Sandpile.Support.Dgt4ABandInvert
-import Sandpile.Support.Dgt4AStep2Output
-import Sandpile.Support.GreenRatioStrict
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -1194,7 +1194,8 @@ private theorem bandStep2_comparison_core (P : BandParameters) (hd : 5 ≤ d)
   -- the threshold event, as a level set of the scenery at the frozen level
   have hset : {σ : Site d → ℝ | meanOdometer (centeredMassLaw d ν) m
         < -(green d 0 0 * scenery d σ 0)}
-      = {σ : Site d → ℝ | -(scenery d σ 0) > meanOdometer (centeredMassLaw d ν) m / green d 0 0} := by
+      = {σ : Site d → ℝ | -(scenery d σ 0) > meanOdometer (centeredMassLaw d ν) m / green d 0 0}
+      := by
     ext σ
     simp only [Set.mem_setOf_eq, gt_iff_lt]
     rw [div_lt_iff₀ hG]

@@ -1,10 +1,13 @@
-/-
-The chain that carries the two case-specific displays of
-`prop:dgt4-contact-asymptotics` to the contact thresholds.
+import Sandpile.Support.Dgt4Thresholds
 
-The two proofs of the proposition, in case (a) at `sandpile.tex:4969` ff. and in
-case (b) at `sandpile.tex:5306` ff., both establish a threshold comparison and a
-threshold asymptotic:
+/-!
+# The threshold chain from the case-specific displays to the contact thresholds
+
+The chain that carries the two case-specific displays of `prop:dgt4-contact-asymptotics` to the
+contact thresholds.
+
+The two proofs of the proposition, in case (a) at `sandpile.tex:4969` ff. and in case (b) at
+`sandpile.tex:5306` ff., both establish a threshold comparison and a threshold asymptotic:
 
   "$\P(\{u_{n+1}(0)=0\}\triangle\{J(0)>\E u_n(0)\})/\P(J(0)>\E u_n(0))\to0$"
   (`eq:dgt4-contact-threshold-relative-error`, `eq:dgt4-b-relative-error`), and
@@ -14,18 +17,16 @@ threshold asymptotic:
 
 They are named here `ThresholdRelativeError` and `ThresholdTailAsymptotics`, and
 `pointwiseContactThresholds_of` deduces from the pair the two limits that
-`Support/Dgt4Contact.lean` turns into the proposition itself and into the
-uniform thresholds of `lem:dgt4-path-survival`.
+`Support/Dgt4Contact.lean` turns into the proposition itself and into the uniform thresholds of
+`lem:dgt4-path-survival`.
 
-Both proofs reach the threshold asymptotic in the same way: the mean-increment
-estimate gives that the increments of the reciprocal threshold probability
-converge, in case (a) to `1/G(0,0)` (`sandpile.tex:5003-5011`) and in case (b)
-through the integral `\int_0^{\E u_n(0)/G(0,0)}dr/\E(-\zeta(0)-r)_+\sim n/G(0,0)`
-(`sandpile.tex:5335-5341`), and then "summing over $n$" inverts the increment.
-That last step is `tendsto_div_nat_of_tendsto_sub`, the Cesaro form of the
-Stolz theorem, followed by `tendsto_mul_of_inverse_increment`.
+Both proofs reach the threshold asymptotic in the same way: the mean-increment estimate gives
+that the increments of the reciprocal threshold probability converge, in case (a) to `1/G(0,0)`
+(`sandpile.tex:5003-5011`) and in case (b) through the integral
+`\int_0^{\E u_n(0)/G(0,0)}dr/\E(-\zeta(0)-r)_+\sim n/G(0,0)` (`sandpile.tex:5335-5341`), and then
+"summing over $n$" inverts the increment. That last step is `tendsto_div_nat_of_tendsto_sub`, the
+Cesaro form of the Stolz theorem, followed by `tendsto_mul_of_inverse_increment`.
 -/
-import Sandpile.Support.Dgt4Thresholds
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -79,6 +80,10 @@ theorem tendsto_shift_mul {b : ℕ → ℝ} {L : ℝ}
   field_simp
   ring
 
+/-- **The Cesaro form of the Stolz theorem.** If the increments `g(n+1) - g(n)` converge to `c`,
+then `g(n)/n` converges to `c`: `Filter.Tendsto.cesaro` gives the Cesaro average of the
+increments, and `Finset.sum_range_sub` rewrites that average as `(g n - g 0)/n`, whose limit
+agrees with `g n / n` up to the vanishing term `g 0 / n`. -/
 theorem tendsto_div_nat_of_tendsto_sub {g : ℕ → ℝ} {c : ℝ}
     (h : Tendsto (fun n : ℕ => g (n + 1) - g n) atTop (𝓝 c)) :
     Tendsto (fun n : ℕ => g n / (n : ℝ)) atTop (𝓝 c) := by
@@ -94,6 +99,9 @@ theorem tendsto_div_nat_of_tendsto_sub {g : ℕ → ℝ} {c : ℝ}
   field_simp
   ring
 
+/-- Inverting a limit of the reciprocal increments: if `(B n)⁻¹ / n → c` for a positive `c`,
+then `n * B n → c⁻¹`, by taking reciprocals of `hstolz` (`Filter.Tendsto.inv₀`) and simplifying
+`(n * B n)⁻¹⁻¹ = n * B n`. -/
 theorem tendsto_mul_of_inverse_increment {B : ℕ → ℝ} (hBpos : ∀ n, 0 < B n) {c : ℝ} (hc : 0 < c)
     (hstolz : Tendsto (fun n : ℕ => (B n)⁻¹ / (n : ℝ)) atTop (𝓝 c)) :
     Tendsto (fun n : ℕ => (n : ℝ) * B n) atTop (𝓝 c⁻¹) := by
@@ -123,6 +131,12 @@ theorem thresholdTailAsymptotics_of_inverse_increment {ν : Measure ℝ}
   have := tendsto_mul_of_inverse_increment hBpos (inv_pos.mpr hG) hstolz
   rwa [inv_inv] at this
 
+/-- `PointwiseContactThresholds d ν J κ` from the pair `ThresholdTailAsymptotics` and
+`ThresholdRelativeError`, at the shifted index `m - 1`: the first limit follows from
+`tendsto_shift_mul` applied to the tail asymptotic and divided by `G(0,0)κ`; the second follows
+from multiplying the (shifted) tail asymptotic by the relative error, since their product is
+`m` times the symmetric-difference probability up to the vanishing correction from dividing and
+re-multiplying by the nonzero tail probability. -/
 theorem pointwiseContactThresholds_of {ν : Measure ℝ}
     {J : (Sandpile.Site d → ℝ) → Sandpile.Site d → ℝ} {κ : ℝ}
     (hG : 0 < Sandpile.green d 0 0 * κ)

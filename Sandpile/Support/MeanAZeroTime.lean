@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MeanAValue
+import Sandpile.Support.ExplBallLocal
+
+/-! # Vanishing of the field at time zero
+
 The field vanishes at time zero, and the value dominates the field.
 
 `eq:dlt4-linear-gaussian-potential` (`sandpile.tex:1014-1021`) reads
@@ -22,8 +26,6 @@ supremum of a set containing `0` is nonnegative whether or not the set is
 bounded above, since an unbounded set of reals has supremum `0` in this
 convention as well.
 -/
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ExplBallLocal
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

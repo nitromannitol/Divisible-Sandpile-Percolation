@@ -1,18 +1,21 @@
-/-
+import Sandpile.Support.ContCell
+
+/-!
+# The parity imbalance of the mesh
+
 The parity imbalance of the mesh, for the second display of Step 2 of
 `prop:d4-superdiffusive-limit` (`sandpile.tex:3374-3382`).
 
-The paper compares the smoothed error with the field `C_R` that is constant on
-each parity class of the lattice.  Such a field pairs against the `ω`-shifted
-test function through the difference of its two constants times the mass the
-shift puts on ONE parity class, the total mass being zero.  That mass is small
-because the parity of the cell `⌊Rz⌋` FLIPS under the translation by `e_i/R`:
-pairing the shift with the parity indicator and translating by one step turns
-twice the imbalance into the integral of the increment of the shift over one
-step.  This is the paper's "cancellation between the two parity classes", and it
-reduces the second display to a modulus of continuity at scale `1/R`.
+The paper compares the smoothed error with the field `C_R` that is constant on each parity class
+of the lattice. Such a field pairs against the `ω`-shifted test function through the difference
+of its two constants times the mass the shift puts on ONE parity class, the total mass being
+zero. That mass is small because the parity of the cell `⌊Rz⌋` FLIPS under the translation by
+`e_i/R` (`parityChar_add_meshStep`): pairing the shift with the parity indicator (`parityChar`)
+and translating by one step turns twice the imbalance into the integral of the increment of the
+shift over one step (`abs_integral_mul_parityChar_le`). This is the paper's "cancellation
+between the two parity classes", and it reduces the second display to a modulus of continuity
+at scale `1/R`.
 -/
-import Sandpile.Support.ContCell
 
 open MeasureTheory Filter Topology
 namespace Sandpile.Support
@@ -28,6 +31,7 @@ noncomputable def parityChar (R : ℝ) (z : Space d) : ℝ :=
 noncomputable def meshStep (d : ℕ) (R : ℝ) (i₀ : Fin d) : Space d :=
   (EuclideanSpace.single i₀ (R⁻¹ : ℝ))
 
+/-- The `i`-th coordinate of `meshStep d R i₀` is `R⁻¹` at `i = i₀` and `0` elsewhere. -/
 theorem meshStep_apply {R : ℝ} (i₀ i : Fin d) :
     meshStep d R i₀ i = if i = i₀ then R⁻¹ else 0 := by
   simp [meshStep]
@@ -77,9 +81,11 @@ theorem measurable_parityChar (R : ℝ) : Measurable (parityChar (d := d) R) := 
   rw [hcongr]
   exact measurable_const.ite hset measurable_const
 
+/-- `parityChar` only ever takes the values `0` and `1`, so it is nonnegative. -/
 theorem parityChar_nonneg (R : ℝ) (z : Space d) : 0 ≤ parityChar R z := by
   unfold parityChar; split <;> norm_num
 
+/-- `parityChar` only ever takes the values `0` and `1`, so it is at most `1`. -/
 theorem parityChar_le_one (R : ℝ) (z : Space d) : parityChar R z ≤ 1 := by
   unfold parityChar; split <;> norm_num
 

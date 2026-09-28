@@ -1,22 +1,25 @@
-/-
-Step 2 of `lem:dgt4-path-survival` along one path, with the paper's own data in place
-(`sandpile.tex:5529-5571`).
+import Sandpile.Support.LinStep2Pi
+import Sandpile.Support.LinStep2Targets
 
-`Support/LinStep2Uniform.lean` proves the one-path bound for an abstract level function `b`
-and an abstract weight family `\pi`.  Here the level function is the paper's
-`b_r=\E u_{n-r-1}(0)` clamped at the path length (`Sandpile.stepLevel`), the weights are the
-threshold probabilities `\pi_{R,r}=\P(J(0)>b_r)` themselves, and the identity
-`\P(J(0)\leq b_r)=1-\pi_{R,r}` is the complement identity of `Support/LinStep2Pi.lean`,
-read through the null measurability of the threshold event.  The smallness `\pi\leq1/2`
-that the logarithm expansion needs is `weight_le_half`, whose hypothesis is
-`4G(0,0)\kappa\leq\varepsilon n_R`.
+/-!
+# Step 2 of the path-survival lemma, with the paper's levels and weights in place
+
+This module proves Step 2 of `lem:dgt4-path-survival` along one path, with the paper's own data
+in place (`sandpile.tex:5529-5571`).
+
+`Support/LinStep2Uniform.lean` proves the one-path bound for an abstract level function `b` and
+an abstract weight family `\pi`. Here the level function is the paper's `b_r=\E u_{n-r-1}(0)`
+clamped at the path length (`Sandpile.stepLevel`), the weights are the threshold probabilities
+`\pi_{R,r}=\P(J(0)>b_r)` themselves, and the identity `\P(J(0)\leq b_r)=1-\pi_{R,r}` is the
+complement identity of `Support/LinStep2Pi.lean`, read through the null measurability of the
+threshold event. The smallness `\pi\leq1/2` that the logarithm expansion needs is
+`weight_le_half`, whose hypothesis is `4G(0,0)\kappa\leq\varepsilon n_R`.
 
 What is left to supply is exactly the paper's three inputs: the threshold-replacement error
 `eq:dgt4-uniform-contact-thresholds` (`hthr` and `hwin`), the factorization of Step 1
-(`hfact`), and `lem:dgt4-weighted-last-visits` (`hlv`).
+(`hfact`), and `lem:dgt4-weighted-last-visits` (`hlv`). The main result is
+`integral_abs_survival_sub_profile_le_steps`.
 -/
-import Sandpile.Support.LinStep2Pi
-import Sandpile.Support.LinStep2Targets
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

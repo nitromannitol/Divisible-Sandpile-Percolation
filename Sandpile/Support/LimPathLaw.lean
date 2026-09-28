@@ -1,4 +1,10 @@
-/-
+import Sandpile.Continuum.Stopping
+import Sandpile.Support.ExplBallExit
+import LatticeProb.Prob.BrownianPathLaw
+
+/-!
+# The law of a centred Brownian path is base-point- and space-independent
+
 The law of the centred path of a Brownian motion does not depend on the starting
 point, nor on the space the motion is built on.
 
@@ -17,9 +23,6 @@ measurable map on path space.
 This module mentions nothing of this repository: it belongs in the shared library and
 is recorded as generic, to migrate.
 -/
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ExplBallExit
-import LatticeProb.Prob.BrownianPathLaw
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum

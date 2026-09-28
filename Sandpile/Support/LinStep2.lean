@@ -1,18 +1,16 @@
-/-
-The integrated form of the deterministic chain of Step 2 of `lem:dgt4-path-survival`
-(`sandpile.tex:5549-5567`).
-
-`Support/LinProduct.lean` proves the chain POINTWISE in the path: the product
-`∏_r (1-π_{R,r})^{I_{r,j}(X)}` is within `2 ∑_r I_{r,j}(X) π_{R,r}^2` of
-`exp(-∑_r I_{r,j}(X) π_{R,r})`, and that exponential is within
-`κ η + ε κ (η - log(1 - j/n_R))` of the profile `(1 - j/n_R)^κ` whenever the weighted
-last-visit sum is within `η` of `-log(1 - j/n_R)`.  What
-`lem:dgt4-weighted-last-visits` supplies is not a pointwise bound but an INTEGRAL one,
-`∫_X |G(0,0) ∑_{i≤j} I_{i,j}(X)/(n_R-i) + log(1 - j/n_R)| dX ≤ η`, so the pointwise chain is
-applied with the pointwise defect in place of `η` and then integrated; that is the single
-lemma below.
--/
 import Sandpile.Support.LinProduct
+
+/-!
+# The integrated exponential comparison and weight asymptotics of Step 2
+
+The pointwise chain of `Support/LinProduct.lean` bounds `exp (-P ω)` against the profile
+`x ^ κ` in terms of the pointwise defect `|P ω - κ * (G * S ω)|`, but the hypothesis available in
+practice is an integral bound `∫ |G * S + L| ∂μ ≤ η` on that defect rather than a pointwise one.
+This file integrates the pointwise chain against such an integral bound, records the uniform
+continuity of the profile `t ↦ t ^ κ` on `[0, 1]` needed to interchange `n_R` with `R² T`, and
+proves the two forms of the weight asymptotic `π_{R,r} ≈ Gκ / (n_R - r)`: a relative-error bound
+and the uniform upper bound `π ≤ 2Gκ / m` that follows when the relative error is at most one.
+-/
 
 open MeasureTheory
 

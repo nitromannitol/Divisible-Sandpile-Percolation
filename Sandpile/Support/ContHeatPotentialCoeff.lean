@@ -1,19 +1,16 @@
-/-
-The finite-dimensional clause of `prop:dlt4-heat-potential-invariance`
-(`sandpile.tex:1841-1848`), reduced to the two Riemann-sum statements about the
-coefficients of the rescaled linear field.
-
-`heat_potential_fd_of` asked for four inputs: square integrability of the
-Brownian Green kernels, Lindeberg's smallness of the combined coefficients, the
-convergence of their sums of squares, and the identification of the limit with
-the `L²` inner product.  In dimensions one to three the first two are now
-theorems, `memLp_greenTimeBM` and `interp_hsmall`, so the clause rests on the
-last two alone: the sums of squares converge, and their limit is the `L²` inner
-product of the Brownian Green kernels.  Those are the local central limit
-theorem and the Riemann-sum convergence of `ssec:green-estimates`.
--/
 import Sandpile.Support.ContInterpSmall
 import Sandpile.Support.ContBMSquare
+
+/-!
+# Finite-dimensional convergence from the coefficient asymptotics
+
+`heat_potential_fd_of` needs four inputs: square integrability of the Brownian Green
+kernels, Lindeberg smallness of the combined coefficients, convergence of the sums of squares
+of the coefficients, and identification of the limit with an `L²` inner product. In
+dimensions one to three the first two inputs are already theorems, `memLp_greenTimeBM` and
+`interp_hsmall`, so `heat_potential_fd_of_coeff` discharges the finite-dimensional convergence
+of the rescaled linear field from the remaining two hypotheses alone.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

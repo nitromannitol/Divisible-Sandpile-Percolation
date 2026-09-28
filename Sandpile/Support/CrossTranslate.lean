@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossBasic
+
+/-!
+# Translation invariance of the crossing events
+
 Translation of the planar crossings of `sandpile.tex:2112-2118`, and the
 resulting translation invariance of the crossing events for a stationary
 planar law (`sandpile.tex:2103-2104`: "The unit-scale field `𝒳_1` is
@@ -13,7 +17,6 @@ possible because a translation of the field is invertible: a measure-preserving
 map with a measure-preserving inverse pushes every set, measurable or not, to a
 set of the same measure.
 -/
-import Sandpile.Support.CrossBasic
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

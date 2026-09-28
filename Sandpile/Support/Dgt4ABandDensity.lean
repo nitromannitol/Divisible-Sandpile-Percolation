@@ -1,22 +1,23 @@
-/-
-The density of the one-site law of Step 1 of `thm:dgt4-many-limits`
-(`sandpile.tex:5930-6055`).
-
-The paper writes the law as `μ + η + Γ` with `η` the band mixture and `Γ` an
-independent smoothing summand, so that the density is a convolution.  Here the
-band components already have smooth densities (`Dgt4ABandComponent`), so the
-law is taken to be the MIXTURE of those components with one strictly positive
-smooth summand.  The mixture has the same four Step-1 properties: the band
-carriers are the same intervals, the components below the `k`th band contribute
-nothing at all to the `k`th band's range instead of the paper's `e^{-c a_k^4}`,
-and the positive summand is what makes the density strictly positive.
-
-The density is an infinite sum, but the band carriers march off to `-∞`, so on a
-neighbourhood of any point all but finitely many summands vanish; that is what
-makes the sum smooth.
--/
 import Sandpile.Support.Dgt4ABandComponent
 import Mathlib.Probability.Distributions.Gaussian.Real
+
+/-!
+# The one-site density as a mixture of band components
+
+The density of the one-site law of Step 1 of `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`).
+The paper writes the law as `μ + η + Γ`, with `η` the band mixture and `Γ` an independent
+smoothing summand, so the density is a convolution. Here the band components already have
+smooth densities (`Dgt4ABandComponent`), so the law is taken to be the MIXTURE of those
+components with one strictly positive smooth summand (`bandLawDensity`). The mixture retains
+the four Step-1 properties: the band carriers are the same intervals, the components below the
+`k`th band contribute nothing at all to the `k`th band's range instead of the paper's
+`e^{-c a_k^4}`, and the positive summand is what makes the density strictly positive
+(`bandLawDensity_pos`).
+
+The density is an infinite sum, but the band carriers march off to `-∞`, so on a neighbourhood
+of any point all but finitely many summands vanish (`bandComponent_eventually_eq_zero`); that is
+what makes the sum smooth (`contDiff_bandLawDensity`).
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -77,6 +78,9 @@ theorem bandComponent_eventually_eq_zero (hl0 : 0 < l1) (hl1 : l1 < 1)
     nlinarith [hl0, hl1]
   rw [bandComponent_eq_zero_of_ge (hm k) hl1 (ha k) hle, mul_zero]
 
+/-- The one-site density `bandLawDensity` is smooth: the Gaussian summand is smooth
+(`contDiff_gaussianPDFReal`) and the band-component sum is smooth by
+`contDiff_tsum_of_eventually_eq_zero` together with `bandComponent_eventually_eq_zero`. -/
 theorem contDiff_bandLawDensity (hl0 : 0 < l1) (hl1 : l1 < 1)
     (ha : ∀ k, 0 < a k) (hm : ∀ k, 0 < m k) (hatop : Tendsto a atTop atTop) :
     ContDiff ℝ (⊤ : ℕ∞) (bandLawDensity w0 mu v l1 a w θ m) := by
@@ -86,6 +90,9 @@ theorem contDiff_bandLawDensity (hl0 : 0 < l1) (hl1 : l1 < 1)
     (bandComponent_eventually_eq_zero hl0 hl1 ha hm hatop)
 
 
+/-- The density `bandLawDensity` is nonnegative whenever the smoothing weight `w0`, all band
+weights `w k`, and all band shape parameters `θ k` are nonnegative, since it is a sum of
+nonnegative terms (`gaussianPDFReal_nonneg`, `bandComponent_nonneg`). -/
 theorem bandLawDensity_pos_of_nonneg (hw0 : 0 ≤ w0) (hθ : ∀ k, 0 ≤ θ k)
     (hw : ∀ k, 0 ≤ w k) (hl1 : l1 < 1) (ha : ∀ k, 0 < a k) (x : ℝ) :
     0 ≤ bandLawDensity w0 mu v l1 a w θ m x := by
@@ -95,6 +102,10 @@ theorem bandLawDensity_pos_of_nonneg (hw0 : 0 ≤ w0) (hθ : ∀ k, 0 ≤ θ k)
     tsum_nonneg fun k => mul_nonneg (hw k) (bandComponent_nonneg (hθ k) hl1 (ha k) x)
   exact add_nonneg h1 h2
 
+/-- The density `bandLawDensity` is strictly positive whenever the smoothing weight `w0` is
+strictly positive and `v ≠ 0`: the Gaussian summand is then strictly positive
+(`gaussianPDFReal_pos`) and the remaining band-component sum is nonnegative
+(`bandComponent_nonneg`). -/
 theorem bandLawDensity_pos (hw0 : 0 < w0) (hv : v ≠ 0) (hθ : ∀ k, 0 ≤ θ k)
     (hw : ∀ k, 0 ≤ w k) (hl1 : l1 < 1) (ha : ∀ k, 0 < a k) (x : ℝ) :
     0 < bandLawDensity w0 mu v l1 a w θ m x := by
@@ -109,6 +120,9 @@ section Integrals
 
 variable {l1 : ℝ} {a θ : ℝ} {m : ℕ}
 
+/-- `bandComponent l1 a θ m` has compact support contained in `[-a, -(l1 * a)]`, since it
+vanishes below `-a` (`bandComponent_eq_zero_of_le`) and above `-(l1 * a)`
+(`bandComponent_eq_zero_of_ge`). -/
 lemma hasCompactSupport_bandComponent (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) :
     HasCompactSupport (bandComponent l1 a θ m) := by
   refine HasCompactSupport.intro (isCompact_Icc (a := -a) (b := -(l1 * a))) fun x hx => ?_
@@ -119,6 +133,8 @@ lemma hasCompactSupport_bandComponent (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) :
       exact hx ⟨h, le_of_not_gt hc⟩
     exact bandComponent_eq_zero_of_ge hm hl1 ha this.le
 
+/-- `bandComponent l1 a θ m` is integrable, being continuous (`contDiff_bandComponent`) with
+compact support (`hasCompactSupport_bandComponent`). -/
 lemma integrable_bandComponent (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) :
     Integrable (bandComponent l1 a θ m) :=
   (contDiff_bandComponent l1 a θ m).continuous.integrable_of_hasCompactSupport

@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.KillRep
+import Sandpile.Support.ContLcltPoint
+import Sandpile.Frozen.MeanLocalization
+
+/-!
+# The killed walk stays within one step of its box
+
 Where a killed walk can be when it stops, and why the cutoff of the proof of
 Theorem 1.3(i)(b) costs nothing in the killed problem.
 
@@ -18,9 +24,6 @@ within `⌊L⌋+1` of the centre of the box in every coordinate
 (`killed_position_box`), and its rescaling is within `√d(⌊L⌋+1)/R` of the
 rescaled centre (`norm_scaledSite_sub_le`).
 -/
-import Sandpile.Support.KillRep
-import Sandpile.Support.ContLcltPoint
-import Sandpile.Frozen.MeanLocalization
 
 open MeasureTheory
 open scoped NNReal

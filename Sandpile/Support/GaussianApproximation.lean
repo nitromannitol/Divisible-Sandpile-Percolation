@@ -1,8 +1,17 @@
-/-
-Gaussian exponential concentration passes through uniform smooth
-approximations with a common Lipschitz bound.
--/
 import Sandpile.Support.GaussianRotation
+
+/-!
+# Gaussian exponential concentration through smooth uniform approximation
+
+Gaussian exponential concentration passes through uniform smooth approximations with a common
+Lipschitz bound. `integral_sub_abs_le_of_uniform` and `integral_exp_centered_le_of_uniform`
+transport a uniform bound `|f - g| ≤ e` between two functions to a bound on their centered
+Gaussian integrals and centered exponential moment-generating functions; combined with the smooth
+case (`hasSubgaussianMGF_smooth_lipschitz`), this gives
+`hasSubgaussianMGF_of_smooth_uniform_approximation`: a Lipschitz function that is a uniform limit
+of smooth Lipschitz functions of the same constant has a subgaussian MGF with the same variance
+proxy as the smooth case.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter
 open scoped NNReal ENNReal Topology
@@ -13,6 +22,8 @@ namespace Sandpile
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [FiniteDimensional ℝ H]
   [MeasurableSpace H] [BorelSpace H]
 
+/-- **A uniform bound transports to the centered Gaussian integrals.** If `|f x - g x| ≤ e`
+everywhere, the two Gaussian integrals of `f` and `g` differ by at most `e`. -/
 lemma integral_sub_abs_le_of_uniform {f g : H → ℝ} (hf : Integrable f (stdGaussian H))
     (hg : Integrable g (stdGaussian H)) {e : ℝ} (he : ∀ x, |f x - g x| ≤ e) :
     |(∫ x, f x ∂stdGaussian H) - ∫ x, g x ∂stdGaussian H| ≤ e := by
@@ -21,6 +32,9 @@ lemma integral_sub_abs_le_of_uniform {f g : H → ℝ} (hf : Integrable f (stdGa
     (norm_integral_le_of_norm_le_const (μ := stdGaussian H)
       (ae_of_all _ (fun x => show ‖f x - g x‖ ≤ e by simpa only [Real.norm_eq_abs] using he x)))
 
+/-- **A uniform bound transports the centered exponential moment, up to a multiplicative
+error.** If `f` and `g` are Lipschitz and `|f x - g x| ≤ e` everywhere, the centered exponential
+moment of `f` is at most `exp(2|a|e)` times that of `g`, for every `a`. -/
 lemma integral_exp_centered_le_of_uniform {f g : H → ℝ} {D D' : ℝ≥0}
     (hf : LipschitzWith D f) (hg : LipschitzWith D' g) {e : ℝ}
     (he : ∀ x, |f x - g x| ≤ e) (a : ℝ) :
@@ -50,6 +64,11 @@ lemma integral_exp_centered_le_of_uniform {f g : H → ℝ} {D D' : ℝ≥0}
     (by rw [abs_mul]; exact mul_le_mul_of_nonneg_left hb (abs_nonneg a))
   nlinarith
 
+/-- **A Lipschitz function that is a uniform limit of smooth Lipschitz functions of the same
+constant has a subgaussian MGF with the same variance proxy as the smooth case.** Given
+`hasSubgaussianMGF_smooth_lipschitz` for each smooth approximant `g`, the multiplicative error
+`exp(2|a|e)` from `integral_exp_centered_le_of_uniform` vanishes as `e → 0`, so the smooth case's
+bound `exp(B)`, with `B = π² D² a² / 8`, passes to the limit `f`. -/
 lemma hasSubgaussianMGF_of_smooth_uniform_approximation {f : H → ℝ} {D : ℝ≥0}
     (hf : LipschitzWith D f)
     (happrox : ∀ e : ℝ, 0 < e → ∃ g : H → ℝ, ContDiff ℝ 1 g ∧ LipschitzWith D g ∧
@@ -74,8 +93,10 @@ lemma hasSubgaussianMGF_of_smooth_uniform_approximation {f : H → ℝ} {D : ℝ
           mul_le_mul_of_nonneg_left hc (Real.exp_pos _).le
         _ = _ := (Real.exp_add _ _).symm
     have hc : Continuous (fun e : ℝ => Real.exp (2 * |a| * e + B)) := by fun_prop
-    have ht : Tendsto (fun e : ℝ => Real.exp (2 * |a| * e + B)) (𝓝[>] (0 : ℝ)) (𝓝 (Real.exp B)) := by
-      simpa only [mul_zero, zero_add] using (hc.tendsto (0 : ℝ)).mono_left (show 𝓝[>] (0 : ℝ) ≤ 𝓝 (0 : ℝ) from inf_le_left)
+    have ht :
+        Tendsto (fun e : ℝ => Real.exp (2 * |a| * e + B)) (𝓝[>] (0 : ℝ)) (𝓝 (Real.exp B)) := by
+      simpa only [mul_zero, zero_add] using
+        (hc.tendsto (0 : ℝ)).mono_left (show 𝓝[>] (0 : ℝ) ≤ 𝓝 (0 : ℝ) from inf_le_left)
     apply ge_of_tendsto ht
     filter_upwards [self_mem_nhdsWithin] with e he
     exact hb e he

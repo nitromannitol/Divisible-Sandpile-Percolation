@@ -1,15 +1,17 @@
-/-
+import Sandpile.Support.LinJacobianEarly
+import Sandpile.Support.LinWeights
+
+/-!
+# The covariance hypothesis, in Step 1's vocabulary
+
 The covariance hypothesis of `lem:dgt4-linearization-from-survival`
 (`sandpile.tex:5635-5650`) in the vocabulary Step 1 consumes.
 
-The frozen statement writes the conditional covariance as
-`E[S_i(X)S_j(Y)] - E[S_i(X)]E[S_j(Y)]` with the survival indicator of its own
-file, while Step 1 works with `covSurvival`, the `ProbabilityTheory.covariance`
-of the two indicators.  The survival indicators are bounded and measurable, so
-the two agree.
+The frozen statement writes the conditional covariance as `E[S_i(X)S_j(Y)] -
+E[S_i(X)]E[S_j(Y)]` with the survival indicator of its own file, while Step 1 works with
+`covSurvival`, the `ProbabilityTheory.covariance` of the two indicators. The survival
+indicators are bounded and measurable, so the two agree.
 -/
-import Sandpile.Support.LinJacobianEarly
-import Sandpile.Support.LinWeights
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

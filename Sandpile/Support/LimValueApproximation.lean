@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.LimValue
+import Sandpile.Support.LimBallContinuity
+
+/-!
+# The ball-stopped field and its approximation of the localized value
+
 The capped ball-stopped field is defined from the actual heat potential.
 Its payoff is an admissible lower bound for the localized stopping value.
 The eventual uniform approximation of this field by the ball Green field is
 kept as the precise analytic input; the resulting value comparison is proved.
 -/
-import Sandpile.Support.LimValue
-import Sandpile.Support.LimBallContinuity
 
 open MeasureTheory ProbabilityTheory Set Filter InnerProductSpace
 open Sandpile.Continuum Sandpile.Support Sandpile.Frozen.FixedScaleCrossings
@@ -13,6 +16,10 @@ open scoped ENNReal NNReal RealInnerProductSpace
 
 open TopologicalSpace
 
+/-- Two almost-surely continuous fields `F` and `G` on a separable space `X` that
+agree almost surely at each fixed point agree almost surely everywhere: read the
+pointwise equalities off a countable dense subset `S` of `X`, then extend to all
+of `X` by continuity. -/
 theorem Sandpile.Support.ae_eq_of_continuous_versions {Ω X : Type*}
     [MeasurableSpace Ω] [TopologicalSpace X] [SeparableSpace X]
     (P : Measure Ω) (F G : X → Ω → ℝ)
@@ -29,6 +36,11 @@ theorem Sandpile.Support.ae_eq_of_continuous_versions {Ω X : Type*}
     Continuous.ext_on hSd hωF hωG (fun x hx => hωEq ⟨x, hx⟩)
   exact congrFun he
 
+/-- `𝒳_{s,T}(u)` of `sandpile.tex:2495-2511`: `(2d)^{-1}` times the sum of the
+heat potential at `(T, planePoint u)` and the mean, over the Brownian motion `B`
+started at `planePoint u`, of minus the heat potential read at the space-time
+point of that motion when it exits the ball of radius `s` or reaches time `T`,
+whichever comes first. -/
 noncomputable def Sandpile.Support.ballStoppedField {ΩW ΩB : Type*} [MeasurableSpace ΩB]
     (d : ℕ) (Z : ℝ → Space d → ΩW → ℝ) (PB : Measure ΩB)
     (B : Space d → ℝ≥0 → ΩB → Space d) (s T : ℝ) (u : Space 2) (ω : ΩW) : ℝ :=
@@ -38,6 +50,12 @@ noncomputable def Sandpile.Support.ballStoppedField {ΩW ΩB : Type*} [Measurabl
       (B (planePoint u) (LatticeProb.exitTimeTrunc (B (planePoint u))
         (planePoint u) s T.toNNReal η) η) ω ∂PB)
 
+/-- **The ball-stopped rule is admissible for `𝒰_{Z,1}`.** Almost surely, for
+every scale `s ≤ 1` and every plane point `u`, `2d` times the ball-stopped field
+`ballStoppedField` is at most the localized value `localizedValue`, since the
+ball-stopped exit rule is a special case of the admissible stopping rules for
+the localized value once the heat potential is continuous on the relevant
+space-time strip. -/
 theorem Sandpile.Support.ae_ballStoppedField_le_localizedValue {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ}
     (hd : d = 2 ∨ d = 3) {PW : Measure ΩW} {Z : ℝ → Space d → ΩW → ℝ}
@@ -60,6 +78,12 @@ theorem Sandpile.Support.ae_ballStoppedField_le_localizedValue {ΩW ΩB : Type*}
   simpa only [Sandpile.Support.ballStoppedField, ← mul_assoc, mul_inv_cancel₀ hd0, one_mul,
     Sandpile.Support.localizedValue] using hpay
 
+/-- The hypothesis that, for every finite set of scales and rectangles and every
+`c, δ > 0`, the ball-stopped field `ballStoppedField` is eventually (as the
+horizon `T → ∞`) within `c` of the ball field `ballField`, uniformly on the
+rectangles, off an event of probability at most `δ`. This is the analytic input
+the paper's uniform-in-probability convergence supplies and that the rest of
+this module reduces `LocalizedValueApproximation` to. -/
 def Sandpile.Support.BallStoppedApproximation (d : ℕ) : Prop :=
   ∀ (k : ℕ) (s : Fin k → ℚ), (∀ i, 0 < s i ∧ s i < 1) →
   ∀ (N : ℕ) (a b : Fin N → Fin 2 → ℝ) (c δ : ℝ), 0 < c → 0 < δ →
@@ -83,6 +107,11 @@ def Sandpile.Support.BallStoppedApproximation (d : ℕ) : Prop :=
       ≤ ENNReal.ofReal δ
 
 
+/-- **The transfer lemma of the approximation argument.** If a field `V` is
+almost surely dominated by `D * G i u` for every index `i` and point `u` in a
+set `K`, and `G` and `F` are within `c` of each other on `K` off an event of
+probability at most `δ`, then `V` is dominated by `D * (F i u - c)` on `K` off
+that same event of probability at most `δ`. -/
 theorem Sandpile.Support.approximation_good_event_lower {Ω U I : Type*}
     [MeasurableSpace Ω] (P : Measure Ω) (K : Set U) (F G : I → U → Ω → ℝ)
     (V : U → Ω → ℝ) (D c δ : ℝ) (hD : 0 ≤ D)
@@ -98,6 +127,11 @@ theorem Sandpile.Support.approximation_good_event_lower {Ω U I : Type*}
   have hx := mul_le_mul_of_nonneg_left (show F i u ω - c ≤ G i u ω by linarith) hD
   exact hx.trans (hω i u hu)
 
+/-- **`LocalizedValueApproximation` from `BallStoppedApproximation`.** Combining
+the admissibility of the ball-stopped rule
+(`ae_ballStoppedField_le_localizedValue`) with the approximation hypothesis via
+`approximation_good_event_lower` yields, for a large enough horizon `T`, the
+localized-value approximation the crossing theorem needs. -/
 theorem Sandpile.Support.localizedValueApproximation_of_ballStoppedApproximation {d : ℕ}
     (hd : d = 2 ∨ d = 3) (hApprox : Sandpile.Support.BallStoppedApproximation d) :
     Sandpile.Support.LocalizedValueApproximation d := by

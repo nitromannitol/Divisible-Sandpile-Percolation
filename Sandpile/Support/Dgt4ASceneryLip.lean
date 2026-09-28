@@ -1,9 +1,3 @@
-/-
-The coordinatewise Lipschitz coefficient of the finite-coordinate form of `D_n`
-(`sandpile.tex:5057-5058`).  Changing `\zeta(z)` changes `\zeta(0)` by the indicator of
-`z=0`, changes `u_n(0)` by at most `G(0,z)` and changes `Pu_n(0)` by at most
-`PG(\cdot,z)(0)=G(0,z)-\one_{z=0}`, so the total coefficient is at most `2G(0,z)`.
--/
 import Sandpile.Support.Dgt4ADeviationScenery
 import Sandpile.Support.GreenHigh
 import Sandpile.Support.TightWeightedMembrane
@@ -11,6 +5,15 @@ import Sandpile.Support.ExitGreen
 import Sandpile.Support.OriginKernel
 import Sandpile.Support.HeightLower
 import Sandpile.Support.Dgt4AIterateMulConst
+
+/-!
+# The coordinatewise Lipschitz coefficient of the finite-coordinate deviation
+
+The coordinatewise Lipschitz coefficient of the finite-coordinate form of `D_n`
+(`sandpile.tex:5057-5058`). Changing `\zeta(z)` changes `\zeta(0)` by the indicator of `z=0`,
+changes `u_n(0)` by at most `G(0,z)` and changes `Pu_n(0)` by at most
+`PG(\cdot,z)(0)=G(0,z)-\one_{z=0}`, so the total coefficient is at most `2G(0,z)`.
+-/
 
 open MeasureTheory Filter Topology Set
 

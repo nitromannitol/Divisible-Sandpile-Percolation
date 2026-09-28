@@ -1,9 +1,16 @@
-/-
-The ball Green field, coordinate-plane rectangles and star top-bottom
-crossings used by the dimension-four percolation argument.
--/
 import Sandpile.Walk
 import Sandpile.External.BallGreenBounds
+
+/-!
+# Ball crossing definitions in dimension four
+
+The ball Green field, coordinate-plane rectangles and star top-bottom crossings used by the
+dimension-four percolation argument: `ballCube` and `ballGreenField` transcribe the box and the
+ball-killed Green field of `eq:d4-ball-green-field`, `starGraph` is the `∗`-adjacency on
+translates of the coordinate plane, `ballRect` is the crossing rectangle `R_{ϑ,r}(x)`, and
+`HasStarTopBottomCrossing` records a `∗`-connected top-to-bottom crossing of that rectangle inside
+a set `S`.
+-/
 
 namespace Sandpile
 

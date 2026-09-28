@@ -1,11 +1,12 @@
-/-
+import Sandpile.Support.Dgt4ATailLip
+import Sandpile.External.GreenBoundsHigh
+
+/-!
 The `j`-step tail of the heat kernel in the two forms the paper uses: the sum
 `\sum_{r\geq j}p_r(0,z)` of `sandpile.tex:5063-5066` and the subtype sum
 `Sandpile.External.tailKernel d j z` of `eq:dgt4-tail-kernel`
 (`sandpile.tex:1305-1310`).
 -/
-import Sandpile.Support.Dgt4ATailLip
-import Sandpile.External.GreenBoundsHigh
 
 open MeasureTheory Filter Topology Set
 

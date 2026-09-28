@@ -1,11 +1,17 @@
-/-
-The square half-bound at an arbitrary square scale `s ≤ r`:
-the RswSquareHalf argument transposed to general `s`.
--/
 import Sandpile.Support.GaussianSquareMean
 import Sandpile.Support.RswArithmetic
 import Sandpile.Support.RectangleMonotonicity
 import Sandpile.Support.CrossingContinuity
+
+/-!
+# The square half-bound at an arbitrary scale
+
+The square half-bound at an arbitrary square scale `s ≤ r`: the `RswSquareHalf` argument
+transposed to general `s`. `exists_gaussian_square_crossing_ge_half_scale` is the same Gaussian
+lower-tail argument as `exists_gaussian_square_crossing_ge_half`, but for a square of side `s`
+that may be smaller than the field scale `r`; the tail bound still enters only through `r`, so the
+half-probability threshold is uniform over `2 ≤ s ≤ r`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped NNReal ENNReal
@@ -36,7 +42,8 @@ lemma exists_gaussian_square_crossing_ge_half_scale (hBall : External.BallGreenB
   have hA := h₁ r L s (by omega) hL (by omega) hcard φ hφ x v hv
   set μ := LatticeProb.iidLaw 4 (gaussianReal 0 v) with hμ
   set Lsq : (Site 4 → ℝ) → ℝ := fun ζ => crossingValue (planeRectangle s s)
-    (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) with hLsq
+    (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))
+    with hLsq
   have hf : Measurable Lsq := by
     have hQ : IsLatticeRectangle (planeRectangle s s) :=
       isLatticeRectangle_planeRectangle _ _

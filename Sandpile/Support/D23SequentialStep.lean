@@ -1,4 +1,19 @@
-/-
+import Sandpile.Support.D23Compactness
+import Sandpile.Support.D23Transfer
+import Sandpile.Support.D23HeatCoupling
+import Sandpile.Support.D23UniformTightness
+import Sandpile.Support.D23Mesh
+import Sandpile.Frozen.LimitingOdometerCrossing
+import Sandpile.Support.D23NormalizedTransfer
+import Sandpile.Support.ContFDSeq
+import Sandpile.Support.D23CubeValueRegularity
+import Sandpile.Support.LimWhiteNoiseInstance
+import Sandpile.Support.MeanAKolmogorov
+import Sandpile.Support.ContContinuumMCT
+
+/-!
+# The sequential step of the dimension two and three percolation theorem
+
 The sequential step of the dimension two and three percolation theorem.
 
 The reduction is already in place: `d23BlockCrossing_of_convergent_variance`
@@ -23,18 +38,6 @@ coupling into a bound on the bad-block probability. The assumed bad-block
 probability staying above the threshold along the whole sequence then contradicts
 that bound.
 -/
-import Sandpile.Support.D23Compactness
-import Sandpile.Support.D23Transfer
-import Sandpile.Support.D23HeatCoupling
-import Sandpile.Support.D23UniformTightness
-import Sandpile.Support.D23Mesh
-import Sandpile.Frozen.LimitingOdometerCrossing
-import Sandpile.Support.D23NormalizedTransfer
-import Sandpile.Support.ContFDSeq
-import Sandpile.Support.D23CubeValueRegularity
-import Sandpile.Support.LimWhiteNoiseInstance
-import Sandpile.Support.MeanAKolmogorov
-import Sandpile.Support.ContContinuumMCT
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -126,7 +129,8 @@ theorem continuous_clampTime_of_continuousOn {d : ℕ} (G : ℝ → Space d → 
 /-- **A version of the heat potential that is measurable at every point and continuous at
 every sample point.**  The frozen version is continuous only on strips and only almost
 surely, and is not measurable; this one is read at the non-negative part of the time, which
-is all the stopping values read, and is the modification of `exists_measurable_continuous_version`. -/
+is all the stopping values read, and is the modification of
+`exists_measurable_continuous_version`. -/
 theorem exists_globalHeatField {d : ℕ} (hd1 : 1 ≤ d) (hd3 : d ≤ 3)
     {ΩW : Type} [MeasurableSpace ΩW] (PW : Measure ΩW)
     (W : (Space d → ℝ) → ΩW → ℝ) (hW : IsWhiteNoise d W PW)
@@ -140,7 +144,8 @@ theorem exists_globalHeatField {d : ℕ} (hd1 : 1 ≤ d) (hd3 : d ≤ 3)
       (∀ t x, Measurable fun ω => Zg ω t x) ∧
       (∀ ω, Continuous fun q : ℝ × Space d => Zg ω q.1 q.2) ∧
       (∀ᵐ ω ∂PW, ∀ t : ℝ, 0 ≤ t → ∀ x, Zg ω t x = Z1 t x ω) ∧
-      (∀ t : ℝ, 0 ≤ t → ∀ x, (fun ω => Zg ω t x) =ᵐ[PW] fun ω => gaussianPotential d 1 W t x ω) := by
+      (∀ t : ℝ, 0 ≤ t → ∀ x,
+        (fun ω => Zg ω t x) =ᵐ[PW] fun ω => gaussianPotential d 1 W t x ω) := by
   have hXm : ∀ q : ℝ × Space d, Measurable fun ω => gaussianPotential d 1 W (max q.1 0) q.2 ω :=
     fun q => (hW.meas _ (memLp_greenTimeBM hd1 hd3 (le_max_right _ _) q.2)).const_mul _
   have hae : ∀ q : ℝ × Space d, (fun ω => Z1 (max q.1 0) q.2 ω) =ᵐ[PW]
@@ -300,7 +305,8 @@ theorem d23_sequential_of_crossing (d : ℕ) (hd : d = 2 ∨ d = 3)
   -- one motion, shifted to every starting point
   obtain ⟨ΩB, mB, PB, hPB, B0all, hB0all, hB0cont, hB0sm⟩ := motion_exists d
   let B : Space d → ℝ≥0 → ΩB → Space d := fun y t ω => y + B0all 0 t ω
-  have hB : ∀ y, IsBrownian d y (B y) PB := fun y => isBrownian_add_const d PB (B0all 0) (hB0all 0) y
+  have hB : ∀ y, IsBrownian d y (B y) PB :=
+    fun y => isBrownian_add_const d PB (B0all 0) (hB0all 0) y
   have hBcont : ∀ (y : Space d) (ω : ΩB), Continuous fun t => B y t ω :=
     fun y ω => continuous_const.add (hB0cont 0 ω)
   have hBsm : ∀ (y : Space d) (t : ℝ≥0), StronglyMeasurable (B y t) :=

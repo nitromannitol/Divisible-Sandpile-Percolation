@@ -1,11 +1,15 @@
-/-
-The `L²` split of Step 2 of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5803-5845`): the squared difference of the centred tested field
-from the weighted linear field is at most twice the squared remainder of
-`eq:dgt4-convex-linear-remainder` plus twice the squared coefficient replacement
-of `eq:dgt4-linear-coefficient-replacement`.
--/
 import Mathlib
+
+/-!
+# The `L²` split into a remainder and a coefficient-replacement term
+
+The squared difference `(A - B - C) ^ 2` between the centred tested field `A`, the weighted
+linear field `B`, and a further correction `C` is bounded by `2 (A - B) ^ 2 + 2 C ^ 2`, so a
+vanishing `L²` norm of `A - B` together with a vanishing `L²` norm of `C` forces a vanishing `L²`
+norm of `A - B - C`. This file proves that split and its integrated consequence, together with the
+second-moment bound `∫ (∑ i, d i * ζ i) ^ 2 ≤ Var (∑ i, |d i|) ^ 2` for a linear functional of an
+i.i.d. centred scenery of finitely many coordinates, used for the coefficient-replacement term.
+-/
 
 open Filter Topology
 

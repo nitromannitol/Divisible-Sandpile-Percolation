@@ -1,47 +1,46 @@
-/-
-The stability input of the four-term bound of Theorem 1.3(i)(b), and the bridge
-that removes the paper's subsequence argument.
-
-The four-term assembly `Sandpile.abs_rescaled_odometer_sub_brownianValue_le`
-bounds the gap between the rescaled odometer and the Brownian value by
-`E₀+E₁+E₂+E₃`, and `E₂` is the STABILITY gap: the distance between the walk value
-of the cut-off rescaled field and the Brownian discount of the cut-off limit
-field.  The cited input `Sandpile.External.ContinuumStoppingStability` delivers
-exactly that gap, but only for a FIXED family of rewards converging uniformly;
-the paper reaches such a family by saying that every subsequence has a further
-subsequence along which the field converges locally uniformly almost surely
-(`sandpile.tex:1878-1880`), which is a Skorokhod representation.
-
-This module replaces that step.  The observation is that the threshold the cited
-input produces depends on the reward family, on the accuracy, on the uniform
-bound and on the compact set, and on nothing else.  So:
-
-* applied to the CONSTANT family at each member of a FINITE collection of
-  rewards, it produces ONE threshold that serves the whole collection
-  (`stability_uniform_of_finite`);
-
-* both values are 1-Lipschitz in the reward for the supremum norm
-  (`abs_stoppingSup_sub_le_of_reward` and
-  `Sandpile.Continuum.abs_brownianDiscount_sub_le_of_reward`), so a reward within
-  `η` of a member of the collection inherits the bound with `2η` added
-  (`stability_gap_of_near_finite` and `stability_gap_of_uniformly_near`).
-
-The realization space of the motion is bound at `Type u` and the cited input is taken
-at the same universe, because the cited theorem holds on an arbitrary probability
-space and the statements of the paper that consume these lemmas carry a realization
-space of their own.
-
-The reward may then be RANDOM, because the threshold does not see it.  That is
-what the subsequence argument was for, and it is why the weakest of the three
-Skorokhod strengths the shared library offers is enough for this node: the
-library's `tendsto_integral_of_fdd_of_equicontinuous` is needed only for the
-LIMIT of the Brownian values, a bounded functional of the path that is uniformly
-continuous for the supremum norm on a compact set, and never for a fixed
-realization of the field.
--/
 import Sandpile.Support.ExplValueGap
 import Sandpile.Support.Localization
 import Sandpile.External.ContStoppingStability
+
+/-!
+# The stability gap, without the paper's subsequence argument
+
+The stability input of the four-term bound of Theorem 1.3(i)(b), and the bridge that removes the
+paper's subsequence argument.
+
+The four-term assembly `Sandpile.abs_rescaled_odometer_sub_brownianValue_le` bounds the gap
+between the rescaled odometer and the Brownian value by `E₀+E₁+E₂+E₃`, and `E₂` is the stability
+gap: the distance between the walk value of the cut-off rescaled field and the Brownian discount
+of the cut-off limit field. The cited input `Sandpile.External.ContinuumStoppingStability`
+delivers exactly that gap, but only for a fixed family of rewards converging uniformly; the paper
+reaches such a family by saying that every subsequence has a further subsequence along which the
+field converges locally uniformly almost surely (`sandpile.tex:1878-1880`), which is a Skorokhod
+representation.
+
+This module replaces that step. The observation is that the threshold the cited input produces
+depends on the reward family, on the accuracy, on the uniform bound and on the compact set, and on
+nothing else. So:
+
+* applied to the constant family at each member of a finite collection of rewards, it produces one
+  threshold that serves the whole collection (`stability_uniform_of_finite`);
+
+* both values are 1-Lipschitz in the reward for the supremum norm
+  (`abs_stoppingSup_sub_le_of_reward` and
+  `Sandpile.Continuum.abs_brownianDiscount_sub_le_of_reward`), so a reward within `η` of a member
+  of the collection inherits the bound with `2η` added (`stability_gap_of_near_finite` and
+  `stability_gap_of_close`).
+
+The realization space of the motion is bound at `Type u` and the cited input is taken at the same
+universe, because the cited theorem holds on an arbitrary probability space and the statements of
+the paper that consume these lemmas carry a realization space of their own.
+
+The reward may then be random, because the threshold does not see it. That is what the
+subsequence argument was for, and it is why the weakest of the three Skorokhod strengths the
+shared library offers is enough for this node: the library's
+`tendsto_integral_of_fdd_of_equicontinuous` is needed only for the limit of the Brownian values, a
+bounded functional of the path that is uniformly continuous for the supremum norm on a compact
+set, and never for a fixed realization of the field.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,23 +1,18 @@
-/-
-The weights of Step 2 of `lem:dgt4-path-survival` (`sandpile.tex:5561-5567`), and Step 2
-along one path in the form the averaged limit consumes.
-
-The deterministic chain of `Support/LinStep2Chain.lean` carries the last-visit exponent as
-the membership indicator of `Sandpile.lastVisitTimes`, while
-`lem:dgt4-weighted-last-visits` is stated through `Sandpile.visitInd`; the two agree
-(`cast_lastVisit_eq_visitInd`), so the paper's weighted last-visit sum
-`\sum_{r\leq j}I_{r,j}(X)/(n_R-r)` IS `Sandpile.lvSum` (`sum_lastVisit_wcoef_eq_lvSum`).
-
-The paper's substitution `\pi_{R,r}=\frac{G(0,0)\kappa}{n_R-r}(1+o_R(1))` is used twice.
-Its UPPER form `\pi_{R,r}\leq2G(0,0)\kappa/(n_R-r)` gives the paper's
-`\sum_r\pi_{R,r}^2\leq C(\varepsilon)/n_R` through `sum_inv_sq_range_le`
-(`sum_lastVisit_sq_le`), and its RELATIVE form gives the deviation of the exact weighted sum
-from `\kappa G(0,0)S(X)` (`abs_sum_lastVisit_sub_le`).  With both,
-`integral_abs_survival_sub_profile_le` is Step 2 along one path with every error named: the
-threshold replacement `\eta`, the factorization `\theta`, the square sum, and the integral
-bound `\eta'` that `lem:dgt4-weighted-last-visits` supplies.
--/
 import Sandpile.Support.LinStep3Product
+
+/-!
+# The weights of Step 2 of the path-survival lemma, integrated along one path
+
+The last-visit exponent is carried as the membership indicator of `lastVisitTimes`, which
+agrees with the indicator `visitInd` that the weighted-last-visits lemma is stated through, so
+the weighted last-visit sum `∑_{r≤j} I_{r,j}(X)/(n-r)` is exactly `lvSum n j X`. The weight
+substitution `π_{R,r} = G(0,0)κ/(n_R-r)·(1+o_R(1))` is used in two forms: an upper bound
+`π_{R,r} ≤ 2G(0,0)κ/(n_R-r)`, which gives a bound `∑_r π_{R,r}² ≤ C(ε)/n_R` on the square sum
+of the weights, and a relative bound, which gives the deviation of the exact weighted sum from
+`κ G(0,0) · lvSum n j X`. Combining both with a threshold-replacement error, a factorization
+error, and the integral bound supplied by the weighted-last-visits lemma produces Step 2 of the
+path-survival lemma along one path, integrated over the walk, with every error term named.
+-/
 
 open MeasureTheory Filter Topology
 

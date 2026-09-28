@@ -1,18 +1,22 @@
-/-
-The second moment of a smoothed increment, for the first display of Step 2 of
-`prop:d4-superdiffusive-limit` (`sandpile.tex:3374-3380`).
-
-Step 2 compares `F_R = P^{n_R}E_{t_R-n_R}` with the constant `C_R` of its own
-parity class.  The smoothing operator has finite range, so the increment
-`F_R(x) - F_R(b)` is a FINITE linear combination `∑_z(p_n(x,z)-p_n(b,z))E(z)` of
-the values of the error field, and Minkowski in `L²` bounds its second moment by
-the square of the `ℓ¹` gradient of the smoothing kernel times the uniform second
-moment of the field.  With `eq:rw-tv-gradient` squared
-(`Sandpile.exists_heatKernel_gradient_sq_four`) this is the paper's
-`C(1+\log\log t_R)R^2/n_R`.
--/
 import Sandpile.Support.D4SmoothGradient
 import Sandpile.Support.BlockIncrement
+
+/-!
+# The second moment of a smoothed increment
+
+The second moment of a smoothed increment, for the first display of Step 2 of
+`prop:d4-superdiffusive-limit` (`sandpile.tex:3374-3380`). Step 2 compares
+`F_R = P^{n_R}E_{t_R-n_R}` with the constant `C_R` of its own parity class. The smoothing operator
+has finite range, so the increment `F_R(x) - F_R(b)` is a FINITE linear combination
+`∑_z(p_n(x,z)-p_n(b,z))E(z)` of the values of the error field
+(`smoothing_increment_eq_finsetSum`), and Minkowski in `L²` bounds its second moment
+(`integral_sq_smoothing_increment_le`, `integrable_sq_smoothing_increment`) by the square of the
+`ℓ¹` gradient of the smoothing kernel times the uniform second moment of the field. With
+`eq:rw-tv-gradient` squared (`Sandpile.exists_heatKernel_gradient_sq_four`) this is the paper's
+`C(1+\log\log t_R)R^2/n_R` (`exists_integral_sq_smoothing_increment_four`). The parity-class
+cancellation (`sum_parity_const_mul`) is what turns the second display of Step 2 into an estimate
+on the imbalance between the two parity classes of the mesh.
+-/
 
 open MeasureTheory Filter Topology
 

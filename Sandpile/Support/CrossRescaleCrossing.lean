@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossRescale
+
+/-!
+# The rescaled crossing estimate
+
 `eq:rescaled-crossing-estimate` (`sandpile.tex:2404-2413`) for the crossing
 events, from the chain identity of `Sandpile/Support/CrossRescale.lean` and the
 bracket of `Sandpile/Support/CrossUnion.lean`.
@@ -14,7 +18,6 @@ With `R = h/s`, the rectangle `[-a,a]×[0,2h]` dilated by `1/s` is
 becomes the level `L b(s)/b` at scale one, where `b` is the field scale `s` or
 `√s`.  This module carries out that comparison.
 -/
-import Sandpile.Support.CrossRescale
 
 open MeasureTheory Set Filter
 open scoped ENNReal

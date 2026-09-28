@@ -1,11 +1,15 @@
-/-
-The measure-theoretic bridge used by the Step-3 derivation of
-`thm:dgt4-many-limits` (`sandpile.tex:5900-5928`): an `L²` bound on the
-difference of two families gives convergence in measure of the difference, and a
-family differing from a family converging in distribution to a centred Gaussian
-by a term converging in measure to zero converges to the same Gaussian.
--/
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# Measure-theoretic bridge for the many-limits step 3
+
+The measure-theoretic bridge used by the Step-3 derivation of `thm:dgt4-many-limits`
+(`sandpile.tex:5900-5928`): an `L²` bound on the difference of two families gives convergence
+in measure of the difference (`tendstoInMeasure_sub_of_integral_sq`), and a family differing
+from a family converging in distribution to a centred Gaussian by a term converging in
+measure to zero converges to the same Gaussian
+(`tendstoInDistribution_of_sub_tendstoInMeasure`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

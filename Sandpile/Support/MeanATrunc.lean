@@ -1,20 +1,15 @@
-/-
-The truncation at a level and the two uniform tail bounds it obeys under an
-exponential moment.  These are the analytic content of the word "immediately"
-in `sandpile.tex:2029-2031`: "The uniform exponential moment in
-Proposition~\ref{prop:continuum-value-selfsimilar} immediately implies the
-following corollary."  A uniform exponential moment makes the families
-`{X}` and `{X²}` uniformly integrable, with an explicit modulus: for a
-nonnegative `X`,
+import Mathlib
 
-  `E[X - (X ∧ M)] ≤ M e^{-θM} E e^{θX}`,
-  `E[X² - (X ∧ M)²] ≤ M² e^{-θM} E e^{θX}`,
+/-!
+# Uniform tail bounds for the truncation at a level
 
-the first for `θM ≥ 1` and the second for `θM ≥ 2`.  Both moduli tend to zero
-as `M → ∞`, uniformly over any family whose exponential moments are bounded by
+The truncation `y ↦ 0 ∨ (y ∧ M)` at a level `M`, and the two uniform tail bounds it obeys under
+an exponential moment: for a nonnegative `X`, `E[X - (X ∧ M)] ≤ M e^{-θM} E e^{θX}` when
+`θM ≥ 1`, and `E[X² - (X ∧ M)²] ≤ M² e^{-θM} E e^{θX}` when `θM ≥ 2`. A uniform exponential
+moment therefore makes the families `{X}` and `{X²}` uniformly integrable, with both moduli
+tending to zero as `M → ∞` uniformly over any family whose exponential moments are bounded by
 one constant.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 
@@ -34,6 +29,7 @@ noncomputable def truncBdd (M : ℝ) : BoundedContinuousFunction ℝ ℝ :=
       rw [Real.dist_eq, abs_le]
       constructor <;> linarith)
 
+/-- `truncBdd M` evaluates to the truncation `max 0 (min y M)`. -/
 @[simp] theorem truncBdd_apply (M : ℝ) (y : ℝ) :
     truncBdd M y = max 0 (min y M) := rfl
 
@@ -156,6 +152,7 @@ noncomputable def truncSqBdd (M : ℝ) : BoundedContinuousFunction ℝ ℝ :=
       rw [Real.dist_eq, abs_le]
       constructor <;> nlinarith)
 
+/-- `truncSqBdd M` evaluates to the squared truncation `(max 0 (min y M)) ^ 2`. -/
 @[simp] theorem truncSqBdd_apply (M : ℝ) (y : ℝ) :
     truncSqBdd M y = (max 0 (min y M)) ^ 2 := rfl
 

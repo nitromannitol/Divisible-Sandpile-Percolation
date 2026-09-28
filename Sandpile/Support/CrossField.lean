@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossUnion
+
+/-!
+# Symmetric, associated planar fields
+
 The continuum planar vocabulary of `sandpile.tex:2103-2104` stated on the field
 rather than on its law:
 
@@ -31,15 +35,14 @@ distributions.
 distributions, in the form of Esary, Proschan and Walkup and exactly in the form
 Pitt's theorem supplies it: for finitely many points of the plane and bounded
 measurable functions of those field values that are nondecreasing in every
-coordinate, the two functions correlate nonnegatively.  It is stated on finitely
-many points, not on increasing subsets of `Ω`, because that is what the cited
-theorem gives; it extends by monotone limits to increasing events depending on
-countably many evaluations, which is the class the chain events
+coordinate, the two functions correlate nonnegatively.  It is stated on
+finitely many points, not on increasing subsets of `Ω`, because that is what
+the cited theorem gives; it extends by monotone limits to increasing events
+depending on countably many evaluations, which is the class the chain events
 `Sandpile.Support.crossApprox` of `Sandpile/Support/CrossUnion.lean` belong to.
 The integrals are of bounded measurable functions on a probability space, hence
 of integrable functions, so no junk value can arise.
 -/
-import Sandpile.Support.CrossUnion
 
 open MeasureTheory Set
 
@@ -65,6 +68,8 @@ namespace PlaneSymmetry
 noncomputable def toFun (T : PlaneSymmetry) (u : Space 2) : Space 2 :=
   WithLp.toLp 2 (fun k => T.sign k * u (T.perm k) + T.shift k)
 
+/-- Unfolds `toFun`: the `k`-th coordinate of the image is `T.sign k` times the value at the
+permuted coordinate `T.perm k`, plus the translation `T.shift k`. -/
 theorem toFun_apply (T : PlaneSymmetry) (u : Space 2) (k : Fin 2) :
     T.toFun u k = T.sign k * u (T.perm k) + T.shift k := rfl
 

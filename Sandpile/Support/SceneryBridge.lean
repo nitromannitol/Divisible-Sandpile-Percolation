@@ -1,4 +1,10 @@
-/-
+import Sandpile.Law
+import Sandpile.Support.Odometer
+import Sandpile.Support.Stationary
+
+/-!
+# Mass field / scenery bridge
+
 The bridge between the two languages of the paper: the mass field `σ` with law
 `centeredMassLaw d ν`, in which the main theorems are stated, and the scenery
 `ζ = (σ - 1)/(2d)` with law `iidLaw d ν`, in which the estimates of
@@ -6,9 +12,6 @@ The bridge between the two languages of the paper: the mass field `σ` with law
 its scenery, the scenery of the mass law is the i.i.d. law of the one-site
 scenery, and hence every event and every mean transports.
 -/
-import Sandpile.Law
-import Sandpile.Support.Odometer
-import Sandpile.Support.Stationary
 
 open MeasureTheory ProbabilityTheory
 
@@ -16,6 +19,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The odometer of a mass field `σ` equals the odometer of its scenery `scenery d σ`, proved
+by induction on `t` using `relax_eq_scenery` to match the one-step relaxation formulas. -/
 theorem odometer_eq_odometerOf (σ : Site d → ℝ) (t : ℕ) :
     odometer σ t = odometerOf (scenery d σ) t := by
   induction t with
@@ -25,6 +30,10 @@ theorem odometer_eq_odometerOf (σ : Site d → ℝ) (t : ℕ) :
       show relax σ (odometer σ n) x = max 0 (scenery d σ x + avg (odometerOf (scenery d σ) n) x)
       rw [relax_eq_scenery, ih]
 
+/-- The scenery map pushes `centeredMassLaw d ν` forward to `LatticeProb.iidLaw d ν`: since
+`scenery d` acts coordinatewise by the affine bijection `z ↦ (z - 1) / (2 * d)`, whose inverse
+`z ↦ 1 + 2 * d * z` is used to build `centeredMassLaw`, the pushforward at each site undoes
+that affine shift and returns `ν`. -/
 theorem map_scenery_centeredMassLaw (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hd : 1 ≤ d) : (centeredMassLaw d ν).map (scenery d) = LatticeProb.iidLaw d ν := by
   have hd0 : (2 * (d : ℝ)) ≠ 0 := by

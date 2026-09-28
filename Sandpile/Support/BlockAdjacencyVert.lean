@@ -1,17 +1,25 @@
-/-
-Vertical adjacency of good coarse blocks: if two vertically neighbouring
-coarse sites of the `(2r)`-lattice are both good for the field `F` at level
-`ℓ`, then the level-`ℓ` superlevel set of `F` contains a nearest-neighbour
-walk joining a site of the lower block's square to a site of the upper
-block's square.
--/
 import Sandpile.Support.BlockAdjacency
 import Sandpile.Support.PercSquareToTall
+
+/-!
+# Vertical adjacency of good coarse blocks
+
+If two vertically neighbouring coarse sites of the `(2r)`-lattice are both good for the
+field `F` at level `ℓ`, then the level-`ℓ` superlevel set of `F` contains a
+nearest-neighbour walk joining a site of the lower block's square to a site of the upper
+block's square.  This is the vertical counterpart of `Sandpile.Support.BlockAdjacency`,
+obtained by intersecting a top-bottom crossing of the tall rectangle with a left-right
+crossing of the upper square instead of a wide rectangle with a right square.
+-/
 
 open scoped NNReal
 noncomputable section
 namespace Sandpile
 
+/-- If two vertically adjacent coarse sites are both good, the superlevel set contains a
+nearest-neighbour walk from the block at `z` to the block at `z + e₁`, obtained by
+intersecting the top-bottom crossing of the tall rectangle at `z` with the left-right
+crossing of the square at `z + e₁`. -/
 theorem blockGood_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
     (h1 : BlockGood r F ℓ z) (h2 : BlockGood r F ℓ (z + ![(0 : ℤ), (1 : ℤ)])) :
     ∃ a b : Site 2, ∃ p : (lattice 2).Walk a b,

@@ -1,15 +1,17 @@
-/-
-Vacuity and junk-value checks for the crossing chain.
-
-Every statement of the chain is an inequality or an identity about integrals of kernels
-and about stopped Brownian motions, and each of those carries a junk value that could
-satisfy it for the wrong reason: a Bochner integral is zero when its integrand is not
-integrable, `ENNReal.toReal ⊤` is zero, and a supremum over an empty set is zero.  The
-checks below rule those out where they matter, and they live in the repository, imported
-by the root module, so that the gates cover them.
--/
 import Sandpile.Support.LimApproxAssembly
 import Sandpile.Support.MainExplBrownianCont
+
+/-!
+# Vacuity and junk-value checks for the crossing chain
+
+Every statement of the crossing chain is an inequality or an identity about integrals of
+kernels and about stopped Brownian motions, and each of those carries a junk value that
+could satisfy it for the wrong reason: a Bochner integral is zero when its integrand is
+not integrable, `ENNReal.toReal ⊤` is zero, and a supremum over an empty set is zero. The
+theorems below rule those degenerate readings out: the exit time is genuinely finite with
+positive probability, the relevant kernels have positive mass, and the hypotheses of the
+chain are simultaneously satisfiable by an actual model.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -23,6 +25,10 @@ If the exit time were infinite almost surely the accumulated reward would be the
 value `0`, and the external's identity would read `0 = 2d ∫ ballKernel`.  The mass of the
 kernel is positive, so the external entails that the motion leaves the ball with positive
 probability: the identity is an assertion about a genuine random variable. -/
+/-- If the ball-occupation-density external held while the exit time from the unit ball
+were almost surely infinite, its identity would read the vacuous `0 = 2d ∫ ballKernel`;
+since the ball kernel has positive mass, the external instead forces the exit time to be
+finite with positive probability. -/
 theorem occupation_external_forces_finite_exit
     (hOcc : Sandpile.External.BallOccupationDensity) {d : ℕ} (hd : d = 2 ∨ d = 3)
     (u : Space 2) (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
@@ -45,6 +51,9 @@ theorem occupation_external_forces_finite_exit
 Its mass is the expected truncated exit time, so it is positive as soon as that is: the
 identification of the ball-stopped field with a white-noise average is not the trivial
 `W 0 = 0`. -/
+/-- The mass of `ballStoppedKernel` equals the expectation of the stop time
+`ballStopTime`, so it is positive as soon as the stop time has positive expectation, which
+shows the identification with a white-noise average is not the trivial `W 0 = 0`. -/
 theorem stopped_kernel_mass_pos {ΩB : Type} [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d)
     (PB : Measure ΩB) [IsProbabilityMeasure PB] {B : Space d → ℝ≥0 → ΩB → Space d}
     (hB : ∀ y, IsBrownian d y (B y) PB) (hBc : ∀ y ω, Continuous fun t => B y t ω)
@@ -59,6 +68,8 @@ theorem stopped_kernel_mass_pos {ΩB : Type} [MeasurableSpace ΩB] {d : ℕ} (hd
 The modulus and rate estimates of the chain bound the `L²` norms of differences of the
 ball kernel and its stopped approximations.  Those statements would be empty if the ball
 kernel were almost everywhere zero; it is not, since its mass is positive. -/
+/-- `ballKernel d 1 u` is not almost everywhere `0` with respect to Lebesgue measure,
+since its integral equals the positive mass of the centred kernel. -/
 theorem ballKernel_not_ae_zero {d : ℕ} (hd : d = 2 ∨ d = 3) (u : Space 2) :
     ¬ (ballKernel d 1 u =ᵐ[(volume : Measure (Space d))] 0) := by
   intro hzero
@@ -76,6 +87,9 @@ theorem ballKernel_not_ae_zero {d : ℕ} (hd : d = 2 ∨ d = 3) (u : Space 2) :
 The theorems of the chain carry `IsBrownian`, continuity of every path and strong
 measurability of every time slice at once; those are satisfiable simultaneously, so none
 of the statements holds for want of a model. -/
+/-- There is a probability space carrying, for every starting point `x`, a Brownian motion
+`B x` from `x` whose paths are continuous and whose time slices are strongly measurable,
+so the joint hypotheses of the chain are simultaneously satisfiable. -/
 theorem motion_exists (d : ℕ) :
     ∃ (Ω : Type) (_ : MeasurableSpace Ω) (P : Measure Ω) (_ : IsProbabilityMeasure P)
       (B : Space d → ℝ≥0 → Ω → Space d), (∀ x, IsBrownian d x (B x) P) ∧
@@ -86,6 +100,10 @@ theorem motion_exists (d : ℕ) :
 
 Its hypotheses are satisfiable by a field that is not almost surely zero: a measurable
 field, continuous in the parameter, is its own version. -/
+/-- For any measurable `g`, taking `Y u ω = g ω` constantly in `u` produces a version of
+`g` that is measurable in `ω` for each `u`, continuous in `u` for each `ω`, and agrees
+with `g` almost everywhere, so the hypotheses of the continuous-version construction are
+satisfiable and not vacuous. -/
 theorem version_hypotheses_satisfiable {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     {E : Type*} [MetricSpace E] [TopologicalSpace.SeparableSpace E] (g : Ω → ℝ)
     (hg : Measurable g) :

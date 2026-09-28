@@ -1,18 +1,15 @@
-/-
-White noise on `ℝ^d` exists.
-
-Every statement of the paper that mentions white noise is quantified over a
-probability space carrying a family with the four properties of
-`Sandpile.Continuum.IsWhiteNoise`.  Without a construction those statements
-would be vacuous, so the construction is recorded here as a theorem: the
-isonormal process over a countable orthonormal basis of `L²(ℝ^d)` has exactly
-those properties, and `L²` of Lebesgue measure on `ℝ^d` is separable, so such a
-basis exists.  This is the same discharge that
-`Sandpile.External.optimalStopping` performs for the optimal-stopping
-representation.
--/
 import Sandpile.Continuum.WhiteNoise
 import LatticeProb.Gauss.WhiteNoise
+
+/-!
+# Existence of white noise on `ℝ^d`
+
+Every statement in the development that quantifies over white noise needs a witness, since
+without one such statements would be vacuous.  This file supplies it: the isonormal Gaussian
+process over a countable orthonormal basis of `L²(ℝ^d)` satisfies the four defining properties
+of `Sandpile.Continuum.IsWhiteNoise`, and `L²` of Lebesgue measure on `ℝ^d` is separable, so such
+a basis exists.
+-/
 
 open MeasureTheory ProbabilityTheory
 

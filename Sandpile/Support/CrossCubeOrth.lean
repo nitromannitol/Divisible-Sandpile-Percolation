@@ -1,11 +1,13 @@
-/-
+import Sandpile.Support.LimNoiseCoordinates
+import Sandpile.Support.ContCell
+
+/-! # Orthonormal cube indicators
+
 The orthonormality of the white-noise coordinates of the exploration: the
 indicators of the disjoint unit cubes the exploration reveals are orthonormal in
 `L²`, so the coordinates are independent standard Gaussians
 (`sandpile.tex:2262-2270`).
 -/
-import Sandpile.Support.LimNoiseCoordinates
-import Sandpile.Support.ContCell
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum

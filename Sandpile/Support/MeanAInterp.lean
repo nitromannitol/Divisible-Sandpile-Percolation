@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ContMeshPoint
+import Sandpile.Support.ExplInterp
+import Sandpile.Support.MeanAValue
+
+/-!
+# The rescaled odometer as the interpolated field at a mesh point
+
 The rescaled odometer of `cor:dlt4-mean-asymptotic` is the interpolated field of
 `thm:main-explosion`(i)(b) read at a mesh point.
 
@@ -18,9 +24,6 @@ and no approximation is needed at all.  For `x ≠ 0` what remains is
 `‖meshPoint R x - x‖ ≤ √d/R` (`Sandpile.Support.norm_meshPoint_sub_le`) fed into the
 modulus-of-continuity half of the tightness clause of (i)(b).
 -/
-import Sandpile.Support.ContMeshPoint
-import Sandpile.Support.ExplInterp
-import Sandpile.Support.MeanAValue
 
 open MeasureTheory Filter Topology
 
@@ -45,7 +48,8 @@ theorem floor_mul_meshPoint (R : ℝ) (hR : R ≠ 0) (x : Space d) (i : Fin d) :
 /-- **The interpolated field at the mesh point is the lattice value.** -/
 theorem multilinearInterp_meshPoint (R : ℝ) (hR : R ≠ 0) (f : Site d → ℝ) (x : Space d) :
     multilinearInterp R f (meshPoint R x) = f fun i => ⌊R * x i⌋ := by
-  rw [multilinearInterp_of_fract_eq_zero R f (meshPoint R x) (fun i => fract_mul_meshPoint R hR x i)]
+  rw [multilinearInterp_of_fract_eq_zero R f (meshPoint R x)
+    (fun i => fract_mul_meshPoint R hR x i)]
   congr 1
   funext i
   exact floor_mul_meshPoint R hR x i

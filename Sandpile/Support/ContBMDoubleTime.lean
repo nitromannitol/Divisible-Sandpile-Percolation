@@ -1,17 +1,19 @@
-/-
-The double time integral of the on-diagonal Brownian heat kernel, and why it is
-finite exactly below dimension four.
-
-`p^{BM}_{s+s'}(x,x) = (2\pi(s+s')/d)^{-d/2}`, and the arithmetic-geometric mean
-inequality `2\sqrt{ss'} \leq s+s'` replaces the coupled singularity
-`(s+s')^{-d/2}` by the product `s^{-d/4}s'^{-d/4}` of two separate ones.  Each
-factor is integrable near zero exactly when `d/4 < 1`, so the double integral
-over `(0,t)^2` is finite exactly when `d < 4`, with no case analysis on the
-dimension.  Together with Chapman-Kolmogorov this is the finiteness of
-`\int g^{BM}_t(x,y)^2\,dy` in dimensions one to three, which is what the white
-noise asks of its index in `prop:dlt4-heat-potential-invariance`.
--/
 import Sandpile.Support.ContBMTimeBound
+
+/-!
+# The double time integral of the on-diagonal Brownian heat kernel
+
+The double time integral of the on-diagonal Brownian heat kernel, and why it is finite exactly
+below dimension four. `p^{BM}_{s+s'}(x,x) = (2\pi(s+s')/d)^{-d/2}`, and the arithmetic-geometric
+mean inequality `2\sqrt{ss'} \leq s+s'` (`two_sqrt_mul_le_add`) replaces the coupled singularity
+`(s+s')^{-d/2}` by the product `s^{-d/4}s'^{-d/4}` of two separate ones
+(`heatKernelBM_diag_add_le`). Each factor is integrable near zero exactly when `d/4 < 1`
+(`lintegral_rpow_neg_quarter_lt_top`), so the double integral over `(0,t)^2` is finite exactly
+when `d < 4` (`lintegral_double_time_lt_top`), with no case analysis on the dimension. Together
+with Chapman-Kolmogorov this is the finiteness of `\int g^{BM}_t(x,y)^2\,dy` in dimensions one
+to three, which is what the white noise asks of its index in
+`prop:dlt4-heat-potential-invariance`.
+-/
 
 open MeasureTheory
 open scoped NNReal Real ENNReal

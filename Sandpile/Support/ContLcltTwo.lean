@@ -1,18 +1,16 @@
-/-
-The local central limit theorem applied to a double time sum with TWO time
-weights.
-
-`Sandpile.Support.tendsto_scaled_time_sum_of_localCLT` reads the same weight in
-the two time variables, which is what `prop:weighted-membrane-limit` needs.  The
-double time sums of `prop:dlt4-heat-potential-invariance` carry two DIFFERENT
-horizons, one for each of the two mesh times, so the two weights differ; nothing
-else in the argument changes.  The proof is the same as the one-weight one: the
-local central limit theorem controls the summand uniformly over the admissible
-pairs, and the parity-restricted Riemann sums of `Sandpile.Support.ContMeshParity`
-turn the result into half of the double time integral, which the factor two of
-the theorem cancels.
--/
 import Sandpile.Support.ContLcltStep
+
+/-!
+# The local central limit theorem for a double time sum with two weights
+
+`tendsto_scaled_time_sum_of_localCLT` reads the same weight `g` in both time variables of the
+double time sum. The heat-potential invariance principle instead carries two different weights
+`g₁`, `g₂`, one for each mesh time; nothing else in the argument changes.
+`tendsto_scaled_time_sum_of_localCLT'` proves the two-weight version: the local central
+limit theorem controls the summand uniformly over the admissible pairs, and the
+parity-restricted Riemann sums turn the result into half of the double time integral, a
+factor the leading `2` in the pointwise approximation `f` cancels.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -22,6 +20,9 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- The scaled double time sum with two weights `g₁`, `g₂` equals the sum restricted to the
+parity-matching pairs `SameParity (p.1 + p.2) x y`, after splitting the power `R ^ (d - 4)`
+into `R ^ d * (R ^ 2)⁻¹ * (R ^ 2)⁻¹`. -/
 theorem scaled_time_sum_eq_filter' {R : ℝ} (hR : 0 < R) (T : ℝ) (g₁ g₂ : ℝ → ℝ)
     (x y : Site d) :
     R ^ ((d : ℝ) - 4) *
@@ -78,7 +79,8 @@ theorem tendsto_scaled_time_sum_of_localCLT'
     (continuous_heatKernelBM_max hd h2δ u v).comp (continuous_fst.add continuous_snd)
   have hcont : Continuous fun p : ℝ × ℝ => f p.1 p.2 := by
     rw [hfdef]
-    exact continuous_const.mul (((hg₁.comp continuous_fst).mul (hg₂.comp continuous_snd)).mul hcontK)
+    exact continuous_const.mul
+      (((hg₁.comp continuous_fst).mul (hg₂.comp continuous_snd)).mul hcontK)
   have hMbd : ∀ r r' : ℝ, |f r r'| ≤ 2 * (Q * Q * K) := by
     intro r r'
     have h1 : |f r r'|

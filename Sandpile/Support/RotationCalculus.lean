@@ -1,12 +1,22 @@
-/-
-The fundamental theorem of calculus and Jensen inequality along a
-quarter-circle interpolation between two points.
--/
 import Mathlib.Probability.Distributions.Gaussian.Fernique
 import Mathlib.Analysis.Convex.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+/-!
+# Calculus along a quarter-circle interpolation
+
+The fundamental theorem of calculus and Jensen's inequality along a quarter-circle
+interpolation between two points. Using `ContinuousLinearMap.rotation`, the pair `p = (p₁, p₂)`
+is rotated by angle `π/2 * t` as `t` runs from `0` to `1`, so the first coordinate moves from
+`p₁` to `p₂` while the second moves from `p₂` to `-p₁`. `hasDerivAt_rotation_fst` and
+`hasDerivAt_comp_rotation` compute the derivative in `t` of this first coordinate, and of
+`f` composed with it, by the chain rule. `exp_sub_le_integral_rotation` combines the resulting
+fundamental theorem of calculus identity `f p₂ - f p₁ = ∫₀¹ g(t) dt` with the convexity of
+`Real.exp` (Jensen's inequality) to bound `exp (a * (f p₂ - f p₁))` by the average over `t` of
+`exp (a * g(t))`, where `g(t)` is the derivative computed above.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped NNReal ENNReal
@@ -18,6 +28,9 @@ namespace Sandpile
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/-- The first coordinate of the quarter-circle rotation `t ↦ rotation (π/2 * t) p` has derivative
+`(π/2) • (rotation (π/2 * t) p).2`, i.e. `π/2` times the rotation's own second coordinate, by
+the chain rule applied to `cos` and `sin`. -/
 lemma hasDerivAt_rotation_fst (p : E × E) (t : ℝ) :
     HasDerivAt (fun s => (ContinuousLinearMap.rotation (Real.pi / 2 * s) p).1)
       ((Real.pi / 2) • (ContinuousLinearMap.rotation (Real.pi / 2 * t) p).2) t := by
@@ -30,6 +43,9 @@ lemma hasDerivAt_rotation_fst (p : E × E) (t : ℝ) :
   · simp only [ContinuousLinearMap.rotation_apply, smul_add, smul_smul, mul_one]
     congr 1 <;> congr 1 <;> ring
 
+/-- For `C¹` `f`, the composite `t ↦ f ((rotation (π/2 * t) p).1)` has derivative
+`(π/2) * fderiv ℝ f (rotation (π/2 * t) p).1 (rotation (π/2 * t) p).2` at `t`, by the chain rule
+combining `hasDerivAt_rotation_fst` with the Fréchet derivative of `f`. -/
 lemma hasDerivAt_comp_rotation {f : E → ℝ} (hf : ContDiff ℝ 1 f) (p : E × E) (t : ℝ) :
     HasDerivAt (fun s => f ((ContinuousLinearMap.rotation (Real.pi / 2 * s) p).1))
       (Real.pi / 2 * fderiv ℝ f ((ContinuousLinearMap.rotation (Real.pi / 2 * t) p).1)
@@ -38,6 +54,9 @@ lemma hasDerivAt_comp_rotation {f : E → ℝ} (hf : ContDiff ℝ 1 f) (p : E ×
     (hasDerivAt_rotation_fst p t)
   simpa only [map_smul, smul_eq_mul, Function.comp_def] using hh
 
+/-- The rotation map `(t, p) ↦ rotation (π/2 * t) p` is jointly continuous in the angle
+parameter `t` and the pair `p`, by unfolding it into continuous trigonometric and linear
+operations. -/
 lemma continuous_rotation_pair :
     Continuous (fun q : ℝ × (E × E) => ContinuousLinearMap.rotation (Real.pi / 2 * q.1) q.2) := by
   change Continuous (fun q : ℝ × (E × E) =>
@@ -45,13 +64,22 @@ lemma continuous_rotation_pair :
       -Real.sin (Real.pi / 2 * q.1) • q.2.1 + Real.cos (Real.pi / 2 * q.1) • q.2.2))
   fun_prop
 
+/-- For `C¹` `f`, the derivative expression `(π/2) * fderiv ℝ f (rotation (π/2 * q.1) q.2).1
+(rotation (π/2 * q.1) q.2).2` from `hasDerivAt_comp_rotation` is jointly continuous in the pair
+`q = (t, p)`, using continuity of `fderiv` for `C¹` functions and `continuous_rotation_pair`. -/
 lemma continuous_rotation_derivative {f : E → ℝ} (hf : ContDiff ℝ 1 f) :
     Continuous (fun q : ℝ × (E × E) =>
       Real.pi / 2 * fderiv ℝ f ((ContinuousLinearMap.rotation (Real.pi / 2 * q.1) q.2).1)
         ((ContinuousLinearMap.rotation (Real.pi / 2 * q.1) q.2).2)) := by
-  exact continuous_const.mul (((hf.continuous_fderiv one_ne_zero).comp continuous_rotation_pair.fst).clm_apply
-    continuous_rotation_pair.snd)
+  exact continuous_const.mul
+    (((hf.continuous_fderiv one_ne_zero).comp continuous_rotation_pair.fst).clm_apply
+      continuous_rotation_pair.snd)
 
+/-- **Jensen along the quarter-circle interpolation.** For `C¹` `f`, `exp (a * (f p.2 - f p.1))`
+is at most the average over `t ∈ [0, 1]` of `exp (a * g(t))`, where `g(t)` is the directional
+derivative of `f` along the rotation from `hasDerivAt_comp_rotation`. This follows by writing
+`f p.2 - f p.1 = ∫₀¹ g(t) dt` via the fundamental theorem of calculus and applying convexity of
+`Real.exp` (`convexOn_exp.map_integral_le`) to the uniform measure on `[0, 1]`. -/
 lemma exp_sub_le_integral_rotation {f : E → ℝ} (hf : ContDiff ℝ 1 f) (p : E × E) (a : ℝ) :
     Real.exp (a * (f p.2 - f p.1)) ≤
       ∫ t in (0 : ℝ)..1, Real.exp (a * (Real.pi / 2 *
@@ -66,7 +94,8 @@ lemma exp_sub_le_integral_rotation {f : E → ℝ} (hf : ContDiff ℝ 1 f) (p : 
         -Real.sin (Real.pi / 2 * t) • p.1 + Real.cos (Real.pi / 2 * t) • p.2))
     fun_prop
   have hg : Continuous g := by
-    exact continuous_const.mul (((hf.continuous_fderiv one_ne_zero).comp hrot.fst).clm_apply hrot.snd)
+    exact continuous_const.mul
+      (((hf.continuous_fderiv one_ne_zero).comp hrot.fst).clm_apply hrot.snd)
   have he : (∫ t in (0 : ℝ)..1, g t) = f p.2 - f p.1 := by
     have hh := intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1)
       (f := fun t => f ((ContinuousLinearMap.rotation (Real.pi / 2 * t) p).1)) (f' := g)

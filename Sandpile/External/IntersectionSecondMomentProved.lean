@@ -1,4 +1,10 @@
-/-
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.Support.LinIntersect
+import Sandpile.Support.Localization
+
+/-!
+# The second intersection moment is proved
+
 The second intersection moment `Sandpile.External.IntersectionSecondMoment`,
 Lawler, *Intersections of Random Walks*, proof of Theorem 3.3.2 (pp. 95-97),
 is no longer assumed.
@@ -36,9 +42,6 @@ ingredient is either already in `Sandpile.Support.LinIntersect` or is the
 ordinary (not strong) Markov property of the walk at a fixed time, already
 proved in the shared library for the optimal-stopping development.
 -/
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.Localization
 
 open MeasureTheory
 open scoped ENNReal
@@ -136,7 +139,8 @@ theorem walkLaw_apply_two_site [NeZero d] (hd : 1 ≤ d) (x z w : Site d) (i m :
   rw [integral_const_mul] at hmk
   have hint1 : ∫ X, Set.indicator {X : ℕ → Site d | X i = z ∧ X (i + m) = w} (fun _ => (1 : ℝ)) X
       ∂(walkLaw d x) = (walkLaw d x).real {X : ℕ → Site d | X i = z ∧ X (i + m) = w} := by
-    rw [integral_indicator_const (μ := walkLaw d x) (1 : ℝ) (measurableSet_path_eq_and i z (i + m) w),
+    rw [integral_indicator_const (μ := walkLaw d x) (1 : ℝ)
+        (measurableSet_path_eq_and i z (i + m) w),
       smul_eq_mul, mul_one]
   have hint2 : ∫ X, Set.indicator {X : ℕ → Site d | X i = z} (fun _ => (1 : ℝ)) X
       ∂(walkLaw d x) = heatKernel d i x z := by
@@ -271,6 +275,8 @@ theorem lintegral_localTime_mul_le [NeZero d] (hd : 3 ≤ d) (x z w : Site d) :
 
 /-! ### Translation invariance of the `ℓ²` Green mass -/
 
+/-- The two-point Green function is translation invariant: shifting both endpoints by the
+same `w'` does not change its value, by translation invariance of the heat kernel. -/
 theorem green_add_right (x y w' : Site d) : green d (x + w') (y + w') = green d x y :=
   tsum_congr fun k => heatKernel_add_right k x y w'
 
@@ -283,6 +289,8 @@ theorem tsum_green_sq_eq (z : Site d) :
     simpa using green_add_right 0 c z
   simpa using congrArg (fun r : ℝ => r ^ 2) hg
 
+/-- Square-summability of the Green function transports from the origin to any base point,
+by the same translation `green_add_right` uses. -/
 theorem summable_green_sq_of (hM : Summable fun w : Site d => green d 0 w ^ 2) (z : Site d) :
     Summable fun w : Site d => green d z w ^ 2 := by
   have h1 : Summable fun c : Site d => green d z (c + z) ^ 2 := by
@@ -302,6 +310,8 @@ d`, so that the Tonelli argument below needs only a single `tsum`. -/
 noncomputable def pairLT (p : Site d × Site d) (X : ℕ → Site d) : ℝ≥0∞ :=
   localTime p.1 X * localTime p.2 X
 
+/-- `pairLT` is measurable, being a product of the measurable local-time functionals at its
+two coordinates. -/
 theorem measurable_pairLT (p : Site d × Site d) : Measurable (pairLT p) :=
   (measurable_localTime p.1).mul (measurable_localTime p.2)
 
@@ -421,7 +431,8 @@ theorem tsum_green_matching_eq (_hd1 : 1 ≤ d)
 /-- **The crossed-orderings sum.**  The "crossed orderings" pattern sums to the
 `ofReal` of the crossed-ordering sum of `Sandpile.External.GreenBoundsHigh`. -/
 theorem tsum_green_crossed_eq (x y : Site d)
-    (hsum : Summable fun p : Site d × Site d => green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2) :
+    (hsum : Summable fun p : Site d × Site d =>
+      green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2) :
     (∑' p : Site d × Site d,
         ENNReal.ofReal (green d x p.1) * ENNReal.ofReal (green d y p.2)
           * (ENNReal.ofReal (green d p.1 p.2) * ENNReal.ofReal (green d p.1 p.2)))
@@ -441,7 +452,8 @@ theorem tsum_green_crossed_eq (x y : Site d)
   rw [tsum_congr hT2eq]
   exact (ENNReal.ofReal_tsum_of_nonneg
     (fun p : Site d × Site d =>
-      mul_nonneg (mul_nonneg (green_nonneg x p.1) (sq_nonneg (green d p.1 p.2))) (green_nonneg y p.2))
+      mul_nonneg (mul_nonneg (green_nonneg x p.1) (sq_nonneg (green d p.1 p.2)))
+        (green_nonneg y p.2))
     hsum).symm
 
 /-! ### The combinatorics of the four relative orderings -/
@@ -453,8 +465,8 @@ four relative orderings, identifies the two "matching" orderings (up to the
 Proposition 3.2.1 times the first intersection moment, and the two "crossed"
 orderings (again up to the swap) with the crossed-ordering sum bounded
 directly by `Sandpile.External.GreenBoundsHigh`.  This isolates the Green-sum
-combinatorics from the walk/measure-theoretic vocabulary of the surrounding
-theorem, which keeps each step's elaboration context small. -/
+combinatorics from the walk/measure-theoretic vocabulary of the surrounding proof, keeping
+each step's elaboration context small. -/
 theorem green_bound_combine (hd1 : 1 ≤ d)
     (hL2 : Summable fun w : Site d => green d 0 w ^ 2)
     (C1 C2 : ℝ) (hC1 : 0 < C1) (hC2 : 0 < C2)
@@ -502,8 +514,10 @@ theorem green_bound_combine (hd1 : 1 ≤ d)
     ENNReal.ofReal_le_ofReal (hcross x y).2
   have hgoal : ENNReal.ofReal (∑' w : Site d, green d 0 w ^ 2)
           * ENNReal.ofReal (∑' z : Site d, green d x z * green d y z)
-        + ENNReal.ofReal (∑' p : Site d × Site d, green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2)
-        + ENNReal.ofReal (∑' p : Site d × Site d, green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2)
+        + ENNReal.ofReal
+            (∑' p : Site d × Site d, green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2)
+        + ENNReal.ofReal
+            (∑' p : Site d × Site d, green d x p.1 * green d p.1 p.2 ^ 2 * green d y p.2)
         + ENNReal.ofReal (∑' w : Site d, green d 0 w ^ 2)
           * ENNReal.ofReal (∑' z : Site d, green d x z * green d y z)
       ≤ ENNReal.ofReal (∑' w : Site d, green d 0 w ^ 2)

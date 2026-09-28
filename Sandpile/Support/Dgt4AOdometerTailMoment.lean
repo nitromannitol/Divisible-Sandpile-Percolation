@@ -1,14 +1,18 @@
-/-
-The variance of `P^ju_n(0)` at the tail-kernel coefficients.  The functional reads the box
-`Q(0,n+j)`, its coordinate Lipschitz coefficient at `z` is the tail kernel
-`\sum_{r\geq j}p_r(0,z)`, and those are square summable in `d\geq5`
-(`eq:dgt4-tail-kernel`, `sandpile.tex:1303-1306`), so the product moment bound gives a
-second moment bounded by the square sum of the tail kernel.
--/
 import Sandpile.Support.Dgt4AOdometerTailLip
 import Sandpile.Support.Dgt4ATailKernelSq
 import Sandpile.Support.Concentration
 import Sandpile.Support.BlockIncrement
+
+/-!
+# Moment bound for the iterated odometer average at the tail-kernel coefficients
+
+The `p`-th moment of `P^ju_n(0)` at the tail-kernel coefficients. The functional reads the box
+`Q(0,n+j)`, so it factors through the finitely many coordinates there
+(`boxAvgIterateOdometer`), and its coordinatewise Lipschitz coefficient at `z` is the tail
+kernel `\sum_{r\geq j}p_r(0,z)` (`eq:dgt4-tail-kernel`, `sandpile.tex:1303-1306`); the general
+product moment bound of `Support/Concentration.lean` then bounds the `p`-th moment about the
+mean by `pairMoment ν p` times the `p/2`-th power of the square sum of the tail kernel.
+-/
 
 open LatticeProb
 
@@ -18,6 +22,7 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The tail kernel `\sum_{r\geq j}p_r(0,y)` is nonnegative, as a sum of heat-kernel values. -/
 theorem tailKernel_nonneg (j : ℕ) (y : Site d) :
     0 ≤ Sandpile.External.tailKernel d j y :=
   tsum_nonneg fun _ => heatKernel_nonneg _ _ _
@@ -40,16 +45,23 @@ noncomputable def boxAvgIterateOdometer (n j : ℕ)
     (ξ : Fin (boxFinset (0 : Site d) (n + j)).card → ℝ) : ℝ :=
   (avg^[j] (fun y => odometerOf (siteExtend (boxFinset (0 : Site d) (n + j)) ξ) n y)) 0
 
+/-- `boxAvgIterateOdometer n j` is measurable as a function of the box coordinates, being the
+composite of `siteExtend` with the measurable functional `avg^[j] (odometerOf · n)`. -/
 theorem measurable_boxAvgIterateOdometer (n j : ℕ) :
     Measurable (boxAvgIterateOdometer (d := d) n j) :=
   (measurable_avg_iterate_odometerOf j n 0).comp (measurable_siteExtend _)
 
+/-- `boxAvgIterateOdometer n j`, evaluated at the coordinates picked out of `ζ` by `siteEnum`,
+recovers `P^ju_n(0)` at `ζ` itself. -/
 theorem boxAvgIterateOdometer_pick (n j : ℕ) (ζ : Site d → ℝ) :
     boxAvgIterateOdometer n j
         (fun i => ζ (siteEnum (boxFinset (0 : Site d) (n + j)) i))
       = (avg^[j] (fun y => odometerOf ζ n y)) 0 :=
   avgIterate_odometerOf_congr_box n j _ ζ fun _ hz => siteExtend_siteEnum _ ζ hz
 
+/-- Changing one box coordinate `ξ i` of `boxAvgIterateOdometer n j` changes its value by at
+most the tail kernel at the corresponding site, times the size of the change: the box form of
+`abs_avgIterate_odometerOf_update_le`. -/
 theorem abs_boxAvgIterateOdometer_update_le (hd : 5 ≤ d) (n j : ℕ)
     (ξ : Fin (boxFinset (0 : Site d) (n + j)).card → ℝ)
     (i : Fin (boxFinset (0 : Site d) (n + j)).card) (v : ℝ) :

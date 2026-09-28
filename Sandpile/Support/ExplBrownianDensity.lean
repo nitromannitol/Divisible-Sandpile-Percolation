@@ -1,17 +1,25 @@
-/-
-The Brownian transition density for the generator Δ/(2d).
-
-The independent coordinate laws have variance r/d. Their product, transported
-to Euclidean space, gives the heat kernel and its integrable expectation formula.
--/
 import Sandpile.Support.ExplFieldSemigroup
 import Sandpile.Support.StopMeasurable
 import LatticeProb.Prob.GaussDensity
+
+/-!
+# The Brownian transition density for the generator `Δ/(2d)`
+
+The coordinates of a Brownian motion `B` on `Space d` are independent, each with variance
+`r/d` at time `r`, the normalization forced by the generator `Δ/(2d)`. Transporting the
+resulting product Gaussian law to Euclidean space via the coordinate isometry identifies the
+law of a Brownian increment `z + (B r - B 0)` with the measure of density `heatKernelBM d r z`,
+and yields the corresponding integrable transition expectation formula.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology LatticeProb
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- For a Brownian motion `B` on `Space d`, the `i`-th coordinate of the increment
+`z + (B r - B 0)` has law `gaussianReal (z i) (r / d)`, the variance forced on each
+coordinate by the generator `Δ/(2d)`. -/
 theorem brownian_shift_coord_hasLaw {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) {P : Measure Ω} {x : Space d}
     {B : ℝ≥0 → Ω → Space d} (hB : IsBrownian d x B P)
@@ -34,13 +42,18 @@ theorem brownian_shift_coord_hasLaw {Ω : Type*} [MeasurableSpace Ω]
   rw [mul_div_cancel_left₀ _ hs]
 
 
+/-- The measure on `Space d` with density the product Gaussian density
+`∏ i, gaussianPDF (z i) v` equals the pushforward of the product measure
+`Measure.pi (fun i => gaussianReal (z i) v)` under the coordinate isometry
+`MeasurableEquiv.toLp 2 (Fin d → ℝ)`. -/
 theorem euclidean_gaussDensity_mean_eq_map {d : ℕ} (z : Space d)
     (v : ℝ≥0) (hv : v ≠ 0) :
     (volume : Measure (Space d)).withDensity (fun y => ∏ i, gaussianPDF (z i) v (y i)) =
       (Measure.pi fun i : Fin d => gaussianReal (z i) v).map
         (MeasurableEquiv.toLp 2 (Fin d → ℝ)) := by
   classical
-  haveI (i : Fin d) : IsProbabilityMeasure ((volume : Measure ℝ).withDensity (gaussianPDF (z i) v)) := by
+  haveI (i : Fin d) :
+      IsProbabilityMeasure ((volume : Measure ℝ).withDensity (gaussianPDF (z i) v)) := by
     rw [← gaussianReal_of_var_ne_zero (z i) hv]
     infer_instance
   have hpi : Measure.pi (fun i : Fin d => gaussianReal (z i) v) =
@@ -49,12 +62,16 @@ theorem euclidean_gaussDensity_mean_eq_map {d : ℕ} (z : Space d)
     rw [pi_withDensity_prod (fun _ : Fin d => (volume : Measure ℝ))
       (fun i => gaussianPDF (z i) v) (fun i => measurable_gaussianPDF (z i) v), ← volume_pi]
   have hm : Measurable (fun y : Fin d → ℝ => ∏ i, gaussianPDF (z i) v (y i)) :=
-    Finset.measurable_prod _ fun i _ => (measurable_gaussianPDF (z i) v).comp (measurable_pi_apply i)
+    Finset.measurable_prod _ fun i _ =>
+      (measurable_gaussianPDF (z i) v).comp (measurable_pi_apply i)
   rw [hpi, map_withDensity_measurePreserving (MeasurableEquiv.toLp 2 (Fin d → ℝ))
     (PiLp.volume_preserving_toLp (Fin d)) hm]
   rfl
 
 
+/-- For a Brownian motion `B` on `Space d`, the pushforward law of `z + (B r - B 0)` under
+`P` is the measure on `Space d` with density `heatKernelBM d r z`, obtained by transporting
+the per-coordinate Gaussian laws of `brownian_shift_coord_hasLaw` to Euclidean space. -/
 theorem brownian_shift_map_heatKernelBM {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) {P : Measure Ω} {x : Space d}
     {B : ℝ≥0 → Ω → Space d} (hB : IsBrownian d x B P)
@@ -77,8 +94,10 @@ theorem brownian_shift_map_heatKernelBM {Ω : Type*} [MeasurableSpace Ω]
   have he : P.map (fun b => z + (B r b - B 0 b)) =
       (Measure.pi (fun i : Fin d => gaussianReal (z i) (Real.toNNReal ((r : ℝ) / d)))).map
         (MeasurableEquiv.toLp 2 (Fin d → ℝ)) := by
-    rw [← hp, AEMeasurable.map_map_of_aemeasurable (MeasurableEquiv.toLp 2 (Fin d → ℝ)).measurable.aemeasurable
-      (aemeasurable_pi_lambda _ fun i => (hl i).aemeasurable)]
+    rw [← hp,
+      AEMeasurable.map_map_of_aemeasurable
+        (MeasurableEquiv.toLp 2 (Fin d → ℝ)).measurable.aemeasurable
+        (aemeasurable_pi_lambda _ fun i => (hl i).aemeasurable)]
     rfl
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
   have hv : Real.toNNReal ((r : ℝ) / d) ≠ 0 := by positivity
@@ -89,6 +108,9 @@ theorem brownian_shift_map_heatKernelBM {Ω : Type*} [MeasurableSpace Ω]
     ENNReal.ofReal_prod_of_nonneg (fun i _ => gaussianPDFReal_nonneg (z i) _ (y i))]
   rfl
 
+/-- If `heatKernelBM d r z * f` is integrable, the observable `f (z + (B r - B 0))` is
+integrable under `P`, and its expectation is the transition expectation formula
+`∫ y, heatKernelBM d r z y * f y`. -/
 theorem brownian_transition_integral {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) {P : Measure Ω} {x : Space d}
     {B : ℝ≥0 → Ω → Space d} (hB : IsBrownian d x B P)
@@ -106,7 +128,8 @@ theorem brownian_transition_integral {Ω : Type*} [MeasurableSpace Ω]
     rw [hmap]
     apply (integrable_withDensity_iff_integrable_smul' (μ := (volume : Measure (Space d)))
       (g := f) hm (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)).mpr
-    simpa only [ENNReal.toReal_ofReal (heatKernelBM_nonneg d (show 0 ≤ (r : ℝ) from r.property) z _),
+    simpa only [ENNReal.toReal_ofReal
+        (heatKernelBM_nonneg d (show 0 ≤ (r : ℝ) from r.property) z _),
       smul_eq_mul] using hi
   refine ⟨(integrable_map_measure hf.aestronglyMeasurable hF).mp hif, ?_⟩
   calc (∫ b, f (F b) ∂P) = ∫ y, f y ∂P.map F :=

@@ -1,20 +1,19 @@
-/-
-A polynomial tail for the supremum of the continuous version of the Gaussian
-heat potential on a unit space-time box, uniform in the box's spatial centre.
-
-The potential is stationary in space (`exists_potential_moment_bound`,
-`exists_anchor_moment` are both bounds that hold at EVERY space point, not just
-inside a bounded region), so translating the unit box `[0,T] × [-1,1]^d` to any
-centre `v : Fin d → ℝ` costs nothing: the increment and anchor moments of the
-translated process are exactly the increment and anchor moments of the
-untranslated one, read at the translated point.  One application of
-`kolmogorov_polynomial_tail` therefore serves every centre with the same
-constant `B`.
--/
 import Sandpile.Support.GrowIncrementMoment
 import Sandpile.Support.GrowAnchorMoment
 import Sandpile.Support.MainExplKolmogorovTail
 import Sandpile.Support.GrowAeMoment
+
+/-!
+# A uniform polynomial tail for the potential on a unit box
+
+Gives a polynomial tail for the supremum of the continuous version of the Gaussian heat
+potential on a unit space-time box, uniform in the box's spatial centre. The potential is
+stationary in space, since the increment and anchor moment bounds hold at every space point
+and not merely inside a bounded region, so translating the unit box `[0, T] × [-1, 1]^d` to any
+centre `v : Fin d → ℝ` costs nothing: the increment and anchor moments of the translated process
+are exactly those of the untranslated one, read at the translated point. A single application of
+`kolmogorov_polynomial_tail` therefore serves every centre with the same constant `B`.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -24,17 +23,21 @@ open Sandpile.Continuum
 
 variable {d : ℕ}
 
-/-- The continuous version of the potential, read as a process on `Fin (d+1) → ℝ`
-with the spatial coordinates translated by `v`. -/
+/-- The process `Y` reindexed by a single coordinate `u : Fin (d + 1) → ℝ`, whose first
+coordinate `u 0` is read as time and whose remaining coordinates `u j.succ` are read as the
+spatial position shifted by the fixed centre `v : Fin d → ℝ`. -/
 noncomputable def piPotential {ΩW : Type*} (Y : ℝ × (Fin d → ℝ) → ΩW → ℝ) (v : Fin d → ℝ)
     (u : Fin (d + 1) → ℝ) (ω : ΩW) : ℝ :=
   Y (u 0, fun j => u j.succ + v j) ω
 
+/-- `piPotential Y v u` is measurable in `ω` whenever every time-space slice of `Y` is. -/
 theorem measurable_piPotential {ΩW : Type*} [MeasurableSpace ΩW] (Y : ℝ × (Fin d → ℝ) → ΩW → ℝ)
     (hYmeas : ∀ z, Measurable (Y z)) (v : Fin d → ℝ) (u : Fin (d + 1) → ℝ) :
     Measurable (piPotential Y v u) :=
   hYmeas _
 
+/-- For a fixed sample `ω`, `piPotential Y v · ω` is continuous in `u` whenever `Y · ω` is
+continuous, since it factors through the continuous reindexing map `u ↦ (u 0, u j.succ + v j)`. -/
 theorem continuousOn_piPotential {ΩW : Type*} (Y : ℝ × (Fin d → ℝ) → ΩW → ℝ)
     (hYcont : ∀ ω, Continuous fun z => Y z ω) (v : Fin d → ℝ) (ω : ΩW) :
     Continuous fun u : Fin (d + 1) → ℝ => piPotential Y v u ω := by
@@ -67,7 +70,8 @@ theorem exists_potential_box_tail (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
   set M : ℝ := max (Kc * K ^ q) Manc with hMdef
   have hab : boxLo d 1 ≤ boxHi d T 1 := boxLo_le_boxHi d 1 T hT.le zero_le_one
   have hq' : ((d + 1 : ℕ) : ℝ) < q := by push_cast; rw [hqdef]; linarith
-  obtain ⟨B, hB0, hB⟩ := kolmogorov_polynomial_tail (d + 1) (boxLo d 1) (boxHi d T 1) hab p q M hp hq'
+  obtain ⟨B, hB0, hB⟩ :=
+    kolmogorov_polynomial_tail (d + 1) (boxLo d 1) (boxHi d T 1) hab p q M hp hq'
   refine ⟨B, hB0, fun v Λ hΛ => ?_⟩
   refine hB PW inferInstance (piPotential Y v) (measurable_piPotential Y hYmeas v) ?_ ?_ ?_ ?_
     (fun ω => (continuousOn_piPotential Y hYcont v ω).continuousOn) Λ hΛ
@@ -110,7 +114,8 @@ theorem exists_potential_box_tail (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
     have hab : dist (fun j : Fin d => u j.succ + v j) (fun j : Fin d => u' j.succ + v j)
         = dist (fun j : Fin d => u j.succ) (fun j : Fin d => u' j.succ) := by
       rw [dist_eq_norm, dist_eq_norm, hfeq]
-    have hnormle : ‖x - x'‖ ≤ K * dist (fun j : Fin d => u j.succ) (fun j : Fin d => u' j.succ) := by
+    have hnormle : ‖x - x'‖
+        ≤ K * dist (fun j : Fin d => u j.succ) (fun j : Fin d => u' j.succ) := by
       rw [hxdef, hx'def]
       calc ‖(WithLp.toLp 2 (fun j : Fin d => u j.succ + v j) : Space d)
               - WithLp.toLp 2 (fun j : Fin d => u' j.succ + v j)‖

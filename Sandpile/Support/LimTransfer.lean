@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossLaw
+
+/-!
+# Transferring an all-rectangles crossing bound between spaces
+
 Carrying a crossing statement about all the prescribed rectangles at once from
 one space carrying white noise to another.
 
@@ -18,7 +22,6 @@ crossing event at two levels a distance `ε` apart.  Running the bracket twice,
 once up and once down, transfers a crossing bound from one space to another at
 the cost of lowering the level by `ε`, which the extraction absorbs into `c`.
 -/
-import Sandpile.Support.CrossLaw
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

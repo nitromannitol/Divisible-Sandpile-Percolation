@@ -1,22 +1,23 @@
-/-
-The `p`-th moment of a linear functional of an i.i.d. scenery, in terms of the
-`ℓ²` norm of its coefficient vector.
-
-The first conjunct of `lem-weighted-exp-conc` prices the `p`-th moment of a
-functional that is Lipschitz in each coordinate with constants `ℓ` by the two
-sums `∑ ℓ_i^2` and `∑ ℓ_i^p`.  For the linear functional `ξ ↦ ∑ c_i ξ_i` the
-constants are `ℓ_i = |c_i|`, the first sum is the squared `ℓ²` norm of `c`, and
-the second is dominated by the same quantity because the `ℓ^p` norm decreases in
-`p`.  So the `p`-th moment of the linear functional is at most a constant times
-the `ℓ²` norm of `c`, which is what the tightness clause of
-`prop:dlt4-heat-potential-invariance` asks of the increment of the interpolated
-field.
--/
 import Sandpile.Frozen.WeightedExpConcentration
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.ContCoeffL2
 import LatticeProb.Support.ContSums
+
+/-!
+# Moments of a linear functional of an i.i.d. scenery
+
+The weighted exponential concentration inequality prices the `p`-th moment of a functional
+that is Lipschitz in each coordinate with constants `ℓ_i` by the two sums `∑ ℓ_i ^ 2` and
+`∑ ℓ_i ^ p`. For the linear functional `ξ ↦ ∑ c_i ξ_i` the coordinate constants are `ℓ_i = |c_i|`,
+the first sum is the squared `ℓ²` norm of `c`, and the second is dominated by the same quantity
+because the `ℓ^p` norm decreases in `p`, so `exists_moment_linear_pi` bounds the `p`-th moment of
+the linear functional by a constant multiple of the `ℓ²` norm of `c`. Reading `N` distinct sites
+of the scenery of a centred mass field carries its law to the `N`-fold product of the one-site
+law, which transports this bound to the increment of the interpolated rescaled field
+(`exists_moment_linInterp_sub_le`), in terms of the `ℓ²` norm of the increment of its
+coefficient vector `interpCoeff`.
+-/
 
 open LatticeProb
 

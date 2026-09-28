@@ -1,4 +1,13 @@
-/-
+import Sandpile.Support.Dgt4ACondIntegrable
+import Sandpile.Support.Dgt4ACovIterate
+import Sandpile.Support.Dgt4ACondMeas
+import Sandpile.Support.Dgt4AStep2Prep
+import Sandpile.Support.Dgt4AStep2Site
+import Sandpile.Support.Stationary
+
+/-!
+# The terminal quantity of Step 2 at every level
+
 **The terminal quantity of Step 2 at the conditioned level** (`sandpile.tex:5092-5131`):
 the object `P^{k+1}|V_\infty-u_t+a|(0)` read as a function of the residual, its
 measurability, and the integrability of the conditional expectation at EVERY level.
@@ -8,12 +17,6 @@ The conditional expectation exists for almost every level by
 the level then carries integrability from one level to all of them, which is what the
 comparison of Step 2 needs at the particular level `\E u_n(0)+\Sigma^2y/\E u_n(0)`.
 -/
-import Sandpile.Support.Dgt4ACondIntegrable
-import Sandpile.Support.Dgt4ACovIterate
-import Sandpile.Support.Dgt4ACondMeas
-import Sandpile.Support.Dgt4AStep2Prep
-import Sandpile.Support.Dgt4AStep2Site
-import Sandpile.Support.Stationary
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -104,7 +107,8 @@ theorem integrable_condTerminal (hGH : Sandpile.External.GreenBoundsHigh) (hd : 
     filter_upwards [hres] with r hr
     have h := hlip cc r hr s₀ (s - s₀) a t k hk
     rw [show s₀ + (s - s₀) = s by ring] at h
-    have h2 : |condTerminal d hd cc s a t k r - condTerminal d hd cc s₀ a t k r| ≤ L * |cc * (s - s₀)| := h
+    have h2 : |condTerminal d hd cc s a t k r - condTerminal d hd cc s₀ a t k r|
+        ≤ L * |cc * (s - s₀)| := h
     have h3 := abs_sub_abs_le_abs_sub (condTerminal d hd cc s a t k r)
       (condTerminal d hd cc s₀ a t k r)
     linarith

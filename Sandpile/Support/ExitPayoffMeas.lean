@@ -2,6 +2,15 @@ import Sandpile.Support.Localization
 import Sandpile.Support.ExitAverage
 import Sandpile.Support.OriginKilled
 
+/-!
+# Measurability of the exit payoff
+
+`measurable_uncurry_exit_payoff` shows that the exit payoff, either zero when the walk has
+exited into `D` by the stopping time `stopBeforeExit` or else the localized odometer
+`localizedOdometer` evaluated at the stopped site, is jointly measurable in the scenery and
+the path.
+-/
+
 open MeasureTheory Filter Topology
 open scoped Classical
 

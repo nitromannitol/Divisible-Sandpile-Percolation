@@ -1,14 +1,23 @@
-/-
+import Sandpile.Support.CrossUnion
+
+/-!
+# Coordinate barriers block crossings
+
 A coordinate barrier on which the value is below the proposed crossing level
 prevents a continuum crossing, by the intermediate value property of a
 connected set. This applies even when the value has no continuity assumption.
 -/
-import Sandpile.Support.CrossUnion
 
 open MeasureTheory ProbabilityTheory Set Filter InnerProductSpace
 open Sandpile.Continuum Sandpile.Support Sandpile.Frozen.FixedScaleCrossings
 open scoped ENNReal NNReal RealInnerProductSpace
 
+/-- If every point of the rectangle `rectSet a b` on the coordinate hyperplane
+`{u | u i = v}` has value `U u ≤ H`, then no connected crossing curve `Γ` of
+the rectangle in coordinate `i` can lie entirely in `{u | H < U u}`: a
+crossing curve must meet that hyperplane (by connectedness / the intermediate
+value property), where its value is bounded by `H`, contradicting the strict
+crossing condition. -/
 theorem Sandpile.Support.not_crosses_of_coordinate_barrier
     {a b : Fin 2 → ℝ} {i : Fin 2} {v H : ℝ} {U : Space 2 → ℝ}
     (hv : a i ≤ v ∧ v ≤ b i)

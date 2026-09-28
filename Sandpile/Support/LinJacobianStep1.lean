@@ -1,17 +1,20 @@
-/-
-The split of Step 1 of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5755-5783`): the coordinate derivative of the tested field is the
-sum of its early and late parts, the site sum of its variances is at most twice
-the site sum of the early variances plus twice the site sum of the late second
-moments, and a quantity bounded that way for every `δ > 0` tends to zero.
-
-The last statement is the paper's "letting `δ ↓ 0`", written so that the early
-and late parts, the error `ε_R(δ)` and the `o(1)` of
-`eq:dgt4-late-derivative-variance` all depend on `δ`, as they do in the paper.
--/
 import Sandpile.Support.LinJacobianEarly
 import Sandpile.Support.LinJacobianLate
 import Sandpile.Support.LinVarSplit
+
+/-!
+# The early/late split of the coordinate-derivative variance in Step 1
+
+This module proves the split of Step 1 of `lem:dgt4-linearization-from-survival`
+(`sandpile.tex:5755-5783`): the coordinate derivative of the tested field is the sum of its early
+and late parts, the site sum of its variances is at most twice the site sum of the early
+variances plus twice the site sum of the late second moments (`tsum_variance_split`), and a
+quantity bounded that way for every `δ > 0` tends to zero (`tendsto_zero_of_delta_split`).
+
+The last statement is the paper's "letting `δ ↓ 0`", written so that the early and late parts,
+the error `ε_R(δ)` and the `o(1)` of `eq:dgt4-late-derivative-variance` all depend on `δ`, as
+they do in the paper.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -22,8 +25,8 @@ variable {d : ℕ}
 /-- **Letting `δ ↓ 0`** (`sandpile.tex:5770-5778`).  A nonnegative quantity that
 for every `δ > 0` is eventually at most `2(Cε_R + C/(δR²)) + 2(Cδ² + o_R)` tends
 to zero. -/
-theorem tendsto_zero_of_delta_split {l : Filter ℝ} (V : ℝ → ℝ) (early late : ℝ → ℝ → ℝ) (C : ℝ) (hC : 0 ≤ C)
-    (δ₀ : ℝ) (hδ₀ : 0 < δ₀)
+theorem tendsto_zero_of_delta_split {l : Filter ℝ} (V : ℝ → ℝ) (early late : ℝ → ℝ → ℝ)
+    (C : ℝ) (hC : 0 ≤ C) (δ₀ : ℝ) (hδ₀ : 0 < δ₀)
     (hnonneg : ∀ᶠ R : ℝ in l, 0 ≤ V R)
     (hsplit : ∀ δ : ℝ, 0 < δ → δ < δ₀ →
       ∀ᶠ R : ℝ in l, V R ≤ 2 * early δ R + 2 * late δ R)

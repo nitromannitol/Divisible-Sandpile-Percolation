@@ -1,8 +1,11 @@
-/-
-The square summability of the tail kernel, `eq:dgt4-tail-kernel` of
-`sandpile.tex:1303-1306`, read off the Green-bounds input.
--/
 import Sandpile.External.GreenBoundsHigh
+
+/-!
+# Square summability of the tail kernel
+
+The square summability of the tail kernel, `eq:dgt4-tail-kernel` of `sandpile.tex:1303-1306`, read
+off the Green-bounds input.
+-/
 
 open MeasureTheory Filter Topology
 

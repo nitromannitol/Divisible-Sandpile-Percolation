@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinSurvEarlyVarExpansion
+import Sandpile.Support.LinEarlyVarArith
+
+/-!
+# The early bound of the derivative-variance expansion
+
 The early bound of `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`).
 
 The paper expands `∑_z Var(D^{≤}_{R,z})` over two independent walks and then
@@ -9,8 +14,6 @@ do not mention the walk-pair expansion: the per-pair integral bound, which is
 integral, and the summation over the pairs of sites, which is linearity of the
 finite sum against the two moment bounds.
 -/
-import Sandpile.Support.LinSurvEarlyVarExpansion
-import Sandpile.Support.LinEarlyVarArith
 
 open MeasureTheory ProbabilityTheory
 

@@ -1,15 +1,18 @@
-/-
-The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the two analytic residuals of its proof, with the two realization spaces bound
-explicitly as the frozen statement binds them.
-
-The first residual is samplewise polynomial growth of the field on the time strip,
-which supplies the boundedness of the attainable payoffs and of the far values; the
-second is the strong Markov step at the exit time of the ball.  The assembly
-`brownian_ball_localization_of_growth_and_step` carries both, and this file is that
-statement with the spaces bound before the motion, as the frozen node has them.
--/
 import Sandpile.Support.ExplBallAssembly
+
+/-!
+# The ball-localization lemma from its two residuals, spaces bound first
+
+The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) from the two
+analytic residuals of its proof, with the two realization spaces bound explicitly as the frozen
+statement binds them.
+
+The first residual is samplewise polynomial growth of the field on the time strip, which supplies
+the boundedness of the attainable payoffs and of the far values; the second is the strong Markov
+step at the exit time of the ball. The assembly `brownian_ball_localization_of_growth_and_step`
+carries both, and this file is that statement with the spaces bound before the motion, as the
+frozen node has them.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -48,6 +51,7 @@ theorem brownian_ball_localization_of_residuals (d : ℕ) (_hd : d < 4) :
   obtain ⟨C, c, hC, hc, hmain⟩ := brownian_ball_localization_of_growth_and_step (d := d)
   refine ⟨C, c, hC, hc, ?_⟩
   intro T hT A hA K hK PW hPW PB hPB B hBrown hcont hmeas Z p C₀ hC₀ hgrowth hcontZ hstep
-  exact hmain T hT A hA K hK ΩW PW ΩB PB B hBrown hcont (fun y t => (hmeas y t).measurable) Z p C₀ hC₀ hgrowth hcontZ hstep
+  exact hmain T hT A hA K hK ΩW PW ΩB PB B hBrown hcont
+    (fun y t => (hmeas y t).measurable) Z p C₀ hC₀ hgrowth hcontZ hstep
 
 end Sandpile.Continuum

@@ -1,13 +1,15 @@
-/-
-The two branches of the threshold field of `sandpile.tex:5454-5455`: "Set
-`J=-V_∞` in case (a) and `J=-G(0,0)ζ` in case (b)."  Either branch, together
-with the threshold asymptotic and the threshold comparison for that `J`, is
-`CaseThresholdField`, the single input that `prop:dgt4-contact-asymptotics` and
-`prop:dgt4-linearization` still need.
--/
 import Sandpile.Support.Dgt4Assembly
 import Sandpile.Support.Dgt4ThresholdChain
 import Sandpile.Support.InfiniteGreenField
+
+/-!
+# Selecting the threshold field by case
+
+The two branches of the threshold field of `sandpile.tex:5454-5455`: "Set `J=-V_∞` in case (a) and
+`J=-G(0,0)ζ` in case (b)." Either branch, together with the threshold asymptotic and the threshold
+comparison for that `J`, is `CaseThresholdField`, the single input that
+`prop:dgt4-contact-asymptotics` and `prop:dgt4-linearization` still need.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

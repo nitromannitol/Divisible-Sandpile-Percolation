@@ -1,29 +1,28 @@
-/-
-Step 1 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:5930-6051`), named.
-
-The paper constructs a one-site law with a band structure: parameters
-`ℓ_0 < ℓ_1 < 1`, `1/ℓ_1 < λ_0 < 1/ℓ_0`, `A > 1` with
-`1 - λ_0 ℓ_1 + (λ_0 - 1)/A < 0`, exponents `ϑ_k ∈ [1,2]` with subsequential
-limit set `[1,2]`, levels `a_k = A^k`, weights `ω_k = c_0 e^{-a_k}`, and
-variables `B_k ∈ [ℓ_1,1]` with `P(B_k > y) = ((1-y)/(1-ℓ_1))^{ϑ_k}`.  The law
-`ζ(0) = μ + η + Γ` of `eq:dgt4-band-law` is a mixture of the atoms `-a_k B_k`
-with weights `ω_k` plus a `Γ` with density proportional to `e^{-x^4}`, shifted
-to mean zero.
-
-Step 1 establishes, for this law, the tail order `eq:dgt4-band-tail-order`, the
-band profile `eq:dgt4-band-profile`, the density bound `eq:dgt4-band-density`,
-and the two isolation estimates `eq:dgt4-band-upper-isolation` and
-`eq:dgt4-band-lower-isolation`.  Step 2 (`sandpile.tex:6051-6275`) then adds the
-origin-fixed concentration `eq:dgt4-band-origin-fixed-concentration` and the
-origin-fixed lower tail `eq:dgt4-band-origin-fixed-lower-tail`, and derives the
-two band limits.
-
-`BandLawProfile` names the four Step-1 estimates as a predicate on a law and its
-band parameters; `BandLawStep2` adds the two origin-fixed estimates.  Both are
-statements about the constructed law only, so they are the honest interface of
-Step 1 and Step 2.
--/
 import Sandpile.Support.ManyLStep3
+
+/-!
+# The band parameters and the four Step-1 estimates
+
+Step 1 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:5930-6051`), named. The paper
+constructs a one-site law with a band structure: parameters `ℓ_0 < ℓ_1 < 1`, `1/ℓ_1 < λ_0 <
+1/ℓ_0`, `A > 1` with `1 - λ_0 ℓ_1 + (λ_0 - 1)/A < 0`, exponents `ϑ_k ∈ [1,2]` with
+subsequential limit set `[1,2]`, levels `a_k = A^k`, weights `ω_k = c_0 e^{-a_k}`, and variables
+`B_k ∈ [ℓ_1,1]` with `P(B_k > y) = ((1-y)/(1-ℓ_1))^{ϑ_k}`. The law `ζ(0) = μ + η + Γ` of
+`eq:dgt4-band-law` is a mixture of the atoms `-a_k B_k` with weights `ω_k` plus a `Γ` with
+density proportional to `e^{-x^4}`, shifted to mean zero. `BandParameters` packages the constants
+and hypotheses, with `BandParameters.level` and `BandParameters.weight` giving `a_k` and `ω_k`.
+
+Step 1 establishes, for this law, the tail order `eq:dgt4-band-tail-order` (`BandProfile`), the
+density bound `eq:dgt4-band-density` (`BandDensity`), and the two isolation estimates
+`eq:dgt4-band-upper-isolation` (`BandUpperIsolation`) and `eq:dgt4-band-lower-isolation`
+(`BandLowerIsolation`), bundled as `BandLawProfile`. Step 2 (`sandpile.tex:6051-6275`) then adds
+the origin-fixed concentration `eq:dgt4-band-origin-fixed-concentration` and the origin-fixed
+lower tail `eq:dgt4-band-origin-fixed-lower-tail`, and derives the two band limits.
+
+`BandLawProfile` is a statement about the constructed law only, so it is the honest interface
+between Step 1 and the rest of the proof: later files consume the four estimates through this
+predicate without depending on the mixture construction itself.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

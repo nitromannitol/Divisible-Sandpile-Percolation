@@ -1,32 +1,19 @@
-/-
-The passage, common to both cases of `prop:dgt4-contact-asymptotics`, from the
-mean-increment estimate to the increments of the reciprocal threshold
-probability.
-
-In case (a) the paper writes it out at `sandpile.tex:5001-5011`: the
-Mills-ratio asymptotics turn `eq:dgt4-contact-mean-increment` into
-`\E u_{n+1}(0)-\E u_n(0)\sim\Sigma^2\P(-V_\infty(0)>\E u_n(0))/(G(0,0)\E u_n(0))`,
-whence `\E u_n(0)(\E u_{n+1}(0)-\E u_n(0))\to0`, and then "a first-order
-expansion of the tail" gives
-
-  `1/\P(-V_\infty(0)>\E u_{n+1}(0))-1/\P(-V_\infty(0)>\E u_n(0))\to1/G(0,0)`,
-
-which `thresholdTailAsymptotics_of_inverse_increment` inverts.
-
-The content is four factors, each tending to one.  Writing `b n` for the
-threshold probability at `\E u_n(0)`, `D n` for its decrement, `dl n` for the
-increment of the mean odometer, `I n` for the integrated tail at `\E u_n(0)`,
-`p n` for the density there and `t n` for `\E u_n(0)` itself, they are
-
-  `G\,dl n/I n\to1`                 the paper's mean-increment estimate,
-  `t n\,I n/(v\,b n)\to1`           the Mills ratio for the integrated tail,
-  `v\,p n/(t n\,b n)\to1`           the Mills ratio for the tail itself,
-  `D n/(p n\,dl n)\to1`             the first-order expansion of the tail,
-
-and their product with `G⁻¹` is `D n/(b n)^2`, which is the increment of the
-reciprocal because `b (n+1)=b n-D n`.
--/
 import Sandpile.Support.Dgt4ThresholdChain
+
+/-!
+# From the mean-increment estimate to the reciprocal threshold chain
+
+This file proves the passage, common to both cases of `prop:dgt4-contact-asymptotics`, from the
+mean-increment estimate to the increments of the reciprocal threshold probability. Writing `b n`
+for the threshold probability at `𝔼 u_n(0)`, `D n` for its decrement, `dl n` for the increment
+of the mean odometer, `I n` for the integrated tail at `𝔼 u_n(0)`, `p n` for the density there
+and `t n` for `𝔼 u_n(0)` itself, the chain assembles four factors each tending to one: the
+mean-increment estimate `G dl n / I n → 1`, the two Mills ratios `t n I n / (v b n) → 1` and
+`v p n / (t n b n) → 1`, and the first-order tail expansion `D n / (p n dl n) → 1`. Their product
+with `G⁻¹` is `D n / (b n)^2`, the increment of the reciprocal `(b (n+1))⁻¹ - (b n)⁻¹` since
+`b (n+1) = b n - D n`; the file also isolates the abstract Mills-ratio squeezes and the tail
+expansion that feed the two case-specific proofs.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

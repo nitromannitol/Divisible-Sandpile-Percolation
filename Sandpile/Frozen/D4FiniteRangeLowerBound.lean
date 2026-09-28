@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.FiniteRange
+
+/-!
+# Finite-range lower bound in dimension four
+
 Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3950-3958`
 (label `lem:d4-finite-range-lower-bound`):
 
@@ -47,7 +51,6 @@ the smallest sigma-algebra making the scenery values inside that box
 measurable.  "For all large `r`" is `∀ᶠ r in atTop`; the first clause carries
 no largeness, matching the paper, which states it for every `z`.
 -/
-import Sandpile.Support.FiniteRange
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

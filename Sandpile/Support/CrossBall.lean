@@ -1,20 +1,21 @@
-/-
-The ball field of `sandpile.tex:2076-2088` and the plane symmetries: the first
-step of the symmetry hypothesis the continuum crossing comparison asks for.
-
-`𝒳_s(u)` is the white noise tested against `ballKernel d s u`, the Green
-function of the ball of radius `s` about `u`, so the kernel depends on `u` and
-on the integration variable `z` only through the vector `planePoint u - z`.
-Translating the point of the plane is therefore translating the kernel
-(`ballKernel_translate`), and since the covariance of the white noise is the
-`L²` inner product, which is invariant under a translation of the plane, the
-translated ball field has the same finite-dimensional distributions as the ball
-field.  That is `Sandpile.Continuum.IsSymmetricField` for the translation part;
-the coordinate interchange and the sign changes are the same computation for the
-corresponding change of variables, and the sign flip of the values is the
-symmetry of the centred Gaussian law.  Those steps are not written here.
--/
 import Sandpile.Support.CrossField
+
+/-!
+# Translation symmetry of the ball field
+
+The ball field of `sandpile.tex:2076-2088` and the plane symmetries: the first step of the
+symmetry hypothesis the continuum crossing comparison asks for. `𝒳_s(u)` is the white
+noise tested against `ballKernel d s u`, the Green function of the ball of radius `s` about
+`u`, so the kernel depends on `u` and on the integration variable `z` only through the
+vector `planePoint u - z`. Translating the point of the plane is therefore translating the
+kernel (`ballKernel_translate`), and since the covariance of the white noise is the `L²`
+inner product, which is invariant under a translation of the plane, the translated ball
+field has the same finite-dimensional distributions as the ball field. That is
+`Sandpile.Continuum.IsSymmetricField` for the translation part; the coordinate interchange
+and the sign changes are the same computation for the corresponding change of variables,
+and the sign flip of the values is the symmetry of the centred Gaussian law. Those steps
+are not written here.
+-/
 
 open MeasureTheory Set
 

@@ -1,10 +1,14 @@
-/-
-The band-mixture weights in Step 1 of `thm:dgt4-many-limits`
-(`sandpile.tex:5946-5947,5967-5970,6018-6030`). Exponential moments are
-summable, and the mass and first moment of later bands are negligible compared
-with the current band. Every series used in the bounds is summable.
--/
 import Sandpile.Support.Dgt4ABandLaw
+
+/-!
+# Band-mixture weight estimates
+
+The band-mixture weights in Step 1 of `thm:dgt4-many-limits`
+(`sandpile.tex:5946-5947,5967-5970,6018-6030`). Exponential moments are summable
+(`BandParameters.summable_weight_exp`), and the mass and first moment of later bands are
+negligible compared with the current band (`BandParameters.weight_tail_ratio_tendsto`,
+`BandParameters.level_weight_tail_ratio_tendsto`). Every series used in the bounds is summable.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

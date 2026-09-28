@@ -1,4 +1,6 @@
-/-
+import Sandpile.Support.LinEscape
+
+/-!
 The return probability of Step 3 of case (a): "Since
 `\P_0(\tau_0^+\leq k_n)\to1-G(0,0)^{-1}`" (`sandpile.tex:5212`).
 
@@ -8,7 +10,6 @@ events decrease to the event that the walk never returns, whose probability is
 `escProb d`.  The escape probability is `G(0,0)^{-1}` by `escProb_eq`, the one-step
 decomposition of `Support/LinEscape.lean`.
 -/
-import Sandpile.Support.LinEscape
 
 open MeasureTheory Filter Topology
 

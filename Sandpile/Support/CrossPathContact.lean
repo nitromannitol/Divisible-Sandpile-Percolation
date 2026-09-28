@@ -1,11 +1,24 @@
-/- First and last contact times for continuous real functions. -/
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Topology.Order.Compact
 import Mathlib.Topology.Instances.Real.Lemmas
 
+/-!
+# First and last contact times for continuous real functions
+
+For a continuous `f : ℝ → ℝ` sandwiching a level `c` between its values at the endpoints
+of an interval `[a, b]`, this file isolates the first time (`exists_first_contact`) and the
+last time (`exists_last_contact`) in `[a, b]` at which `f` actually equals `c`. Each contact
+time is produced as an extremum of the (compact, nonempty by the intermediate value theorem)
+level set `Icc a b ∩ f ⁻¹' {c}`, together with the one-sided bound on `f` that makes it the
+first, respectively last, such time.
+-/
+
 open Set
 namespace Sandpile.Support.CrossPathContact
 
+/-- Between `a ≤ b` with `f a ≤ c ≤ f b`, there is a first time `t ∈ Icc a b` where `f t = c`:
+the minimum of the (compact, nonempty) level set `Icc a b ∩ f ⁻¹' {c}`, characterized by
+`f u ≤ c` for every `u` up to `t`. -/
 theorem exists_first_contact {f : ℝ → ℝ} (hf : Continuous f)
     {a b c : ℝ} (hab : a ≤ b) (ha : f a ≤ c) (hb : c ≤ f b) :
     ∃ t ∈ Icc a b, f t = c ∧ ∀ u ∈ Icc a t, f u ≤ c := by
@@ -24,6 +37,9 @@ theorem exists_first_contact {f : ℝ → ℝ} (hf : Continuous f)
   rw [hvu] at hev
   exact hgt.ne' hev
 
+/-- Between `a ≤ b` with `f a ≤ c ≤ f b`, there is a last time `t ∈ Icc a b` where `f t = c`:
+the maximum of the (compact, nonempty) level set `Icc a b ∩ f ⁻¹' {c}`, characterized by
+`c ≤ f u` for every `u` from `t` onward. -/
 theorem exists_last_contact {f : ℝ → ℝ} (hf : Continuous f)
     {a b c : ℝ} (hab : a ≤ b) (ha : f a ≤ c) (hb : c ≤ f b) :
     ∃ t ∈ Icc a b, f t = c ∧ ∀ u ∈ Icc t b, c ≤ f u := by

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Iterate
+import Sandpile.External.HeatKernelBounds
+
+/-!
+# Small-Power Heat Kernel Bounds
+
 The small-power decay of the doubled heat kernel in dimension four, the input
 that `prop:d4-diffusive-tightness` (`sandpile.tex:3288-3316`) feeds to the
 tightness criterion.  The paper's chain is
@@ -13,8 +18,6 @@ because `(a+1)(b+1)\leq4(a+b)^2`, so the double sum splits into the square of a
 one-dimensional sum, and `\sum_{m<M}(m+1)^{\delta-1}\leq M^{\delta}/\delta` by
 induction from the weighted arithmetic-geometric mean inequality.
 -/
-import Sandpile.Support.Iterate
-import Sandpile.External.HeatKernelBounds
 
 open MeasureTheory
 
@@ -22,6 +25,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The heat kernel is invariant under negating both endpoints:
+`heatKernel d k (-x) (-y) = heatKernel d k x y`, proved by induction on `k` using the
+symmetry of the one-step recursion under `x ↦ -x`. -/
 theorem heatKernel_neg : ∀ (k : ℕ) (x y : Site d),
     heatKernel d k (-x) (-y) = heatKernel d k x y := by
   intro k
@@ -45,6 +51,9 @@ theorem heatKernel_neg : ∀ (k : ℕ) (x y : Site d),
       rw [h1, h2, ih (x - unit i) y, ih (x + unit i) y]
       ring
 
+/-- The heat kernel is symmetric in its two sites: `heatKernel d k x y = heatKernel d k y x`,
+obtained by translating both sides to be based at `0` via `heatKernel_add_right` and then
+applying `heatKernel_neg`. -/
 theorem heatKernel_symm (k : ℕ) (x y : Site d) :
     heatKernel d k x y = heatKernel d k y x := by
   have h1 : heatKernel d k x y = heatKernel d k (x - y) 0 := by
@@ -59,10 +68,16 @@ theorem heatKernel_symm (k : ℕ) (x y : Site d) :
     exact this.symm
   rw [h1, h2, h3]
 
+/-- The finite-time Green function is symmetric: `greenTime d t x y = greenTime d t y x`,
+by summing `heatKernel_symm` over the first `t` times. -/
 theorem greenTime_symm (t : ℕ) (x y : Site d) :
     greenTime d t x y = greenTime d t y x :=
   Finset.sum_congr rfl fun k _ => heatKernel_symm k x y
 
+/-- The inner product of two finite-time Green functions decomposes as a double sum of heat
+kernels: `∑'_z greenTime t x z * greenTime t y z = ∑_{a<t} ∑_{b<t} heatKernel (a+b) x y`,
+obtained by expanding `greenTime` as a sum over one factor and applying the heat-kernel
+convolution identity `tsum_heatKernel_mul_greenTime` to the other. -/
 theorem tsum_greenTime_mul_greenTime (t : ℕ) (x y : Site d) :
     ∑' z : Site d, greenTime d t x z * greenTime d t y z
       = ∑ a ∈ Finset.range t, ∑ b ∈ Finset.range t, heatKernel d (a + b) x y := by
@@ -80,6 +95,8 @@ end Sandpile
 
 namespace Sandpile.Support
 
+/-- The elementary bound `exp (-q) ≤ q ^ (-ε)` for `0 < ε ≤ 1` and `q > 0`, proved from
+`q ^ ε ≤ 1 + q ≤ exp q` by taking reciprocals. -/
 theorem exp_neg_le_rpow_neg (ε q : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (hq : 0 < q) :
     Real.exp (-q) ≤ q ^ (-ε) := by
   have h1 : q ^ ε ≤ 1 + q := by
@@ -97,6 +114,9 @@ theorem exp_neg_le_rpow_neg (ε q : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (hq : 
   rw [Real.rpow_neg (le_of_lt hq), Real.exp_neg]
   exact inv_anti₀ h3 (le_trans h1 h2)
 
+/-- The partial-sum bound `∑_{m<M} (m+1)^{ε-1} ≤ M^ε / ε` for `0 < ε ≤ 1`, proved by
+induction on `M` from the weighted arithmetic-geometric mean inequality comparing
+`(n+1)^ε` with `n^ε + ε (n+1)^{ε-1}`. -/
 theorem sum_succ_rpow_le (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (M : ℕ) :
     ∑ m ∈ Finset.range M, ((m : ℝ) + 1) ^ (ε - 1) ≤ (M : ℝ) ^ ε / ε := by
   induction M with
@@ -127,6 +147,9 @@ theorem sum_succ_rpow_le (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (M : ℕ) :
     push_cast
     nlinarith [hkey, ih']
 
+/-- The pair factorization `(a+b)^{ε-2} ≤ 4(a+1)^{ε/2-1}(b+1)^{ε/2-1}` for `a + b ≥ 1`,
+proved from the elementary inequality `(a+1)(b+1) ≤ 4(a+b)^2` by taking the `(ε-2)/2`
+power of both sides. -/
 theorem pair_factor (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (a b : ℕ) (hab : 1 ≤ a + b) :
     ((a : ℝ) + (b : ℝ)) ^ (ε - 2)
       ≤ 4 * ((a : ℝ) + 1) ^ (ε / 2 - 1) * ((b : ℝ) + 1) ^ (ε / 2 - 1) := by
@@ -169,6 +192,9 @@ theorem pair_factor (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (a b : ℕ) (hab
   rw [hL, hR] at hmain
   nlinarith [hmain, hpos, h4le]
 
+/-- The Gaussian small-power bound `exp(-c L² / m) ≤ exp(c) c^{-ε} m^ε (1 + L²)^{-ε}` for
+`m ≥ 1`, proved by splitting the exponent into `c/m + -(c(1+L²)/m)` and bounding the
+second term via `exp_neg_le_rpow_neg`. -/
 theorem exp_gauss_small_power (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (c : ℝ) (hc : 0 < c)
     (m : ℕ) (hm : 1 ≤ m) (L : ℝ) :
     Real.exp (-c * L ^ 2 / (m : ℝ))
@@ -198,6 +224,10 @@ theorem exp_gauss_small_power (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (c : �
         exact mul_le_mul h2 h3 (le_of_lt (Real.exp_pos _)) (le_of_lt (Real.exp_pos _))
     _ = Real.exp c * c ^ (-ε) * (m:ℝ) ^ ε * (1 + L ^ 2) ^ (-ε) := by rw [h4]; ring
 
+/-- A four-dimensional heat kernel bound splitting the time and space dependence: there is
+`C₂ > 0` with `heatKernel 4 (a+b) x y ≤ C₂ (1+|x-y|²)^{-ε} (a+1)^{ε/2-1} (b+1)^{ε/2-1}` for
+all `a, b, x, y`, obtained by combining the Gaussian upper bound `hHK` with
+`exp_gauss_small_power` and `pair_factor`, treating `a = b = 0` separately. -/
 theorem exists_heatKernel_product_bound (hHK : Sandpile.External.HeatKernelBounds)
     (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) :
     ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ (a b : ℕ) (x y : Sandpile.Site 4),
@@ -281,6 +311,10 @@ theorem exists_heatKernel_product_bound (hHK : Sandpile.External.HeatKernelBound
       _ = C₂ * (1 + L ^ 2) ^ (-ε) * ((a:ℝ) + 1) ^ (ε / 2 - 1) * ((b:ℝ) + 1) ^ (ε / 2 - 1) := by
           ring
 
+/-- The double-sum bound `∑_{a<t} ∑_{b<t} f(a+b) ≤ K(4/ε²) t^ε` for any `f` satisfying the
+pair factorization `f(a+b) ≤ K(a+1)^{ε/2-1}(b+1)^{ε/2-1}`, proved by factoring the double
+sum as a product of two one-dimensional sums and bounding each with `sum_succ_rpow_le` at
+exponent `ε/2`. -/
 theorem double_sum_factor_bound (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
     (K : ℝ) (hK : 0 ≤ K) (f : ℕ → ℝ) (t : ℕ)
     (hf : ∀ a b : ℕ, f (a + b) ≤ K * ((a : ℝ) + 1) ^ (ε / 2 - 1) * ((b : ℝ) + 1) ^ (ε / 2 - 1)) :

@@ -1,16 +1,27 @@
-/-
-The first-order odometer limit in dimension four. The logarithmic variance
-bound gives convergence in L2. Concentration on exponential square-root
-scales, followed by monotonicity and mean concavity, gives almost-sure convergence.
--/
 import Sandpile.Support.D4Concentration
 import Sandpile.Support.D4MeanLower
+
+/-!
+# The first-order odometer limit in dimension four
+
+This file proves that the ratio of the dimension-four odometer to its mean converges to `1`,
+both in `L²` and almost surely. `tendsto_ratio_L2_four` gets `L²` convergence directly from the
+logarithmic variance bound `exists_odometer_variance_bound_four` together with the logarithmic
+lower bound on the mean, by a squeeze argument. `tendsto_ratio_ae_four` gets almost-sure
+convergence along the exponential square-root time scale `scaleTime` from a Borel–Cantelli
+argument using the concentration bound, and then transfers this along-scale convergence to full
+convergence in `t` using the monotonicity of the odometer in time and the concavity of the mean
+odometer (`tendsto_ratio_of_scales`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- Given a two-regime concentration bound and a logarithmic lower bound on the mean odometer,
+the odometer at every fixed site `x`, divided by the mean odometer, converges almost surely to
+`1` as `t → ∞`, in dimension four. -/
 theorem tendsto_ratio_ae_four (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν)
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
@@ -60,7 +71,8 @@ theorem tendsto_ratio_ae_four (ν : Measure ℝ) [IsProbabilityMeasure ν]
     set g : ℕ → ℝ := fun k => C * Real.exp (-(β * (k : ℝ) ^ ((1 : ℝ) / 2)))
       with hg
     have hgnn : ∀ k, 0 ≤ g k := fun k => by positivity
-    have hgsum : Summable g := (summable_exp_neg_rpow hβpos (by norm_num : (0 : ℝ) < 1 / 2)).mul_left _
+    have hgsum : Summable g :=
+      (summable_exp_neg_rpow hβpos (by norm_num : (0 : ℝ) < 1 / 2)).mul_left _
     have hbound : ∀ k : ℕ,
         P {σ | ε * M (n k) ≤ |odometer σ (n k) x - M (n k)|} ≤ ENNReal.ofReal (g k) := by
       intro k

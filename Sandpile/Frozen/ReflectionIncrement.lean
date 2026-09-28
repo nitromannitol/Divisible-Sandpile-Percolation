@@ -1,4 +1,10 @@
-/-
+import Sandpile.Walk
+import Sandpile.Law
+import Sandpile.Support.Translation
+
+/-!
+# Reflection increment identity for the mean odometer
+
 Lemma of sandpile.tex on the growth of the mean odometer, frozen.
 `sandpile.tex:899-905` (label `lem:reflection-increment`):
 
@@ -20,9 +26,6 @@ follow from the displayed hypotheses, and are assumed here so that no clause is
 read vacuously.  The dimension carries `1 ≤ d` because at `d = 0` the scenery
 and the averaging operator are junk zeros.
 -/
-import Sandpile.Walk
-import Sandpile.Law
-import Sandpile.Support.Translation
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

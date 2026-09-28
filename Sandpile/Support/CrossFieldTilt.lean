@@ -1,28 +1,25 @@
-/-
-The Cameron--Martin shift read on the crossing event of Step 3 of
-`prop:fixed-scale-crossings` (`sandpile.tex:2337-2350`):
-
-  "Since the unit kernel has mass `𝔪`, the shift raises every field value used by the
-   exploration by `ℓ`.  By sign symmetry, for `ℓ≥0`,
-   `P({𝒳₁<ℓ} crosses) = P_ℓ(E_R(θ))`."
-
-The measurable representative `closedCrossEvent` of the crossing is a countable intersection
-of countable unions of countable intersections of single field values, so it is the preimage,
-under the map that reads the whole field, of ONE event on the function space.  Three facts
-are proved here and combined:
-
-* `closedCrossEvent_preimage_eval`: the crossing event is that preimage;
-* `closedCrossEvent_congr_rect`: it depends only on the field inside the rectangle, because
-  every point a chain event evaluates lies on the chain, which a good chain keeps inside;
-* `closedCrossEvent_add_const`: adding a constant to the field lowers the level by it.
-
-Together with `whiteNoise_tilted_map_shift` they give `whiteNoise_tilted_closedCrossEvent`:
-the tilt by `a𝒲(k) - a²‖k‖²/2` moves the crossing at level `l` to the crossing at level
-`l - a𝔪`, whenever every unit kernel of the rectangle pairs with `k` to the mass `𝔪`.
--/
 import Sandpile.Support.CrossCameronMartin
 import Sandpile.Support.CrossLocalEvents
 import Sandpile.Support.CrossBallMemLp
+
+/-!
+# The Cameron-Martin shift on the crossing event
+
+The Cameron-Martin shift read on the crossing event of Step 3 of `prop:fixed-scale-crossings`
+(`sandpile.tex:2337-2350`): since the unit kernel has mass `𝔪`, the shift raises every field
+value used by the exploration by `ℓ`, so by sign symmetry, for `ℓ ≥ 0`,
+`P({𝒳₁<ℓ} crosses) = P_ℓ(E_R(θ))`. The measurable representative `closedCrossEvent` of the
+crossing is a countable intersection of countable unions of countable intersections of single
+field values, so it is the preimage, under the map that reads the whole field, of one event
+`evalCrossEvent` on the function space. Three facts are proved and combined:
+`closedCrossEvent_preimage_eval` identifies the crossing event with that preimage;
+`closedCrossEvent_congr_rect` shows it depends only on the field inside the rectangle, because
+every point a chain event evaluates lies on the chain, which a good chain keeps inside; and
+`closedCrossEvent_add_const` shows adding a constant to the field lowers the level by it.
+Together with `whiteNoise_tilted_map_shift` these give `whiteNoise_tilted_closedCrossEvent`:
+the tilt by `a𝒲(k) - a²‖k‖²/2` moves the crossing at level `l` to the crossing at level
+`l - a𝔪`, whenever every unit kernel of the rectangle pairs with `k` to the mass `𝔪`.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -35,6 +32,8 @@ noncomputable def evalCrossEvent (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     Set (Space 2 → ℝ) :=
   closedCrossEvent (fun (u : Space 2) (f : Space 2 → ℝ) => f u) a b i l
 
+/-- The canonical crossing event `evalCrossEvent` is measurable, being built as a countable
+intersection of countable unions of preimages of the coordinate evaluation maps. -/
 theorem measurableSet_evalCrossEvent (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     MeasurableSet (evalCrossEvent a b i l) :=
   measurableSet_closedCrossEvent_local _ a b i l fun x _ => measurable_pi_apply x

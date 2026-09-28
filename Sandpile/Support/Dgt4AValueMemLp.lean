@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4AStep2Prep
+
+/-!
+# Square integrability of the centred value
+
 `eq:dgt4-centered-value-decay` (`sandpile.tex:5031-5034`) in the paper's own square-root
 form, and the first-moment form that Step 2 consumes.
 
@@ -7,7 +11,6 @@ The square integrability of `V_\infty(0)-u_n(0)+c` is what makes the second mome
 divergent integral: the field at the origin is the isonormal image of a square-summable
 family and the odometer is square integrable whenever the one-site law is.
 -/
-import Sandpile.Support.Dgt4AStep2Prep
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

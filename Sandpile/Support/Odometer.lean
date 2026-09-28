@@ -1,9 +1,12 @@
-/-
-Elementary facts about the odometer of `Sandpile/Basic.lean`: it is nonnegative,
-nondecreasing in time, monotone in the mass field, and its recursion is the one
-`sandpile.tex` writes in the scenery variable.
--/
 import Sandpile.Walk
+
+/-!
+# Elementary properties of the odometer
+
+Basic facts about the odometer of `Sandpile/Basic.lean`: it is nonnegative, nondecreasing in
+time, monotone in the mass field, and its recursion is the one `sandpile.tex` writes in the
+scenery variable.
+-/
 
 namespace Sandpile
 

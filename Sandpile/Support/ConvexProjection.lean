@@ -1,12 +1,14 @@
-/-
-The convex comparison of an iid scenery with its bounded two-cell conditional
-projection. Conditional Jensen is applied to the finite-coordinate odometer,
-then the product pushforward and scenery marginal identify both expectations.
--/
 import Sandpile.Support.BinaryProjection
 import Sandpile.Support.ConditionalProduct
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.IncrementBall
+
+/-! # Convex projection of the box odometer
+
+The convex comparison of an iid scenery with its bounded two-cell conditional
+projection. Conditional Jensen is applied to the finite-coordinate odometer,
+then the product pushforward and scenery marginal identify both expectations.
+-/
 
 open LatticeProb
 
@@ -57,10 +59,14 @@ theorem integral_convex_binaryProjection_le {N : ℕ} (ν : Measure ℝ) [IsProb
     filter_upwards [hvec, hj] with ξ hξ hjξ
     change φ (P[id | M] ξ) ≤ P[φ | M] ξ at hjξ
     rwa [hξ] at hjξ
-  have h := integral_mono_of_nonneg (Filter.Eventually.of_forall fun ξ : Fin N → ℝ => hφ0 (fun i => g (ξ i)))
+  have h := integral_mono_of_nonneg
+    (Filter.Eventually.of_forall fun ξ : Fin N → ℝ => hφ0 (fun i => g (ξ i)))
     integrable_condExp hbound
   rwa [integral_condExp hM] at h
 
+/-- `siteExtend s` bundled as a linear map `(Fin s.card → ℝ) →ₗ[ℝ] (Site d → ℝ)`;
+additivity and scalar-homogeneity hold by cases on membership in `s`, since
+`siteExtend` returns `0` off `s`. -/
 noncomputable def siteExtendLinear {d : ℕ} (s : Finset (Site d)) :
     (Fin s.card → ℝ) →ₗ[ℝ] (Site d → ℝ) where
   toFun := siteExtend s
@@ -75,10 +81,15 @@ noncomputable def siteExtendLinear {d : ℕ} (s : Finset (Site d)) :
     classical
     by_cases hz : z ∈ s <;> simp [siteExtend, hz]
 
+/-- `boxOdometer t x` is convex on `Fin (boxFinset x t).card → ℝ`, obtained by composing
+the convexity of `odometerOf` with the linear extension `siteExtendLinear`. -/
 theorem convexOn_boxOdometer {d : ℕ} (t : ℕ) (x : Site d) :
     ConvexOn ℝ Set.univ (boxOdometer t x) :=
   (odometerOf_convexOn t x).comp_linearMap (siteExtendLinear (boxFinset x t))
 
+/-- `boxOdometer t x` is integrable against the product law `Measure.pi fun _ => ν` on the
+finite coordinate set `boxFinset x t`, transferred from `integrable_odometerOf` through the
+coordinate-pick measure-preserving map. -/
 theorem integrable_boxOdometer {d : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (t : ℕ) (x : Site d) :
     Integrable (boxOdometer t x) (Measure.pi fun _ : Fin (boxFinset x t).card => ν) := by
@@ -104,7 +115,8 @@ theorem meanOdometerOf_binaryProjection_le {d : ℕ} (ν : Measure ℝ) [IsProba
   have hmap : (Measure.pi fun _ : Fin (boxFinset x t).card => ν).map (fun ξ i => f (ξ i)) =
       Measure.pi (fun _ : Fin (boxFinset x t).card => ν.map f) :=
     Measure.pi_map_pi (fun _ => hfm.aemeasurable)
-  have hleft : (∫ ξ, boxOdometer t x (fun i => f (ξ i)) ∂(Measure.pi fun _ : Fin (boxFinset x t).card => ν)) =
+  have hleft : (∫ ξ, boxOdometer t x (fun i => f (ξ i))
+        ∂(Measure.pi fun _ : Fin (boxFinset x t).card => ν)) =
       ∫ ζ, odometerOf ζ t x ∂(LatticeProb.iidLaw d (ν.map f)) := by
     have hFm : Measurable (fun ξ : Fin (boxFinset x t).card → ℝ => fun i => f (ξ i)) :=
       measurable_pi_lambda _ fun i => hfm.comp (measurable_pi_apply i)

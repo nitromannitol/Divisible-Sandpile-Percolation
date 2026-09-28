@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4FieldRecursion
+import Sandpile.Support.RefinedIncrement
+import Sandpile.Support.Killed
+import Sandpile.Support.LinLastVisit
+import Sandpile.Support.OriginConcentration
+
+/-!
 **The stopping comparison of Step 3 of case (a)**
 (`eq:dgt4-gaussian-stopping-comparison`, `sandpile.tex:5197-5210`).
 
@@ -23,11 +29,6 @@ more than the paper's `P_0(\tau_0^+\leq k_n)`; both converge to `1-G(0,0)^{-1}`,
 which is all that `eq:dgt4-gaussian-boundary-profile` reads off them, and the
 terminal term is the paper's `P^{k_n+1}|V_\infty-u_{n-k_n}+\E u_n(0)|(0)` exactly.
 -/
-import Sandpile.Support.Dgt4FieldRecursion
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Support.Killed
-import Sandpile.Support.LinLastVisit
-import Sandpile.Support.OriginConcentration
 
 open MeasureTheory Filter Topology
 
@@ -62,6 +63,8 @@ theorem boxDist_add_unit_origin_le (x : Site d) (i : Fin d) :
   simp only [Pi.add_apply] at *
   rcases hu with hu | hu <;> rw [hu] <;> omega
 
+/-- A backward neighbour of `x` is at box distance at most `boxDist x 0 + 1` from the
+origin, the mirror of `boxDist_add_unit_origin_le`. -/
 theorem boxDist_sub_unit_origin_le (x : Site d) (i : Fin d) :
     boxDist (x - unit i) 0 ≤ boxDist x 0 + 1 := by
   refine Finset.sup_le fun j _ => ?_

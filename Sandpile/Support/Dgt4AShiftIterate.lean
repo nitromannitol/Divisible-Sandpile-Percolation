@@ -1,19 +1,22 @@
-/-
-**The Lipschitz constant of the conditioning** (`sandpile.tex:5120-5124`): "propagating this
-by `P^{k_n+1}` bounds this Lipschitz constant by
-`P^{k_n+1}\Cov(V_\infty(\cdot),V_\infty(0))(0)/\Sigma^2`."
-
-`Support/Dgt4AShiftLip.lean` bounds the change of `V_\infty(x)-u_n(x)` under a change
-`\Sigma\delta` of the conditioned value by
-`|c\delta|\,\Cov(V_\infty(x),V_\infty(0))/(c\|G(0,\cdot)\|)`, site by site, the parameter
-`\delta` being the level in units of `\Sigma`.  The `j`-step average is a positive averaging operator, so the same bound holds after
-`P^j` with the covariance replaced by its `j`-step average, and
-`Support/Dgt4AStep2Lip.lean` already bounds that by `Ck_n^{(4-d)/4}`.
--/
 import Sandpile.Support.Dgt4AShiftLip
 import Sandpile.Support.Dgt4AIterateLip
 import Sandpile.Support.Dgt4AIterateMulConst
 import Sandpile.Support.Dgt4AStep2Lip
+
+/-!
+# The Lipschitz constant of the conditioning after averaging
+
+**The Lipschitz constant of the conditioning** (`sandpile.tex:5120-5124`): "propagating this by
+`P^{k_n+1}` bounds this Lipschitz constant by
+`P^{k_n+1}\Cov(V_\infty(\cdot),V_\infty(0))(0)/\Sigma^2`."
+
+`Support/Dgt4AShiftLip.lean` bounds the change of `V_\infty(x)-u_n(x)` under a change
+`\Sigma\delta` of the conditioned value by
+`|c\delta|\,\Cov(V_\infty(x),V_\infty(0))/(c\|G(0,\cdot)\|)`, site by site, the parameter `\delta`
+being the level in units of `\Sigma`. The `j`-step average is a positive averaging operator, so
+the same bound holds after `P^j` with the covariance replaced by its `j`-step average, and
+`Support/Dgt4AStep2Lip.lean` already bounds that by `Ck_n^{(4-d)/4}`.
+-/
 
 open MeasureTheory Filter Topology Set
 

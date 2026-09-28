@@ -1,29 +1,32 @@
-/-
-Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5495-5526`), the case in which
-the threshold field is independent:
+import Sandpile.Law
+import Sandpile.Walk
+import LatticeProb.Prob.FiniteMarginal
+
+/-!
+# Step 1 of path survival, the independent case
+
+Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5495-5526`), the case in which the
+threshold field is independent:
 
   "When the $J(x)$ are independent, the left-hand side of
    \eqref{eq:dgt4-path-threshold-factorization} is zero."
 
-The display in question (`sandpile.tex:5502-5508`) compares the probability that
-a finite family of threshold events holds simultaneously with the product of the
+The display in question (`sandpile.tex:5502-5508`) compares the probability that a
+finite family of threshold events holds simultaneously with the product of the
 individual probabilities,
 
   "$\left|\P\left(\bigcap_{x\in\Lambda}\{J(x)\leq b_x\}\right)
      -\prod_{x\in\Lambda}\P(J(0)\leq b_x)\right|$".
 
-In case (b) of `IsThresholdField`, `J(x) = -G(0,0)\zeta(x)` is a function of the
-single coordinate `σ(x)` of the i.i.d. mass field, so the two sides are equal and
-the difference is exactly zero, for every finite `Λ` and every choice of levels.
+In case (b) of `IsThresholdField`, `J(x) = -G(0,0)\zeta(x)` is a function of the single
+coordinate `σ(x)` of the i.i.d. mass field, so the two sides are equal and the difference
+is exactly zero, for every finite `Λ` and every choice of levels.
 
-The first theorem is the finite-dimensional product formula behind it: reading
-finitely many coordinates of an i.i.d. field gives the product of the one-site
-probabilities.  It is the finite-box marginal `LatticeProb.iidLaw_map_restrict`
-of the library, evaluated on a box.
+The first theorem is the finite-dimensional product formula behind it: reading finitely
+many coordinates of an i.i.d. field gives the product of the one-site probabilities. It
+is the finite-box marginal `LatticeProb.iidLaw_map_restrict` of the library, evaluated on
+a box.
 -/
-import Sandpile.Law
-import Sandpile.Walk
-import LatticeProb.Prob.FiniteMarginal
 
 open MeasureTheory
 

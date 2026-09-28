@@ -1,14 +1,14 @@
-/-
-The passage from the vanishing second moment of the frozen integrand (the first
-conjunct of `lem:dgt4-linearization-from-survival`) to convergence in measure of
-the pairings, which the second conjunct upgrades to `H^{-s}_loc`.
-
-`sandpile.tex:5841-5851`: "Convergence in \eqref{eq:dgt4-linearization-from-paths}
-on a countable dense family of test functions identifies every subsequential
-limit of the difference as the zero distribution.  Hence the difference converges
-to zero in probability in `H^{-s}_{\rm loc}(\R^d)`."
--/
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# From vanishing second moment to convergence in measure
+
+This file passes from the vanishing second moment of a family of `L²` random variables to their
+convergence in measure, and then restates convergence in measure as the more concrete statement
+that `P {ω | ε < |Z R ω|}` tends to zero for every `ε > 0`. Together these give the passage used
+to upgrade convergence of a countable dense family of test-function pairings to convergence in
+probability of the underlying distributions.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

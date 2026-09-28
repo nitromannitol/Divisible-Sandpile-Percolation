@@ -1,10 +1,3 @@
-/-
-The trace law of the exploration on the unit cubes it reveals: the white noise
-tested against the indicators of the revealed cubes is a product of standard
-Gaussians (`sandpile.tex:2262-2270`).  The cubes are disjoint and of volume one,
-so their indicators are orthonormal in `L²` and the coordinates are independent
-standard Gaussians by `map_whiteNoise_orthonormal`.
--/
 import Sandpile.Support.CrossCubeOrth
 import Sandpile.Support.CrossTraceLaw
 import Sandpile.Support.CrossFixedScaleBall
@@ -12,6 +5,15 @@ import Sandpile.Support.CrossLevelLoss
 import Sandpile.Support.CrossTrace
 import Sandpile.Support.CrossFixedScaleBall
 import Sandpile.Support.CrossEntropyPi
+
+/-! # Trace law on revealed unit cubes
+
+The trace law of the exploration on the unit cubes it reveals: the white noise
+tested against the indicators of the revealed cubes is a product of standard
+Gaussians (`sandpile.tex:2262-2270`).  The cubes are disjoint and of volume one,
+so their indicators are orthonormal in `L²` and the coordinates are independent
+standard Gaussians by `map_whiteNoise_orthonormal`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -22,12 +24,18 @@ namespace Sandpile.Support
 one. -/
 theorem cubeIndicator_norm {d : ℕ} (c : Set (Space d)) (hmeas : MeasurableSet c)
     (hvol : volume c = 1) :
-    ∫ y : Space d, (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y
-      * (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y = 1 := by
-  have hinner : inner ℝ (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ))
+    ∫ y : Space d,
+        (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ)
+          : Space d → ℝ) y
+      * (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ)
+          : Space d → ℝ) y = 1 := by
+  have hinner : inner ℝ
+      (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ))
       (indicatorConstLp 2 hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ)) = 1 := by
-    have h := L2.inner_indicatorConstLp_indicatorConstLp (𝕜 := ℝ) (E := ℝ) (μ := (volume : Measure (Space d)))
-      hmeas hmeas (by rw [hvol]; exact ENNReal.one_ne_top) (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ) (1 : ℝ)
+    have h := L2.inner_indicatorConstLp_indicatorConstLp (𝕜 := ℝ) (E := ℝ)
+      (μ := (volume : Measure (Space d)))
+      hmeas hmeas (by rw [hvol]; exact ENNReal.one_ne_top)
+      (by rw [hvol]; exact ENNReal.one_ne_top) (1 : ℝ) (1 : ℝ)
     rw [h, Set.inter_self, Measure.real, hvol]
     norm_num
   have h := hinner
@@ -45,16 +53,21 @@ theorem map_whiteNoise_cubeIndicators {Ω : Type} [MeasurableSpace Ω] {d n : �
       = Measure.pi fun _ : Fin n => ProbabilityTheory.gaussianReal 0 1 := by
   have horth := Sandpile.Support.orthonormal_cubeIndicators c hmeas hvol hdisj
   have hnorm : ∀ i : Fin n, ∫ y : Space d,
-      (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y
-        * (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y = 1 :=
+      (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ)
+        : Space d → ℝ) y
+        * (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ)
+            : Space d → ℝ) y = 1 :=
     fun i => cubeIndicator_norm (c i) (hmeas i) (hvol i)
   have hmain := Sandpile.Support.map_whiteNoise_orthonormal hW
-    (fun i : Fin n => indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ))
+    (fun i : Fin n =>
+      indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ))
     horth hnorm
   rw [← hmain]
   apply Measure.map_congr
   filter_upwards [ae_all_iff.mpr (fun i : Fin n =>
-    (Sandpile.Support.whiteNoise_toLp_ae hW _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ) (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))).symm)]
+    (Sandpile.Support.whiteNoise_toLp_ae hW _
+      (memLp_indicator_const 2 (hmeas i) (1 : ℝ)
+        (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))).symm)]
     with ω hω
   funext i
   exact hω i
@@ -100,16 +113,25 @@ theorem map_whiteNoise_cubeIndicators_shift {Ω : Type} [MeasurableSpace Ω] {d 
       = Measure.pi fun i : Fin n => ProbabilityTheory.gaussianReal (v i) 1 := by
   have horth := Sandpile.Support.orthonormal_cubeIndicators c hmeas hvol hdisj
   have hnorm : ∀ i : Fin n, ∫ y : Space d,
-      (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y
-        * (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y = 1 :=
+      (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ)
+        : Space d → ℝ) y
+        * (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ)
+            : Space d → ℝ) y = 1 :=
     fun i => cubeIndicator_norm (c i) (hmeas i) (hvol i)
   have hmain := Sandpile.Support.map_whiteNoise_orthonormal_shift hW
-    (fun i : Fin n => indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ))
+    (fun i : Fin n =>
+      indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ))
     horth hnorm v
-  have hae : (fun ω => (fun i : Fin n => W (fun y => (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ) : Space d → ℝ) y) ω + v i))
-      =ᵐ[P] fun ω => (fun i : Fin n => W (fun y => (c i).indicator (fun _ => (1 : ℝ)) y) ω + v i) := by
+  have hae : (fun ω => (fun i : Fin n =>
+      W (fun y =>
+        (indicatorConstLp 2 (hmeas i) (by rw [hvol i]; exact ENNReal.one_ne_top) (1 : ℝ)
+          : Space d → ℝ) y) ω + v i))
+      =ᵐ[P] fun ω =>
+        (fun i : Fin n => W (fun y => (c i).indicator (fun _ => (1 : ℝ)) y) ω + v i) := by
     filter_upwards [ae_all_iff.mpr (fun i : Fin n =>
-      (Sandpile.Support.whiteNoise_toLp_ae hW _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ) (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))).symm)]
+      (Sandpile.Support.whiteNoise_toLp_ae hW _
+        (memLp_indicator_const 2 (hmeas i) (1 : ℝ)
+          (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))).symm)]
       with ω hω
     funext i
     exact congrArg (fun x => x + v i) (hω i).symm
@@ -147,7 +169,9 @@ theorem hloss_ballField_of_cube_data
   have htr : Measurable fun ω => (fun i : Fin n =>
       W (fun y => (cubes i).indicator (fun _ => (1 : ℝ)) y) ω) :=
     measurable_pi_iff.mpr fun i =>
-      hW.meas _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ) (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
+      hW.meas _
+        (memLp_indicator_const 2 (hmeas i) (1 : ℝ)
+          (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
   have hent : InformationTheory.klDiv
       (P₁.map fun ω => (fun i : Fin n => W (fun y => (cubes i).indicator (fun _ => (1 : ℝ)) y) ω))
       (P₀.map fun ω => (fun i : Fin n => W (fun y => (cubes i).indicator (fun _ => (1 : ℝ)) y) ω))
@@ -157,6 +181,9 @@ theorem hloss_ballField_of_cube_data
   rw [hcross]
   exact hloss_of_trace hPin P₀ P₁ _ htr E hE n m L R Cn α₁ hm hL hR hCn hNb hent
 
+/-- `prop:fixed-scale-crossings` from the cube exploration: the level loss of
+Steps 2-3 is supplied by the trace law on the revealed unit cubes, assembled by
+`fixed_scale_crossings_of_ball`. -/
 theorem fixed_scale_crossings_of_cube_exploration
     (hRSW : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)
@@ -190,7 +217,9 @@ theorem measurable_trace_cubes {Ω : Type} [MeasurableSpace Ω] {d n : ℕ}
     Measurable fun ω => (fun i : Fin n =>
       W (fun y => (cubes i).indicator (fun _ => (1 : ℝ)) y) ω) := by
   exact measurable_pi_iff.mpr fun i =>
-    hW.meas _ (memLp_indicator_const 2 (hmeas i) (1 : ℝ) (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
+    hW.meas _
+      (memLp_indicator_const 2 (hmeas i) (1 : ℝ)
+        (Or.inr (by rw [hvol i]; exact ENNReal.one_ne_top)))
 
 
 /-- `prop:fixed-scale-crossings` from the cube exploration: the level loss of

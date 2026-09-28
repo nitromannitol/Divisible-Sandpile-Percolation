@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.D4SOmegaModulus
+import Sandpile.Support.D4SModulus
+import Sandpile.Support.D4SParity
+import Sandpile.Support.D4SmoothL2
+import Sandpile.Support.D4SNegSobolev
+
+/-!
+# The Second Display of Step 2: The Parity-Class Constant
+
 The second display of Step 2 of `prop:d4-superdiffusive-limit`
 (`sandpile.tex:3374-3382`):
 `E‖(C_R^{(R)})^ω‖²_{H^{-s}(D)} ≤ C_{D,s}(1+\log\log t_R)R^{-2\min\{s,1\}}`,
@@ -6,19 +14,14 @@ where `C_R` is constant on each parity class of the lattice.
 
 The `ω`-shift has total mass zero, so a field constant on each parity class
 pairs against the cell masses through the difference of the two constants and
-the mass of ONE class alone (`sum_parity_const_mul`).  That mass is the integral
+the mass of ONE class alone (`sum_parity_const_mul`). That mass is the integral
 of the shifted test function against the even-cell indicator, and the parity of
 `⌊Rz⌋` flips under the step `e_{i}/R`, so the integral is half the `L¹` modulus
 of continuity of the shifted test function at scale `1/R`
-(`abs_integral_mul_parityChar_le`).  Cauchy-Schwarz on a ball containing the
+(`abs_integral_mul_parityChar_le`). Cauchy-Schwarz on a ball containing the
 support turns that into the `L²` modulus, which is `‖h‖^{\min\{s,1\}}` for the
 test function and `‖h‖` for the fixed density.
 -/
-import Sandpile.Support.D4SOmegaModulus
-import Sandpile.Support.D4SModulus
-import Sandpile.Support.D4SParity
-import Sandpile.Support.D4SmoothL2
-import Sandpile.Support.D4SNegSobolev
 
 open MeasureTheory Filter Topology
 open scoped ENNReal
@@ -48,9 +51,13 @@ theorem sqrt_rpow_two_mul {r σ : ℝ} (hr : 0 ≤ r) :
   congr 1
   ring
 
+/-- The mesh step `meshStep d R i₀`, the vector with `R⁻¹` in coordinate `i₀` and `0`
+elsewhere, has Euclidean norm `|R⁻¹|`. -/
 theorem norm_meshStep (R : ℝ) (i₀ : Fin d) : ‖meshStep d R i₀‖ = |R⁻¹| := by
   rw [meshStep, PiLp.norm_single, Real.norm_eq_abs]
 
+/-- `parityChar R z` is the lattice embedding at scale `R` of the indicator function of
+the even-parity sites, i.e. of `fun x => if SameParity x 0 then 1 else 0`. -/
 theorem parityChar_eq_embed (R : ℝ) (z : Space d)
     [DecidablePred fun x : Sandpile.Site d => Sandpile.External.SameParity x 0] :
     parityChar R z =

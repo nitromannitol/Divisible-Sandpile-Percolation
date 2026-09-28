@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.D23Box
+import Sandpile.Support.LocalizationRecursion
+import Sandpile.Support.OriginKilled
+import Sandpile.Support.D4CritStationary
+
+/-!
+# The localized odometer field for the dimension-two and dimension-three argument
+
 The localized odometer field of the dimension-two and dimension-three
 percolation argument (`sandpile.tex:2600-2604`): the field
 `u_{⌊R²T⌋}^{Q(x,R)}(x)` read in the coordinate plane, whose superlevel set at
@@ -7,10 +14,6 @@ are collected here: the field is dominated by the odometer at the same time, it
 commutes with translation of the scenery, and it reads the scenery only inside
 its own box.
 -/
-import Sandpile.Support.D23Box
-import Sandpile.Support.LocalizationRecursion
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.D4CritStationary
 
 open MeasureTheory
 
@@ -31,6 +34,8 @@ theorem d23Field_le_odometerOf (hd : 1 ≤ d) (R t : ℕ) (ζ : Site d → ℝ) 
     d23Field d R t ζ u ≤ odometerOf ζ t (planeSite u) :=
   localizedOdometer_le_full hd _ ζ t _
 
+/-- The localized field `d23Field d R t` at the coarse site `u` is measurable in the
+scenery, inherited from measurability of `localizedOdometer`. -/
 theorem measurable_d23Field (hd : 1 ≤ d) (R t : ℕ) (u : Site 2) :
     Measurable (fun ζ : Site d → ℝ => d23Field d R t ζ u) :=
   measurable_localizedOdometer hd _ t _
@@ -49,6 +54,8 @@ theorem d23Field_shift (hd : 1 ≤ d) (R t : ℕ) (ζ : Site d → ℝ) (u c : S
 def extendOn (D : Set (Site d)) (ρ : D → ℝ) : Site d → ℝ :=
   fun y => if h : y ∈ D then ρ ⟨y, h⟩ else 0
 
+/-- `extendOn D` is measurable, since each coordinate `y` is either the constant
+function `0` (when `y ∉ D`) or a coordinate projection `ρ ↦ ρ ⟨y, h⟩` (when `y ∈ D`). -/
 theorem measurable_extendOn (D : Set (Site d)) :
     Measurable (extendOn D : (D → ℝ) → Site d → ℝ) := by
   refine measurable_pi_lambda _ fun y => ?_

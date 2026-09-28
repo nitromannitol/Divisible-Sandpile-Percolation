@@ -7,6 +7,17 @@ import Sandpile.Support.OriginKilled
 import Sandpile.Support.ExitPayoffMeas
 import Sandpile.Support.ExitPayoffInt
 
+/-!
+# Fubini swap for the localized exit-value expectation
+
+The localized exit average `localizedExitAverage D N E m ζ x` is a `ζ`-average of the localized
+odometer evaluated at the site where a walk from `x`, stopped on exiting `D` within `N` steps,
+lands. This file swaps the order of the two integrals, the mass-configuration average over `ζ`
+and the walk average over `X`, showing the `ζ`-average of the exit average equals the walk
+average of the `ζ`-average of the exit payoff. The swap rests on the measurability and
+integrability of the uncurried exit payoff on the product measure.
+-/
+
 open MeasureTheory ProbabilityTheory
 open scoped Classical
 

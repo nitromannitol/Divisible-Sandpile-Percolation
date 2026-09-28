@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Lipschitz
+import Sandpile.Support.Stationary
+import LatticeProb.Prob.FiniteMarginal
+
+/-!
+# The Finite-Coordinate Bridge
+
 The finite-coordinate bridge.
 
 Every functional of the scenery that `sandpile.tex` applies a concentration
@@ -9,9 +15,6 @@ other hand, is stated for a finite product `Measure.pi` over `Fin N`.  This file
 is the passage between the two: reading `N` distinct sites carries the i.i.d.
 law of the field to the `N`-fold product of its one-site law.
 -/
-import Sandpile.Support.Lipschitz
-import Sandpile.Support.Stationary
-import LatticeProb.Prob.FiniteMarginal
 
 open LatticeProb
 
@@ -45,9 +48,12 @@ theorem odometerOf_congr_box (t : ℕ) (x : Site d) (ζ η : Site d → ℝ)
 noncomputable def siteEnum (s : Finset (Site d)) : Fin s.card → Site d :=
   fun i => ((s.equivFin.symm i : ↥s) : Site d)
 
+/-- The enumeration `siteEnum s i` always lands in `s`, since it is the coercion of the
+`s.equivFin`-preimage of `i`, an element of the subtype `↥s`. -/
 theorem siteEnum_mem (s : Finset (Site d)) (i : Fin s.card) : siteEnum s i ∈ s :=
   (s.equivFin.symm i).2
 
+/-- `siteEnum s` is injective, since it factors through the bijection `s.equivFin`. -/
 theorem siteEnum_injective (s : Finset (Site d)) : Function.Injective (siteEnum s) := by
   intro i j hij
   have : s.equivFin.symm i = s.equivFin.symm j := Subtype.ext hij
@@ -57,10 +63,14 @@ theorem siteEnum_injective (s : Finset (Site d)) : Function.Injective (siteEnum 
 noncomputable def siteExtend (s : Finset (Site d)) (ξ : Fin s.card → ℝ) : Site d → ℝ :=
   fun z => if h : z ∈ s then ξ (s.equivFin ⟨z, h⟩) else 0
 
+/-- Extending the coordinate vector `ζ ∘ siteEnum s` back to a function on all of `Site d`
+recovers `ζ` at every site of `s`: `siteEnum` and `siteExtend` are mutually inverse there. -/
 theorem siteExtend_siteEnum (s : Finset (Site d)) (ζ : Site d → ℝ) {z : Site d}
     (hz : z ∈ s) : siteExtend s (fun i => ζ (siteEnum s i)) z = ζ z := by
   simp [siteExtend, siteEnum, hz]
 
+/-- Updating the `i`-th coordinate of `ξ` and then extending equals extending `ξ` and then
+updating the value at the corresponding site `siteEnum s i`. -/
 theorem siteExtend_update (s : Finset (Site d)) (ξ : Fin s.card → ℝ)
     (i : Fin s.card) (y : ℝ) :
     siteExtend s (Function.update ξ i y)
@@ -80,6 +90,8 @@ theorem siteExtend_update (s : Finset (Site d)) (ξ : Fin s.card → ℝ)
       intro h; exact hz (h ▸ siteEnum_mem s i)
     simp [siteExtend, hz, Function.update_of_ne hzi]
 
+/-- `siteExtend s` is measurable: at each site `z` it is either a coordinate projection (if
+`z ∈ s`) or the constant `0` (otherwise), and `measurable_pi_lambda` reduces to these cases. -/
 theorem measurable_siteExtend (s : Finset (Site d)) : Measurable (siteExtend s) := by
   classical
   refine measurable_pi_lambda _ fun z => ?_
@@ -95,12 +107,17 @@ noncomputable def sceneryOdometer (s : Finset (Site d)) (t : ℕ) (x : Site d)
     (ξ : Fin s.card → ℝ) : ℝ :=
   odometerOf (siteExtend s ξ) t x
 
+/-- Reading `sceneryOdometer s t x` at the coordinate vector `ζ ∘ siteEnum s`, for `s` containing
+the radius-`t` box about `x`, recovers the odometer `odometerOf ζ t x`, since `siteExtend s (ζ ∘
+siteEnum s)` agrees with `ζ` on that box. -/
 theorem sceneryOdometer_pick {s : Finset (Site d)} {t : ℕ} {x : Site d}
     (hsub : boxFinset x t ⊆ s) (ζ : Site d → ℝ) :
     sceneryOdometer s t x (fun i => ζ (siteEnum s i)) = odometerOf ζ t x :=
   odometerOf_congr_box t x _ ζ fun _ hz =>
     siteExtend_siteEnum s ζ (hsub (mem_boxFinset hz))
 
+/-- `sceneryOdometer s t x` is measurable, as the composite of the measurable odometer functional
+`odometerOf t x` and the measurable extension map `siteExtend s`. -/
 theorem measurable_sceneryOdometer (s : Finset (Site d)) (t : ℕ) (x : Site d) :
     Measurable (sceneryOdometer s t x) :=
   (measurable_odometerOf t x).comp (measurable_siteExtend s)
@@ -130,6 +147,7 @@ theorem sum_siteEnum {M : Type*} [AddCommMonoid M] (s : Finset (Site d)) (f : Si
 noncomputable abbrev boxEnum (x : Site d) (t : ℕ) : Fin (boxFinset x t).card → Site d :=
   siteEnum (boxFinset x t)
 
+/-- `boxEnum x t` is injective, inherited from `siteEnum_injective` at `boxFinset x t`. -/
 theorem boxEnum_injective (x : Site d) (t : ℕ) : Function.Injective (boxEnum x t) :=
   siteEnum_injective _
 
@@ -138,19 +156,27 @@ noncomputable abbrev boxOdometer (t : ℕ) (x : Site d)
     (ξ : Fin (boxFinset x t).card → ℝ) : ℝ :=
   sceneryOdometer (boxFinset x t) t x ξ
 
+/-- The specialization of `sceneryOdometer_pick` to the box's own enumeration: reading
+`boxOdometer t x` at `ζ ∘ boxEnum x t` recovers `odometerOf ζ t x`. -/
 theorem boxOdometer_pick (t : ℕ) (x : Site d) (ζ : Site d → ℝ) :
     boxOdometer t x (fun i => ζ (boxEnum x t i)) = odometerOf ζ t x :=
   sceneryOdometer_pick (subset_refl _) ζ
 
+/-- `boxOdometer t x` is measurable, the specialization of `measurable_sceneryOdometer` to the
+box's own enumeration. -/
 theorem measurable_boxOdometer (t : ℕ) (x : Site d) : Measurable (boxOdometer t x) :=
   measurable_sceneryOdometer _ t x
 
+/-- The specialization of `abs_sceneryOdometer_update_le` to the box's own enumeration: updating
+one box coordinate moves `boxOdometer t x` by at most the Green kernel at that site. -/
 theorem abs_boxOdometer_update_le (t : ℕ) (x : Site d) (ξ : Fin (boxFinset x t).card → ℝ)
     (i : Fin (boxFinset x t).card) (y : ℝ) :
     |boxOdometer t x ξ - boxOdometer t x (Function.update ξ i y)|
       ≤ greenTime d t x (boxEnum x t i) * |ξ i - y| :=
   abs_sceneryOdometer_update_le _ t x ξ i y
 
+/-- The specialization of `sum_siteEnum` to the box's own enumeration: a sum over the box
+coordinates equals the sum over the box `Finset` itself. -/
 theorem sum_boxEnum {M : Type*} [AddCommMonoid M] (x : Site d) (t : ℕ) (f : Site d → M) :
     ∑ i : Fin (boxFinset x t).card, f (boxEnum x t i) = ∑ z ∈ boxFinset x t, f z :=
   sum_siteEnum _ f
@@ -164,6 +190,8 @@ theorem tsum_greenTime_mul_eq_sum (t : ℕ) (x : Site d) (f : Site d → ℝ) :
     exact hz (mem_boxFinset (greenTime_support t x hne))
   simp [hg]
 
+/-- The infinite sum of the squared Green kernel `greenTime d t x` collapses to the finite sum
+over the box `boxFinset x t`, since the kernel vanishes outside its support. -/
 theorem tsum_greenTime_sq_eq_sum (t : ℕ) (x : Site d) :
     ∑' z : Site d, greenTime d t x z ^ 2 = ∑ z ∈ boxFinset x t, greenTime d t x z ^ 2 := by
   refine tsum_eq_sum fun z hz => ?_

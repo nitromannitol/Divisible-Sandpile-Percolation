@@ -1,15 +1,19 @@
-/-
-Step 3 of `prop:d4-pointwise-linearization` (`sandpile.tex:3128-3186`): the
-window of reflection terms
-
-    Y = ∑_{k<n} P^k r_{t-1-k}(x) ,   r_s = (-ζ - P u_s)_+ ,
-
-is nonnegative, is below `u_t(x) - V_t(x)`, and has mean
-`E u_t(0) - E u_{t-n}(0)`, which the concavity of the mean odometer bounds by
-`(n/(t-n)) E u_{t-n}(0)`.
--/
 import Sandpile.Support.D4Mean
 import Sandpile.Support.HeightLower
+
+/-!
+# The reflection window: nonnegativity, domination, and its mean
+
+Step 3 of `prop:d4-pointwise-linearization` (`sandpile.tex:3128-3186`). The window of reflection
+terms `reflectionSum ζ n t x = ∑_{k<n} P^k r_{t-1-k}(x)`, with `r_s = (-ζ - P u_s)_+`, is
+nonnegative (`reflectionSum_nonneg`) and is below `u_t(x) - V_t(x)`
+(`reflectionSum_le_diffField`). Its mean is the growth of the mean odometer over the window,
+`E u_t(0) - E u_{t-n}(0)` (`integral_reflectionSum`), which the concavity of the mean odometer
+bounds by `(n/(t-n)) E u_{t-n}(0)` (`meanOdometerOf_window_le`). The last section bounds the two
+tails of the window around its mean: a Markov bound (`measure_reflectionSum_markov`) and, once the
+level exceeds twice the mean, an exponential bound inherited from the tail of `u_t - V_t`
+(`measure_reflectionSum_tail_four`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -22,11 +26,14 @@ variable {d : ℕ}
 noncomputable def reflectionSum (ζ : Site d → ℝ) (n t : ℕ) (x : Site d) : ℝ :=
   ∑ k ∈ Finset.range n, (avg^[k] (reflectionTerm ζ (t - 1 - k))) x
 
+/-- Iterating the averaging operator `avg` preserves nonnegativity of `f`. -/
 theorem avg_iterate_nonneg {f : Site d → ℝ} (hf : ∀ y, 0 ≤ f y) (k : ℕ) (x : Site d) :
     0 ≤ (avg^[k] f) x := by
   have h := avg_iterate_mono (d := d) k (f := fun _ => (0 : ℝ)) (g := f) hf x
   rwa [avg_iterate_zero] at h
 
+/-- The window `reflectionSum` is nonnegative, as a sum of nonnegative averaged reflection
+terms. -/
 theorem reflectionSum_nonneg (ζ : Site d → ℝ) (n t : ℕ) (x : Site d) :
     0 ≤ reflectionSum ζ n t x :=
   Finset.sum_nonneg fun k _ => avg_iterate_nonneg (reflectionTerm_nonneg ζ _) k x
@@ -53,10 +60,14 @@ theorem reflectionSum_le_diffField (ζ : Site d → ℝ) {n t : ℕ} (hn : n ≤
 
 /-! ### The mean of the window -/
 
+/-- Rewrites the reflection term via the odometer recursion
+`odometerOf_succ_eq_add_reflection`. -/
 theorem reflectionTerm_eq_sub (ζ : Site d → ℝ) (s : ℕ) (y : Site d) :
     reflectionTerm ζ s y = odometerOf ζ (s + 1) y - ζ y - avg (odometerOf ζ s) y := by
   rw [odometerOf_succ_eq_add_reflection ζ s y]; ring
 
+/-- The averaged odometer `avg (odometerOf ζ s)` is integrable, since `avg` unfolds to a finite
+heat-kernel-weighted sum of integrable odometer values (`integrable_odometerOf`). -/
 theorem integrable_avg_odometerOf (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z : ℝ => max z 0) ν) (s : ℕ) (y : Site d) :
     Integrable (fun ζ : Site d → ℝ => avg (odometerOf ζ s) y) (LatticeProb.iidLaw d ν) := by
@@ -70,6 +81,9 @@ theorem integrable_avg_odometerOf (ν : Measure ℝ) [IsProbabilityMeasure ν]
   refine Integrable.congr ?_ (Filter.Eventually.of_forall fun ζ => (hrw ζ).symm)
   exact integrable_finsetSum _ fun z _ => (integrable_odometerOf d ν hpos s z).const_mul _
 
+/-- The reflection term `reflectionTerm ζ s` is integrable, by rewriting it via
+`reflectionTerm_eq_sub` as a difference of integrable odometer, coordinate, and
+averaged-odometer terms. -/
 theorem integrable_reflectionTerm (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hpos : Integrable (fun z : ℝ => max z 0) ν) (s : ℕ)
     (y : Site d) :
@@ -136,6 +150,8 @@ theorem integral_avg_iterate_reflectionTerm (hd : 1 ≤ d) (ν : Measure ℝ)
     rw [integral_const_mul, integral_reflectionTerm hd ν hint hmean hpos s z]
   rw [Finset.sum_congr rfl hz, ← Finset.sum_mul, sum_heatKernel_boxFinset hd k x, one_mul]
 
+/-- Each iterated average `avg^[k] (reflectionTerm ζ s)` is integrable, by unfolding it as a
+finite heat-kernel-weighted sum of integrable reflection terms (`integrable_reflectionTerm`). -/
 theorem integrable_avg_iterate_reflectionTerm (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hpos : Integrable (fun z : ℝ => max z 0) ν) (k s : ℕ)
     (x : Site d) :
@@ -149,6 +165,8 @@ theorem integrable_avg_iterate_reflectionTerm (ν : Measure ℝ) [IsProbabilityM
   refine Integrable.congr ?_ (Filter.Eventually.of_forall fun ζ => (hrw ζ).symm)
   exact integrable_finsetSum _ fun z _ => (integrable_reflectionTerm ν hint hpos s z).const_mul _
 
+/-- The window `reflectionSum ζ n t` is integrable, as a finite sum of integrable iterated
+averages of reflection terms. -/
 theorem integrable_reflectionSum (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hpos : Integrable (fun z : ℝ => max z 0) ν) (n t : ℕ)
     (x : Site d) :

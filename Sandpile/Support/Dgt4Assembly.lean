@@ -1,26 +1,20 @@
-/-
-The two nodes of the subsection that rest on the contact thresholds, assembled.
-
-`CaseThresholdField` names what the two case-specific proofs of
-`prop:dgt4-contact-asymptotics` produce: a threshold field `J` of the shape
-`sandpile.tex:5454-5455` fixes, `J = -G(0,0)ζ` in case (b) and `J = -V_∞` in
-case (a), together with the two limits of `PointwiseContactThresholds`.  From
-it:
-
-* `dgt4_contact_asymptotics_of` is `prop:dgt4-contact-asymptotics` itself;
-* `dgt4_linearization_inputs_of` is the hypothesis pair of
-  `lem:dgt4-linearization-from-survival` at the time weights
-  `q_{R,j} = (1 - j/(R^2T))^κ`, obtained through the sealed
-  `lem:dgt4-path-survival`, whose own hypothesis is the uniform form of the
-  thresholds.
-
-This is exactly the paper's proof of `prop:dgt4-linearization`
-(`sandpile.tex:5853-5864`) with the two case proofs abstracted into their
-conclusion.
--/
 import Sandpile.Support.Dgt4Contact
 import Sandpile.Support.Dgt4LinInputs
 import Sandpile.Support.LinLastVisit
+
+/-!
+# Assembling the contact-threshold and linearization propositions
+
+`CaseThresholdField` packages what the two case-specific proofs of
+`prop:dgt4-contact-asymptotics` produce: a threshold field `J`, with `J = -G(0,0)ζ` in case (b)
+and `J = -V_∞` in case (a), together with the two limits of `PointwiseContactThresholds`. From
+such a field, `dgt4_contact_asymptotics_of` derives `prop:dgt4-contact-asymptotics` itself, and
+`dgt4_linearization_inputs_of` derives the hypothesis pair of
+`lem:dgt4-linearization-from-survival` at the time weights `q_{R,j} = (1 - j/(R^2T))^κ`, obtained
+through the sealed `lem:dgt4-path-survival`. Together these assemble the paper's proof of
+`prop:dgt4-linearization`, with the two case proofs abstracted into a single hypothesis on the
+threshold field.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

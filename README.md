@@ -264,8 +264,8 @@ The twelve pairs are `Nontriviality`, `CriticalLevels`, `MeanGrowthLow`,
 `propext`, `Classical.choice` and `Quot.sound`, and
 `Audit/StatementRegression.lean` checks locally that each solution statement is
 exactly the challenge statement and mentions no constant of `Sandpile` or
-`LatticeProb`.  The comparator was run on all twelve pairs on 2026-09-24, at
-commit `4545f0b`, and every pair passed with the Lean kernel and with the
+`LatticeProb`.  The comparator was run on all twelve pairs on 2026-09-28, at
+commit `8207a73`, and every pair passed with the Lean kernel and with the
 independent nanoda kernel; the results and the reproduction steps are in
 [`Audit/COMPARATOR_RUNS.md`](Audit/COMPARATOR_RUNS.md).  The workflow
 [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml) runs

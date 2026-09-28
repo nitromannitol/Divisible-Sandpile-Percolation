@@ -1,11 +1,13 @@
-/-
-The pointwise collapse of the site sum of the visit-indicator product.
-
-`eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): for fixed paths `X`, `Y`
-and coefficients `c`, the identity `∑_z 1_{X_i=z}1_{Y_j=z} = 1_{X_i=Y_j}` collapses the
-site sum of the expansion to the intersection indicator.
--/
 import Sandpile.Support.LinEarlyVarDefs
+
+/-!
+# Collapse of the site sum of a visit-indicator product
+
+For fixed paths `X`, `Y` and coefficients `c`, the identity
+`∑_z 1_{X i = z} * 1_{Y j = z} = 1_{X i = Y j}` collapses the site sum of the doubly
+indexed expansion `∑' z, ∑ i ∑ j 1_{X i = z} * 1_{Y j = z} * c i j` to the sum of the
+intersection indicator `∑ i ∑ j 1_{X i = Y j} * c i j`.
+-/
 
 open MeasureTheory ProbabilityTheory
 

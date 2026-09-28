@@ -1,25 +1,19 @@
-/-
-`eq:dgt4-linearization-from-paths` (`sandpile.tex:5651-5657`), the first
-conclusion of `lem:dgt4-linearization-from-survival`, for a NONNEGATIVE test
-function.
-
-Step 1 (`Support/LinJacobianTestedStep1.lean`) supplies the derivative-variance
-limit, `Support/LinJacobianCoefInput.lean` the mean-gradient approximation,
-`Support/LinJacobianTestedGreenInput.lean` the uniform bound on the coefficients
-and `Support/LinJacobianIntegrableInputs.lean` the three square-integrability
-hypotheses, so Step 2 of `Support/LinTestedStep2.lean` applies; the pairing
-identity of `Support/LinTestedPairing.lean` then rewrites the conclusion in the
-vocabulary of the frozen statement.
-
-Nonnegativity of the test function is what makes the tested field convex in each
-coordinate of the scenery, which is the hypothesis of Step 2.  A signed test
-function enters as the difference of its positive and negative parts.
-The limits may be taken along any real-scale filter below `atTop`;
-the default scale-filter bound retains the unrestricted real-scale form.
--/
 import Sandpile.Support.LinJacobianIntegrableInputs
 import Sandpile.Support.LinTestedPairing
 import Sandpile.Support.ContWeightedLimit
+
+/-!
+# The `L²` linearization limit for a nonnegative test function
+
+This file assembles the `L²` linearization limit for the odometer field tested against a
+nonnegative test function `φ`: with the derivative-variance limit, the mean-gradient
+approximation, the uniform coefficient bound, and the three square-integrability hypotheses as
+inputs, Step 2 gives the vanishing `L²` norm of the tested field minus its linear approximation.
+Nonnegativity of `φ` is what makes the tested field convex in each coordinate of the scenery,
+which is the hypothesis Step 2 needs; a signed test function is handled elsewhere as the
+difference of its positive and negative parts. The limits may be taken along any real-scale
+filter below `atTop`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -93,8 +87,8 @@ theorem tendsto_l2_frozen_of_nonneg {l : Filter ℝ} [NeZero d] (hd : 5 ≤ d)
   obtain ⟨B₀, hB₀⟩ := exists_sum_testedGreenWeight_sq_le hd hGreen φ hφ Cφ L hCφ hL hb hint n
   have hstep2 := tendsto_l2_testedField_jacobian ν hmean hsqν s a n
     (fun R x => testedWeightCut_nonneg R L hφ x) coef B₀ hB₀
-    (tendsto_finset_variance_testedWeight (hl := hl) hd hGreen hInter ν φ hφsq hφ Cφ L hCφ hL hb hint
-      n T C hT hcov)
+    (tendsto_finset_variance_testedWeight (hl := hl) hd hGreen hInter ν φ hφsq hφ Cφ L hCφ hL hb
+      hint n T C hT hcov)
     (tendsto_coef_error_testedWeight (hl := hl) hd ν φ hφsq hint hφ L T q hsurv)
     (fun R => integrable_sq_testedField_sub_linear ν hsqν (s R) (a R) (n R)
       (testedSites (s R) (n R))

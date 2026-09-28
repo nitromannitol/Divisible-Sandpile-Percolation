@@ -1,20 +1,25 @@
-/-
-Invariance of the ball Green field under a permutation of the coordinates:
-the killed Green function of the cube is permutation invariant, so permuting
-the scenery permutes the field.  This is what makes the two bottom-top
-crossing clauses of the good-block event have the same law as the two
-left-right clauses.
--/
 import Sandpile.Support.BallCrossingDefinitions
 import Sandpile.Support.KernelPermutation
 import Sandpile.Law
+
+/-!
+# Coordinate-Permutation Symmetry of the Ball Field
+
+Invariance of the ball Green field under a permutation of the coordinates:
+the killed Green function of the cube is permutation invariant, so permuting
+the scenery permutes the field. This is what makes the two bottom-top
+crossing clauses of the good-block event have the same law as the two
+left-right clauses.
+-/
 
 open MeasureTheory
 
 noncomputable section
 namespace Sandpile
 
-
+/-- The preimage of the sup-norm cube `ballCube 0 r` under a coordinate permutation
+`permuteSite e` is `ballCube 0 r` itself, since the sup-norm condition ranges over all
+`i : Fin 4` and permuting `e` only relabels which index the condition is checked at. -/
 lemma ballCube_preimage_permute (e : Fin 4 ≃ Fin 4) (r : ℝ) :
     (permuteSite e) ⁻¹' (ballCube 0 r) = ballCube 0 r := by
   ext x
@@ -27,6 +32,10 @@ lemma ballCube_preimage_permute (e : Fin 4 ≃ Fin 4) (r : ℝ) :
     exact h (e i)
 
 
+/-- The ball Green field of a coordinate-permuted scenery `fun y => ζ (permuteSite e y)`
+at `z` equals the ball Green field of `ζ` at the permuted site `permuteSite e z`, proved
+by rewriting the killed Green kernel via `killedGreen_permute` and reindexing the `tsum`
+along `permuteSite e`. -/
 lemma ballGreenField_permute (e : Fin 4 ≃ Fin 4) (r : ℕ) (ζ : Site 4 → ℝ) (z : Site 4) :
     ballGreenField r (fun y => ζ (permuteSite e y)) z
       = ballGreenField r ζ (permuteSite e z) := by
@@ -50,6 +59,9 @@ lemma ballGreenField_permute (e : Fin 4 ≃ Fin 4) (r : ℕ) (ζ : Site 4 → �
 
 
 
+/-- The i.i.d. law `LatticeProb.iidLaw 4 ν` is invariant under pushforward along the
+coordinate relabelling `fun η x => η (permuteSite e x)`, since `permuteSite e` is a
+measure-preserving bijection of the index set `Site 4`. -/
 theorem iidLaw_map_permuteSite {α : Type*} [MeasurableSpace α] (ν : Measure α)
     [IsProbabilityMeasure ν] (e : Fin 4 ≃ Fin 4) :
     (LatticeProb.iidLaw 4 ν).map (fun η : Site 4 → α => fun x => η (permuteSite e x))

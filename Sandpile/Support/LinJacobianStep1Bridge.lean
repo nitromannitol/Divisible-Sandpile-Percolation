@@ -1,17 +1,17 @@
-/-
-The junction between Step 1 and Step 2 of `lem:dgt4-linearization-from-survival`.
-
-Step 1 (`Support/LinJacobianEarlyDisplay.lean`) proves that the sum over ALL
-sites of the variances of the coordinate derivative, taken under the law of the
-mass configuration, tends to zero.  Step 2
-(`Support/LinTestedStep2.lean`) consumes the sum over the FINITE set of sites the
-tested field reads, taken under the i.i.d. law of the field itself.  The scenery
-map carries one to the other, and the finite sum is below the full sum because
-every variance is nonnegative.
--/
 import Sandpile.Support.LinJacobianEarlyDisplay
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.LinJacobianShift
+
+/-!
+# Passing the vanishing site-sum of variances from the mass field to the i.i.d. field
+
+The scenery map carries the law of the mass configuration to the i.i.d. law of the field, so the
+variance of any functional of the field equals the variance of the corresponding functional of the
+scenery. Combined with the fact that a finite sum of variances over the sites a tested field reads
+is bounded by the full sum over all sites, this transports the vanishing-as-`R → ∞` conclusion for
+the full site sum of variances of the coordinate derivative, taken under the law of the mass
+configuration, to the same conclusion for the finite site sum taken under the i.i.d. law.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

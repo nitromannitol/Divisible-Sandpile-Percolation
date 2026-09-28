@@ -1,15 +1,26 @@
-/-
-Gaussian fluctuations and the exact variance limit for the dimension-four odometer.
-The membrane limit transfers through a reflection error vanishing in the second moment.
--/
 import Sandpile.Support.D4L2Error
 import Sandpile.Support.MembraneGaussian
 import Sandpile.Support.SecondMomentConvergence
+
+/-!
+# Gaussian fluctuations of the dimension-four odometer
+
+This file transfers the Gaussian central limit theorem for the membrane `V_t` to the
+dimension-four odometer itself. The odometer decomposes as the membrane plus a reflection
+error, and the error is shown to vanish in the second moment (hence in probability) after
+division by `√(log t)`, so Slutsky's theorem carries the membrane's Gaussian limit and its
+exact variance `4 Var(id)/π²` over to the centred, rescaled odometer, both under the i.i.d.
+scenery law and under the sandpile's centered-mass law.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- **The membrane is square-integrable.** For `ν` with a finite second moment, the membrane
+`membrane ζ t x`, viewed as a function of the i.i.d. scenery `ζ`, lies in `MemLp · 2`: it is a
+finite linear combination `∑_i greenTime d t x (boxEnum x t i) · ζ (boxEnum x t i)` of
+coordinates, each of which is in `MemLp · 2`. -/
 theorem memLp_two_membrane {d : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hsq : MemLp (id : ℝ → ℝ) 2 ν) (t : ℕ) (x : Site d) :
     MemLp (fun ζ => membrane ζ t x) 2 (LatticeProb.iidLaw d ν) := by
@@ -17,12 +28,21 @@ theorem memLp_two_membrane {d : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν
     (fun i => greenTime d t x (boxEnum x t i))
   exact h.ae_eq (Eventually.of_forall fun ζ => (membrane_eq_sum_boxEnum t x ζ).symm)
 
+/-- Rescaling a function by `1/√L` before squaring and integrating divides its squared
+integral by `L`: `∫(F/√L)² = (∫F²)/L`. -/
 theorem integral_div_sqrt_sq {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) (F : Ω → ℝ) (L : ℝ) (hL : 0 ≤ L) :
     (∫ ω, (F ω / Real.sqrt L) ^ 2 ∂μ) = (∫ ω, F ω ^ 2 ∂μ) / L := by
   simp_rw [div_pow, Real.sq_sqrt hL]
   rw [integral_div]
 
+/-- **The dimension-four odometer is asymptotically Gaussian, under the i.i.d. scenery
+law.** With `ν` centred, square-integrable and with an exponential moment, the centred
+odometer `odometerOf ζ t 0 - E[odometerOf · t 0]`, divided by `√(log t)`, converges in
+distribution to `gaussianReal 0 (4 Var(id)/π²)`, and its variance divided by `log t` converges
+to that same constant `4 Var(id)/π²`. The proof splits the centred odometer into the membrane
+`V_t` (already known Gaussian) plus an error term, and shows the error's second moment
+divided by `log t` tends to zero, so it contributes nothing to either limit. -/
 theorem odometer_gaussian_four_iid (hVS : External.VarianceScale)
     (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hsq : MemLp (id : ℝ → ℝ) 2 ν)
@@ -86,6 +106,11 @@ theorem odometer_gaussian_four_iid (hVS : External.VarianceScale)
       (Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ t)))]
     rw [variance_eq_integral (measurable_odometerOf t 0).aemeasurable]
 
+/-- **The dimension-four odometer is asymptotically Gaussian, under the sandpile's
+centered-mass law.** This transfers `odometer_gaussian_four_iid` from the i.i.d. scenery law
+to `centeredMassLaw 4 ν` along the measure-preserving `scenery` map: the centred odometer
+`odometer σ t 0 - meanOdometer (centeredMassLaw 4 ν) t`, divided by `√(log t)`, converges in
+distribution to `gaussianReal 0 (4 Var(id)/π²)`, with the same limiting variance ratio. -/
 theorem odometer_gaussian_four_mass (hVS : External.VarianceScale)
     (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hsq : MemLp (id : ℝ → ℝ) 2 ν)

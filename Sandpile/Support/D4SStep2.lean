@@ -1,21 +1,24 @@
-/-
-Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3382`): the
-smoothed linearization error is negligible in `H^{-s}(D)`.
-
-The paper writes the conclusion as `\E\|((P^{n_R}E_{t_R-n_R})^{(R)})^\omega\|^2
-_{H^{-s}(D)}\to0` and proves it by two displays: the field is flat at the scale
-of the mesh except for a parity-class constant, and the parity-class constant
-cancels against the `\omega`-shift.  What the limit theorem consumes is
-convergence to zero in probability, and Markov's inequality gives it from the
-expectations of the two dominating variables, so no second moment of the norm
-itself has to be formed.
--/
 import Sandpile.Support.D4SStep2Inputs
 import Sandpile.Support.D4SStep2Scales
 import Sandpile.Support.D4SStep2Second
 import Sandpile.Support.D4SStep2Mesh
 import Sandpile.Support.D4SMarkov
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# Step 2: Negligibility of the Smoothed Linearization Error
+
+Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3382`): the
+smoothed linearization error is negligible in `H^{-s}(D)`.
+
+The paper writes the conclusion as `\E\|((P^{n_R}E_{t_R-n_R})^{(R)})^\omega\|^2
+_{H^{-s}(D)}\to0` and proves it by two displays: the field is flat at the scale
+of the mesh except for a parity-class constant, and the parity-class constant
+cancels against the `\omega`-shift. What the limit theorem consumes is
+convergence to zero in probability, and Markov's inequality gives it from the
+expectations of the two dominating variables, so no second moment of the norm
+itself has to be formed.
+-/
 
 open LatticeProb
 

@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Membrane
+
+/-!
+# Scaled Distance Comparison
+
 The comparison between the Euclidean distance of two points of `ℝ^d` at scale
 `R` and the lattice distance of the two sites they are embedded into by
 `f^{(R)}(z) = f(⌊Rz⌋)`.  The embedding moves each coordinate by less than one,
@@ -7,7 +11,6 @@ so the two distances differ by at most `√d`, and the decaying powers
 is the passage from the lattice hypothesis of `lem:sobolev-tightness` to the
 continuum hypothesis of the tightness criterion it invokes.
 -/
-import Sandpile.Continuum.Membrane
 
 open MeasureTheory Filter Topology
 

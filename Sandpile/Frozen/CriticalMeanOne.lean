@@ -1,4 +1,12 @@
-/-
+import Sandpile.Law
+import Sandpile.External.BerryEsseen
+import Sandpile.External.VarianceScale
+import Sandpile.Frozen.CriticalToppling
+import Sandpile.Support.CriticalMean
+
+/-!
+# The critical mean-one polynomial lower tail
+
 Corollary of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1820-1826`
 (label `cor:critical-mean-one`, under the standing hypotheses of Subsection
 `ssec:expl-d123` stated at `sandpile.tex:1696-1701`):
@@ -18,11 +26,6 @@ event in `ℝ≥0∞`, against `ENNReal.ofReal` of the paper's right-hand side, 
 that no `toReal` junk value can weaken it; `t ≥ 2` is the paper's threshold.
 Integrability of `|ζ(0)|³` is the standing hypothesis `E|ζ(0)|³ < ∞`.
 -/
-import Sandpile.Law
-import Sandpile.External.BerryEsseen
-import Sandpile.External.VarianceScale
-import Sandpile.Frozen.CriticalToppling
-import Sandpile.Support.CriticalMean
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

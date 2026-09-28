@@ -1,12 +1,19 @@
-/-
+import Sandpile.Support.RealBoxes
+
+/-!
+# Uniform double-exponential decay for a quadratic recurrence
+
 Uniform double-exponential decay for a quadratic probability recurrence.
 -/
-import Sandpile.Support.RealBoxes
 
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- Given positive `c₀, C₀, c, C` and `B ≥ 1`, produces `b, η > 0` and a threshold `M ≥ 1`,
+uniform in `m ≥ M`, such that any `q : ℕ → ℝ≥0∞` with `q 0 ≤ C₀ * exp (-c₀ * m)` and the
+quadratic recursion `q (n + 1) ≤ C * q n ^ 2 + C * B ^ n * exp (-c * m * 2 ^ n)` satisfies the
+double-exponential bound `q n ≤ η * exp (-b * m * 2 ^ n)` for every `n`. -/
 lemma exists_double_exponential_bound (c₀ C₀ c C B : ℝ)
     (hc₀ : 0 < c₀) (hC₀ : 0 < C₀) (hc : 0 < c) (hC : 0 < C) (hB : 1 ≤ B) :
     ∃ b η M : ℝ, 0 < b ∧ 0 < η ∧ 1 ≤ M ∧

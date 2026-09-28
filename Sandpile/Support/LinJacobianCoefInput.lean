@@ -1,22 +1,3 @@
-/-
-`eq:dgt4-linear-coefficient-replacement` (`sandpile.tex:5796-5802`) at the tested
-weight: the hypothesis `hcoef` of Step 2 of
-`lem:dgt4-linearization-from-survival`.
-
-The mean gradient of the odometer differs from the heat-kernel profile by an
-error whose `ℓ¹` norm is `o(R^2)`, which is `eq:dgt4-mean-gradient-approximation`
-and is what the survival hypothesis of the lemma gives.  The coefficient the
-frozen statement subtracts is that profile convolved with the tested weight, so
-the coefficient error is the weight convolved with the gradient error, and
-Young's inequality turns the `ℓ²` norm of a convolution into
-`‖a_R‖_2 ‖e_R‖_1 ≤ (C(φ)R^{-4})^{1/2} o(R^2) = o(1)`.  The `ℓ²` norm of the
-weight is `eq:dgt4-tested-cell-l2`; taking the `ℓ¹` norm of the error, rather
-than its `ℓ²` norm, is what makes the two scales cancel.
-
-Both the mean gradient and the profile vanish outside the box of radius `n_R`,
-by finite propagation speed for the heat kernel and by the locality of the
-odometer recursion for the Jacobian, so the convolution is a finite sum.
--/
 import Sandpile.Support.LinJacobianTestedGreenInput
 import Sandpile.Support.LinJacobianCellGeneral
 import Sandpile.Support.LinMeanGradientApprox
@@ -24,6 +5,26 @@ import Sandpile.Support.LinYoung
 import Sandpile.Support.LinTestedPairing
 import Sandpile.Support.Stationary
 import Sandpile.Support.LinGreenTail
+
+/-!
+# The tested coefficient error as a convolution with the mean-gradient error
+
+This module proves `eq:dgt4-linear-coefficient-replacement` (`sandpile.tex:5796-5802`) at the
+tested weight: the hypothesis `hcoef` of Step 2 of `lem:dgt4-linearization-from-survival`.
+
+The mean gradient of the odometer differs from the heat-kernel profile by an error whose `ℓ¹`
+norm is `o(R^2)`, which is `eq:dgt4-mean-gradient-approximation` and is what the survival
+hypothesis of the lemma gives. The coefficient the frozen statement subtracts is that profile
+convolved with the tested weight, so the coefficient error is the weight convolved with the
+gradient error (`coef_error_eq_conv`), and Young's inequality (`tendsto_coef_error_testedWeight`)
+turns the `ℓ²` norm of a convolution into `‖a_R‖_2 ‖e_R‖_1 ≤ (C(φ)R^{-4})^{1/2} o(R^2) = o(1)`.
+The `ℓ²` norm of the weight is `eq:dgt4-tested-cell-l2`; taking the `ℓ¹` norm of the error, rather
+than its `ℓ²` norm, is what makes the two scales cancel.
+
+Both the mean gradient and the profile vanish outside the box of radius `n_R`, by finite
+propagation speed for the heat kernel and by the locality of the odometer recursion for the
+Jacobian, so the convolution is a finite sum.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -80,6 +81,8 @@ theorem odometerJacobian_bounds [NeZero d] (hd : 1 ≤ d) (ζ : Site d → ℝ) 
           (fun X => (pathOdometerDerivative_bounds ζ n z X).2)
     _ = (n : ℝ) := by simp
 
+/-- `ζ ↦ odometerJacobian ζ n x z` is integrable under the i.i.d. law `LatticeProb.iidLaw d ν`,
+since `odometerJacobian_bounds` bounds it between `0` and `n`. -/
 theorem integrable_odometerJacobian [NeZero d] (hd : 1 ≤ d) (ν : Measure ℝ)
     [IsProbabilityMeasure ν] (n : ℕ) (x z : Site d) :
     Integrable (fun ζ => odometerJacobian ζ n x z) (LatticeProb.iidLaw d ν) := by
@@ -116,6 +119,8 @@ theorem gradientError_eq_zero_of_notMem (ν : Measure ℝ) [IsProbabilityMeasure
     rw [heatKernel_eq_zero_of_lt j 0 w (by have := Finset.mem_range.mp hj; omega), mul_zero]
   rw [gradientError, h1, h2, sub_zero]
 
+/-- `|gradientError d ν n q w|` is summable over `w`, since `gradientError_eq_zero_of_notMem`
+makes it vanish outside the finite box `boxFinset 0 n`. -/
 theorem summable_abs_gradientError (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (n : ℕ) (q : ℕ → ℝ) : Summable fun w : Site d => |gradientError d ν n q w| := by
   classical

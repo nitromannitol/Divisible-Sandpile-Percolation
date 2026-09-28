@@ -1,19 +1,21 @@
-/-
+import Sandpile.Support.LinStep2Profile
+
+/-!
+# Targets for the five Step 2 errors
+
 The choice of targets that makes the five errors of Step 2 add to less than a prescribed
 `c` (`sandpile.tex:5571-5574`).
 
 `Sandpile.integral_abs_survival_sub_profile_le_window` bounds the mean deviation along one
-path by
-`\eta(1+L)+\theta+Q+\kappa\eta'+\eta\kappa(\eta'+L)` with `L=\log(1/\varepsilon)` and
-`Q=16(G(0,0)\kappa)^2/(\varepsilon n_R)`.  Four of the five tend to zero for free once the
+path by `\eta(1+L)+\theta+Q+\kappa\eta'+\eta\kappa(\eta'+L)` with `L=\log(1/\varepsilon)` and
+`Q=16(G(0,0)\kappa)^2/(\varepsilon n_R)`. Four of the five tend to zero for free once the
 targets are fixed; the arithmetic of fixing them is here, separated from the probability.
 
 `error_sum_le_of_targets` is the addition, and the two existence lemmas are the choices:
 `\eta=\min\{1,c/(5(1+L)(1+\kappa))\}` makes the first and the last term at most `c/5`
-simultaneously, and `\eta'=\min\{1,c/(5\kappa)\}` makes the fourth at most `c/5`.  The
+simultaneously, and `\eta'=\min\{1,c/(5\kappa)\}` makes the fourth at most `c/5`. The
 remaining two, `\theta\leq c/5` and `Q\leq c/5`, are conditions on `R` alone.
 -/
-import Sandpile.Support.LinStep2Profile
 
 open MeasureTheory Filter Topology
 

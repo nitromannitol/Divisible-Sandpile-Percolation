@@ -1,26 +1,22 @@
-/-
-`lem:convex-linear-bound` (`sandpile.tex:1547-1569`) read on the lattice field.
-
-The frozen bound `Sandpile.Frozen.convex_linear_bound` is stated for a
-functional of `N` independent real coordinates.  Step 2 of
-`lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5830`) applies it to
-the tested field `F_R = ∑_x a_R(x) u_{n_R}(x)`, which is a functional of the
-whole scenery that reads only the finitely many sites the odometer can see.
-This module carries the bound across that gap: a measurable functional of
-`V → ℝ` that reads only the sites of a finite set `S`, coordinatewise convex
-with right derivatives between `0` and `b_v` on `S`, obeys the same inequality
-under `Measure.infinitePi`, with the sums running over `S`.
-
-The transport is the one of `LatticeProb.variance_le_half_sum_of_local`: the
-reading map `ω ↦ (ω (e j))_{j < |S|}` sends the infinite product to the finite
-one, and the section `x ↦ (v ↦ if v ∈ S then x (S.equivFin v) else 0)` inverts
-it on the coordinates that the functional reads.  The right derivative is local
-for the same reason the functional is, because the derivative of a function is
-determined by the function.
--/
 import Sandpile.Frozen.ConvexLinearBound
 import Sandpile.Support.LinL2Split
 import LatticeProb.Prob.FiniteMarginal
+
+/-!
+# The convex-linear bound read on a finite set of sites of the lattice field
+
+The frozen bound `Sandpile.Frozen.convex_linear_bound` is stated for a functional of `N`
+independent real coordinates, while the tested field of the linearization argument is a
+functional of the whole scenery `V → ℝ` that reads only the finitely many sites the
+odometer can see. This file carries the bound across that gap: a measurable functional of
+`V → ℝ` that reads only the sites of a finite set `S`, coordinatewise convex with right
+derivatives between `0` and `b v` on `S`, obeys the same inequality under
+`Measure.infinitePi`, with the sums running over `S`. The transport uses the reading map
+`ω ↦ (ω (e j))_{j < |S|}`, which sends the infinite product measure to a finite one, and
+its section `x ↦ (v ↦ if v ∈ S then x (S.equivFin v) else 0)`, which inverts it on the
+coordinates the functional reads; the right derivative is local for the same reason the
+functional is, since the derivative of a function is determined by the function.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -29,9 +25,14 @@ namespace Sandpile
 /-- The universal constant of `lem:convex-linear-bound`. -/
 noncomputable def convexLinearConst : ℝ := Classical.choose Sandpile.Frozen.convex_linear_bound
 
+/-- `convexLinearConst` is positive, being the constant of `Sandpile.Frozen.convex_linear_bound`. -/
 theorem convexLinearConst_pos : 0 < convexLinearConst :=
   (Classical.choose_spec Sandpile.Frozen.convex_linear_bound).1
 
+/-- The defining property of `convexLinearConst`: the convex-linear bound of
+`Sandpile.Frozen.convex_linear_bound`, unpacked as an explicit statement about a
+measurable, coordinatewise convex functional `F` of `N` independent real coordinates
+with right derivatives `D i` bounded between `0` and `b i`. -/
 theorem convexLinearConst_spec :
     ∀ (N : ℕ) (ν : Measure ℝ), IsProbabilityMeasure ν → ∫ z, z ∂ν = 0 →
       Integrable (fun z => z ^ 2) ν →
@@ -175,14 +176,16 @@ theorem convex_linear_bound_local
     rw [hpt] at this
     rw [hfun]
     exact this
-  have hD'b : ∀ᵐ x ∂(Measure.pi fun _ : Fin k => ν), ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j) := by
+  have hD'b : ∀ᵐ x ∂(Measure.pi fun _ : Fin k => ν),
+      ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j) := by
     have hset : MeasurableSet {x : Fin k → ℝ | ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j)} := by
       have : {x : Fin k → ℝ | ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j)}
           = ⋂ j : Fin k, ({x | 0 ≤ D' j x} ∩ {x | D' j x ≤ b (e j)}) := by
         ext x; simp [Set.mem_iInter, Set.mem_setOf_eq, forall_and]
       rw [this]
       exact MeasurableSet.iInter fun j =>
-        (measurableSet_le measurable_const (hD'm j)).inter (measurableSet_le (hD'm j) measurable_const)
+        (measurableSet_le measurable_const (hD'm j)).inter
+          (measurableSet_le (hD'm j) measurable_const)
     rw [← hTmap, ae_map_iff hTmeas.aemeasurable hset]
     filter_upwards [hDb] with ω hω
     intro j
@@ -392,6 +395,8 @@ theorem hasDerivWithinAt_rightDerivField {V : Type*} [DecidableEq V]
   hasDerivWithinAt_Ioi_iff_Ici.mp
     (hconv.hasDerivWithinAt_rightDeriv_of_mem_interior (by simp))
 
+/-- `rightDerivField F v` is measurable, whenever `F` is measurable and coordinatewise
+convex in the coordinate `v`. -/
 theorem measurable_rightDerivField {V : Type*} [DecidableEq V]
     (F : (V → ℝ) → ℝ) (hFm : Measurable F) (v : V)
     (hconv : ∀ ω : V → ℝ, ConvexOn ℝ (Set.univ : Set ℝ) fun y => F (Function.update ω v y)) :
@@ -471,6 +476,9 @@ theorem convexOn_section {f : (V → ℝ) → ℝ}
   rw [hup]
   exact hf.2 (Set.mem_univ _) (Set.mem_univ _) ht₁ ht₂ ht
 
+/-- The exact second moment `∫ (∑ i, d i * ζ i) ^ 2 = (∫ z ^ 2 ∂ν) * ∑ i, d i ^ 2` of a
+linear functional of finitely many independent coordinates under `Measure.pi`, computed
+from the variance of a sum of independent scaled copies of the one-site coordinate. -/
 theorem integral_sq_linear_eq_pi (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hsq : MemLp (id : ℝ → ℝ) 2 ν)
     {N : ℕ} (d : Fin N → ℝ) :

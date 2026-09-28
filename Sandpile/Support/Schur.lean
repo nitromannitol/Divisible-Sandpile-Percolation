@@ -1,14 +1,16 @@
-/-
+import Sandpile.External.BerryEsseen
+
+/-!
+# The Schur test for a correlation matrix
+
 The Schur test for a correlation matrix.
 
-`thm:critical-toppling` needs the covariance matrix of the standardized membrane
-fields to have quadratic form between `1-δ` and `1+δ`.  The diagonal is one by
-construction and the off-diagonal entries are bounded by `eq:corr-bound`, so the
-only ingredient is the elementary bound that a symmetric matrix whose rows carry
-off-diagonal mass at most `ρ` perturbs the identity's quadratic form by at most
-`ρ`.
+`thm:critical-toppling` needs the covariance matrix of the standardized membrane fields to have
+quadratic form between `1-δ` and `1+δ`. The diagonal is one by construction and the off-diagonal
+entries are bounded by `eq:corr-bound`, so the only ingredient is the elementary bound that a
+symmetric matrix whose rows carry off-diagonal mass at most `ρ` perturbs the identity's quadratic
+form by at most `ρ`.
 -/
-import Sandpile.External.BerryEsseen
 
 open Sandpile.External.BerryEsseen
 
@@ -23,6 +25,8 @@ noncomputable def offEntry {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ) (j k : Fin
 noncomputable def offRow {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ) (j : Fin m) : ℝ :=
   ∑ k, offEntry S j k
 
+/-- The off-diagonal entry `offEntry S j k` is always nonnegative, being either `0` or an
+absolute value. -/
 theorem offEntry_nonneg {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ) (j k : Fin m) :
     0 ≤ offEntry S j k := by
   unfold offEntry
@@ -30,6 +34,8 @@ theorem offEntry_nonneg {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ) (j k : Fin m)
   · exact le_refl 0
   · exact abs_nonneg _
 
+/-- `offEntry` inherits the symmetry of `S`: `offEntry S j k = offEntry S k j` whenever
+`S j k = S k j` for all entries. -/
 theorem offEntry_symm {m : ℕ} {S : Matrix (Fin m) (Fin m) ℝ}
     (hsymm : ∀ j k, S j k = S k j) (j k : Fin m) : offEntry S j k = offEntry S k j := by
   unfold offEntry
@@ -37,6 +43,8 @@ theorem offEntry_symm {m : ℕ} {S : Matrix (Fin m) (Fin m) ℝ}
   · rw [if_pos h, if_pos h.symm]
   · rw [if_neg h, if_neg (fun hc => h hc.symm), hsymm j k]
 
+/-- Zeroing out the `j`-th term of a sum over `f` subtracts that term: `∑ k, (if j = k then 0
+else f k) = (∑ k, f k) - f j`. -/
 theorem sum_ite_eq_sub {m : ℕ} (j : Fin m) (f : Fin m → ℝ) :
     ∑ k, (if j = k then (0 : ℝ) else f k) = (∑ k, f k) - f j := by
   have e : ∀ k, (if j = k then (0 : ℝ) else f k) = f k - (if j = k then f k else 0) := by
@@ -44,6 +52,9 @@ theorem sum_ite_eq_sub {m : ℕ} (j : Fin m) (f : Fin m → ℝ) :
   rw [Finset.sum_congr rfl (fun k _ => e k), Finset.sum_sub_distrib]
   simp
 
+/-- When `S` has unit diagonal, `quadForm S v - ∑ j, v j ^ 2` equals the pure off-diagonal
+double sum `∑ j, ∑ k, (if j = k then 0 else S j k * v j * v k)`, by applying `sum_ite_eq_sub`
+to each row. -/
 theorem quadForm_sub_eq {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ)
     (hdiag : ∀ j, S j j = 1) (v : Fin m → ℝ) :
     quadForm S v - ∑ j, v j ^ 2

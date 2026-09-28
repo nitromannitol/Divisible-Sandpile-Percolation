@@ -1,9 +1,12 @@
-/-
+import LatticeProb.Walk.WindowD4
+import LatticeProb.Walk.GreenSq
+
+/-!
+# Paired time-step estimates for doubled sums
+
 Paired time-step estimates for doubled sums of a nonnegative heat kernel.
 The summable remainder is retained after weighting each pair by its time.
 -/
-import LatticeProb.Walk.WindowD4
-import LatticeProb.Walk.GreenSq
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -28,6 +31,10 @@ theorem sum_time_pair_identity (f : ℕ → ℝ) (t : ℕ) (ht : 1 ≤ t) :
     ring
 
 
+/-- The double sum `∑_{a,b<t} f(a+b)` is within `5M` of the singly-weighted sum
+`∑_{1≤s<t} s * f(s)`, given `f` is nonnegative, bounded by `M` at `0`, and bounded by
+`M/n^2` beyond, via `LatticeProb.pairCount` and the inverse-square tail bound
+`sum_Ico_inv_sq_le_two`. -/
 theorem double_sum_sub_weighted_bound (f : ℕ → ℝ) (M : ℝ) (hM : 0 ≤ M)
     (hf : ∀ n, 0 ≤ f n) (hf0 : f 0 ≤ M)
     (hbound : ∀ n : ℕ, 1 ≤ n → f n ≤ M / (n : ℝ) ^ 2)
@@ -86,10 +93,14 @@ theorem double_sum_sub_weighted_bound (f : ℕ → ℝ) (M : ℝ) (hM : 0 ≤ M)
     rw [Finset.sum_add_distrib]
     ring
   rw [hsplit, hlow]
-  rw [abs_of_nonneg (by linarith [hf 0, Finset.sum_nonneg (fun s (_ : s ∈ Finset.Ico 1 t) => hf s)])]
+  rw [abs_of_nonneg (by
+    linarith [hf 0, Finset.sum_nonneg (fun s (_ : s ∈ Finset.Ico 1 t) => hf s)])]
   linarith
 
 
+/-- Combining `double_sum_sub_weighted_bound` with `sum_time_pair_identity` and a pointwise
+paired approximation `f n + f (n + 1) ≈ A/n^2 * exp (-2q/n)` (error `C/n^3`) bounds the double
+sum `∑_{a,b<t} f(a+b)` within `7M+C` of `A/2 * ∑_{1≤s<t} exp (-2q/s)/s`. -/
 theorem double_sum_paired_approx (f : ℕ → ℝ) (M C A q : ℝ) (hM : 0 ≤ M)
     (hf : ∀ n, 0 ≤ f n) (hf0 : f 0 ≤ M)
     (hbound : ∀ n : ℕ, 1 ≤ n → f n ≤ M / (n : ℝ) ^ 2)

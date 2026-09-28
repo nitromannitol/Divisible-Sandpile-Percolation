@@ -1,46 +1,22 @@
-/-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4894-4896`
-(label `prop:dgt4-contact-asymptotics`):
-
-  "As $n \to \infty$, we have $\P(u_n(0)=0)\sim\frac{G(0,0)\kappa}{n}$."
-
-The standing hypotheses are those of `sandpile.tex:4641-4643`: "Throughout the
-remainder of this subsection, we assume the hypotheses of
-Theorem~\ref{thm:dgt4-diffusive-membrane}, and $\kappa$ denotes the exponent
-defined there."  They are therefore transcribed here in full, exactly as in
-`Sandpile/Frozen/DGT4DiffusiveMembrane.lean`: `d ≥ 5`, the scenery i.i.d.,
-atomless, centred, of finite positive variance, and either Gaussian, in which
-case `κ = 1`, or bounded above with a lower tail regularly varying of index
-`-α` for some `α > 2`, in which case `κ = 1 - 1/α`.  The disjunction pins `κ`
-in each branch; the proposition is proved case by case at
-`sandpile.tex:4969` and `sandpile.tex:5306`.
-
-Modelling decisions.
-
-The scenery is written in the mass normalization: the integration variable is
-`σ` with law `Sandpile.centeredMassLaw d ν`, so `ζ = (σ-1)/(2d)` has one-site
-law `ν` and `u_n(0)` is `Sandpile.odometer σ n 0`.
-
-`f ∼ g` is `Tendsto (f / g) atTop (𝓝 1)`.  The probability is the `toReal` of
-the measure of the event `{σ | u_n(0) = 0}`; the event is measurable, since
-`u_n(0)` depends on finitely many coordinates.  The quotient is by
-`G(0,0)κ/n`, which vanishes at `n = 0`; the junk value `x/0 = 0` there is
-invisible to the `atTop` filter, and `G(0,0)κ > 0` for every `n ≥ 1` because
-`d ≥ 5` makes `G(0,0)` finite and positive and each branch of `hcase` makes
-`κ > 0`.
-
-Cited inputs (standing convention R1).  Step 4 of case (a) bounds the conditional
-mean increment for `y \leq -1` by Gaussian concentration for the Lipschitz
-functional `\Theta_n` (`sandpile.tex:5267-5271`); that inequality is Borell's and
-Tsirelson-Ibragimov-Sudakov's, cited and not proved in the paper, and enters here
-as `hGaussConc` at version 3.  `hGreenHigh` carries the `d \geq 5` Green estimates
-of `ssec:green-estimates` the two cases use throughout.
--/
 import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.GaussianLipschitzConcentration
 import Sandpile.Support.Dgt4AFinal
+
+/-!
+# Contact-probability asymptotics above dimension four
+
+This file proves the frozen statement of `prop:dgt4-contact-asymptotics` (`sandpile.tex:4894-4896`):
+for `d ≥ 5` and scenery `ζ` i.i.d., atomless, centered, of finite positive variance, and either
+Gaussian (`κ = 1`) or bounded above with a regularly varying lower tail of index `-α`, `α > 2`
+(`κ = 1 - 1/α`), the probability that the odometer at the origin vanishes at time `n` is
+asymptotic to `G(0,0) κ / n`. The scenery is carried in the mass normalization, so `u_n(0)` is
+`Sandpile.odometer σ n 0` for `σ` of law `Sandpile.centeredMassLaw d ν`. The proof of the two cases
+cites Borell's and Tsirelson-Ibragimov-Sudakov's Gaussian concentration inequality for the
+Lipschitz functional `Θ_n` of `sandpile.tex:5267-5271` as the explicit hypothesis `hGaussConc`,
+and draws throughout on the `d ≥ 5` Green estimates.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,11 +1,14 @@
-/-
-A nonnegative combination of coordinatewise convex functions is convex.  This is
+import Mathlib
+
+/-!
+# Convexity of nonnegative combinations
+
+A nonnegative combination of coordinatewise convex functions is convex. This is
 the convexity of the tested field `F_R = ∑_x a_R(x) u_{n_R}(x)` used in Step 2 of
 `lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5817`): each `u_{n_R}(x)`
 is coordinatewise convex in the scenery (`prop:finite-time-concentration-scale`),
 and `a_R(x) = R^{(d-4)/2} φ_R(x) ≥ 0` for `φ ≥ 0`.
 -/
-import Mathlib
 
 open Set
 

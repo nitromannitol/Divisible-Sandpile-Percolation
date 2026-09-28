@@ -1,23 +1,24 @@
-/-
-The one-dimensional Gaussian inputs of case (a) of
-`prop:dgt4-contact-asymptotics`: "The Mills-ratio tail asymptotics for the
-mean-zero Gaussian $V_\infty(0)$ give, as $t\to\infty$,
+import Sandpile.Support.Dgt4TailChain
+import Sandpile.Support.Dgt4CaseSelect
+
+/-!
+# The one-dimensional Gaussian Mills-ratio inputs of case (a)
+
+The one-dimensional Gaussian inputs of case (a) of `prop:dgt4-contact-asymptotics`: "The
+Mills-ratio tail asymptotics for the mean-zero Gaussian $V_\infty(0)$ give, as $t\to\infty$,
 $\E(-V_\infty(0)-t)_+\sim\frac{\Sigma^2}{t}\P(-V_\infty(0)>t)$ and
 $-\frac{d}{dt}\P(-V_\infty(0)>t)\sim\frac{t}{\Sigma^2}\P(-V_\infty(0)>t)$"
 (`sandpile.tex:4991-5000`).
 
 `gaussianUpperTail v` is the tail `t \mapsto \P(N(0,v)>t)` and `gaussianIntegratedTail v` the
-integrated tail `t \mapsto \E(N(0,v)-t)_+`; in case (a) the field `-V_\infty(0)`
-is the mean-zero Gaussian of variance `\Sigma^2`, so these are the two
-quantities the display names.
+integrated tail `t \mapsto \E(N(0,v)-t)_+`; in case (a) the field `-V_\infty(0)` is the mean-zero
+Gaussian of variance `\Sigma^2`, so these are the two quantities the display names.
 
-`GaussianMillsBounds v` collects the four non-asymptotic Mills bounds and the two
-monotonicity bounds for the increment of the tail; the asymptotics the chain of
-`Support/Dgt4TailChain.lean` consumes are squeezed out of them here.  All six
-are inequalities between explicit one-dimensional Gaussian quantities.
+`GaussianMillsBounds v` collects the four non-asymptotic Mills bounds and the two monotonicity
+bounds for the increment of the tail (proved unconditionally by `gaussianMillsBounds`); the
+asymptotics the chain of `Support/Dgt4TailChain.lean` consumes are squeezed out of them here. All
+six are inequalities between explicit one-dimensional Gaussian quantities.
 -/
-import Sandpile.Support.Dgt4TailChain
-import Sandpile.Support.Dgt4CaseSelect
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -61,7 +62,8 @@ structure GaussianMillsBounds (v : ℝ≥0) : Prop where
   le_tail : ∀ t : ℝ, 0 < t →
     ((v : ℝ) / t - (v : ℝ) ^ 2 / t ^ 3) * gaussianPDFReal 0 v t ≤ gaussianUpperTail v t
   /-- `I(t) ≤ v²φ(t)/t²`. -/
-  mean_le : ∀ t : ℝ, 0 < t → gaussianIntegratedTail v t ≤ (v : ℝ) ^ 2 * gaussianPDFReal 0 v t / t ^ 2
+  mean_le : ∀ t : ℝ, 0 < t →
+    gaussianIntegratedTail v t ≤ (v : ℝ) ^ 2 * gaussianPDFReal 0 v t / t ^ 2
   /-- `v²φ(t)/(t²+3v) ≤ I(t)`. -/
   le_mean : ∀ t : ℝ, 0 < t →
     (v : ℝ) ^ 2 * gaussianPDFReal 0 v t / (t ^ 2 + 3 * (v : ℝ)) ≤ gaussianIntegratedTail v t
@@ -129,7 +131,8 @@ theorem tendsto_gaussMills_tail (v : ℝ≥0) (hv : v ≠ 0) (h : GaussianMillsB
 
 /-- The Mills ratio for the integrated Gaussian tail, `sandpile.tex:4990-4992`. -/
 theorem tendsto_gaussMills_mean (v : ℝ≥0) (hv : v ≠ 0) (h : GaussianMillsBounds v) :
-    Tendsto (fun t : ℝ => t * gaussianIntegratedTail v t / ((v : ℝ) * gaussianUpperTail v t)) atTop (𝓝 1) :=
+    Tendsto (fun t : ℝ => t * gaussianIntegratedTail v t / ((v : ℝ) * gaussianUpperTail v t))
+      atTop (𝓝 1) :=
   tendsto_mills_mean (coe_pos_of_ne_zero hv) (fun t => gaussianPDFReal_pos 0 v t hv)
     h.tail_le h.le_tail h.mean_le h.le_mean
     (tendsto_inv_one_add_div_sq (3 * (v : ℝ))) (tendsto_inv_one_sub_div_sq _)
@@ -193,6 +196,9 @@ theorem upperTail_eq_setIntegral (v : ℝ≥0) (hv : v ≠ 0) (t : ℝ) :
   rw [gaussianUpperTail, gaussianReal_apply_eq_integral 0 hv (Set.Ioi t),
     ENNReal.toReal_ofReal (integral_nonneg fun s => gaussianPDFReal_nonneg 0 v s)]
 
+/-- `s ↦ s φ(s)` is integrable, the product of the identity function against the Gaussian
+density rewritten as a constant times `s ↦ s exp(-s²/(2v))`, which is dominated by the known
+integrable Gaussian-weighted polynomial `integrable_mul_exp_neg_mul_sq`. -/
 theorem integrable_mul_gaussianPDFReal (v : ℝ≥0) (hv : v ≠ 0) :
     Integrable (fun s : ℝ => s * gaussianPDFReal 0 v s) := by
   have hvpos : (0 : ℝ) < (v : ℝ) := coe_pos_of_ne_zero hv
@@ -206,6 +212,9 @@ theorem integrable_mul_gaussianPDFReal (v : ℝ≥0) (hv : v ≠ 0) :
   simp only [gaussianPDFReal, hexp]
   ring
 
+/-- `∫_a^∞ (s/v)φ(s) ds = φ(a)`, since `-φ` is an antiderivative of `s ↦ (s/v)φ(s)`
+(`hasDerivAt_gaussianPDF`) that tends to `0` at infinity (`tendsto_gaussianPDF_zero`), so the
+fundamental theorem of calculus for improper integrals applies. -/
 theorem integral_Ioi_mul_gaussianPDFReal (v : ℝ≥0) (hv : v ≠ 0) (a : ℝ) :
     ∫ s in Set.Ioi a, s / (v : ℝ) * gaussianPDFReal 0 v s = gaussianPDFReal 0 v a := by
   have hvpos : (0 : ℝ) < (v : ℝ) := coe_pos_of_ne_zero hv
@@ -247,6 +256,8 @@ theorem integrableOn_div_pow_mul_pdf (v : ℝ≥0) {a : ℝ} (ha : 0 < a) (c : �
         div_le_div_of_nonneg_left (by positivity) hpk hak
     _ = |c| / a ^ k * gaussianPDFReal 0 v s := by ring
 
+/-- The derivative identity behind the first Mills bound: `d/dr [-(v/r)φ(r)] = φ(r) + (v/r²)φ(r)`
+at `r = s`, from the product rule applied to `hasDerivAt_gaussianPDF` and `hasDerivAt_inv`. -/
 theorem hasDerivAt_millsAux (v : ℝ≥0) (hv : v ≠ 0) {s : ℝ} (hs : s ≠ 0) :
     HasDerivAt (fun r : ℝ => -((v : ℝ) / r * gaussianPDFReal 0 v r))
       (gaussianPDFReal 0 v s + (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s) s := by
@@ -264,6 +275,9 @@ theorem hasDerivAt_millsAux (v : ℝ≥0) (hv : v ≠ 0) {s : ℝ} (hs : s ≠ 0
   refine key.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)
   simp [div_eq_mul_inv]
 
+/-- The derivative identity behind the second Mills bound: `d/dr [-(v/r³)φ(r)] = φ(r)/r² +
+3v·φ(r)/r⁴` at `r = s`, from the product rule applied to `hasDerivAt_gaussianPDF` and the
+derivative of the cube's inverse. -/
 theorem hasDerivAt_millsAux3 (v : ℝ≥0) (hv : v ≠ 0) {s : ℝ} (hs : s ≠ 0) :
     HasDerivAt (fun r : ℝ => -((v : ℝ) / r ^ 3 * gaussianPDFReal 0 v r))
       (gaussianPDFReal 0 v s / s ^ 2 + 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4) s := by
@@ -308,6 +322,9 @@ theorem integral_Ioi_millsAux (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a
   have h := integral_Ioi_of_hasDerivAt_of_tendsto' hderiv hint hf
   simpa using h
 
+/-- The second fundamental-theorem identity behind the Mills bounds: `∫_a^∞ (φ(s)/s² +
+3v·φ(s)/s⁴) ds = (v/a³)φ(a)`, applying the improper fundamental theorem of calculus to the
+antiderivative `-(v/r³)φ(r)` of `hasDerivAt_millsAux3`. -/
 theorem integral_Ioi_millsAux3 (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     ∫ s in Set.Ioi a, (gaussianPDFReal 0 v s / s ^ 2
         + 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4)
@@ -338,11 +355,15 @@ theorem integrableOn_pdf_Ioi (v : ℝ≥0) (a : ℝ) :
     IntegrableOn (gaussianPDFReal 0 v) (Set.Ioi a) :=
   (integrable_gaussianPDFReal 0 v).integrableOn
 
+/-- The weight `s ↦ (v/s²)φ(s)` from `integral_Ioi_millsAux` is integrable on `(a, ∞)` for
+`a > 0`, a special case of `integrableOn_div_pow_mul_pdf`. -/
 theorem integrableOn_weight_Ioi (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     IntegrableOn (fun s : ℝ => (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s) (Set.Ioi a) :=
   (integrableOn_div_pow_mul_pdf v ha (v : ℝ) 2).congr
     (Filter.Eventually.of_forall fun s => by ring)
 
+/-- `Φ(a) + ∫_a^∞ (v/s²)φ(s) ds = (v/a)φ(a)`, splitting `integral_Ioi_millsAux` into the tail
+(`upperTail_eq_setIntegral`) plus the weight integral. -/
 theorem upperTail_add_weight (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     gaussianUpperTail v a + ∫ s in Set.Ioi a, (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s
       = (v : ℝ) / a * gaussianPDFReal 0 v a := by
@@ -350,6 +371,8 @@ theorem upperTail_add_weight (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a)
     ← integral_add (integrableOn_pdf_Ioi v a) (integrableOn_weight_Ioi v ha)]
   exact integral_Ioi_millsAux v hv ha
 
+/-- The weight integral `∫_a^∞ (v/s²)φ(s) ds` is nonnegative, being the integral of a
+nonnegative integrand. -/
 theorem weight_nonneg (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     0 ≤ ∫ s in Set.Ioi a, (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s := by
   refine setIntegral_nonneg measurableSet_Ioi fun s hs => ?_
@@ -357,12 +380,17 @@ theorem weight_nonneg (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
   have := gaussianPDFReal_nonneg 0 v s
   positivity
 
+/-- The upper Mills bound `Φ(a) ≤ (v/a)φ(a)`, dropping the nonnegative weight integral from
+`upperTail_add_weight`. -/
 theorem upperTail_le_mills (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     gaussianUpperTail v a ≤ (v : ℝ) / a * gaussianPDFReal 0 v a := by
   have h := upperTail_add_weight v hv ha
   have hnn := weight_nonneg v ha
   linarith
 
+/-- The weight integral is bounded by `(v/a²)Φ(a)`, monotonicity of the integral against the
+constant bound `s ↦ v/a²` on `1/s²` for `s > a`, then rewriting as the tail
+(`upperTail_eq_setIntegral`). -/
 theorem weight_le (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     (∫ s in Set.Ioi a, (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s)
       ≤ (v : ℝ) / a ^ 2 * gaussianUpperTail v a := by
@@ -382,6 +410,8 @@ theorem weight_le (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     _ = (v : ℝ) / a ^ 2 * gaussianUpperTail v a := by
         rw [integral_const_mul, upperTail_eq_setIntegral v hv a]
 
+/-- The lower Mills bound `(v/a - v²/a³)φ(a) ≤ Φ(a)`, feeding `weight_le` back into
+`upperTail_add_weight` to eliminate the weight integral. -/
 theorem mills_le_upperTail (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     ((v : ℝ) / a - (v : ℝ) ^ 2 / a ^ 3) * gaussianPDFReal 0 v a ≤ gaussianUpperTail v a := by
   have h := upperTail_add_weight v hv ha
@@ -414,8 +444,8 @@ theorem integratedTail_eq (v : ℝ≥0) (hv : v ≠ 0) (a : ℝ) :
     funext x
     by_cases hx : a < x
     · rw [Set.indicator_of_mem (Set.mem_Ioi.mpr hx), max_eq_right (by linarith : (0 : ℝ) ≤ x - a)]
-    · rw [Set.indicator_of_notMem (by simpa using not_lt.mp hx), max_eq_left (by linarith [not_lt.mp hx] : x - a ≤ 0),
-        mul_zero]
+    · rw [Set.indicator_of_notMem (by simpa using not_lt.mp hx),
+        max_eq_left (by linarith [not_lt.mp hx] : x - a ≤ 0), mul_zero]
   have hA : IntegrableOn (fun x : ℝ => x * gaussianPDFReal 0 v x) (Set.Ioi a) :=
     (integrable_mul_gaussianPDFReal v hv).integrableOn
   have hB : IntegrableOn (fun x : ℝ => a * gaussianPDFReal 0 v x) (Set.Ioi a) :=
@@ -438,6 +468,8 @@ theorem integratedTail_eq (v : ℝ≥0) (hv : v ≠ 0) (a : ℝ) :
     rw [integral_const_mul, upperTail_eq_setIntegral v hv a]
   rw [h1, h2, integral_indicator measurableSet_Ioi, h3, h4, h5]
 
+/-- `I(a) = a·∫_a^∞ (v/s²)φ(s) ds`, substituting the tail formula `integratedTail_eq` and
+`upperTail_add_weight` to eliminate `Φ(a)` and `(v/a)φ(a)`. -/
 theorem integratedTail_eq_mul_weight (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     gaussianIntegratedTail v a
       = a * ∫ s in Set.Ioi a, (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s := by
@@ -455,11 +487,14 @@ theorem integrableOn_pdf_div_sq (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     IntegrableOn (fun s : ℝ => gaussianPDFReal 0 v s / s ^ 2) (Set.Ioi a) :=
   (integrableOn_div_pow_mul_pdf v ha 1 2).congr (Filter.Eventually.of_forall fun s => by ring)
 
+/-- The weight `s ↦ 3v·φ(s)/s⁴` from `integral_Ioi_millsAux3` is integrable on `(a, ∞)` for
+`a > 0`, a special case of `integrableOn_div_pow_mul_pdf`. -/
 theorem integrableOn_pdf_div_four (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     IntegrableOn (fun s : ℝ => 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4) (Set.Ioi a) :=
   (integrableOn_div_pow_mul_pdf v ha (3 * (v : ℝ)) 4).congr
     (Filter.Eventually.of_forall fun s => by ring)
 
+/-- The weight integral of `integral_Ioi_millsAux` factors as `v` times `∫_a^∞ φ(s)/s² ds`. -/
 theorem weight_eq_const_mul (v : ℝ≥0) (a : ℝ) :
     (∫ s in Set.Ioi a, (v : ℝ) / s ^ 2 * gaussianPDFReal 0 v s)
       = (v : ℝ) * ∫ s in Set.Ioi a, gaussianPDFReal 0 v s / s ^ 2 := by
@@ -467,6 +502,8 @@ theorem weight_eq_const_mul (v : ℝ≥0) (a : ℝ) :
   refine setIntegral_congr_fun measurableSet_Ioi fun s _ => ?_
   ring
 
+/-- `∫_a^∞ φ(s)/s² ds + ∫_a^∞ 3v·φ(s)/s⁴ ds = (v/a³)φ(a)`, splitting `integral_Ioi_millsAux3`
+into its two summands. -/
 theorem weight3_identity (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     (∫ s in Set.Ioi a, gaussianPDFReal 0 v s / s ^ 2)
       + ∫ s in Set.Ioi a, 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4
@@ -474,6 +511,8 @@ theorem weight3_identity (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
   rw [← integral_add (integrableOn_pdf_div_sq v ha) (integrableOn_pdf_div_four v ha)]
   exact integral_Ioi_millsAux3 v hv ha
 
+/-- The second weight integral `∫_a^∞ 3v·φ(s)/s⁴ ds` is nonnegative, its integrand being a
+nonnegative product. -/
 theorem integral_pdf_div_four_nonneg (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     0 ≤ ∫ s in Set.Ioi a, 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4 := by
   refine setIntegral_nonneg measurableSet_Ioi fun s hs => ?_
@@ -482,6 +521,8 @@ theorem integral_pdf_div_four_nonneg (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
   have hv2 : (0 : ℝ) ≤ (v : ℝ) := (v : ℝ≥0).coe_nonneg
   positivity
 
+/-- The second weight integral is bounded by `(3v/a²)∫_a^∞ φ(s)/s² ds`, comparing `1/s⁴` to
+`(1/a²)(1/s²)` termwise using `a ≤ s` on `(a, ∞)`. -/
 theorem integral_pdf_div_four_le (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
     (∫ s in Set.Ioi a, 3 * (v : ℝ) * gaussianPDFReal 0 v s / s ^ 4)
       ≤ 3 * (v : ℝ) / a ^ 2 * ∫ s in Set.Ioi a, gaussianPDFReal 0 v s / s ^ 2 := by
@@ -510,6 +551,9 @@ theorem integral_pdf_div_four_le (v : ℝ≥0) {a : ℝ} (ha : 0 < a) :
 
 
 
+/-- The upper Mills bound for the integrated tail, `I(a) ≤ v²φ(a)/a²`: rewrite `I(a)` via
+`integratedTail_eq_mul_weight`, bound `∫_a^∞ φ(s)/s² ds` by `(v/a³)φ(a)` from `weight3_identity`
+using that the second weight integral is nonnegative (`integral_pdf_div_four_nonneg`). -/
 theorem integratedTail_le_mills (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     gaussianIntegratedTail v a ≤ (v : ℝ) ^ 2 * gaussianPDFReal 0 v a / a ^ 2 := by
   have hv2 : (0 : ℝ) ≤ (v : ℝ) := (v : ℝ≥0).coe_nonneg
@@ -529,6 +573,9 @@ theorem integratedTail_le_mills (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 <
   rw [heq] at hstep
   exact hstep
 
+/-- The lower Mills bound for the integrated tail, `v²φ(a)/(a² + 3v) ≤ I(a)`: bound
+`∫_a^∞ φ(s)/s² ds` below using `integral_pdf_div_four_le` inside `weight3_identity`, then rewrite
+`I(a)` via `integratedTail_eq_mul_weight`. -/
 theorem mills_le_integratedTail (v : ℝ≥0) (hv : v ≠ 0) {a : ℝ} (ha : 0 < a) :
     (v : ℝ) ^ 2 * gaussianPDFReal 0 v a / (a ^ 2 + 3 * (v : ℝ))
       ≤ gaussianIntegratedTail v a := by
@@ -574,6 +621,8 @@ theorem gaussianPDFReal_antitone (v : ℝ≥0) (hv : v ≠ 0) {x y : ℝ} (hx : 
         mul_le_mul_of_nonneg_left hexp hc
     _ = gaussianPDFReal 0 v x := rfl
 
+/-- The tail decrement `Φ(s) - Φ(s+d)` equals the integral of the density over `(s, s+d]`,
+splitting `Set.Ioi s` into `Set.Ioc s (s + d)` and `Set.Ioi (s + d)`. -/
 theorem upperTail_sub_eq (v : ℝ≥0) (hv : v ≠ 0) (s d : ℝ) (hd : 0 < d) :
     gaussianUpperTail v s - gaussianUpperTail v (s + d)
       = ∫ x in Set.Ioc s (s + d), gaussianPDFReal 0 v x := by
@@ -592,11 +641,16 @@ theorem upperTail_sub_eq (v : ℝ≥0) (hv : v ≠ 0) (s d : ℝ) (hd : 0 < d) :
   rw [upperTail_eq_setIntegral v hv s, upperTail_eq_setIntegral v hv (s + d), hI]
   ring
 
+/-- The Lebesgue measure of `(s, s+d]` is `d`, computing `Real.volume_real_Ioc` at the endpoint
+`s + d - s = d`. -/
 theorem volume_real_Ioc_add (s d : ℝ) (hd : 0 < d) :
     (volume : Measure ℝ).real (Set.Ioc s (s + d)) = d := by
   rw [Real.volume_real_Ioc]
   rw [show s + d - s = d by ring, max_eq_left hd.le]
 
+/-- The upper monotonicity bound on the tail decrement: `Φ(s) - Φ(s+d) ≤ φ(s)d`, bounding the
+integral of `upperTail_sub_eq` above by the constant `φ(s)` using antitonicity of the density
+(`gaussianPDFReal_antitone`) on `(s, s+d]`. -/
 theorem upperTail_sub_le (v : ℝ≥0) (hv : v ≠ 0) {s d : ℝ} (hs : 0 ≤ s) (hd : 0 < d) :
     gaussianUpperTail v s - gaussianUpperTail v (s + d) ≤ gaussianPDFReal 0 v s * d := by
   rw [upperTail_sub_eq v hv s d hd]
@@ -610,6 +664,9 @@ theorem upperTail_sub_le (v : ℝ≥0) (hv : v ≠ 0) {s d : ℝ} (hs : 0 ≤ s)
     _ = gaussianPDFReal 0 v s * d := by
         rw [setIntegral_const, volume_real_Ioc_add s d hd, smul_eq_mul, mul_comm]
 
+/-- The lower monotonicity bound on the tail decrement: `φ(s+d)d ≤ Φ(s) - Φ(s+d)`, bounding the
+integral of `upperTail_sub_eq` below by the constant `φ(s+d)` using antitonicity of the density
+(`gaussianPDFReal_antitone`) on `(s, s+d]`. -/
 theorem le_upperTail_sub (v : ℝ≥0) (hv : v ≠ 0) {s d : ℝ} (hs : 0 ≤ s) (hd : 0 < d) :
     gaussianPDFReal 0 v (s + d) * d
       ≤ gaussianUpperTail v s - gaussianUpperTail v (s + d) := by

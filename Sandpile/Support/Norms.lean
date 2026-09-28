@@ -1,10 +1,13 @@
-/-
+import Sandpile.Law
+import LatticeProb.Prob.WeightedConc
+
+/-!
+# Norms for the one-site resampling concentration lemma
+
 The three quantities the concentration lemma of `sandpile.tex:1344-1404` is
 stated with: the resampling moment `E|ξ_i - ξ_i'|^p` of a one-site law, and the
 `ℓ²` and `ℓ^∞` norms of the vector of Lipschitz constants.
 -/
-import Sandpile.Law
-import LatticeProb.Prob.WeightedConc
 
 open MeasureTheory
 

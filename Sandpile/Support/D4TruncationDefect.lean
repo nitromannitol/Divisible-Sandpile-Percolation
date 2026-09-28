@@ -1,14 +1,17 @@
-/-
-The defect between the kernel of the time-truncated membrane field and the
-potential kernel, for Step 1 of `prop:d4-superdiffusive-limit`.
-
-The two kernels differ by the time tail of the heat kernel at `x` and a term
-that does not depend on `x`; the second is annihilated by the `ω`-pairing,
-whose test function integrates to zero, so the whole defect is carried by the
-tail `∑_{j≥t} p_j(x,y)`.  The `α > 2` arithmetic that makes the tail vanish at
-the superdiffusive times `t_R = ⌊R^α⌋` is recorded here as well.
--/
 import Sandpile.Support.D4KernelL2
+
+/-!
+# The truncation defect between the time-truncated and potential kernels
+
+The defect between the kernel of the time-truncated membrane field and the potential kernel, for
+Step 1 of `prop:d4-superdiffusive-limit`. The two kernels differ by the time tail of the heat
+kernel at `x` (`green_sub_greenTime`) and a term that does not depend on `x`
+(`greenTime_sub_potentialKernel`); the second is annihilated by the `ω`-pairing, whose test
+function integrates to zero, so the whole defect is carried by the tail `∑_{j≥t} p_j(x,y)`. The
+`α > 2` arithmetic that makes the tail vanish at the superdiffusive times `t_R = ⌊R^α⌋` is
+recorded here as well (`tendsto_superdiffusive_defect_scale`), via the equivalence
+`R^{1/2}⌊R^α⌋^{-1/4} → 0` (`sandpile.tex:3345-3350`).
+-/
 
 open MeasureTheory Filter Topology
 

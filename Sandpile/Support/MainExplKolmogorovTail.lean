@@ -1,31 +1,17 @@
-/-
-The quantitative form of the multi-parameter Kolmogorov criterion: a polynomial
-tail for the supremum of a process over a box, with an exponent equal to the
-moment exponent and a constant that does not depend on the process.
-
-`LatticeProb.kolmogorovBoundPi` is a tightness criterion: for each accuracy it
-produces one level, valid for EVERY process on EVERY probability space obeying
-the same increment and anchor moment bounds on the box, but with no rate in the
-accuracy.  An infinite union over the boxes of a lattice needs a rate, and the
-criterion supplies one by itself.  Fix the accuracy at one half and let `B` be
-the resulting level.  Given a process `X` and a level `L`, condition the measure
-on the event that `X` exceeds `L` somewhere on the box and multiply the process
-by the `p`-th root of the probability of that event.  Conditioning multiplies
-every `p`-th moment by at most the reciprocal of that probability, and the
-rescaling multiplies it by exactly that probability, so the rescaled process on
-the conditioned space obeys the SAME two moment bounds and the criterion applies
-to it unchanged.  Its conclusion says that the rescaled process exceeds `B`
-somewhere on the box with conditional probability at most one half; but if the
-probability of the original event were larger than `(B/L)^p`, the rescaled
-process would exceed `B` on the whole of the conditioning event, whose
-conditional probability is one.  Hence the event has probability at most
-`(B/L)^p`.
-
-The event is measurable because the paths are continuous on the box and the box
-has a countable dense subset, namely the clamp of a countable dense subset of
-the ambient space.
--/
 import Sandpile.Support.ContKolmogorovAssembly
+
+/-!
+# A quantitative Kolmogorov tail bound for the supremum on a box
+
+This file upgrades the multi-parameter Kolmogorov tightness criterion `kolmogorovBoundPi`,
+which for each accuracy produces one level valid for every process obeying given increment and
+anchor moment bounds but with no rate in the accuracy, into a genuine polynomial tail: the
+probability that a process exceeds a level `L` somewhere on a box is at most `(B/L)^p`, for a
+constant `B` depending only on the box and the moment data. The upgrade conditions the measure
+on the exceedance event and rescales the process by the `p`-th root of that event's probability
+so that the same moment bounds hold on the conditioned space; applying the tightness criterion
+to the rescaled process and comparing the two possible outcomes forces the polynomial tail.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal

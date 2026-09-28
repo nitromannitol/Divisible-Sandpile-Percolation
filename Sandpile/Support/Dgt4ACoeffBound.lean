@@ -1,12 +1,15 @@
-/-
+import Sandpile.Support.Dgt4ADeviationLip
+import Sandpile.Support.LinGaussFactor
+
+/-!
+# Coefficient bound for the centered deviation
+
 The coordinatewise Lipschitz coefficient of `D_n` at `z` is at most twice the Green
 function `G(0,z)`, so its square is summable by `eq:dgt4-green-l2`
 (`sandpile.tex:1299-1300`).  The coefficient is `G(0,z)+PG(\cdot,z)(0)`, and the Green
 identity `avg_green` evaluates the neighbour average at the origin as `G(0,z)` minus the
 indicator of `z=0`.
 -/
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.LinGaussFactor
 
 open MeasureTheory Filter Topology Set
 

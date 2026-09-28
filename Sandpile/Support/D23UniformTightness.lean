@@ -1,10 +1,18 @@
-/-
-The compact tightness estimates for the heat potential, uniform over scenery
-laws with a common exponential-moment bound (`sandpile.tex:1950-1955`).
--/
 import Sandpile.Support.ContKolmogorovAssembly
 import Sandpile.Support.D23UniformMoments
 import Sandpile.External.HeatKernelBoundsProved
+
+/-!
+# Uniform compact tightness of the heat potential
+
+This file proves the compact tightness estimates for the heat potential, uniform over scenery
+laws satisfying a common exponential-moment bound (`sandpile.tex:1950-1955`). Both the
+oscillation threshold and the modulus-of-continuity threshold in
+`heat_potential_tightness_uniform_of_exp_bound` are chosen before any particular scenery law is
+fixed, using the pointwise and modulus moment bounds for the linearly interpolated heat
+potential together with the Kolmogorov continuity criterion `kolmogorovBoundPi_holds` and
+`kolmogorovModulusPi_holds`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Frozen.HeatPotentialInvariance
@@ -106,7 +114,8 @@ theorem heat_potential_tightness_uniform_of_exp_bound
     fun R hR σ => continuousOn_piField hHK hd hd3 hθ0 hθ1 R hR σ T L hT.le hL
   constructor
   · intro ε hε
-    obtain ⟨B, hB⟩ := kolmogorovBoundPi_holds (d + 1) (boxLo d L) (boxHi d T L) p₀ (p₀ * β) MM hp₀0 hq ε hε
+    obtain ⟨B, hB⟩ := kolmogorovBoundPi_holds (d + 1) (boxLo d L) (boxHi d T L) p₀ (p₀ * β) MM
+      hp₀0 hq ε hε
     refine ⟨B, ?_⟩
     intro ν hν hmean hexp hK₀ R hR
     letI := hν

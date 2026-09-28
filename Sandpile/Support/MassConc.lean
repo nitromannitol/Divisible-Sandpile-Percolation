@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.PointwiseConc
+import Sandpile.Support.SceneryBridge
+import Sandpile.Support.Concentration
+
+/-!
+# Mass-field concentration and variance bounds for the odometer
+
 The pointwise concentration and the uniform variance bound of `ssec:expl-d5`,
 carried across the bridge into the mass-field language in which the paper's
 statements are frozen.
@@ -10,9 +16,6 @@ square sum of the Green coefficients, which dimension five and above bounds
 uniformly in the time and the base point.  Here they are transported to
 `Sandpile.odometer` under `Sandpile.centeredMassLaw`.
 -/
-import Sandpile.Support.PointwiseConc
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Concentration
 
 open LatticeProb
 

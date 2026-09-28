@@ -1,15 +1,22 @@
-/-
-Finite-horizon killed walk rewards have bounded attainable values. A finite
-family of continuous rewards gives one stability threshold for a source reward
-and a continuous limit reward approximated by the same family member.
--/
 import Sandpile.Support.KillStability
 import Sandpile.Support.StopValue
 import Sandpile.Support.StoppedOdometer
 
+/-!
+# Stability of killed-walk stopping values
+
+Finite-horizon killed walk rewards have bounded attainable values. A finite
+family of continuous rewards gives one stability threshold for a source reward
+and a continuous limit reward approximated by the same family member.
+-/
+
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- The set of stopped values `Sandpile.killedSet D n x (fun k X => F k (X k))` is
+bounded above, by the finite constant `M = ∑_{j ≤ n} ∑_{z ∈ boxFinset x n} |F j z|`:
+every stopped reward is dominated, in absolute value, by the sum of `|F j z|` over
+the times `j` and sites `z` the walk can reach before time `n`. -/
 theorem Sandpile.bddAbove_killedSet_stopped_value {d : ℕ} (hd : 1 ≤ d)
     (D : Set (Sandpile.Site d)) (x : Sandpile.Site d) (n : ℕ)
     (F : ℕ → Sandpile.Site d → ℝ) :
@@ -33,6 +40,15 @@ theorem Sandpile.bddAbove_killedSet_stopped_value {d : ℕ} (hd : 1 ≤ d)
     (integrable_const M) hb
   simpa using he
 
+/-- For a compact `K`, a finite family `G` of continuous, uniformly bounded reward
+functions, and error thresholds `ηF`, `ηH`, all rescaled discrete killed-walk
+stopping values built from a reward `F` within `ηF` of some `G i` are, for large
+enough `R`, within `ε + ηF + ηH` of the continuum Brownian discounted value built
+from any continuous `H` within `ηH` of that same `G i`. Proved by comparing both
+sides to the value at `G i` via
+`Sandpile.abs_killedStoppingSup_sub_le_of_reward` and
+`Sandpile.Continuum.abs_brownianDiscountCube_sub_le_of_continuousOn`, and closing
+with `Sandpile.killed_stability_uniform_of_finite`. -/
 theorem Sandpile.killed_stability_gap_of_two_rewards
     (hStab : Sandpile.External.CubeStoppingStability) (d : ℕ) (hd : 1 ≤ d)
     (ΩB : Type) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]

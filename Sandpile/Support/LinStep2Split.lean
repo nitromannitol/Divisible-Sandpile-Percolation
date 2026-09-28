@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinStep2Integral
+
+/-! # Step 2 Sum Split
+
 The two ends of Step 2 of `lem:dgt4-path-survival`: the survival probability lies in
 `[0,1]`, and the split of `R^{-2}\sum_{j<n_R}` at `(1-\varepsilon)n_R`
 (`sandpile.tex:5571-5583`).
@@ -18,7 +21,6 @@ late indices, and `inv_sq_sum_range_le`, which turns that into `Tc+\varepsilon T
 paper's "first `R`, then `\varepsilon`" are made at once: for a target `\eta` the proof
 takes `\varepsilon=\min\{1/2,\eta/(4T)\}` and the uniform bound `c=\eta/(4T)`.
 -/
-import Sandpile.Support.LinStep2Integral
 
 open MeasureTheory Filter Topology
 

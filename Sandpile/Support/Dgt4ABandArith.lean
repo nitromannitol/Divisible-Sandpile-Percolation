@@ -1,15 +1,18 @@
-/-
+import Mathlib
+
+/-!
+# Arithmetic Core of the Summed Profile
+
 The arithmetic core of the summed profile of Step 2 of `thm:dgt4-many-limits`
 (`sandpile.tex:6223-6250`): from the summed increment bound and `R²ω = G(0,0)L`,
 the rescaled profile at an index `n` within `B` of `tR²` is `t/κ` up to
 `C/L + B/(κR²) + TηG(0,0)`.
 
 The paper sums from the hitting time `τ_k`, not from zero, so the index at which
-the profile is read is within `1 + τ_k` of `tR_k²` rather than within `1`.  The
+the profile is read is within `1 + τ_k` of `tR_k²` rather than within `1`. The
 bound is therefore stated with the displacement `B` as a parameter, and the
 reading at `n = ⌊tR²⌋` is the corollary at `B = 1`.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

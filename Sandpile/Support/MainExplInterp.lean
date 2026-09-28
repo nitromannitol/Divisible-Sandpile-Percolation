@@ -1,12 +1,15 @@
-/-
+import Sandpile.Support.ExplInterp
+import Sandpile.Support.LinStationary
+
+/-!
+# Measurability and mesh-point control of the multilinear interpolation
+
 The multilinear interpolation of a measurable lattice field is measurable, and it
 differs from the value at the mesh point of the cell by at most the oscillation of
-the field over that cell.  Both are used to pass from the lattice value at
+the field over that cell. Both are used to pass from the lattice value at
 `⌊Rx⌋`, which the coupling controls, to the interpolation at `x`, which is the
 field of `thm:main-explosion`(i)(b).
 -/
-import Sandpile.Support.ExplInterp
-import Sandpile.Support.LinStationary
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped NNReal ENNReal

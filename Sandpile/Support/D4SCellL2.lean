@@ -1,16 +1,19 @@
-/-
-The `L²` side of the pairing bound of Steps 2 and 3 of
-`prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3404`).
-
-Over the cells of the mesh the pairing of a lattice field with a test function
-is the finite sum `∑_x f(x)m_R(x)` of `Sandpile.Support.latticePairing_eq_sum`.
-Cauchy-Schwarz in the cell index separates the random field from the test
-function: the field contributes `R^{-d}∑_x f(x)²`, a finite sum of random
-variables whose expectation is controlled by the uniform second moment of the
-field, and the test function contributes `∑_x m_R(x)² ≤ R^{-d}∫φ²`, which is
-Cauchy-Schwarz against the constant one on each cell.
--/
 import Sandpile.Support.ContCell
+
+/-!
+# The `L²` side of the cell-pairing bound
+
+Steps 2 and 3 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3404`). Over the cells of the
+mesh the pairing of a lattice field with a test function is the finite sum `∑_x f(x)m_R(x)` of
+`Sandpile.Support.latticePairing_eq_sum`. Cauchy-Schwarz against the constant one on a set of
+finite measure (`sq_setIntegral_le`) separates the random field from the test function in this
+pairing (`abs_latticePairing_le`): the field contributes `∑_x f(x)²`, and the test function
+contributes `∑_x m_R(x)² ≤ R^{-d}∫φ²` (`sum_sq_cellMass_le`), since each cell has volume `R^{-d}`
+and the cells are disjoint. The same Cauchy-Schwarz estimate also bounds the `L¹` norm of a
+function supported on a finite-measure set by its `L²` norm (`integral_abs_le_sqrt_measure_mul`),
+which is how the modulus of continuity of Step 2's second display becomes a bound on the parity
+imbalance (`sandpile.tex:3374-3382`).
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

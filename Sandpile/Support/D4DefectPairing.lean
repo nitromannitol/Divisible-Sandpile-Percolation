@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.D4DefectParity
+
+/-!
+# The Cauchy-Schwarz pairing bound for the dimension-four defect
+
 The pairing step of Step 1 of `prop:d4-superdiffusive-limit`.
 
 The `ω`-representative pairs a lattice kernel against the cell masses
@@ -7,9 +11,9 @@ so the defect at a site `y` is the finite sum `∑_x K(x,y)m_R(x)`.  Cauchy-Schw
 in `x` against the weights `|m_R(x)|` turns a uniform `ℓ²` bound on the slices
 `K(x,·)` into an `ℓ²` bound on the pairing, with the total mass `∑_x|m_R(x)|`
 squared in front.  Nothing here is analytic: the cell decomposition has already
-made the pairing a finite sum.
+made the pairing a finite sum. The single theorem `tsum_sq_finset_pairing_le` proves this
+Cauchy-Schwarz pairing bound.
 -/
-import Sandpile.Support.D4DefectParity
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

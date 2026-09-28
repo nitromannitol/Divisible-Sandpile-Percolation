@@ -1,20 +1,18 @@
-/-
-**The comparison of Step 2** (`sandpile.tex:5125-5131`): "Comparing the conditional
-expectation at `b=\E u_n(0)+\Sigma^2y/\E u_n(0)` with its unconditional average, and bounding
-their difference by the Lipschitz constant times `\E|b+V_\infty(0)|`".
-
-In the conditioning of `Support/Dgt4ACondition.lean` the unconditional average IS the
-average over the level of the conditional expectation, because the law of the scenery is the
-image of `N(0,1)\otimes\rho` under the shift.  So the comparison is the elementary statement
-that a quantity which is `L`-Lipschitz in the level differs from its average over the level
-by at most `L` times the mean distance to that level, and the mean distance is at most
-`|b|+\E|V_\infty(0)|`, which is `O(\E u_n(0))` at the level of the display.
-
-The last lemma is the form Step 4 uses for `y\geq0` (`sandpile.tex:5275-5277`): a function
-Lipschitz at the origin with a bounded value there is at most `C+L|y|`.
--/
 import Sandpile.Support.Dgt4ACovIterate
 import Sandpile.Support.Dgt4AIterateConst
+
+/-!
+# Comparing a conditional expectation with its unconditional average
+
+Because the law of the scenery is the image of `N(0, 1) ⊗ ρ` under a shift, the unconditional
+average of a quantity is the average, over the conditioning level, of the conditional
+expectation at that level. Consequently a quantity that is `L`-Lipschitz in the level differs
+from its average over the level by at most `L` times the mean distance to that level, and the
+mean distance to a level `s` is at most `|s|` plus the first absolute moment. This file also
+records the elementary fact that a function Lipschitz at the origin with a bounded value
+there is bounded by an affine function of its argument, and that a uniform almost-everywhere
+bound on a difference of integrands passes to the integrals.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -38,9 +36,9 @@ theorem abs_integral_sub_avgIntegral_le {Ω : Type*} {mΩ : MeasurableSpace Ω}
   refine (abs_integral_le_integral_abs).trans ?_
   exact integral_mono ((integrable_const _).sub hint).abs hintabs hlip
 
-/-- **`\E|b+V_\infty(0)|=O(\E u_n(0))`** (`sandpile.tex:5125-5126`), in the form the previous
-lemma consumes: the mean distance to a level is at most the level plus the first absolute
-moment. -/
+/-- **`\E|b+V_\infty(0)|=O(\E u_n(0))`** (`sandpile.tex:5125-5126`), in the form consumed by
+the previous lemma: the mean distance to a level is at most the level plus the first
+absolute moment. -/
 theorem integral_abs_sub_le {ν : Measure ℝ} [IsProbabilityMeasure ν] (s : ℝ)
     (hint : Integrable (fun z : ℝ => |z|) ν) :
     (∫ z, |s - z| ∂ν) ≤ |s| + ∫ z, |z| ∂ν := by

@@ -1,9 +1,18 @@
-/-
+import Sandpile.Support.LimLaw
+import Sandpile.Support.LimStepOne
+import Sandpile.Support.LimTransfer
+import Sandpile.Support.LimSymmetry
+import Sandpile.Support.CrossBallSym
+import Sandpile.Frozen.FixedScaleCrossings
+
+/-!
+# Finite-scale extraction
+
 `lem:finite-scale-extraction` (`sandpile.tex:2415-2425`) assembled from its two
 steps.
 
   "[Finite-scale extraction]  Fix `N≥1` axis-parallel rectangles `𝓡_1,…,𝓡_N` in
-   the plane and a coordinate crossing direction for each rectangle.  For every
+   the plane and a coordinate crossing direction for each rectangle. For every
    `ε>0`, there are `c>0` and rational scales `s_1,…,s_k∈(0,1)` such that
    `P(⋂_{j=1}^N H_{𝓡_j}(4c; max_{1≤i≤k} 𝒳_{s_i}))≥1-ε`."
 
@@ -14,18 +23,12 @@ scales by a prefix of one enumeration of the rationals in `(0,1)` and takes a
 stage of the increasing sequence of events by continuity from below.
 
 That stage is chosen on one space carrying white noise, while the statement
-fixes `c` and the scales before any space is named.  The two are reconciled by
+fixes `c` and the scales before any space is named. The two are reconciled by
 the transfer of `Sandpile/Support/LimTransfer.lean`, which carries a crossing
 bound for all the rectangles from one space to another at the cost of halving
 the level: the level `4c₀` of the stage becomes `2c₀ = 4(c₀/2)` everywhere, and
 `c = c₀/2` is the constant the lemma returns.
 -/
-import Sandpile.Support.LimLaw
-import Sandpile.Support.LimStepOne
-import Sandpile.Support.LimTransfer
-import Sandpile.Support.LimSymmetry
-import Sandpile.Support.CrossBallSym
-import Sandpile.Frozen.FixedScaleCrossings
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

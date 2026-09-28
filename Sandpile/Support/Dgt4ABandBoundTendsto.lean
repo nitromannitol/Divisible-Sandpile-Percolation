@@ -1,9 +1,14 @@
-/-
-The vanishing of the error bound in the summed profile of Step 2 of
-`thm:dgt4-many-limits` (`sandpile.tex:6245-6250`): with `R_k → ∞`, `L_k → ∞` and
-`η_k → 0`, the bound `C/L_k + 1/(κR_k²) + Tη_k/κ` tends to `0`.
--/
 import Mathlib
+
+/-!
+# Vanishing of the error bound in the summed profile
+
+The vanishing of the error bound in the summed profile of Step 2 of `thm:dgt4-many-limits`
+(`sandpile.tex:6245-6250`): with `R_k → ∞`, `L_k → ∞` and `η_k → 0`, the bound
+`C/L_k + 1/(κR_k²) + Tη_k/κ` tends to `0` (`tendsto_bound_of_scaled`), and this persists
+(`tendsto_bound_of_scaled_offset`) when the summation instead starts at an offset `s_k` with
+`s_k = o(R_k^2)`, since the extra term `s_k/(κR_k²)` also vanishes.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

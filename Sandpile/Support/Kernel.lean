@@ -1,11 +1,13 @@
-/-
-The lattice heat kernel of `Sandpile/Walk.lean` is nonnegative and has finite
-propagation speed: `p_k(x, y) = 0` once the box distance from `x` to `y` exceeds
-`k`.  Finite propagation speed is what makes `g_t(x, ·)` finitely supported, and
-that in turn is what keeps every `tsum` against a Green kernel in the frozen
-statements away from its junk value.
--/
 import Sandpile.Walk
+
+/-!
+# Nonnegativity and finite propagation speed of the lattice heat kernel
+
+The lattice heat kernel of `Sandpile/Walk.lean` is nonnegative and has finite propagation speed:
+`p_k(x, y) = 0` once the box distance from `x` to `y` exceeds `k`. Finite propagation speed is
+what makes `g_t(x, ·)` finitely supported, and that in turn is what keeps every `tsum` against a
+Green kernel in the frozen statements away from its junk value.
+-/
 
 namespace Sandpile
 
@@ -15,9 +17,11 @@ variable {d : ℕ}
 are balls. -/
 def boxDist (x y : Site d) : ℕ := Finset.univ.sup fun i => (x i - y i).natAbs
 
+/-- `boxDist x x = 0`: a site is at box distance zero from itself. -/
 theorem boxDist_self (x : Site d) : boxDist x x = 0 := by
   simp [boxDist]
 
+/-- If `boxDist x y = 0` then `x = y`, since every coordinate difference must vanish. -/
 theorem boxDist_eq_zero {x y : Site d} (h : boxDist x y = 0) : x = y := by
   funext i
   have : (x i - y i).natAbs ≤ 0 := h ▸ Finset.le_sup (f := fun i => (x i - y i).natAbs)
@@ -36,6 +40,7 @@ theorem boxDist_add_unit_le (x y : Site d) (i : Fin d) :
     · left; simp [unit, Pi.single_eq_of_ne (Ne.symm h)]
   rcases hu with hu | hu <;> rw [hu] at hj <;> omega
 
+/-- Moving by minus one unit vector changes the box distance by at most one. -/
 theorem boxDist_sub_unit_le (x y : Site d) (i : Fin d) :
     boxDist x y ≤ boxDist (x - unit i) y + 1 := by
   refine Finset.sup_le fun j _ => ?_
@@ -119,6 +124,7 @@ theorem greenTime_nonneg (t : ℕ) (x y : Site d) : 0 ≤ greenTime d t x y :=
 noncomputable def boxFinset (x : Site d) (r : ℕ) : Finset (Site d) :=
   Fintype.piFinset fun i => Finset.Icc (x i - r) (x i + r)
 
+/-- If `y` is within box distance `r` of `x`, then `y` belongs to `boxFinset x r`. -/
 theorem mem_boxFinset {x y : Site d} {r : ℕ} (h : boxDist x y ≤ r) : y ∈ boxFinset x r := by
   refine Fintype.mem_piFinset.mpr fun i => Finset.mem_Icc.mpr ?_
   have : (x i - y i).natAbs ≤ r :=

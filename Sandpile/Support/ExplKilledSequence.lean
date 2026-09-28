@@ -1,39 +1,26 @@
-/-
-The ball comparison and the varying-law form of the cube-killed scaling limit of
-`sandpile.tex:1929-1956` (label `rem:dlt4-killed-scaling`).
-
-Comparison.  The Euclidean unit ball lies in the cube `u+[-1,1]^d`, so every stopping rule
-allowed by the ball value is allowed by the cube value, and `𝒰_{Z,□}(T,u) ≥ 𝒰_{Z,1}(T,u)`.
-The general inequality `brownianValueBall_le_brownianValueCube` asks the payoffs of the
-unrestricted family to be bounded above; the comparison needs only the cube payoffs, and a
-reward that is continuous on `ℝ × ℝ^d` is bounded on the compact strip over the cube, which
-bounds every cube payoff.  That is `brownianValueBall_le_brownianValueCube_of_continuous`, and
-it applies to every sample point at which the heat potential is continuous.
-
-Varying laws.  The estimates under `Sandpile.dlt4_killed_scaling_of_inputs` see the scenery
-law only through an exponential moment: the tightness and oscillation bounds of the heat
-potential are uniform over laws with a common bound, and the only limit input is the
-finite-dimensional convergence of the interpolated potential, which
-`heat_potential_fd_seq` proves along a sequence of laws whose variances converge.  The
-coupling theorem `Sandpile.dlt4_killed_scaling_seq_of_fdd` is therefore the fixed-law proof
-run along `(νs k, Rseq k)`; here it is stated jointly in the law index and the scale, which
-is the form of the remark: for every accuracy there are an index `k₀` and a scale `R₀` beyond
-which every pair `(νs k, R)` carries the coupling.  The joint form follows from the diagonal
-one by contradiction: a failing pair for each threshold gives a diagonal sequence of laws and
-scales, along which the diagonal form applies.
-
-The limiting field is `gaussianPotential d v W = √v · gaussianPotential d 1 W`, the value for
-unit-variance scenery times the limiting standard deviation; the cube value is positively
-homogeneous in the reward, so the limiting value is that multiple of the unit-variance one.
-A field that is continuous at one positive variance is continuous at every variance, since the
-variance enters only as a constant factor.
--/
 import Sandpile.Support.ExplKilledValue
 import Sandpile.Support.StopValue
 import Sandpile.Support.KillCutoff
 import Sandpile.Support.D23KilledCoupling
 import Sandpile.Support.ContFDSeq
 import Sandpile.Support.ContContinuumMCT
+
+/-!
+# The cube-killed scaling limit along a sequence of scenery laws
+
+The Euclidean unit ball lies in the cube `u + [-1,1]^d`, so a reward continuous on
+`ℝ × Space d` gives `brownianValueBall B P h T 1 u ≤ brownianValueCube B P h T 1 u`
+(`brownianValueBall_le_brownianValueCube_of_continuous`), since continuity bounds the cube
+payoffs on the compact strip over the cube. The Gaussian potential of variance `v` is `√v`
+times the potential of unit variance, and this scaling passes to the cube-killed value and to
+continuity of sample paths at every variance once it holds at one positive variance.
+`Sandpile.dlt4_killed_scaling_sequence_of_inputs` combines these facts with a
+finite-dimensional convergence theorem for scenery laws with a common exponential moment and
+variances converging to `v` to extract, from the fixed-law coupling
+`Sandpile.dlt4_killed_scaling_seq_of_fdd`, the joint statement that for every accuracy there
+are a law index and a scale beyond which every such pair is coupled to the cube-killed value
+of the limiting Gaussian potential.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

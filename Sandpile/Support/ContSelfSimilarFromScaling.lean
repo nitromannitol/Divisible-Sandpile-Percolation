@@ -1,4 +1,3 @@
-/- The three clauses of the continuum-value proposition from the parabolic scaling limit. -/
 import Sandpile.Support.ContSelfSimilarLimit
 import Sandpile.Support.ContSelfSimilarMesh
 import Sandpile.Support.ContSelfSimilarMoments
@@ -7,6 +6,23 @@ import Sandpile.Support.MeanAMean
 import Sandpile.Support.MeanAExpLimit
 import Sandpile.Support.MeanALimit
 import Sandpile.Support.Dgt4OriginProb
+
+/-!
+# Self-similarity from the parabolic scaling limit
+
+The three clauses of the continuum-value proposition, derived from the parabolic scaling
+limit hypothesis `hScaling` on the rescaled odometer. Given the finite-dimensional
+convergence of `rescaledOdometer` to `continuumValue d Z B PB` together with the tightness
+and equicontinuity bounds that `hScaling` packages,
+`continuum_value_self_similar_of_parabolic_limit` derives: a measurable version of the
+continuum value that is self-similar in law, with `continuumValue T x` having the law of
+`T^{(4-d)/4} • continuumValue 1 0` (`clause1_of_transfers`); a uniform exponential moment
+for the rescaled odometer (`exists_uniform_exp_moment_rescaled_mass`) that transfers to
+integrability of `exp(θ · continuumValue 1 0)` (`integrable_exp_of_uniform_exp`); and
+positive `p`-th power moments of `continuumValue T x` for every `p > 0`, related to the
+moment at `(1,0)` by the same self-similar scaling exponent
+(`continuumValue_power_moments`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

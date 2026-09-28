@@ -1,15 +1,15 @@
-/-
-`eq:dgt4-band-contact-rate` (`sandpile.tex:6257-6267`) from the pointwise
-threshold asymptotic of `prop:dgt4-contact-asymptotics`: the threshold
-probability at the level `E u_{n-1}(0)` is `G(0,0)κ/n` to leading order,
-uniformly over the band `δ R_k^2 ≤ n ≤ ⌊R_k^2 T⌋`.
-
-The band estimate is read along a sequence of scales, at the constant exponent
-sequence, because a pointwise asymptotic fixes one `κ`; the varying exponents of
-the band construction are supplied by Step 2 itself, not by this passage.
--/
 import Sandpile.Support.Dgt4ABand
 import Sandpile.Support.Dgt4Thresholds
+
+/-!
+# The band contact rate from the pointwise threshold asymptotic
+
+`BandContactRate` follows from the pointwise threshold asymptotic: the threshold probability at
+the level `E u_{n-1}(0)` is `G(0,0)κ/n` to leading order, uniformly over the band
+`δ R_k^2 ≤ n ≤ ⌊R_k^2 T⌋`. The band estimate is read here along a constant exponent sequence,
+because a pointwise asymptotic fixes one `κ`; the varying exponents of the band construction are
+supplied elsewhere, not by this passage.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

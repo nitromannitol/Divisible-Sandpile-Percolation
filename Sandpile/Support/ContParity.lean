@@ -1,19 +1,18 @@
-/-
-The parity of simple random walk on `ℤ^d`, which is the content of the factor
-two in the local central limit theorem the paper quotes at
-`sandpile.tex:1145-1161`:
-
-  "The factor $2$ accounts for parity: for fixed $x$ and $\ell$, the sites $y$
-   with $p_\ell(x,y)>0$ form one parity class, whose scaled counting measure has
-   density $1/2$."
-
-Each step of the walk changes the coordinate sum by exactly one, so the sum of
-the coordinates of the two endpoints and the number of steps always add up to an
-even number; equivalently, the transition probability vanishes on the other
-parity class.  This is the only property of the parity class used when the local
-central limit theorem is summed against the cells of the mesh.
--/
 import Sandpile.Support.Kernel
+
+/-!
+# Parity of simple random walk on `ℤ^d`
+
+Each step of the simple random walk on `ℤ^d` changes the coordinate sum by exactly one, so the
+coordinate sums of the two endpoints together with the number of steps always add up to an even
+number (`SameParity`); equivalently, the `n`-step transition kernel `Sandpile.heatKernel`
+vanishes off this parity class (`heatKernel_eq_zero_of_not_sameParity`). Restricting a lattice
+sum to the parity class is the same as averaging the full sum against the alternating parity
+sign `parSign` (`sum_filter_sameParity_eq`), and for fixed endpoints the admissible pairs of
+times in a double sum form one parity class of their total (`filter_sameParity_eq_or`,
+`sum_time_double_eq_filter`). This is the only property of the parity class the local central
+limit theorem needs when summed against the cells of the time mesh.
+-/
 
 open Sandpile
 
@@ -36,6 +35,7 @@ join `x` to `y` in `n` steps only inside this class. -/
 def SameParity (n : ℕ) (x y : Site d) : Prop :=
   ((∑ i, x i) + (∑ i, y i) + (n : ℤ)) % 2 = 0
 
+/-- `SameParity n x y` is decidable, since it unfolds to a decidable equality on `ℤ`. -/
 instance (n : ℕ) (x y : Site d) : Decidable (SameParity n x y) := by
   unfold SameParity; infer_instance
 
@@ -141,8 +141,8 @@ theorem filter_sameParity_eq_or (x y : Site d) (N : ℕ) :
     have hc : ((p.1 + p.2 : ℕ) : ℤ) = (p.1 : ℤ) + (p.2 : ℤ) := by push_cast; ring
     omega
 
-/-- **The double time sum of the transition kernel is carried by the parity
-class of the total.** -/
+/-- **The double time sum of the transition kernel is carried by the parity class
+of the total.** -/
 theorem sum_time_double_eq_filter (x y : Site d) (N : ℕ) (w : ℕ → ℕ → ℝ) :
     ∑ a ∈ Finset.range N, ∑ b ∈ Finset.range N, w a b * Sandpile.heatKernel d (a + b) x y
       = ∑ p ∈ ((Finset.range N) ×ˢ (Finset.range N)).filter

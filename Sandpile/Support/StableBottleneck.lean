@@ -1,9 +1,19 @@
-/-
-Stable positive derivative envelopes for bounded-walk bottlenecks and rectangle
-crossings, at logarithmic depth and with a uniform approximation error.
--/
 import Sandpile.Support.PositiveJet
 import Sandpile.Support.RectangleBottleneck
+
+/-!
+# Positive derivative envelopes for bottleneck and rectangle crossings
+
+Stable positive derivative envelopes for bounded-walk bottlenecks and rectangle crossings, at
+logarithmic depth and with a uniform approximation error. `smoothBoundedBottleneck_positiveJet`
+upgrades the coarse `SmoothBottleneckBound` of `smoothBoundedBottleneck_bound` to the finer,
+`PositiveJet`-valued envelopes of this file, by the same midpoint induction on the recursion depth.
+`rectangle_positive_bottleneck_at_depth` and `exists_positive_rectangle_bottleneck` then specialize
+this to a lattice rectangle's crossing value, giving a smooth approximation with `HasPositiveJet`
+envelopes at depth and approximation error logarithmic in the rectangle's cardinality, matching
+`rectangle_smooth_bottleneck_at_depth` and `exists_smooth_rectangle_bottleneck` of
+`RectangleBottleneck.lean`.
+-/
 
 open LatticeProb
 
@@ -15,6 +25,11 @@ section FiniteGraph
 
 variable {V : Type*} [Fintype V] (G : SimpleGraph V)
 
+/-- **`PositiveJet` envelopes for the smoothed bounded-walk bottleneck.** The smoothed bottleneck
+`smoothBoundedBottleneck G β n a b h` has a `HasPositiveJet β (2n+1)` structure, by the same
+midpoint induction as `smoothBoundedBottleneck_bound`: the base case is a soft-minimum pair of
+coordinate jets, and the inductive step composes a soft-maximum over the midpoints of soft-minimum
+pairs of jets at depth `n`. -/
 lemma smoothBoundedBottleneck_positiveJet [DecidableEq V] {β : ℝ} (hβ : β ≠ 0) :
     ∀ (n : ℕ) (a b : V) (h : BoundedReach G n a b),
       HasPositiveJet β (2 * n + 1) (smoothBoundedBottleneck G β n a b h) := by
@@ -37,6 +52,12 @@ lemma smoothBoundedBottleneck_positiveJet [DecidableEq V] {β : ℝ} (hβ : β �
 
 end FiniteGraph
 
+/-- **A `HasPositiveJet` approximation to a rectangle's crossing value at walk depth `n`.** For a
+lattice rectangle `Q` with `Q.card ≤ 2 ^ n`, the softmax `L` of the smoothed bottleneck over every
+pair of left/right boundary points has `HasPositiveJet β (2n+2) L` and approximates
+`crossingValue Q` to within an error logarithmic in `Q.card` and `n`, by combining
+`smoothBoundedBottleneck_positiveJet` with `crossingValue_eq_bounded_max` and the error bound
+`abs_softMaximum_sub_finiteMaximum`. -/
 lemma rectangle_positive_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     (hN : Q.Nonempty) {n : ℕ} (hn : Q.card ≤ 2 ^ n) {β : ℝ} (hβ : 0 < β) :
     ∃ L : (Q → ℝ) → ℝ, HasPositiveJet β (2 * n + 2) L ∧
@@ -80,6 +101,12 @@ lemma rectangle_positive_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLatti
         add_le_add le_rfl (div_le_div_of_nonneg_right hlog hβ.le)
       _ = _ := by ring
 
+/-- **A universal `HasPositiveJet` approximation to any rectangle's crossing value.** There is a
+single constant `C` such that for every lattice rectangle `Q` with at least two sites and every
+`β ≥ 1`, some `L` with `HasPositiveJet β n L` at logarithmic depth `n ≤ C log(Q.card)` approximates
+`crossingValue Q` to within `C (log Q.card)² / β`: obtained from
+`rectangle_positive_bottleneck_at_depth` at the logarithmic depth furnished by
+`exists_logarithmic_walk_depth`. -/
 lemma exists_positive_rectangle_bottleneck :
     ∃ C : ℝ, 0 < C ∧
       ∀ Q : Finset (Site 2), IsLatticeRectangle Q → 2 ≤ Q.card →

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContHeatPotentialFD
+import Sandpile.Support.GreenSup
+
+/-!
+# Lindeberg Smallness of the Rescaled Linear Field's Coefficients
+
 The Lindeberg smallness of the coefficients of the rescaled linear field, in
 dimensions one to three.  This is the hypothesis `hsmall` of
 `Sandpile.Support.heat_potential_fd_of`, the finite-dimensional clause of
@@ -16,8 +21,6 @@ supremum of the truncated Green kernel in dimensions one to three
 and `R^{-1/2}`, all of which vanish, which is the smallness the Lindeberg-Feller
 theorem asks for.
 -/
-import Sandpile.Support.ContHeatPotentialFD
-import Sandpile.Support.GreenSup
 
 open MeasureTheory Filter Topology
 
@@ -27,6 +30,9 @@ open Sandpile Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- `Sandpile.greenSupRate d` is monotone in its time argument, checked directly
+from its case definition (`√n`, `1 + log n`, or the constant `1`, depending on
+`d`). -/
 theorem greenSupRate_mono (d : ℕ) {n m : ℕ} (h : n ≤ m) :
     Sandpile.greenSupRate d n ≤ Sandpile.greenSupRate d m := by
   unfold Sandpile.greenSupRate
@@ -39,6 +45,9 @@ theorem greenSupRate_mono (d : ℕ) {n m : ℕ} (h : n ≤ m) :
     linarith
   · exact le_rfl
 
+/-- The fractional part `R ^ 2 * r - ⌊R ^ 2 * r⌋`, used as the time-interpolation
+weight between the two mesh times, lies in `[0, 1]`, from the defining floor
+inequalities. -/
 theorem interp_time_weight_mem {R r : ℝ} (hR : 0 < R) (hr : 0 ≤ r) :
     0 ≤ R ^ 2 * r - (⌊R ^ 2 * r⌋₊ : ℝ) ∧ R ^ 2 * r - (⌊R ^ 2 * r⌋₊ : ℝ) ≤ 1 := by
   have ha : (0 : ℝ) ≤ R ^ 2 * r := by positivity
@@ -65,7 +74,8 @@ by
   obtain ⟨hs0, hs1⟩ := interp_time_weight_mem hR hr
   have hp : (0 : ℝ) < R ^ ((d : ℝ) / 2 - 2) := Real.rpow_pos_of_pos hR _
   have hX0 : (0 : ℝ) ≤ Sandpile.greenTime d ⌊R ^ 2 * r⌋₊ z y := Sandpile.greenTime_nonneg _ _ _
-  have hY0 : (0 : ℝ) ≤ Sandpile.greenTime d (⌊R ^ 2 * r⌋₊ + 1) z y := Sandpile.greenTime_nonneg _ _ _
+  have hY0 : (0 : ℝ) ≤ Sandpile.greenTime d (⌊R ^ 2 * r⌋₊ + 1) z y :=
+    Sandpile.greenTime_nonneg _ _ _
   have hXM : Sandpile.greenTime d ⌊R ^ 2 * r⌋₊ z y
       ≤ C * Sandpile.greenSupRate d (⌊R ^ 2 * r⌋₊ + 1) := by
     refine le_trans (hsup _ z y) ?_

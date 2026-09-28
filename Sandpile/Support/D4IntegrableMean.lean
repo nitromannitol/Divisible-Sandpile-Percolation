@@ -1,12 +1,18 @@
-/-
-The logarithmic lower bound for centered integrable nondegenerate scenery,
-`cor:d4-logarithmic-mean-lower` of `sandpile.tex:2962-2990`. Projecting onto a
-negative half-line and its complement gives a bounded centered law; conditional
-Jensen transfers the logarithmic lower bound from that law to the original one.
--/
 import Sandpile.Support.ConvexProjection
 import Sandpile.Frozen.CriticalTopplingD4
 import Sandpile.External.VarianceScaleProved
+
+/-!
+# The logarithmic mean lower bound for integrable scenery in dimension four
+
+The logarithmic lower bound for centered integrable nondegenerate scenery,
+`cor:d4-logarithmic-mean-lower` of `sandpile.tex:2962-2990`. Projecting onto a negative half-line
+and its complement gives a bounded centered law; conditional Jensen transfers the logarithmic lower
+bound from that law to the original one. The single theorem `exists_log_mean_lower_integrable_four`
+builds the bounded projected law `binaryProjection`, applies the already-proved critical toppling
+estimate `Sandpile.Frozen.critical_toppling_d4` to it, and transfers the resulting logarithmic mean
+bound back to the original law via `meanOdometerOf_binaryProjection_le`.
+-/
 
 open MeasureTheory ProbabilityTheory
 

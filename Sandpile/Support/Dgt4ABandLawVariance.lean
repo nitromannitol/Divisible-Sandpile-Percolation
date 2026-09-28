@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ABandLawMean
+
+/-!
+# Second moment of the band law
+
 The second moment of the constructed one-site law: the ingredients of the
 variance-one clause of `thm:dgt4-many-limits` (`sandpile.tex:5903`).
 
@@ -12,7 +16,6 @@ The free variance `v` of the construction enters only through the Gaussian
 summand, exactly as the shift `μ` does, so normalizing the variance is again one
 division and the band carriers do not move.
 -/
-import Sandpile.Support.Dgt4ABandLawMean
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -108,6 +111,8 @@ theorem integral_gaussianPDFReal_mul_sq (mu : ℝ) (v : ℝ≥0) (hv : v ≠ 0) 
 /-- The second moment of a band component. -/
 def bandSecondMoment (l1 a θ : ℝ) (m : ℕ) : ℝ := ∫ x : ℝ, bandComponent l1 a θ m x * x ^ 2
 
+/-- The second-moment integrand `bandComponent l1 a θ m x * x^2` of a band component is
+integrable: it is continuous, and inherits compact support from `bandComponent`. -/
 theorem integrable_bandComponent_mul_sq {l1 a θ : ℝ} {m : ℕ}
     (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) :
     Integrable fun x : ℝ => bandComponent l1 a θ m x * x ^ 2 := by
@@ -115,6 +120,8 @@ theorem integrable_bandComponent_mul_sq {l1 a θ : ℝ} {m : ℕ}
     ((contDiff_bandComponent l1 a θ m).continuous.mul (continuous_pow 2)) ?_
   exact (hasCompactSupport_bandComponent hm hl1 ha).mul_right
 
+/-- The second moment of a band component is nonnegative, since its integrand
+`bandComponent l1 a θ m x * x^2` is a product of two nonnegative functions. -/
 theorem bandSecondMoment_nonneg {l1 a θ : ℝ} {m : ℕ} (hθ : 0 < θ) (hl1 : l1 < 1) (ha : 0 < a) :
     0 ≤ bandSecondMoment l1 a θ m :=
   integral_nonneg fun x =>

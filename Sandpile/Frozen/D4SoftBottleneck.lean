@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.RectangleBottleneck
+
+/-!
+# Smooth soft bottleneck functional on a rectangle
+
 Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3478-3500`
 (label `lem:d4-soft-bottleneck`):
 
@@ -52,7 +56,6 @@ Quantifier order.  The constant `C` is called absolute, so it is bound before
 hold for every field `F`, which is the paper's "uniformly over `F`".  The
 exponent `k - 1` is natural subtraction, harmless since `k ∈ {1,2,3}`.
 -/
-import Sandpile.Support.RectangleBottleneck
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_soft_bottleneck :

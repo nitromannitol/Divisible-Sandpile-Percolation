@@ -1,11 +1,12 @@
-/-
+import Sandpile.Support.LinStep3Core
+import Sandpile.Frozen.DGT4PathSurvival
+
+/-!
 The sequence-indexed independent-threshold form of `lem:dgt4-path-survival`
 (`sandpile.tex:5469-5486`), used in Step 3 of `thm:dgt4-many-limits`.
 The contact thresholds and both conclusions are required only along `Rseq`.
 The threshold field is `-G(0,0)ζ`, so its factorization is exact.
 -/
-import Sandpile.Support.LinStep3Core
-import Sandpile.Frozen.DGT4PathSurvival
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -41,7 +42,8 @@ theorem dgt4_path_survival_sequence_indep
     ∃ C : ℝ, ∀ δ : ℝ, δ ∈ Set.Ioo 0 T →
       ∃ εfun : ℕ → ℝ, (∀ k : ℕ, 0 ≤ εfun k) ∧ Tendsto εfun atTop (𝓝 0) ∧
         ∀ k : ℕ, ∀ i j : ℕ,
-          (i : ℝ) ≤ (⌊(Rseq k) ^ 2 * T⌋₊ : ℝ) - δ * (Rseq k) ^ 2 → (j : ℝ) ≤ (⌊(Rseq k) ^ 2 * T⌋₊ : ℝ) - δ * (Rseq k) ^ 2 →
+          (i : ℝ) ≤ (⌊(Rseq k) ^ 2 * T⌋₊ : ℝ) - δ * (Rseq k) ^ 2 →
+            (j : ℝ) ≤ (⌊(Rseq k) ^ 2 * T⌋₊ : ℝ) - δ * (Rseq k) ^ 2 →
           ∀ X Y : ℕ → Sandpile.Site d,
             Sandpile.Frozen.DGT4PathSurvival.IsNNPath i X →
             Sandpile.Frozen.DGT4PathSurvival.IsNNPath j Y →

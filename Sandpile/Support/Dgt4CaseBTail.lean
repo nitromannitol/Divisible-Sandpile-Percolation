@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4CaseB
+import LatticeProb.Prob.Karamata
+
+/-! # Case B Threshold Tail Asymptotics
+
 The parts of case (b) of `prop:dgt4-contact-asymptotics` that the shared
 probability library now supplies, and the reduction of its threshold asymptotic
 to one statement that it does not.
@@ -19,8 +23,6 @@ and then "summing over $n$", which is the Stolz-Cesaro theorem already in
 `karamata_integrated_tail`; the second is not in the library and is carried here
 as `KaramataOriginTail`.
 -/
-import Sandpile.Support.Dgt4CaseB
-import LatticeProb.Prob.Karamata
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,11 +1,17 @@
-/-
-Bounds for the interpolated odometer over a bounded interval of scales. Only
-finitely many times and lattice sites are involved, and a bound for their values
-bounds both the interpolants and their Lipschitz constants.
--/
 import Sandpile.Support.MainExplInterpRegularity
 import Sandpile.Support.MainExplInterp
 import Sandpile.Support.Kernel
+
+/-!
+# Uniform bounds for the interpolated odometer over a bounded scale interval
+
+Over a compact spatial set `K` and a scale interval `1 ≤ R ≤ L`, only finitely many times and
+lattice sites are involved in the rescaled interpolant `multilinearInterp R (fun y => R ^ (-(2
+- d/2)) * odometer σ ⌊T R²⌋₊ y)`, since the interpolation corners of a point of `K` at a scale
+up to `L` all lie in one fixed finite box. A probabilistic bound on the odometer values on that
+box then bounds both the interpolant's values and its Lipschitz constant on `K`, uniformly in
+`R`, outside an event of arbitrarily small probability.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

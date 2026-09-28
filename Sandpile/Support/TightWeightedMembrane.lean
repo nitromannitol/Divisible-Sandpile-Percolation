@@ -1,24 +1,27 @@
-/-
-The time-weighted membrane field of `prop:weighted-membrane-limit`
-(`sandpile.tex:4692-4703`),
-
-  `x ↦ ∑_{j<t} q(j) (P^j ζ)(x)`,
-
-its Green representation, and the covariance decay it inherits from the
-intersection estimate `eq:dgt4-intersection-first-moment`.  The weighted kernel
-`∑_{j<t} q(j) p_j(x,z)` is bounded by `Q g_t(x,z)` whenever `|q| ≤ Q` on the
-range, so the covariance of two weighted fields is at most `Q² Var(ζ(0))` times
-the doubled Green kernel, which in dimension five and above is at most
-`C(1+|x-y|)^{4-d}` uniformly in the time.  That is exactly the hypothesis of the
-tightness lemma at `β = d-4`, whose normalization `R^{β/2}` is the statement's
-`R^{(d-4)/2}` and whose threshold `s > β/2` is the statement's `s > (d-4)/2`.
--/
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.Iterate
 import Sandpile.Support.GreenHigh
 import Sandpile.Support.TightNegSobolev
 import Sandpile.Frozen.SobolevTightness
 import Sandpile.Support.TightD4Covariance
+
+/-!
+# Tightness of the time-weighted membrane field
+
+The time-weighted membrane field of `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`),
+
+  `x ↦ ∑_{j<t} q(j) (P^j ζ)(x)`,
+
+its Green representation, and the covariance decay it inherits from the intersection estimate
+`eq:dgt4-intersection-first-moment`. The weighted kernel `∑_{j<t} q(j) p_j(x,z)` is bounded by
+`Q g_t(x,z)` whenever `|q| ≤ Q` on the range, so the covariance of two weighted fields is at
+most `Q² Var(ζ(0))` times the doubled Green kernel, which in dimension five and above is at
+most `C(1+|x-y|)^{4-d}` uniformly in the time. That is exactly the tightness hypothesis at
+`β = d-4`, whose normalization `R^{β/2}` is the statement's `R^{(d-4)/2}` and whose threshold
+`s > β/2` is the statement's `s > (d-4)/2`. `weighted_membrane_tight` proves this tightness for
+the general weighted field, and `dgt4_odometer_tight` / `dgt4_odometer_tight'` specialize it to
+the odometer fluctuation of `thm:dgt4-diffusive-membrane`.
+-/
 
 open LatticeProb
 

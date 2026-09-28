@@ -1,21 +1,20 @@
-/-
-Step 2 of `prop:d4-pointwise-linearization` (`sandpile.tex:3100-3125`): the tail
-of the smoothed difference,
-
-    P(|P^n(u_{t-n} - E u_{t-n}(0) - V_{t-n})(x)| > u)
-      ≤ C exp{-c min(u²/(1 + log((t+2)/(n+2))), u n)} ,
-
-uniformly in `x`.  The coordinate Lipschitz coefficient of the smoothed
-difference is twice the window `∑_{k=n}^{t-1} p_k(x,z)`
-(`Sandpile.abs_diffSmoothed_update_le`), whose two norms are
-`eq:d4-window-l2` and `eq:d4-window-linfty`, and the mean of the smoothed
-difference is `E u_{t-n}(0)` (`Sandpile.integral_diffSmoothed`).
-`lem:weighted-exp-conc` clause (b) then gives the bound.
--/
 import Sandpile.Support.D4Smoothed
 import Sandpile.Support.D4Difference
 import Sandpile.External.VarianceScale
 import Sandpile.Frozen.WeightedExpConcentration
+
+/-!
+# The tail of the smoothed difference in dimension four
+
+This file proves Step 2 of `prop:d4-pointwise-linearization` (`sandpile.tex:3100-3125`): the
+tail bound `P(|P^n(u_{t-n} - E u_{t-n}(0) - V_{t-n})(x)| > u) ≤ C exp{-c min(u²/(1 +
+log((t+2)/(n+2))), u n)}`, uniformly in `x`. The coordinate Lipschitz coefficient of the
+smoothed difference is twice the window `∑_{k=n}^{t-1} p_k(x,z)`
+(`Sandpile.abs_diffSmoothed_update_le`), whose two norms are `eq:d4-window-l2` and
+`eq:d4-window-linfty`, and the mean of the smoothed difference is `E u_{t-n}(0)`
+(`Sandpile.integral_diffSmoothed`). The weighted exponential concentration lemma then gives
+the bound.
+-/
 
 open LatticeProb
 

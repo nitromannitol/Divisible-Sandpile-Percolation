@@ -1,28 +1,24 @@
-/-
-The white-noise scaling of the ball field, `eq:cont-field-scaling` at
-`sandpile.tex:2093-2099`:
-
-  "The change of variables `z = sw` and white-noise scaling give
-   `{𝒳_s(su)} = {s 𝒳_1(u)}` in law for `d = 2` and `{√s 𝒳_1(u)}` for `d = 3`."
-
-`Sandpile/Support/CrossBallScale.lean` has the kernel half: dilating the point,
-the variable and the radius by `a` leaves the dimension-two kernel unchanged and
-multiplies the dimension-three kernel by `1/a`.  This module takes the identity
-to the field.
-
-The covariance of the ball field is the `L²` inner product of two kernels, and
-dilating the integration variable by `a` multiplies a Lebesgue integral on `ℝ^d`
-by `a^d`, so the covariance of the dilated field is `a^d` times the square of the
-dimensional factor times the covariance of the field: `a²` in dimension two and
-`a³·a^{-2} = a` in dimension three.  Those are the squares of `a` and of `√a`,
-which is the paper's `s` and `√s` once `a` is `s` and the radius is one.  Both
-fields are centred Gaussian, so the covariances determine the laws, and that last
-step is `Sandpile.External.GaussianLawDeterminedByCovariance`.
--/
 import Sandpile.Support.CrossBallScale
 import Sandpile.Support.CrossBallGauss
 import Sandpile.Support.CrossBallMemLp
 import Sandpile.External.GaussianLawCovariance
+
+/-!
+# White-noise scaling of the ball field
+
+The white-noise scaling of the ball field, `eq:cont-field-scaling` at `sandpile.tex:2093-2099`:
+the change of variables `z = sw` and white-noise scaling give `{𝒳_s(su)} = {s 𝒳_1(u)}` in law
+for `d = 2` and `{√s 𝒳_1(u)}` for `d = 3`. `Sandpile/Support/CrossBallScale.lean` has the
+kernel half: dilating the point, the variable and the radius by `a` leaves the dimension-two
+kernel unchanged and multiplies the dimension-three kernel by `1/a`. This module takes the
+identity to the field. The covariance of the ball field is the `L²` inner product of two
+kernels, and dilating the integration variable by `a` multiplies a Lebesgue integral on `ℝ^d`
+by `a^d`, so the covariance of the dilated field is `a^d` times the square of the dimensional
+factor times the covariance of the field: `a²` in dimension two and `a³·a^{-2} = a` in
+dimension three. Those are the squares of `a` and of `√a`, which is the paper's `s` and `√s`
+once `a` is `s` and the radius is one. Both fields are centred Gaussian, so the covariances
+determine the laws, and that last step is `Sandpile.External.GaussianLawDeterminedByCovariance`.
+-/
 
 open MeasureTheory Set
 

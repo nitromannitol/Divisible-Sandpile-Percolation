@@ -1,33 +1,35 @@
-/-
-The exit time of a Euclidean ball for the Brownian motion of
-`ssec:localization` (`sandpile.tex:1636-1646`), and its tail.
-
-`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) replaces each
-stopping time `τ` by `τ ∧ τ_{u,A}`, where `τ_{u,A}` is the exit time of the
-Euclidean ball of radius `A` about `u`, and pays the probability that the ball
-is left before time `T`.  This module supplies the two halves of that sentence
-which need nothing about the field:
-
-- the tail `P(τ_{u,A} < T) ≤ C e^{-cA²/T}`, the continuum analogue of
-  `eq:rw-max-displacement`.  It is the library's Brownian exit estimate read in
-  the vocabulary of this repository: the three clauses of
-  `Sandpile.Continuum.IsBrownian` are verbatim those of
-  `LatticeProb.IsBrownianSpace`, so no continuity and no measurability of the
-  motion is needed for it.  Both the open form (`A < ‖B s ω - u‖`) and the
-  closed form (`A ≤ ‖B s ω - u‖`, the event the exit time itself defines) are
-  proved, with the SAME constants and both depending only on the dimension: the
-  closed event at level `A` is contained in the open event at every level
-  `A' < A`, and the bound is continuous in the level, so no rate is halved and
-  no horizon enters the constants.
-
-- the fact that `τ ∧ τ_{u,A}` is again an admissible stopping time of the value
-  and has not left the ball strictly before it stops, so that its payoff belongs
-  to the attainable set of the localized value `𝒰_{Z,A}`. Natural-filtration
-  stopping times are stable under minima, and the exit time of a closed ball is
-  a stopping time for a motion with continuous paths.
--/
 import Sandpile.Continuum.Stopping
 import LatticeProb
+
+/-!
+# The exit time of a ball and its tail
+
+The exit time of a Euclidean ball for the Brownian motion of `ssec:localization`
+(`sandpile.tex:1636-1646`), and its tail.
+
+`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) replaces each stopping time `τ` by
+`τ ∧ τ_{u,A}`, where `τ_{u,A}` is the exit time of the Euclidean ball of radius `A` about `u`,
+and pays the probability that the ball is left before time `T`. This module supplies the two
+halves of that sentence which need nothing about the field:
+
+- the tail `P(τ_{u,A} < T) ≤ C e^{-cA²/T}` (`exists_ball_exit_tail`,
+  `exists_ball_exit_tail_closed_uniform`, `exists_ball_exit_tail_closed`), the continuum
+  analogue of `eq:rw-max-displacement`. It is the library's Brownian exit estimate read in the
+  vocabulary of this repository: the three clauses of `Sandpile.Continuum.IsBrownian` are
+  verbatim those of `LatticeProb.IsBrownianSpace` (`isBrownianSpace_of_isBrownian`), so no
+  continuity and no measurability of the motion is needed for it. Both the open form
+  (`A < ‖B s ω - u‖`) and the closed form (`A ≤ ‖B s ω - u‖`, the event the exit time itself
+  defines) are proved, with the SAME constants and both depending only on the dimension: the
+  closed event at level `A` is contained in the open event at every level `A' < A`, and the
+  bound is continuous in the level, so no rate is halved and no horizon enters the constants.
+
+- the fact that `τ ∧ τ_{u,A}` is again an admissible stopping time of the value and has not
+  left the ball strictly before it stops, so that its payoff belongs to the attainable set of
+  the localized value `𝒰_{Z,A}`. Natural-filtration stopping times are stable under minima
+  (`isBrownianStopping_min`), the exit time of a closed ball is a stopping time for a motion
+  with continuous paths (`isBrownianStopping_exitTimeTrunc`), and a time bounded by it has not
+  left the ball strictly before it stops (`ball_condition_of_le_exitTime`).
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -86,8 +88,8 @@ theorem exists_ball_exit_tail_closed_uniform (d : ℕ) :
         ENNReal.toReal_mono (by simp) hle
     _ = C * Real.exp (-(c * A ^ 2 / T)) := ENNReal.toReal_ofReal hpos
 
-/-- **The exit-time tail for the closed ball** at a fixed horizon, the form the localization
-lemma consumes. -/
+/-- **The exit-time tail for the closed ball** at a fixed horizon, the form the
+localization lemma consumes. -/
 theorem exists_ball_exit_tail_closed (d : ℕ) (T : ℝ) (hT : 0 < T) :
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
       ∀ (u : Space d) (Ω : Type) (_ : MeasurableSpace Ω) (P : Measure Ω),
@@ -119,7 +121,8 @@ theorem isBrownianStopping_exitTimeTrunc {B : ℝ≥0 → Ω → Space d}
     IsBrownianStopping B (LatticeProb.exitTimeTrunc B u A Tn) := by
   letI : MeasurableSpace Ω := MeasurableSpace.comap (fun ω => fun t => B t ω) inferInstance
   have hp : Measurable (fun ω => fun t => B t ω) := measurable_iff_comap_le.mpr le_rfl
-  have hm : ∀ t, StronglyMeasurable (B t) := fun t => ((measurable_pi_apply t).comp hp).stronglyMeasurable
+  have hm : ∀ t, StronglyMeasurable (B t) :=
+    fun t => ((measurable_pi_apply t).comp hp).stronglyMeasurable
   exact (Sandpile.Continuum.isBrownianStopping_iff_natFiltration B hm _).2
     (LatticeProb.isStoppingTime_exitTimeTrunc hm hcont u A Tn)
 

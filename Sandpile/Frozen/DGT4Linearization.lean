@@ -1,49 +1,3 @@
-/-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4809-4825`
-(label `prop:dgt4-linearization`):
-
-  "Fix $T>0$ and let $n_R\coloneqq\lfloor R^2T\rfloor$.  For every
-   $\varphi\in C_c^\infty(\R^d)$,
-     $\E\Bigl[\Bigl(R^{(d-4)/2}\bigl(u_{n_R}-\E u_{n_R}(0)
-      -\sum_{j=0}^{n_R-1}(1-\frac{j}{R^2T})^\kappa P^j\zeta\bigr)^{(R)}(\varphi)
-      \Bigr)^2\Bigr]\longrightarrow0$."
-
-The standing hypotheses are those of `sandpile.tex:4641-4643`: "Throughout the
-remainder of this subsection, we assume the hypotheses of
-Theorem~\ref{thm:dgt4-diffusive-membrane}, and $\kappa$ denotes the exponent
-defined there."  They are therefore transcribed here in full, exactly as in
-`Sandpile/Frozen/DGT4DiffusiveMembrane.lean`: `d ≥ 5`, the scenery i.i.d.,
-atomless, centred, of finite positive variance, and either Gaussian with
-`κ = 1`, or bounded above with regularly varying lower tail of index `-α`,
-`α > 2`, and `κ = 1 - 1/α`.  The disjunction pins `κ` in each branch.
-
-Modelling decisions.
-
-The scenery is written in the mass normalization: the integration variable is
-`σ` with law `Sandpile.centeredMassLaw d ν`, so `ζ = Sandpile.scenery d σ` has
-one-site law `ν` and `u_n` is `Sandpile.odometer σ n`.  `E u_{n_R}(0)` is
-`Sandpile.meanOdometer`.  `P^j ζ` is `Sandpile.avg^[j] ζ`, and the sum
-`∑_{j=0}^{n_R-1}` is over `Finset.range ⌊R^2T⌋₊`.
-
-`(·)^{(R)}(φ)` is `Sandpile.Continuum.latticePairing R`, applied to the lattice
-field in the large parentheses; the whole difference is formed on the lattice
-before pairing, exactly as the paper writes it.  `φ ∈ C_c^∞(ℝ^d)` is
-`Sandpile.Continuum.IsTestFn Set.univ φ`.
-
-The paper proves this proposition (`sandpile.tex:5853-5864`) by applying
-`lem:dgt4-path-survival` and then `lem:dgt4-linearization-from-survival` to the
-time weights `q_{R,j} = (1 - j/(R^2T))^κ`.  Through that chain the proof reaches
-five results cited from outside the paper, so the statement carries them as
-explicit hypotheses: the Green bounds and the normal comparison inequality of
-`lem:dgt4-path-survival`, the Gaussian concentration inequality that the
-threshold field of `sandpile.tex:5454-5455` rests on in the Gaussian case, and
-the intersection second moment and the Besov tightness criterion of
-`lem:dgt4-linearization-from-survival`.
-
-The convergence is as `R → ∞` through the reals, so the limit is
-`Tendsto … atTop (𝓝 0)` on `ℝ`; `⌊R^2T⌋` is `Nat.floor`, whose junk value at
-negative arguments is never seen since the filter is `atTop` and `T > 0`.
--/
 import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Continuum.Membrane
@@ -55,6 +9,22 @@ import Sandpile.External.ContinuumBesovTightness
 import Sandpile.Support.LinJacobianFirstConjunct
 import Sandpile.Support.Dgt4LinAllPaths
 import Sandpile.Support.Dgt4AFinal
+
+/-!
+# Linearization of the rescaled odometer above dimension four
+
+This file proves the frozen statement of `prop:dgt4-linearization` (`sandpile.tex:4809-4825`):
+for `d ≥ 5` and scenery satisfying the standing hypotheses of `thm:dgt4-diffusive-membrane`, the
+rescaled and time-weighted difference between the odometer `u_{n_R}` and its linear approximation
+`∑_{j=0}^{n_R-1} (1 - j/(R²T))^κ P^j ζ` converges to zero in `L²` after pairing against any test
+function `φ`, as `R → ∞` with `n_R = ⌊R²T⌋`. The scenery is carried in the mass normalization, so
+`P^j ζ` is `Sandpile.avg^[j] (Sandpile.scenery d σ)` and the pairing `(·)^{(R)}(φ)` is
+`Sandpile.Continuum.latticePairing R`. The proof chains the path-survival estimate of
+`lem:dgt4-path-survival` with `lem:dgt4-linearization-from-survival`, and along the way carries
+the Green bounds, the normal comparison inequality, the Gaussian concentration inequality for the
+threshold field, the intersection second moment, and the Besov tightness criterion as explicit
+hypotheses.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

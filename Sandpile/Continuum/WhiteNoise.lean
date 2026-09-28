@@ -1,28 +1,27 @@
-/-
-White noise on `ℝ^d` and the point field `Z` of `sandpile.tex`,
-`ssec:continuum-membrane-fields` (lines 954-1069).
-
-  "Let `𝒲` be white noise on `ℝ^d`, that is, the mean-zero Gaussian linear
-   functional on `L²(ℝ^d)` with covariance `Cov(𝒲(f), 𝒲(g)) = ∫ f g`."
-
-Mathlib 4.32 has Gaussian processes (`ProbabilityTheory.IsGaussianProcess`) but
-no construction of white noise and no Kolmogorov extension theorem, so white
-noise is a PREDICATE on a family `W` of random variables indexed by test
-functions on a probability space, exactly transcribing the four properties the
-paper asks of it: Gaussian finite-dimensional laws, mean zero, the `L²`
-covariance, and linearity in the test function. Joint versions along strongly
-measurable L² families are also recorded; the covariance identity proves that
-this clause is satisfied by the same construction. Every statement that mentions
-white noise is universally quantified over a space carrying such a family.
-
-  "`Z(t,x) = √Var(ζ(0)) 𝒲(g_t^{BM}(x,·))`"  (`eq:dlt4-linear-gaussian-potential`)
-
-is `gaussianPotential`.  It is a genuine point field only for `d ≤ 3`, where
-`g_t^{BM}(x,·) ∈ L²(ℝ^d)`; the definition itself does not need that.
--/
 import Sandpile.Continuum.Kernel
 import LatticeProb.Prob.L2JointVersion
 import Mathlib
+
+/-!
+# White noise and the Gaussian point field
+
+White noise on `ℝ^d` and the point field `Z` of `sandpile.tex`, `ssec:continuum-membrane-fields`
+(lines 954-1069): "Let `𝒲` be white noise on `ℝ^d`, that is, the mean-zero Gaussian linear
+functional on `L²(ℝ^d)` with covariance `Cov(𝒲(f), 𝒲(g)) = ∫ f g`."
+
+Mathlib 4.32 has Gaussian processes (`ProbabilityTheory.IsGaussianProcess`) but no construction
+of white noise and no Kolmogorov extension theorem, so white noise is a PREDICATE `IsWhiteNoise`
+on a family `W` of random variables indexed by test functions on a probability space, exactly
+transcribing the four properties the paper asks of it: Gaussian finite-dimensional laws, mean
+zero, the `L²` covariance, and linearity in the test function. Joint versions along strongly
+measurable `L²` families are also recorded (`IsWhiteNoise.jointMeas_univ`); the covariance
+identity proves that this clause is satisfied by the same construction. Every statement that
+mentions white noise is universally quantified over a space carrying such a family.
+
+The point field `"Z(t,x) = √Var(ζ(0)) 𝒲(g_t^{BM}(x,·))"` (`eq:dlt4-linear-gaussian-potential`) is
+`gaussianPotential`. It is a genuine point field only for `d ≤ 3`, where `g_t^{BM}(x,·) ∈
+L²(ℝ^d)`; the definition itself does not need that.
+-/
 
 open MeasureTheory ProbabilityTheory
 

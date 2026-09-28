@@ -1,10 +1,14 @@
-/-
+import Sandpile.Support.Dgt4AStep4Mean
+
+/-!
+# Step 4 of case (a): the conditional contact probability
+
 **The conditional contact probability of Step 4 of case (a)**
 (`eq:dgt4-gaussian-conditional-contact`, `sandpile.tex:5141-5147` and
 `sandpile.tex:5283-5286`).
 
 The contact event is `\{u_{n+1}(0)=0\}=\{-\zeta(0)-Pu_n(0)\geq0\}`, with a wide inequality:
-the odometer recursion is `u_{n+1}(0)=(\zeta(0)+Pu_n(0))_+`.  Step 3 gives the limit of the
+the odometer recursion is `u_{n+1}(0)=(\zeta(0)+Pu_n(0))_+`. Step 3 gives the limit of the
 conditional probability of the STRICT event, so the wide one is read off it for `y>0` by
 monotonicity, and for `y<0` by the same comparison, which bounds the wide event as well.
 The paper's sentence "The same bound holds with `m_n(y)` replaced by the conditional
@@ -12,7 +16,6 @@ probability" is the second theorem: on the contact event the terminal quantity e
 `\Sigma^2|y|/\E u_n(0)`, so the conditional concentration tail bounds the conditional
 probability by `e^{-2|y|}` for `y\leq-1` and all large `n`.
 -/
-import Sandpile.Support.Dgt4AStep4Mean
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal

@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.MeanAAssembly
+import Sandpile.Support.MeanAVersion
+import Sandpile.Support.Dgt4OriginProb
+import Sandpile.Frozen.BrownianScalingLimit
+import Sandpile.Frozen.ContinuumValueSelfSimilar
+
+/-!
+# Theorem 1.3(i)(a): the mean odometer growth rate at the origin
+
 Theorem 1.3(i)(a) of `sandpile.tex` (`sandpile.tex:206-217`) wired to the two
 statements its proof names, on the spaces the repository builds.
 
@@ -16,11 +24,6 @@ those of `Sandpile.Continuum.exists_isWhiteNoise` and
 `Sandpile.Continuum.exists_isBrownian`, which `mean_growth_le_three_of_variance_pos`
 supplies.
 -/
-import Sandpile.Support.MeanAAssembly
-import Sandpile.Support.MeanAVersion
-import Sandpile.Support.Dgt4OriginProb
-import Sandpile.Frozen.BrownianScalingLimit
-import Sandpile.Frozen.ContinuumValueSelfSimilar
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

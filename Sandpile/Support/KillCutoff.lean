@@ -1,19 +1,20 @@
-/-
-The cutoff of the proof of Theorem 1.3(i)(b) is free in the killed problem.
-
-The proof of Theorem 1.3(i)(b) inserts a continuous cutoff `χ_A` on both sides so
-that the cited stability input, which needs BOUNDED rewards, applies, and then pays
-the two cutoff errors of `sandpile.tex:1908-1922`.  In the killed problem of
-`rem:dlt4-killed-scaling` there is nothing to pay: the killed walk is within one
-step of `Q(⌊Ru⌋,R)` when it stops and the killed motion is in the closed cube
-`u+[-1,1]^d` when it stops, so as soon as `χ_A` is one on a fixed neighbourhood of
-the cube both killed values are UNCHANGED by the cutoff, not merely close to the
-uncut ones.  That is what this module proves: the two payoff sets are equal,
-because their integrands agree almost surely.
--/
 import Sandpile.Support.KillBox
 import Sandpile.Support.KillLip
 import Sandpile.Support.ExplCutoff
+
+/-!
+# The cutoff is free in the killed problem
+
+The proof of Theorem 1.3(i)(b) inserts a continuous cutoff `χ_A` on both sides so that the cited
+stability input, which needs bounded rewards, applies, and then pays the two cutoff errors of
+`sandpile.tex:1908-1922`. In the killed problem of `rem:dlt4-killed-scaling` there is nothing to
+pay: the killed walk is within one step of `Q(⌊Ru⌋,R)` when it stops and the killed motion is in
+the closed cube `u+[-1,1]^d` when it stops, so as soon as `χ_A` is one on a fixed neighbourhood of
+the cube both killed values are unchanged by the cutoff, not merely close to the uncut ones. That
+is what `killedSet_cutoff_eq`, `killedStoppingSup_cutoff_eq`, `cubeStoppingPayoffs_cutoff_eq` and
+`brownianDiscountCube_cutoff_eq` prove: the two payoff sets, or discounted values, are equal
+because their integrands agree almost surely.
+-/
 
 open MeasureTheory
 open scoped NNReal

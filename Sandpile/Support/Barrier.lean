@@ -1,19 +1,19 @@
-/-
-The parabolic barrier of Step 1 of the proof of `thm:dgt4-height-lower`,
-`sandpile.tex:4197-4230`, and the two elementary facts about the squared
-Euclidean norm that it rests on: its neighbour average exceeds it by exactly
-one, and it dominates the square of the sup-norm distance to the origin.
-
-If the scenery is at most `-a` on a box and the odometer is below the parabola
-`a|z|^2/2` on the boundary sphere at every time, then the recursion cannot lift
-it above the parabola anywhere in the box, at any time.  In particular the
-neighbour average at the origin is at most `a/2`, which is what makes the
-reflected increment positive.
--/
 import Sandpile.Support.Odometer
 import Sandpile.Support.Kernel
 import Sandpile.Support.Stationary
 import LatticeProb.Walk.SRWDiag
+
+/-!
+# The parabolic barrier
+
+This file proves the parabolic barrier of Step 1 of the proof of `thm:dgt4-height-lower`
+(`sandpile.tex:4197-4230`), together with the two elementary facts about the squared Euclidean
+norm it rests on: its neighbour average exceeds it by exactly one, and it dominates the square of
+the sup-norm distance to the origin. If the scenery is at most `-a` on a box and the odometer is
+below the parabola `a|z|²/2` on the boundary sphere at every time, then the recursion cannot lift
+it above the parabola anywhere in the box, at any time; in particular the neighbour average at the
+origin is at most `a/2`, which is what makes the reflected increment positive.
+-/
 
 open LatticeProb
 
@@ -28,6 +28,8 @@ of its cast. -/
 theorem natAbs_cast_real (n : ℤ) : ((n.natAbs : ℕ) : ℝ) = |((n : ℤ) : ℝ)| := by
   rw [← Int.cast_abs, ← Int.natCast_natAbs n, Int.cast_natCast]
 
+/-- Stepping to the neighbour `x + unit i` changes the squared Euclidean norm by
+`2 · x i + 1`. -/
 theorem sqNorm_add_unit (x : Site d) (i : Fin d) :
     sqNorm (x + unit i) = sqNorm x + 2 * ((x i : ℤ) : ℝ) + 1 := by
   classical
@@ -50,6 +52,8 @@ theorem sqNorm_add_unit (x : Site d) (i : Fin d) :
   simp
   ring
 
+/-- Stepping to the neighbour `x - unit i` changes the squared Euclidean norm by
+`-(2 · x i) + 1`. -/
 theorem sqNorm_sub_unit (x : Site d) (i : Fin d) :
     sqNorm (x - unit i) = sqNorm x - 2 * ((x i : ℤ) : ℝ) + 1 := by
   classical
@@ -135,6 +139,7 @@ theorem odometerOf_le_succ (ζ : Site d → ℝ) :
       show max 0 (ζ x + avg (odometerOf ζ n) x) ≤ max 0 (ζ x + avg (odometerOf ζ (n+1)) x)
       exact max_le_max le_rfl (by linarith)
 
+/-- The odometer written in the scenery is a monotone function of time, at every fixed site. -/
 theorem odometerOf_mono_time (ζ : Site d → ℝ) (x : Site d) :
     Monotone fun t => odometerOf ζ t x :=
   monotone_nat_of_le_succ fun t => odometerOf_le_succ ζ t x

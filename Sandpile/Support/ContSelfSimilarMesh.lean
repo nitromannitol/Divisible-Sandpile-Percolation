@@ -1,7 +1,18 @@
-/- Passing from the interpolated parabolic limit to the lattice value. -/
 import Sandpile.Support.MeanAInterp
 import Sandpile.Support.MeanAIndex
 import Sandpile.Support.LinStationary
+
+/-!
+# From the interpolated parabolic limit to the lattice value
+
+The rescaled odometer `rescaledOdometer d R T x` at a mesh point agrees with the multilinear
+interpolation `multilinearInterp` of the rescaled odometer field, so any compact modulus of
+continuity for the interpolation forces the two to differ by an amount tending to `0` in
+measure (`rescaledOdometer_sub_interp_tendstoInMeasure`), because the mesh point of `x`
+converges to `x`. Combined with convergence in distribution of the one-point interpolation
+value, this transports the limit to the rescaled odometer itself
+(`tendstoInDistribution_rescaled_of_interp`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

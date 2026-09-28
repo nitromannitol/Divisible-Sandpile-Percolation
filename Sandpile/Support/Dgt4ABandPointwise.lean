@@ -1,15 +1,17 @@
-/-
-The pointwise passage of Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6305`): at a FIXED scale `R`, the two band limits at
-`δ = ε T/2` give the uniform contact-threshold estimate over
-`⌈ε ⌊R^2 T⌋⌉ ≤ m ≤ ⌊R^2 T⌋`, because `⌈ε ⌊R^2 T⌋⌉ ≥ ε(R^2 T - 1) ≥ (ε T/2) R^2`
-for all large `R`.  This is the arithmetic core of
-`uniformContactThresholds_of_band`, factored out so that the subsequence form
-can be obtained by `filter_upwards` alone.
--/
 import Sandpile.Support.Dgt4ABandIndex
 import Sandpile.Walk
 import Sandpile.Law
+
+/-!
+# The pointwise passage of Step 2
+
+The pointwise passage of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6305`): at a FIXED
+scale `R`, the two band limits at `δ = ε T/2` give the uniform contact-threshold estimate
+over `⌈ε ⌊R^2 T⌋⌉ ≤ m ≤ ⌊R^2 T⌋` (`uniformContactThresholds_at`), because
+`⌈ε ⌊R^2 T⌋⌉ ≥ ε(R^2 T - 1) ≥ (ε T/2) R^2` for all large `R`. This is the arithmetic core of
+`uniformContactThresholds_of_band`, factored out so that the subsequence form can be obtained
+by `filter_upwards` alone.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

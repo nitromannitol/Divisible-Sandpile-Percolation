@@ -1,20 +1,19 @@
-/-
-The truncation defect across a parity change, in `ℓ²`.
-
-The `ℓ²` bounds of `Sandpile.exists_heatKernel_tail_l2_four` compare two sites
-of the same parity, which is what the total-variation gradient bound
-`eq:rw-tv-gradient` requires.  In the pairing of Step 1 of
-`prop:d4-superdiffusive-limit` the moving site `⌊Rz⌋` takes both parities
-against the fixed base point, so the defect at a site of the other parity is
-compared with the base point one time later: the one-step recursion in the base
-point writes `p_{n+1}(x',·)` as the average of `p_n` over the `2d` neighbours of
-`x'`, each of which has the parity of `x` and lies within `|x-x'|+1` of it, and
-the time shift telescopes against the tail, leaving one term `p_t(0,·)` whose
-`ℓ²` norm is `O(t^{-1})`.  This is the `ℓ²` transposition of
-`Sandpile.Support.tsum_abs_heatKernel_sub_succ_le`.
--/
 import Sandpile.Support.D4DefectTail
 import Sandpile.Support.ContPairedGradient
+
+/-!
+# The ℓ² truncation defect across a parity change
+
+The `ℓ²` bounds of `Sandpile.exists_heatKernel_tail_l2_four` compare two sites of the same
+parity, which is what the total-variation gradient bound `eq:rw-tv-gradient` requires. In the
+pairing of Step 1 of `prop:d4-superdiffusive-limit` the moving site `⌊Rz⌋` takes both parities
+against the fixed base point, so the defect at a site of the other parity is compared with the
+base point one time later: the one-step recursion in the base point writes `p_{n+1}(x',·)` as the
+average of `p_n` over the `2d` neighbours of `x'`, each of which has the parity of `x` and lies
+within `|x-x'|+1` of it, and the time shift telescopes against the tail, leaving one term
+`p_t(0,·)` whose `ℓ²` norm is `O(t^{-1})`. This is the `ℓ²` transposition of
+`Sandpile.Support.tsum_abs_heatKernel_sub_succ_le`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

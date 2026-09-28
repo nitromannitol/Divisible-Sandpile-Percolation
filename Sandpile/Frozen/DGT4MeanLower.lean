@@ -1,30 +1,19 @@
-/-
-Corollary of sandpile.tex, frozen.  `sandpile.tex:4326-4341`
-(label `cor:dgt4-mean-lower`, parts (i) and (ii)):
-
-  "(i) Let $(\zeta(x))_{x\in\Z^d}$ be i.i.d., mean zero, integrable, and
-   nondegenerate.  There are $c>0$ and $t_0<\infty$, depending on $d$ and the
-   one-site law, such that, for every $t\geq t_0$,
-     $\E u_t(0)\geq c(\log t)^{2/d}$.
-   (ii) If $a>0$ and $q\in(0,1]$ are fixed, then the constants in (i) can be
-   chosen depending only on $d,a,q$ over all such fields satisfying
-     $\P(\zeta(0)\leq-a)\geq q$."
-
-Both parts are present, as the two conjuncts of the conclusion.  In (i) the
-constants depend on `d` and the one-site law, so `c` and `t₀` are bound after
-`ν`; in (ii) they depend only on `d, a, q`, so they are bound after `a, q` and
-before `ν`.  This is the only difference between the two conjuncts apart from
-the extra lower-tail hypothesis.  Integrability of `ζ(0)` is `Integrable id ν`
-and mean zero is `∫ z, z ∂ν = 0`; the exponential moment of the section is
-deliberately absent, since this corollary removes it.  Nondegeneracy is "the
-law is not a point mass", written `∀ z, ν ≠ Measure.dirac z`, rather than
-`0 < Var`, because only integrability is assumed and the variance may be
-infinite.  `P(ζ(0) ≤ -a) ≥ q` is `ENNReal.ofReal q ≤ ν (Set.Iic (-a))`.
--/
 import Sandpile.Law
 import Sandpile.Support.IncrementBall
 import Sandpile.Support.Increment
 import Sandpile.Support.SceneryBridge
+
+/-!
+# A mean lower bound with only a first moment
+
+This file proves the frozen statement of `cor:dgt4-mean-lower` (`sandpile.tex:4326-4341`), in two
+parts. Part (i): for `d ≥ 5` and scenery i.i.d., mean zero, integrable, and nondegenerate (not a
+point mass), there are `c > 0` and `t₀` depending on `d` and the one-site law such that
+`E u_t(0) ≥ c (log t)^{2/d}` for all `t ≥ t₀`. Part (ii): if in addition `a > 0` and `q ∈ (0, 1]`
+are fixed with `P(ζ(0) ≤ -a) ≥ q`, the constants `c, t₀` can be chosen to depend only on `d, a, q`
+and not otherwise on the one-site law. Neither part assumes any exponential moment, unlike the
+rest of the section.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,9 +1,14 @@
-/-
-The telescoping bound behind the summed profile of Step 2 of
-`thm:dgt4-many-limits` (`sandpile.tex:6223-6250`): if every increment of `y` is
-within `e` of `c`, then `y n - y 0` is within `n e` of `n c`.
--/
 import Mathlib
+
+/-!
+# Telescoping bound for summed increments
+
+The telescoping bound behind the summed profile of Step 2 of `thm:dgt4-many-limits`
+(`sandpile.tex:6223-6250`): if every increment of `y` is within `e` of `c`, then `y n - y 0` is
+within `n e` of `n c`. `abs_sub_sum_le` proves this from the origin, and
+`abs_sub_sum_le_offset` proves the same bound started at an arbitrary offset `s`, the form the
+paper needs when summing from a hitting time `τ_k`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

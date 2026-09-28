@@ -1,34 +1,22 @@
-/-
-Theorem (High-dimensional mean growth) of sandpile.tex, frozen.
-`sandpile.tex:4195-4218` (label `thm:dgt4-height-lower`):
-
-  "Fix $\nu_0>0$, $\theta_0>0$, and $K_0<\infty$.  There are $c,C>0$ and
-   $t_0<\infty$, depending only on $d,\nu_0,\theta_0,K_0$, such that every
-   mean-zero i.i.d.\ field satisfying
-     $\Var(\zeta(0))\geq\nu_0^2$, $\E e^{\theta_0|\zeta(0)|}\leq K_0$
-   satisfies, for every $t\geq t_0$,
-     $\E u_t(0)\geq c(\log t)^{2/d}$.
-   Moreover, for every $x\in\Z^d$, $t\geq0$, and $s\geq0$,
-     $\P(|u_t(x)-\E u_t(0)|\geq s)\leq C\exp\{-c\min(s^2,s)\}$.
-   Consequently, for every fixed $x\in\Z^d$,
-     $u_t(x)/\E u_t(0)\to1$ in $L^2$ and almost surely."
-
-The field is the scenery `ζ` of the section, so the mass field is
-`σ = 1 + 2dζ` and the law is `centeredMassLaw d ν` for a one-site law `ν` of
-`ζ(0)`; `E u_t(0)` is `meanOdometer`.  `c`, `C`, `t₀` are bound after
-`d, ν₀, θ₀, K₀` and before `ν`, which is the paper's "depending only on
-$d,\nu_0,\theta_0,K_0$".  The exponential moment is transcribed as
-integrability together with the bound `≤ K₀`, so that a non-integrable law
-cannot satisfy the hypothesis through the junk value `∫ = 0`.  The
-concentration bound is stated in `ℝ≥0∞` against `ENNReal.ofReal` of the right
-side, avoiding `toReal` on the left.  Finiteness of the variance is not
-listed: it follows from the exponential moment, and the theorem's own
-hypothesis list is `Var ≥ ν₀²` together with `E e^{θ₀|ζ(0)|} ≤ K₀`.
--/
 import Sandpile.Law
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.HeightLower
+
+/-!
+# High-dimensional mean growth, frozen
+
+Theorem (high-dimensional mean growth) of `sandpile.tex`, frozen (`sandpile.tex:4195-4218`, label
+`thm:dgt4-height-lower`): fixing `ν₀ > 0`, `θ₀ > 0`, `K₀ < ∞` and `d ≥ 5`, there are `c, C > 0` and
+`t₀ < ∞`, depending only on `d, ν₀, θ₀, K₀`, such that every mean-zero i.i.d. field with variance
+at least `ν₀²` and exponential moment at most `K₀` satisfies `E u_t(0) ≥ c (log t)^{2/d}` for
+`t ≥ t₀`, a matching concentration bound `P(|u_t(x) - E u_t(0)| ≥ s) ≤ C exp(-c min(s²,s))` for
+every `x`, `t`, `s ≥ 0`, and consequently `u_t(x)/E u_t(0) → 1` in `L²` and almost surely. The
+field is the scenery `ζ` with mass field `σ = 1 + 2dζ`, carried by `centeredMassLaw d ν`; `c`, `C`,
+`t₀` are bound after `d, ν₀, θ₀, K₀` and before `ν`, matching the paper's dependence, and the
+exponential moment is transcribed as integrability together with the bound `≤ K₀` so that a
+non-integrable law cannot satisfy the hypothesis through the junk value `∫ = 0`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

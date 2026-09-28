@@ -1,15 +1,3 @@
-/-
-The parabolic scaling limit of `thm:main-explosion`(i)(b), assembled from its
-inputs: the unkilled analogue of `Sandpile.dlt4_killed_scaling_of_inputs`.
-
-The four errors of `Sandpile.abs_rescaled_odometer_sub_brownianValue_le` are
-supplied by the field coupling and the mesh approximation, by the walk half of
-the cutoff error at the dyadic-annulus bound of the interpolated field, by the
-stability gap at the two cut-off rewards, and by the Brownian half of the cutoff
-error at the polynomial envelope of the limit field.  What the cube-killed route
-got for free from the confinement of the walk in the cube, the unkilled route
-gets from those two annulus estimates.
--/
 import Sandpile.Support.MainExplStability
 import Sandpile.Support.MainExplBrownCutoff
 import Sandpile.Support.MainExplGrowth
@@ -22,6 +10,20 @@ import Sandpile.Support.ExplBallReward
 import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.Frozen.HeatPotentialInvariance
 
+/-!
+# The parabolic scaling limit of `thm:main-explosion`(i)(b), assembled from its inputs
+
+This is the unkilled analogue of `Sandpile.dlt4_killed_scaling_of_inputs`.
+
+The four errors of `Sandpile.abs_rescaled_odometer_sub_brownianValue_le` are
+supplied by the field coupling and the mesh approximation, by the walk half of
+the cutoff error at the dyadic-annulus bound of the interpolated field, by the
+stability gap at the two cut-off rewards, and by the Brownian half of the cutoff
+error at the polynomial envelope of the limit field. What the cube-killed route
+got for free from the confinement of the walk in the cube, the unkilled route
+gets from those two annulus estimates.
+-/
+
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
@@ -29,6 +31,17 @@ universe u v
 open Sandpile Sandpile.Continuum
 
 set_option maxHeartbeats 3200000 in
+/-- **The parabolic scaling limit of `thm:main-explosion`(i)(b), assembled from its four error
+inputs.** Given a compact set `K` and accuracies `ε, δ`, there is a scale `R₀` beyond which the
+rescaled odometer and the Brownian potential's stopped value can be coupled, through a
+probability measure `P` on scenery-times-white-noise pairs with the right marginals, so that
+they differ by more than `ε` somewhere on `K` with probability at most `δ`. The four inputs
+assembled here are the field coupling and mesh approximation (`heat_field_coupling`), the walk
+cutoff error at the dyadic-annulus bound of `exists_mesh_annulus_bound`
+(`exists_walk_cutoff_stoppingSup_gap`), the stability gap between the two cutoff rewards
+(`stability_gap_of_two_rewards`), and the Brownian cutoff error at the polynomial envelope of the
+limit field (`exists_brownianDiscount_cutoff_gap_of_growth`); this is the unkilled analogue of
+`Sandpile.dlt4_killed_scaling_of_inputs`. -/
 theorem Sandpile.dlt4_scaling_of_inputs
     (_hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})

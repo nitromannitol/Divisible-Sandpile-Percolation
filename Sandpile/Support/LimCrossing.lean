@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LimValue
+
+/-!
+# Assembling the limiting odometer crossing theorem
+
 `thm:limiting-odometer-crossing` (`sandpile.tex:2515-2530`) assembled.
 
   "Apply Lemma [finite-scale extraction] with error `ε/2`.  This gives `c>0` and
@@ -19,7 +23,6 @@ Both the ball fields and the heat potential in the stopping value are their
 actual continuous versions. The motion has continuous paths and strongly
 measurable evaluations, so the capped ball-exit rule can be used.
 -/
-import Sandpile.Support.LimValue
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -57,7 +60,8 @@ theorem limiting_odometer_crossing_of_inputs
       ENNReal.ofReal (1 - ε) ≤ PW {ω | ∀ j : Fin N,
         Crosses (a j) (b j) (dir j) {u | H < localizedValue d Z PB B T u ω}} := by
   obtain ⟨c, k, s, hc, hk, hs, hext⟩ :=
-    finite_scale_extraction_of_inputs hRSWc hPitt hGauss hd hZ hLaw a b hab dir (ε / 2) (by linarith)
+    finite_scale_extraction_of_inputs hRSWc hPitt hGauss hd hZ hLaw a b hab dir (ε / 2)
+      (by linarith)
   obtain ⟨T, hT, happ⟩ := hApp k s hs N a b c (ε / 2) hc (by linarith)
   haveI : NeZero k := ⟨by omega⟩
   have hdpos : (2 : ℝ) ≤ (d : ℝ) := by

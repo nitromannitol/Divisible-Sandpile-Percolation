@@ -1,4 +1,7 @@
-/-
+import Mathlib
+
+/-! # Jensen's inequality for the mean overshoot
+
 Jensen's inequality for the mean overshoot.
 
 Nothing in this file mentions any object of this paper: it is stated for an
@@ -14,7 +17,6 @@ inequality then moves the expectation inside: replacing a random level by its
 mean can only decrease the mean overshoot.  It is `1`-Lipschitz as well, which is
 where the continuity that Mathlib's integral Jensen asks for comes from.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 
@@ -46,6 +48,8 @@ theorem posPart_sub_convex_le {x w₁ w₂ α β : ℝ} (hα : 0 ≤ α) (hβ : 
 /-- The mean overshoot above a level, as a function of the level. -/
 def meanOvershoot (ν : Measure ℝ) (w : ℝ) : ℝ := ∫ x, max (x - w) 0 ∂ν
 
+/-- The mean overshoot is nonnegative, as the integral of the nonnegative
+function `x ↦ max (x - w) 0`. -/
 theorem meanOvershoot_nonneg (ν : Measure ℝ) (w : ℝ) : 0 ≤ meanOvershoot ν w :=
   integral_nonneg fun _ => le_max_right _ _
 
@@ -87,6 +91,8 @@ theorem abs_meanOvershoot_sub_le (ν : Measure ℝ) [IsFiniteMeasure ν]
     _ = |w₁ - w₂| * (ν Set.univ).toReal := by
         rw [integral_const, smul_eq_mul, measureReal_def, mul_comm]
 
+/-- The mean overshoot is continuous in the level, since `abs_meanOvershoot_sub_le`
+makes it Lipschitz with constant the total mass `ν Set.univ`. -/
 theorem continuous_meanOvershoot (ν : Measure ℝ) [IsFiniteMeasure ν]
     (hν : ∀ w : ℝ, Integrable (fun x : ℝ => max (x - w) 0) ν) :
     Continuous (meanOvershoot ν) := by

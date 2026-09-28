@@ -1,36 +1,23 @@
-/-
-The skeleton of the proof of Theorem 1.3(i)(b) (`sandpile.tex:1874-1935`): the gap
-between the rescaled odometer at a lattice point and the Brownian value at the
-corresponding point of `ℝ^d`, in four named errors.
-
-The paper's proof runs: the exact identity for `u_t - V_t` at the parabolic scale
-turns the rescaled odometer into the field plus an optimal-stopping value; the
-field converges (`prop:dlt4-heat-potential-invariance`); and the two
-optimal-stopping values are compared by inserting the cutoff `χ_A` on both sides,
-so that the standard stability of optimal-stopping values under uniform
-convergence of BOUNDED rewards applies (`ext-continuum-stopping-stability`), and
-the two cutoff errors are paid separately (`sandpile.tex:1908-1922`).
-
-`abs_rescaled_odometer_sub_brownianValue_le` is exactly that: the gap is at most
-`E₀ + E₁ + E₂ + E₃`, where `E₀` is the error of the field at the mesh point, `E₁`
-the discrete cutoff error, `E₂` the stability gap at the cut-off rewards, and `E₃`
-the Brownian cutoff error.  Nothing about the four errors is assumed here beyond
-their own statements; each is supplied by a named result of the paper, and the
-two cutoff errors are reduced to the paper's display by
-`Sandpile.abs_stoppingSup_sub_le` with `Sandpile.abs_integral_sub_cutoff_le` and
-by their Brownian counterparts in `Sandpile/Support/ExplHorizon.lean`.
-
-`linInterp_scaledSite` and `cutoff_linInterp_scaledSite` are what let the two
-vocabularies meet.  The external stability input states the discrete value with the
-INTERPOLATED field `Z_R^{lin}` evaluated at the rescaled walk position, while the
-exact identity produces the MESH field `Z_R` at the lattice position; at a lattice
-point the rescaled position is a mesh point and the two agree, which is
-`linInterp_of_mesh`.
--/
 import Sandpile.Support.ExplScalingId
 import Sandpile.Support.ExplHorizon
 import Sandpile.Support.ExplCutoff
 import Sandpile.External.LocalCLT
+
+/-!
+# The four-term error decomposition of the odometer-Brownian gap
+
+`abs_rescaled_odometer_sub_brownianValue_le` bounds the gap between the rescaled odometer at a
+lattice point and the Brownian value at the corresponding point of `ℝ^d` by the sum of four
+named errors: the error of the interpolated field at the mesh point, the discrete cutoff
+error, the stability gap of optimal-stopping values under uniform convergence of the cut-off
+rewards, and the Brownian cutoff error. The two cutoff errors,
+`abs_stoppingSup_sub_cutoffSup_le` on the walk side and
+`abs_brownianDiscount_sub_cutoffDiscount_le` on the Brownian side, both reduce to a single
+bound on how much the cutoff removes from the integral of the reward. `linInterp_scaledSite`
+and `cutoff_linInterp_scaledSite` identify the interpolated field of the stability input with
+the mesh field of the exact identity at a lattice point, where the rescaled position is
+already a mesh point.
+-/
 
 open MeasureTheory
 open scoped NNReal ENNReal

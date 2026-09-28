@@ -1,15 +1,20 @@
-/-
-The last step of the dimension-two and dimension-three percolation proof
-(`sandpile.tex:2606-2612`): the localized odometer at the block horizon is
-dominated by the odometer at the later time `t`, so an infinite
-nearest-neighbour component of a superlevel set of the localized field inside
-the coordinate plane is an infinite component of the superlevel set of the
-odometer at time `t`.
--/
 import Sandpile.Support.D23Field
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.Barrier
 import Sandpile.Support.Crit23Scale
+
+/-!
+# From localized-field components to odometer components
+
+This file carries out the last step of the dimension-two and dimension-three percolation proof
+(`sandpile.tex:2606-2612`). Because the localized odometer field at the block horizon `s` is
+dominated by the odometer at any later time `t`, an infinite nearest-neighbour component of a
+superlevel set of the localized field inside the coordinate plane is also an infinite component
+of the superlevel set of the odometer itself at time `t`
+(`infinite_odometer_component_of_d23Field`). `hasInfiniteComponent_criticalScale_of_plane` then
+restates this at the critical scale `h(t) = t ^ ((4 - d) / 4)` of Theorem 1.2, transporting an
+infinite component of the plane's level set to one of the full lattice's level set.
+-/
 
 open MeasureTheory
 

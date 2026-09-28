@@ -1,4 +1,8 @@
-/-
+import Sandpile.External.BPSH
+import LatticeProb.Graph.ZdRepresentation
+
+/-! # Optimal-Stopping Representation, Proved
+
 The optimal-stopping representation is no longer assumed.
 
 `Sandpile/External/BPSH.lean` states it as a `Prop`, as a cited result must be
@@ -13,9 +17,11 @@ written twice, so they are identified by induction; the stopping value, the
 scenery sum, the optimal stopping index and the walk law are the same
 definitions and need no bridge.
 -/
-import Sandpile.External.BPSH
-import LatticeProb.Graph.ZdRepresentation
 
+/-- The shared library's `LatticeProb.Graph.Zd.zdOdometer` and this file's
+`Sandpile.odometerOf` are the same recursion written twice: proved equal for every `n` and `x`
+by induction on `n`, unfolding `Sandpile.avg`, `LatticeProb.walkOp`, and `LatticeProb.nbrSum`
+to match the two neighbour-averaging formulas. -/
 theorem Sandpile.zdOdometer_eq {d : ℕ} (ζ : Sandpile.Site d → ℝ) :
     ∀ (n : ℕ) (x : Sandpile.Site d),
       LatticeProb.Graph.Zd.zdOdometer ζ n x = Sandpile.odometerOf ζ n x := by

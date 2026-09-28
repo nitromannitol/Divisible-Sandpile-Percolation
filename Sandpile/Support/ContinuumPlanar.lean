@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.PlanarLaw
+import Sandpile.Continuum.Kernel
+
+/-! # Continuum planar crossing vocabulary
+
 Continuum planar vocabulary for the fixed-scale crossing argument
 (`sandpile.tex:2105-2135`): the symmetries of a continuous planar random
 field, positive association of its law, and the rectangle crossing
@@ -12,8 +16,6 @@ reflection invariance, and positive association.  The field is a random
 continuous function on the plane; the crossing events are the compact
 connected crossings of `Sandpile.Frozen.FixedScaleCrossings.Crosses`.
 -/
-import Sandpile.Support.PlanarLaw
-import Sandpile.Continuum.Kernel
 
 open MeasureTheory Set
 

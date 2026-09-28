@@ -1,15 +1,15 @@
-/-
-`eq:dgt4-band-contact-comparison` (`sandpile.tex:6278-6292`) from the second
-clause of `PointwiseContactThresholds`: the contact event `{u_n(0)=0}` agrees
-with the threshold event up to `o(1/n)`, uniformly over the band
-`δ R_k^2 ≤ n ≤ ⌊R_k^2 T⌋`.
-
-Over the band `R_k^2 ≤ n/δ`, so the `n`-normalized pointwise estimate gives the
-scale-normalized band estimate that `uniformContactThresholdsAlong_of_band`
-consumes.
--/
 import Sandpile.Support.Dgt4ABand
 import Sandpile.Support.Dgt4Thresholds
+
+/-!
+# The band-uniform contact comparison
+
+`eq:dgt4-band-contact-comparison` (`sandpile.tex:6278-6292`), derived from the second clause of
+`PointwiseContactThresholds`: the contact event `{u_n(0)=0}` agrees with the threshold event up to
+`o(1/n)`, uniformly over the band `δ R_k^2 ≤ n ≤ ⌊R_k^2 T⌋` (`bandContactComparison_of_pointwise`).
+Over the band `R_k^2 ≤ n/δ`, so the `n`-normalized pointwise estimate gives the scale-normalized
+band estimate that `uniformContactThresholdsAlong_of_band` consumes.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

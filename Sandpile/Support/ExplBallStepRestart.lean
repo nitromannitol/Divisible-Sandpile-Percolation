@@ -1,4 +1,14 @@
-/-
+import Sandpile.Support.ExplBallRestartStep
+import Sandpile.Support.ExplBallConditional
+import Sandpile.Support.ExplBallFinal
+import Sandpile.Support.ExplBallStepEnvelope
+import Sandpile.Support.ExplBallGaussian
+import Sandpile.Support.ExplBrownianEnvelope
+import Sandpile.Support.ExplBallFarUniform
+import Sandpile.Support.ExplBallBound
+
+/-! # Ball Step Residual from Growth and the Restart Bound
+
 The strong Markov step of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
 from samplewise polynomial growth of the field and the pointwise restart bound at
 the exit event of the ball.
@@ -9,14 +19,6 @@ of the two payoffs is at most the far supremum.  The growth supplies the
 integrability of the two stopped rewards through the envelope of the field, and
 the step follows.
 -/
-import Sandpile.Support.ExplBallRestartStep
-import Sandpile.Support.ExplBallConditional
-import Sandpile.Support.ExplBallFinal
-import Sandpile.Support.ExplBallStepEnvelope
-import Sandpile.Support.ExplBallGaussian
-import Sandpile.Support.ExplBrownianEnvelope
-import Sandpile.Support.ExplBallFarUniform
-import Sandpile.Support.ExplBallBound
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -125,12 +127,14 @@ theorem ballRestartResidual_of_condExp (d : ℕ) (h : BallCondExpResidual d) :
           PB[fun b' => (fun t z => Z t z ω)
                 (T - ((min (τ b') (ballExitTime (B u) u A T b') : ℝ≥0) : ℝ))
                 (B u (min (τ b') (ballExitTime (B u) u A T b')) b') -
-              (fun t z => Z t z ω) (T - (τ b' : ℝ)) (B u (τ b') b') | hτ.measurableSpace] b ∂PB := by
+              (fun t z => Z t z ω) (T - (τ b' : ℝ)) (B u (τ b') b')
+                | hτ.measurableSpace] b ∂PB := by
         rw [MeasureTheory.setIntegral_condExp hle_m hg hEτ]
     _ ≤ ∫ _b in {b : ΩB | ballExitTime (B u) u A T b < τ b},
           sSup (farValues B PB (fun t z => Z t z ω) T A K) ∂PB := by
         refine MeasureTheory.setIntegral_mono_on_ae
-          ((MeasureTheory.integrable_condExp (μ := PB) (m := hτ.measurableSpace) (f := fun b' => (fun t z => Z t z ω)
+          ((MeasureTheory.integrable_condExp (μ := PB) (m := hτ.measurableSpace)
+              (f := fun b' => (fun t z => Z t z ω)
                 (T - ((min (τ b') (ballExitTime (B u) u A T b') : ℝ≥0) : ℝ))
                 (B u (min (τ b') (ballExitTime (B u) u A T b')) b') -
               (fun t z => Z t z ω) (T - (τ b' : ℝ)) (B u (τ b') b'))).integrableOn)
@@ -166,7 +170,9 @@ theorem ballStepResidual_of_growth_and_restart (d : ℕ)
               ≤ sSup (farValues B PB (fun t z => Z t z ω) T A K))) :
     BallStepResidual d := by
   intro ΩW mΩW PW hPW W hW ν2 hν2 Z hmod hc T hT A hA K hK ΩB mΩB PB hPB B hBrown hcont hmeas
-  filter_upwards [hgrowth ΩW PW W hW ν2 hν2 Z hmod hc T hT, hrestart ΩW PW W hW ν2 hν2 Z hmod hc T hT A hA K hK ΩB PB B hBrown hcont hmeas, hc T hT] with ω hg hω hcω
+  filter_upwards [hgrowth ΩW PW W hW ν2 hν2 Z hmod hc T hT,
+      hrestart ΩW PW W hW ν2 hν2 Z hmod hc T hT A hA K hK ΩB PB B hBrown hcont hmeas,
+      hc T hT] with ω hg hω hcω
   intro u hu
   obtain ⟨C, hC, p, hp⟩ := hg
   have hCu : 0 ≤ C * (1 + ‖u‖) ^ p := mul_nonneg hC (by positivity)
@@ -186,9 +192,12 @@ theorem ballStepResidual_of_growth_and_restart (d : ℕ)
           mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) h1 p) hC
       _ = C * (1 + ‖u‖) ^ p * (1 + ‖y - u‖) ^ p := by rw [mul_pow]; ring
   have hcoe : (T.toNNReal : ℝ) = T := Real.coe_toNNReal T hT.le
-  obtain ⟨D, hD, hdom⟩ := Sandpile.Support.exists_brownian_envelope_of_polynomial_growth (hBrown u) (fun s => (hmeas u s).measurable) (hcont u) (fun t z => Z t z ω) T.toNNReal (C * (1 + ‖u‖) ^ p) hCu p (fun v hv y => hpu v (by
-      have h : (v:ℝ) ≤ (T.toNNReal:ℝ) := by exact_mod_cast hv
-      rwa [hcoe] at h) y)
+  obtain ⟨D, hD, hdom⟩ :=
+    Sandpile.Support.exists_brownian_envelope_of_polynomial_growth (hBrown u)
+      (fun s => (hmeas u s).measurable) (hcont u) (fun t z => Z t z ω) T.toNNReal
+      (C * (1 + ‖u‖) ^ p) hCu p (fun v hv y => hpu v (by
+        have h : (v:ℝ) ≤ (T.toNNReal:ℝ) := by exact_mod_cast hv
+        rwa [hcoe] at h) y)
   have hbddFull : BddAbove (stoppingPayoffs (B u) PB (fun t z => Z t z ω) T) :=
     bddAbove_stoppingPayoffs_of_samplewise_growth (P := PB) (B := B u) (x := u) (hBrown u)
       (fun s => (hmeas u s).measurable) (hcont u) (fun t z => Z t z ω) T hT.le hcω
@@ -197,8 +206,11 @@ theorem ballStepResidual_of_growth_and_restart (d : ℕ)
       (Filter.Eventually.of_forall fun ω' v hv y => hpu v hv y)
   exact ballExcessStep_of_restart_of_envelope (B u) PB (fun t z => Z t z ω) T A u
     (sSup (farValues B PB (fun t z => Z t z ω) T A K)) hT
-    (le_trans (brownianValue_nonneg_ae (B u) PB (fun t z => Z t z ω) T hT.le u (hBrown u).start hbddFull)
-      (le_csSup (bddAbove_farValues_of_growth_pointwise (PW := PW) (PB := PB) hBrown hcont (fun y t => (hmeas y t).measurable) Z T A hT.le K hK p C hC ω hp hcω) ⟨u, ⟨⟨u, hu, by rw [sub_self, norm_zero]; linarith [hA]⟩, rfl⟩⟩))
+    (le_trans (brownianValue_nonneg_ae (B u) PB (fun t z => Z t z ω) T hT.le u
+        (hBrown u).start hbddFull)
+      (le_csSup (bddAbove_farValues_of_growth_pointwise (PW := PW) (PB := PB) hBrown hcont
+          (fun y t => (hmeas y t).measurable) Z T A hT.le K hK p C hC ω hp hcω)
+        ⟨u, ⟨⟨u, hu, by rw [sub_self, norm_zero]; linarith [hA]⟩, rfl⟩⟩))
     (hcont u) (fun t => (hmeas u t).aemeasurable) hcω
     D hD (Filter.Eventually.of_forall (fun b r hr => by
       have h1 : ((T - (r:ℝ)).toNNReal : ℝ) = T - r := Real.coe_toNNReal _ (by linarith)

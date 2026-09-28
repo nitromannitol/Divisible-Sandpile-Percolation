@@ -1,11 +1,14 @@
-/-
-Elementary facts about the walk vocabulary of `Sandpile/Walk.lean`.
-
-The optimal-stopping values are suprema over a set of reals, so the first thing
-to know is that the set is not empty: the stopping time that stops at once is
-admissible for every bound.  Without this the `sSup` could be its junk value.
--/
 import Sandpile.Walk
+
+/-!
+# Elementary facts about the walk vocabulary
+
+Basic identities for the objects of `Sandpile.Walk`: the heat kernel `heatKernel` and its
+partial sums `greenTime`, the membrane recursion `membrane`, and the odometer written in the
+scenery variable via `odometerOf`. The optimal-stopping value `stoppingSup` is a supremum over a
+set of reals, so the first fact recorded is that this set is nonempty: the stopping time that
+stops at once is admissible for every bound, so the `sSup` is not forced to its junk value.
+-/
 
 namespace Sandpile
 

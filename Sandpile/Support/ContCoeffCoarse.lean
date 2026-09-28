@@ -1,21 +1,21 @@
-/-
-The `ℓ²` modulus of the coefficient vector of the interpolated field ABOVE the
-mesh spacing.
-
-`ContCoeffL2` prices the increment of the coefficient vector by the increment of
-the mesh: at two points of `[0,T] × ℝ^d` it gives
-`‖c_p - c_q‖₂ ≤ R^{d/2-2}(R²|Δr| + G·R‖Δw‖₁)`, which is the right size when the
-two points lie in one cell of the mesh and is too large by `(R·dist)^{(1+θ)/2}`
-when they are far apart.  This module supplies the complementary estimate.  The
-route is the three-point chain through the base corners of the two cells: with
-`a = ⌊R²r⌋`, `b = ⌊Rw⌋` and `p̃ = (a/R², b/R)`, the coefficient vector at `p̃` is
-exactly `R^{d/2-2} g_a(b, ·)`, so the middle increment is an increment of the
-Green kernel in its two indices, priced by the two `L²` estimates of
-`ContGreenIncrementSum` and `ContCoeffL2`, and the two outer increments are the
-estimate of `ContCoeffL2` across a single cell.
--/
 import Sandpile.Support.ContCoeffL2
 import LatticeProb.Support.ContSums
+
+/-!
+# The `ℓ²` modulus of the coefficient vector of the interpolated field
+
+`ContCoeffL2` prices the increment of the coefficient vector by the increment of the mesh: it
+gives `‖c_p - c_q‖₂ ≤ R^{d/2-2}(R² |Δr| + G · R ‖Δw‖₁)`, the right size when the two points lie in
+one mesh cell but too large when they are far apart. This file supplies the complementary coarse
+estimate, valid above the mesh spacing, by a three-point chain through the base corners of the two
+cells: the coefficient vector at a base corner is exactly `R^{d/2-2} g_a(b, ·)`, so the middle
+increment is an increment of the Green kernel priced by the `L²` estimates of
+`ContGreenIncrementSum` and `ContCoeffL2`, and the two outer increments are single-cell estimates
+of `ContCoeffL2`. Combining this coarse estimate with the fine, single-cell estimate below the
+mesh spacing at the crossover `R^{-2}` gives `exists_sqrt_tsum_interpCoeff_sub_modulus`, a single
+Hölder modulus `(|Δr| + ‖Δw‖₁) ^ β` with exponent `β = min(1 - d/4, (1-θ)/4)`, with a constant free
+of `R`.
+-/
 
 open LatticeProb
 
@@ -58,29 +58,37 @@ noncomputable def basePoint (R : ℝ) (w : Sandpile.Continuum.Space d) :
     Sandpile.Continuum.Space d :=
   WithLp.toLp 2 (fun i => ((⌊R * w i⌋ : ℤ) : ℝ) / R)
 
+/-- The `i`-th coordinate of `basePoint R w` unfolds to `⌊R * w i⌋ / R`. -/
 theorem basePoint_apply (R : ℝ) (w : Sandpile.Continuum.Space d) (i : Fin d) :
     basePoint R w i = ((⌊R * w i⌋ : ℤ) : ℝ) / R := rfl
 
+/-- Clearing the denominator, `R ^ 2 * baseTime R r` equals `⌊R ^ 2 * r⌋₊`, the natural-number
+floor defining `baseTime`. -/
 theorem mul_baseTime (hR : 0 < R) (r : ℝ) :
     R ^ 2 * baseTime R r = ((⌊R ^ 2 * r⌋₊ : ℕ) : ℝ) := by
   have h : R ^ 2 ≠ 0 := by positivity
   rw [baseTime]
   field_simp
 
+/-- Clearing the denominator, `R * basePoint R w i` equals the integer floor `⌊R * w i⌋`. -/
 theorem mul_basePoint (hR : 0 < R) (w : Sandpile.Continuum.Space d) (i : Fin d) :
     R * basePoint R w i = ((⌊R * w i⌋ : ℤ) : ℝ) := by
   rw [basePoint_apply]
   field_simp
 
+/-- `baseTime R r` is nonnegative, being a natural-number cast divided by `R ^ 2`. -/
 theorem baseTime_nonneg (R r : ℝ) : 0 ≤ baseTime R r :=
   div_nonneg (Nat.cast_nonneg _) (sq_nonneg R)
 
+/-- For `r ≥ 0`, `baseTime R r ≤ r`, since `⌊R ^ 2 * r⌋₊ ≤ R ^ 2 * r`. -/
 theorem baseTime_le (hR : 0 < R) {r : ℝ} (hr : 0 ≤ r) : baseTime R r ≤ r := by
   have hR2 : (0:ℝ) < R ^ 2 := by positivity
   have hfl : ((⌊R ^ 2 * r⌋₊ : ℕ) : ℝ) ≤ R ^ 2 * r := Nat.floor_le (by positivity)
   rw [baseTime, div_le_iff₀ hR2]
   linarith
 
+/-- The rescaled gap between `r` and its mesh base time `baseTime R r` is at most `1`:
+`|R ^ 2 * r - R ^ 2 * baseTime R r| ≤ 1`, from the floor's unit sandwich. -/
 theorem abs_sub_mul_baseTime (hR : 0 < R) {r : ℝ} (hr : 0 ≤ r) :
     |R ^ 2 * r - R ^ 2 * baseTime R r| ≤ 1 := by
   rw [mul_baseTime hR]
@@ -90,6 +98,9 @@ theorem abs_sub_mul_baseTime (hR : 0 < R) {r : ℝ} (hr : 0 ≤ r) :
   rw [abs_le]
   constructor <;> linarith
 
+/-- The rescaled `ℓ¹` gap between `w` and its mesh base point `basePoint R w` is at most `d`:
+each coordinate's gap `|R * w i - R * basePoint R w i|` is at most `1` by the integer floor's
+unit sandwich, and there are `d` coordinates. -/
 theorem sum_abs_sub_mul_basePoint (hR : 0 < R) (w : Sandpile.Continuum.Space d) :
     ∑ i : Fin d, |R * w i - R * basePoint R w i| ≤ (d : ℝ) := by
   have hterm : ∀ i : Fin d, |R * w i - R * basePoint R w i| ≤ 1 := by
@@ -112,6 +123,9 @@ theorem interpCoeff_basePoint (hR : 0 < R) (r : ℝ) (w : Sandpile.Continuum.Spa
   interpCoeff_of_floor_eq R (baseTime R r) (basePoint R w) ⌊R ^ 2 * r⌋₊
     (fun i => ⌊R * w i⌋) (mul_baseTime hR r) (fun i => mul_basePoint hR w i) y
 
+/-- The squared increment of the finite-time Green kernel between two indices `(k, z)` and
+`(k', z')` is summable over `y`, by expanding the square into the four summable cross terms of
+`Sandpile.summable_greenTime_mul_greenTime`. -/
 theorem summable_greenTime_sub_sq (k k' : ℕ) (z z' : Site d) :
     Summable (fun y : Site d =>
       (Sandpile.greenTime d k z y - Sandpile.greenTime d k' z' y) ^ 2) := by
@@ -121,6 +135,9 @@ theorem summable_greenTime_sub_sq (k k' : ℕ) (z z' : Site d) :
   have s21 := Sandpile.summable_greenTime_mul_greenTime (d := d) k' k z' z
   exact ((s11.add s22).sub (s12.add s21)).congr fun y => by ring
 
+/-- The coefficient `interpCoeff d R r w y` vanishes once `y` lies outside a box
+`Sandpile.boxFinset 0 n` of radius `n` large enough to contain every mesh point the interpolation
+can read, since `interp_box_subset` confines the interpolation's support to that box. -/
 theorem interpCoeff_eq_zero_of_not_mem_box (R r : ℝ) (w : Sandpile.Continuum.Space d) {n : ℕ}
     (hn : ⌈|R| * ‖w‖⌉₊ + 1 + 1 + (⌊R ^ 2 * r⌋₊ + 1) ≤ n) {y : Site d}
     (hy : y ∉ Sandpile.boxFinset (0 : Site d) n) : interpCoeff d R r w y = 0 := by
@@ -128,6 +145,9 @@ theorem interpCoeff_eq_zero_of_not_mem_box (R r : ℝ) (w : Sandpile.Continuum.S
   refine subset_trans (interp_box_subset R ‖w‖ r w le_rfl ε) (fun x hx => ?_)
   exact Sandpile.mem_boxFinset (le_trans (Sandpile.mem_boxFinset_iff.mp hx) hn)
 
+/-- The squared increment of the interpolated coefficient between two points `(r, w)` and
+`(r', w')` is summable over `y`, since it vanishes outside a common finite box by
+`interpCoeff_eq_zero_of_not_mem_box`. -/
 theorem summable_interpCoeff_sub_sq (R r r' : ℝ) (w w' : Sandpile.Continuum.Space d) :
     Summable (fun y : Site d => (interpCoeff d R r w y - interpCoeff d R r' w' y) ^ 2) := by
   classical
@@ -603,7 +623,8 @@ theorem exists_sqrt_tsum_interpCoeff_base_sub_le
     rw [mul_add]
     exact add_le_add hA1 hA2
   refine le_trans (mul_le_mul_of_nonneg_left hsqrtS hRe) ?_
-  have hcomb : R ^ ((d : ℝ) / 2 - 2) * (Real.sqrt C₄ * ((1 + |(a : ℝ) - (a' : ℝ)|) ^ (1 - (d : ℝ) / 4)
+  have hcomb : R ^ ((d : ℝ) / 2 - 2)
+        * (Real.sqrt C₄ * ((1 + |(a : ℝ) - (a' : ℝ)|) ^ (1 - (d : ℝ) / 4)
         + (Sandpile.External.latticeDist b b' + 1) ^ ((1 - θ) / 2)
           * (1 + (a' : ℝ)) ^ ((3 - (d : ℝ) + θ) / 4)))
       = Real.sqrt C₄ * (R ^ ((d : ℝ) / 2 - 2) * ((1 + |(a : ℝ) - (a' : ℝ)|) ^ (1 - (d : ℝ) / 4)
@@ -618,11 +639,15 @@ theorem exists_sqrt_tsum_interpCoeff_base_sub_le
     mul_le_mul_of_nonneg_left hRf hAc
   exact sum_coeff_le hAc hBg hDc hP1 hP2 hP3 hRfm
 
+/-- The reversed form of `abs_sub_mul_baseTime`, with the mesh base time and `r` swapped inside
+the absolute value. -/
 theorem abs_sub_mul_baseTime' (hR : 0 < R) {r : ℝ} (hr : 0 ≤ r) :
     |R ^ 2 * baseTime R r - R ^ 2 * r| ≤ 1 := by
   rw [abs_sub_comm]
   exact abs_sub_mul_baseTime hR hr
 
+/-- The reversed form of `sum_abs_sub_mul_basePoint`, with the mesh base point and `w` swapped
+inside each absolute value. -/
 theorem sum_abs_sub_mul_basePoint' (hR : 0 < R) (w : Sandpile.Continuum.Space d) :
     ∑ i : Fin d, |R * basePoint R w i - R * w i| ≤ (d : ℝ) := by
   have hcongr : ∀ i ∈ (Finset.univ : Finset (Fin d)),
@@ -731,6 +756,8 @@ theorem exists_sqrt_tsum_interpCoeff_sub_coarse
   refine mul_le_mul_of_nonneg_left ?_ hs3
   nlinarith [hA, hB, hC, hP1, hP2, hP3, hC₅.le, hC₆.le]
 
+/-- The rescaled `ℓ¹` distance factors: `∑ i, |R * w i - R * w' i| = R * ∑ i, |w i - w' i|` for
+`R ≥ 0`. -/
 theorem sum_abs_mul_sub {R : ℝ} (hR : 0 ≤ R) (w w' : Sandpile.Continuum.Space d) :
     ∑ i : Fin d, |R * w i - R * w' i| = R * ∑ i : Fin d, |w i - w' i| := by
   rw [Finset.mul_sum]

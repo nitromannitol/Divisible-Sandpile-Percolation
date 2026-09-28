@@ -1,10 +1,20 @@
-/-
-The one-site law attached to a set of band parameters, and the Step-1 tail
-profile `eq:dgt4-band-profile` of `thm:dgt4-many-limits`
-(`sandpile.tex:5930-6055`) for it.
--/
 import Sandpile.Support.Dgt4ABandLawProfile
 import Sandpile.Support.Dgt4ABandWeights
+
+/-!
+# The one-site law of a set of band parameters
+
+The one-site law attached to a set of band parameters, and the Step-1 tail profile
+`eq:dgt4-band-profile` of `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`) for it.
+`BandParameters.law` builds the law from a smoothing resolution `m` and a variance `v` for
+the positive summand; `BandParameters.level_sep` records that the band levels are strictly
+separated, `P.level i ≤ P.l1 * P.level j` for `i < j`. `bandProfile_law` shows this
+constructed law satisfies `BandProfile`, by combining three error terms that all tend to
+zero (the exponential tail of the positive summand relative to its own band's weight, the
+smoothing width `2/m k`, and the tail-to-weight ratio `P.weight_tail_ratio_tendsto`), and
+`bandUpperIsolation_tail_law` specializes this to the first half of
+`eq:dgt4-band-upper-isolation`: the mass above the `k`th band level is `o(P.weight k)`.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

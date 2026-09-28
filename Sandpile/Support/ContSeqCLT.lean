@@ -1,24 +1,28 @@
-/-
-The Lindeberg-Feller step of the scaling limits of `ssec:dgt4-membrane`, in the
-form the frozen statements need: convergence in distribution along `R → ∞` in
-`ℝ`, of a pairing written as a finite linear functional of the scenery.
-
-The paper's step (`sandpile.tex:4718-4731`) is: write
-`𝓕_R(φ) = ∑_z a_R(z) ζ(z)`; the coefficient bound gives Lindeberg's condition,
-and the convergence of `∑_z a_R(z)^2` gives the variance, so the
-Lindeberg-Feller theorem gives the Gaussian limit.  The library's
-`LatticeProb.weighted_iid_central_limit_pick` is that theorem for a sequence
-indexed by `ℕ`; `atTop` on `ℝ` is countably generated, so convergence along
-every sequence tending to infinity is convergence along `atTop`, and that is the
-first lemma below.
-
-The last lemma carries the limit from the i.i.d. law of the scenery to the
-centred mass law of `σ = 1 + 2dζ`, which is the law the frozen statements
-integrate over.
--/
 import LatticeProb.Prob.WeightedCLT
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.FiniteCoord
+
+/-!
+# The Lindeberg-Feller step along a real parameter
+
+The Lindeberg-Feller step of the scaling limits of `ssec:dgt4-membrane`, in the form the
+frozen statements need: convergence in distribution along `R → ∞` in `ℝ`, of a pairing
+written as a finite linear functional of the scenery.
+
+The paper's step (`sandpile.tex:4718-4731`) is: write `𝓕_R(φ) = ∑_z a_R(z) ζ(z)`; the
+coefficient bound gives Lindeberg's condition, and the convergence of `∑_z a_R(z)^2` gives
+the variance, so the Lindeberg-Feller theorem gives the Gaussian limit. The library's
+`LatticeProb.weighted_iid_central_limit_pick` is that theorem for a sequence indexed by
+`ℕ`; `atTop` on `ℝ` is countably generated, so convergence along every sequence tending to
+infinity is convergence along `atTop` (`tendstoInDistribution_atTop_of_seq`), and combined
+with the coefficient hypotheses this gives `tendstoInDistribution_linear_pick`, with
+`tendstoInDistribution_congr_atTop` recording that the limit depends on the family only
+through its eventual values.
+
+The last lemma, `tendstoInDistribution_linear_pick_mass`, carries the limit from the i.i.d.
+law of the scenery to the centred mass law of `σ = 1 + 2dζ`, which is the law the frozen
+statements integrate over.
+-/
 
 open LatticeProb
 

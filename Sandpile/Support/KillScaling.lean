@@ -1,10 +1,3 @@
-/-
-The cube-killed scaling limit for centered scenery in dimensions at most three.
-Finite-dimensional convergence and equicontinuity couple the heat potentials on
-a compact cylinder. A finite family of cutoff rewards gives a uniform stopping
-stability threshold, and both killed cutoff errors vanish. The remaining mesh
-and stopping errors yield uniform convergence in probability on compact sets.
--/
 import Sandpile.Support.KillFieldCoupling
 import Sandpile.Support.KillValueStability
 import Sandpile.Support.KillMeshApproximation
@@ -13,10 +6,30 @@ import Sandpile.Support.KillRadius
 import Sandpile.Support.ExplRewardFamily
 import Sandpile.Frozen.HeatPotentialInvariance
 
+/-!
+# The cube-killed scaling limit for centered scenery
+
+Assembles the cube-killed scaling limit for centered scenery in dimensions at most three from
+its component estimates. Finite-dimensional convergence and equicontinuity couple the discrete
+and continuum heat potentials on a compact cylinder, a finite family of cutoff rewards gives a
+uniform stopping stability threshold, and both killed cutoff errors vanish as the reward index
+grows. The remaining mesh and stopping errors are then made uniformly small, so the rescaled
+odometer converges in probability to the killed Brownian value, uniformly on compact sets of
+starting points.
+-/
+
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 open Sandpile Sandpile.Continuum
 
+/-- **The cube-killed scaling limit for centered scenery in dimensions at most three,
+assembled from its component estimates.** Given the local central limit theorem, cube-stopping
+stability, a centered scenery law with the stated moment and exponential-moment hypotheses, a
+Gaussian heat potential coupled to a white noise, and a Brownian motion from each starting
+point, the rescaled localized odometer stopped on leaving the box `supBox` agrees with the
+Brownian value stopped on leaving the unit cube, to within any `ε` and with probability at least
+`1 - δ`, uniformly for starting points `u` in a compact set `K` and for all sufficiently large
+rescaling parameters `R`. -/
 theorem Sandpile.dlt4_killed_scaling_of_inputs
     (_hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.CubeStoppingStability)
@@ -181,11 +194,13 @@ theorem Sandpile.dlt4_killed_scaling_of_inputs
       le_of_not_gt (fun h => hob ⟨q, hq, (T, u), hcu, hmesh R hRmm T hT.le u, h⟩)
     have hcou : |v p.1 T u - z p.2 T u| ≤ η :=
       le_of_not_gt (fun h => hg ⟨(T, u), hcu, h⟩)
-    have hqval : v p.1 q.1 q.2 = Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y := by
+    have hqval : v p.1 q.1 q.2
+        = Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y := by
       simpa only [v, q, y, Nat.cast_zero, sub_zero, Nat.sub_zero,
         Support.scaledSite_floor_eq_meshPoint] using
         linInterp_scaledSite R hRp.ne' (scenery d p.1) n 0 (Nat.zero_le n) y
-    have hfield : |Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y - z p.2 T u| ≤ 2 * η := by
+    have hfield : |Frozen.HeatPotentialInvariance.meshValue d R (scenery d p.1) n y
+        - z p.2 T u| ≤ 2 * η := by
       rw [← hqval]
       have ht := abs_sub_le (v p.1 q.1 q.2) (v p.1 T u) (z p.2 T u)
       linarith
@@ -203,10 +218,12 @@ theorem Sandpile.dlt4_killed_scaling_of_inputs
     linarith
   calc
     P _ ≤ centeredMassLaw d ν (badM ∪ badO) + P badG + PW badC :=
-      measure_error_le_of_marginals (centeredMassLaw d ν) PW P hPf hPs (badM ∪ badO) badC badG _ hsub
+      measure_error_le_of_marginals (centeredMassLaw d ν) PW P hPf hPs
+        (badM ∪ badO) badC badG _ hsub
     _ ≤ (ENNReal.ofReal (δ / 3) + ENNReal.ofReal (δ / 3)) + ENNReal.ofReal (δ / 3) + 0 := by
       rw [hbadC]
-      exact add_le_add (add_le_add ((measure_union_le _ _).trans (add_le_add hbadM hbadO)) hPgap) le_rfl
+      exact add_le_add
+        (add_le_add ((measure_union_le _ _).trans (add_le_add hbadM hbadO)) hPgap) le_rfl
     _ = ENNReal.ofReal δ := by
       rw [add_zero, ← ENNReal.ofReal_add (by positivity) (by positivity),
         ← ENNReal.ofReal_add (by positivity) (by positivity)]

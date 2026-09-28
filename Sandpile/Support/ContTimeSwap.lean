@@ -1,27 +1,26 @@
-/-
-The exchange of the space integral with the two time integrals in the covariance
-of `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`).
-
-The limit produced by the local central limit theorem and the Riemann-sum
-argument is a double space integral of a double TIME integral against the
-Brownian heat kernel, and the paper writes the covariance in that order.  The
-passage `δ → 0` that removes the time cutoff, on the other hand, is uniform in
-the SPACE variables and not in the time, because the kernel has a diagonal
-singularity as the time tends to zero while its total mass stays one.  So the
-inner space integral is moved through the two time integrals once and for all:
-for a fixed point `u` and a bounded measurable weight `w`,
-
-  `∫ (∫_0^T∫_0^T w(r,r') p^{BM}_{r+r'}(u,v) dr dr') φ(v) dv
-     = ∫_0^T∫_0^T w(r,r') (∫ p^{BM}_{r+r'}(u,v) φ(v) dv) dr dr'`.
-
-The right-hand side is bounded by `‖w‖_∞‖φ‖_∞T²` with no dependence on `u` and
-no dependence on the time, because the kernel has total mass one; that bound is
-what makes the cutoff removable.  Both time integrals run over the OPEN interval
-`(0,T)`, which differs from the paper's `[0,T]` by a null set, so that the time
-`r + r'` at which the kernel is read is positive throughout and the kernel is
-never at its junk value at time zero.
--/
 import Sandpile.Support.ContBMSpace
+
+/-!
+# The space integral commutes with the double time integral against the Brownian kernel
+
+The limit produced by the local central limit theorem and the Riemann-sum argument writes the
+covariance of `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`) as a double space integral
+of a double TIME integral against the Brownian heat kernel; removing the time cutoff as `δ → 0`
+is uniform in the SPACE variable but not in the time, since the kernel is singular on the
+diagonal as the time tends to zero while its total mass stays one. `integral_swap_time` moves the
+inner space integral through both time integrals once and for all: for a bounded measurable
+weight `w` and a bounded integrable test function `φ`,
+`∫ (∫₀^T∫₀^T w(r,r') p^{BM}_{r+r'}(u,v) dr dr') φ(v) dv` equals
+`∫₀^T∫₀^T w(r,r') (∫ p^{BM}_{r+r'}(u,v) φ(v) dv) dr dr'`, and the right-hand side is bounded by
+`‖w‖_∞‖φ‖_∞T²` with no dependence on `u` or on the time, which is what makes the cutoff
+removable. `integral_swap_generic` is the abstract exchange behind it, `integral_swap_time_inner`
+the same exchange at a single fixed outer time, and `heatKernelBM_le_of_le`,
+`integrable_heatKernelBM_mul`, `abs_integral_heatKernelBM_mul_le` and `abs_time_integral_le`
+supply the pointwise and integral bounds on the kernel that the two exchanges rest on. Both time
+integrals run over the OPEN interval `(0,T)`, which differs from the paper's `[0,T]` by a null
+set, so that the time `r + r'` at which the kernel is read stays positive throughout and the
+kernel is never read at its junk value at time zero.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -33,6 +32,9 @@ variable {d : ℕ}
 
 /-! ### The kernel read at a time bounded below, and paired with a test function -/
 
+/-- The kernel's own uniform bound `heatKernelBM_le`, monotonized in the time: since the bound
+`(4πt/(2d))^{-d/2}` is decreasing in `t`, any time `t ≥ t₀` obeys the bound already valid at the
+smaller time `t₀`. -/
 theorem heatKernelBM_le_of_le (hd : 1 ≤ d) {t₀ t : ℝ} (ht₀ : 0 < t₀) (h : t₀ ≤ t)
     (u v : Space d) :
     heatKernelBM d t u v ≤ (4 * Real.pi * t₀ / (2 * d)) ^ (-(d : ℝ) / 2) := by
@@ -44,6 +46,8 @@ theorem heatKernelBM_le_of_le (hd : 1 ≤ d) {t₀ t : ℝ} (ht₀ : 0 < t₀) (
   have h1 : 4 * Real.pi * t₀ ≤ 4 * Real.pi * t := by nlinarith
   gcongr
 
+/-- The kernel at a fixed positive time, multiplied by an integrable test function, is itself
+integrable, since the kernel is bounded by the uniform constant of `heatKernelBM_le`. -/
 theorem integrable_heatKernelBM_mul (hd : 1 ≤ d) {t : ℝ} (ht : 0 < t)
     (φ : Space d → ℝ) (hφ : Integrable φ) (u : Space d) :
     Integrable (fun v : Space d => heatKernelBM d t u v * φ v) := by
@@ -136,11 +140,17 @@ theorem integral_swap_generic {T : ℝ} (K : ℝ → Space d → ℝ)
 
 /-! ### Bounds on the inner time integral -/
 
+/-- The real-valued Lebesgue measure of the open interval `(0,T)` is `T`, for `T ≥ 0`. -/
 theorem volume_Ioo_toReal {T : ℝ} (hT : 0 ≤ T) :
     (volume : Measure ℝ).real (Set.Ioo (0:ℝ) T) = T := by
   rw [MeasureTheory.measureReal_def, Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith)]
   ring
 
+/-- At a fixed outer time `r`, the inner time integral against a jointly measurable weight `f`
+and the heat kernel is almost-everywhere strongly measurable in the space variable, since the
+joint integrand is measurable in the pair `(v, r')` and
+`MeasureTheory.AEStronglyMeasurable.integral_prod_right'` integrates out the time
+coordinate. -/
 theorem aesm_time_integral (d : ℕ) (u : Space d) (T : ℝ) (f : ℝ → ℝ → ℝ)
     (hf : Measurable (Function.uncurry f)) (r : ℝ) :
     AEStronglyMeasurable
@@ -153,6 +163,9 @@ theorem aesm_time_integral (d : ℕ) (u : Space d) (T : ℝ) (f : ℝ → ℝ �
     exact h1.mul (measurable_heatKernelBM_pair d u r)
   exact hg.aestronglyMeasurable.integral_prod_right'
 
+/-- A constant multiple of the kernel, as a function of the inner time `r'` at a fixed outer time
+`r > 0`, is integrable on the bounded interval `(0,T)`, by the uniform bound
+`heatKernelBM_le_of_le` at the threshold `r`. -/
 theorem integrable_const_mul_heatKernelBM_time (hd : 1 ≤ d) {T r : ℝ} (hr : 0 < r)
     (c : ℝ) (u v : Space d) :
     IntegrableOn (fun r' : ℝ => c * heatKernelBM d (r + r') u v) (Set.Ioo (0:ℝ) T) := by
@@ -280,7 +293,6 @@ integral against the Brownian kernel, paired in space with `φ` at a fixed point
 bounded by `T²‖w‖_∞‖φ‖_∞`, with no dependence on `u` and none on the time, which
 is what the passage `δ → 0` needs and what the left-hand side does not provide,
 the kernel being singular on the diagonal as the time tends to zero. -/
-
 theorem integral_swap_time (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
     (w : ℝ → ℝ → ℝ) (hw : Measurable (Function.uncurry w)) (Wb : ℝ)
     (hWb : ∀ s s', |w s s'| ≤ Wb)

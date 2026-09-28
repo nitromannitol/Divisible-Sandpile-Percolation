@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContTimeSwap
+import Sandpile.Support.ContCutoff
+
+/-!
+# Removing the Time Cutoff from the Weighted Membrane Limit
+
 The passage `δ → 0` that removes the time cutoff from
 `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`), on the continuum side.
 
@@ -12,8 +17,6 @@ The two weights differ only where one of the two times is below `2δ`, so the
 difference is at most `4δT` times the square of the bound on the weight times the
 sup norm, and it tends to zero with `δ` with no estimate on the kernel at all.
 -/
-import Sandpile.Support.ContTimeSwap
-import Sandpile.Support.ContCutoff
 
 open MeasureTheory Filter Topology
 
@@ -25,6 +28,10 @@ variable {d : ℕ}
 
 /-! ### The mass of the cutoff's complement -/
 
+/-- The mass of the cutoff's complement `∫_{(0,T)} (1 - cutoffFn δ r) dr` is at
+most `2δ`, since `1 - cutoffFn δ r` is dominated by the indicator of `(-∞, 2δ)`
+and that indicator's mass on `(0,T)` is the volume of the smaller set
+`(0,T) ∩ (-∞, 2δ) ⊆ (0, 2δ)`. -/
 theorem integral_one_sub_cutoff_le {T δ : ℝ} (hδ : 0 < δ) :
     ∫ r in Set.Ioo (0:ℝ) T, (1 - cutoffFn δ r) ≤ 2 * δ := by
   classical
@@ -151,6 +158,10 @@ theorem abs_time_pairing_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) {r : ℝ} (h
     _ = T * (Wb * C) := by
         rw [MeasureTheory.setIntegral_const, volume_Ioo_toReal hT, smul_eq_mul]
 
+/-- The exchanged-form integrand
+`r ↦ ∫_{(0,T)} w r r' * (∫_v heatKernelBM d (r + r') u v * φ v) dr'` is integrable
+on `(0,T)`, dominated by the constant `T * (Wb * C)` bound of
+`abs_time_pairing_le`. -/
 theorem integrable_time_pairing (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) (w : ℝ → ℝ → ℝ)
     (hw : Measurable (Function.uncurry w)) (Wb : ℝ) (hWb : ∀ s s', |w s s'| ≤ Wb)
     (φ : Space d → ℝ) (hφ : Integrable φ) (C : ℝ) (hC : ∀ z, |φ z| ≤ C) (u : Space d) :
@@ -170,6 +181,10 @@ theorem integrable_time_pairing (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) (w : ℝ
 
 /-! ### The difference of two weights -/
 
+/-- For a fixed positive outer time `r`, the map
+`r' ↦ f r' * heatKernelBM d (r + r') u v` is integrable on `(0,T)`, dominated by
+the constant `Wb * (4π r / (2d))^{-d/2}` bound on the heat kernel's on-diagonal
+value at any time at least `r`. -/
 theorem integrableOn_weight_mul_heatKernelBM (hd : 1 ≤ d) {T r : ℝ} (hr : 0 < r)
     (f : ℝ → ℝ) (hf : Measurable f) (Wb : ℝ) (hWb : ∀ s, |f s| ≤ Wb) (u v : Space d) :
     IntegrableOn (fun r' : ℝ => f r' * heatKernelBM d (r + r') u v) (Set.Ioo (0:ℝ) T) := by
@@ -212,6 +227,9 @@ theorem swap_kernel_sub (hd : 1 ≤ d) {T r : ℝ} (hr : 0 < r)
   ring
 
 
+/-- The map `v ↦ (∫_{(0,T)} w r' * heatKernelBM d (r + r') u v dr') * φ v` is
+integrable, being `φ` dominated by the constant bound
+`T * (Wb * (4π r / (2d))^{-d/2})` on the inner time integral. -/
 theorem integrable_swap_kernel_mul (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) {r : ℝ} (hr : 0 < r)
     (w : ℝ → ℝ) (hw : Measurable w) (Wb : ℝ) (hWb : ∀ s, |w s| ≤ Wb)
     (φ : Space d → ℝ) (hφ : Integrable φ) (u : Space d) :
@@ -328,6 +346,10 @@ theorem abs_time_pairing_sub_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) {r : ℝ
 
 /-! ### The difference of the two double time integrals -/
 
+/-- The difference of the two double time integrals, each paired with `φ` through
+the heat kernel, is at most `D` whenever `D` bounds the double time integral of
+`C` times the pointwise difference `|w₁ - w₂|` of the weights; proved by reducing
+to `abs_time_pairing_sub_le` at each fixed outer time `r`. -/
 theorem abs_time2_pairing_sub_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
     (w₁ w₂ : ℝ → ℝ → ℝ) (hw₁ : Measurable (Function.uncurry w₁))
     (hw₂ : Measurable (Function.uncurry w₂)) (Wb : ℝ)
@@ -363,6 +385,10 @@ theorem abs_time2_pairing_sub_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
 
 /-! ### The double space integral of the double time integral -/
 
+/-- The double space integral
+`u ↦ ∫_v (∫∫_{(0,T)²} w r r' * heatKernelBM d (r + r') u v) * φ v dv` is
+measurable, by iterating joint-measurability and Fubini over the four
+coordinates `(u, v, r, r')`. -/
 theorem aesm_space_pairing (d : ℕ) (T : ℝ) (w : ℝ → ℝ → ℝ)
     (hw : Measurable (Function.uncurry w)) (φ : Space d → ℝ) (hφ : Integrable φ) :
     AEStronglyMeasurable (fun u : Space d =>
@@ -427,6 +453,10 @@ theorem abs_space_pairing_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
     _ = T * (T * (Wb * C)) := by
         rw [MeasureTheory.setIntegral_const, volume_Ioo_toReal hT, smul_eq_mul]
 
+/-- The map
+`u ↦ (∫_v (∫∫_{(0,T)²} w r r' * heatKernelBM d (r + r') u v) * φ v dv) * φ u` is
+integrable, being `φ` dominated by the constant bound `T * (T * (Wb * C))` of
+`abs_space_pairing_le`. -/
 theorem integrable_space_pairing (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
     (w : ℝ → ℝ → ℝ) (hw : Measurable (Function.uncurry w)) (Wb : ℝ)
     (hWb : ∀ s s', |w s s'| ≤ Wb)
@@ -486,6 +516,10 @@ theorem abs_integral2_space_pairing_sub_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ 
 
 /-! ### The weight difference integrated -/
 
+/-- The difference between the cut product
+`(q' r * cutoffFn δ r) * (q' r' * cutoffFn δ r')` and the uncut product
+`q' r * q' r'` is at most `Q * Q * ((1 - cutoffFn δ r) + (1 - cutoffFn δ r'))`,
+by factoring it through the cutoff's complement at each of the two times. -/
 theorem abs_cut_weight_diff_le {δ Q : ℝ} (q' : ℝ → ℝ) (hQ0 : 0 ≤ Q) (hQ : ∀ r, |q' r| ≤ Q)
     (r r' : ℝ) :
     |(q' r * cutoffFn δ r) * (q' r' * cutoffFn δ r') - q' r * q' r'|
@@ -507,6 +541,8 @@ theorem abs_cut_weight_diff_le {δ Q : ℝ} (q' : ℝ → ℝ) (hQ0 : 0 ≤ Q) (
   have h3 : (0:ℝ) ≤ (1 - cutoffFn δ r) + (1 - cutoffFn δ r') := by linarith
   exact mul_le_mul h1 h2 (abs_nonneg _) (mul_nonneg hQ0 hQ0)
 
+/-- Splitting off the constant `a`,
+`∫_{(0,T)} (a + (1 - cutoffFn δ r')) dr' = T * a + ∫_{(0,T)} (1 - cutoffFn δ r') dr'`. -/
 theorem integral_cut_majorant_eq {T δ : ℝ} (hT : 0 ≤ T) (a : ℝ) :
     ∫ r' in Set.Ioo (0:ℝ) T, (a + (1 - cutoffFn δ r'))
       = T * a + ∫ r' in Set.Ioo (0:ℝ) T, (1 - cutoffFn δ r') := by
@@ -526,6 +562,9 @@ theorem integral_cut_majorant_eq {T δ : ℝ} (hT : 0 ≤ T) (a : ℝ) :
     MeasureTheory.setIntegral_const, volume_Ioo_toReal hT, smul_eq_mul]
 
 
+/-- A continuous function bounded in absolute value by a constant `M` is
+integrable on the interval `(0, T)`, by domination by the constant `M` on that
+finite-measure interval. -/
 theorem integrableOn_Ioo_of_bdd {T : ℝ} (f : ℝ → ℝ) (hf : Continuous f) (M : ℝ)
     (hM : ∀ r, |f r| ≤ M) : IntegrableOn f (Set.Ioo (0:ℝ) T) := by
   haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
@@ -537,6 +576,9 @@ theorem integrableOn_Ioo_of_bdd {T : ℝ} (f : ℝ → ℝ) (hf : Continuous f) 
   rw [Real.norm_eq_abs]
   exact hM r
 
+/-- For a jointly continuous `F`, the inner time integral
+`r ↦ ∫_{(0,T)} F r r' dr'` is measurable, by Fubini for a continuous (hence
+measurable) integrand. -/
 theorem aesm_inner_time_integral {T : ℝ} (F : ℝ → ℝ → ℝ)
     (hF : Continuous (Function.uncurry F)) :
     AEStronglyMeasurable (fun r : ℝ => ∫ r' in Set.Ioo (0:ℝ) T, F r r')

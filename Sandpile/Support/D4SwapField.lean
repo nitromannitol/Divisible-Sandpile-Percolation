@@ -1,13 +1,18 @@
-/-
-The diagonal reflection of the coordinate plane about a block corner, read on
-the ball Green field: reflecting the field about the corner is the field of the
-reflected scenery at a translate.  With the permutation invariance of the
-i.i.d. scenery law this makes the two bottom-top clauses of the good-block
-event have the law of the two left-right clauses.
--/
 import Sandpile.Support.D4BlockGood
 import Sandpile.Support.D4FieldSymmetry
 import Sandpile.Support.D4CrossingMeasurable
+
+/-!
+# The diagonal plane reflection and the ball Green field
+
+Reflecting the ball Green field about a block corner along the diagonal `swapPlaneAbout` agrees
+with reading the field of the coordinate-swapped scenery at a translate. Combined with the
+permutation invariance of the i.i.d. scenery law, this shows the two bottom-top clauses of the
+good-block event have the same law as the two left-right clauses. The file also records that
+adjacency in `starGraph` and the existence of a `HasStarTopBottomCrossing` witness are both
+translation invariant, which the reflection argument uses to move a crossing along with the
+change of base point.
+-/
 
 open MeasureTheory
 
@@ -15,6 +20,9 @@ noncomputable section
 namespace Sandpile
 
 
+/-- `swapPlaneAbout x y` agrees with the coordinate swap
+`permuteSite (Equiv.swap (0 : Fin 4) 1)` applied to the translate
+`permuteSite (Equiv.swap (0 : Fin 4) 1) x + y - x`, checked coordinate by coordinate. -/
 lemma swapPlaneAbout_eq_permute (x y : Site 4) :
     swapPlaneAbout x y =
       permuteSite (Equiv.swap (0 : Fin 4) 1)
@@ -67,6 +75,9 @@ lemma ballGreenField_swapPlaneAbout (r : ℕ) (ζ : Site 4 → ℝ) (x y : Site 
 
 
 
+/-- Adjacency in `starGraph` is translation invariant: if `starGraph.Adj z w` holds then so
+does `starGraph.Adj (z + v) (w + v)`, since each of the three defining clauses of `Adj` depends
+only on the coordinatewise difference `z - w`, which is unchanged by adding `v` to both sides. -/
 lemma starGraph_adj_add (v : Site 4) {z w : Site 4} (h : starGraph.Adj z w) :
     starGraph.Adj (z + v) (w + v) := by
   obtain ⟨hne, hd, hc⟩ := h
@@ -88,6 +99,9 @@ lemma starGraph_adj_add (v : Site 4) {z w : Site 4} (h : starGraph.Adj z w) :
     simp only [Pi.add_apply, this]
 
 
+/-- A `HasStarTopBottomCrossing` witness for the translated target set `{y | y + v ∈ S}` based
+at `x` transports to a witness for `S` based at `x + v`, by translating the crossing chain
+pointwise by `v` and using `starGraph_adj_add` to preserve the chain's adjacency. -/
 lemma hasStarTopBottomCrossing_add (ϑ : ℝ) (r : ℕ) (x v : Site 4) (S : Set (Site 4))
     (h : HasStarTopBottomCrossing ϑ r x {y | y + v ∈ S}) :
     HasStarTopBottomCrossing ϑ r (x + v) S := by

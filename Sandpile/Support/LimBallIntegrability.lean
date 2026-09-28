@@ -1,14 +1,22 @@
-/-
+import Mathlib
+import Sandpile.Support.LimBallBounds
+
+/-!
+# Integrability of a continuous reward at a ball-stopped time
+
 Measurable stopping times evaluate continuous paths measurably. A continuous
 reward on the closed time and ball cylinder is integrable at any measurable
 stopping time satisfying the horizon and ball constraints almost surely.
 -/
-import Mathlib
-import Sandpile.Support.LimBallBounds
+
 open TopologicalSpace
 open MeasureTheory ProbabilityTheory Set Filter
 open scoped ENNReal NNReal
 
+/-- Evaluating a jointly continuous-in-time, pointwise-measurable path family at a
+measurable stopping time gives a measurable function of the sample point: the
+uncurried evaluation map is measurable by joint continuity/measurability, and the
+stopping time composes into its first argument. -/
 theorem Sandpile.Support.measurable_stopped_evaluation {Ω E : Type*}
     [MeasurableSpace Ω] [TopologicalSpace E] [PseudoMetrizableSpace E]
     [MeasurableSpace E] [BorelSpace E]
@@ -20,6 +28,13 @@ theorem Sandpile.Support.measurable_stopped_evaluation {Ω E : Type*}
 
 open Sandpile.Continuum
 
+/-- **A continuous reward evaluated at time-to-horizon and the stopped position is
+integrable**, given that the stopping time is a.s. bounded by the horizon `T` and the
+path stays within distance `A` of its start before stopping: the reward restricted to
+the compact cylinder `Icc 0 T ×ˢ closedBall u A` is bounded (`hc` is continuous on a
+compact set), the stopped evaluation `(ω ↦ (T - τ ω, B (τ ω) ω))` almost surely lands
+in that cylinder, and a bounded measurable function is integrable
+(`Integrable.of_bound`). -/
 theorem Sandpile.Support.integrable_continuous_ball_reward {Ω : Type*} [MeasurableSpace Ω]
     {P : Measure Ω} [IsProbabilityMeasure P] {d : ℕ}
     (B : ℝ≥0 → Ω → Space d) (hcont : ∀ ω, Continuous fun t => B t ω)

@@ -1,5 +1,9 @@
-/-
-The uniform approximation of the ball field by the ball-stopped field.
+import Sandpile.Support.LimDiffKernel
+import Sandpile.Support.LimBoxUniform
+import Sandpile.Support.LimFieldVersion
+
+/-!
+# Uniform approximation by the ball-stopped field
 
 This is `Sandpile.Support.BallStoppedApproximation`, the analytic input of
 `thm-limiting-odometer-crossing`: on finitely many rectangles and finitely many scales,
@@ -14,9 +18,6 @@ module does, is to move between the rectangle `rectSet a b` of the plane with it
 Euclidean metric and the box `Set.Icc a b` of `Fin 2 → ℝ` with the supremum metric that
 the chaining lemma is stated for, and to sum the finitely many exceptional events.
 -/
-import Sandpile.Support.LimDiffKernel
-import Sandpile.Support.LimBoxUniform
-import Sandpile.Support.LimFieldVersion
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -31,6 +32,8 @@ theorem planePoint_toLp_coord {d : ℕ} (u' : Fin 2 → ℝ) (i : Fin d) :
     (planePoint (d := d) (WithLp.toLp 2 u') : Space d) i
       = if h : (i : ℕ) < 2 then u' ⟨(i : ℕ), h⟩ else 0 := rfl
 
+/-- Membership of a plane point coming from a box parameter in `rectSet a b` is exactly
+membership of the parameter in the corresponding box `Set.Icc a b`. -/
 theorem rectSet_toLp_iff {a b : Fin 2 → ℝ} (u' : Fin 2 → ℝ) :
     (WithLp.toLp 2 u' : Space 2) ∈ rectSet a b ↔ u' ∈ Set.Icc a b := by
   constructor
@@ -361,7 +364,8 @@ theorem ballStoppedApproximation_of_occupation
         |ballStoppedField d Z PB B ((s ij.1 : ℚ) : ℝ) T u ω
           - ballField d W ((s ij.1 : ℚ) : ℝ) u ω| ≤ c}ᶜ ≤ ENNReal.ofReal ε := by
     intro ij
-    exact hT ij ΩW PW hPW W hW (hXc _ (hscale ij.1).1 (hscale ij.1).2) Z hmod hZc ΩB PB hPB B hB hBc hBm
+    exact hT ij ΩW PW hPW W hW (hXc _ (hscale ij.1).1 (hscale ij.1).2) Z hmod hZc ΩB PB hPB B hB
+      hBc hBm
   refine le_trans (Finset.sum_le_sum fun ij _ => hbound ij) ?_
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin,
     nsmul_eq_mul]

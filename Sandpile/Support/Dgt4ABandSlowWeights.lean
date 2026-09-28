@@ -1,18 +1,19 @@
-/-
-The slowly diverging weights `L_k` of Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6092-6095`).
-
-The paper's sentence is "Choose `L_k ↑ ∞` so slowly that each of the four errors
-in `eq:dgt4-band-profile`, `eq:dgt4-band-upper-isolation`,
-`eq:dgt4-band-lower-isolation` and
-`eq:dgt4-band-origin-fixed-concentration`, after multiplication by `L_k²`, still
-tends to zero."  For a single nonnegative null sequence `e` the choice
-`L_k = (√√(e_k ∨ 1/(k+1)))⁻¹` works: it diverges because `e_k ∨ 1/(k+1)` tends to
-zero, and `L_k² e_k ≤ √(e_k ∨ 1/(k+1))` tends to zero as well.  The four errors
-are handled by applying this to their maximum, and every sequence dominated by
-`e` inherits the conclusion.
--/
 import Mathlib
+
+/-!
+# The slowly diverging weights of Step 2
+
+The slowly diverging weights `L_k` of Step 2 of `thm:dgt4-many-limits`
+(`sandpile.tex:6092-6095`), constructed by `exists_slow_weights`.
+
+The paper's sentence is "Choose `L_k ↑ ∞` so slowly that each of the four errors in
+`eq:dgt4-band-profile`, `eq:dgt4-band-upper-isolation`, `eq:dgt4-band-lower-isolation` and
+`eq:dgt4-band-origin-fixed-concentration`, after multiplication by `L_k²`, still tends to
+zero." For a single nonnegative null sequence `e` the choice `L_k = (√√(e_k ∨ 1/(k+1)))⁻¹`
+works: it diverges because `e_k ∨ 1/(k+1)` tends to zero, and `L_k² e_k ≤ √(e_k ∨ 1/(k+1))`
+tends to zero as well. The four errors are handled by applying this to their maximum, and
+every sequence dominated by `e` inherits the conclusion.
+-/
 
 open Filter Topology
 

@@ -1,16 +1,18 @@
-/-
-The positive mean limit in dimensions one through three, derived from the
-parabolic scaling limit and the concentration estimates for the rescaled odometer.
-Compact tightness bounds its means, so the centered exponential estimate gives a
-uniform exponential moment. Passing that bound through the weak limit yields
-convergence of the first two moments and positivity of the limiting mean.
--/
 import Sandpile.Support.MainExplScaling
 import Sandpile.Support.MeanAAssembly
 import Sandpile.Support.MeanAVersion
 import Sandpile.Support.MeanAMean
 import Sandpile.Support.MeanAExpLimit
 import Sandpile.Support.Dgt4OriginProb
+
+/-! # Positivity of the limiting mean at the origin
+
+The positive mean limit in dimensions one through three, derived from the
+parabolic scaling limit and the concentration estimates for the rescaled odometer.
+Compact tightness bounds its means, so the centered exponential estimate gives a
+uniform exponential moment. Passing that bound through the weak limit yields
+convergence of the first two moments and positivity of the limiting mean.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -51,8 +53,8 @@ theorem mean_variance_limit_at_origin_of_localCLT
   have hsq : Integrable (fun z : ℝ => z ^ 2) ν := integrable_sq_of_evariance ν hvar'
   obtain ⟨Z, hZmod, hZcont, hZgrow⟩ :=
     exists_continuous_version_growth hd hd3 hν2.le PW W hW
-  have hib := Sandpile.brownian_scaling_limit_of_localCLT hLocalCLT hStab d hd hd3 ν hmean hvar hvar'
-    θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB B hB hBc hBm 1 one_pos
+  have hib := Sandpile.brownian_scaling_limit_of_localCLT hLocalCLT hStab d hd hd3 ν hmean hvar
+    hvar' θ₀ hθ₀ hexp ΩW PW W hW Z hZmod hZcont hZgrow ΩB PB B hB hBc hBm 1 one_pos
   have hres := tendstoInDistribution_rescaled_one_zero d ν PW PB Z B
     (hib.1 1 (fun _ => (0 : Space d)))
   obtain ⟨K, hK⟩ := exists_uniform_mean_rescaled_of_tightness d hd hd3 ν hsq

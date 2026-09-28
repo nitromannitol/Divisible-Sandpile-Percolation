@@ -1,8 +1,12 @@
-/-
-The `j`-step average of a constant is the constant: `P^j c = c`.  It is the last step of the
-`P^j` telescoping of `sandpile.tex:5074-5077`.
--/
 import Sandpile.Support.Dgt4AIterateAbs
+
+/-!
+# Iterating the averaging operator on a constant function
+
+The `j`-fold iterate `avg^[j]` of the nearest-neighbour averaging operator `avg` fixes every
+constant function: `(avg^[j] fun _ => c) x = c` for all `x`. The proof is an induction on `j`
+using that `avg` itself fixes constants.
+-/
 
 open MeasureTheory Filter Topology Set
 

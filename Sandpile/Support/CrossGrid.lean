@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossPath
+import Sandpile.Support.RectangleIntersection
+import Sandpile.Support.BlockGeometry
+
+/-! # Discretized planar duality
+
 Continuum planar duality for a square, by discretization onto a fine grid.
 
 The square estimate of `sandpile.tex:2235-2236`, `P(H_{[-R,R]^2}(0)) ≥ 1/2`, is
@@ -33,19 +38,22 @@ compares two crossing events of equal law through the countable chain events of
 chain events at levels a distance `ε` apart.  Since the conclusion is a bound on
 the chain event at EVERY level below zero, adding `η` to `ε` changes nothing.
 -/
-import Sandpile.Support.CrossPath
-import Sandpile.Support.RectangleIntersection
-import Sandpile.Support.BlockGeometry
 
 open MeasureTheory Set
 namespace Sandpile.Support
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
+/-- The grid point of mesh `t` at lattice site `z`: the plane point with coordinates
+`t * z i`. -/
 noncomputable def gridPt (t : ℝ) (z : Site 2) : Sandpile.Continuum.Space 2 :=
   WithLp.toLp 2 (fun i : Fin 2 => t * (z i : ℝ))
 
+/-- `gridPt t z` evaluated at coordinate `i` is `t * (z i : ℝ)`, unfolding `gridPt`
+by `rfl`. -/
 theorem gridPt_apply (t : ℝ) (z : Site 2) (i : Fin 2) : gridPt t z i = t * (z i : ℝ) := rfl
 
+/-- `rectSet a b` is compact, being the image under `WithLp.toLp` of the compact product
+of closed intervals `∏ i, Icc (a i) (b i)`. -/
 theorem isCompact_rectSet (a b : Fin 2 → ℝ) : IsCompact (rectSet a b) := by
   have hset : rectSet a b = (WithLp.toLp 2 : (Fin 2 → ℝ) → Sandpile.Continuum.Space 2) ''
       (Set.univ.pi fun i => Set.Icc (a i) (b i)) := by
@@ -59,6 +67,8 @@ theorem isCompact_rectSet (a b : Fin 2 → ℝ) : IsCompact (rectSet a b) := by
   rw [hset]
   exact (isCompact_univ_pi fun i => isCompact_Icc).image (PiLp.continuous_toLp 2 fun _ => ℝ)
 
+/-- A modulus of continuity for `f` on the compact set `K`: some `δ > 0` such that points
+of `K` within `δ` have `f`-values within `η`, from uniform continuity of `f` on `K`. -/
 theorem exists_modulus {K : Set (Sandpile.Continuum.Space 2)} (hK : IsCompact K)
     {f : Sandpile.Continuum.Space 2 → ℝ} (hf : Continuous f) {η : ℝ} (hη : 0 < η) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ x ∈ K, ∀ y ∈ K, dist x y ≤ δ → |f x - f y| ≤ η := by
@@ -68,6 +78,8 @@ theorem exists_modulus {K : Set (Sandpile.Continuum.Space 2)} (hK : IsCompact K)
   have h := hmain x hx y hy hxy
   rwa [Real.dist_eq] at h
 
+/-- If two lattice sites differ by at most `1` in each integer coordinate, their real
+coordinate differences are also bounded by `1` in absolute value. -/
 theorem abs_coord_sub_le_one {z w : Site 2} (h : ∀ i : Fin 2, (z i - w i).natAbs ≤ 1) :
     ∀ i : Fin 2, |(z i : ℝ) - (w i : ℝ)| ≤ 1 := by
   intro i
@@ -82,6 +94,9 @@ theorem abs_coord_sub_le_one {z w : Site 2} (h : ∀ i : Fin 2, (z i - w i).natA
     push_cast at hr
     linarith
 
+/-- Two grid points at mesh `t` whose lattice sites differ by at most `1` in each
+coordinate are within Euclidean distance `2 * t`, from the coordinatewise bound and the
+Euclidean norm formula. -/
 theorem dist_gridPt_le {t : ℝ} (ht : 0 ≤ t) {z w : Site 2}
     (h : ∀ i : Fin 2, |(z i : ℝ) - (w i : ℝ)| ≤ 1) :
     dist (gridPt t z) (gridPt t w) ≤ 2 * t := by
@@ -103,6 +118,8 @@ theorem dist_gridPt_le {t : ℝ} (ht : 0 ≤ t) {z w : Site 2}
       ≤ Real.sqrt ((2 * t) ^ 2) := Real.sqrt_le_sqrt hsum
     _ = 2 * t := Real.sqrt_sq (by linarith)
 
+/-- A grid point of mesh `t` at a site of the `n × n` lattice rectangle lies in the plane
+square `[0, s]²`, where `s = t * n`. -/
 theorem gridPt_mem_rectSet {t s : ℝ} (ht : 0 ≤ t) {n : ℕ} (hts : t * (n : ℝ) = s)
     {z : Site 2} (hz : z ∈ Sandpile.planeRectangle n n) :
     gridPt t z ∈ rectSet ![0, 0] ![s, s] := by
@@ -124,6 +141,8 @@ theorem gridPt_mem_rectSet {t s : ℝ} (ht : 0 ≤ t) {n : ℕ} (hts : t * (n : 
     · show t * (z 1 : ℝ) ≤ s
       nlinarith
 
+/-- Every point of the segment from `v` to `w` is no farther from `v` than `w` itself is,
+since `segSet` parametrizes it as `v + t • (w - v)` for `t ∈ [0, 1]`. -/
 theorem dist_mem_segSet {v w u : Sandpile.Continuum.Space 2} (hu : u ∈ segSet v w) :
     dist u v ≤ dist v w := by
   obtain ⟨t, ⟨ht0, ht1⟩, rfl⟩ := hu
@@ -134,6 +153,10 @@ theorem dist_mem_segSet {v w u : Sandpile.Continuum.Space 2} (hu : u ∈ segSet 
   rw [hnorm, abs_of_nonneg ht0]
   nlinarith
 
+/-- The polygonal chain through the images `g` of the vertices of a graph walk `p` from
+`x` to `y` is a `Crosses` witness for `S`: consecutive images are within `δ`, every
+segment point within `δ` of the rectangle lies in `S`, and the endpoints meet the two
+faces `a i` and `b i`. Built from `crosses_of_pathSet`. -/
 theorem crosses_of_walk {V : Type*} {G : SimpleGraph V} {x y : V} (p : G.Walk x y)
     (g : V → Sandpile.Continuum.Space 2) {a b : Fin 2 → ℝ} {i : Fin 2}
     {S : Set (Sandpile.Continuum.Space 2)} {δ : ℝ} (hδ : 0 ≤ δ)
@@ -215,7 +238,8 @@ theorem crosses_sublevel_of_star_walk {s t η δ : ℝ} {n : ℕ}
     (hc : (c : Site 2) 1 = 0) (hd : (d : Site 2) 1 = (n : ℤ))
     (hq : ∀ z ∈ q.support, f (gridPt t (z : Site 2)) ≤ 0) :
     Crosses ![0, 0] ![s, s] 1 {u | f u ≤ η} := by
-  have hrect : ∀ z : {x : Site 2 // x ∈ ((Sandpile.planeRectangle n n : Finset (Site 2)) : Set (Site 2))},
+  have hrect :
+      ∀ z : {x : Site 2 // x ∈ ((Sandpile.planeRectangle n n : Finset (Site 2)) : Set (Site 2))},
       gridPt t (z : Site 2) ∈ rectSet ![0, 0] ![s, s] :=
     fun z => gridPt_mem_rectSet ht0 htn (Finset.mem_coe.mp z.2)
   refine crosses_of_walk q (fun z => gridPt t (z : Site 2)) hδ hrect ?_ ?_ ?_ ?_

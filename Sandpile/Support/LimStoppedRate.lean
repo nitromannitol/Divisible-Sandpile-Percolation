@@ -1,5 +1,8 @@
-/-
-A geometric rate for the `L²` convergence of the ball-stopped kernel.
+import Sandpile.Support.LimKernelRate
+import Sandpile.Support.LimOccupationLimit
+
+/-!
+# A geometric rate for `L²` convergence of the ball-stopped kernel
 
 `LimBallStoppedTail.lean` proves that `2d·ballKernel − ballStoppedKernel` tends to zero
 in `L²(Space d)` as the horizon grows, with no rate, because its tail is handled by
@@ -13,8 +16,6 @@ and `∫ ballStoppedKernel` is the mean truncated exit time.  That mass decays g
 small `L²` norm, at the cost of the power `1/3`, using the integrability of the `5/2` power
 of the ball kernel.
 -/
-import Sandpile.Support.LimKernelRate
-import Sandpile.Support.LimOccupationLimit
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -26,6 +27,9 @@ variable {ΩB : Type}
 
 /-! ### The `5/2` power of the ball kernel -/
 
+/-- The `5/2` power of `2d·ballKernel` is integrable, translated from the integrability of
+the `5/2` power of the centred kernel (`integrable_centredKernel_rpow`) via the
+translation invariance of Lebesgue measure. -/
 theorem integrable_ballKernel_rpow {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s)
     (u : Space 2) :
     Integrable (fun y : Space d => (2 * (d : ℝ) * ballKernel d s u y) ^ ((5 : ℝ) / 2))
@@ -56,6 +60,8 @@ theorem integrable_ballKernel_rpow {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (h
       = 2 * (d : ℝ) * centredKernel d s (planePoint (d := d) u - y) from rfl,
     Real.mul_rpow h2 h0]
 
+/-- The integral of the `5/2` power of `2d·ballKernel` equals `(2d)^(5/2)` times the
+integral of the `5/2` power of the centred kernel, by translation invariance. -/
 theorem integral_ballKernel_rpow_eq {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (_hs : 0 < s)
     (u : Space 2) :
     (∫ y : Space d, (2 * (d : ℝ) * ballKernel d s u y) ^ ((5 : ℝ) / 2))
@@ -86,6 +92,9 @@ theorem integral_ballKernel_rpow_eq {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (
 
 /-! ### The mass of the difference is the mean overshoot -/
 
+/-- On the event that the exit time is finite, the ball-stopped time (in `ℝ`) equals
+the minimum of the exit time and the horizon `T`, since the truncation `ballStopTime`
+is defined as an infimum in `ℝ≥0∞` that here has no `⊤` term to worry about. -/
 theorem coe_ballStopTime_eq_min {d : ℕ} {B : Space d → ℝ≥0 → ΩB → Space d} {s T : ℝ}
     (hT : 0 ≤ T) (u : Space 2) (b : ΩB)
     (hfin : LatticeProb.exitTime (B (planePoint u)) (planePoint u) s b < ⊤) :
@@ -118,6 +127,7 @@ theorem coe_ballStopTime_eq_min {d : ℕ} {B : Space d → ℝ≥0 → ΩB → S
       rwa [hTreal] at this
     rw [h2, min_eq_right h3]
 
+/-- The (real-valued) ball-stopped time is integrable, being bounded by the constant `T`. -/
 theorem integrable_coe_ballStopTime [MeasurableSpace ΩB] {d : ℕ} (PB : Measure ΩB)
     [IsProbabilityMeasure PB] {B : Space d → ℝ≥0 → ΩB → Space d}
     (hBc : ∀ y ω, Continuous fun t => B y t ω) (hBm : ∀ y t, StronglyMeasurable (B y t))
@@ -169,6 +179,8 @@ noncomputable def kernelRateConst (d : ℕ) (s : ℝ) : ℝ :=
     * (1 + (2 * (d : ℝ)) ^ ((5 : ℝ) / 2)
         * ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2))
 
+/-- The constant `kernelRateConst d s` is nonnegative, as a sum of nonnegative
+integrals raised to nonnegative powers. -/
 theorem kernelRateConst_nonneg {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (_hs : 0 < s) :
     0 ≤ kernelRateConst d s := by
   have hint : (0 : ℝ) ≤ ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2) := by

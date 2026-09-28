@@ -1,12 +1,20 @@
-/-
+import Sandpile.Support.D23Field
+import Sandpile.Support.D4CritLSS
+
+/-!
+# Measurability and stationarity of the dimension two/three good-block process
+
 Two of the three hypotheses of \citet[Corollary~1.4]{LSS} for the good-block
 process of the dimension-two and dimension-three percolation argument
 (`sandpile.tex:2585-2590`): measurability and stationarity.  Stationarity is the
 translation covariance of the localized odometer field together with the shift
-invariance of the i.i.d. scenery law.
+invariance of the i.i.d. scenery law. The measurability half is proved by
+`measurableSet_blockGood_d23Field` and `measurable_decide_blockGood_d23Field`, writing
+`BlockGood` as a finite intersection of level-set-crossing conditions on `crossingValue`;
+stationarity combines the shift covariance `blockGood_d23Field_shift` of the localized field
+`d23Field` with the shift-invariance `massLaw_map_shiftField` of the i.i.d. scenery law to give
+`blockGood_d23Field_law_stationary`.
 -/
-import Sandpile.Support.D23Field
-import Sandpile.Support.D4CritLSS
 
 open MeasureTheory
 
@@ -28,6 +36,10 @@ theorem blockGood_d23Field_shift (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) (ζ : Si
   refine blockGood_congr R _ _ ℓ (z + w) z fun v => ?_
   rw [d23Field_shift hd, blockShift_add]
 
+/-- The good-block event `{ζ | BlockGood R (d23Field d R t ζ) ℓ z}` is measurable in the
+scenery `ζ`, since `BlockGood` unfolds to a finite intersection of four crossing-threshold
+conditions `ℓ ≤ crossingValue Q (...)` on the localized field `d23Field`, each measurable
+because `crossingValue` is measurable in the field and `d23Field` is measurable in `ζ`. -/
 theorem measurableSet_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) (z : Site 2) :
     MeasurableSet {ζ : Site d → ℝ | BlockGood R (d23Field d R t ζ) ℓ z} := by
   have hm : ∀ (Q : Finset (Site 2)), IsLatticeRectangle Q → Q.Nonempty →
@@ -63,6 +75,9 @@ theorem measurableSet_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) 
         (measurable_pi_lambda _ fun v => measurable_d23Field hd R t _))
   exact h1.inter (h2.inter (h3.inter h4))
 
+/-- The Boolean indicator `ζ ↦ decide (BlockGood R (d23Field d R t ζ) ℓ z)` is measurable,
+since its preimage of `{true}` is exactly the measurable set of
+`measurableSet_blockGood_d23Field`. -/
 theorem measurable_decide_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) (z : Site 2) :
     Measurable (fun ζ : Site d → ℝ => decide (BlockGood R (d23Field d R t ζ) ℓ z)) := by
   refine measurable_to_bool ?_

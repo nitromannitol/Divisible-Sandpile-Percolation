@@ -1,33 +1,31 @@
-/-
-The record that part (i) of Step 2 of `thm:dgt4-many-limits` must be stated about
-the origin-frozen average `W_n = avg (originOdometer (scenery d σ) n) 0`, and not
-about the scenery value at the origin.
-
-An earlier transcription of `eq:dgt4-band-origin-fixed-lower-tail`, the predicate
-`BandStep2Input`, read the lower tail of the FIXED scenery value at the origin
-minus a deterministic sequence diverging to `+∞`.  That statement is FALSE, and
-this module proves it: every real random variable has a finite sublevel set of
-positive probability, so choosing `r` so large that `C e^{-λ r}` drops below that
-probability and then `n` so large that the sublevel set lies inside
-`{X - m_n ≤ -r}` contradicts the bound, whatever `C` is.  The refutation holds at
-every centered integrable nondegenerate scenery law in the paper's dimension
-range, and in particular at the standardized logistic law that the repository
-already uses as its explicit scenery witness.
-
-The predicate itself was deleted, so that nothing can be built on
-it; this module is kept, restated against the shape rather than the name, so that
-the negative result remains a machine-checked artefact rather than a note.
-
-The paper's correct estimates are the two ORIGIN-FIXED ones,
-`eq:dgt4-band-origin-fixed-concentration` and
-`eq:dgt4-band-origin-fixed-lower-tail` (`sandpile.tex:6065-6090`), which are
-about `W_n`, centered at `E u_n(0)/G(0,0)` and at `E W_n` respectively.  Both are
-PROVED, as `Sandpile.Support.band_origin_concentration` and
-`Sandpile.Support.band_origin_lower_tail`
-(`Sandpile/Support/Dgt4ABandConcentration.lean`).  Step 2 consumes those.
--/
 import Sandpile.Support.Dgt4MeanDiv
 import Sandpile.Support.ContLogisticLaw
+
+/-!
+# Step 2's lower tail cannot be centered at the scenery value
+
+The record that part (i) of Step 2 of `thm:dgt4-many-limits` must be stated about the
+origin-frozen average `W_n = avg (originOdometer (scenery d σ) n) 0`, and not about the scenery
+value at the origin. An earlier transcription of `eq:dgt4-band-origin-fixed-lower-tail`, the
+predicate `BandStep2Input`, read the lower tail of the FIXED scenery value at the origin minus a
+deterministic sequence diverging to `+∞`. That statement is FALSE, and this module proves it:
+every real random variable has a finite sublevel set of positive probability, so choosing `r` so
+large that `C e^{-λ r}` drops below that probability and then `n` so large that the sublevel set
+lies inside `{X - m_n ≤ -r}` contradicts the bound, whatever `C` is. The refutation holds at every
+centered integrable nondegenerate scenery law in the paper's dimension range, and in particular at
+the standardized logistic law that the repository already uses as its explicit scenery witness.
+
+The predicate itself was deleted, so that nothing can be built on it; this module is kept,
+restated against the shape rather than the name, so that the negative result remains a
+machine-checked artefact rather than a note.
+
+The paper's correct estimates are the two ORIGIN-FIXED ones,
+`eq:dgt4-band-origin-fixed-concentration` and `eq:dgt4-band-origin-fixed-lower-tail`
+(`sandpile.tex:6065-6090`), which are about `W_n`, centered at `E u_n(0)/G(0,0)` and at `E W_n`
+respectively. Both are PROVED, as `Sandpile.Support.band_origin_concentration` and
+`Sandpile.Support.band_origin_lower_tail` (`Sandpile/Support/Dgt4ABandConcentration.lean`).
+Step 2 consumes those.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

@@ -1,32 +1,20 @@
-/-
-The uniform smallness of the mean deviation over `j\leq(1-\varepsilon)n_R`
-(`sandpile.tex:5529-5583`), which is what `Support/LinStep2Averaged.lean` reduces the first
-conclusion of `lem:dgt4-path-survival` to.
-
-`eventually_uniform_survival_core` is the assembly: the five errors of
-`Support/LinStep2Assembly.lean` are made simultaneously small by the choice of targets of
-`Support/LinStep2Targets.lean`, and each target is met eventually in `R`.  The window
-hypothesis `eq:dgt4-uniform-contact-thresholds` supplies the first at `\eta`, Step 1 supplies
-the second at `\theta=c/10`, `lem:dgt4-weighted-last-visits` supplies the fourth at `\eta'`,
-and the two remaining ones, `16(G(0,0)\kappa)^2/(\varepsilon n_R)` and the replacement of
-`n_R` by `R^2T` in the profile, are conditions on `R` alone.
-
-The factorization of Step 1 enters as a hypothesis in the single form both branches supply:
-for every target and every `K\geq1`, eventually in `R`, a family of at most `TR^2` distinct
-sites whose levels have threshold probability between `1/(KR^2)` and `K/R^2` factorizes up to
-the target.  In the independent branch that is exact
-(`Sandpile.indep_path_factorization`), and in the Gaussian branch it is
-`Sandpile.eventually_gauss_path_factorization_tails`.  The constant `K` is
-`\max\{1,4G(0,0)\kappa/(\varepsilon T),2T/(G(0,0)\kappa)\}`: the upper bound because the
-weights are at most `2G(0,0)\kappa/(n_R-j)\leq4G(0,0)\kappa/(\varepsilon R^2T)`, the lower
-because they are at least `G(0,0)\kappa/(2n_R)\geq G(0,0)\kappa/(2R^2T)`.
-
-`eventually_uniform_survival` reads the two branches of the threshold-field dichotomy of `sandpile.tex:5454-5455` into that form,
-and `tendsto_averaged_survival_of_thresholds` is the first conclusion of the lemma.
--/
 import Sandpile.Support.LinStep2Assembly
 import Sandpile.Support.LinGaussShift
 import Sandpile.Support.LinStationary
+
+/-!
+# The uniform smallness of the mean deviation over early times
+
+This file assembles the five errors of the path-survival estimate into a single uniform bound: for
+every `ε ∈ (0, 1)` and every target size, eventually in `R` the survival probability along any path
+of at most `(1 - ε) n_R` steps differs from the profile `(1 - j / (R² T)) ^ κ` in mean by at most
+the target. The factorization of Step 1 enters as a single hypothesis both branches of the
+threshold-field dichotomy supply: for every target and every `K ≥ 1`, eventually in `R`, a family
+of at most `T R²` distinct sites whose levels have threshold probability between `1 / (K R²)` and
+`K / R²` factorizes up to the target, exactly in the independent branch and via the normal
+comparison inequality in the Gaussian branch. Combining the two branches gives the first
+conclusion of the path-survival lemma as a limit.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -244,7 +232,7 @@ theorem eventually_uniform_survival_core [NeZero d] {l : Filter ℝ}
     hle2 hprofj.le
   linarith [hfin]
 
-/-- **The uniform smallness in both branches of the threshold-field dichotomy of `sandpile.tex:5449-5450`**
+/-- **The uniform smallness in both branches of the threshold-field dichotomy**
 (`sandpile.tex:5449-5450`, `sandpile.tex:5494-5578`).  In the independent branch the
 factorization of Step 1 is exact; in the Gaussian branch it is the normal comparison
 inequality applied to the levels the window hypothesis produces. -/

@@ -1,14 +1,15 @@
-/-
-Where the capped time differs from the time.
-
-The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) splits at the
-first exit and pays only on the event `{τ_D < τ}`.  In the continuum that event
-is `{τ_{u,A} < τ}`, and for a stopping time bounded by the horizon it sits inside
-the event that the ball is left before the horizon, whose probability is the
-exit-time tail.  These two facts are what turns the split of a single stopping
-time into the factor `C e^{-cA²/T}` of `lem:brownian-ball-localization`.
--/
 import Sandpile.Support.ExplBallGap
+
+/-!
+# Where the capped exit time differs from the stopping time
+
+The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) splits at the first exit
+and pays only on the event `{τ_D < τ}`. In the continuum that event is `{τ_{u,A} < τ}`, and
+for a stopping time bounded by the horizon it sits inside the event that the ball is left
+before the horizon (`lt_subset_ballExitEvent`), whose probability is the exit-time tail
+(`measureReal_lt_le_ballExitEvent`). These two facts are what turns the split of a single
+stopping time into the factor `C e^{-cA²/T}` of `lem:brownian-ball-localization`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

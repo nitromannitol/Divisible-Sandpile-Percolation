@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MainExplWalkValue
+import Sandpile.Support.StopValue
+
+/-! # The two-reward stability gap
+
 The stability gap `E₂` of the four-term bound at TWO rewards.
 
 `Sandpile.abs_rescaled_odometer_sub_brownianValue_le` needs the distance between
@@ -19,8 +23,6 @@ time, the attainable payoffs are bounded above by `bddAbove_walk_stopped_value`
 and the stopped reward is integrable by `integrable_stopped_value`, both without
 any bound on the reward.
 -/
-import Sandpile.Support.MainExplWalkValue
-import Sandpile.Support.StopValue
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal

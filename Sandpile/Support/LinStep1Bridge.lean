@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinStep1Factor
+import Sandpile.Support.LinThresholdNull
+import Sandpile.Support.LinFactor
+
+/-! # Step 1 Bridge
+
 The two branches of Step 1 of `lem:dgt4-path-survival` in the shape Step 2 consumes.
 
 `Support/LinStep2Replace.lean` asks for the factorization along the last-visit sites of a path
@@ -21,9 +26,6 @@ as an explicit hypothesis, because the paper proves it separately in the two cas
   `Support/LinThresholdNull.lean`.  `eventually_gauss_path_factorization_of_field` is then the
   factorization written through `J`.
 -/
-import Sandpile.Support.LinStep1Factor
-import Sandpile.Support.LinThresholdNull
-import Sandpile.Support.LinFactor
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

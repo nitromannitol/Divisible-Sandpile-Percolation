@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossField
+import Mathlib.InformationTheory.KullbackLeibler.Basic
+
+/-!
+# Pinsker's inequality
+
 Pinsker's inequality, cited by name in Step 3 of the proof of
 `prop:fixed-scale-crossings` at `sandpile.tex:2390`:
 
@@ -23,8 +28,6 @@ It is a classical inequality, it is not proved in the paper, and it belongs in
 the shared library; it is requested there, and this Prop is discharged when it
 lands.
 -/
-import Sandpile.Support.CrossField
-import Mathlib.InformationTheory.KullbackLeibler.Basic
 
 open MeasureTheory Set
 

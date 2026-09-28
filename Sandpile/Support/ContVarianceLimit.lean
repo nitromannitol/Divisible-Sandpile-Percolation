@@ -1,22 +1,19 @@
-/-
-The limit of the variance of the rescaled pairing in
-`prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`), which the paper states
-in one sentence at `sandpile.tex:4724-4729`: "the local central limit theorem,
-followed by a Riemann-sum argument, gives `Var(𝓕_R(φ)) → Var(𝓖(φ))`".
-
-The three pieces are in place.  The local central limit theorem and the
-Riemann-sum argument give the limit for a time weight that vanishes near zero
-(`Sandpile.Support.tendsto_integral2_timeKernel`); cutting the weight there
-changes the lattice quantity by `O(δ)` uniformly in the scale
-(`Sandpile.Support.abs_sum_scaledCoeff_sq_sub_cut_le`); and it changes the
-limit by `O(δ)` as well, because after the space integral is moved through the
-two time integrals the kernel enters only through its pairing with the test
-function (`Sandpile.Support.abs_integral2_space_pairing_sub_le`).  A quantity
-uniformly within `ε` of a convergent one whose limit is within `ε` of `V`
-converges to `V`.
--/
 import Sandpile.Support.ContDominated
 import Sandpile.Support.ContCutLimit
+
+/-!
+# The limit of the variance of the rescaled pairing
+
+`tendsto_sum_scaledCoeff_sq` proves that the sum of squares of the scaled coefficients
+converges to the double space integral of the test function `φ` against the double time
+integral of the Brownian heat kernel: the local central limit theorem and a Riemann-sum
+argument give this limit for a time weight that vanishes near zero
+(`tendsto_integral2_timeKernel`), cutting the weight there changes the lattice sum by `O(δ)`
+uniformly in the scale (`abs_sum_scaledCoeff_sq_sub_cut_le`), and it changes the limit by `O(δ)`
+as well, because moving the space integral through the two time integrals leaves the kernel
+entering only through its pairing with `φ` (`abs_integral2_space_pairing_sub_le`). A quantity
+uniformly within `ε` of a convergent one whose limit is within `ε` of `V` converges to `V`.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -28,6 +25,9 @@ variable {d : ℕ}
 
 /-! ### The sum of squares with the double time sum outside -/
 
+/-- Interchanging the finite space sum over `s ×ˢ s` with the double time sum: the sum of the
+mass-weighted kernel over pairs of sites, with the double time sum inside, equals the double
+time sum with the space pairing inside. -/
 theorem sum_space_time_comm' (s : Finset (Site d)) (m : Site d → ℝ) (w : ℕ → ℕ → ℝ) (N : ℕ)
     (K : ℕ → Site d → Site d → ℝ) :
     ∑ p ∈ s ×ˢ s, m p.1 * m p.2 *
@@ -204,6 +204,9 @@ theorem abs_sum_scaledCoeff_sq_sub_cut_le (hd : 1 ≤ d) {R T L δ Q C : ℝ} (h
 
 /-! ### Bridges to the continuum form -/
 
+/-- The interval integral `∫ r in 0..T, f r` (an integral over `Set.Ioc 0 T`) equals the
+integral of `f` over the open interval `Set.Ioo 0 T`, since a single point does not affect a
+Lebesgue integral. -/
 theorem intervalIntegral_eq_Ioo {T : ℝ} (hT : 0 ≤ T) (f : ℝ → ℝ) :
     ∫ r in (0:ℝ)..T, f r = ∫ r in Set.Ioo (0:ℝ) T, f r := by
   rw [intervalIntegral.integral_of_le hT, MeasureTheory.integral_Ioc_eq_integral_Ioo]
@@ -277,6 +280,9 @@ theorem sum_scaledCoeff_sq_eq_timeKernel {R : ℝ} (hR : 0 < R) (L T : ℝ) (g :
   ring
 
 
+/-- The double interval integral of `q` against the Brownian heat kernel equals the double
+integral over the open square of any `q'` agreeing with `q` on `[0, T]`, by applying
+`intervalIntegral_eq_Ioo` in each time variable. -/
 theorem time2_integral_eq {T : ℝ} (hT : 0 ≤ T) (q q' : ℝ → ℝ)
     (hqq : ∀ r ∈ Set.Icc (0:ℝ) T, q' r = q r) (x y : Space d) :
     (∫ r in (0:ℝ)..T, ∫ r' in (0:ℝ)..T, q r * q r' * heatKernelBM d (r + r') x y)
@@ -314,6 +320,8 @@ theorem cov_eq_space_pairing {T : ℝ} (hT : 0 ≤ T) (q q' : ℝ → ℝ)
 
 /-! ### The limit -/
 
+/-- A function continuous on `Set.Icc 0 T` extends, via `Set.IccExtend`, to a bounded
+continuous function `q'` on all of `ℝ` that agrees with `q` on `Set.Icc 0 T`. -/
 theorem exists_continuous_extension_bdd {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ → ℝ)
     (hq : ContinuousOn q (Set.Icc 0 T)) :
     ∃ (q' : ℝ → ℝ) (Q : ℝ), Continuous q' ∧ 0 ≤ Q ∧ (∀ r, |q' r| ≤ Q) ∧
@@ -328,6 +336,9 @@ theorem exists_continuous_extension_bdd {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ 
     rw [Set.IccExtend_of_mem hT _ hr]
     rfl
 
+/-- The sum of squares of the scaled coefficients depends on the time weight only through its
+values on `[0, T]`: replacing `q` by any `q'` agreeing with it there leaves the sum unchanged,
+since only the arguments `a / R ^ 2` for `a < ⌊R ^ 2 T⌋` are ever read. -/
 theorem sum_scaledCoeff_sq_congr {R : ℝ} (hR : 0 < R) (L : ℝ) {T : ℝ} (hT : 0 ≤ T)
     (q q' : ℝ → ℝ) (hqq : ∀ r ∈ Set.Icc (0:ℝ) T, q' r = q r) (φ : Space d → ℝ) :
     ∑ z ∈ coeffBox d R L T, scaledCoeff d R L T q' φ z ^ 2

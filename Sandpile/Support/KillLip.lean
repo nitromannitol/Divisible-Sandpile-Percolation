@@ -1,27 +1,25 @@
-/-
-The two values of `rem:dlt4-killed-scaling` are 1-Lipschitz in the reward.
-
-The proof of Theorem 1.3(i)(b) compares an optimal-stopping value of the rescaled
-field with the Brownian value of the limiting field by inserting a third reward
-between them, and every such insertion costs the supremum distance between the two
-rewards, because a supremum of integrals of rewards within `E` of each other moves by
-at most `E`.  That is `Sandpile.abs_stoppingSup_sub_le_of_reward` and
-`Sandpile.Continuum.abs_brownianDiscount_sub_le_of_reward` in the unkilled problem;
-the killed forms are proved here, for the value killed on leaving a set of sites and
-for the value killed on leaving a cube.
-
-The killed Brownian value evaluates its reward at the stopping position, which the
-killing condition constrains only STRICTLY BEFORE the stopping time.  A motion with
-continuous paths that starts at `u` is nevertheless in the CLOSED cube when it stops
-(`ae_cube_at_stop`), so a reward comparison valid on the closed cube is enough; and a
-Brownian motion has almost surely continuous paths, because each of its coordinates,
-centred and scaled, is a real Brownian motion (`ae_continuous_of_isBrownian`).  That
-is what lets the comparison of the two rewards be made only where the killed motion
-can go.
--/
 import Sandpile.Support.KillRep
 import Sandpile.Support.ExplStability
 import Sandpile.Support.ExplKilledValue
+
+/-!
+# The two values of `rem:dlt4-killed-scaling` are 1-Lipschitz in the reward
+
+The proof of Theorem 1.3(i)(b) compares an optimal-stopping value of the rescaled field with the
+Brownian value of the limiting field by inserting a third reward between them, and every such
+insertion costs the supremum distance between the two rewards, since a supremum of integrals of
+rewards within `E` of each other moves by at most `E`. That fact is
+`Sandpile.abs_stoppingSup_sub_le_of_reward` and
+`Sandpile.Continuum.abs_brownianDiscount_sub_le_of_reward` in the unkilled problem; the killed
+forms are proved here, for the value killed on leaving a set of sites and for the value killed
+on leaving a cube. The killed Brownian value evaluates its reward at the stopping position,
+which the killing condition constrains only strictly before the stopping time, but a motion with
+continuous paths starting at `u` is nevertheless in the closed cube when it stops
+(`ae_cube_at_stop`), using that a Brownian motion has almost surely continuous paths because each
+of its coordinates, centred and scaled, is a real Brownian motion
+(`ae_continuous_of_isBrownian`); this is what lets the comparison of the two rewards be made only
+where the killed motion can go.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

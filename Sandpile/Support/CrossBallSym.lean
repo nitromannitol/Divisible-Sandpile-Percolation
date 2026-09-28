@@ -1,27 +1,24 @@
-/-
-The plane symmetries of `sandpile.tex:2103` acting on the ball field.
-
-  "The unit-scale field `𝒳_1` is stationary, sign-symmetric, invariant under
-   rotations by `π/2` and coordinate reflections."
-
-A symmetry of the plane lattice is a permutation of the two coordinates, a sign
-on each, and a translation (`Sandpile.Continuum.PlaneSymmetry`).  It lifts to
-`ℝ^d` by acting on the first two coordinates and fixing the rest; the lift is an
-isometry, it preserves Lebesgue measure, and it carries `planePoint u` to
-`planePoint (T u)`.  Since the ball kernel sees the ambient point only through
-its distance to the centre, the change of variables along the lift shows that
-the covariances of the ball field at `T u, T v` and at `u, v` agree; the sign on
-the values contributes `ε² = 1`, and both fields are centred.
-
-What is left to turn that into the equality of laws that
-`Sandpile.Continuum.IsSymmetricField` asks for is the general fact that a centred
-Gaussian process is determined in law by its covariance.  That fact is not the
-paper's and not cited by it; it is standard, and it is carried as the explicit
-hypothesis `Sandpile.External.GaussianLawDeterminedByCovariance`, which is also
-requested of the shared library.
--/
 import Sandpile.Support.CrossBallMemLp
 import Sandpile.External.GaussianLawCovariance
+
+/-!
+# The plane symmetries acting on the ball field
+
+The plane symmetries of `sandpile.tex:2103` acting on the ball field: the unit-scale field
+`𝒳_1` is stationary, sign-symmetric, invariant under rotations by `π/2` and coordinate
+reflections. A symmetry of the plane lattice is a permutation of the two coordinates, a sign
+on each, and a translation (`Sandpile.Continuum.PlaneSymmetry`). It lifts to `ℝ^d` by acting
+on the first two coordinates and fixing the rest; the lift is an isometry, it preserves
+Lebesgue measure, and it carries `planePoint u` to `planePoint (T u)`. Since the ball kernel
+sees the ambient point only through its distance to the centre, the change of variables along
+the lift shows that the covariances of the ball field at `T u, T v` and at `u, v` agree; the
+sign on the values contributes `ε² = 1`, and both fields are centred. What is left to turn
+that into the equality of laws that `Sandpile.Continuum.IsSymmetricField` asks for is the
+general fact that a centred Gaussian process is determined in law by its covariance. That fact
+is not the paper's and not cited by it; it is standard, and it is carried as the explicit
+hypothesis `Sandpile.External.GaussianLawDeterminedByCovariance`, which is also requested of
+the shared library.
+-/
 
 open MeasureTheory Set
 
@@ -33,6 +30,7 @@ open Sandpile.Continuum
 noncomputable def sgnIso (a : ℝ) : ℝ ≃ₗᵢ[ℝ] ℝ :=
   if a = -1 then LinearIsometryEquiv.neg ℝ else LinearIsometryEquiv.refl ℝ ℝ
 
+/-- The isometry `sgnIso a` acts as multiplication by `a`, when `a` is `1` or `-1`. -/
 theorem sgnIso_apply {a : ℝ} (h : a = 1 ∨ a = -1) (x : ℝ) : sgnIso a x = a * x := by
   rcases h with rfl | rfl
   · rw [sgnIso, if_neg (by norm_num)]
@@ -45,12 +43,16 @@ permutation of the two plane coordinates, and the identity on the rest. -/
 def liftPerm (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) : Equiv.Perm (Fin d) :=
   if T.perm 0 = 0 then Equiv.refl _ else Equiv.swap ⟨0, by omega⟩ ⟨1, by omega⟩
 
+/-- If a plane symmetry's coordinate permutation fixes `0`, it also fixes `1`, since
+`T.perm` is a permutation of `Fin 2`. -/
 theorem perm_fin_two_of_zero (T : PlaneSymmetry) (h : T.perm 0 = 0) : T.perm 1 = 1 := by
   by_contra hne
   have h1 : T.perm 1 = 0 := by omega
   have := T.perm.injective (h.trans h1.symm)
   exact absurd this (by decide)
 
+/-- If a plane symmetry's coordinate permutation moves `0`, it is the transposition of
+`Fin 2`: `T.perm 0 = 1` and `T.perm 1 = 0`. -/
 theorem perm_fin_two_of_ne (T : PlaneSymmetry) (h : T.perm 0 ≠ 0) :
     T.perm 0 = 1 ∧ T.perm 1 = 0 := by
   have h0 : T.perm 0 = 1 := by omega
@@ -60,6 +62,8 @@ theorem perm_fin_two_of_ne (T : PlaneSymmetry) (h : T.perm 0 ≠ 0) :
   have := T.perm.injective (h0.trans h1.symm)
   exact absurd this (by decide)
 
+/-- On the first two coordinates, `liftPerm` agrees with the plane symmetry's own
+coordinate permutation `T.perm`. -/
 theorem liftPerm_coe_lt (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) (k : Fin 2) :
     ((liftPerm d hd T ⟨(k : ℕ), by omega⟩ : Fin d) : ℕ) = ((T.perm k : Fin 2) : ℕ) := by
   unfold liftPerm
@@ -78,6 +82,7 @@ theorem liftPerm_coe_lt (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) (k : Fin 2)
         Equiv.swap_apply_right]
       simpa using congrArg (fun j : Fin 2 => (j : ℕ)) h1.symm
 
+/-- `liftPerm` fixes every coordinate index `2 ≤ (i : ℕ)` beyond the plane's own two. -/
 theorem liftPerm_of_ge (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) {i : Fin d}
     (hi : ¬ ((i : ℕ) < 2)) : liftPerm d hd T i = i := by
   unfold liftPerm
@@ -92,6 +97,8 @@ theorem liftPerm_of_ge (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) {i : Fin d}
 noncomputable def liftSign (d : ℕ) (T : PlaneSymmetry) : Fin d → ℝ :=
   fun i => if h : (i : ℕ) < 2 then T.sign ⟨i, h⟩ else 1
 
+/-- Every coordinate of `liftSign` is `1` or `-1`, since `T.sign` is on the first two
+coordinates and the lift places `1` on the rest. -/
 theorem liftSign_eq_one_or (d : ℕ) (T : PlaneSymmetry) (i : Fin d) :
     liftSign d T i = 1 ∨ liftSign d T i = -1 := by
   unfold liftSign
@@ -108,6 +115,8 @@ noncomputable def liftLinear (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) :
   (LinearIsometryEquiv.piLpCongrLeft 2 ℝ ℝ (liftPerm d hd T).symm).trans
     (LinearIsometryEquiv.piLpCongrRight 2 (fun i => sgnIso (liftSign d T i)))
 
+/-- `liftLinear` applied to `y` at coordinate `i` is `liftSign d T i` times `y` read at the
+permuted coordinate `liftPerm d hd T i`. -/
 theorem liftLinear_apply (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
     (y : Sandpile.Continuum.Space d) (i : Fin d) :
     liftLinear d hd T y i = liftSign d T i * y (liftPerm d hd T i) := by
@@ -119,6 +128,8 @@ noncomputable def liftSym (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
     (y : Sandpile.Continuum.Space d) : Sandpile.Continuum.Space d :=
   liftLinear d hd T y + planePoint (d := d) (WithLp.toLp 2 T.shift)
 
+/-- The lift `liftSym` intertwines `planePoint` with the plane symmetry itself: lifting the
+image of `u` under `T.toFun` agrees with first lifting `u` and then applying `liftSym`. -/
 theorem liftSym_planePoint (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
     (u : Sandpile.Continuum.Space 2) :
     liftSym d hd T (planePoint (d := d) u) = planePoint (d := d) (T.toFun u) := by
@@ -164,6 +175,8 @@ theorem liftSym_planePoint (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
       rw [dif_neg h]
     rw [hplane, hshift, hrhs, mul_zero, add_zero]
 
+/-- `liftSym` is an isometry of `ℝ^d`: its linear part `liftLinear` is, and the translation
+by the lifted shift cancels in a difference. -/
 theorem norm_liftSym_sub (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
     (a b : Sandpile.Continuum.Space d) :
     ‖liftSym d hd T a - liftSym d hd T b‖ = ‖a - b‖ := by
@@ -173,6 +186,8 @@ theorem norm_liftSym_sub (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
     abel
   rw [h, LinearIsometryEquiv.norm_map]
 
+/-- `liftSym` preserves Lebesgue measure on `ℝ^d`, being the composite of the measure-preserving
+linear isometry `liftLinear` with a translation. -/
 theorem measurePreserving_liftSym (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) :
     MeasurePreserving (liftSym d hd T)
       (volume : Measure (Sandpile.Continuum.Space d)) volume := by
@@ -184,6 +199,8 @@ theorem measurePreserving_liftSym (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) :
       volume volume := measurePreserving_add_right volume _
   exact h2.comp h1
 
+/-- `liftSym` is a measurable embedding of `ℝ^d`, being the composite of the homeomorphism
+`liftLinear` with a translation homeomorphism. -/
 theorem measurableEmbedding_liftSym (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) :
     MeasurableEmbedding (liftSym d hd T) := by
   have h1 : MeasurableEmbedding (liftLinear d hd T) :=
@@ -197,7 +214,8 @@ theorem measurableEmbedding_liftSym (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
 measure-preserving map of the ambient space that carries the two centres
 correctly: the kernel sees the ambient point only through its distance to the
 centre. -/
-theorem cov_ballKernel_comp {d : ℕ} (s : ℝ) (Φ : Sandpile.Continuum.Space d → Sandpile.Continuum.Space d)
+theorem cov_ballKernel_comp {d : ℕ} (s : ℝ)
+    (Φ : Sandpile.Continuum.Space d → Sandpile.Continuum.Space d)
     (hmp : MeasurePreserving Φ volume volume) (hme : MeasurableEmbedding Φ)
     (u' v' u v : Sandpile.Continuum.Space 2)
     (hu : ∀ y, ‖planePoint (d := d) u' - Φ y‖ = ‖planePoint (d := d) u - y‖)

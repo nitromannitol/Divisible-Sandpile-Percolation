@@ -1,19 +1,20 @@
-/-
-The rank-one reduction of `sandpile.tex:5270-5271` at every configuration.
-
-`Support/Dgt4AConcLp.lean` has the contraction as an identity in `lp 2`.  What the
-conditioning needs is the contraction for the everywhere-defined reduction
-`projUnit` of `Support/Dgt4AConcProj.lean`, whose pairing is the box limit where that
-limit exists and zero elsewhere.  The two branches match along a pair at finite
-`\ell^2` distance, because the partial sums of the two configurations differ by a
-series that converges absolutely by Cauchy-Schwarz: either both configurations have
-the limit, and then the reduction removes exactly the component along the conditioned
-direction, or neither has it, and then the reduction is the identity on the
-difference.  In both branches the squared distance does not increase, which is the
-hypothesis of the Gaussian concentration inequality.
--/
 import Sandpile.Support.Dgt4AConcLp
 import Sandpile.Support.Dgt4AConcProj
+
+/-!
+# The rank-one reduction is a contraction everywhere
+
+The rank-one reduction of `sandpile.tex:5270-5271` at every configuration.
+`Support/Dgt4AConcLp.lean` has the contraction as an identity in `lp 2`. What the conditioning
+needs is the contraction for the everywhere-defined reduction `projUnit` of
+`Support/Dgt4AConcProj.lean`, whose pairing is the box limit where that limit exists and zero
+elsewhere. The two branches match along a pair at finite `\ell^2` distance, because the partial
+sums of the two configurations differ by a series that converges absolutely by Cauchy-Schwarz:
+either both configurations have the limit, and then the reduction removes exactly the component
+along the conditioned direction, or neither has it, and then the reduction is the identity on the
+difference. In both branches the squared distance does not increase, which is the hypothesis of
+the Gaussian concentration inequality.
+-/
 
 open MeasureTheory Filter Topology
 

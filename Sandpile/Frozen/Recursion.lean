@@ -1,6 +1,11 @@
-/-
-Lemma of sandpile.tex recording the odometer recursion, frozen.
-`sandpile.tex:817-822` (label `lem:recursion`):
+import Sandpile.Walk
+import Sandpile.Support.Toppling
+
+/-!
+# The frozen odometer recursion
+
+This module states and proves the lemma of `sandpile.tex` recording the odometer
+recursion, `sandpile.tex:817-822` (label `lem:recursion`):
 
   "For all $n \geq 0$ and $x\in\Z^d$,
    $u_{n+1}(x) = \bigl(\frac{1}{2d}\sum_{y \sim x} u_n(y) + \zeta(x)\bigr)_+$."
@@ -28,8 +33,6 @@ hold for that reason alone, so the hypothesis keeps every instance of the
 statement a statement about a lattice.  `n` is universally quantified over all
 of `ℕ`, which is the paper's `n ≥ 0`.
 -/
-import Sandpile.Walk
-import Sandpile.Support.Toppling
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

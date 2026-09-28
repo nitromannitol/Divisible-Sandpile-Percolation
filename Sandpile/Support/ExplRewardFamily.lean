@@ -1,5 +1,8 @@
-/-
-The finite family of continuous cut-off rewards.
+import Sandpile.Support.ExplNetFamily
+import Sandpile.Support.ExplCutoff
+
+/-!
+# The finite family of continuous cut-off rewards
 
 `Sandpile.exists_finite_family_of_compact` builds, on a compact set, a finite
 family of globally continuous functions within `2η` of every function obeying a
@@ -15,8 +18,6 @@ The two hypotheses on the field are exactly the complements of the two events of
 the tightness clause of `prop:dlt4-heat-potential-invariance`, written as the
 proposition writes them.
 -/
-import Sandpile.Support.ExplNetFamily
-import Sandpile.Support.ExplCutoff
 
 open Metric
 
@@ -28,6 +29,7 @@ variable {d : ℕ}
 def rewardBox (d : ℕ) (T₁ A : ℝ) : Set (ℝ × Space d) :=
   Set.Icc (0 : ℝ) T₁ ×ˢ Metric.closedBall (0 : Space d) (2 * A)
 
+/-- `rewardBox` is compact, as a product of a compact interval and a compact closed ball. -/
 theorem isCompact_rewardBox (d : ℕ) (T₁ A : ℝ) : IsCompact (rewardBox d T₁ A) :=
   isCompact_Icc.prod (isCompact_closedBall _ _)
 

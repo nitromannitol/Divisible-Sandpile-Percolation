@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinStep2Averaged
+
+/-! # Step 2 Window Connectors
+
 The connectors between the hypothesis `eq:dgt4-uniform-contact-thresholds` and the window
 form Step 2 consumes (`sandpile.tex:5472-5479`, `sandpile.tex:5531-5565`).
 
@@ -14,7 +17,6 @@ window, because `r\leq j\leq(1-\varepsilon)n_R` makes `n_R-r` an integer at leas
 weights are at most `2G(0,0)\kappa/(n_R-r)\leq2G(0,0)\kappa/(\varepsilon n_R)`, hence at
 most `1/2` once `4G(0,0)\kappa\leq\varepsilon n_R`.
 -/
-import Sandpile.Support.LinStep2Averaged
 
 open MeasureTheory Filter Topology
 

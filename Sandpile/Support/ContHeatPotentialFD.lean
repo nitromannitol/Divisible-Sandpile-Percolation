@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContVectorCLT
+import Sandpile.Support.ContHeatPotential
+
+/-!
+# The Finite-Dimensional Clause Reduced to Coefficient Statements
+
 The finite-dimensional clause of `prop:dlt4-heat-potential-invariance`
 (`sandpile.tex:1841-1848`), reduced to two statements about the coefficients of
 the rescaled linear field.
@@ -14,8 +19,6 @@ the pair `hQlim`, `hQvar`, are the only analytic input left in the clause; they
 are the local central limit theorem and the Riemann-sum convergence of
 `ssec:green-estimates`.
 -/
-import Sandpile.Support.ContVectorCLT
-import Sandpile.Support.ContHeatPotential
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

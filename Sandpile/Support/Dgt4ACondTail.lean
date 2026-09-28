@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ACondMeas
+import Sandpile.Support.Dgt4ACondUnion
+import Sandpile.Support.Dgt4ACorrGap
+
+/-!
+# One-site Gaussian tail of the conditioned field
+
 **The one-site Gaussian tail of the conditioned field**, the estimate Step 3 of case (a)
 feeds to its union bound (`sandpile.tex:5176-5183`): under the conditioning
 `-V_\infty(0)=\E u_n(0)+\Sigma^2y/\E u_n(0)` the field at a site `z\ne0` is a Gaussian
@@ -12,9 +18,6 @@ The Gaussian input is Chernoff's bound for an isonormal image
 the conditioned direction can only shrink the norm, so the variance is at most
 `\|G(0,\cdot)\|^2`, which is `\Sigma^2` in the units of the conditioned scenery.
 -/
-import Sandpile.Support.Dgt4ACondMeas
-import Sandpile.Support.Dgt4ACondUnion
-import Sandpile.Support.Dgt4ACorrGap
 
 open LatticeProb.Isonormal
 

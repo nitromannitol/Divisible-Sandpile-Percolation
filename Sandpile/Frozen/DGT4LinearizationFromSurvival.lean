@@ -1,4 +1,15 @@
-/-
+import Sandpile.Law
+import Sandpile.Walk
+import Sandpile.Continuum.Membrane
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.IntersectionSecondMomentProved
+import Sandpile.External.ContinuumBesovTightness
+import Sandpile.External.RellichKondrachovNegSobolev
+import Sandpile.Support.LinJacobianFirstConjunct
+import Sandpile.Support.Dgt4ALinNegSobolev
+
+/-! # Linearization from Path Survival
+
 Lemma of sandpile.tex, frozen.  `sandpile.tex:5686-5731`
 (label `lem:dgt4-linearization-from-survival`):
 
@@ -69,15 +80,6 @@ The scenery is written in the mass normalization: the integration variable is
 one-site law `ν` and `u_n` is `Sandpile.odometer σ n`; `E u_{n_R}(0)` is
 `Sandpile.meanOdometer` and `P^j ζ` is `Sandpile.avg^[j] ζ`.
 -/
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.IntersectionSecondMomentProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.RellichKondrachovNegSobolev
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.Support.Dgt4ALinNegSobolev
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

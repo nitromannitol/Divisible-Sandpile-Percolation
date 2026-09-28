@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.HeatPotentialDefs
+import Sandpile.Frozen.DifferenceRepresentation
+import Sandpile.External.BPSHProved
+import Sandpile.Support.Membrane
+import Sandpile.Support.Walk
+
+/-!
+# The exact identity of the parabolic-scale rescaling
+
 The exact identity of the proof of Theorem 1.3(i)(b) at the parabolic scale
 (`sandpile.tex:1881-1890`), and the two facts about optimal-stopping values it is
 read through.
@@ -24,11 +32,6 @@ whose payoffs differ by at most `E` differ by at most `E`
 (`abs_stoppingSup_sub_le`), which is the form in which the cutoff error of
 `sandpile.tex:1908-1921` is paid.
 -/
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Frozen.DifferenceRepresentation
-import Sandpile.External.BPSHProved
-import Sandpile.Support.Membrane
-import Sandpile.Support.Walk
 
 open MeasureTheory
 open scoped Pointwise

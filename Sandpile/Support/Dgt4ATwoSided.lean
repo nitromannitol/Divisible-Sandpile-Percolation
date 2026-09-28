@@ -1,12 +1,15 @@
-/-
+import Sandpile.External.GaussianLipschitzConcentration
+
+/-!
+# Two-sided Gaussian concentration from the one-sided bounds
+
 The two-sided Gaussian tail from the two one-sided concentration inequalities: if
 `\P(\E f+t\leq f)\leq e^{-t^2/(2L^2)}` and `\P(f+t\leq\E f)\leq e^{-t^2/(2L^2)}` for every
-`t\geq0` then `\P(t\leq|f-\E f|)\leq 2e^{-t^2/(2L^2)}`, by the union bound over the two
-signs.  This is the passage from the cited Gaussian concentration
-(`Sandpile.External.GaussianLipschitzConcentration`, applied to `f` and to `-f`) to the
-two-sided tail of `sandpile.tex:5059-5061`.
+`t\geq0` then `\P(t\leq|f-\E f|)\leq 2e^{-t^2/(2L^2)}`, by the union bound over the two signs. This
+is the passage from the cited Gaussian concentration
+(`Sandpile.External.GaussianLipschitzConcentration`, applied to `f` and to `-f`) to the two-sided
+tail of `sandpile.tex:5059-5061`.
 -/
-import Sandpile.External.GaussianLipschitzConcentration
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

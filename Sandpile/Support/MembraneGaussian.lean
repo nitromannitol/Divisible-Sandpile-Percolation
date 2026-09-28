@@ -1,9 +1,19 @@
-/-
-The Gaussian limit and exact logarithmic variance of the dimension-four membrane
-from the paired heat-kernel estimate and the weighted independent-row theorem.
--/
 import Sandpile.Support.DoubleHeatKernel
 import LatticeProb.Prob.WeightedCLT
+
+/-!
+# Gaussian limit of the dimension-four membrane
+
+The Gaussian limit and exact logarithmic variance of the dimension-four membrane from the
+paired heat-kernel estimate and the weighted independent-row central limit theorem. The sum
+of squared Green weights at the origin is rewritten as a double sum of heat kernel values
+(`green_square_eq_double_kernel`) and shown to grow like `(4/π²)·log t`
+(`tendsto_green_square_div_log_four`), using `External.PairedLocalCLTFour`. Feeding the Green
+weights as the array of a weighted i.i.d. central limit theorem then gives the Gaussian limit
+of `membrane ζ t 0 / √(log t)` (`tendsto_membrane_gaussian_four`), and combining the exact
+variance identity `variance_membrane` with the same logarithmic asymptotics gives the matching
+variance asymptotics (`tendsto_membrane_variance_four`).
+-/
 
 open LatticeProb
 
@@ -11,6 +21,9 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- The sum of squared Green weights at the origin equals a double sum of heat kernel values
+at combined time steps, via the identification of `greenTime` with `LatticeProb.srwGreen` and
+the paired heat-kernel identity `LatticeProb.tsum_srwGreen_sq`. -/
 theorem green_square_eq_double_kernel (d t : ℕ) :
     (∑' y : Site d, greenTime d t 0 y ^ 2) =
       ∑ a ∈ Finset.range t, ∑ b ∈ Finset.range t, heatKernel d (a + b) 0 0 := by
@@ -18,6 +31,11 @@ theorem green_square_eq_double_kernel (d t : ℕ) :
   rw [LatticeProb.tsum_srwGreen_sq]
   simp only [heatKernel_eq_srwHeat, sub_self]
 
+/-- In dimension four, the sum of squared Green weights at the origin, divided by `log t`,
+tends to `4/π²`: the paired heat-kernel bound `hPaired` (through
+`exists_double_heat_kernel_four_bound`) controls the deviation of
+`green_square_eq_double_kernel`'s double sum from `(4/π²)·log t` by a constant, and dividing by
+the divergent `log t` kills that constant error. -/
 theorem tendsto_green_square_div_log_four (hPaired : External.PairedLocalCLTFour) :
     Tendsto (fun t : ℕ => (∑' y : Site 4, greenTime 4 t 0 y ^ 2) / Real.log t) atTop
       (𝓝 (4 / Real.pi ^ 2)) := by
@@ -45,6 +63,12 @@ theorem tendsto_green_square_div_log_four (hPaired : External.PairedLocalCLTFour
         (∑' y : Site 4, greenTime 4 t 0 y ^ 2) / Real.log t from by ring)
   simpa only [zero_add] using h
 
+/-- **The dimension-four membrane at the origin, rescaled by `√(log t)`, converges in
+distribution to a centred Gaussian of variance `4·Var(ν)/π²`.**  The membrane is a weighted
+sum of i.i.d. scenery values with Green weights `greenTime 4 t 0 (boxEnum · ·)`; the weights
+each shrink to zero (`hsmall`, from the uniform Green bound `LatticeProb.srwGreen_four_le`) and
+their squares sum to `4/π²` in the limit (`hQ`, from `tendsto_green_square_div_log_four`), so
+the weighted independent-row central limit theorem `weighted_iid_central_limit_pick` applies. -/
 theorem tendsto_membrane_gaussian_four (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hsq : MemLp (id : ℝ → ℝ) 2 ν)
     (hmean : ∫ z, z ∂ν = 0) :
@@ -95,6 +119,10 @@ theorem tendsto_membrane_gaussian_four (hPaired : External.PairedLocalCLTFour)
   simpa only [he, hvQ] using hclt
 
 
+/-- The variance of the dimension-four membrane at the origin, divided by `log t`, tends to
+`4·Var(ν)/π²`: the exact identity `variance_membrane` rewrites the variance as `Var(ν)` times
+the sum of squared Green weights, and `tendsto_green_square_div_log_four` supplies the limit of
+that sum divided by `log t`. -/
 theorem tendsto_membrane_variance_four (hPaired : External.PairedLocalCLTFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hsq : MemLp (id : ℝ → ℝ) 2 ν) :
     Tendsto (fun t : ℕ => variance (fun ζ => membrane ζ t 0) (LatticeProb.iidLaw 4 ν) /

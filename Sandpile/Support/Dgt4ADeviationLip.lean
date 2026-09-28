@@ -1,12 +1,15 @@
-/-
+import Sandpile.Support.Dgt4AOriginDeviation
+import Sandpile.Support.Dgt4AAvgDeviation
+
+/-!
+# Two-site Lipschitz bound for the centred deviation
+
 The coordinatewise Lipschitz coefficient of the centred deviation
-`D_n = (V_∞-u_n)(0) - P(V_∞-u_n)(0)` of `sandpile.tex:5050-5058`, at the coordinate `z`:
-at most `G(0,z) + PG(·,z)(0)`.  It is the two-site form of the coordinatewise Lipschitz
+`D_n = (V_∞-u_n)(0) - P(V_∞-u_n)(0)` of `sandpile.tex:5050-5058`, at the coordinate `z`,
+is at most `G(0,z) + PG(·,z)(0)`. It is the two-site form of the coordinatewise Lipschitz
 bound of `Support/Dgt4FieldRecursion.lean`, one application at the origin and one at each
 neighbour, combined through the triangle inequality.
 -/
-import Sandpile.Support.Dgt4AOriginDeviation
-import Sandpile.Support.Dgt4AAvgDeviation
 
 open MeasureTheory Filter Topology Set
 
@@ -49,7 +52,15 @@ theorem abs_centeredDeviation_update_le (hd : 3 ≤ d) (ζ : Site d → ℝ)
               - odometerOf (Function.update ζ z v) n 0)|
         + |avg (fun y => infiniteGreenField ζ y - odometerOf ζ n y) 0
           - avg (fun y => infiniteGreenField (Function.update ζ z v) y
-              - odometerOf (Function.update ζ z v) n y) 0| := by have h := abs_sub_le ((infiniteGreenField ζ 0 - odometerOf ζ n 0) - (infiniteGreenField (Function.update ζ z v) 0 - odometerOf (Function.update ζ z v) n 0)) 0 ((avg (fun y => infiniteGreenField ζ y - odometerOf ζ n y) 0) - (avg (fun y => infiniteGreenField (Function.update ζ z v) y - odometerOf (Function.update ζ z v) n y) 0)); simpa [abs_sub_comm] using h
+              - odometerOf (Function.update ζ z v) n y) 0| := by
+        have h := abs_sub_le
+          ((infiniteGreenField ζ 0 - odometerOf ζ n 0)
+            - (infiniteGreenField (Function.update ζ z v) 0
+                - odometerOf (Function.update ζ z v) n 0)) 0
+          ((avg (fun y => infiniteGreenField ζ y - odometerOf ζ n y) 0)
+            - (avg (fun y => infiniteGreenField (Function.update ζ z v) y
+                - odometerOf (Function.update ζ z v) n y) 0))
+        simpa [abs_sub_comm] using h
     _ ≤ green d 0 z * |ζ z - v| + avg (fun y => green d y z) 0 * |ζ z - v| :=
         add_le_add h1 h2
     _ = (green d 0 z + avg (fun y => green d y z) 0) * |ζ z - v| := by ring

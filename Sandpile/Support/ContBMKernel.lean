@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Kernel
+
+/-!
+# Elementary Properties of the Brownian Heat Kernel
+
 Elementary properties of the Brownian heat kernel `p^{BM}` of
 `eq:brownian-heat-green-kernels` (`sandpile.tex:963-968`): nonnegativity,
 positivity at positive times, symmetry, and the on-diagonal bound.
@@ -7,7 +11,6 @@ These are what the local central limit theorem of `sandpile.tex:1145-1161` is
 compared against when the double time sum of `prop:weighted-membrane-limit` is
 turned into the double time integral of `generalWeightedMembraneCov`.
 -/
-import Sandpile.Continuum.Kernel
 
 open MeasureTheory
 

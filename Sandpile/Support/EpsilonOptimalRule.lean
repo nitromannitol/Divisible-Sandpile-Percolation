@@ -1,17 +1,24 @@
-/-
+import Mathlib
+import Sandpile.Walk
+import Sandpile.Support.Localization
+
+/-! # Epsilon-Optimal Localized Stopping Rules
+
 ε-optimal localized stopping rules: for every starting point in the domain
 and every ε > 0 there is a stopping rule bounded by the horizon whose
 expected localized payoff is within ε of the localized value.  This is the
 selection step for the finite-range lower bound of the dimension-four
 critical-level percolation argument (`sandpile.tex:3882-3895`).
 -/
-import Mathlib
-import Sandpile.Walk
-import Sandpile.Support.Localization
 
 open MeasureTheory
 namespace Sandpile
 
+/-- **ε-optimal localized stopping rule.**  For a horizon `t`, starting point `y ∈ D` and
+`ε > 0`, there is a stopping rule `ρ` bounded by `t` whose expected localized payoff, the
+scenery values summed up to the exit of `D`, is within `ε` of `localizedOdometer D ζ t y`. The
+rule is extracted from the supremum `stoppingSup` defining the localized odometer by
+approximating that supremum from below. -/
 theorem exists_epsilon_optimal_rule {d : ℕ} (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d → ℝ)
     (t : ℕ) (y : Site d) (hy : y ∈ D) (ε : ℝ) (hε : 0 < ε) :
     ∃ ρ : (ℕ → Site d) → ℕ, IsWalkStopping ρ ∧ (∀ X, ρ X ≤ t) ∧

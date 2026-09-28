@@ -1,19 +1,17 @@
-/-
-The smoothed difference `P^n(u_{t-n} - V_{t-n})(x)` as a function of finitely
-many scenery coordinates, with its coordinate Lipschitz bound.
-
-Step 2 of `prop:d4-pointwise-linearization` (`sandpile.tex:3100-3125`) reads the
-first summand of the backward decomposition through
-`lem:difference-representation`: changing one coordinate `ζ(z)` by `h` moves
-`u_{t-n}(y) - V_{t-n}(y)` by at most `|h| ∑_{j<t-n} p_j(y,z)`, and averaging
-against `p_n(x,y)` turns that into `|h| ∑_{k=n}^{t-1} p_k(x,z)`.  Here the same
-coefficient is obtained without the optimal-stopping representation: the
-odometer's own Lipschitz bound is `Sandpile.abs_odometerOf_update_le` and the
-membrane is linear with the same kernel, so the difference has twice that
-coefficient, which changes only the constants of the tail.
--/
 import Sandpile.Support.Smoothed
 import Sandpile.Support.D4Linearization
+
+/-!
+# The smoothed difference as a function of finitely many scenery coordinates
+
+This file writes the smoothed difference `P^n(u_{t-n} - V_{t-n})(x)` as a function of finitely
+many scenery coordinates, with its coordinate Lipschitz bound, for Step 2 of
+`prop:d4-pointwise-linearization` (`sandpile.tex:3100-3125`). The paper's coefficient
+`|h| ∑_{k=n}^{t-1} p_k(x,z)` for changing one coordinate `ζ(z)` by `h` is recovered here
+without the optimal-stopping representation: the odometer's own Lipschitz bound is
+`Sandpile.abs_odometerOf_update_le` and the membrane is linear with the same kernel, so the
+difference has twice that coefficient, which only changes the constants of the tail.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -44,6 +42,8 @@ theorem membrane_eq_sum_avg_iterate (ζ : Site d → ℝ) :
         Finset.sum_range_succ' (fun k => (avg^[k] ζ) y) n]
       simp [add_comm]
 
+/-- The averaging operator `avg` iterated `m` times distributes over a finite sum of fields:
+`(P^m ∑_{k∈s} F_k)(x) = ∑_{k∈s} (P^m F_k)(x)`. -/
 theorem avg_iterate_finsetSum {ι : Type*} (s : Finset ι) :
     ∀ (m : ℕ) (F : ι → Site d → ℝ) (x : Site d),
       (avg^[m] fun y => ∑ k ∈ s, F k y) x = ∑ k ∈ s, (avg^[m] (F k)) x := by
@@ -81,6 +81,9 @@ theorem smoothedCoeff_eq_zero_of_lt (m n : ℕ) (x z : Site d) (h : m + n < boxD
   have hj' : j < n := Finset.mem_range.mp hj
   exact heatKernel_eq_zero_of_lt (m + j) x z (by omega)
 
+/-- The infinite pairing `∑_z smoothedCoeff d m n x z * f z` collapses to the finite sum over
+the box `boxFinset x (m+n)`, since the coefficient vanishes outside it
+(`smoothedCoeff_eq_zero_of_lt`). -/
 theorem tsum_smoothedCoeff_mul_eq_sum (m n : ℕ) (x : Site d) (f : Site d → ℝ) :
     ∑' z : Site d, smoothedCoeff d m n x z * f z
       = ∑ z ∈ boxFinset x (m + n), smoothedCoeff d m n x z * f z := by
@@ -90,6 +93,9 @@ theorem tsum_smoothedCoeff_mul_eq_sum (m n : ℕ) (x : Site d) (f : Site d → �
       (by by_contra hc; exact hz (mem_boxFinset (Nat.le_of_not_lt hc)))
   simp [hzero]
 
+/-- The special case of `tsum_smoothedCoeff_mul_eq_sum` at `f = smoothedCoeff d m n x`: the
+`ℓ²` sum of the window coefficient over the whole lattice equals its sum over the box
+`boxFinset x (m+n)`. -/
 theorem tsum_smoothedCoeff_sq_eq_sum (m n : ℕ) (x : Site d) :
     ∑' z : Site d, smoothedCoeff d m n x z ^ 2
       = ∑ z ∈ boxFinset x (m + n), smoothedCoeff d m n x z ^ 2 := by
@@ -122,6 +128,8 @@ theorem avg_iterate_diffField (m n : ℕ) (x : Site d) (ζ : Site d → ℝ) :
     exact tsum_congr fun z => by ring
   rw [hmul]; ring
 
+/-- `windowLinear s m n x`, evaluated at the coordinates of `ζ` on any finite set `s`
+containing the box `boxFinset x (m+n)`, recovers `P^m V_n(x)`. -/
 theorem windowLinear_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
     (hsub : boxFinset x (m + n) ⊆ s) (ζ : Site d → ℝ) :
     windowLinear s m n x (fun i => ζ (siteEnum s i)) = (avg^[m] (membrane ζ n)) x := by
@@ -134,6 +142,8 @@ theorem windowLinear_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
       (by by_contra hc; exact hz (mem_boxFinset (Nat.le_of_not_lt hc)))
   simp [hzero]
 
+/-- `diffSmoothed s m n x`, evaluated at the coordinates of `ζ` on any finite set `s`
+containing the box `boxFinset x (m+n)`, recovers `P^m(u_n - V_n)(x)`. -/
 theorem diffSmoothed_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
     (hsub : boxFinset x (m + n) ⊆ s) (ζ : Site d → ℝ) :
     diffSmoothed s m n x (fun i => ζ (siteEnum s i)) = (avg^[m] (diffField ζ n)) x := by
@@ -142,11 +152,15 @@ theorem diffSmoothed_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
       = (avg^[m] fun z => odometerOf ζ n z) x := scenerySmoothed_pick hsub' ζ
   rw [diffSmoothed, hodo, windowLinear_pick hsub' ζ, avg_iterate_diffField m n x ζ]
 
+/-- `windowLinear s m n x` is measurable, being a finite sum of coordinate projections each
+scaled by a constant coefficient. -/
 theorem measurable_windowLinear (s : Finset (Site d)) (m n : ℕ) (x : Site d) :
     Measurable (windowLinear s m n x) := by
   unfold windowLinear
   exact Finset.measurable_sum _ fun i _ => (measurable_pi_apply i).const_mul _
 
+/-- `diffSmoothed s m n x` is measurable, being the difference of the measurable functions
+`scenerySmoothed s m n x` and `windowLinear s m n x`. -/
 theorem measurable_diffSmoothed (s : Finset (Site d)) (m n : ℕ) (x : Site d) :
     Measurable (diffSmoothed s m n x) :=
   (measurable_scenerySmoothed s m n x).sub (measurable_windowLinear s m n x)

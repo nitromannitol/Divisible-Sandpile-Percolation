@@ -1,19 +1,19 @@
-/-
-The uniform exponential moment of the centred rescaled odometer,
-`sandpile.tex:1995-2007`.
-
-`lem:weighted-exp-conc` bounds the moment generating function of a
-coordinate-Lipschitz functional at every parameter below the reciprocal of the
-supremum of its weights, with a constant read at the gap between the two.  For
-the rescaled odometer that gap moves with `R`, so the bound is made uniform by
-raising one weight to the common bound `√M`: the supremum norm is then exactly
-`√M`, the parameter `θ = θ₀/(2√M)` leaves the fixed gap `θ₀/2`, and the square
-sum, which is what multiplies the constant, is at most `2M` by the uniform
-Green bound.  The product `θ²‖ℓ‖₂²` is then at most `θ₀²/2`, independent of `R`.
--/
 import Sandpile.Support.MeanAConc
 import Sandpile.Support.PointwiseConc
 import Sandpile.Support.SceneryBridge
+
+/-!
+# The uniform exponential moment of the centred rescaled odometer
+
+The uniform exponential moment of the centred rescaled odometer, `sandpile.tex:1995-2007`.
+`lem:weighted-exp-conc` bounds the moment generating function of a coordinate-Lipschitz
+functional at every parameter below the reciprocal of the supremum of its weights, with a
+constant read at the gap between the two. For the rescaled odometer that gap moves with `R`, so
+the bound is made uniform by raising one weight to the common bound `√M`: the supremum norm is
+then exactly `√M`, the parameter `θ = θ₀/(2√M)` leaves the fixed gap `θ₀/2`, and the square sum,
+which is what multiplies the constant, is at most `2M` by the uniform Green bound, so the
+product `θ²‖ℓ‖₂²` is at most `θ₀²/2`, independent of `R`.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -21,6 +21,8 @@ namespace Sandpile.Support
 
 variable {d : ℕ}
 
+/-- Raising the `i₀`-th weight to `m`, when every weight is already at most `m`, makes the
+supremum norm of the updated tuple exactly `m`. -/
 theorem lInfNorm_update_eq {N : ℕ} (ℓ : Fin N → ℝ) (i₀ : Fin N) (m : ℝ)
     (hle : ∀ i, ℓ i ≤ m) : Sandpile.lInfNorm (Function.update ℓ i₀ m) = m := by
   haveI : Nonempty (Fin N) := ⟨i₀⟩

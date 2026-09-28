@@ -1,14 +1,20 @@
-/-
-The boundedness of the far values of `lem:brownian-ball-localization`
-(`sandpile.tex:1647-1658`) with no separate moment hypothesis.
-
-The polynomial moment of the compact-time Brownian maximum is uniform over the
-starting point and the motion (`exists_uniform_pathRadius_moment`), so the
-boundedness of the far values follows from the samplewise polynomial growth of
-the field alone.
--/
 import Sandpile.Support.ExplBallBound
 import Sandpile.Support.ExplBallMoment
+
+/-!
+# Uniform boundedness of the far values, from a uniform path-radius moment
+
+The boundedness of the far values of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
+with no separate moment hypothesis.
+
+The polynomial moment of the compact-time Brownian maximum is uniform over the starting point
+and the motion (`exists_uniform_pathRadius_moment`), so the boundedness of the far values
+follows from the samplewise polynomial growth of the field alone.
+`bddAbove_farValues_of_growth_uniform` draws this conclusion at a single sample point directly,
+`bddAbove_farValues_of_growth_pointwise` supplies the underlying quantitative bound, and
+`bddAbove_farValues_of_samplewise_growth_uniform` upgrades to an almost-sure statement when the
+growth amplitude and degree are only chosen after the sample.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -111,6 +117,7 @@ theorem bddAbove_farValues_of_samplewise_growth_uniform {PW : Measure ΩW}
     ∀ᵐ ω ∂PW, BddAbove (farValues B PB (fun t z => Z t z ω) T A K) := by
   filter_upwards [hgrowth, hcontZ] with ω hg hc
   obtain ⟨C, hC, p, hp⟩ := hg
-  exact bddAbove_farValues_of_growth_pointwise (PW := PW) (PB := PB) hBrown hcont hmeas Z T A hT K hK p C hC ω hp hc
+  exact bddAbove_farValues_of_growth_pointwise (PW := PW) (PB := PB) hBrown hcont hmeas Z T A hT
+    K hK p C hC ω hp hc
 
 end Sandpile.Continuum

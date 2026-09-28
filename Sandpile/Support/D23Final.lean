@@ -1,13 +1,17 @@
-/-
-The dimension two and three critical level percolation theorem, assembled.
-
-`d23_sequential_of_crossing` supplies the sequential step;
-`d23BlockCrossing_of_convergent_variance` turns it into the uniform block-crossing
-estimate; `d23_critical_level_percolation_of_block_crossing` turns that into the
-theorem.
--/
 import Sandpile.Support.D23SequentialStep
 import Sandpile.Support.D23Assembly
+
+/-!
+# Assembling the critical-level percolation theorem in dimensions two and three
+
+This file composes the main percolation result from three pieces proved elsewhere: the
+sequential step `d23_sequential_of_crossing`, which is turned into the uniform block-crossing
+estimate by `d23BlockCrossing_of_convergent_variance`, which is in turn converted into the
+percolation statement by `d23_critical_level_percolation_of_block_crossing`. The single
+declaration here, `d23_critical_level_percolation_assembled`, chains these three results
+together to conclude that the critical level of the odometer has an infinite component in the
+coordinate plane, in dimensions two and three.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

@@ -1,8 +1,14 @@
-/-
-Walk extraction from the vertical crossing value: the transpose companion of
-`exists_lr_walk_of_le_crossingValue`.
--/
 import Sandpile.Support.BlockGeometry
+
+/-!
+# The vertical crossing value and the good-block predicate
+
+Walk extraction from the vertical crossing value: `exists_tb_walk_of_le_verticalCrossingValue` is
+the transpose companion of `exists_lr_walk_of_le_crossingValue`, obtained by conjugating a
+left-right walk on the transposed rectangle by `rectangleTransposeHom`. The file also defines
+`blockShift`, which recenters the field at a coarse block anchored at `2r · z`, and `BlockGood`,
+the conjunction of the four block crossings of `sandpile.tex:3974-3981` for that shifted field.
+-/
 
 open scoped NNReal
 noncomputable section
@@ -17,8 +23,10 @@ lemma exists_tb_walk_of_le_verticalCrossingValue {w h : ℕ} (F : planeRectangle
       (a : Site 2) 1 = 0 ∧ (b : Site 2) 1 = h ∧
       ∀ z ∈ p.support, ℓ ≤ F z := by
   obtain ⟨a', b', p', ha', hb', hp'⟩ :=
-    exists_lr_walk_of_le_crossingValue (fun z : planeRectangle h w => F (transposeRectangle h w z)) hℓ
-  refine ⟨transposeRectangle h w a', transposeRectangle h w b', p'.map (rectangleTransposeHom h w), ?_, ?_, ?_⟩
+    exists_lr_walk_of_le_crossingValue
+      (fun z : planeRectangle h w => F (transposeRectangle h w z)) hℓ
+  refine ⟨transposeRectangle h w a', transposeRectangle h w b',
+    p'.map (rectangleTransposeHom h w), ?_, ?_, ?_⟩
   · have ha0 := (mem_rectangleLeft_planeRectangle _).mp ha'
     have hz1 : ((transposeRectangle h w a' : planeRectangle w h) : Site 2) 1 = (a' : Site 2) 0 := by
       have := transposeRectangle_coord_zero w h (transposeRectangle h w a')

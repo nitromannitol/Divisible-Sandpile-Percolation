@@ -1,14 +1,15 @@
-/-
-Square integrability of the continuum value at a general `(T,x)` from the law
-identity of clause 1 of `prop:continuum-value-selfsimilar` and square
-integrability at `(1,0)`.
-
-The law identity `𝒰(T,x) =^d T^β 𝒰(1,0)` transfers `MemLp` across the map, and
-`MemLp.comp_of_map` pulls it back along the measurable value.
--/
 import Sandpile.Support.MeanAValue
 import Sandpile.Support.ContLawTransfer
 import Sandpile.Support.ContMeanAsymptotic
+
+/-!
+# Square integrability of the continuum value by transfer of law
+
+Square integrability of the continuum value at a general `(T,x)` from the law identity of
+clause 1 of `prop:continuum-value-selfsimilar` and square integrability at `(1,0)`. The law
+identity `𝒰(T,x) =^d T^β 𝒰(1,0)` transfers `MemLp` across the map, and `MemLp.comp_of_map`
+pulls it back along the measurable value.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

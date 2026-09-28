@@ -1,14 +1,19 @@
-/-
-The two boundedness inputs of `lem:brownian-ball-localization`
-(`sandpile.tex:1647-1658`): the terminal reward is bounded above on the
-`A`-neighbourhood of the compact set `K`, and the attainable stopping payoffs of
-the field are bounded above at every starting point of the neighbourhood.
-
-The paper's proof bounds the value at `u` by the value at the nearest point of
-`K` plus the exit-time tail; the two facts here are what that comparison needs.
--/
 import Sandpile.Support.ExplBallGaussian
 import Sandpile.Support.ExplBrownianEnvelope
+
+/-!
+# Boundedness and growth inputs of ball localization
+
+This file supplies the two boundedness inputs of `lem:brownian-ball-localization`: the terminal
+reward is bounded above on the `A`-neighbourhood of the compact set `K`, and the attainable
+stopping payoffs of the field are bounded above at every starting point of that neighbourhood.
+The paper's proof bounds the value at `u` by the value at the nearest point of `K` plus the
+exit-time tail, and these are the two facts that comparison needs. The boundedness of the
+stopping payoffs and of the Brownian value itself are derived here from samplewise polynomial
+growth of the field together with a moment bound on the Brownian path radius, and combined with
+the strong Markov step into the per-sample bundle `BallLocalizationInput`, first at one point and
+then uniformly over the compact set `K`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -217,6 +222,9 @@ theorem ballInput_of_samplewise_growth {PW : Measure ΩW} [IsProbabilityMeasure 
   exact BallLocalizationInput.of B PB (fun t z => Z t z ω) T A K u hfull hf (hst u hu)
 
 
+/-- Almost surely, the far values `farValues B PB (fun t z => Z t z ω) T A K` are bounded
+above, from a uniform polynomial growth bound on `Z` and a uniform bound `M` on the `p`-th
+moment of `1 + brownianPathRadius`, applied at each point of the `A`-neighbourhood of `K`. -/
 theorem bddAbove_farValues_of_growth {PW : Measure ΩW} [IsProbabilityMeasure PW]
     {PB : Measure ΩB} [IsProbabilityMeasure PB] {B : Space d → ℝ≥0 → ΩB → Space d}
     (hBrown : ∀ y : Space d, IsBrownian d y (B y) PB)

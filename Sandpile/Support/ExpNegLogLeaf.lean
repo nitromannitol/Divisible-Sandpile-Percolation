@@ -1,12 +1,19 @@
-/-
+import Mathlib
+
+/-!
+# An elementary exponential decay leaf
+
 An elementary decay leaf: `exp (-k * log r) < q` eventually.
 -/
-import Mathlib
 
 open Filter Real
 
 namespace Sandpile
 
+/-- `Real.exp (-(k * Real.log r))` is eventually, in `r : ℕ`, less than `q`: past the
+threshold `r₀ = ⌈exp (-(log q) / k)⌉ + 1`, taking logarithms and using the monotonicity of
+`Real.exp` and `Real.log` turns the claim into the elementary comparison `-(log q)/k < log r`.
+-/
 lemma eventually_exp_neg_mul_log_lt {k q : ℝ} (hk : 0 < k) (hq : 0 < q) :
     ∃ r₀ : ℕ, ∀ r : ℕ, r₀ ≤ r → Real.exp (-(k * Real.log (r : ℝ))) < q := by
   have hR : 0 < Real.exp (-(Real.log q) / k) := Real.exp_pos _

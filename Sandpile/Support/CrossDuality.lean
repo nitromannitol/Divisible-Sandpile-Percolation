@@ -1,52 +1,53 @@
-/-
+import Sandpile.Support.CrossFieldSym
+import Sandpile.Support.CrossLaw
+import Sandpile.Support.CrossGrid
+
+/-!
+# The square crossing estimate from planar duality
+
 The square estimate of `sandpile.tex:2235-2236`:
 
-  "By sign symmetry and rotation invariance, `P(H_{[-R,R]^2}(0)) ≥ 1/2`
-   uniformly in `R ≥ 1`."
+  "By sign symmetry and rotation invariance, `P(H_{[-R,R]^2}(0)) ≥ 1/2` uniformly in `R ≥ 1`."
 
-The argument is planar duality together with the two symmetries.  Duality, the
-deterministic statement that for a continuous field either the superlevel set
-crosses the square left-right or the sublevel set crosses it bottom-top, is
-`continuum_square_duality` of `Sandpile/Support/CrossGrid.lean`, proved there by
-discretization onto a grid fine enough for the field's modulus of continuity; it
-holds between the levels `-η` and `η` for every `η > 0`.  The rest is here.
+The argument is planar duality together with the two symmetries. Duality, the deterministic
+statement that for a continuous field either the superlevel set crosses the square left-right or
+the sublevel set crosses it bottom-top, is `continuum_square_duality` of
+`Sandpile/Support/CrossGrid.lean`, proved there by discretization onto a grid fine enough for the
+field's modulus of continuity; it holds between the levels `-η` and `η` for every `η > 0`. The
+rest is here (`square_half_crossApprox`, `square_half_crossing`, `square_half_translate`).
 
-The sublevel bottom-top crossing is the superlevel left-right crossing of the
-field read through the coordinate interchange and the sign flip, which is the
-field `Z = -X ∘ transpose`; the two events are equal as subsets of the
-probability space.  `Z` has the same law as `X`, since the interchange composed
-with the sign flip is one of the symmetries of `IsSymmetricField`.  Equality in
-law does not compare the outer measures of the two crossing events, which are
-not known to be measurable; what it does compare is the chain events of
-`Sandpile/Support/CrossLaw.lean`, and those bracket the crossing probability
-from both sides at levels a distance `ε` apart.  Running the bracket through the
-union bound gives the estimate at the level `-ε`, for every `ε > 0`, and on both
-sides for the CHAIN EVENT, which is measurable:
+The sublevel bottom-top crossing is the superlevel left-right crossing of the field read through
+the coordinate interchange and the sign flip, which is the field `Z = -X ∘ transpose`; the two
+events are equal as subsets of the probability space. `Z` has the same law as `X`, since the
+interchange composed with the sign flip is one of the symmetries of `IsSymmetricField`. Equality
+in law does not compare the outer measures of the two crossing events, which are not known to be
+measurable; what it does compare is the chain events of `Sandpile/Support/CrossLaw.lean`, and
+those bracket the crossing probability from both sides at levels a distance `ε` apart. Running
+the bracket through the union bound gives the estimate at the level `-ε`, for every `ε > 0`, and
+on both sides for the CHAIN EVENT, which is measurable:
 
   `1 ≤ P*(X crosses at 0) + P*(-X ∘ transpose crosses at 0)`
     `≤ P(chain event of X at -ε) + P(chain event of -X ∘ transpose at -ε)`
     `= 2 P(chain event of X at -ε)`      (equal laws)
 
-so `P(chain event of X at -ε) ≥ 1/2`, and the crossing form follows because the
-chain event is contained in the crossing.
+so `P(chain event of X at -ε) ≥ 1/2`, and the crossing form follows because the chain event is
+contained in the crossing.
 
-The loss of `ε` is an artefact of this route and not of the paper: it is the
-price of comparing two crossing events of equal law through countably many
-values, together with the price of sampling the field on a grid.  It cannot be
-removed by letting `ε → 0` in the chain events alone: they decrease, as `ε`
-does, to the set where SOME admissible chain works at every level `-ε`, and the
-chain may change with `ε`, so that set is strictly larger than the chain event
-at the level `0`.  What closes the gap is the compactness of the crossings
-themselves: a Hausdorff limit of compact connected crossings of `{X ≥ -1/n}` is a
-compact connected crossing of `{X ≥ 0}`.  That argument is not written here, and
-nothing downstream needs it: the level enters the fixed-scale crossing estimate
-only through the level loss of Step 3, which compares two levels.  For the same
-reason the `η` of the duality costs nothing: it is absorbed into the `ε`, half of
-the budget going to the grid and half to the chains.
+The loss of `ε` is an artefact of this route and not of the paper: it is the price of comparing
+two crossing events of equal law through countably many values, together with the price of
+sampling the field on a grid. It cannot be removed by letting `ε → 0` in the chain events alone:
+they decrease, as `ε` does, to the set where SOME admissible chain works at every level `-ε`, and
+the chain may change with `ε`, so that set is strictly larger than the chain event at the level
+`0`. What closes the gap is the compactness of the crossings themselves: a Hausdorff limit of
+compact connected crossings of `{X ≥ -1/n}` is a compact connected crossing of `{X ≥ 0}`. That
+argument is not written here, and nothing downstream needs it: the level enters the fixed-scale
+crossing estimate only through the level loss of Step 3, which compares two levels. For the same
+reason the `η` of the duality costs nothing: it is absorbed into the `ε`, half of the budget
+going to the grid and half to the chains.
+
+`crossApprox_mono_field` and `crossingSet_swap` are the elementary facts about crossing events,
+monotonicity in the field and the coordinate-swap symmetry, that the argument above uses.
 -/
-import Sandpile.Support.CrossFieldSym
-import Sandpile.Support.CrossLaw
-import Sandpile.Support.CrossGrid
 
 open MeasureTheory Set
 open scoped NNReal ENNReal

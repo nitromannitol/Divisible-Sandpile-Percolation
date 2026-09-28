@@ -3,12 +3,35 @@ import Sandpile.External.GreenBoundsHighProved
 import Sandpile.Support.ExitGreen
 import Sandpile.Support.NearKernel
 
+/-!
+# The ball-killed Green estimates, proved
+
+This module discharges the seven-clause external input `Sandpile.External.BallGreenBounds`,
+the standard ball-killed Green estimates for the walk killed on exiting the box
+`BallGreen.box r` in dimension four, instead of assuming them. Each display is proved by its
+own `aux_ballgreen_clauseK` theorem: `aux_ballgreen_clause1` through `aux_ballgreen_clause3`
+give the pointwise and `ℓ²` decay of `Sandpile.killedGreen` by comparison with the free
+Green's function `Sandpile.green 4`; `aux_ballgreen_clause4_holds` proves the annular gradient
+bound `annulusUnitShiftBound` from a discrete Caccioppoli inequality; `aux_ballgreen_clause5`
+and `aux_ballgreen_clause6_holds` control the cutoff field `BallGreen.cutField` and its
+shifts, the latter via `farResidualBound_holds`; and `aux_ballgreen_clause7_holds` proves the
+decay `timeTailDecayBound` of `BallGreen.timeTail`, exponential in `A`, from a Gaussian
+heat-kernel bound and a geometric block-survival decay. `aux_ballgreen_assemble` combines all
+seven clauses into one constant pair `(C, c)`, and the
+frozen theorem `Sandpile.External.ballGreenBounds` at the end applies it to close the external
+input.
+-/
+
 open MeasureTheory
 
 open Sandpile
 
 namespace Sandpile.External
 
+/-- Proves clause one: `Sandpile.killedGreen (BallGreen.box r) 0 u` is nonnegative and dominated
+by the free Green's function `Sandpile.green 4 0 u`, which itself decays like `C / (1 + |u|) ^ 2`,
+via the simple-random-walk Green bound `LatticeProb.exists_srwGreenInf_euclid_le` and term-by-term
+domination of the killed kernel by the heat kernel. -/
 theorem aux_ballgreen_clause1 :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r →
       ∀ u : Sandpile.Site 4,
@@ -37,6 +60,10 @@ theorem aux_ballgreen_clause1 :
     simpa [BallGreen.latticeNorm, LatticeProb.euclidNorm] using hfree u
   exact ⟨hnonneg, hdom, hpoint⟩
 
+/-- Proves clause two: the `ℓ²` sum `∑' u, Sandpile.killedGreen (BallGreen.box r) 0 u ^ 2` is at
+most `C * Real.log r`, by combining the pointwise decay from `aux_ballgreen_clause1` with the
+radial shell-counting estimate `LatticeProb.sum_box_radial_le` and the harmonic-sum bound
+`LatticeProb.sum_inv_le_one_add_log`. -/
 theorem aux_ballgreen_clause2 :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r →
       (∑' u : Sandpile.Site 4,
@@ -191,6 +218,10 @@ theorem aux_ballgreen_clause2 :
       _ ≤ C * Real.log (r : ℝ) := hmain
   exact hfinite ▸ hfinbound
 
+/-- Proves clause three: the `ℓ²` sum of `Sandpile.killedGreen (BallGreen.box r) 0 ·` restricted
+to the ball `{u | BallGreen.latticeNorm u ≤ 2 * L}` is at most `C * Real.log (2 * L + 2)`, by the
+same radial shell-counting argument as `aux_ballgreen_clause2`, applied to the sup-norm box of
+side `n = 2 * L` in place of `r`. -/
 theorem aux_ballgreen_clause3 :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, 2 ≤ L →
       (∑' u : {u : Sandpile.Site 4 //
@@ -358,6 +389,12 @@ theorem aux_ballgreen_clause3 :
     norm_num
   exact hbox.trans (mul_le_mul_of_nonneg_left hlogfinal hC.le)
 
+/-- Proves clause five: for a cutoff `φ` satisfying `BallGreen.IsCutoff`, the cutoff field
+`BallGreen.cutField r L φ` is bounded pointwise by `C / L ^ 2` and its cubed sum
+`∑' u, BallGreen.cutField r L φ u ^ 3` is bounded by `C / L ^ 2`, using the decay from
+`aux_ballgreen_clause1`, the vanishing of the cutoff field for `BallGreen.latticeNorm u ≤ L`, and
+the radial tail estimate `LatticeProb.sum_finset_radial_tail_le` for the sixth-power profile
+`f k = C₁ ^ 3 / (1 + k) ^ 6`. -/
 theorem aux_ballgreen_clause5 :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, 2 ≤ L →
       ∀ φ : ℝ → ℝ, BallGreen.IsCutoff φ →
@@ -642,7 +679,9 @@ theorem aux_ballgreen_clause5 :
 They are named propositions, rather than assumed theorems, so the assembly below
 can be checked independently without adding an unproved assumption. -/
 
-def aux_ballgreen_clause4 : Prop :=
+/-- The proposition that a unit-shift discrete-gradient `L²` bound for the box-killed Green's
+function holds uniformly in the box radius `r`, over the annulus `R ≤ |u| ≤ 2R`. -/
+def annulusUnitShiftBound : Prop :=
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ R : ℕ, 2 ≤ R → ∀ i : Fin 4,
       (∑' u : {u : Sandpile.Site 4 //
           (R : ℝ) ≤ BallGreen.latticeNorm u ∧
@@ -652,7 +691,9 @@ def aux_ballgreen_clause4 : Prop :=
           Sandpile.killedGreen (BallGreen.box r) 0 (u : Sandpile.Site 4)) ^ 2) ≤
         C / (R : ℝ) ^ 2
 
-def aux_ballgreen_clause6 : Prop :=
+/-- The proposition that a general-shift `L²` bound for the cutoff-truncated field
+`BallGreen.cutField` holds, uniform in the shift size `M` up to a `(1+M)^4` factor. -/
+def cutFieldShiftBound : Prop :=
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, 2 ≤ L →
       ∀ φ : ℝ → ℝ, BallGreen.IsCutoff φ → ∀ M : ℝ, 1 ≤ M →
         ∀ w : Sandpile.Site 4, BallGreen.latticeNorm w ≤ M * (L : ℝ) →
@@ -660,13 +701,19 @@ def aux_ballgreen_clause6 : Prop :=
             (BallGreen.cutField r L φ u - BallGreen.cutField r L φ (u - w)) ^ 2) ≤
             C * (1 + M) ^ 4
 
-def aux_ballgreen_clause7 : Prop :=
+/-- The proposition that `BallGreen.timeTail` decays exponentially in the time-cutoff parameter `A`,
+both pointwise and in `ℓ²`. -/
+def timeTailDecayBound : Prop :=
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧ ∀ r : ℕ, 2 ≤ r → ∀ A : ℝ, 1 ≤ A →
       (∀ u : Sandpile.Site 4,
           |BallGreen.timeTail r A u| ≤ C / (r : ℝ) ^ 2 * Real.exp (-c * A)) ∧
         (∑' u : Sandpile.Site 4, BallGreen.timeTail r A u ^ 2) ≤
           C * Real.exp (-c * A)
 
+/-- Assembles the seven proved clauses `h1`-`h7` (with `h4`, `h6`, `h7` packaged as the named
+propositions `annulusUnitShiftBound`, `cutFieldShiftBound`, `timeTailDecayBound`) into a single
+`Sandpile.External.BallGreenBounds` witness, taking the shared constant `C` to be the maximum of
+the seven individual constants and the decay rate `c` from clause seven. -/
 theorem aux_ballgreen_assemble
     (h1 : ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r →
       ∀ u : Sandpile.Site 4,
@@ -681,15 +728,15 @@ theorem aux_ballgreen_assemble
           BallGreen.latticeNorm u ≤ 2 * (L : ℝ)},
         Sandpile.killedGreen (BallGreen.box r) 0 (u : Sandpile.Site 4) ^ 2) ≤
         C * Real.log (2 * (L : ℝ) + 2))
-    (h4 : aux_ballgreen_clause4)
+    (h4 : annulusUnitShiftBound)
     (h5 : ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, 2 ≤ L →
       ∀ φ : ℝ → ℝ, BallGreen.IsCutoff φ →
         (∀ u : Sandpile.Site 4,
             |BallGreen.cutField r L φ u| ≤ C / (L : ℝ) ^ 2) ∧
           (∑' u : Sandpile.Site 4, BallGreen.cutField r L φ u ^ 3) ≤
             C / (L : ℝ) ^ 2)
-    (h6 : aux_ballgreen_clause6)
-    (h7 : aux_ballgreen_clause7) :
+    (h6 : cutFieldShiftBound)
+    (h7 : timeTailDecayBound) :
     Sandpile.External.BallGreenBounds := by
   obtain ⟨C₁, hC₁, h1⟩ := h1
   obtain ⟨C₂, hC₂, h2⟩ := h2
@@ -770,7 +817,10 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-private theorem aux_bg4_caccioppoli_support {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
+/-- A discrete Caccioppoli energy inequality on a conductance network: if `f` is harmonic on `B` and
+the test function `eta` satisfies `f * eta^2 = 0` outside `B`, the `eta`-weighted Dirichlet
+energy of `f` is controlled by the gradient energy of `eta` weighted by `f^2`. -/
+private theorem caccioppoli_of_support {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
     {c : V → V → ℝ} (hc : LatticeProb.Network.IsCond G c)
     (S B : Finset V) (f η : V → ℝ)
     (hf : ∀ x ∈ B, LatticeProb.Network.netLaplacian G c f x = 0)
@@ -837,7 +887,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-private theorem aux_bg4_supNorm_adj {x y : Sandpile.Site 4}
+/-- Adjacent sites of the `ℤ^4` lattice graph have sup-norms differing by at most `1`, in both
+directions. -/
+private theorem supNorm_adj_le {x y : Sandpile.Site 4}
     (hxy : (LatticeProb.lattice 4).Adj x y) :
     LatticeProb.supNorm y ≤ LatticeProb.supNorm x + 1 ∧
       LatticeProb.supNorm x ≤ LatticeProb.supNorm y + 1 := by
@@ -885,7 +937,10 @@ private theorem aux_bg4_supNorm_adj {x y : Sandpile.Site 4}
       exact h
   exact ⟨hforward, hback⟩
 
-private theorem aux_bg4_caccioppoli {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
+/-- The Caccioppoli energy inequality for a cutoff function `eta` vanishing outside `B`: the
+`eta`-weighted Dirichlet energy of a function `f` harmonic on `B` is at most four times the
+`f^2`-weighted gradient energy of `eta`. -/
+private theorem caccioppoli_of_cutoff {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
     {c : V → V → ℝ} (hc : LatticeProb.Network.IsCond G c)
     (S B : Finset V) (f η : V → ℝ)
     (hf : ∀ x ∈ B, LatticeProb.Network.netLaplacian G c f x = 0)
@@ -952,7 +1007,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-private theorem aux_bg4_box_eq_set (r : ℕ) :
+/-- The killed-Green box `BallGreen.box r` coincides, as a set, with the coercion of the sup-norm
+box `LatticeProb.boxFinset 0 r`. -/
+private theorem box_eq_boxFinset (r : ℕ) :
     BallGreen.box r = (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4)) := by
   ext u
   simp only [BallGreen.box, Set.mem_setOf_eq, Finset.mem_coe, LatticeProb.mem_boxFinset_iff,
@@ -967,12 +1024,15 @@ private theorem aux_bg4_box_eq_set (r : ℕ) :
       simpa only [Int.abs_eq_natAbs] using hi
     exact_mod_cast hi'
 
-private theorem aux_bg4_killed_eq_network (r : ℕ) (u : Sandpile.Site 4) :
+/-- The box-killed Green's function on `Sandpile.Site 4` equals `8` times the network-killed Green's
+function of the `ℤ^4` lattice graph restricted to the same box, the factor `8` coming from the
+degree normalization between the sandpile and network kernels. -/
+private theorem killedGreen_eq_networkGreen (r : ℕ) (u : Sandpile.Site 4) :
     Sandpile.killedGreen (BallGreen.box r) 0 u =
       8 * LatticeProb.Graph.killedGreenReal (LatticeProb.lattice 4)
         (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4)) 0 u := by
   classical
-  have hbox := aux_bg4_box_eq_set r
+  have hbox := box_eq_boxFinset r
   let q : Sandpile.Site 4 := fun _ => (r + 1 : ℕ)
   have hq : q ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
     intro hq
@@ -993,25 +1053,30 @@ private theorem aux_bg4_killed_eq_network (r : ℕ) (u : Sandpile.Site 4) :
   funext k
   rw [← Sandpile.killedKernel_eq_graph]
 
-noncomputable def aux_bg4_eta (R : ℕ) (x : Sandpile.Site 4) : ℝ :=
+/-- A piecewise-linear cutoff function on `Sandpile.Site 4` that ramps from `0` to `1` on `[R/8,
+R/4]`, stays `1` on `[R/4, 3R]`, and ramps back to `0` on `[3R, 4R]`, used to localize the
+annular gradient estimate at scale `R`. -/
+noncomputable def annulusCutoff (R : ℕ) (x : Sandpile.Site 4) : ℝ :=
   min (max 0 (((LatticeProb.supNorm x : ℝ) - (R : ℝ) / 8) / ((R : ℝ) / 8)))
     (max 0 (min 1 ((4 * (R : ℝ) - (LatticeProb.supNorm x : ℝ)) / (R : ℝ))))
 
-private theorem aux_bg4_eta_zero {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
+/-- `annulusCutoff R` vanishes on the inner region `|x| ≤ R/8`. -/
+private theorem annulusCutoff_eq_zero_of_le {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
     (hx : (LatticeProb.supNorm x : ℝ) ≤ (R : ℝ) / 8) :
-    aux_bg4_eta R x = 0 := by
-  dsimp [aux_bg4_eta]
+    annulusCutoff R x = 0 := by
+  dsimp [annulusCutoff]
   have hq : ((LatticeProb.supNorm x : ℝ) - (R : ℝ) / 8) / ((R : ℝ) / 8) ≤ 0 := by
     apply (div_le_iff₀ (by positivity : (0 : ℝ) < (R : ℝ) / 8)).2
     linarith
   rw [max_eq_left hq]
   simp
 
-private theorem aux_bg4_eta_one {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
+/-- `annulusCutoff R` equals `1` on the plateau `R/4 ≤ |x| ≤ 3R`. -/
+private theorem annulusCutoff_eq_one_of_mem {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
     (hx₁ : (R : ℝ) / 4 ≤ (LatticeProb.supNorm x : ℝ))
     (hx₂ : (LatticeProb.supNorm x : ℝ) ≤ 3 * (R : ℝ)) :
-    aux_bg4_eta R x = 1 := by
-  dsimp [aux_bg4_eta]
+    annulusCutoff R x = 1 := by
+  dsimp [annulusCutoff]
   have hi : 1 ≤ ((LatticeProb.supNorm x : ℝ) - (R : ℝ) / 8) / ((R : ℝ) / 8) := by
     apply (le_div_iff₀ (by positivity : (0 : ℝ) < (R : ℝ) / 8)).2
     linarith
@@ -1024,10 +1089,12 @@ private theorem aux_bg4_eta_one {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
     rw [min_eq_left ho, max_eq_right (by norm_num)]
   rw [hob, min_eq_right hia]
 
-private theorem aux_bg4_eta_lipschitz {R : ℕ} (hR : 0 < R)
+/-- `annulusCutoff R` is Lipschitz with constant `8/R` across an edge of the lattice graph, obtained
+by combining two `1`-Lipschitz linear ramps through `min`/`max`. -/
+private theorem annulusCutoff_lipschitz {R : ℕ} (hR : 0 < R)
     {x y : Sandpile.Site 4} (hxy : (LatticeProb.lattice 4).Adj x y) :
-    |aux_bg4_eta R x - aux_bg4_eta R y| ≤ 8 / (R : ℝ) := by
-  have hs := aux_bg4_supNorm_adj hxy
+    |annulusCutoff R x - annulusCutoff R y| ≤ 8 / (R : ℝ) := by
+  have hs := supNorm_adj_le hxy
   have hdist : |(LatticeProb.supNorm x : ℝ) - (LatticeProb.supNorm y : ℝ)| ≤ 1 := by
     have h1 : (LatticeProb.supNorm y : ℝ) ≤ (LatticeProb.supNorm x : ℝ) + 1 := by
       exact_mod_cast hs.1
@@ -1124,20 +1191,21 @@ private theorem aux_bg4_eta_lipschitz {R : ℕ} (hR : 0 < R)
   rw [ENNReal.coe_nnreal_eq,
     ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (k₈ : ℝ))] at hxy'
   have hto := (ENNReal.toReal_le_toReal ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top).mpr hxy'
-  have hreal : |aux_bg4_eta R x - aux_bg4_eta R y| ≤ (k₈ : ℝ) *
+  have hreal : |annulusCutoff R x - annulusCutoff R y| ≤ (k₈ : ℝ) *
       |(LatticeProb.supNorm x : ℝ) - (LatticeProb.supNorm y : ℝ)| := by
-    simpa [aux_bg4_eta, Real.dist_eq] using hto
-  have hxy'' : |aux_bg4_eta R x - aux_bg4_eta R y| ≤
+    simpa [annulusCutoff, Real.dist_eq] using hto
+  have hxy'' : |annulusCutoff R x - annulusCutoff R y| ≤
       (8 / (R : ℝ)) * |(LatticeProb.supNorm x : ℝ) - (LatticeProb.supNorm y : ℝ)| := by
     simpa [hk₈] using hreal
   exact hxy''.trans (by
     have hk : (0 : ℝ) ≤ 8 / (R : ℝ) := by positivity
     simpa using mul_le_mul_of_nonneg_left hdist hk)
 
-private theorem aux_bg4_eta_zero_outer {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
+/-- `annulusCutoff R` vanishes on the outer region `|x| ≥ 4R`. -/
+private theorem annulusCutoff_eq_zero_of_ge {R : ℕ} (hR : 0 < R) (x : Sandpile.Site 4)
     (hx : 4 * (R : ℝ) ≤ (LatticeProb.supNorm x : ℝ)) :
-    aux_bg4_eta R x = 0 := by
-  dsimp [aux_bg4_eta]
+    annulusCutoff R x = 0 := by
+  dsimp [annulusCutoff]
   have hq : (4 * (R : ℝ) - (LatticeProb.supNorm x : ℝ)) / (R : ℝ) ≤ 0 := by
     apply (div_le_iff₀ (by positivity : (0 : ℝ) < (R : ℝ))).2
     linarith
@@ -1147,7 +1215,12 @@ private theorem aux_bg4_eta_zero_outer {R : ℕ} (hR : 0 < R) (x : Sandpile.Site
     le_max_left _ _
   rw [min_eq_right hi]
 
-theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
+/-- Proves that `annulusUnitShiftBound` holds, i.e. clause four: for `R ≥ 16` this follows from a
+discrete Caccioppoli energy inequality (`caccioppoli_of_support`) applied to `Sandpile.killedGreen`
+as a harmonic test function against the Lipschitz radial cutoff `annulusCutoff R`, which equals `1`
+on the annulus `R ≤ |x| ≤ 2R` and vanishes outside `|x| ≤ 4R`; for `R < 16` a crude finite bound
+over the box `LatticeProb.boxFinset 0 (2 * R + 1)` suffices instead. -/
+theorem aux_ballgreen_clause4_holds : annulusUnitShiftBound := by
   obtain ⟨C₀, hC₀, hclause1⟩ := aux_ballgreen_clause1
   let C : ℝ := C₀ ^ 2 * (2 ^ 40 * 11 ^ 4 + 4 * 63 ^ 4 * 256)
   have hC : 0 < C := by
@@ -1179,11 +1252,11 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
       LatticeProb.Graph.killedGreenReal G (Cfin : Set (Sandpile.Site 4)) 0
     let f : Sandpile.Site 4 → ℝ := fun x =>
       Sandpile.killedGreen (BallGreen.box r) 0 x
-    let eta : Sandpile.Site 4 → ℝ := aux_bg4_eta R
+    let eta : Sandpile.Site 4 → ℝ := annulusCutoff R
     have hf_eq : ∀ x : Sandpile.Site 4, f x = 8 * g x := by
       intro x
       dsimp [f, g, Cfin, G]
-      exact aux_bg4_killed_eq_network r x
+      exact killedGreen_eq_networkGreen r x
     have hCzero : (0 : Sandpile.Site 4) ∈ Cfin := by
       dsimp [Cfin]
       rw [LatticeProb.mem_boxFinset_zero_iff]
@@ -1224,7 +1297,7 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
         · have hinner : ¬ (R : ℝ) / 8 < (LatticeProb.supNorm x : ℝ) := by
             intro hinner
             exact hx (Finset.mem_filter.mpr ⟨hxbox, hxC, hinner⟩)
-          have hη := aux_bg4_eta_zero (R := R) (by omega) x (le_of_not_gt hinner)
+          have hη := annulusCutoff_eq_zero_of_le (R := R) (by omega) x (le_of_not_gt hinner)
           simp [eta, hη]
         · have hsup : 4 * R < LatticeProb.supNorm x := by
             by_contra hnot
@@ -1233,7 +1306,7 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
             exact le_of_not_gt hnot
           have hsup' : 4 * (R : ℝ) ≤ (LatticeProb.supNorm x : ℝ) := by
             exact_mod_cast (Nat.le_of_lt hsup)
-          have hη := aux_bg4_eta_zero_outer (R := R) (by omega) x hsup'
+          have hη := annulusCutoff_eq_zero_of_ge (R := R) (by omega) x hsup'
           simp [eta, hη]
       · have hzero := Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hxC
         simp [f, hzero]
@@ -1247,11 +1320,11 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
       intro x hx y hxy
       have hxbox := (Finset.mem_filter.mp hx).1
       have hsupx := (LatticeProb.mem_boxFinset_zero_iff.mp hxbox)
-      have hsupy := (aux_bg4_supNorm_adj hxy).1
+      have hsupy := (supNorm_adj_le hxy).1
       have hsupx' : LatticeProb.supNorm x ≤ 4 * R := by exact hsupx
       have hsupy' : LatticeProb.supNorm y ≤ 4 * R + 1 := by omega
       exact (LatticeProb.mem_boxFinset_zero_iff.mpr hsupy')
-    have henergy := aux_bg4_caccioppoli_support
+    have henergy := caccioppoli_of_support
       (G := G) (c := LatticeProb.Network.unitCond G) LatticeProb.Network.isCond_unitCond
       S B f eta hf htest hBS hnb
     have hsup_le_norm : ∀ z : Sandpile.Site 4,
@@ -1274,7 +1347,7 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
         linarith
       have hupp : (LatticeProb.supNorm z : ℝ) ≤ 3 * (R : ℝ) := by
         exact (hsup_le_norm z).trans hz₂ |>.trans (by linarith)
-      exact aux_bg4_eta_one (R := R) (by omega) z hlow hupp
+      exact annulusCutoff_eq_one_of_mem (R := R) (by omega) z hlow hupp
     let hAset : Set (Sandpile.Site 4) :=
       {u | (R : ℝ) ≤ BallGreen.latticeNorm u ∧
         BallGreen.latticeNorm u ≤ 2 * (R : ℝ)}
@@ -1390,7 +1463,7 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
       · simp [heq, hcond]
         dsimp [A₀]
         positivity
-      · have hη := aux_bg4_eta_lipschitz (R := R) (by omega) hxy
+      · have hη := annulusCutoff_lipschitz (R := R) (by omega) hxy
         have hηsq : (eta x - eta y) ^ 2 ≤ (8 / (R : ℝ)) ^ 2 := by
           have habs : |eta x - eta y| ≤ 8 / (R : ℝ) := by
             simpa [eta] using hη
@@ -1407,7 +1480,7 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
           rcases hnonzero with hxη | hyη
           · have hsup : (R : ℝ) / 8 < (LatticeProb.supNorm x : ℝ) := by
               by_contra hnot
-              have hz := aux_bg4_eta_zero (R := R) (by omega) x
+              have hz := annulusCutoff_eq_zero_of_le (R := R) (by omega) x
                 (le_of_not_gt hnot)
               exact hxη (by simpa [eta] using hz)
             exact (by
@@ -1415,12 +1488,12 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
               linarith)
           · have hsupy : (R : ℝ) / 8 < (LatticeProb.supNorm y : ℝ) := by
               by_contra hnot
-              have hz := aux_bg4_eta_zero (R := R) (by omega) y
+              have hz := annulusCutoff_eq_zero_of_le (R := R) (by omega) y
                 (le_of_not_gt hnot)
               exact hyη (by simpa [eta] using hz)
             have hsupxy : (LatticeProb.supNorm y : ℝ) ≤
                 (LatticeProb.supNorm x : ℝ) + 1 := by
-              exact_mod_cast (aux_bg4_supNorm_adj hxy).1
+              exact_mod_cast (supNorm_adj_le hxy).1
             have hsupx : (R : ℝ) / 8 - 1 <
                 (LatticeProb.supNorm x : ℝ) := by linarith
             have hnorm := hsup_le_norm x
@@ -1429,19 +1502,19 @@ theorem aux_ballgreen_clause4_holds : aux_ballgreen_clause4 := by
           rcases hnonzero with hxη | hyη
           · have hsupx : (R : ℝ) / 8 < (LatticeProb.supNorm x : ℝ) := by
               by_contra hnot
-              have hz := aux_bg4_eta_zero (R := R) (by omega) x
+              have hz := annulusCutoff_eq_zero_of_le (R := R) (by omega) x
                 (le_of_not_gt hnot)
               exact hxη (by simpa [eta] using hz)
             have hsupxy : (LatticeProb.supNorm x : ℝ) ≤
                 (LatticeProb.supNorm y : ℝ) + 1 := by
-              exact_mod_cast (aux_bg4_supNorm_adj hxy).2
+              exact_mod_cast (supNorm_adj_le hxy).2
             have hsupy : (R : ℝ) / 8 - 1 <
                 (LatticeProb.supNorm y : ℝ) := by linarith
             have hnorm := hsup_le_norm y
             linarith
           · have hsup : (R : ℝ) / 8 < (LatticeProb.supNorm y : ℝ) := by
               by_contra hnot
-              have hz := aux_bg4_eta_zero (R := R) (by omega) y
+              have hz := annulusCutoff_eq_zero_of_le (R := R) (by omega) y
                 (le_of_not_gt hnot)
               exact hyη (by simpa [eta] using hz)
             exact (by
@@ -1638,10 +1711,10 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-/-- **Minkowski's inequality for `BallGreen.latticeNorm`.**  The Euclidean norm of a sum of two
-lattice vectors is at most the sum of the two Euclidean norms, by the usual Cauchy-Schwarz
-argument on the cross term. -/
-theorem aux_bg6_latticeNorm_add_le (a b : Sandpile.Site 4) :
+/-- Minkowski's triangle inequality for `BallGreen.latticeNorm`: the Euclidean norm of a sum of two
+lattice vectors is at most the sum of the two Euclidean norms, via Cauchy-Schwarz on the cross
+term. -/
+theorem latticeNorm_add_le (a b : Sandpile.Site 4) :
     BallGreen.latticeNorm (a + b) ≤ BallGreen.latticeNorm a + BallGreen.latticeNorm b := by
   have hcs := Real.sum_mul_le_sqrt_mul_sqrt (Finset.univ : Finset (Fin 4))
     (fun i => ((a i : ℤ) : ℝ)) (fun i => ((b i : ℤ) : ℝ))
@@ -1667,7 +1740,8 @@ theorem aux_bg6_latticeNorm_add_le (a b : Sandpile.Site 4) :
   have hbb : BallGreen.latticeNorm b ^ 2 = ∑ i:Fin 4, ((b i:ℤ):ℝ)^2 := by
     unfold BallGreen.latticeNorm
     rw [Real.sq_sqrt (by positivity)]
-  have hsq : (∑ i:Fin 4, (((a+b) i:ℤ):ℝ)^2) ≤ (BallGreen.latticeNorm a + BallGreen.latticeNorm b)^2 := by
+  have hsq : (∑ i:Fin 4, (((a+b) i:ℤ):ℝ)^2) ≤
+      (BallGreen.latticeNorm a + BallGreen.latticeNorm b)^2 := by
     rw [hexpand]
     have hring : (BallGreen.latticeNorm a + BallGreen.latticeNorm b)^2 =
         BallGreen.latticeNorm a ^2 + 2*(BallGreen.latticeNorm a * BallGreen.latticeNorm b)
@@ -1678,9 +1752,9 @@ theorem aux_bg6_latticeNorm_add_le (a b : Sandpile.Site 4) :
     _ ≤ Real.sqrt ((BallGreen.latticeNorm a + BallGreen.latticeNorm b)^2) := Real.sqrt_le_sqrt hsq
     _ = BallGreen.latticeNorm a + BallGreen.latticeNorm b := Real.sqrt_sq (by linarith [hA, hB])
 
-/-- A site of the killed-Green box has Euclidean norm at most `2r`, since the sup-norm is at
-most the Euclidean norm and the Euclidean norm is at most `√4 = 2` times the sup-norm. -/
-theorem aux_bg6_latticeNorm_le_of_mem_boxFinset {r : ℕ} {u : Sandpile.Site 4}
+/-- A site of the sup-norm box `LatticeProb.boxFinset 0 r` has Euclidean norm at most `2r`, since
+the Euclidean norm is at most `sqrt 4 = 2` times the sup-norm. -/
+theorem latticeNorm_le_of_mem_boxFinset {r : ℕ} {u : Sandpile.Site 4}
     (hu : u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r) :
     BallGreen.latticeNorm u ≤ 2 * (r : ℝ) := by
   have hsup : LatticeProb.supNorm u ≤ r := LatticeProb.mem_boxFinset_zero_iff.mp hu
@@ -1693,16 +1767,11 @@ theorem aux_bg6_latticeNorm_le_of_mem_boxFinset {r : ℕ} {u : Sandpile.Site 4}
   have hcast : (LatticeProb.supNorm u : ℝ) ≤ (r:ℝ) := by exact_mod_cast hsup
   nlinarith [h1, hcast]
 
-/-- **The precise residual left for `aux_ballgreen_clause6`.**  The general-shift `L²` gradient
-bound for the ball-killed Green function itself (no cutoff), restricted to the region where
-`(2+M)L ≤ |u|`.  This is the genuine estimate `aux_ballgreen_clause6` needs beyond what
-`aux_ballgreen_clause1` and `aux_ballgreen_clause5` already give: those two only bound `cutField`
-and its cube, not a shifted difference, and a shifted-difference sum is not uniformly bounded in
-`r` without some cancellation (the uncancelled bound degrades like `log r`, matching
-`aux_ballgreen_clause2`).  `aux_ballgreen_clause4` (the annular gradient bound for a unit shift)
-is the natural source of that cancellation, via a telescoping sum over a lattice path from `0` to
-`w` and a dyadic sum over annuli; that reduction is not carried out here. -/
-def aux_bg6_far_residual : Prop :=
+/-- The proposition asserting an `L²` gradient bound for the box-killed Green's function itself,
+with no cutoff, restricted to the far region `(2+M)L ≤ |u|`; this is the residual estimate that
+`cutFieldShiftBound_of_farResidualBound` needs beyond what `annulusUnitShiftBound` and the
+pointwise/cube bounds already give. -/
+def farResidualBound : Prop :=
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, 2 ≤ L → ∀ M : ℝ, 1 ≤ M →
       ∀ w : Sandpile.Site 4, BallGreen.latticeNorm w ≤ M * (L : ℝ) →
         (∑' u : Sandpile.Site 4,
@@ -1711,13 +1780,10 @@ def aux_bg6_far_residual : Prop :=
                 Sandpile.killedGreen (BallGreen.box r) 0 (u - w)) ^ 2) u) ≤
           C * (1 + M) ^ 4
 
-/-- **`aux_ballgreen_clause6` reduces to the far residual.**  Split `ℤ^4` at the threshold
-`(2+M)L`: below it, the crude sup bound of `aux_ballgreen_clause5` costs a factor `(1+M)^4`
-against the volume of a ball of that radius (this part needs no cancellation); at or above it,
-the cutoff `φ` has saturated to `1` on both `u` and `u-w` (using `1 ≤ M`, so `(2+M)L ≥ 2L`, and
-Minkowski's inequality for `BallGreen.latticeNorm`, so `u - w` is also past `2L`), so `cutField`
-agrees exactly with `killedGreen (box r) 0`, which is exactly `aux_bg6_far_residual`. -/
-theorem aux_bg6_reduce (hfar : aux_bg6_far_residual) : aux_ballgreen_clause6 := by
+/-- `cutFieldShiftBound` follows from `farResidualBound`: below the threshold `(2+M)L`, the crude
+sup-bound on `cutField` costs only a `(1+M)^4` volume factor, and above it `cutField` agrees
+exactly with the killed Green's function, which is exactly the far-residual hypothesis. -/
+theorem cutFieldShiftBound_of_farResidualBound (hfar : farResidualBound) : cutFieldShiftBound := by
   classical
   obtain ⟨C₅, hC₅, hclause5⟩ := aux_ballgreen_clause5
   obtain ⟨Cf, hCf, hfar⟩ := hfar
@@ -1741,11 +1807,13 @@ theorem aux_bg6_reduce (hfar : aux_bg6_far_residual) : aux_ballgreen_clause6 := 
   have hthresh_uw : ∀ u : Sandpile.Site 4, (2 + M) * (L : ℝ) ≤ BallGreen.latticeNorm u →
       BallGreen.cutField r L φ (u - w) = Sandpile.killedGreen (BallGreen.box r) 0 (u - w) := by
     intro u hu
-    have htri : BallGreen.latticeNorm u ≤ BallGreen.latticeNorm (u - w) + BallGreen.latticeNorm w := by
-      have h := aux_bg6_latticeNorm_add_le (u - w) w
+    have htri : BallGreen.latticeNorm u ≤
+        BallGreen.latticeNorm (u - w) + BallGreen.latticeNorm w := by
+      have h := latticeNorm_add_le (u - w) w
       rwa [sub_add_cancel] at h
     have h2L : 2 * (L : ℝ) ≤ BallGreen.latticeNorm (u - w) := by nlinarith [hw, hu, htri]
-    have hs : (2 : ℝ) ≤ BallGreen.latticeNorm (u - w) / (L : ℝ) := (le_div_iff₀ hLpos).2 (by linarith)
+    have hs : (2 : ℝ) ≤ BallGreen.latticeNorm (u - w) / (L : ℝ) :=
+      (le_div_iff₀ hLpos).2 (by linarith)
     unfold BallGreen.cutField
     rw [hφ.2.2.2 _ hs, mul_one]
   -- a crude pointwise bound, valid everywhere, from the sup bound alone.
@@ -1788,16 +1856,16 @@ theorem aux_bg6_reduce (hfar : aux_bg6_far_residual) : aux_ballgreen_clause6 := 
       have hmem : u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
         by_contra hnm
         exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-      have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+      have hb := latticeNorm_le_of_mem_boxFinset hmem
       linarith
     · by_contra hz
       have hmem : (u - w) ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
         by_contra hnm
         exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-      have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+      have hb := latticeNorm_le_of_mem_boxFinset hmem
       have htri : BallGreen.latticeNorm u ≤
           BallGreen.latticeNorm (u - w) + BallGreen.latticeNorm w := by
-        have h := aux_bg6_latticeNorm_add_le (u - w) w
+        have h := latticeNorm_add_le (u - w) w
         rwa [sub_add_cancel] at h
       linarith
   -- `D`, `N` and `F` all vanish outside the ball of radius `bigS`.
@@ -1948,7 +2016,8 @@ theorem aux_bg6_reduce (hfar : aux_bg6_far_residual) : aux_ballgreen_clause6 := 
   have h52M : (5 + 2 * M : ℝ) ≤ 5 * (1 + M) := by nlinarith [hMnn]
   have h52M4 : (5 + 2 * M : ℝ) ^ 4 ≤ (5 * (1 + M)) ^ 4 :=
     pow_le_pow_left₀ (by linarith) h52M 4
-  have hnearFinal : (LatticeProb.ballFinset 4 ρ).card • nearBound ≤ 2500 * C₅ ^ 2 * (1 + M) ^ 4 := by
+  have hnearFinal : (LatticeProb.ballFinset 4 ρ).card • nearBound ≤
+      2500 * C₅ ^ 2 * (1 + M) ^ 4 := by
     rw [nsmul_eq_mul]
     have hstep1 : ((LatticeProb.ballFinset 4 ρ).card : ℝ) * nearBound ≤
         (2 * ρ + 1) ^ 4 * nearBound := mul_le_mul_of_nonneg_right hcard hnearBoundnn
@@ -1972,7 +2041,8 @@ theorem aux_bg6_reduce (hfar : aux_bg6_far_residual) : aux_ballgreen_clause6 := 
   calc (∑' u : Sandpile.Site 4,
       (BallGreen.cutField r L φ u - BallGreen.cutField r L φ (u - w)) ^ 2)
       ≤ (∑' u : Sandpile.Site 4,
-            Set.indicator {u : Sandpile.Site 4 | BallGreen.latticeNorm u < ρ} (fun _ => nearBound) u)
+            Set.indicator {u : Sandpile.Site 4 | BallGreen.latticeNorm u < ρ}
+              (fun _ => nearBound) u)
           + (∑' u : Sandpile.Site 4,
               Set.indicator {u : Sandpile.Site 4 | ρ ≤ BallGreen.latticeNorm u}
                 (fun u => (Sandpile.killedGreen (BallGreen.box r) 0 u -
@@ -1984,1037 +2054,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-/-
-theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
-  obtain ⟨G, g, hG, hg, hheat⟩ := Sandpile.External.gaussianUpper 4 (by norm_num)
-  obtain ⟨M, hM, hblock⟩ := aux_bg7_survival_block G g hG hg hheat
-  let C₀ : ℝ := 32 * G * (M : ℝ)
-  let C : ℝ := 81 * C₀ ^ 2 + C₀ + 1
-  let c : ℝ := Real.log 2 / (100 * (M : ℝ))
-  have hMpos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
-  have hC₀ : 0 < C₀ := by dsimp [C₀]; positivity
-  have hC : 0 < C := by dsimp [C]; positivity
-  have hc : 0 < c := by dsimp [c]; positivity
-  refine ⟨C, c, hC, hc, ?_⟩
-  intro r hr A hA
-  let N : ℕ := ⌊A * (r : ℝ) ^ 2⌋₊
-  let B : ℕ := M * r ^ 2
-  have hr1 : 1 ≤ r := by omega
-  have hr2 : 1 ≤ r ^ 2 := by
-    simpa [pow_two] using Nat.mul_le_mul hr1 hr1
-  have hrR : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (show 0 < r by omega)
-  have hN : r ^ 2 ≤ N := by
-    dsimp [N]
-    apply Nat.le_floor
-    have hrpow : ((r ^ 2 : ℕ) : ℝ) = (r : ℝ) ^ 2 := by
-      norm_num
-    rw [hrpow]
-    nlinarith [hA, sq_nonneg (r : ℝ)]
-  have hB : 0 < B := by
-    dsimp [B]
-    exact Nat.mul_pos (by omega) (by omega)
-  have hB1 : 1 ≤ B := by omega
-  have hblock0 : ∀ x : Sandpile.Site 4,
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) B x ≤ (1 : ℝ) / 2 := by
-    intro x
-    simpa [B] using hblock r hr x
-  have hs : Summable (fun n : ℕ =>
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) n 0) := aux_bg7_survival_summable r
-  obtain ⟨hf, hhalf⟩ := aux_bg7_half_survival_tsum
-    (LatticeProb.boxFinset 0 r) N 0 hs
-  have hshift := aux_bg7_survival_shift_tsum
-    (LatticeProb.boxFinset 0 r) B hB hblock0 (N / 2) 0
-  have hq : ∀ u : Sandpile.Site 4,
-      BallGreen.timeTail r A u ≤
-        (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          ((1 : ℝ) / 2) ^ ((N / 2) / B) := by
-    intro u
-    have hKsum : Summable (fun j : ℕ =>
-        Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) := by
-      exact (Sandpile.summable_killedKernel_transient (by norm_num)
-        (BallGreen.box r) 0 u).comp_injective (add_right_injective N)
-    have hright : Summable (fun j : ℕ =>
-        (4 * G / (r : ℝ) ^ 4) *
-          LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) :=
-      hf.mul_left (4 * G / (r : ℝ) ^ 4)
-    have htail : BallGreen.timeTail r A u ≤
-        (4 * G / (r : ℝ) ^ 4) *
-          (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := by
-      rw [aux_bg7_timeTail_tsum]
-      change (∑' j : ℕ, Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) ≤ _
-      rw [← tsum_mul_left]
-      apply hKsum.tsum_le_tsum
-      · intro j
-        apply aux_bg7_kernel_step r (N + j) u hr
-          (le_trans hN (Nat.le_add_right N j)) G g hG hg hheat
-      · exact hright
-    calc
-      BallGreen.timeTail r A u ≤
-          (4 * G / (r : ℝ) ^ 4) *
-            (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := htail
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * (∑' t : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) (N / 2 + t) 0)) :=
-        mul_le_mul_of_nonneg_left hhalf (by positivity)
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * ((B : ℝ) * 2 * ((1 : ℝ) / 2) ^ ((N / 2) / B))) :=
-        mul_le_mul_of_nonneg_left
-          (mul_le_mul_of_nonneg_left hshift (by norm_num)) (by positivity)
-      _ = _ := by ring
-  have hQ : (A / (100 * (M : ℝ)) - 1) ≤
-      (((N / 2) / B : ℕ) : ℝ) := by
-    by_cases hsmall : A ≤ 100 * (M : ℝ)
-    · have hh : A / (100 * (M : ℝ)) - 1 ≤ 0 := by
-        have hden : (0 : ℝ) < 100 * (M : ℝ) := by positivity
-        have hdiv : A / (100 * (M : ℝ)) ≤ 1 := by
-          apply (div_le_iff₀ hden).2
-          simpa using hsmall
-        linarith
-      have hqnonneg : 0 ≤ (((N / 2) / B : ℕ) : ℝ) := by positivity
-      linarith
-    · have hNfloor : A * (r : ℝ) ^ 2 < (N : ℝ) + 1 := by
-        dsimp [N]
-        exact Nat.lt_floor_add_one _
-      have hLfloor : (N : ℝ) + 1 ≤ 2 * ((N / 2 : ℕ) : ℝ) + 2 := by
-        have hh : N + 1 ≤ 2 * (N / 2 + 1) := by omega
-        exact_mod_cast hh
-      have hQfloor : ((N / 2 : ℕ) : ℝ) <
-          (B : ℝ) * ((((N / 2) / B : ℕ) : ℝ) + 1) := by
-        have hBnat : 0 < B := by omega
-        have hmod := Nat.mod_lt (N / 2) hBnat
-        have hdiv := Nat.div_add_mod (N / 2) B
-        have hlt : N / 2 < B * (N / 2 / B) + B := by omega
-        have hh : N / 2 < B * (N / 2 / B + 1) := by
-          simpa [Nat.mul_add, Nat.add_mul, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using hlt
-        exact_mod_cast hh
-      have hBr : (B : ℝ) = (M : ℝ) * (r : ℝ) ^ 2 := by
-        simp [B, Nat.cast_mul, Nat.cast_pow]
-      have hBpos : (0 : ℝ) < (B : ℝ) := by exact_mod_cast hB
-      have h1 : A * (r : ℝ) ^ 2 / 2 - 1 < ((N / 2 : ℕ) : ℝ) := by
-        nlinarith [hNfloor, hLfloor]
-      have h2 := (div_lt_div_iff₀ hBpos hBpos).2
-        (mul_lt_mul_of_pos_right h1 hBpos)
-      have h3 : ((N / 2 : ℕ) : ℝ) / (B : ℝ) - 1 <
-          (((N / 2) / B : ℕ) : ℝ) := by
-        have h3a : ((N / 2 : ℕ) : ℝ) / (B : ℝ) <
-            (((N / 2) / B : ℕ) : ℝ) + 1 := by
-          apply (div_lt_iff₀ hBpos).2
-          nlinarith [hQfloor]
-        linarith
-      have hBge : (1 : ℝ) ≤ (B : ℝ) := by exact_mod_cast hB1
-      have h2' : A / (2 * (M : ℝ)) - 1 <
-          ((N / 2 : ℕ) : ℝ) / (B : ℝ) := by
-        have hInv : 1 / (B : ℝ) ≤ 1 := by
-          exact (div_le_iff₀ hBpos).2 (by nlinarith [hBge])
-        have hEq : (A * (r : ℝ) ^ 2 / 2 - 1) / (B : ℝ) =
-            A / (2 * (M : ℝ)) - 1 / (B : ℝ) := by
-          rw [hBr]
-          field_simp [ne_of_gt hMpos, ne_of_gt hrR]
-        calc
-          A / (2 * (M : ℝ)) - 1 ≤ A / (2 * (M : ℝ)) - 1 / (B : ℝ) := by
-            linarith
-          _ = (A * (r : ℝ) ^ 2 / 2 - 1) / (B : ℝ) := hEq.symm
-          _ < _ := h2
-      have hQlow : A / (2 * (M : ℝ)) - 2 <
-          (((N / 2) / B : ℕ) : ℝ) := by
-        linarith [h2', h3]
-      have hAgt : 100 * (M : ℝ) < A := lt_of_not_ge hsmall
-      have hscale : A / (100 * (M : ℝ)) - 1 <
-          A / (2 * (M : ℝ)) - 2 := by
-        field_simp
-        nlinarith [hAgt, hMpos]
-      exact (hscale.trans hQlow).le
-  have hqexp : ((1 : ℝ) / 2) ^ ((N / 2) / B) ≤
-      2 * Real.exp (-c * A) := by
-    have hbase : (0 : ℝ) < (1 : ℝ) / 2 := by norm_num
-    have hmono := Real.rpow_le_rpow_of_exponent_ge hbase (by norm_num) hQ
-    have hpow : ((1 : ℝ) / 2) ^ ((N / 2) / B) =
-        ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) := by
-      rw [Real.rpow_natCast]
-    rw [hpow]
-    have heq : ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) =
-        Real.exp (-c * A) := by
-      rw [Real.rpow_def_of_pos hbase]
-      dsimp [c]
-      rw [show Real.log ((1 : ℝ) / 2) = -Real.log 2 by
-        rw [show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ by norm_num, Real.log_inv]]
-      congr 1
-      field_simp
-    rw [← heq]
-    calc
-      ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) ≤
-          ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ)) - 1) := hmono
-      _ = 2 * ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) := by
-        have he : A / (100 * (M : ℝ)) - 1 =
-            A / (100 * (M : ℝ)) + (-1 : ℝ) := by ring
-        rw [he, Real.rpow_add hbase]
-        ring
-  have hpoint : ∀ u : Sandpile.Site 4,
-      |BallGreen.timeTail r A u| ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-    intro u
-    have hnonneg := (aux_bg7_timeTail_factor r A u).1
-    have hu := (hq u).trans (by
-      calc
-        _ ≤ (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-            (2 * Real.exp (-c * A)) :=
-          mul_le_mul_of_nonneg_left hqexp (by positivity)
-        _ = C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-          dsimp [C₀, B]
-          norm_num [Nat.cast_mul, Nat.cast_pow]
-          field_simp
-          ring)
-    calc
-      |BallGreen.timeTail r A u| = BallGreen.timeTail r A u := abs_of_nonneg hnonneg
-      _ ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := hu
-  have hbox : BallGreen.box r =
-      (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set _) := by
-    ext v
-    constructor
-    · intro hv
-      apply Sandpile.mem_boxFinset
-      apply Finset.sup_le
-      intro i _
-      simpa [BallGreen.box, Pi.zero_apply, zero_sub, Int.natAbs_neg] using hv i
-    · intro hv
-      have hi := (LatticeProb.mem_boxFinset_iff.mp hv)
-      intro i
-      have hi0 : |v i| ≤ (r : ℤ) := by simpa [sub_zero] using hi i
-      have hi1 : ((v i).natAbs : ℤ) ≤ (r : ℤ) := by
-        rw [Int.natCast_natAbs]
-        exact hi0
-      exact_mod_cast hi1
-  have hzero : ∀ u : Sandpile.Site 4,
-      u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-        BallGreen.timeTail r A u = 0 := by
-    intro u hu
-    unfold BallGreen.timeTail
-    rw [Sandpile.killedGreen_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      Sandpile.killedGreenTime_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      sub_zero]
-  refine ⟨?_, ?_⟩
-  · intro u
-    have hC₀le : C₀ ≤ C := by
-      dsimp [C]
-      nlinarith [sq_nonneg C₀]
-    calc
-      |BallGreen.timeTail r A u| ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := hpoint u
-      _ ≤ C / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-        gcongr
-  · have hsqzero : ∀ u : Sandpile.Site 4,
-        u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-          BallGreen.timeTail r A u ^ 2 = 0 := by
-      intro u hu
-      rw [hzero u hu, zero_pow (by decide : 2 ≠ 0)]
-    rw [tsum_eq_sum hsqzero]
-    have hE : Real.exp (-c * A) ≤ 1 := by
-      rw [Real.exp_le_one_iff]
-      have hAnonneg : (0 : ℝ) ≤ A := by linarith
-      linarith [mul_nonneg hc.le hAnonneg]
-    have hsum :
-        (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-            (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-      calc
-        (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-            BallGreen.timeTail r A u ^ 2) ≤
-            ∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-          apply Finset.sum_le_sum
-          intro u hu
-          have hp := hpoint u
-          have hb : 0 ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by positivity
-          have hsq : |BallGreen.timeTail r A u| ^ 2 =
-              BallGreen.timeTail r A u ^ 2 := sq_abs _
-          nlinarith [sq_nonneg (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) -
-            |BallGreen.timeTail r A u|), hsq, abs_nonneg (BallGreen.timeTail r A u)]
-        _ = ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-          rw [Finset.sum_const, nsmul_eq_mul, LatticeProb.card_boxFinset_zero]
-          norm_num
-    calc
-      (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-            (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := hsum
-      _ ≤ 81 * C₀ ^ 2 * Real.exp (-c * A) := by
-        have hcard : ((2 * r + 1 : ℕ) : ℝ) ≤ 3 * (r : ℝ) := by
-          push_cast
-          nlinarith [show (1 : ℝ) ≤ (r : ℝ) by exact_mod_cast hr1]
-        have hcard4 : ((2 * r + 1 : ℕ) : ℝ) ^ 4 ≤ (3 * (r : ℝ)) ^ 4 := by gcongr
-        calc
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 ≤
-              (3 * (r : ℝ)) ^ 4 *
-                (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 :=
-            mul_le_mul_of_nonneg_right hcard4 (sq_nonneg _)
-          _ = 81 * C₀ ^ 2 * Real.exp (-c * A) ^ 2 := by
-            have hr4 : (r : ℝ) ^ 4 ≠ 0 := by positivity
-            field_simp
-            ring
-          _ ≤ 81 * C₀ ^ 2 * Real.exp (-c * A) := by
-            have hcoef : 0 ≤ 81 * C₀ ^ 2 := by positivity
-            have hE2 : Real.exp (-c * A) ^ 2 ≤ Real.exp (-c * A) := by
-              have hE0 : 0 ≤ Real.exp (-c * A) := (Real.exp_pos _).le
-              calc
-                Real.exp (-c * A) ^ 2 = Real.exp (-c * A) * Real.exp (-c * A) := by ring
-                _ ≤ Real.exp (-c * A) * 1 :=
-                  mul_le_mul_of_nonneg_left hE hE0
-                _ = Real.exp (-c * A) := by ring
-            exact mul_le_mul_of_nonneg_left hE2 hcoef
-      _ ≤ C * Real.exp (-c * A) := by
-        have hcoefC : 81 * C₀ ^ 2 ≤ C := by
-          dsimp [C]
-          nlinarith [hC₀]
-        exact mul_le_mul_of_nonneg_right hcoefC (Real.exp_pos _).le
-
--/
-
-end Sandpile.External
-
-namespace Sandpile.External
-
-/-
-theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
-  obtain ⟨G, g, hG, hg, hheat⟩ := Sandpile.External.gaussianUpper 4 (by norm_num)
-  obtain ⟨M, hM, hblock⟩ := aux_bg7_survival_block G g hG hg hheat
-  let C₀ : ℝ := 32 * G * (M : ℝ)
-  let C : ℝ := 81 * C₀ ^ 2 + C₀ + 1
-  let c : ℝ := Real.log 2 / (100 * (M : ℝ))
-  have hMpos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
-  have hC₀ : 0 < C₀ := by dsimp [C₀]; positivity
-  have hC : 0 < C := by dsimp [C]; positivity
-  have hc : 0 < c := by dsimp [c]; positivity
-  refine ⟨C, c, hC, hc, ?_⟩
-  intro r hr A hA
-  let N : ℕ := ⌊A * (r : ℝ) ^ 2⌋₊
-  let B : ℕ := M * r ^ 2
-  have hr1 : 1 ≤ r := by omega
-  have hr2 : 1 ≤ r ^ 2 := by
-    simpa [pow_two] using Nat.mul_le_mul hr1 hr1
-  have hrR : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (show 0 < r by omega)
-  have hN : r ^ 2 ≤ N := by
-    dsimp [N]
-    apply Nat.le_floor
-    have hrpow : ((r ^ 2 : ℕ) : ℝ) = (r : ℝ) ^ 2 := by
-      norm_num
-    rw [hrpow]
-    nlinarith [hA, sq_nonneg (r : ℝ)]
-  have hB : 0 < B := by
-    dsimp [B]
-    exact Nat.mul_pos (by omega) (by omega)
-  have hB1 : 1 ≤ B := by omega
-  have hblock0 : ∀ x : Sandpile.Site 4,
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) B x ≤ (1 : ℝ) / 2 := by
-    intro x
-    simpa [B] using hblock r hr x
-  have hs : Summable (fun n : ℕ =>
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) n 0) := aux_bg7_survival_summable r
-  obtain ⟨hf, hhalf⟩ := aux_bg7_half_survival_tsum
-    (LatticeProb.boxFinset 0 r) N 0 hs
-  have hshift := aux_bg7_survival_shift_tsum
-    (LatticeProb.boxFinset 0 r) B hB hblock0 (N / 2) 0
-  have hq : ∀ u : Sandpile.Site 4,
-      BallGreen.timeTail r A u ≤
-        (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          ((1 : ℝ) / 2) ^ ((N / 2) / B) := by
-    intro u
-    have hKsum : Summable (fun j : ℕ =>
-        Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) := by
-      exact (Sandpile.summable_killedKernel_transient (by norm_num)
-        (BallGreen.box r) 0 u).comp_injective (add_right_injective N)
-    have hright : Summable (fun j : ℕ =>
-        (4 * G / (r : ℝ) ^ 4) *
-          LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) :=
-      hf.mul_left (4 * G / (r : ℝ) ^ 4)
-    have htail : BallGreen.timeTail r A u ≤
-        (4 * G / (r : ℝ) ^ 4) *
-          (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := by
-      rw [aux_bg7_timeTail_tsum]
-      change (∑' j : ℕ, Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) ≤ _
-      rw [← tsum_mul_left]
-      apply hKsum.tsum_le_tsum
-      · intro j
-        apply aux_bg7_kernel_step r (N + j) u hr
-          (le_trans hN (Nat.le_add_right N j)) G g hG hg hheat
-      · exact hright
-    calc
-      BallGreen.timeTail r A u ≤
-          (4 * G / (r : ℝ) ^ 4) *
-            (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := htail
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * (∑' t : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) (N / 2 + t) 0)) :=
-        mul_le_mul_of_nonneg_left hhalf (by positivity)
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * ((B : ℝ) * 2 * ((1 : ℝ) / 2) ^ ((N / 2) / B))) :=
-        mul_le_mul_of_nonneg_left
-          (mul_le_mul_of_nonneg_left hshift (by norm_num)) (by positivity)
-      _ = _ := by ring
-  have hQ : (A / (100 * (M : ℝ)) - 1) ≤
-      (((N / 2) / B : ℕ) : ℝ) := by
-    by_cases hsmall : A ≤ 100 * (M : ℝ)
-    · have hh : A / (100 * (M : ℝ)) - 1 ≤ 0 := by
-        have hden : (0 : ℝ) < 100 * (M : ℝ) := by positivity
-        have hdiv : A / (100 * (M : ℝ)) ≤ 1 := by
-          apply (div_le_iff₀ hden).2
-          simpa using hsmall
-        linarith
-      have hqnonneg : 0 ≤ (((N / 2) / B : ℕ) : ℝ) := by positivity
-      linarith
-    · have hNfloor : A * (r : ℝ) ^ 2 < (N : ℝ) + 1 := by
-        dsimp [N]
-        exact Nat.lt_floor_add_one _
-      have hLfloor : (N : ℝ) + 1 ≤ 2 * ((N / 2 : ℕ) : ℝ) + 2 := by
-        have hh : N + 1 ≤ 2 * (N / 2 + 1) := by omega
-        exact_mod_cast hh
-      have hQfloor : ((N / 2 : ℕ) : ℝ) <
-          (B : ℝ) * ((((N / 2) / B : ℕ) : ℝ) + 1) := by
-        have hBnat : 0 < B := by omega
-        have hmod := Nat.mod_lt (N / 2) hBnat
-        have hdiv := Nat.div_add_mod (N / 2) B
-        have hlt : N / 2 < B * (N / 2 / B) + B := by omega
-        have hh : N / 2 < B * (N / 2 / B + 1) := by
-          simpa [Nat.mul_add, Nat.add_mul, Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using hlt
-        exact_mod_cast hh
-      have hBr : (B : ℝ) = (M : ℝ) * (r : ℝ) ^ 2 := by
-        simp [B, Nat.cast_mul, Nat.cast_pow]
-      have hBpos : (0 : ℝ) < (B : ℝ) := by exact_mod_cast hB
-      have h1 : A * (r : ℝ) ^ 2 / 2 - 1 < ((N / 2 : ℕ) : ℝ) := by
-        nlinarith [hNfloor, hLfloor]
-      have h2 := (div_lt_div_iff₀ hBpos hBpos).2
-        (mul_lt_mul_of_pos_right h1 hBpos)
-      have h3 : ((N / 2 : ℕ) : ℝ) / (B : ℝ) - 1 <
-          (((N / 2) / B : ℕ) : ℝ) := by
-        have h3a : ((N / 2 : ℕ) : ℝ) / (B : ℝ) <
-            (((N / 2) / B : ℕ) : ℝ) + 1 := by
-          apply (div_lt_iff₀ hBpos).2
-          nlinarith [hQfloor]
-        linarith
-      have hBge : (1 : ℝ) ≤ (B : ℝ) := by exact_mod_cast hB1
-      have h2' : A / (2 * (M : ℝ)) - 1 <
-          ((N / 2 : ℕ) : ℝ) / (B : ℝ) := by
-        have hInv : 1 / (B : ℝ) ≤ 1 := by
-          exact (div_le_iff₀ hBpos).2 (by nlinarith [hBge])
-        have hEq : (A * (r : ℝ) ^ 2 / 2 - 1) / (B : ℝ) =
-            A / (2 * (M : ℝ)) - 1 / (B : ℝ) := by
-          rw [hBr]
-          field_simp [ne_of_gt hMpos, ne_of_gt hrR]
-        calc
-          A / (2 * (M : ℝ)) - 1 ≤ A / (2 * (M : ℝ)) - 1 / (B : ℝ) := by
-            linarith
-          _ = (A * (r : ℝ) ^ 2 / 2 - 1) / (B : ℝ) := hEq.symm
-          _ < _ := h2
-      have hQlow : A / (2 * (M : ℝ)) - 2 <
-          (((N / 2) / B : ℕ) : ℝ) := by
-        linarith [h2', h3]
-      have hAgt : 100 * (M : ℝ) < A := lt_of_not_ge hsmall
-      have hscale : A / (100 * (M : ℝ)) - 1 <
-          A / (2 * (M : ℝ)) - 2 := by
-        field_simp
-        nlinarith [hAgt, hMpos]
-      exact (hscale.trans hQlow).le
-  have hqexp : ((1 : ℝ) / 2) ^ ((N / 2) / B) ≤
-      2 * Real.exp (-c * A) := by
-    have hbase : (0 : ℝ) < (1 : ℝ) / 2 := by norm_num
-    have hmono := Real.rpow_le_rpow_of_exponent_ge hbase (by norm_num) hQ
-    have hpow : ((1 : ℝ) / 2) ^ ((N / 2) / B) =
-        ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) := by
-      rw [Real.rpow_natCast]
-    rw [hpow]
-    have heq : ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) =
-        Real.exp (-c * A) := by
-      rw [Real.rpow_def_of_pos hbase]
-      dsimp [c]
-      rw [show Real.log ((1 : ℝ) / 2) = -Real.log 2 by
-        rw [show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ by norm_num, Real.log_inv]]
-      congr 1
-      field_simp
-    rw [← heq]
-    calc
-      ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) ≤
-          ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ)) - 1) := hmono
-      _ = 2 * ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) := by
-        have he : A / (100 * (M : ℝ)) - 1 =
-            A / (100 * (M : ℝ)) + (-1 : ℝ) := by ring
-        rw [he, Real.rpow_add hbase]
-        ring
-  have hpoint : ∀ u : Sandpile.Site 4,
-      |BallGreen.timeTail r A u| ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-    intro u
-    have hnonneg := (aux_bg7_timeTail_factor r A u).1
-    have hu := (hq u).trans (by
-      calc
-        _ ≤ (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-            (2 * Real.exp (-c * A)) :=
-          mul_le_mul_of_nonneg_left hqexp (by positivity)
-        _ = C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-          dsimp [C₀, B]
-          norm_num [Nat.cast_mul, Nat.cast_pow]
-          field_simp
-          ring)
-    calc
-      |BallGreen.timeTail r A u| = BallGreen.timeTail r A u := abs_of_nonneg hnonneg
-      _ ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := hu
-  have hbox : BallGreen.box r =
-      (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set _) := by
-    ext v
-    constructor
-    · intro hv
-      apply Sandpile.mem_boxFinset
-      apply Finset.sup_le
-      intro i _
-      simpa [BallGreen.box, Pi.zero_apply, zero_sub, Int.natAbs_neg] using hv i
-    · intro hv
-      have hi := (LatticeProb.mem_boxFinset_iff.mp hv)
-      intro i
-      have hi0 : |v i| ≤ (r : ℤ) := by simpa [sub_zero] using hi i
-      have hi1 : ((v i).natAbs : ℤ) ≤ (r : ℤ) := by
-        rw [Int.natCast_natAbs]
-        exact hi0
-      exact_mod_cast hi1
-  have hzero : ∀ u : Sandpile.Site 4,
-      u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-        BallGreen.timeTail r A u = 0 := by
-    intro u hu
-    unfold BallGreen.timeTail
-    rw [Sandpile.killedGreen_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      Sandpile.killedGreenTime_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      sub_zero]
-  refine ⟨?_, ?_⟩
-  · intro u
-    have hC₀le : C₀ ≤ C := by
-      dsimp [C]
-      nlinarith [sq_nonneg C₀]
-    calc
-      |BallGreen.timeTail r A u| ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := hpoint u
-      _ ≤ C / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-        gcongr
-  · have hsqzero : ∀ u : Sandpile.Site 4,
-        u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-          BallGreen.timeTail r A u ^ 2 = 0 := by
-      intro u hu
-      rw [hzero u hu, zero_pow (by decide : 2 ≠ 0)]
-    rw [tsum_eq_sum hsqzero]
-    have hE : Real.exp (-c * A) ≤ 1 := by
-      rw [Real.exp_le_one_iff]
-      have hAnonneg : (0 : ℝ) ≤ A := by linarith
-      linarith [mul_nonneg hc.le hAnonneg]
-    have hsum :
-        (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-            (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-      calc
-        (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-            BallGreen.timeTail r A u ^ 2) ≤
-            ∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-          apply Finset.sum_le_sum
-          intro u hu
-          have hp := hpoint u
-          have hb : 0 ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by positivity
-          have hsq : |BallGreen.timeTail r A u| ^ 2 =
-              BallGreen.timeTail r A u ^ 2 := sq_abs _
-          nlinarith [sq_nonneg (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) -
-            |BallGreen.timeTail r A u|), hsq, abs_nonneg (BallGreen.timeTail r A u)]
-        _ = ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-          rw [Finset.sum_const, nsmul_eq_mul, LatticeProb.card_boxFinset_zero]
-          norm_num
-    calc
-      (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-            (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := hsum
-      _ ≤ 81 * C₀ ^ 2 * Real.exp (-c * A) := by
-        have hcard : ((2 * r + 1 : ℕ) : ℝ) ≤ 3 * (r : ℝ) := by
-          push_cast
-          nlinarith [show (1 : ℝ) ≤ (r : ℝ) by exact_mod_cast hr1]
-        have hcard4 : ((2 * r + 1 : ℕ) : ℝ) ^ 4 ≤ (3 * (r : ℝ)) ^ 4 := by gcongr
-        calc
-          ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-              (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 ≤
-              (3 * (r : ℝ)) ^ 4 *
-                (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 :=
-            mul_le_mul_of_nonneg_right hcard4 (sq_nonneg _)
-          _ = 81 * C₀ ^ 2 * Real.exp (-c * A) ^ 2 := by
-            have hr4 : (r : ℝ) ^ 4 ≠ 0 := by positivity
-            field_simp
-            ring
-          _ ≤ 81 * C₀ ^ 2 * Real.exp (-c * A) := by
-            have hcoef : 0 ≤ 81 * C₀ ^ 2 := by positivity
-            have hE2 : Real.exp (-c * A) ^ 2 ≤ Real.exp (-c * A) := by
-              have hE0 : 0 ≤ Real.exp (-c * A) := (Real.exp_pos _).le
-              calc
-                Real.exp (-c * A) ^ 2 = Real.exp (-c * A) * Real.exp (-c * A) := by ring
-                _ ≤ Real.exp (-c * A) * 1 :=
-                  mul_le_mul_of_nonneg_left hE hE0
-                _ = Real.exp (-c * A) := by ring
-            exact mul_le_mul_of_nonneg_left hE2 hcoef
-      _ ≤ C * Real.exp (-c * A) := by
-        have hcoefC : 81 * C₀ ^ 2 ≤ C := by
-          dsimp [C]
-          nlinarith [hC₀]
-        exact mul_le_mul_of_nonneg_right hcoefC (Real.exp_pos _).le
-
--/
-
-end Sandpile.External
-
-namespace Sandpile.External
-
-/-
-theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
-  obtain ⟨G, g, hG, hg, hheat⟩ := Sandpile.External.gaussianUpper 4 (by norm_num)
-  obtain ⟨M, hM, hblock⟩ := aux_bg7_survival_block G g hG hg hheat
-  let C₀ : ℝ := 32 * G * (M : ℝ)
-  let C : ℝ := 81 * C₀ ^ 2 + C₀ + 1
-  let c : ℝ := Real.log 2 / (100 * (M : ℝ))
-  have hMpos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
-  have hC₀ : 0 < C₀ := by dsimp [C₀]; positivity
-  have hC : 0 < C := by dsimp [C]; positivity
-  have hc : 0 < c := by
-    dsimp [c]
-    positivity
-  refine ⟨C, c, hC, hc, ?_⟩
-  intro r hr A hA
-  let N : ℕ := ⌊A * (r : ℝ) ^ 2⌋₊
-  let B : ℕ := M * r ^ 2
-  have hr1 : 1 ≤ r := by omega
-  have hr2 : 1 ≤ r ^ 2 := by
-    simpa [pow_two] using Nat.mul_le_mul hr1 hr1
-  have hrR : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (show 0 < r by omega)
-  have hN : r ^ 2 ≤ N := by
-    dsimp [N]
-    apply Nat.le_floor
-    have hrpow : ((r ^ 2 : ℕ) : ℝ) = (r : ℝ) ^ 2 := by
-      norm_num
-    rw [hrpow]
-    nlinarith [hA, sq_nonneg (r : ℝ)]
-  have hB : 0 < B := by
-    dsimp [B]
-    exact Nat.mul_pos (by omega) (by omega)
-  have hB1 : 1 ≤ B := by omega
-  have hblock0 : ∀ x : Sandpile.Site 4,
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) B x ≤ (1 : ℝ) / 2 := by
-    intro x
-    simpa [B] using hblock r hr x
-  have hs : Summable (fun n : ℕ =>
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) n 0) := aux_bg7_survival_summable r
-  obtain ⟨hf, hhalf⟩ := aux_bg7_half_survival_tsum
-    (LatticeProb.boxFinset 0 r) N 0 hs
-  have hshift := aux_bg7_survival_shift_tsum
-    (LatticeProb.boxFinset 0 r) B hB hblock0 (N / 2) 0
-  have hbox : BallGreen.box r =
-      (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set _) := by
-    ext v
-    constructor
-    · intro hv
-      apply Sandpile.mem_boxFinset
-      apply Finset.sup_le
-      intro i _
-      simpa [BallGreen.box, Pi.zero_apply, zero_sub, Int.natAbs_neg] using hv i
-    · intro hv
-      have hi := (LatticeProb.mem_boxFinset_iff.mp hv)
-      intro i
-      have hii := hi i
-      have hi0 : |v i| ≤ (r : ℤ) := by simpa [sub_zero] using hii
-      have hi1 : ((v i).natAbs : ℤ) ≤ (r : ℤ) := by
-        rw [Int.natCast_natAbs]
-        exact hi0
-      exact_mod_cast hi1
-  have hpoint : ∀ u : Sandpile.Site 4,
-      0 ≤ BallGreen.timeTail r A u ∧
-      BallGreen.timeTail r A u ≤
-        (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          ((1 : ℝ) / 2) ^ ((N / 2) / B) := by
-    intro u
-    have hKsum : Summable (fun j : ℕ =>
-        Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) := by
-      exact (Sandpile.summable_killedKernel_transient (by norm_num)
-        (BallGreen.box r) 0 u).comp_injective (add_right_injective N)
-    have htail_sum :
-        BallGreen.timeTail r A u ≤
-          (4 * G / (r : ℝ) ^ 4) *
-            (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := by
-      rw [aux_bg7_timeTail_tsum]
-      have hright : Summable (fun j : ℕ =>
-          (4 * G / (r : ℝ) ^ 4) *
-            LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) :=
-        hf.mul_left (4 * G / (r : ℝ) ^ 4)
-      apply hKsum.tsum_le_tsum
-      · intro j
-        apply aux_bg7_kernel_step r (N + j) u hr
-          (le_trans hN (Nat.le_add_right N j)) G g hG hg hheat
-      · exact hright
-    have hqbound : BallGreen.timeTail r A u ≤
-        (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          ((1 : ℝ) / 2) ^ ((N / 2) / B) := by
-      calc
-        BallGreen.timeTail r A u ≤
-            (4 * G / (r : ℝ) ^ 4) *
-              (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-                (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := htail_sum
-        _ ≤ (4 * G / (r : ℝ) ^ 4) *
-            (2 * (∑' t : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) (N / 2 + t) 0)) :=
-          mul_le_mul_of_nonneg_left hhalf (by positivity)
-        _ ≤ (4 * G / (r : ℝ) ^ 4) *
-            (2 * ((B : ℝ) * 2 * ((1 : ℝ) / 2) ^ ((N / 2) / B))) :=
-          mul_le_mul_of_nonneg_left hshift (by positivity)
-        _ = _ := by ring
-    have hqexp : ((1 : ℝ) / 2) ^ ((N / 2) / B) ≤
-        2 * Real.exp (-c * A) := by
-      have hQ : (A / (100 * (M : ℝ)) - 1) ≤
-          (((N / 2) / B : ℕ) : ℝ) := by
-        by_cases hsmall : A ≤ 100 * (M : ℝ)
-        · have hh : A / (100 * (M : ℝ)) - 1 ≤ 0 := by
-            have := (div_le_iff₀ (by positivity : (0 : ℝ) < 100 * (M : ℝ))).2 hsmall
-            linarith
-          positivity
-        · have hNfloor : A * (r : ℝ) ^ 2 < (N : ℝ) + 1 := by
-            dsimp [N]
-            exact Nat.lt_floor_add_one _
-        have hLfloor : (N : ℝ) < 2 * ((N / 2 : ℕ) : ℝ) + 2 := by
-          have hh : N < 2 * (N / 2 + 1) := by omega
-          exact_mod_cast hh
-        have hQfloor : ((N / 2 : ℕ) : ℝ) <
-            (B : ℝ) * ((((N / 2) / B : ℕ) : ℝ) + 1) := by
-          have hh : N / 2 < B * (N / 2 / B + 1) := by omega
-          exact_mod_cast hh
-        have hBr : (B : ℝ) = (M : ℝ) * (r : ℝ) ^ 2 := by
-          simp [B, Nat.cast_mul, Nat.cast_pow]
-        have hBpos : (0 : ℝ) < (B : ℝ) := by exact_mod_cast hB
-        have hQlow : (A / (2 * (M : ℝ)) - 2) <
-            (((N / 2) / B : ℕ) : ℝ) := by
-          have h1 : A * (r : ℝ) ^ 2 / 2 - 1 < ((N / 2 : ℕ) : ℝ) := by
-            nlinarith [hNfloor, hLfloor]
-          have h2 := (div_lt_div_iff₀ hBpos hBpos).2 h1
-          have h3 :
-              ((N / 2 : ℕ) : ℝ) / (B : ℝ) - 1 <
-                (((N / 2) / B : ℕ) : ℝ) := by
-            have := (div_lt_iff₀ hBpos).2 (by nlinarith [hQfloor])
-            linarith
-          rw [hBr] at h2
-          have hBge : (1 : ℝ) ≤ (B : ℝ) := by exact_mod_cast hB1
-          have hInv : 1 / (B : ℝ) ≤ 1 := by
-            exact (div_le_iff₀ hBpos).2 (by nlinarith)
-          have hmain : A / (2 * (M : ℝ)) - 2 ≤
-              A / (100 * (M : ℝ)) - 1 := by
-            field_simp
-            nlinarith [hsmall, hMpos]
-          linarith
-        exact hQlow.trans (by
-          field_simp
-          nlinarith [hsmall, hMpos])
-      have hbase : (0 : ℝ) < (1 : ℝ) / 2 := by norm_num
-      have hpow : ((1 : ℝ) / 2) ^ ((N / 2) / B) =
-          ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) := by
-        rw [Real.rpow_natCast]
-      have hmono := Real.rpow_le_rpow_of_exponent_ge hbase (by norm_num)
-        hQ
-      rw [hpow]
-      have heq : ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) =
-          Real.exp (-c * A) := by
-        rw [Real.rpow_def_of_pos hbase]
-        dsimp [c]
-        rw [show Real.log ((1 : ℝ) / 2) = -Real.log 2 by
-          rw [show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ by norm_num, Real.log_inv]]
-        congr 1
-        field_simp
-      rw [← heq]
-      calc
-        ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) ≤
-            ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ)) - 1) := hmono
-        _ = 2 * ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) := by
-          rw [← Real.rpow_add hbase.le]
-          norm_num
-          ring
-    have hnonneg : 0 ≤ BallGreen.timeTail r A u :=
-      (aux_bg7_timeTail_factor r A u).1
-    refine ⟨hnonneg, ?_⟩
-    calc
-      BallGreen.timeTail r A u ≤
-          (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-            ((1 : ℝ) / 2) ^ ((N / 2) / B) := hqbound
-      _ ≤ (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          (2 * Real.exp (-c * A)) :=
-        mul_le_mul_of_nonneg_left hqexp (by positivity)
-      _ = C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-        dsimp [C₀, B]
-        field_simp
-        ring
-      _ ≤ C / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-        gcongr
-        dsimp [C]
-        linarith
-  have hzero : ∀ u : Sandpile.Site 4,
-      u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-        BallGreen.timeTail r A u = 0 := by
-    intro u hu
-    unfold BallGreen.timeTail
-    rw [Sandpile.killedGreen_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      Sandpile.killedGreenTime_eq_zero_of_target_notMem _ (by rw [hbox]; exact hu),
-      sub_zero]
-  refine ⟨?_, ?_⟩
-  · intro u
-    by_cases hu : u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r
-    · rw [hzero u hu, abs_zero]
-      positivity
-    · have hh := (show 0 ≤ BallGreen.timeTail r A u from
-        (aux_bg7_timeTail_factor r A u).1)
-      exact (abs_of_nonneg hh).trans_le (by
-        have h := (show BallGreen.timeTail r A u ≤
-            C / (r : ℝ) ^ 2 * Real.exp (-c * A) from by
-          exact (by
-            have := (aux_bg7_timeTail_factor r A u).2
-            unfinished))
-        exact h)
-  · have hsqzero : ∀ u : Sandpile.Site 4,
-        u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-          BallGreen.timeTail r A u ^ 2 = 0 := by
-      intro u hu
-      rw [hzero u hu, zero_pow (by decide : 2 ≠ 0)]
-    rw [tsum_eq_sum hsqzero]
-    have hsumq := Finset.sum_le_sum (s := LatticeProb.boxFinset (0 : Sandpile.Site 4) r)
-      (fun u hu => by
-        have h := (aux_bg7_timeTail_factor r A u).2
-        unfinished)
-    calc
-      (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          81 * C₀ ^ 2 * Real.exp (-c * A) := by
-        unfinished
-      _ ≤ C * Real.exp (-c * A) := by
-        have hcoefC : 81 * C₀ ^ 2 ≤ C := by
-          dsimp [C]
-          nlinarith [hC₀]
-        exact mul_le_mul_of_nonneg_right hcoefC (Real.exp_pos _).le
--/
-
-end Sandpile.External
-
-namespace Sandpile.External
-
-/-
-theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
-  obtain ⟨G, g, hG, hg, hheat⟩ := Sandpile.External.gaussianUpper 4 (by norm_num)
-  obtain ⟨M, hM, hblock⟩ := aux_bg7_survival_block G g hG hg hheat
-  let C₀ : ℝ := 32 * G * (M : ℝ)
-  let C : ℝ := 81 * C₀ ^ 2 + C₀ + 1
-  let c : ℝ := Real.log 2 / (100 * (M : ℝ))
-  have hMpos : (0 : ℝ) < (M : ℝ) := by exact_mod_cast (show 0 < M by omega)
-  have hC₀ : 0 < C₀ := by dsimp [C₀]; positivity
-  have hC : 0 < C := by dsimp [C]; positivity
-  have hc : 0 < c := by
-    dsimp [c]
-    positivity
-  refine ⟨C, c, hC, hc, ?_⟩
-  intro r hr A hA
-  let N : ℕ := ⌊A * (r : ℝ) ^ 2⌋₊
-  let B : ℕ := M * r ^ 2
-  have hr1 : 1 ≤ r := by omega
-  have hr2 : 1 ≤ r ^ 2 := by
-    simpa [pow_two] using Nat.mul_le_mul hr1 hr1
-  have hrR : (0 : ℝ) < (r : ℝ) := by exact_mod_cast (show 0 < r by omega)
-  have hN : r ^ 2 ≤ N := by
-    dsimp [N]
-    apply Nat.le_floor
-    have hAr : (r : ℝ) ^ 2 ≤ A * (r : ℝ) ^ 2 := by
-      nlinarith [hA, sq_nonneg (r : ℝ)]
-    exact hAr
-  have hB : 0 < B := by
-    dsimp [B]
-    exact Nat.mul_pos (by omega) (by omega)
-  have hblock0 : ∀ x : Sandpile.Site 4,
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) B x ≤ (1 : ℝ) / 2 := by
-    intro x
-    simpa [B] using hblock r hr x
-  have hs : Summable (fun n : ℕ =>
-      LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) n 0) := aux_bg7_survival_summable r
-  obtain ⟨hf, hhalf⟩ := aux_bg7_half_survival_tsum
-    (LatticeProb.boxFinset 0 r) N 0 hs
-  have hshift := aux_bg7_survival_shift_tsum
-    (LatticeProb.boxFinset 0 r) B hB hblock0 (N / 2) 0
-  have hKsum : Summable (fun j : ℕ =>
-      Sandpile.killedKernel (BallGreen.box r) (N + j) 0 0) := by
-    exact (Sandpile.summable_killedKernel_transient (by norm_num)
-      (BallGreen.box r) 0 0).comp_injective (add_right_injective N)
-  have htail_sum :
-      BallGreen.timeTail r A 0 ≤
-        (4 * G / (r : ℝ) ^ 4) *
-          (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := by
-    rw [aux_bg7_timeTail_tsum]
-    have hright : Summable (fun j : ℕ =>
-        (4 * G / (r : ℝ) ^ 4) *
-          LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) :=
-      hf.mul_left (4 * G / (r : ℝ) ^ 4)
-    apply hKsum.tsum_le_tsum
-    · intro j
-      apply aux_bg7_kernel_step r (N + j) 0 hr
-      exact le_trans hN (Nat.le_add_right N j)
-    · exact hright
-  have hqbound : BallGreen.timeTail r A 0 ≤
-      (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-        ((1 : ℝ) / 2) ^ ((N / 2) / B) := by
-    calc
-      BallGreen.timeTail r A 0 ≤
-          (4 * G / (r : ℝ) ^ 4) *
-            (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-              (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := htail_sum
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * (∑' t : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
-            (LatticeProb.boxFinset 0 r) (N / 2 + t) 0)) :=
-        mul_le_mul_of_nonneg_left hhalf (by positivity)
-      _ ≤ (4 * G / (r : ℝ) ^ 4) *
-          (2 * ((B : ℝ) * 2 * ((1 : ℝ) / 2) ^ ((N / 2) / B))) :=
-        mul_le_mul_of_nonneg_left hshift (by positivity)
-      _ = _ := by ring
-  have hqexp : ((1 : ℝ) / 2) ^ ((N / 2) / B) ≤
-      2 * Real.exp (-c * A) := by
-    have hq0 : (0 : ℝ) ≤ (((N / 2) / B : ℕ) : ℝ) := by positivity
-    have hbase : (0 : ℝ) < (1 : ℝ) / 2 := by norm_num
-    have hbase1 : (1 : ℝ) / 2 ≤ 1 := by norm_num
-    have hpow : ((1 : ℝ) / 2) ^ ((N / 2) / B) =
-        ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) := by
-      rw [Real.rpow_natCast]
-    have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
-    have hqreal : (A / (100 * (M : ℝ)) - 1) ≤
-        (((N / 2) / B : ℕ) : ℝ) := by
-      by_cases hsmall : A ≤ 100 * (M : ℝ)
-      · have : A / (100 * (M : ℝ)) - 1 ≤ 0 := by
-          have := div_le_one hsmall
-          linarith
-        linarith
-      · unfinished
-    rw [hpow]
-    have hpowmono := Real.rpow_le_rpow_of_exponent_ge hbase hbase1 hqreal
-    have heq : ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) =
-        Real.exp (-c * A) := by
-      rw [Real.rpow_def_of_pos hbase]
-      dsimp [c]
-      rw [show Real.log ((1 : ℝ) / 2) = -Real.log 2 by
-        rw [show (1 : ℝ) / 2 = (2 : ℝ)⁻¹ by norm_num, Real.log_inv]]
-      congr 1
-      field_simp
-    rw [← heq]
-    have hminus : ((1 : ℝ) / 2) ^ (-1 : ℝ) = 2 := by norm_num
-    calc
-      ((1 : ℝ) / 2) ^ ((((N / 2) / B : ℕ) : ℝ)) ≤
-          ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ)) - 1) := hpowmono
-      _ = 2 * ((1 : ℝ) / 2) ^ (A / (100 * (M : ℝ))) := by
-        rw [← Real.rpow_add hbase.le]
-        norm_num
-        ring
-  have hpoint0 : BallGreen.timeTail r A 0 ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-    calc
-      BallGreen.timeTail r A 0 ≤
-          (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-            ((1 : ℝ) / 2) ^ ((N / 2) / B) := hqbound
-      _ ≤ (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
-          (2 * Real.exp (-c * A)) :=
-        mul_le_mul_of_nonneg_left hqexp (by positivity)
-      _ = C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
-        dsimp [C₀, B]
-        field_simp
-        ring
-  have hzero : ∀ u : Sandpile.Site 4,
-      u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-        BallGreen.timeTail r A u = 0 := by
-    intro u hu
-    unfold BallGreen.timeTail
-    rw [Sandpile.killedGreen_eq_zero_of_target_notMem _ (by
-      intro h
-      exact hu (by rw [show BallGreen.box r =
-        (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set _) from by
-          ext v
-          constructor
-          · intro hv; apply Sandpile.mem_boxFinset; apply Finset.sup_le
-            intro i _
-            simpa [BallGreen.box, Pi.zero_apply, zero_sub, Int.natAbs_neg] using hv i
-          · intro hv i
-            have hi := (LatticeProb.mem_boxFinset_iff.mp hv) i
-            have hi0 : |u i| ≤ (r : ℤ) := by simpa [sub_zero] using hi
-            have hi1 : ((u i).natAbs : ℤ) ≤ (r : ℤ) := by
-              rw [Int.natCast_natAbs]
-              exact hi0
-            exact_mod_cast hi1]
-        exact h),
-      Sandpile.killedGreenTime_eq_zero_of_target_notMem _ (by
-        intro h
-        exact hu (by rw [show BallGreen.box r =
-          (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set _) from by
-            ext v
-            constructor
-            · intro hv; apply Sandpile.mem_boxFinset; apply Finset.sup_le
-              intro i _
-              simpa [BallGreen.box, Pi.zero_apply, zero_sub, Int.natAbs_neg] using hv i
-            · intro hv i
-              have hi := (LatticeProb.mem_boxFinset_iff.mp hv) i
-              have hi0 : |u i| ≤ (r : ℤ) := by simpa [sub_zero] using hi
-              have hi1 : ((u i).natAbs : ℤ) ≤ (r : ℤ) := by
-                rw [Int.natCast_natAbs]
-                exact hi0
-              exact_mod_cast hi]
-          exact h), sub_zero]
-  refine ⟨?_, ?_⟩
-  · intro u
-    by_cases hu : u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r
-    · rw [hzero u hu, abs_zero]
-      positivity
-    · have htrans : BallGreen.timeTail r A u =
-          BallGreen.timeTail r A 0 := by
-        unfinished
-      rw [htrans]
-      exact (abs_of_nonneg (by positivity)).trans (hpoint0)
-  · have hsqzero : ∀ u : Sandpile.Site 4,
-      u ∉ LatticeProb.boxFinset (0 : Sandpile.Site 4) r →
-        BallGreen.timeTail r A u ^ 2 = 0 := by
-      intro u hu; rw [hzero u hu, zero_pow (by decide : 2 ≠ 0)]
-    rw [tsum_eq_sum hsqzero]
-    have hsumq : ∀ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-        BallGreen.timeTail r A u ^ 2 ≤
-          (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-      intro u hu
-      unfinished
-    calc
-      (∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-          BallGreen.timeTail r A u ^ 2) ≤
-          ∑ u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r,
-            (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 :=
-        Finset.sum_le_sum fun u hu => hsumq u hu
-      _ = ((2 * r + 1 : ℕ) : ℝ) ^ 4 *
-          (C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A)) ^ 2 := by
-        rw [Finset.sum_const, nsmul_eq_mul, LatticeProb.card_boxFinset_zero]
-        norm_num
-      _ ≤ C * Real.exp (-c * A) := by
-        unfinished
--/
-
-end Sandpile.External
-
-namespace Sandpile.External
-
-theorem aux_bg7_timeTail_tsum (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
+/-- `BallGreen.timeTail r A u` equals the tail sum `∑' j, killedKernel (box r) (floor (A r^2) + j) 0
+u` of the killed transition kernel past time `floor (A r^2)`. -/
+theorem timeTail_eq_tsum_killedKernel (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
     BallGreen.timeTail r A u =
       ∑' j : ℕ, Sandpile.killedKernel (BallGreen.box r)
         (⌊A * (r : ℝ) ^ 2⌋₊ + j) 0 u := by
@@ -3038,7 +2080,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_survival_summable (r : ℕ) :
+/-- The survival probabilities `LatticeProb.Network.survival (lattice 4) (boxFinset 0 r) n 0` form a
+summable sequence in `n`, by comparison with the summable killed-kernel mass on the box. -/
+theorem survival_summable (r : ℕ) :
     Summable (fun n : ℕ =>
       LatticeProb.Network.survival (LatticeProb.lattice 4)
         (LatticeProb.boxFinset 0 r) n 0) := by
@@ -3095,7 +2139,10 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_half_survival_tsum
+/-- Splitting the tail sum of `survival` at index `(N+j)/2` into even and odd `j` and using
+monotonicity of `survival` in its time argument bounds the tail sum by twice the tail sum
+starting at `N/2`. -/
+theorem survival_tsum_halfShift_le
     (C : Finset (Sandpile.Site 4)) (N : ℕ) (x : Sandpile.Site 4)
     (hs : Summable (fun n : ℕ =>
       LatticeProb.Network.survival (LatticeProb.lattice 4) C n x)) :
@@ -3159,7 +2206,10 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_kernel_mass (r n : ℕ) :
+/-- The finite sum of the killed transition kernel `killedKernel (box r) n 0 v` over `v` in the
+sup-norm box of radius `n` equals the network survival probability `survival (lattice 4)
+(boxFinset 0 r) n 0`. -/
+theorem sum_killedKernel_eq_survival (r n : ℕ) :
     (∑ v ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) n,
       Sandpile.killedKernel (BallGreen.box r) n 0 v) =
       LatticeProb.Network.survival (LatticeProb.lattice 4)
@@ -3210,7 +2260,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_survival_shift_tsum
+/-- If `survival` at some fixed time `B` is at most `1/2` from every starting point, the tail sum of
+`survival (K+j)` over `j` decays geometrically, bounded by `2B * (1/2)^(floor (K/B))`. -/
+theorem survival_tsum_le_of_block_decay
     (C : Finset (Sandpile.Site 4)) (B : ℕ) (hB : 0 < B)
     (hblock : ∀ x : Sandpile.Site 4,
       LatticeProb.Network.survival (LatticeProb.lattice 4) C B x ≤ (1 : ℝ) / 2)
@@ -3295,7 +2347,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_killedPair_target_indicator (D : Set (Sandpile.Site 4))
+/-- `killedPair D n f x` only depends on the values of `f` inside `D`, since it equals `killedPair D
+n (D.indicator f) x`. -/
+theorem killedPair_eq_killedPair_indicator (D : Set (Sandpile.Site 4))
     (n : ℕ) (f : Sandpile.Site 4 → ℝ) (x : Sandpile.Site 4) :
     Sandpile.killedPair D n f x =
       Sandpile.killedPair D n (D.indicator f) x := by
@@ -3306,14 +2360,16 @@ theorem aux_bg7_killedPair_target_indicator (D : Set (Sandpile.Site 4))
   · rw [Set.indicator_of_notMem hy]
     simp [Sandpile.killedKernel_eq_zero_of_target_notMem D hy]
 
-theorem aux_bg7_killedPair_add (D : Set (Sandpile.Site 4))
+/-- The Chapman-Kolmogorov identity for `killedPair`: pairing over `m + n` steps equals pairing over
+`m` steps against the `n`-step pairing of `f`. -/
+theorem killedPair_add_eq_killedPair_comp (D : Set (Sandpile.Site 4))
     (m n : ℕ) (f : Sandpile.Site 4 → ℝ) (x : Sandpile.Site 4) :
     Sandpile.killedPair D (m + n) f x =
       Sandpile.killedPair D m (fun y => Sandpile.killedPair D n f y) x := by
   induction n generalizing m f x with
   | zero =>
       rw [Nat.add_zero]
-      have h := aux_bg7_killedPair_target_indicator D m f x
+      have h := killedPair_eq_killedPair_indicator D m f x
       simpa only [Sandpile.killedPair_zero] using h
   | succ n ih =>
       calc
@@ -3336,7 +2392,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_killedPair_delta (D : Set (Sandpile.Site 4))
+/-- Pairing against the point-mass indicator at `u` recovers the killed transition kernel:
+`killedPair D n (indicator {u}) x = killedKernel D n x u`. -/
+theorem killedPair_indicator_eq_killedKernel (D : Set (Sandpile.Site 4))
     (n : ℕ) (u x : Sandpile.Site 4) :
     Sandpile.killedPair D n (fun y => if y = u then (1 : ℝ) else 0) x =
       Sandpile.killedKernel D n x u := by
@@ -3347,7 +2405,10 @@ theorem aux_bg7_killedPair_delta (D : Set (Sandpile.Site 4))
   · intro y hy
     simp [hy]
 
-theorem aux_bg7_killedKernel_semigroup (D : Set (Sandpile.Site 4))
+/-- The semigroup (Chapman-Kolmogorov) identity for the killed kernel: `killedKernel D (m+n) x u`
+equals the finite sum over `v` in the box of radius `m` of `killedKernel D m x v * killedKernel
+D n v u`, derived from the `killedPair` addition law and the delta-pairing identity. -/
+theorem killedKernel_add_eq_sum_mul (D : Set (Sandpile.Site 4))
     (m n : ℕ) (x u : Sandpile.Site 4) :
     Sandpile.killedKernel D (m + n) x u =
       ∑ v ∈ LatticeProb.boxFinset x m,
@@ -3356,8 +2417,8 @@ theorem aux_bg7_killedKernel_semigroup (D : Set (Sandpile.Site 4))
       Sandpile.killedPair D q (fun y => if y = u then 1 else 0) v =
         Sandpile.killedKernel D q v u := by
     intro q v
-    exact aux_bg7_killedPair_delta D q u v
-  rw [← hdelta (m + n) x, aux_bg7_killedPair_add D m n
+    exact killedPair_indicator_eq_killedKernel D q u v
+  rw [← hdelta (m + n) x, killedPair_add_eq_killedPair_comp D m n
     (fun y => if y = u then 1 else 0) x]
   have hzero : ∀ v : Sandpile.Site 4,
       v ∉ LatticeProb.boxFinset x m → Sandpile.killedKernel D m x v = 0 := by
@@ -3379,7 +2440,10 @@ theorem aux_bg7_killedKernel_semigroup (D : Set (Sandpile.Site 4))
     rw [hzero v hv, zero_mul]
   rw [tsum_eq_sum hzero']
 
-theorem aux_bg7_kernel_step (r k : ℕ) (u : Sandpile.Site 4)
+/-- Splitting a time `k ≥ r^2` at its midpoint and applying the Gaussian heat-kernel upper bound to
+the second half bounds the killed kernel `killedKernel (box r) k 0 u` by a constant times the
+survival probability at time `k/2`. -/
+theorem killedKernel_le_const_mul_survival_half (r k : ℕ) (u : Sandpile.Site 4)
     (hr : 2 ≤ r) (hk : r ^ 2 ≤ k) (G g : ℝ) (hG : 0 < G) (hg : 0 < g)
     (hheat : ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site 4,
       Sandpile.heatKernel 4 n x y ≤
@@ -3397,7 +2461,7 @@ theorem aux_bg7_kernel_step (r k : ℕ) (u : Sandpile.Site 4)
   have hhalf : (m + l) / 2 = m := by
     change (k / 2 + (k - k / 2)) / 2 = k / 2
     omega
-  rw [hkl, aux_bg7_killedKernel_semigroup, hhalf]
+  rw [hkl, killedKernel_add_eq_sum_mul, hhalf]
   have hl : 1 ≤ l := by
     change 1 ≤ k - k / 2
     have hr1 : 1 ≤ r := by omega
@@ -3436,7 +2500,7 @@ theorem aux_bg7_kernel_step (r k : ℕ) (u : Sandpile.Site 4)
         Sandpile.killedKernel (BallGreen.box r) m 0 v) =
         LatticeProb.Network.survival (LatticeProb.lattice 4)
           (LatticeProb.boxFinset 0 r) m 0 :=
-    aux_bg7_kernel_mass r m
+    sum_killedKernel_eq_survival r m
   have hnon : 0 ≤ LatticeProb.Network.survival (LatticeProb.lattice 4)
       (LatticeProb.boxFinset 0 r) m 0 :=
     LatticeProb.Network.survival_nonneg _ _ _
@@ -3475,7 +2539,11 @@ theorem aux_bg7_kernel_step (r k : ℕ) (u : Sandpile.Site 4)
     exact mul_le_mul_of_nonneg_left hden_le hG.le
   exact hsum'.trans (mul_le_mul_of_nonneg_right hratio hnon)
 
-theorem aux_bg7_timeTail_factor (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
+/-- `BallGreen.timeTail r A u` is nonnegative and bounded above by `green 4 0 0` times the survival
+probability `survival (lattice 4) (boxFinset 0 r) (floor (A r^2)) 0`, obtained by factoring the
+tail sum through the kernel at time `floor (A r^2)` and bounding each remaining killed Green's
+function by the diagonal free Green's function. -/
+theorem timeTail_le_green_mul_survival (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
     0 ≤ BallGreen.timeTail r A u ∧
       BallGreen.timeTail r A u ≤
         Sandpile.green 4 0 0 *
@@ -3502,7 +2570,7 @@ theorem aux_bg7_timeTail_factor (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
       Sandpile.killedPair D j (fun y => if y = u then (1 : ℝ) else 0) v =
         Sandpile.killedKernel D j v u := by
     intro j v
-    exact aux_bg7_killedPair_delta D j u v
+    exact killedPair_indicator_eq_killedKernel D j u v
   have hsem : ∀ (j : ℕ),
       Sandpile.killedKernel D (N + j) 0 u =
         ∑ v ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) N,
@@ -3516,7 +2584,7 @@ theorem aux_bg7_timeTail_factor (r : ℕ) (A : ℝ) (u : Sandpile.Site 4) :
       _ = Sandpile.killedPair D N
             (fun v => Sandpile.killedPair D j
               (fun y => if y = u then (1 : ℝ) else 0) v) 0 :=
-        aux_bg7_killedPair_add D N j (fun y => if y = u then (1 : ℝ) else 0) 0
+        killedPair_add_eq_killedPair_comp D N j (fun y => if y = u then (1 : ℝ) else 0) 0
       _ = ∑ v ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) N,
             Sandpile.killedKernel D N 0 v * Sandpile.killedKernel D j v u := by
         rw [Sandpile.killedPair_eq_sum]
@@ -3628,7 +2696,9 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_gaussian_upper_d4 (G g : ℝ)
+/-- Given a Gaussian upper bound on the dimension-`4` heat kernel, dropping the (at most `1`)
+exponential factor gives the cruder bound `heatKernel 4 n x y ≤ G / n^2` for `n ≥ 1`. -/
+theorem heatKernel_le_const_div_sq (G g : ℝ)
     (hG : 0 < G) (hg : 0 < g)
     (hheat : ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site 4,
       Sandpile.heatKernel 4 n x y ≤
@@ -3662,7 +2732,10 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_bg7_survival_block (G g : ℝ) (hG : 0 < G) (hg : 0 < g)
+/-- Using the Gaussian heat-kernel upper bound, there is a block size `M` (depending only on the
+Gaussian constants) such that the survival probability on any box of radius `r` after `M r^2`
+steps is at most `1/2`, from any starting point in the box. -/
+theorem survival_le_half_of_blockSize (G g : ℝ) (hG : 0 < G) (hg : 0 < g)
     (hheat : ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site 4,
       Sandpile.heatKernel 4 n x y ≤
         G * (n : ℝ) ^ (-(4 : ℝ) / 2) *
@@ -3690,7 +2763,7 @@ theorem aux_bg7_survival_block (G g : ℝ) (hG : 0 < G) (hg : 0 < g)
     have hpoint : ∀ v : Sandpile.Site 4,
         Sandpile.heatKernel 4 n x v ≤ G / (n : ℝ) ^ 2 := by
       intro v
-      exact aux_bg7_gaussian_upper_d4 G g hG hg hheat n hn x v
+      exact heatKernel_le_const_div_sq G g hG hg hheat n hn x v
     have hsum :
           LatticeProb.Network.survival (LatticeProb.lattice 4)
             (LatticeProb.boxFinset (0 : Sandpile.Site 4) r) n x ≤
@@ -3701,7 +2774,8 @@ theorem aux_bg7_survival_block (G g : ℝ) (hG : 0 < G) (hg : 0 < g)
       calc
         LatticeProb.Graph.killedHeat (LatticeProb.lattice 4)
             (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4)) n x v =
-            Sandpile.killedKernel (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4))
+            Sandpile.killedKernel
+              (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4))
               n x v := (Sandpile.killedKernel_eq_graph _ _ _ _).symm
         _ ≤ Sandpile.heatKernel 4 n x v :=
           Sandpile.killedKernel_le_heatKernel _ _ _ _
@@ -3753,9 +2827,15 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
+/-- Proves that `timeTailDecayBound` holds, i.e. clause seven: both the pointwise bound
+`|BallGreen.timeTail r A u| ≤ C / r ^ 2 * exp (-c * A)` and the `ℓ²` bound follow from a Gaussian
+heat-kernel upper bound (`Sandpile.External.gaussianUpper`) together with the geometric
+block-survival decay `survival_le_half_of_blockSize`, transferred to the killed kernel via
+`killedKernel_le_const_mul_survival_half` and the shift estimates `survival_tsum_halfShift_le`
+and `survival_tsum_le_of_block_decay`, with rate `c = Real.log 2 / (100 * M)`. -/
+theorem aux_ballgreen_clause7_holds : timeTailDecayBound := by
   obtain ⟨G, g, hG, hg, hheat⟩ := Sandpile.External.gaussianUpper 4 (by norm_num)
-  obtain ⟨M, hM, hblock⟩ := aux_bg7_survival_block G g hG hg hheat
+  obtain ⟨M, hM, hblock⟩ := survival_le_half_of_blockSize G g hG hg hheat
   let C₀ : ℝ := 32 * G * (M : ℝ)
   let C : ℝ := 81 * C₀ ^ 2 + C₀ + 1
   let c : ℝ := Real.log 2 / (100 * (M : ℝ))
@@ -3789,10 +2869,10 @@ theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
     simpa [B] using hblock r hr x
   have hs : Summable (fun n : ℕ =>
       LatticeProb.Network.survival (LatticeProb.lattice 4)
-        (LatticeProb.boxFinset 0 r) n 0) := aux_bg7_survival_summable r
-  obtain ⟨hf, hhalf⟩ := aux_bg7_half_survival_tsum
+        (LatticeProb.boxFinset 0 r) n 0) := survival_summable r
+  obtain ⟨hf, hhalf⟩ := survival_tsum_halfShift_le
     (LatticeProb.boxFinset 0 r) N 0 hs
-  have hshift := aux_bg7_survival_shift_tsum
+  have hshift := survival_tsum_le_of_block_decay
     (LatticeProb.boxFinset 0 r) B hB hblock0 (N / 2) 0
   have hq : ∀ u : Sandpile.Site 4,
       BallGreen.timeTail r A u ≤
@@ -3812,12 +2892,12 @@ theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
         (4 * G / (r : ℝ) ^ 4) *
           (∑' j : ℕ, LatticeProb.Network.survival (LatticeProb.lattice 4)
             (LatticeProb.boxFinset 0 r) ((N + j) / 2) 0) := by
-      rw [aux_bg7_timeTail_tsum]
+      rw [timeTail_eq_tsum_killedKernel]
       change (∑' j : ℕ, Sandpile.killedKernel (BallGreen.box r) (N + j) 0 u) ≤ _
       rw [← tsum_mul_left]
       apply hKsum.tsum_le_tsum
       · intro j
-        apply aux_bg7_kernel_step r (N + j) u hr
+        apply killedKernel_le_const_mul_survival_half r (N + j) u hr
           (le_trans hN (Nat.le_add_right N j)) G g hG hg hheat
       · exact hright
     calc
@@ -3925,7 +3005,7 @@ theorem aux_ballgreen_clause7_holds : aux_ballgreen_clause7 := by
   have hpoint : ∀ u : Sandpile.Site 4,
       |BallGreen.timeTail r A u| ≤ C₀ / (r : ℝ) ^ 2 * Real.exp (-c * A) := by
     intro u
-    have hnonneg := (aux_bg7_timeTail_factor r A u).1
+    have hnonneg := (timeTail_le_green_mul_survival r A u).1
     have hu := (hq u).trans (by
       calc
         _ ≤ (16 * G * (B : ℝ) / (r : ℝ) ^ 4) *
@@ -4045,58 +3125,73 @@ end Sandpile.External
 
 namespace Sandpile.External
 
-def aux_bg6_nrm1 (z : Sandpile.Site 4) : ℕ := ∑ i, (z i).natAbs
+/-- The `ℓ¹` (taxicab) norm on `Sandpile.Site 4`, the sum of the absolute values of the four integer
+coordinates. -/
+def l1Norm (z : Sandpile.Site 4) : ℕ := ∑ i, (z i).natAbs
 
-theorem aux_bg6_nrm1_eq_zero_iff {z : Sandpile.Site 4} :
-    aux_bg6_nrm1 z = 0 ↔ z = 0 := by
+/-- `l1Norm z = 0` if and only if `z = 0`. -/
+theorem l1Norm_eq_zero_iff {z : Sandpile.Site 4} :
+    l1Norm z = 0 ↔ z = 0 := by
   constructor
   · intro h
     funext i
     have hi := (Finset.sum_eq_zero_iff.mp h) i (Finset.mem_univ i)
     simpa [Int.natAbs_eq_zero] using hi
   · rintro rfl
-    simp [aux_bg6_nrm1]
+    simp [l1Norm]
 
-theorem aux_bg6_nrm1_add_le (z w : Sandpile.Site 4) :
-    aux_bg6_nrm1 (z + w) ≤ aux_bg6_nrm1 z + aux_bg6_nrm1 w := by
-  rw [aux_bg6_nrm1, aux_bg6_nrm1, aux_bg6_nrm1, ← Finset.sum_add_distrib]
+/-- The `ℓ¹` norm is subadditive: `l1Norm (z + w) ≤ l1Norm z + l1Norm w`, coordinatewise from the
+integer triangle inequality. -/
+theorem l1Norm_add_le (z w : Sandpile.Site 4) :
+    l1Norm (z + w) ≤ l1Norm z + l1Norm w := by
+  rw [l1Norm, l1Norm, l1Norm, ← Finset.sum_add_distrib]
   exact Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _
 
-private theorem aux_bg6_dirVec_self (j : Fin 4) (s : Bool) :
+/-- The `j`-th coordinate of the direction vector `dirVec (j, s)` is `1` if `s` is true and `-1`
+otherwise. -/
+private theorem dirVec_self_eq (j : Fin 4) (s : Bool) :
     LatticeProb.dirVec ((j, s) : LatticeProb.Dir 4) j = if s then 1 else -1 := by
   simp [LatticeProb.dirVec]
 
-private theorem aux_bg6_dirVec_of_ne {i j : Fin 4} (s : Bool) (h : i ≠ j) :
+/-- The `i`-th coordinate of the direction vector `dirVec (j, s)` vanishes whenever `i ≠ j`. -/
+private theorem dirVec_eq_zero_of_ne {i j : Fin 4} (s : Bool) (h : i ≠ j) :
     LatticeProb.dirVec ((j, s) : LatticeProb.Dir 4) i = 0 := by
   simp [LatticeProb.dirVec, h]
 
 open Classical in
-noncomputable def aux_bg6_towardVec (p y : Sandpile.Site 4) : Sandpile.Site 4 :=
+/-- The unit direction vector pointing from `y` toward `p`, chosen along the first coordinate where
+`y` and `p` differ, or `0` if `y = p`. -/
+noncomputable def stepToward (p y : Sandpile.Site 4) : Sandpile.Site 4 :=
   if h : ∃ j : Fin 4, y j ≠ p j then
     LatticeProb.dirVec ((h.choose, decide (y h.choose < p h.choose)) : LatticeProb.Dir 4)
   else 0
 
-theorem aux_bg6_towardVec_isDir {p y : Sandpile.Site 4} (hne : y ≠ p) :
+/-- When `y ≠ p`, `stepToward p y` equals `dirVec a` for some direction `a`, namely the coordinate
+along which `y` and `p` first differ, signed toward `p`. -/
+theorem stepToward_eq_dirVec {p y : Sandpile.Site 4} (hne : y ≠ p) :
     ∃ a : LatticeProb.Dir 4,
-      aux_bg6_towardVec p y = LatticeProb.dirVec a := by
+      stepToward p y = LatticeProb.dirVec a := by
   classical
   have h : ∃ j : Fin 4, y j ≠ p j := by
     by_contra hc
     push Not at hc
     exact hne (funext hc)
   exact ⟨(h.choose, decide (y h.choose < p h.choose)), by
-    rw [aux_bg6_towardVec, dif_pos h]⟩
+    rw [stepToward, dif_pos h]⟩
 
-theorem aux_bg6_towardVec_unit {p y : Sandpile.Site 4} (hne : y ≠ p) :
-    ∃ i : Fin 4, aux_bg6_towardVec p y = LatticeProb.unit i ∨
-      aux_bg6_towardVec p y = -LatticeProb.unit i := by
-  obtain ⟨⟨i, b⟩, hb⟩ := aux_bg6_towardVec_isDir hne
+/-- When `y ≠ p`, `stepToward p y` is `±` a coordinate unit vector. -/
+theorem stepToward_eq_unit_or_neg_unit {p y : Sandpile.Site 4} (hne : y ≠ p) :
+    ∃ i : Fin 4, stepToward p y = LatticeProb.unit i ∨
+      stepToward p y = -LatticeProb.unit i := by
+  obtain ⟨⟨i, b⟩, hb⟩ := stepToward_eq_dirVec hne
   cases b
   · exact ⟨i, Or.inr (hb.trans (LatticeProb.dirVec_eq_neg_unit i))⟩
   · exact ⟨i, Or.inl (hb.trans (LatticeProb.dirVec_eq_unit i))⟩
 
-theorem aux_bg6_nrm1_toward {p y : Sandpile.Site 4} (hne : y ≠ p) :
-    aux_bg6_nrm1 (p - (y + aux_bg6_towardVec p y)) + 1 = aux_bg6_nrm1 (p - y) := by
+/-- Moving one step toward `p` decreases the `ℓ¹` distance to `p` by exactly `1`: `l1Norm (p -
+towardStep p y) + 1 = l1Norm (p - y)` when `y ≠ p`. -/
+theorem l1Norm_towardStep_add_one_eq {p y : Sandpile.Site 4} (hne : y ≠ p) :
+    l1Norm (p - (y + stepToward p y)) + 1 = l1Norm (p - y) := by
   classical
   have h : ∃ j : Fin 4, y j ≠ p j := by
     by_contra hc
@@ -4104,28 +3199,28 @@ theorem aux_bg6_nrm1_toward {p y : Sandpile.Site 4} (hne : y ≠ p) :
     exact hne (funext hc)
   set j := h.choose with hj
   have hjne : y j ≠ p j := h.choose_spec
-  have hstep : aux_bg6_towardVec p y =
+  have hstep : stepToward p y =
       LatticeProb.dirVec ((j, decide (y j < p j)) : LatticeProb.Dir 4) := by
-    rw [aux_bg6_towardVec, dif_pos h]
+    rw [stepToward, dif_pos h]
   have hsplit : ∀ z : Sandpile.Site 4,
-      aux_bg6_nrm1 z = (z j).natAbs + ∑ i ∈ Finset.univ.erase j, (z i).natAbs := by
+      l1Norm z = (z j).natAbs + ∑ i ∈ Finset.univ.erase j, (z i).natAbs := by
     intro z
-    rw [aux_bg6_nrm1, ← Finset.add_sum_erase _ _ (Finset.mem_univ j)]
+    rw [l1Norm, ← Finset.add_sum_erase _ _ (Finset.mem_univ j)]
   have hoff : ∀ i ∈ Finset.univ.erase j,
-      ((p - (y + aux_bg6_towardVec p y)) i).natAbs = ((p - y) i).natAbs := by
+      ((p - (y + stepToward p y)) i).natAbs = ((p - y) i).natAbs := by
     intro i hi
     have hij : i ≠ j := Finset.ne_of_mem_erase hi
     simp only [Pi.sub_apply, Pi.add_apply, hstep,
-      aux_bg6_dirVec_of_ne _ hij, add_zero]
-  rw [hsplit (p - (y + aux_bg6_towardVec p y)), hsplit (p - y),
+      dirVec_eq_zero_of_ne _ hij, add_zero]
+  rw [hsplit (p - (y + stepToward p y)), hsplit (p - y),
     Finset.sum_congr rfl hoff]
-  have hjval : ((p - (y + aux_bg6_towardVec p y)) j).natAbs + 1 =
+  have hjval : ((p - (y + stepToward p y)) j).natAbs + 1 =
       ((p - y) j).natAbs := by
-    have hv : (aux_bg6_towardVec p y) j = if y j < p j then (1 : ℤ) else -1 := by
-      rw [hstep, aux_bg6_dirVec_self]
+    have hv : (stepToward p y) j = if y j < p j then (1 : ℤ) else -1 := by
+      rw [hstep, dirVec_self_eq]
       by_cases hlt : y j < p j <;> simp [hlt]
-    have hpa : (p - (y + aux_bg6_towardVec p y)) j =
-        p j - (y j + (aux_bg6_towardVec p y) j) := rfl
+    have hpa : (p - (y + stepToward p y)) j =
+        p j - (y j + (stepToward p y) j) := rfl
     have hpb : (p - y) j = p j - y j := rfl
     rw [hpa, hpb, hv]
     by_cases hlt : y j < p j
@@ -4136,71 +3231,87 @@ theorem aux_bg6_nrm1_toward {p y : Sandpile.Site 4} (hne : y ≠ p) :
       omega
   omega
 
-noncomputable def aux_bg6_toward (p y : Sandpile.Site 4) : Sandpile.Site 4 :=
-  y + aux_bg6_towardVec p y
+/-- The lattice point obtained from `y` by moving one unit step toward `p`, namely `y + stepToward p
+y`. -/
+noncomputable def towardStep (p y : Sandpile.Site 4) : Sandpile.Site 4 :=
+  y + stepToward p y
 
-noncomputable def aux_bg6_gpath (p x : Sandpile.Site 4) (k : ℕ) : Sandpile.Site 4 :=
-  (aux_bg6_toward p)^[k] x
+/-- The `k`-step discrete geodesic from `x` to `p`, obtained by iterating `towardStep p` `k` times
+starting at `x`. -/
+noncomputable def geodesicPath (p x : Sandpile.Site 4) (k : ℕ) : Sandpile.Site 4 :=
+  (towardStep p)^[k] x
 
-@[simp] theorem aux_bg6_gpath_zero (p x : Sandpile.Site 4) :
-    aux_bg6_gpath p x 0 = x := rfl
+/-- `geodesicPath p x 0 = x`. -/
+@[simp] theorem geodesicPath_zero (p x : Sandpile.Site 4) :
+    geodesicPath p x 0 = x := rfl
 
-theorem aux_bg6_gpath_succ (p x : Sandpile.Site 4) (k : ℕ) :
-    aux_bg6_gpath p x (k + 1) = aux_bg6_toward p (aux_bg6_gpath p x k) := by
-  rw [aux_bg6_gpath, aux_bg6_gpath, Function.iterate_succ_apply']
+/-- `geodesicPath p x (k+1) = towardStep p (geodesicPath p x k)`, the one-step unfolding of the
+iterate. -/
+theorem geodesicPath_succ (p x : Sandpile.Site 4) (k : ℕ) :
+    geodesicPath p x (k + 1) = towardStep p (geodesicPath p x k) := by
+  rw [geodesicPath, geodesicPath, Function.iterate_succ_apply']
 
-theorem aux_bg6_gpath_nrm1 (p x : Sandpile.Site 4) : ∀ k : ℕ,
-    k ≤ aux_bg6_nrm1 (p - x) →
-      aux_bg6_nrm1 (p - aux_bg6_gpath p x k) = aux_bg6_nrm1 (p - x) - k := by
+/-- For `k` at most the `ℓ¹` distance from `x` to `p`, the geodesic path has made exactly `k` units
+of progress: `l1Norm (p - geodesicPath p x k) = l1Norm (p - x) - k`. -/
+theorem l1Norm_geodesicPath_eq_sub (p x : Sandpile.Site 4) : ∀ k : ℕ,
+    k ≤ l1Norm (p - x) →
+      l1Norm (p - geodesicPath p x k) = l1Norm (p - x) - k := by
   intro k
   induction k with
   | zero => intro _; simp
   | succ n ih =>
     intro hn
-    have hn' : n ≤ aux_bg6_nrm1 (p - x) := Nat.le_of_succ_le hn
+    have hn' : n ≤ l1Norm (p - x) := Nat.le_of_succ_le hn
     have hprev := ih hn'
-    have hpos : 0 < aux_bg6_nrm1 (p - aux_bg6_gpath p x n) := by omega
-    have hne : aux_bg6_gpath p x n ≠ p := by
+    have hpos : 0 < l1Norm (p - geodesicPath p x n) := by omega
+    have hne : geodesicPath p x n ≠ p := by
       intro hcon
       rw [hcon, sub_self] at hpos
-      rw [aux_bg6_nrm1_eq_zero_iff.mpr rfl] at hpos
+      rw [l1Norm_eq_zero_iff.mpr rfl] at hpos
       exact absurd hpos (lt_irrefl 0)
-    have hstep := aux_bg6_nrm1_toward
-      (p := p) (y := aux_bg6_gpath p x n) hne
-    rw [aux_bg6_gpath_succ, aux_bg6_toward]
+    have hstep := l1Norm_towardStep_add_one_eq
+      (p := p) (y := geodesicPath p x n) hne
+    rw [geodesicPath_succ, towardStep]
     omega
 
-theorem aux_bg6_gpath_ne {p x : Sandpile.Site 4} {k : ℕ}
-    (hk : k < aux_bg6_nrm1 (p - x)) : aux_bg6_gpath p x k ≠ p := by
+/-- Before reaching `p`, the geodesic path has not arrived: `geodesicPath p x k ≠ p` whenever `k <
+l1Norm (p - x)`. -/
+theorem geodesicPath_ne_of_lt {p x : Sandpile.Site 4} {k : ℕ}
+    (hk : k < l1Norm (p - x)) : geodesicPath p x k ≠ p := by
   intro hcon
-  have h := aux_bg6_gpath_nrm1 p x k (le_of_lt hk)
+  have h := l1Norm_geodesicPath_eq_sub p x k (le_of_lt hk)
   rw [hcon] at h
   simp only [sub_self] at h
-  have hz : aux_bg6_nrm1 (0 : Sandpile.Site 4) = 0 :=
-    aux_bg6_nrm1_eq_zero_iff.mpr rfl
+  have hz : l1Norm (0 : Sandpile.Site 4) = 0 :=
+    l1Norm_eq_zero_iff.mpr rfl
   omega
 
-theorem aux_bg6_gpath_end (p x : Sandpile.Site 4) :
-    aux_bg6_gpath p x (aux_bg6_nrm1 (p - x)) = p := by
-  have h := aux_bg6_gpath_nrm1 p x (aux_bg6_nrm1 (p - x)) le_rfl
+/-- The geodesic path reaches its target after exactly `l1Norm (p - x)` steps: `geodesicPath p x
+(l1Norm (p - x)) = p`. -/
+theorem geodesicPath_eq_target (p x : Sandpile.Site 4) :
+    geodesicPath p x (l1Norm (p - x)) = p := by
+  have h := l1Norm_geodesicPath_eq_sub p x (l1Norm (p - x)) le_rfl
   simp only [Nat.sub_self] at h
-  have h2 : p - aux_bg6_gpath p x (aux_bg6_nrm1 (p - x)) = 0 :=
-    aux_bg6_nrm1_eq_zero_iff.mp h
+  have h2 : p - geodesicPath p x (l1Norm (p - x)) = 0 :=
+    l1Norm_eq_zero_iff.mp h
   exact (sub_eq_zero.mp h2).symm
 
-theorem aux_bg6_gpath_step (w : Sandpile.Site 4) {k : ℕ}
-    (hk : k < aux_bg6_nrm1 w) :
+/-- Each step of the geodesic path from `0` toward `w` moves by `+` or `-` a coordinate
+unit vector. -/
+theorem geodesicPath_succ_eq_add_or_sub_unit (w : Sandpile.Site 4) {k : ℕ}
+    (hk : k < l1Norm w) :
     ∃ i : Fin 4,
-      aux_bg6_gpath w 0 (k + 1) = aux_bg6_gpath w 0 k + LatticeProb.unit i ∨
-      aux_bg6_gpath w 0 (k + 1) = aux_bg6_gpath w 0 k - LatticeProb.unit i := by
-  have hne := aux_bg6_gpath_ne (p := w) (x := (0 : Sandpile.Site 4))
+      geodesicPath w 0 (k + 1) = geodesicPath w 0 k + LatticeProb.unit i ∨
+      geodesicPath w 0 (k + 1) = geodesicPath w 0 k - LatticeProb.unit i := by
+  have hne := geodesicPath_ne_of_lt (p := w) (x := (0 : Sandpile.Site 4))
     (by simpa using hk)
-  obtain ⟨i, hi | hi⟩ := aux_bg6_towardVec_unit hne
-  · exact ⟨i, Or.inl (by rw [aux_bg6_gpath_succ, aux_bg6_toward, hi])⟩
-  · exact ⟨i, Or.inr (by rw [aux_bg6_gpath_succ, aux_bg6_toward, hi]; abel)⟩
+  obtain ⟨i, hi | hi⟩ := stepToward_eq_unit_or_neg_unit hne
+  · exact ⟨i, Or.inl (by rw [geodesicPath_succ, towardStep, hi])⟩
+  · exact ⟨i, Or.inr (by rw [geodesicPath_succ, towardStep, hi]; abel)⟩
 
 
-theorem aux_bg6_latticeNorm_unit_le (i : Fin 4) :
+/-- A coordinate unit vector has Euclidean norm at most (in fact equal to) `1`. -/
+theorem latticeNorm_unit_le (i : Fin 4) :
     BallGreen.latticeNorm (LatticeProb.unit i) ≤ 1 := by
   have hsum : (∑ j : Fin 4, (((LatticeProb.unit i) j : ℤ) : ℝ) ^ 2) = 1 := by
     classical
@@ -4213,7 +3324,8 @@ theorem aux_bg6_latticeNorm_unit_le (i : Fin 4) :
   unfold BallGreen.latticeNorm
   rw [hsum, Real.sqrt_one]
 
-theorem aux_bg6_latticeNorm_neg (z : Sandpile.Site 4) :
+/-- `BallGreen.latticeNorm` is invariant under negation: `latticeNorm (-z) = latticeNorm z`. -/
+theorem latticeNorm_neg (z : Sandpile.Site 4) :
     BallGreen.latticeNorm (-z) = BallGreen.latticeNorm z := by
   unfold BallGreen.latticeNorm
   congr 1
@@ -4223,7 +3335,9 @@ theorem aux_bg6_latticeNorm_neg (z : Sandpile.Site 4) :
   push_cast
   ring
 
-theorem aux_bg6_unit_diff_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
+/-- Outside the ball of radius `2r+2`, both the killed Green's function and its unit shift vanish,
+so their squared difference is `0`. -/
+theorem killedGreen_unit_diff_eq_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
     {u : Sandpile.Site 4}
     (hu : u ∉ LatticeProb.ballFinset 4 (2 * (r : ℝ) + 2)) :
     (Sandpile.killedGreen (BallGreen.box r) 0 (u + LatticeProb.unit i) -
@@ -4236,7 +3350,7 @@ theorem aux_bg6_unit_diff_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
     have hmem : u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
       by_contra hnm
       exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-    have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+    have hb := latticeNorm_le_of_mem_boxFinset hmem
     linarith
   have hzero_v : Sandpile.killedGreen (BallGreen.box r) 0
       (u + LatticeProb.unit i) = 0 := by
@@ -4245,21 +3359,24 @@ theorem aux_bg6_unit_diff_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
         LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
       by_contra hnm
       exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-    have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+    have hb := latticeNorm_le_of_mem_boxFinset hmem
     have htri : BallGreen.latticeNorm u ≤
         BallGreen.latticeNorm (u + LatticeProb.unit i) +
           BallGreen.latticeNorm (-(LatticeProb.unit i)) := by
-      have h := aux_bg6_latticeNorm_add_le (u + LatticeProb.unit i)
+      have h := latticeNorm_add_le (u + LatticeProb.unit i)
         (-(LatticeProb.unit i))
       simpa [add_assoc] using h
     have hunit : BallGreen.latticeNorm (LatticeProb.unit i) ≤ 1 :=
-      aux_bg6_latticeNorm_unit_le i
-    rw [aux_bg6_latticeNorm_neg] at htri
+      latticeNorm_unit_le i
+    rw [latticeNorm_neg] at htri
     linarith
   rw [hzero_v, hzero_u]
   ring
 
-theorem aux_bg6_shell_sum_le
+/-- Restricting the annular-gradient hypothesis `h4` (`annulusUnitShiftBound`) to a finite ball
+recovers the same `C4/R^2` bound for the truncated finite sum, since the summand vanishes
+outside that ball. -/
+theorem sum_killedGreen_unit_diff_shell_le
     (C₄ : ℝ) (h4 : ∀ r : ℕ, 2 ≤ r → ∀ R : ℕ, 2 ≤ R → ∀ i : Fin 4,
       (∑' u : {u : Sandpile.Site 4 //
           (R : ℝ) ≤ BallGreen.latticeNorm u ∧
@@ -4296,13 +3413,16 @@ theorem aux_bg6_shell_sum_le
     intro u hu
     by_cases hS : u ∈ S
     · rw [Set.indicator_of_mem hS]
-      exact aux_bg6_unit_diff_zero_of_notMem_ball r i hu
+      exact killedGreen_unit_diff_eq_zero_of_notMem_ball r i hu
     · rw [Set.indicator_of_notMem hS]
   rw [tsum_eq_sum hzero] at h4'
   exact h4'
 
 
-theorem aux_bg6_unit_tail_le
+/-- Decomposing the tail region `|u| ≥ T` into dyadic annuli and applying
+`sum_killedGreen_unit_diff_shell_le` to each, then summing the resulting geometric series,
+bounds the tail sum of the squared unit-shift difference by `8 C4 / T^2`. -/
+theorem tsum_killedGreen_unit_diff_tail_le
     (C₄ : ℝ) (hC₄ : 0 < C₄)
     (h4 : ∀ r : ℕ, 2 ≤ r → ∀ R : ℕ, 2 ≤ R → ∀ i : Fin 4,
       (∑' u : {u : Sandpile.Site 4 //
@@ -4334,7 +3454,7 @@ theorem aux_bg6_unit_tail_le
     by_cases htail : (T : ℝ) ≤ BallGreen.latticeNorm u
     · have hmem : u ∈ {u : Sandpile.Site 4 | (T : ℝ) ≤ BallGreen.latticeNorm u} := htail
       rw [Set.indicator_of_mem hmem]
-      exact aux_bg6_unit_diff_zero_of_notMem_ball r i (by simpa [ball] using hu)
+      exact killedGreen_unit_diff_eq_zero_of_notMem_ball r i (by simpa [ball] using hu)
     · have hmem : u ∉ {u : Sandpile.Site 4 | (T : ℝ) ≤ BallGreen.latticeNorm u} := htail
       rw [Set.indicator_of_notMem hmem]
   have hBcast : (B : ℝ) = 2 * (r : ℝ) + 2 := by
@@ -4443,7 +3563,7 @@ theorem aux_bg6_unit_tail_le
     apply Finset.sum_le_sum
     intro j hj
     dsimp [ball, shell, g] at ⊢
-    exact aux_bg6_shell_sum_le C₄ h4 r (2 ^ k₀ * 2 ^ j) hr
+    exact sum_killedGreen_unit_diff_shell_le C₄ h4 r (2 ^ k₀ * 2 ^ j) hr
       (by
         have hk₀pos : 0 < k₀ := by
           dsimp [k₀]
@@ -4530,8 +3650,10 @@ theorem aux_bg6_unit_tail_le
   exact hsum_point.trans (hsum_shell.trans hsum_geom)
 
 
-theorem aux_bg6_nrm1_le_two_norm (z : Sandpile.Site 4) :
-    (aux_bg6_nrm1 z : ℝ) ≤ 2 * BallGreen.latticeNorm z := by
+/-- The `ℓ¹` norm is at most twice the Euclidean norm on `Sandpile.Site 4`, by Cauchy-Schwarz
+applied to the four coordinates. -/
+theorem l1Norm_le_two_mul_latticeNorm (z : Sandpile.Site 4) :
+    (l1Norm z : ℝ) ≤ 2 * BallGreen.latticeNorm z := by
   have hcs := Real.sum_mul_le_sqrt_mul_sqrt (Finset.univ : Finset (Fin 4))
     (fun i => |((z i : ℤ) : ℝ)|) (fun _ => (1 : ℝ))
   have hcs' : (∑ i : Fin 4, |((z i : ℤ) : ℝ)|) ≤
@@ -4547,9 +3669,9 @@ theorem aux_bg6_nrm1_le_two_norm (z : Sandpile.Site 4) :
       (BallGreen.latticeNorm z) ^ 2 := by
     unfold BallGreen.latticeNorm
     rw [Real.sq_sqrt (by positivity)]
-  have hsum : (aux_bg6_nrm1 z : ℝ) =
+  have hsum : (l1Norm z : ℝ) =
       ∑ i : Fin 4, |((z i : ℤ) : ℝ)| := by
-    unfold aux_bg6_nrm1
+    unfold l1Norm
     rw [Nat.cast_sum]
     apply Finset.sum_congr rfl
     intro i hi
@@ -4559,40 +3681,44 @@ theorem aux_bg6_nrm1_le_two_norm (z : Sandpile.Site 4) :
   rw [hsum]
   simpa [mul_comm] using hcs'
 
-theorem aux_bg6_gpath_norm_le (w : Sandpile.Site 4) : ∀ k,
-    k ≤ aux_bg6_nrm1 w →
-      BallGreen.latticeNorm (aux_bg6_gpath w 0 k) ≤ (k : ℝ) := by
+/-- The Euclidean norm of a `k`-step geodesic path from `0` is at most `k`, by the triangle
+inequality applied inductively to the unit steps. -/
+theorem latticeNorm_geodesicPath_le (w : Sandpile.Site 4) : ∀ k,
+    k ≤ l1Norm w →
+      BallGreen.latticeNorm (geodesicPath w 0 k) ≤ (k : ℝ) := by
   intro k
   induction k with
   | zero => intro _; simp [BallGreen.latticeNorm]
   | succ k ih =>
     intro hk
-    have hk' : k < aux_bg6_nrm1 (w - (0 : Sandpile.Site 4)) := by
+    have hk' : k < l1Norm (w - (0 : Sandpile.Site 4)) := by
       simpa using (Nat.lt_of_succ_le hk)
-    have hne := aux_bg6_gpath_ne (p := w) (x := (0 : Sandpile.Site 4)) hk'
-    obtain ⟨i, hi | hi⟩ := aux_bg6_towardVec_unit hne
-    · rw [aux_bg6_gpath_succ, aux_bg6_toward, hi]
-      have htri := aux_bg6_latticeNorm_add_le
-        (aux_bg6_gpath w 0 k) (LatticeProb.unit i)
-      have hu := aux_bg6_latticeNorm_unit_le i
+    have hne := geodesicPath_ne_of_lt (p := w) (x := (0 : Sandpile.Site 4)) hk'
+    obtain ⟨i, hi | hi⟩ := stepToward_eq_unit_or_neg_unit hne
+    · rw [geodesicPath_succ, towardStep, hi]
+      have htri := latticeNorm_add_le
+        (geodesicPath w 0 k) (LatticeProb.unit i)
+      have hu := latticeNorm_unit_le i
       have hprev := ih (by omega)
       norm_num [Nat.cast_add, Nat.cast_one] at *
       linarith
-    · rw [aux_bg6_gpath_succ, aux_bg6_toward, hi]
-      have htri := aux_bg6_latticeNorm_add_le
-        (aux_bg6_gpath w 0 k) (-(LatticeProb.unit i))
-      have hu := aux_bg6_latticeNorm_unit_le i
-      rw [aux_bg6_latticeNorm_neg] at htri
+    · rw [geodesicPath_succ, towardStep, hi]
+      have htri := latticeNorm_add_le
+        (geodesicPath w 0 k) (-(LatticeProb.unit i))
+      have hu := latticeNorm_unit_le i
+      rw [latticeNorm_neg] at htri
       have hprev := ih (by omega)
       norm_num [Nat.cast_add, Nat.cast_one] at *
       linarith
 
-theorem aux_bg6_toward_interval {p y : Sandpile.Site 4}
+/-- If every coordinate of `y` lies between `0` and the corresponding coordinate of `p`, the same
+holds after taking one step toward `p`. -/
+theorem towardStep_mem_interval {p y : Sandpile.Site 4}
     (hy : ∀ i : Fin 4, min (0 : ℤ) (p i) ≤ y i ∧ y i ≤ max 0 (p i))
     (hne : y ≠ p) :
     ∀ i : Fin 4,
-      min (0 : ℤ) (p i) ≤ aux_bg6_toward p y i ∧
-        aux_bg6_toward p y i ≤ max 0 (p i) := by
+      min (0 : ℤ) (p i) ≤ towardStep p y i ∧
+        towardStep p y i ≤ max 0 (p i) := by
   classical
   have h : ∃ j : Fin 4, y j ≠ p j := by
     by_contra hc
@@ -4600,16 +3726,16 @@ theorem aux_bg6_toward_interval {p y : Sandpile.Site 4}
     exact hne (funext hc)
   let j := h.choose
   have hj : y j ≠ p j := h.choose_spec
-  have hstep : aux_bg6_towardVec p y =
+  have hstep : stepToward p y =
       LatticeProb.dirVec ((j, decide (y j < p j)) : LatticeProb.Dir 4) := by
-    rw [aux_bg6_towardVec, dif_pos h]
-  have hv : (aux_bg6_towardVec p y) j = if y j < p j then (1 : ℤ) else -1 := by
-    rw [hstep, aux_bg6_dirVec_self]
+    rw [stepToward, dif_pos h]
+  have hv : (stepToward p y) j = if y j < p j then (1 : ℤ) else -1 := by
+    rw [hstep, dirVec_self_eq]
     by_cases hlt : y j < p j <;> simp [hlt]
   intro i
   by_cases hij : i = j
   · subst i
-    rw [aux_bg6_toward, Pi.add_apply, hv]
+    rw [towardStep, Pi.add_apply, hv]
     by_cases hlt : y j < p j
     · rw [if_pos hlt]
       have hlow := (hy j).1
@@ -4620,70 +3746,77 @@ theorem aux_bg6_toward_interval {p y : Sandpile.Site 4}
       have hlow := (hy j).1
       have hupp := (hy j).2
       constructor <;> omega
-  · rw [aux_bg6_toward, Pi.add_apply, hstep,
-    aux_bg6_dirVec_of_ne _ hij, add_zero]
+  · rw [towardStep, Pi.add_apply, hstep,
+    dirVec_eq_zero_of_ne _ hij, add_zero]
     exact hy i
 
-theorem aux_bg6_gpath_interval (w : Sandpile.Site 4) : ∀ k,
-    k ≤ aux_bg6_nrm1 w →
+/-- Every coordinate of the geodesic path from `0` toward `w` stays between `0` and the
+corresponding coordinate of `w`, by induction using `towardStep_mem_interval`. -/
+theorem geodesicPath_mem_interval (w : Sandpile.Site 4) : ∀ k,
+    k ≤ l1Norm w →
       ∀ i : Fin 4,
-        min (0 : ℤ) (w i) ≤ aux_bg6_gpath w 0 k i ∧
-          aux_bg6_gpath w 0 k i ≤ max 0 (w i) := by
+        min (0 : ℤ) (w i) ≤ geodesicPath w 0 k i ∧
+          geodesicPath w 0 k i ≤ max 0 (w i) := by
   intro k
   induction k with
   | zero =>
       intro _ i
-      simp only [aux_bg6_gpath_zero, Pi.zero_apply]
+      simp only [geodesicPath_zero, Pi.zero_apply]
       exact ⟨min_le_left _ _, le_max_left _ _⟩
   | succ k ih =>
       intro hk i
-      have hk' : k < aux_bg6_nrm1 (w - (0 : Sandpile.Site 4)) := by
+      have hk' : k < l1Norm (w - (0 : Sandpile.Site 4)) := by
         simpa using (Nat.lt_of_succ_le hk)
-      have hne := aux_bg6_gpath_ne (p := w) (x := (0 : Sandpile.Site 4)) hk'
+      have hne := geodesicPath_ne_of_lt (p := w) (x := (0 : Sandpile.Site 4)) hk'
       have hprev := ih (Nat.le_of_succ_le hk)
-      have hstep := aux_bg6_toward_interval hprev hne i
-      simpa [aux_bg6_gpath_succ] using hstep
+      have hstep := towardStep_mem_interval hprev hne i
+      simpa [geodesicPath_succ] using hstep
 
-theorem aux_bg6_gpath_norm_le_final (w : Sandpile.Site 4) (k : ℕ)
-    (hk : k ≤ aux_bg6_nrm1 w) :
-    BallGreen.latticeNorm (aux_bg6_gpath w 0 k) ≤ BallGreen.latticeNorm w := by
-  have hinter := aux_bg6_gpath_interval w k hk
+/-- The geodesic path from `0` toward `w` never overshoots: its Euclidean norm is at most
+`latticeNorm w`, since `geodesicPath_mem_interval` forces each coordinate to have absolute value
+at most that of `w`. -/
+theorem latticeNorm_geodesicPath_le_latticeNorm (w : Sandpile.Site 4) (k : ℕ)
+    (hk : k ≤ l1Norm w) :
+    BallGreen.latticeNorm (geodesicPath w 0 k) ≤ BallGreen.latticeNorm w := by
+  have hinter := geodesicPath_mem_interval w k hk
   have habs : ∀ i : Fin 4,
-      |((aux_bg6_gpath w 0 k i : ℤ) : ℝ)| ≤ |((w i : ℤ) : ℝ)| := by
+      |((geodesicPath w 0 k i : ℤ) : ℝ)| ≤ |((w i : ℤ) : ℝ)| := by
     intro i
     by_cases hw : 0 ≤ w i
-    · have hlow : (0 : ℤ) ≤ aux_bg6_gpath w 0 k i := by
+    · have hlow : (0 : ℤ) ≤ geodesicPath w 0 k i := by
         simpa [min_eq_left hw] using (hinter i).1
-      have hupp : aux_bg6_gpath w 0 k i ≤ w i := by
+      have hupp : geodesicPath w 0 k i ≤ w i := by
         simpa [max_eq_right hw] using (hinter i).2
       rw [abs_of_nonneg (by exact_mod_cast hlow),
         abs_of_nonneg (by exact_mod_cast hw)]
       exact_mod_cast hupp
     · have hw' : w i ≤ 0 := le_of_not_ge hw
-      have hlow : w i ≤ aux_bg6_gpath w 0 k i := by
+      have hlow : w i ≤ geodesicPath w 0 k i := by
         simpa [min_eq_right hw'] using (hinter i).1
-      have hupp : aux_bg6_gpath w 0 k i ≤ 0 := by
+      have hupp : geodesicPath w 0 k i ≤ 0 := by
         simpa [max_eq_left hw'] using (hinter i).2
       rw [abs_of_nonpos (by exact_mod_cast hupp),
         abs_of_nonpos (by exact_mod_cast hw')]
       norm_num
-      exact_mod_cast (show w i ≤ aux_bg6_gpath w 0 k i from hlow)
+      exact_mod_cast (show w i ≤ geodesicPath w 0 k i from hlow)
   have hsum : (∑ i : Fin 4,
-      (((aux_bg6_gpath w 0 k i : ℤ) : ℝ) ^ 2)) ≤
+      (((geodesicPath w 0 k i : ℤ) : ℝ) ^ 2)) ≤
       ∑ i : Fin 4, (((w i : ℤ) : ℝ) ^ 2) := by
     apply Finset.sum_le_sum
     intro i hi
     have h := habs i
     have hsqabs :
-        |((aux_bg6_gpath w 0 k i : ℤ) : ℝ)| ^ 2 ≤
+        |((geodesicPath w 0 k i : ℤ) : ℝ)| ^ 2 ≤
           |((w i : ℤ) : ℝ)| ^ 2 := by
-      nlinarith [abs_nonneg (((aux_bg6_gpath w 0 k i : ℤ) : ℝ)),
+      nlinarith [abs_nonneg (((geodesicPath w 0 k i : ℤ) : ℝ)),
         abs_nonneg (((w i : ℤ) : ℝ))]
     simpa only [sq_abs] using hsqabs
   unfold BallGreen.latticeNorm
   exact Real.sqrt_le_sqrt hsum
 
-theorem aux_bg6_unit_diff_neg_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
+/-- The negative-direction analogue of `killedGreen_unit_diff_eq_zero_of_notMem_ball`: outside the
+ball of radius `2r+2` the squared difference against a `-`unit shift also vanishes. -/
+theorem killedGreen_unit_diff_neg_eq_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
     {u : Sandpile.Site 4}
     (hu : u ∉ LatticeProb.ballFinset 4 (2 * (r : ℝ) + 2)) :
     (Sandpile.killedGreen (BallGreen.box r) 0 (u - LatticeProb.unit i) -
@@ -4696,7 +3829,7 @@ theorem aux_bg6_unit_diff_neg_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
     have hmem : u ∈ LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
       by_contra hnm
       exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-    have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+    have hb := latticeNorm_le_of_mem_boxFinset hmem
     linarith
   have hzero_v : Sandpile.killedGreen (BallGreen.box r) 0
       (u - LatticeProb.unit i) = 0 := by
@@ -4705,19 +3838,22 @@ theorem aux_bg6_unit_diff_neg_zero_of_notMem_ball (r : ℕ) (i : Fin 4)
         LatticeProb.boxFinset (0 : Sandpile.Site 4) r := by
       by_contra hnm
       exact hz (Sandpile.killedGreen_box_eq_zero_of_notMem_boxFinset r hnm)
-    have hb := aux_bg6_latticeNorm_le_of_mem_boxFinset hmem
+    have hb := latticeNorm_le_of_mem_boxFinset hmem
     have htri : BallGreen.latticeNorm u ≤
         BallGreen.latticeNorm (u - LatticeProb.unit i) +
           BallGreen.latticeNorm (LatticeProb.unit i) := by
-      have h := aux_bg6_latticeNorm_add_le (u - LatticeProb.unit i)
+      have h := latticeNorm_add_le (u - LatticeProb.unit i)
         (LatticeProb.unit i)
       simpa [sub_add_cancel] using h
-    have hunit := aux_bg6_latticeNorm_unit_le i
+    have hunit := latticeNorm_unit_le i
     linarith
   rw [hzero_v, hzero_u]
   ring
 
-theorem aux_bg6_unit_tail_neg_le
+/-- The negative-shift tail sum reduces to the positive-shift tail bound
+`tsum_killedGreen_unit_diff_tail_le` by re-indexing along the unit shift, at the cost of a
+further factor of `4` from comparing radii `T` and `T-1`. -/
+theorem tsum_killedGreen_unit_diff_neg_tail_le
     (C₄ : ℝ) (hC₄ : 0 < C₄)
     (h4 : ∀ r : ℕ, 2 ≤ r → ∀ R : ℕ, 2 ≤ R → ∀ i : Fin 4,
       (∑' u : {u : Sandpile.Site 4 //
@@ -4749,7 +3885,7 @@ theorem aux_bg6_unit_tail_neg_le
     · have hmem : u ∈ {u : Sandpile.Site 4 | (T : ℝ) ≤ BallGreen.latticeNorm u} := ht
       dsimp only [neg]
       rw [Set.indicator_of_mem hmem]
-      exact aux_bg6_unit_diff_neg_zero_of_notMem_ball r i (by simpa [ball] using hu)
+      exact killedGreen_unit_diff_neg_eq_zero_of_notMem_ball r i (by simpa [ball] using hu)
     · have hmem : u ∉ {u : Sandpile.Site 4 | (T : ℝ) ≤ BallGreen.latticeNorm u} := ht
       dsimp only [neg]
       rw [Set.indicator_of_notMem hmem]
@@ -4760,7 +3896,7 @@ theorem aux_bg6_unit_tail_neg_le
           ((T - 1 : ℕ) : ℝ) ≤ BallGreen.latticeNorm u} := ht
       dsimp only [pos]
       rw [Set.indicator_of_mem hmem]
-      exact aux_bg6_unit_diff_zero_of_notMem_ball r i (by simpa [ball] using hu)
+      exact killedGreen_unit_diff_eq_zero_of_notMem_ball r i (by simpa [ball] using hu)
     · have hmem : u ∉ {u : Sandpile.Site 4 |
           ((T - 1 : ℕ) : ℝ) ≤ BallGreen.latticeNorm u} := ht
       dsimp only [pos]
@@ -4780,8 +3916,8 @@ theorem aux_bg6_unit_tail_neg_le
           {u : Sandpile.Site 4 | (T : ℝ) ≤ BallGreen.latticeNorm u} := ht
       dsimp only [neg]
       rw [Set.indicator_of_mem hmem]
-      have htri := aux_bg6_latticeNorm_add_le z (LatticeProb.unit i)
-      have hu := aux_bg6_latticeNorm_unit_le i
+      have htri := latticeNorm_add_le z (LatticeProb.unit i)
+      have hu := latticeNorm_unit_le i
       have hsub : ((T - 1 : ℕ) : ℝ) ≤ BallGreen.latticeNorm z := by
         have hT' : ((T : ℕ) : ℝ) - 1 = ((T - 1 : ℕ) : ℝ) := by
           rw [Nat.cast_sub (R := ℝ) (by omega)]
@@ -4811,7 +3947,7 @@ theorem aux_bg6_unit_tail_neg_le
       ∑' z : Sandpile.Site 4, neg (z + LatticeProb.unit i) := by
     symm
     exact (Equiv.addRight (LatticeProb.unit i)).tsum_eq neg
-  have htail := aux_bg6_unit_tail_le C₄ hC₄ h4 r (T - 1) hr (by omega) i
+  have htail := tsum_killedGreen_unit_diff_tail_le C₄ hC₄ h4 r (T - 1) hr (by omega) i
   have hposbound : (∑' z : Sandpile.Site 4, pos z) ≤
       8 * C₄ / ((T - 1 : ℕ) : ℝ) ^ 2 := by
     simpa [pos] using htail
@@ -4838,7 +3974,10 @@ theorem aux_bg6_unit_tail_neg_le
       apply (div_le_div_iff₀ hdenpos hTdenpos).2
       nlinarith [mul_le_mul_of_nonneg_left hden (le_of_lt hC₄)]
 
-theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
+/-- `farResidualBound` is proved unconditionally, by combining the exponential kernel-mass bound
+`killedKernel_le_const_mul_survival_half` with the geometric block decay
+`survival_tsum_le_of_block_decay` for the Gaussian upper bound on the dimension-`4` heat kernel. -/
+theorem farResidualBound_holds : farResidualBound := by
   classical
   obtain ⟨C₄, hC₄, h4⟩ := aux_ballgreen_clause4_holds
   refine ⟨1024 * C₄, by positivity, ?_⟩
@@ -4847,8 +3986,8 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
     Sandpile.killedGreen (BallGreen.box r) 0 u
   let far : Set (Sandpile.Site 4) :=
     {u | (2 + M) * (L : ℝ) ≤ BallGreen.latticeNorm u}
-  let n : ℕ := aux_bg6_nrm1 w
-  let p : ℕ → Sandpile.Site 4 := fun k => aux_bg6_gpath w 0 k
+  let n : ℕ := l1Norm w
+  let p : ℕ → Sandpile.Site 4 := fun k => geodesicPath w 0 k
   let R : ℕ := 2 * L
   let Apos : Fin 4 → Sandpile.Site 4 → ℝ := fun i z =>
     Set.indicator {z : Sandpile.Site 4 |
@@ -4875,12 +4014,12 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
   have htail_pos : ∀ i : Fin 4, (∑' z : Sandpile.Site 4, Apos i z) ≤
       8 * C₄ / (R : ℝ) ^ 2 := by
     intro i
-    have h := aux_bg6_unit_tail_le C₄ hC₄ h4 r R hr (by omega) i
+    have h := tsum_killedGreen_unit_diff_tail_le C₄ hC₄ h4 r R hr (by omega) i
     simpa [Apos, f] using h
   have htail_neg : ∀ i : Fin 4, (∑' z : Sandpile.Site 4, Aneg i z) ≤
       32 * C₄ / (R : ℝ) ^ 2 := by
     intro i
-    have h := aux_bg6_unit_tail_neg_le C₄ hC₄ h4 r R hr hRge i
+    have h := tsum_killedGreen_unit_diff_neg_tail_le C₄ hC₄ h4 r R hr hRge i
     simpa [Aneg, f] using h
   have hApos_sum : ∀ i : Fin 4, Summable (Apos i) := by
     intro i
@@ -4891,7 +4030,7 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
     by_cases hmem : z ∈ {z : Sandpile.Site 4 | (R : ℝ) ≤ BallGreen.latticeNorm z}
     · dsimp only [Apos]
       rw [Set.indicator_of_mem hmem]
-      exact aux_bg6_unit_diff_zero_of_notMem_ball r i
+      exact killedGreen_unit_diff_eq_zero_of_notMem_ball r i
         (by simpa [ball] using hz)
     · dsimp only [Apos]
       rw [Set.indicator_of_notMem hmem]
@@ -4904,7 +4043,7 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
     by_cases hmem : z ∈ {z : Sandpile.Site 4 | (R : ℝ) ≤ BallGreen.latticeNorm z}
     · dsimp only [Aneg]
       rw [Set.indicator_of_mem hmem]
-      exact aux_bg6_unit_diff_neg_zero_of_notMem_ball r i
+      exact killedGreen_unit_diff_neg_eq_zero_of_notMem_ball r i
         (by simpa [ball] using hz)
     · dsimp only [Aneg]
       rw [Set.indicator_of_notMem hmem]
@@ -4966,18 +4105,18 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
       Summable (step k) ∧ (∑' u : Sandpile.Site 4, step k u) ≤
         32 * C₄ / (L : ℝ) ^ 2 := by
     intro k hk
-    have hk' : k ≤ aux_bg6_nrm1 w := by
+    have hk' : k ≤ l1Norm w := by
       exact le_trans (Nat.le_of_lt hk) (by simp [n])
     have hpk : BallGreen.latticeNorm (p k) ≤ BallGreen.latticeNorm w := by
-      simpa [p] using aux_bg6_gpath_norm_le_final w k hk'
+      simpa [p] using latticeNorm_geodesicPath_le_latticeNorm w k hk'
     have hfar2 : ∀ z : Sandpile.Site 4, z + p k ∈ far →
         (R : ℝ) ≤ BallGreen.latticeNorm z := by
       intro z hz
-      have htri := aux_bg6_latticeNorm_add_le z (p k)
+      have htri := latticeNorm_add_le z (p k)
       dsimp [far] at hz
       rw [hRcast]
       nlinarith [hw, hpk, htri]
-    obtain ⟨i, hi | hi⟩ := aux_bg6_gpath_step w (by simpa [n] using hk)
+    obtain ⟨i, hi | hi⟩ := geodesicPath_succ_eq_add_or_sub_unit w (by simpa [n] using hk)
     · have hdom : ∀ z : Sandpile.Site 4, step k (z + p k) ≤ Aneg i z := by
         intro z
         by_cases hz : z + p k ∈ far
@@ -5073,7 +4212,7 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
         have hp0 : p 0 = 0 := by simp [p]
         have hpn : p n = w := by
           dsimp [p, n]
-          simpa [sub_zero] using (aux_bg6_gpath_end w 0)
+          simpa [sub_zero] using (geodesicPath_eq_target w 0)
         rw [hp0, hpn]
         simp
       have hcs := sq_sum_le_card_mul_sum_sq
@@ -5135,7 +4274,7 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
         ring
   have hn : (n : ℝ) ≤ 2 * M * (L : ℝ) := by
     dsimp [n]
-    have hnorm := aux_bg6_nrm1_le_two_norm w
+    have hnorm := l1Norm_le_two_mul_latticeNorm w
     nlinarith [hw]
   have hn_sq : (n : ℝ) ^ 2 ≤ (2 * M * (L : ℝ)) ^ 2 := by
     nlinarith [sq_nonneg ((n : ℝ) - 2 * M * (L : ℝ))]
@@ -5160,8 +4299,10 @@ theorem aux_bg6_far_residual_holds : aux_bg6_far_residual := by
         nlinarith [hM2]
   simpa [F, far, f] using hfinal
 
-theorem aux_ballgreen_clause6_holds : aux_ballgreen_clause6 :=
-  aux_bg6_reduce aux_bg6_far_residual_holds
+/-- Proves that `cutFieldShiftBound` holds, i.e. clause six, as a direct corollary: apply
+`cutFieldShiftBound_of_farResidualBound` to the far-residual estimate `farResidualBound_holds`. -/
+theorem aux_ballgreen_clause6_holds : cutFieldShiftBound :=
+  cutFieldShiftBound_of_farResidualBound farResidualBound_holds
 
 end Sandpile.External
 

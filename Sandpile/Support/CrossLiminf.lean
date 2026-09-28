@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossBasic
+
+/-!
+# Assembling the fixed-scale crossing bound from a liminf
+
 The final assembly of `prop:fixed-scale-crossings` (`sandpile.tex:2121-2128`)
 out of the two estimates its proof produces:
 
@@ -14,7 +18,6 @@ The `liminf` is taken in `ℝ≥0∞`, so the loss term is compared there; the p
 of the argument is that the loss vanishes as `R → ∞` for each fixed `L`, which
 is why one `p` serves every `L`.
 -/
-import Sandpile.Support.CrossBasic
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

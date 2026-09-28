@@ -1,28 +1,20 @@
-/-
-The tested intersection kernel, `eq:dgt4-tested-intersection-moments`
-(`sandpile.tex:5703-5709`):
-
-  "Compact support, annular summation, and
-   \eqref{eq:dgt4-intersection-first-moment}--\eqref{eq:dgt4-intersection-second-moment}
-   give that for $k=1,2$,
-   $\sum_{x,y\in\Z^d}a_R(x)a_R(y)\mathbf E_x\mathbf E_y[\mathcal I(X,Y)^k]\leq C(\varphi)$."
-
-Both moments are bounded by `C(1+|x-y|)^{4-d}`, the first by
-`Sandpile.lintegral_interCount_le` and the second by the cited input
-`Sandpile.External.IntersectionSecondMoment`, so the display reduces to the
-weighted kernel sum proved here:
-
-  `∑_{x,y} |a_R(x)| |a_R(y)| (1+|x-y|)^{4-d} ≤ C(φ)`,
-
-uniformly in `R ≥ 1`.  The three inputs are the `ℓ¹` bound on the cell masses
-(their sum is at most the integral of the absolute value of the test function),
-the sup bound on one cell mass (at most the sup of the test function times the
-cell volume `R^{-d}`), and the annular summation over the box of the support.
--/
 import Sandpile.Support.LinAnnular
 import Sandpile.Support.LinIntersect
 import Sandpile.Support.ContRiemann
 import Sandpile.Support.ContWeightedLimit
+
+/-!
+# The tested intersection kernel is bounded uniformly in the scale
+
+Both intersection moments of two independent walks are bounded by `C(1 + |x-y|)^{4-d}`, the
+first proved directly and the second from a cited input, so bounding their tested double sums
+`∑_{x,y} a_R(x) a_R(y) E_x E_y[I(X,Y)^k]` for `k = 1, 2`, with `a_R(x) = R^{(d-4)/2} φ_R(x)`,
+reduces to the weighted kernel sum `∑_{x,y} |a_R(x)| |a_R(y)| (1+|x-y|)^{4-d} ≤ C(φ)` proved
+here, uniformly in the scale `R ≥ 1`. The proof combines an `ℓ¹` bound on the cell masses
+`a_R(x)` (their sum is at most the integral of `|φ|`), a sup bound on a single cell mass, and
+an annular summation of the kernel `(1+|x-y|)^{4-d}` over the box carrying the support of `φ`.
+The same kernel bound also controls the tested Green field in `ℓ²`.
+-/
 
 open Finset MeasureTheory
 open scoped ENNReal
@@ -63,7 +55,8 @@ theorem sum_boxFinset_shift_interKernel_le (hd : 5 ≤ d) (K : ℕ) (x : Site d)
         ring
       have : ((0 : Site d) i - (x - y) i).natAbs ≤ ((0 : Site d) i - x i).natAbs +
           ((0 : Site d) i - y i).natAbs := by
-        have hv : ((0 : Site d) i - (x - y) i) = ((0 : Site d) i - x i) - ((0 : Site d) i - y i) := by
+        have hv : ((0 : Site d) i - (x - y) i)
+            = ((0 : Site d) i - x i) - ((0 : Site d) i - y i) := by
           simp [sub_eq_add_neg]
           ring
         rw [hv]

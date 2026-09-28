@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinCorrGap
+
+/-!
+# Closing the arithmetic of Step 1 of the path-survival lemma
+
 The arithmetic that closes Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5516-5527`).
 
 `Support/LinPairSum.lean` proves the one-term bound `pair_term_le`, the near/far split of a
@@ -16,7 +20,6 @@ What is added here is the three pieces that connect them to the paper's data:
   and the far-pair correlation carries `(1+L)^{4-d} ≤ (\log R)^{-2}`, which is the paper's
   `|ρ_{xy}| ≤ C/(\log R)^2`.
 -/
-import Sandpile.Support.LinCorrGap
 
 open scoped NNReal ENNReal
 

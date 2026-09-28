@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4Bernstein
+import Sandpile.Support.Dgt4PairKernel
+
+/-! # Truncated-Field Deviation Estimates
+
 The deviation estimate that the first step of the heavy-tailed case needs
 (`sandpile.tex:5361-5377`), from the Bernstein concentration inequality of
 `Sandpile.Support.Dgt4Bernstein`.
@@ -11,8 +15,6 @@ truncated field but to the ORIGINAL i.i.d. field composed with the truncation: t
 coordinate Lipschitz coefficients, and clamping it from above at a point beyond which the
 scenery puts no mass makes it bounded without changing it almost surely.
 -/
-import Sandpile.Support.Dgt4Bernstein
-import Sandpile.Support.Dgt4PairKernel
 
 open LatticeProb
 
@@ -25,9 +27,11 @@ variable {d : ℕ}
 /-- The value `y` clamped into `[lo, hi]`. -/
 noncomputable def clampAt (lo hi y : ℝ) : ℝ := max (min y hi) lo
 
+/-- `clampAt lo hi y ≤ hi`: the clamped value never exceeds the upper bound `hi`. -/
 theorem clampAt_le (lo hi y : ℝ) (h : lo ≤ hi) : clampAt lo hi y ≤ hi :=
   max_le (min_le_right _ _) h
 
+/-- `lo ≤ clampAt lo hi y`: the clamped value is never below the lower bound `lo`. -/
 theorem le_clampAt (lo hi y : ℝ) : lo ≤ clampAt lo hi y := le_max_right _ _
 
 /-- Clamping is one-Lipschitz. -/
@@ -69,6 +73,8 @@ theorem abs_clampAt_sub_le_range (lo hi y y' : ℝ) (h : lo ≤ hi) :
 theorem clampAt_eq_max (lo hi y : ℝ) (h : y ≤ hi) : clampAt lo hi y = max y lo := by
   rw [clampAt, min_eq_left h]
 
+/-- When `lo ≤ 0 ≤ hi`, the clamped value is bounded in absolute value by the length
+`hi - lo` of the clamping interval, since it lies between `lo` and `hi`. -/
 theorem abs_clampAt_le (lo hi y : ℝ) (hlo : lo ≤ 0) (hhi : 0 ≤ hi) :
     |clampAt lo hi y| ≤ hi - lo := by
   have h1 := clampAt_le lo hi y (le_trans hlo hhi)
@@ -77,6 +83,8 @@ theorem abs_clampAt_le (lo hi y : ℝ) (hlo : lo ≤ 0) (hhi : 0 ≤ hi) :
   · rw [abs_of_nonneg h3]; linarith
   · rw [abs_of_nonpos h3]; linarith
 
+/-- `clampAt lo hi` is measurable, being built from `min` and `max` against
+measurable constants. -/
 theorem measurable_clampAt (lo hi : ℝ) : Measurable (clampAt lo hi) :=
   (measurable_id.min measurable_const).max measurable_const
 

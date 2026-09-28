@@ -1,23 +1,16 @@
-/-
-The bridge from Step 2 to Step 3.
-
-Step 2 produces the contact estimates along ONE scale, with the rate sequence
-`κ_k = 1 + 1/ϑ_k`.  Step 3 consumes `UniformContactThresholdsAlong` at a FIXED
-`κ`, and its hypothesis is that the rate sequence converges to that `κ`.  Along
-the full sequence it does not: the exponents `ϑ_k` are chosen so that their set of
-subsequential limits is all of `[1,2]`, which is precisely what produces a
-continuum of distinct limits.
-
-So the bridge is a subsequence, exactly as the paper takes one and as the frozen
-statement states.  Step 1 already supplies, for every `κ` in the range, a strictly
-increasing `kl` along which the rate converges to `κ`; what is missing is that the
-Step 2 output survives composition with it.
-
-This also settles a predicate flagged during the audit: `Dgt4AStep2Input` asks for
-a single scale serving EVERY `κ`, which no scale can do, since one rate sequence
-cannot converge to two different limits.  The route below does not use it.
--/
 import Sandpile.Support.Dgt4ABandStep2
+
+/-!
+# The bridge from Step 2 to Step 3
+
+Step 2 produces the contact estimates along one scale, with the rate sequence
+`κ_k = 1 + 1/ϑ_k`. Step 3 consumes `UniformContactThresholdsAlong` at a fixed `κ`, and its
+hypothesis is that the rate sequence converges to that `κ`; along the full sequence it does not,
+since the exponents `ϑ_k` are chosen so that their set of subsequential limits is all of `[1, 2]`.
+The bridge is therefore a subsequence: Step 1 supplies, for every `κ` in the range, a strictly
+increasing reindexing along which the rate converges to `κ`, and `dgt4AStep2Output_comp` shows
+the Step 2 output survives composition with it.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

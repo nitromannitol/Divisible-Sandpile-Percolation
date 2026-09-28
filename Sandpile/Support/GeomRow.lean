@@ -1,5 +1,8 @@
-/-
-Geometric row sums.
+import Sandpile.External.BerryEsseen
+import Mathlib.Analysis.SpecificLimits.Basic
+
+/-!
+# Geometric row sums
 
 The correlation matrix of the membrane fields at the geometric scales
 `n_j = N q^j` has off-diagonal entries bounded by `K r^{|j-k|}` with
@@ -7,8 +10,6 @@ The correlation matrix of the membrane fields at the geometric scales
 elementary geometric estimates are here; the identification of `r` is in
 `Sandpile/Support/CriticalScales.lean`.
 -/
-import Sandpile.External.BerryEsseen
-import Mathlib.Analysis.SpecificLimits.Basic
 
 namespace Sandpile
 

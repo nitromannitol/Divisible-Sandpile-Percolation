@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ExplBallFarUniform
+import Sandpile.Support.ExplBallStepEnvelope
+
+/-! # Ball Localization from Growth and the Exit Step
+
 The frozen conclusion of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
 from the two analytic residuals of its proof: samplewise polynomial growth of the
 field on the time strip, and the strong Markov step at the exit time of the ball.
@@ -8,8 +12,6 @@ The reduction `ball_localization_of_input` needs the per-sample bundle
 payoffs and of the far values, and the step supplies the estimate at the exit
 time.  What is left is exactly those two, and nothing else.
 -/
-import Sandpile.Support.ExplBallFarUniform
-import Sandpile.Support.ExplBallStepEnvelope
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -45,7 +47,8 @@ theorem brownian_ball_localization_of_growth_and_step (d : ℕ) :
                 (fun t x => Z t x ω) T z} := by
   obtain ⟨C, c, hC, hc, hmain⟩ := ball_localization_of_input d
   refine ⟨C, c, hC, hc, ?_⟩
-  intro T hT A hA K hK ΩW mΩW PW hPW ΩB mΩB PB hPB B hBrown hcont hmeas Z p C₀ hC₀ hgrowth hcontZ hstep
+  intro T hT A hA K hK ΩW mΩW PW hPW ΩB mΩB PB hPB B hBrown hcont hmeas Z p C₀ hC₀
+    hgrowth hcontZ hstep
   have hfar := bddAbove_farValues_of_growth_uniform hBrown hcont hmeas Z T A hT.le K hK p C₀ hC₀
     hgrowth hcontZ
   have hgrowth' : ∀ᵐ ω ∂PW, ∃ C : ℝ, 0 ≤ C ∧ ∃ p : ℕ,

@@ -27,7 +27,7 @@ listed with their statements in `ASSUMPTIONS.md`.
 | Paper (`paper/sandpile.tex`) SHA-256 | `886793b75289a92d7acbbf93231f5b86a6b1eae1e444e64751a08193e707d5ca` |
 | Build | succeeded, 10229 jobs |
 | Build warnings | 0 |
-| Generated | 2026-09-27 |
+| Generated | 2026-09-28 |
 
 ## Reproducing it
 

@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.InfiniteGreenField
+import Sandpile.Support.Kernel
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.Support.LinAnnular
+
+/-! # Green Function Square Tail
+
 The square tail of the Green function outside a box.
 
 The Gaussian branch of `lem:dgt4-path-survival` reads the field
@@ -11,10 +17,6 @@ origin; here it is moved to the supremum-norm boxes centred at the origin and to
 an arbitrary site `x`, and its exponent `4-d ≤ -1` is read as the decay `1/(n+1)`
 that the Borel-Cantelli argument of `Support/LinGaussField.lean` uses.
 -/
-import Sandpile.Support.InfiniteGreenField
-import Sandpile.Support.Kernel
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.LinAnnular
 
 namespace Sandpile
 

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossGrid
+import Sandpile.Support.CrossBlocking
+
+/-!
+# Transferring a connected set to a nearest-neighbour lattice walk
+
 The blocking half of Step 1 of `prop:fixed-scale-crossings`
 (`sandpile.tex:2233-2235`), continued: the transfer of a compact connected set of
 the plane to a nearest-neighbour walk of the lattice of mesh `t`.
@@ -12,16 +17,19 @@ intermediate site of a diagonal step, at the cost of one more mesh in the distan
 to the set.  The grid site is within `t` of the point it rounds
 (`dist_gridPt_roundSite_le`), so every vertex of the walk is within `2δ` of the set.
 -/
-import Sandpile.Support.CrossGrid
-import Sandpile.Support.CrossBlocking
 
 open MeasureTheory Set
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- The nearest site of the lattice of mesh `t` to a continuum point `u`: each coordinate of
+`u / t` rounded to the nearest integer. -/
 noncomputable def roundSite (t : ℝ) (u : Sandpile.Continuum.Space 2) : Site 2 :=
   fun i => round (u i / t)
 
+/-- Each coordinate of the grid point `t * roundSite t u` is within `t / 2` of the
+corresponding coordinate of `u`: the standard rounding-error bound `|x - round x| ≤ 1/2`,
+rescaled by `t`. -/
 theorem abs_sub_roundSite_le {t : ℝ} (ht : 0 < t) (u : Sandpile.Continuum.Space 2) (i : Fin 2) :
     |u i - t * (roundSite t u i : ℝ)| ≤ t / 2 := by
   have h1 : |u i / t - (roundSite t u i : ℝ)| ≤ 1 / 2 := abs_sub_round (u i / t)
@@ -34,6 +42,8 @@ theorem abs_sub_roundSite_le {t : ℝ} (ht : 0 < t) (u : Sandpile.Continuum.Spac
   rw [← h3]
   linarith
 
+/-- If `u` and `v` are within `δ`, their rounded sites' `i`-th coordinates differ by at most
+`δ / t + 1`: a triangle inequality through the two rounding errors of at most `1/2` each. -/
 theorem roundSite_close {t δ : ℝ} (ht : 0 < t) {u v : Sandpile.Continuum.Space 2}
     (huv : dist u v ≤ δ) (i : Fin 2) :
     |((roundSite t u i : ℤ) : ℝ) - ((roundSite t v i : ℤ) : ℝ)| ≤ δ / t + 1 := by
@@ -64,6 +74,9 @@ theorem roundSite_close {t δ : ℝ} (ht : 0 < t) {u v : Sandpile.Continuum.Spac
     linarith
   exact h6
 
+/-- Sharpens `roundSite_close` to an integer bound: once the mesh is at least twice the
+proximity `δ` (`2δ ≤ t`), points within `δ` round to sites whose `i`-th coordinates differ by
+at most `1`. -/
 theorem natAbs_roundSite_le_one {t δ : ℝ} (ht : 0 < t) (hδt : 2 * δ ≤ t)
     {u v : Sandpile.Continuum.Space 2} (huv : dist u v ≤ δ) (i : Fin 2) :
     (roundSite t u i - roundSite t v i).natAbs ≤ 1 := by
@@ -88,6 +101,8 @@ theorem natAbs_roundSite_le_one {t δ : ℝ} (ht : 0 < t) (hδt : 2 * δ ≤ t)
   rw [abs_le] at h7
   omega
 
+/-- The grid point of the rounded site is within `t` of the point it rounds: the per-coordinate
+bound `abs_sub_roundSite_le` combined into the Euclidean norm on `Space 2`. -/
 theorem dist_gridPt_roundSite_le {t : ℝ} (ht : 0 < t) (u : Sandpile.Continuum.Space 2) :
     dist (gridPt t (roundSite t u)) u ≤ t := by
   rw [dist_eq_norm]
@@ -98,7 +113,8 @@ theorem dist_gridPt_roundSite_le {t : ℝ} (ht : 0 < t) (u : Sandpile.Continuum.
       simp [gridPt, PiLp.sub_apply]
     rw [he, abs_sub_comm]
     exact h
-  have hsum : ‖gridPt t (roundSite t u) - u‖ ^ 2 = ∑ i : Fin 2, ((gridPt t (roundSite t u) - u) i) ^ 2 := by
+  have hsum : ‖gridPt t (roundSite t u) - u‖ ^ 2 =
+      ∑ i : Fin 2, ((gridPt t (roundSite t u) - u) i) ^ 2 := by
     simp [PiLp.norm_sq_eq_of_L2]
   have hb : ∀ i : Fin 2, ((gridPt t (roundSite t u) - u) i) ^ 2 ≤ (t / 2) ^ 2 := by
     intro i
@@ -116,6 +132,8 @@ theorem dist_gridPt_roundSite_le {t : ℝ} (ht : 0 < t) (u : Sandpile.Continuum.
   have hnn : 0 ≤ ‖gridPt t (roundSite t u) - u‖ := norm_nonneg _
   nlinarith
 
+/-- Updating the `0`-th coordinate of a site `z` to that of a site `w` at `L^∞` distance `1`
+moves the grid point by at most `2t`, via `dist_gridPt_le` and `abs_coord_sub_le_one`. -/
 theorem dist_gridPt_update_le {t : ℝ} (ht : 0 ≤ t) {z w : Site 2}
     (h : (z 0 - w 0).natAbs ≤ 1) :
     dist (gridPt t (Function.update z 0 (w 0))) (gridPt t z) ≤ 2 * t := by
@@ -129,6 +147,10 @@ theorem dist_gridPt_update_le {t : ℝ} (ht : 0 ≤ t) {z w : Site 2}
     · rw [Function.update_of_ne hi0]; simp
   exact abs_coord_sub_le_one (fun i => hi) i
 
+/-- Two sites `z`, `w` at `L^∞` coordinate distance at most `1`, each near a point of `Γ` (within
+`t` of a grid point), are joined by a nearest-neighbour lattice walk of length at most `2` whose
+every vertex's grid point stays within `3t` of `Γ`; the extra mesh covers the intermediate site
+inserted for a diagonal step. -/
 theorem exists_lattice_walk_pair_bound {z w : Site 2} {Γ : Set (Sandpile.Continuum.Space 2)}
     {t : ℝ} (ht : 0 ≤ t)
     (hz : ∃ u ∈ Γ, dist (gridPt t z) u ≤ t) (hw : ∃ u ∈ Γ, dist (gridPt t w) u ≤ t)
@@ -230,6 +252,10 @@ theorem exists_lattice_walk_pair_bound {z w : Site 2} {Γ : Set (Sandpile.Contin
             SimpleGraph.Walk.getVert_zero]
           exact ⟨u, huΓ, by nlinarith [ht]⟩
 
+/-- Chains `exists_lattice_walk_pair_bound` by induction on `m` along a finite sequence of sites
+`v 0, …, v (m + 1)` with consecutive `L^∞` coordinate distance at most `1`, each near `Γ`, to
+produce one lattice walk from `v 0` to `v (m + 1)` all of whose vertices stay within `3t`
+of `Γ`. -/
 theorem exists_lattice_walk_of_chain {v : ℕ → Site 2} {m : ℕ}
     {Γ : Set (Sandpile.Continuum.Space 2)} {t : ℝ} (ht : 0 ≤ t)
     (hΓ : ∀ j ≤ m + 1, ∃ u ∈ Γ, dist (gridPt t (v j)) u ≤ t)
@@ -254,6 +280,10 @@ theorem exists_lattice_walk_of_chain {v : ℕ → Site 2} {m : ℕ}
           omega
         exact hq (j - p.length) hjl
 
+/-- Combines `reflTransGen_of_isPreconnected` and `exists_vertices_of_reflTransGen` (extracting a
+finite chain of points of a compact connected `Γ` at consecutive distance below `t / 2`) with
+`exists_lattice_walk_of_chain` to produce a lattice walk between the rounded sites of `x` and `y`
+whose vertices' grid points stay within `2δ` of `Γ`, once `3t ≤ 2δ`. -/
 theorem exists_lattice_walk_of_connected {Γ : Set (Sandpile.Continuum.Space 2)}
     (_hcomp : IsCompact Γ) (hconn : IsConnected Γ) {t δ : ℝ} (ht : 0 < t) (_hδ : 0 < δ)
     (hδt : 3 * t ≤ 2 * δ) {x y : Sandpile.Continuum.Space 2} (hx : x ∈ Γ) (hy : y ∈ Γ)
@@ -320,7 +350,8 @@ theorem exists_lattice_walk_of_crosses {X : Sandpile.Continuum.Space 2 → ℝ}
     {x y : Sandpile.Continuum.Space 2} (hx : x ∈ Γ) (hy : y ∈ Γ) :
     ∃ (t : ℝ) (p : (lattice 2).Walk (roundSite t x) (roundSite t y)),
       0 < t ∧ ∀ j ≤ p.length, -η ≤ X (gridPt t (p.getVert j)) := by
-  simpa using Sandpile.Support.exists_lattice_walk_of_connected_superlevel hX hΓc hΓn hη (fun u hu => show (0:ℝ) ≤ X u from le_of_lt (hΓ hu)) hx hy
+  simpa using Sandpile.Support.exists_lattice_walk_of_connected_superlevel hX hΓc hΓn hη
+    (fun u hu => show (0:ℝ) ≤ X u from le_of_lt (hΓ hu)) hx hy
 
 /-- The transfer of a nonpositive crossing to a lattice walk: a compact connected
 set on which the continuous field is nonpositive, joining two points of a
@@ -333,7 +364,9 @@ theorem exists_lattice_walk_of_crosses_nonpos {X : Sandpile.Continuum.Space 2 �
     {x y : Sandpile.Continuum.Space 2} (hx : x ∈ Γ) (hy : y ∈ Γ) :
     ∃ (t : ℝ) (p : (lattice 2).Walk (roundSite t x) (roundSite t y)),
       0 < t ∧ ∀ j ≤ p.length, X (gridPt t (p.getVert j)) ≤ η := by
-  obtain ⟨t, p, ht, hp⟩ := Sandpile.Support.exists_lattice_walk_of_connected_superlevel (X := fun u => -X u) (hX.neg) hΓc hΓn hη (fun u hu => show (0:ℝ) ≤ -X u from neg_nonneg.mpr (hΓ hu)) hx hy
+  obtain ⟨t, p, ht, hp⟩ :=
+    Sandpile.Support.exists_lattice_walk_of_connected_superlevel (X := fun u => -X u) (hX.neg)
+      hΓc hΓn hη (fun u hu => show (0:ℝ) ≤ -X u from neg_nonneg.mpr (hΓ hu)) hx hy
   refine ⟨t, p, ht, fun j hj => ?_⟩
   have h : -η ≤ -X (gridPt t (p.getVert j)) := by
     simpa using hp j hj

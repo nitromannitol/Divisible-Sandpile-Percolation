@@ -1,12 +1,31 @@
 import Sandpile.External.LocalCLT
 import Sandpile.External.GaussianFourierProved
 
+/-! # The Local Central Limit Theorem, Proved
+
+The parity-corrected local central limit theorem `Sandpile.External.localCLT` is proved rather
+than assumed, discharging `Sandpile.External.LocalCLT` of `Sandpile/External/LocalCLT.lean`. The
+route rewrites the lattice heat kernel as a torus Fourier integral of the characteristic
+function's power, splits the torus into a near region around the origin and its antipode, a
+mixed region, and a far region, and shows the near and antipode contributions converge to twice
+the continuum Gaussian heat kernel while the mixed and far contributions vanish. The antipodal
+term appears because the simple random walk's characteristic function has an antipodal bump
+matching the origin's, contributing only on the parity class of the step count; this parity
+selection is what makes the theorem's error term genuinely `o(1)` rather than merely bounded.
+No estimate here is assumed: the quartic and exponential bounds on the characteristic function
+come from `Sandpile.External.GaussianFourierProved`, and every Gaussian integral identity is
+proved from Mathlib's Gaussian integral lemmas.
+-/
+
 open MeasureTheory Filter
 open scoped BigOperators
 
 /-! The Fourier representation needed for the parity-corrected local CLT. -/
 
-theorem aux_lclt_fourier_inversion {d : ℕ} (hd : 1 ≤ d) (ℓ : ℕ)
+/-- Rewrites the lattice heat kernel `Sandpile.heatKernel` as the torus Fourier integral of the
+characteristic-function power, by unfolding to `LatticeProb.LocalCLT.heatKernel` via
+`heatKernel_eq_srwHeat` and applying `srwHeat_eq_fourier`. -/
+theorem heatKernel_eq_fourierIntegral {d : ℕ} (hd : 1 ≤ d) (ℓ : ℕ)
     (x y : Sandpile.Site d) :
     (Sandpile.heatKernel d ℓ x y : ℂ) =
       (∫ θ in LatticeProb.LocalCLT.torusBox d,
@@ -19,16 +38,23 @@ theorem aux_lclt_fourier_inversion {d : ℕ} (hd : 1 ≤ d) (ℓ : ℕ)
 /-! Positivity selects the parity class on which the antipodal Fourier bump has
 the same sign as the Gaussian bump. -/
 
-theorem aux_lclt_positive_parity {d : ℕ} {ℓ : ℕ} {z : LatticeProb.Site d}
+/-- Shows that whenever the `LatticeProb.srwHeat` transition probability at `z` after `l` steps is
+positive, the parity of `z`'s graph norm must match the parity of `l`, since
+`srwHeat_eq_zero_of_parity` would otherwise force it to vanish. -/
+theorem graphNorm_parity_eq_of_srwHeat_pos {d : ℕ} {ℓ : ℕ} {z : LatticeProb.Site d}
     (hpos : 0 < LatticeProb.srwHeat d ℓ z) :
     ((LatticeProb.graphNorm z : ℕ) : ZMod 2) = ((ℓ : ℕ) : ZMod 2) := by
   by_contra hne
   exact (ne_of_gt hpos) (LatticeProb.srwHeat_eq_zero_of_parity hne)
 
 /-! The library's real multiplier estimate, transported to the complex Fourier
-integrand used by `aux_lclt_fourier_inversion`. -/
+integrand used by `heatKernel_eq_fourierIntegral`. -/
 
-theorem aux_lclt_far_region_integral_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Bounds the integral of the norm of the Fourier integrand over the torus region where some
+coordinate of `θ` lies in the far annulus `[η, π-η]`, by transporting
+`LatticeProb.LocalCLT.integral_farRegion_box_le` along the identification of the integrand's
+norm with `|charFn|^n`. -/
+theorem far_region_integral_norm_le {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η ≤ Real.pi / 2) (z : LatticeProb.Site d) :
     ∫ θ in {θ : Fin d → ℝ |
         θ ∈ LatticeProb.LocalCLT.torusBox d ∧
@@ -67,7 +93,9 @@ theorem aux_lclt_far_region_integral_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
 the form consumed by the triangle inequality after the Fourier integral is
 split into regions. -/
 
-theorem aux_lclt_far_region_setIntegral_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Deduces the same far-region bound for the norm of the set integral itself, from
+`far_region_integral_norm_le` via the triangle inequality `norm_integral_le_integral_norm`. -/
+theorem far_region_setIntegral_norm_le {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η ≤ Real.pi / 2) (z : LatticeProb.Site d) :
     ‖∫ θ in {θ : Fin d → ℝ |
         θ ∈ LatticeProb.LocalCLT.torusBox d ∧
@@ -89,13 +117,15 @@ theorem aux_lclt_far_region_setIntegral_norm {d n : ℕ} (hd : 1 ≤ d) (η : �
     ‖∫ θ in s, f θ ∂volume‖ ≤ ∫ θ in s, ‖f θ‖ ∂volume := hnorm
     _ ≤ (2 * Real.pi) ^ d *
           Real.exp (- (n : ℝ) * (2 / (d : ℝ)) * η ^ 2 / Real.pi ^ 2) := by
-      exact aux_lclt_far_region_integral_norm hd η hη0 hηp z
+      exact far_region_integral_norm_le hd η hη0 hηp z
 
 /-! The Fourier integrand is genuinely periodic under a coordinatewise
 integer multiple of `2π`.  This is the endpoint ingredient needed when a
 fundamental torus box is replaced by a translated one. -/
 
-theorem aux_lclt_fourier_integrand_periodic {d n : ℕ} (z : LatticeProb.Site d)
+/-- Shows the Fourier integrand is invariant under shifting `θ` coordinatewise by integer multiples
+of `2π`, using periodicity of `Complex.exp` at integer multiples of `2πI` and of `Real.cos`. -/
+theorem fourier_integrand_periodic {d n : ℕ} (z : LatticeProb.Site d)
     (θ : Fin d → ℝ) (m : Fin d → ℤ) :
     (∏ k, Complex.exp
         (Complex.ofReal ((θ k + 2 * Real.pi * (m k : ℝ)) * ((z k : ℤ) : ℝ)) * Complex.I))
@@ -130,7 +160,10 @@ theorem aux_lclt_fourier_integrand_periodic {d n : ℕ} (z : LatticeProb.Site d)
   congr 2
   rw [Finset.sum_congr rfl (fun i _ => hcos i)]
 
-theorem aux_lclt_periodic_setIntegral {d n : ℕ} (z : LatticeProb.Site d)
+/-- Transfers `fourier_integrand_periodic` to set integrals, showing the integral over a
+`2π`-shifted preimage set equals the integral over the original set, via the measure-preserving
+translation `tr`. -/
+theorem fourier_integrand_setIntegral_shift_eq {d n : ℕ} (z : LatticeProb.Site d)
     (m : Fin d → ℤ) (s : Set (Fin d → ℝ)) :
     ∫ θ in (fun u : Fin d → ℝ =>
         u + fun i => 2 * Real.pi * (m i : ℝ)) ⁻¹' s,
@@ -156,7 +189,7 @@ theorem aux_lclt_periodic_setIntegral {d n : ℕ} (z : LatticeProb.Site d)
   have hchange := hmp.setIntegral_preimage_emb hemb g s
   have hpt : ∀ u, g (tr u) = g u := by
     intro u
-    exact aux_lclt_fourier_integrand_periodic z u m
+    exact fourier_integrand_periodic z u m
   change (∫ θ in tr ⁻¹' s, g θ ∂volume) = ∫ θ in s, g θ ∂volume
   calc
     ∫ θ in tr ⁻¹' s, g θ ∂volume = ∫ θ in tr ⁻¹' s, g (tr θ) ∂volume := by
@@ -167,7 +200,10 @@ theorem aux_lclt_periodic_setIntegral {d n : ℕ} (z : LatticeProb.Site d)
 
 /-! The pointwise comparison needed on the small Gaussian core. -/
 
-theorem aux_lclt_gaussian_power_comparison {d n : ℕ} (hd : 1 ≤ d) (hn : 2 ≤ n)
+/-- Gives the quantitative comparison `|charFn^n - exp(-nS/2d)| ≤ n(S^2/24d + (S/2d)^2)
+exp(-nS/16d)` on the region where all coordinates are at most `π/2` and `S ≤ d`, built from the
+library's quartic and exponential bounds on `charFn`. -/
+theorem charFn_pow_sub_gaussian_le {d n : ℕ} (hd : 1 ≤ d) (hn : 2 ≤ n)
     (θ : Fin d → ℝ) (hθ : ∀ i, |θ i| ≤ Real.pi / 2)
     (hS : (∑ i : Fin d, θ i ^ 2) ≤ (d : ℝ)) :
     ‖((LatticeProb.charFn d θ) ^ n : ℂ) -
@@ -377,7 +413,10 @@ theorem aux_lclt_gaussian_power_comparison {d n : ℕ} (hd : 1 ≤ d) (hn : 2 �
   all_goals simp [q, a, S]
   all_goals ring_nf
 
-theorem aux_lclt_gaussian_fourier_integral {d : ℕ} (hd : 1 ≤ d) (n : ℕ)
+/-- Computes the Fourier transform of the Gaussian `exp(-nS/2d)` paired against the lattice
+character at `z`, evaluating `GaussianFourier.integral_cexp_neg_mul_sum_add` explicitly to the
+closed Gaussian form in `n`, `d`, and `z`. -/
+theorem gaussian_fourier_integral_eq {d : ℕ} (hd : 1 ≤ d) (n : ℕ)
     (hn : 0 < n) (z : Fin d → ℤ) :
     ∫ θ : Fin d → ℝ,
         (Real.exp (-(n : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) : ℂ) *
@@ -446,7 +485,9 @@ theorem aux_lclt_gaussian_fourier_integral {d : ℕ} (hd : 1 ≤ d) (n : ℕ)
       rw [hexp, ← Complex.ofReal_exp]
       rw [← Complex.ofReal_mul]
 
-theorem aux_lclt_gaussian_integral {d : ℕ} (hd : 1 ≤ d) (n : ℕ) (hn : 0 < n) :
+/-- Computes the total mass `(2πd/n)^(d/2)` of the un-paired Gaussian `exp(-nS/2d)` by taking the
+real part of the same Gaussian Fourier identity evaluated at `z = 0`. -/
+theorem scaled_gaussian_integral_eq {d : ℕ} (hd : 1 ≤ d) (n : ℕ) (hn : 0 < n) :
     ∫ θ : Fin d → ℝ,
         Real.exp (-(n : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) =
       (2 * Real.pi * (d : ℝ) / (n : ℝ)) ^ ((d : ℝ) / 2) := by
@@ -530,7 +571,10 @@ theorem aux_lclt_gaussian_integral {d : ℕ} (hd : 1 ≤ d) (n : ℕ) (hn : 0 < 
             (4 * (↑n / (2 * ↑d))))).re := h're
     _ = _ := hR
 
-theorem aux_lclt_scaledSite_norm_sq {d : ℕ} (R : ℝ) (x y : Sandpile.Site d) :
+/-- Identifies the squared Euclidean norm of the difference of two
+`Sandpile.External.Lclt.scaledSite` points with the sum of squared coordinatewise differences
+divided by `R^2`. -/
+theorem scaledSite_sub_norm_sq {d : ℕ} (R : ℝ) (x y : Sandpile.Site d) :
     ‖Sandpile.External.Lclt.scaledSite R x - Sandpile.External.Lclt.scaledSite R y‖ ^ 2 =
       (∑ i : Fin d, (((x i - y i : ℤ) : ℝ) / R) ^ 2) := by
   rw [EuclideanSpace.real_norm_sq_eq]
@@ -540,10 +584,12 @@ theorem aux_lclt_scaledSite_norm_sq {d : ℕ} (R : ℝ) (x y : Sandpile.Site d) 
   push_cast
   ring_nf
 
-theorem aux_lclt_full_gaussian {d : ℕ} (c : ℝ) (hc : 0 < c) :
+/-- Computes `∫ exp(-c∑θi^2) = (π/c)^(d/2)` over `Fin d → ℝ` by transporting the `EuclideanSpace`
+Gaussian integral identity along the measure-preserving `toLp` embedding. -/
+theorem full_gaussian_integral_eq {d : ℕ} (c : ℝ) (hc : 0 < c) :
     ∫ θ : Fin d → ℝ, Real.exp (-c * (∑ i : Fin d, θ i ^ 2)) =
       (Real.pi / c) ^ ((d : ℝ) / 2) := by
-  have h := aux_lclt_gaussian_fourier (d := d) hc
+  have h := gaussian_fourier_transform_eq (d := d) hc
     (0 : EuclideanSpace ℝ (Fin d))
   let e := MeasurableEquiv.toLp 2 (Fin d → ℝ)
   have hmp : MeasurePreserving (WithLp.toLp 2 : (Fin d → ℝ) → EuclideanSpace ℝ (Fin d))
@@ -564,7 +610,9 @@ theorem aux_lclt_full_gaussian {d : ℕ} (c : ℝ) (hc : 0 < c) :
   rw [← integral_congr_ae (Filter.Eventually.of_forall hp)]
   exact h'
 
-theorem aux_lclt_full_gaussian_integrable {d : ℕ} (c : ℝ) (hc : 0 < c) :
+/-- Proves `θ ↦ exp(-c∑θi^2)` is integrable on `Fin d → ℝ`, by transporting integrability of the
+corresponding `EuclideanSpace` Gaussian along `toLp`. -/
+theorem full_gaussian_integrable {d : ℕ} (c : ℝ) (hc : 0 < c) :
     Integrable (fun θ : Fin d → ℝ => Real.exp (-c * (∑ i : Fin d, θ i ^ 2))) := by
   let e := MeasurableEquiv.toLp 2 (Fin d → ℝ)
   have hmp : MeasurePreserving (WithLp.toLp 2 : (Fin d → ℝ) → EuclideanSpace ℝ (Fin d))
@@ -593,7 +641,9 @@ theorem aux_lclt_full_gaussian_integrable {d : ℕ} (c : ℝ) (hc : 0 < c) :
   filter_upwards with θ
   simpa only [Function.comp_apply] using hp θ
 
-theorem aux_lclt_gaussian_tail {d : ℕ} (c η : ℝ) (hc : 0 < c) (hη : 0 < η) :
+/-- Bounds the Gaussian tail integral outside the cube `[-η,η]^d` by splitting off a factor
+`exp(-cη^2/2)` and comparing the remainder to the full Gaussian mass at the halved rate `c/2`. -/
+theorem gaussian_tail_integral_le {d : ℕ} (c η : ℝ) (hc : 0 < c) (hη : 0 < η) :
     ∫ θ in {θ : Fin d → ℝ | ¬ (∀ i, |θ i| ≤ η)},
         Real.exp (-c * ∑ i : Fin d, θ i ^ 2) ∂volume ≤
       (Real.pi / (c / 2)) ^ ((d : ℝ) / 2) * Real.exp (-c * η ^ 2 / 2) := by
@@ -604,9 +654,9 @@ theorem aux_lclt_gaussian_tail {d : ℕ} (c η : ℝ) (hc : 0 < c) (hη : 0 < η
     dsimp [s]
     measurability
   have hfc : Integrable f := by
-    simpa [f] using aux_lclt_full_gaussian_integrable c hc
+    simpa [f] using full_gaussian_integrable c hc
   have hgc : Integrable g := by
-    apply aux_lclt_full_gaussian_integrable (c / 2)
+    apply full_gaussian_integrable (c / 2)
     positivity
   have hpt : ∀ θ ∈ s, f θ ≤ Real.exp (-c * η ^ 2 / 2) * g θ := by
     intro θ hθ
@@ -646,7 +696,7 @@ theorem aux_lclt_gaussian_tail {d : ℕ} (c η : ℝ) (hc : 0 < c) (hη : 0 < η
     rw [integral_const_mul]
   have hfull : ∫ θ : Fin d → ℝ, g θ =
       (Real.pi / (c / 2)) ^ ((d : ℝ) / 2) := by
-    simpa [g] using aux_lclt_full_gaussian (c / 2) (by positivity)
+    simpa [g] using full_gaussian_integral_eq (c / 2) (by positivity)
   have hsetle : ∫ θ in s, g θ ∂volume ≤ ∫ θ : Fin d → ℝ, g θ := by
     apply setIntegral_le_integral hgc
     filter_upwards with θ
@@ -660,7 +710,9 @@ theorem aux_lclt_gaussian_tail {d : ℕ} (c η : ℝ) (hc : 0 < c) (hη : 0 < η
       rw [hfull]
       ring_nf
 
-theorem aux_lclt_comparison_pointwise {d n : ℕ} (hd : 1 ≤ d) (hn : 0 < n)
+/-- Trades the quadratic-in-`n` prefactor for a `1/n` one, showing `n(S^2/24d+(S/2d)^2)exp(-nS/16d)
+≤ 2304d/n * exp(-nS/48d)`, using the bound `u ≤ 3exp(u/3)` on `u = nS/16d`. -/
+theorem polynomial_gaussian_term_le {d n : ℕ} (hd : 1 ≤ d) (hn : 0 < n)
     (S : ℝ) (hS : 0 ≤ S) :
     (n : ℝ) * (S ^ 2 / (24 * (d : ℝ)) + (S / (2 * (d : ℝ))) ^ 2) *
         Real.exp (-(n : ℝ) * S / (16 * (d : ℝ))) ≤
@@ -731,7 +783,10 @@ theorem aux_lclt_comparison_pointwise {d n : ℕ} (hd : 1 ≤ d) (hn : 0 < n)
         ring_nf
       rw [hu']
 
-theorem aux_lclt_three_way_split {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Splits the torus-box integral of the Fourier integrand into its restrictions to the near-zero
+cube `G`, the near-antipode box `A`, and the remainder `F`, by disjointness and a set-theoretic
+union decomposition. -/
+theorem torusBox_integral_split_three {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I))
@@ -818,7 +873,10 @@ theorem aux_lclt_three_way_split {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hfiG.union hfiA) hfiF]
   rw [setIntegral_union hdisGA hA hfiG hfiA]
 
-theorem aux_lclt_bool_corner_union {d : ℕ} {η : ℝ}
+/-- Identifies the union, over all sign patterns `b`, of the half-open corner boxes at `π` with the
+single antipode box `{θ | ∀ i, θ i ∈ Ioc (π-η) (π+η)}`, by a coordinatewise case split on
+whether `θ i < π`. -/
+theorem antipode_corner_union_eq_box {d : ℕ} {η : ℝ}
     (hη0 : 0 < η) (_hηp : η ≤ Real.pi / 2) :
     (⋃ b : Fin d → Bool, {u : Fin d → ℝ |
       ∀ i, if b i then u i ∈ Set.Ioo (Real.pi - η) Real.pi
@@ -846,7 +904,9 @@ theorem aux_lclt_bool_corner_union {d : ℕ} {η : ℝ}
     · simp only [b, hi, decide_false]
       exact ⟨le_of_not_gt hi, hu i |>.2⟩
 
-theorem aux_lclt_bool_corner_union_ae {d : ℕ} {η : ℝ} :
+/-- Shows the `Ioc`-based antipode box agrees almost everywhere with its `abs`-based description `{θ
+| ∀ i, |θ i - π| ≤ η}`, via `Measure.univ_pi_Ioc_ae_eq_Icc`. -/
+theorem antipode_box_ae_eq_abs_box {d : ℕ} {η : ℝ} :
     {u : Fin d → ℝ | ∀ i, u i ∈ Set.Ioc (Real.pi - η) (Real.pi + η)} =ᵐ[volume]
       {u : Fin d → ℝ | ∀ i, |u i - Real.pi| ≤ η} := by
   have h := Measure.univ_pi_Ioc_ae_eq_Icc
@@ -872,7 +932,10 @@ theorem aux_lclt_bool_corner_union_ae {d : ℕ} {η : ℝ} :
     · intro hu i
       exact abs_le.mpr ⟨by linarith [hu.1 i], by linarith [hu.2 i]⟩
 
-theorem aux_lclt_antipode_corner_assembly {d n : ℕ} (η : ℝ)
+/-- Assembles the integral over the antipode box `B` as the sum, over sign patterns `b`, of the
+integrand's integral over each corner piece `C b`, using disjointness of the corners and
+periodicity to identify each corner integral with a translated piece `Q b`. -/
+theorem antipode_corner_sum_eq_integral {d n : ℕ} (η : ℝ)
     (hη0 : 0 < η) (hηp : η ≤ Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -1026,7 +1089,7 @@ theorem aux_lclt_antipode_corner_assembly {d n : ℕ} (η : ℝ)
           simp [hbval, m]
           exact ⟨hi.1, hi.2⟩
     rw [← hpre]
-    simpa [f] using (aux_lclt_periodic_setIntegral z m (Q b))
+    simpa [f] using (fourier_integrand_setIntegral_shift_eq z m (Q b))
   have hsumC := integral_iUnion_fintype (f := f) hCmeas hCpair hfiC
   have hsumQ := integral_iUnion_fintype (f := f) hQmeas hQpair (fun b =>
     hfiB.mono_set (hQsub b))
@@ -1040,11 +1103,14 @@ theorem aux_lclt_antipode_corner_assembly {d n : ℕ} (η : ℝ)
     _ = ∫ θ in B, f θ := by
       have hQunion : (⋃ b, Q b) =
           {u : Fin d → ℝ | ∀ i, u i ∈ Set.Ioc (Real.pi - η) (Real.pi + η)} := by
-        simpa [Q] using (aux_lclt_bool_corner_union hη0 hηp)
+        simpa [Q] using (antipode_corner_union_eq_box hη0 hηp)
       rw [hQunion]
-      exact setIntegral_congr_set (aux_lclt_bool_corner_union_ae (d := d) (η := η))
+      exact setIntegral_congr_set (antipode_box_ae_eq_abs_box (d := d) (η := η))
 
-theorem aux_lclt_antipode_eq_gauss {d n : ℕ} (η : ℝ) (hη0 : 0 < η)
+/-- Shows the integral of the Fourier integrand over the antipode box equals a fixed phase `(-1)^n *
+(character at π)` times the integral over the near-zero box, via the measure-preserving shift by
+`π`. -/
+theorem antipode_integral_eq_phase_mul_zero_integral {d n : ℕ} (η : ℝ) (hη0 : 0 < η)
     (hηp : η < Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -1118,7 +1184,10 @@ theorem aux_lclt_antipode_eq_gauss {d n : ℕ} (η : ℝ) (hη0 : 0 < η)
   change (∫ θ in G, s * f θ ∂volume) = _
   rw [integral_const_mul]
 
-theorem aux_lclt_antipode_partition {d n : ℕ} (η : ℝ)
+/-- Decomposes the integral over the outer antipode annulus `A` (where every coordinate has `|θ i| ≥
+π-η`) as the sum over sign patterns of the integrals over the corner pieces `C b`, using an
+almost-everywhere partition of `A` by the corners. -/
+theorem antipode_region_eq_sum_corners {d n : ℕ} (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -1249,7 +1318,10 @@ theorem aux_lclt_antipode_partition {d n : ℕ} (η : ℝ)
   rw [← hsum]
   exact setIntegral_congr_set hunion_ae.symm
 
-theorem aux_lclt_antipode_sign {d n : ℕ} {z : LatticeProb.Site d}
+/-- Shows the phase `(-1)^n * ∏k exp(iπzk)` collapses to `1` exactly under the parity hypothesis
+relating `n` and the graph norm of `z`, by writing each factor as `(-1)^|zk|` and matching
+parities. -/
+theorem antipode_phase_eq_one_of_parity {d n : ℕ} {z : LatticeProb.Site d}
     (hpar : ((LatticeProb.graphNorm z : ℕ) : ZMod 2) = ((n : ℕ) : ZMod 2)) :
     (-1 : ℂ) ^ n *
         (∏ k, Complex.exp (Complex.ofReal (Real.pi * ((z k : ℤ) : ℝ)) * Complex.I)) = 1 := by
@@ -1305,7 +1377,10 @@ theorem aux_lclt_antipode_sign {d n : ℕ} {z : LatticeProb.Site d}
       omega
     simpa using (Even.neg_one_pow ht)
 
-theorem aux_lclt_polynomial_gaussian_decay {d : ℕ} {a ε : ℝ}
+/-- Proves `R^d exp(-aR^2) → 0`, giving an explicit radius beyond which the
+polynomial-times-Gaussian quantity is below any target `ε`, via the library's
+`tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero`. -/
+theorem exists_radius_polynomial_gaussian_le {d : ℕ} {a ε : ℝ}
     (ha : 0 < a) (hε : 0 < ε) :
     ∃ R₀ : ℝ, 0 < R₀ ∧ ∀ R : ℝ, R₀ ≤ R →
       R ^ d * Real.exp (-a * R ^ 2) ≤ ε := by
@@ -1337,7 +1412,10 @@ theorem aux_lclt_polynomial_gaussian_decay {d : ℕ} {a ε : ℝ}
   rw [heq] at hdecR
   exact hdecR.le
 
-theorem aux_lclt_mixed_pointwise {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Bounds the Fourier integrand's norm by `exp(-n/d)` at points with one coordinate near `0` and
+another near the torus boundary `π`, from the resulting gap between the cosine sum's upper and
+lower halves forcing `|charFn| ≤ exp(-1/d)`. -/
+theorem mixed_region_pointwise_le {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (θ : Fin d → ℝ)
     (z : LatticeProb.Site d)
     (hθT : θ ∈ LatticeProb.LocalCLT.torusBox d)
@@ -1452,7 +1530,10 @@ theorem aux_lclt_mixed_pointwise {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
       congr 1
       ring
 
-theorem aux_lclt_remainder_cover_ae {d : ℕ} (η : ℝ)
+/-- Shows that, almost everywhere, the leftover region `H` (torus minus the near-zero cube and the
+antipode corners) is contained in the union of the far annulus `E` and the mixed near/far set
+`M`, by a coordinatewise case analysis excluding the boundary values `±π` and `π-η`. -/
+theorem remainder_ae_subset_far_or_mixed {d : ℕ} (η : ℝ)
     (_hη0 : 0 < η) (_hηp : η < Real.pi / 2) :
     let T : Set (Fin d → ℝ) := LatticeProb.LocalCLT.torusBox d
     let G : Set (Fin d → ℝ) := {θ | ∀ i, |θ i| ≤ η}
@@ -1521,7 +1602,10 @@ theorem aux_lclt_remainder_cover_ae {d : ℕ} (η : ℝ)
       exact ⟨(abs_le.mp (hTcoord i)).1, by linarith [hhigh, hiabs]⟩
   exact Or.inr ⟨hθT, hexlow, hexhigh⟩
 
-theorem aux_lclt_remainder_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Bounds `‖∫_H f‖` by combining the far-region bound `far_region_integral_norm_le` on `E` and the
+mixed-region pointwise bound `mixed_region_pointwise_le` integrated over `M \ E`, via
+`remainder_ae_subset_far_or_mixed`. -/
+theorem remainder_integral_norm_le {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (z : LatticeProb.Site d) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -1579,7 +1663,7 @@ theorem aux_lclt_remainder_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
   have hfiN : IntegrableOn f N volume := hfiT.mono_set (by
     intro θ hθ
     exact hθ.1.1)
-  have hcover := aux_lclt_remainder_cover_ae (d := d) η hη0 hηp
+  have hcover := remainder_ae_subset_far_or_mixed (d := d) η hη0 hηp
   have hHK : ∀ᵐ θ : Fin d → ℝ ∂volume, θ ∈ H ↔ θ ∈ (H ∩ (E ∪ M)) := by
     filter_upwards [hcover] with θ hθ
     constructor
@@ -1617,10 +1701,10 @@ theorem aux_lclt_remainder_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
   have hEbound : ∫ θ in E, ‖f θ‖ ∂volume ≤
       (2 * Real.pi) ^ d *
         Real.exp (- (n : ℝ) * (2 / (d : ℝ)) * η ^ 2 / Real.pi ^ 2) := by
-    exact aux_lclt_far_region_integral_norm hd η hη0 hηp.le z
+    exact far_region_integral_norm_le hd η hη0 hηp.le z
   have hMpoint : ∀ θ ∈ M, ‖f θ‖ ≤ Real.exp (- (n : ℝ) / (d : ℝ)) := by
     intro θ hθ
-    exact aux_lclt_mixed_pointwise hd η hη0 hηp θ z hθ.1 hθ.2.1 hθ.2.2
+    exact mixed_region_pointwise_le hd η hη0 hηp θ z hθ.1 hθ.2.1 hθ.2.2
   have hMbound : ∫ θ in N, ‖f θ‖ ∂volume ≤
       (2 * Real.pi) ^ d * Real.exp (- (n : ℝ) / (d : ℝ)) := by
     have hconst : IntegrableOn (fun _ : Fin d → ℝ => Real.exp (- (n : ℝ) / (d : ℝ)))
@@ -1673,7 +1757,10 @@ theorem aux_lclt_remainder_norm {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
         (2 * Real.pi) ^ d * Real.exp (- (n : ℝ) / (d : ℝ)) :=
       add_le_add hEbound hMbound
 
-theorem aux_lclt_gaussian_complex_integrable_pre {d n : ℕ} (hd : 1 ≤ d)
+/-- Proves integrability of the complex Gaussian `exp(-nS/2d)` times the lattice character at `z`,
+by rewriting it as a `GaussianFourier` exponential quadratic-plus-linear form and invoking the
+library's integrability lemma. -/
+theorem gaussian_times_character_integrable {d n : ℕ} (hd : 1 ≤ d)
     (hn : 0 < n) (z : Fin d → ℤ) :
     Integrable (fun θ : Fin d → ℝ =>
       (Real.exp (-(n : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) : ℂ) *
@@ -1700,7 +1787,11 @@ theorem aux_lclt_gaussian_complex_integrable_pre {d n : ℕ} (hd : 1 ≤ d)
   intro θ
   exact (hleft θ).symm
 
-theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
+/-- Bounds the difference between the Fourier integrand's integral over the near-zero cube `G` and
+the full-space Gaussian-times-character integral, splitting into the pointwise Gaussian
+approximation error on `G` (via `polynomial_gaussian_term_le`) and the Gaussian tail outside `G`
+(via `gaussian_tail_integral_le`). -/
+theorem near_region_gaussian_error_le {d n : ℕ} (hd : 1 ≤ d)
     (hn : 0 < n) (hn2 : 2 ≤ n) (η : ℝ) (hη0 : 0 < η) (hηp : η < Real.pi / 2)
     (hη1 : η ≤ 1) (z : Fin d → ℤ) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
@@ -1744,7 +1835,7 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
       LatticeProb.LocalCLT.fourier_integrand_integrable d n z
   have hfiG : IntegrableOn f G volume := hfiT.mono_set hGsub
   have hgi : Integrable g := by
-    simpa [g] using aux_lclt_gaussian_complex_integrable_pre hd hn z
+    simpa [g] using gaussian_times_character_integrable hd hn z
   have hgiG : IntegrableOn g G volume := hgi.integrableOn
   have hphase : ∀ θ : Fin d → ℝ,
       ‖∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)‖ = 1 := by
@@ -1765,7 +1856,7 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
         Finset.sum_le_sum (fun i _ => by
           nlinarith [sq_nonneg (θ i), abs_le.mp (hθ i), hη1])
       simpa using hs
-    have hc := aux_lclt_comparison_pointwise hd hn S hS0
+    have hc := polynomial_gaussian_term_le hd hn S hS0
     have hc' := hc
     have hθpi : ∀ i, |θ i| ≤ Real.pi / 2 := by
       intro i
@@ -1786,16 +1877,16 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
       _ ≤ (n : ℝ) * (S ^ 2 / (24 * (d : ℝ)) +
             (S / (2 * (d : ℝ))) ^ 2) *
           Real.exp (-(n : ℝ) * S / (16 * (d : ℝ))) :=
-            aux_lclt_gaussian_power_comparison hd hn2 θ hθpi hSle
+            charFn_pow_sub_gaussian_le hd hn2 θ hθpi hSle
       _ ≤ 2304 * (d : ℝ) / (n : ℝ) *
           Real.exp (-(n : ℝ) * S / (48 * (d : ℝ))) := by
-            exact aux_lclt_comparison_pointwise hd hn S hS0
+            exact polynomial_gaussian_term_le hd hn S hS0
       _ = bnd θ := by
             dsimp [bnd, c, S]
             congr 3
             field_simp
   have hbd : Integrable bnd := by
-    have hgauss := aux_lclt_full_gaussian_integrable (d := d) c
+    have hgauss := full_gaussian_integrable (d := d) c
       (by dsimp [c]; positivity)
     simpa [bnd] using hgauss.const_mul (2304 * (d : ℝ) / (n : ℝ))
   have hnear : ‖(∫ θ in G, f θ) - ∫ θ in G, g θ‖ ≤
@@ -1819,7 +1910,7 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
         rw [integral_const_mul]
         dsimp [c]
         have hcpos : 0 < (n : ℝ) / (48 * (d : ℝ)) := by positivity
-        rw [aux_lclt_full_gaussian _ hcpos]
+        rw [full_gaussian_integral_eq _ hcpos]
         have hbase48 : Real.pi / ((n : ℝ) / (48 * (d : ℝ))) =
             48 * Real.pi * (d : ℝ) / (n : ℝ) := by
           field_simp
@@ -1827,7 +1918,7 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
   have htail : ∫ θ in Gᶜ, ‖g θ‖ ≤
       (4 * Real.pi * (d : ℝ) / (n : ℝ)) ^ ((d : ℝ) / 2) *
         Real.exp (-(n : ℝ) * η ^ 2 / (4 * (d : ℝ))) := by
-    have ht := aux_lclt_gaussian_tail (d := d) ((n : ℝ) / (2 * (d : ℝ))) η
+    have ht := gaussian_tail_integral_le (d := d) ((n : ℝ) / (2 * (d : ℝ))) η
       (by positivity) hη0
     have hnormg : ∀ θ, ‖g θ‖ =
         Real.exp (-(n : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) := by
@@ -1864,7 +1955,10 @@ theorem aux_lclt_near_gaussian_error {d n : ℕ} (hd : 1 ≤ d)
     _ ≤ _ + ∫ θ in Gᶜ, ‖g θ‖ := add_le_add hnear (norm_integral_le_integral_norm _)
     _ ≤ _ := add_le_add (le_refl _) htail
 
-theorem aux_lclt_uniform_scalar_decay {d : ℕ} (hd : 1 ≤ d)
+/-- Produces a radius `R0` beyond which the combined near/mixed/far error bound stays below `ε`
+uniformly over all `n` with `δR^2 ≤ n`, by applying `exists_radius_polynomial_gaussian_le` to
+the near and mixed error terms and rescaling by `δ`. -/
+theorem exists_uniform_error_bound_le {d : ℕ} (hd : 1 ≤ d)
     (δ η ε : ℝ) (hδ : 0 < δ) (hη0 : 0 < η) (hε : 0 < ε) :
     ∃ R₀ : ℝ, 0 < R₀ ∧ ∀ R : ℝ, R₀ ≤ R →
       ∀ n : ℕ, δ * R ^ 2 ≤ (n : ℝ) →
@@ -1890,10 +1984,10 @@ theorem aux_lclt_uniform_scalar_decay {d : ℕ} (hd : 1 ≤ d)
   have hnear_ev : ∀ᶠ R : ℝ in atTop, K * R ^ (-2 : ℝ) < ε / 3 :=
     hnear_lim.eventually (Iio_mem_nhds (by linarith))
   obtain ⟨r₁, hr₁⟩ := (eventually_atTop.1 hnear_ev)
-  have hfar_decay := aux_lclt_polynomial_gaussian_decay (d := d)
+  have hfar_decay := exists_radius_polynomial_gaussian_le (d := d)
     (a := δ / (d : ℝ)) (ε := ε / 6) (by positivity) (by linarith)
   obtain ⟨r₂, hr₂, hfar₂⟩ := hfar_decay
-  have hmix_decay := aux_lclt_polynomial_gaussian_decay (d := d)
+  have hmix_decay := exists_radius_polynomial_gaussian_le (d := d)
     (a := δ * (2 * η ^ 2 / ((d : ℝ) * Real.pi ^ 2)))
     (ε := (ε / 6) / L) (by positivity) (by positivity)
   obtain ⟨r₃, hr₃, hmix₃⟩ := hmix_decay
@@ -2013,7 +2107,11 @@ theorem aux_lclt_uniform_scalar_decay {d : ℕ} (hd : 1 ≤ d)
       add_le_add (add_le_add hnear htail) hfar
     _ ≤ ε := by linarith
 
-theorem aux_lclt_core_identity {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
+/-- Decomposes the torus integral as `2*(∫_G f) + ∫_H f`, folding the antipode-box contribution into
+the near-zero integral via `antipode_corner_sum_eq_integral`,
+`antipode_integral_eq_phase_mul_zero_integral` and the parity sign
+`antipode_phase_eq_one_of_parity`. -/
+theorem torusBox_integral_eq_two_mul_zero_add_remainder {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
     (hη0 : 0 < η) (hηp : η < Real.pi / 2) (z : LatticeProb.Site d)
     (hpar : ((LatticeProb.graphNorm z : ℕ) : ZMod 2) = ((n : ℕ) : ZMod 2)) :
     let f : (Fin d → ℝ) → ℂ := fun θ =>
@@ -2142,9 +2240,9 @@ theorem aux_lclt_core_identity {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
       linarith [hbi.1, hci.2]
     · exact hi (by simp [hbval, hcval])
   have hsum := integral_iUnion_fintype (f := f) hC hCpair hfiC
-  have hcorner := aux_lclt_antipode_corner_assembly (n := n) η hη0 hηp.le z
-  have hanti := aux_lclt_antipode_eq_gauss (n := n) η hη0 hηp z
-  have hsign := aux_lclt_antipode_sign hpar
+  have hcorner := antipode_corner_sum_eq_integral (n := n) η hη0 hηp.le z
+  have hanti := antipode_integral_eq_phase_mul_zero_integral (n := n) η hη0 hηp z
+  have hsign := antipode_phase_eq_one_of_parity hpar
   have hKint : ∫ θ in K, f θ = ∫ θ in G, f θ := by
     calc
       ∫ θ in K, f θ = ∑ b, ∫ θ in C b, f θ := by
@@ -2162,7 +2260,10 @@ theorem aux_lclt_core_identity {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
   rw [setIntegral_union hdisGK hK hfiG hfiK, hKint]
   ring
 
-theorem aux_lclt_gaussian_complex_integrable {d n : ℕ} (hd : 1 ≤ d)
+/-- A second, unused proof of the same integrability statement as
+`gaussian_times_character_integrable`, obtained identically from the `GaussianFourier`
+integrability lemma. -/
+theorem gaussian_times_character_integrable_alt {d n : ℕ} (hd : 1 ≤ d)
     (hn : 0 < n) (z : Fin d → ℤ) :
     Integrable (fun θ : Fin d → ℝ =>
       (Real.exp (-(n : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) : ℂ) *
@@ -2189,7 +2290,10 @@ theorem aux_lclt_gaussian_complex_integrable {d n : ℕ} (hd : 1 ≤ d)
   intro θ
   exact (hleft θ).symm
 
-theorem aux_lclt_gaussian_heatKernelBM_complex {d : ℕ} (hd : 1 ≤ d)
+/-- Identifies the rescaled discrete Gaussian Fourier integral with the continuum Brownian heat
+kernel `heatKernelBM` evaluated at the scaled lattice points, by transporting through the
+`EuclideanSpace` Fourier identity and matching norms and exponents. -/
+theorem discreteGaussianIntegral_eq_heatKernelBM {d : ℕ} (hd : 1 ≤ d)
     (R : ℝ) (hR : 0 < R) (n : ℕ) (hn : 0 < n)
     (x y : Sandpile.Site d) :
     (2 * Real.pi)⁻¹ ^ d *
@@ -2201,11 +2305,11 @@ theorem aux_lclt_gaussian_heatKernelBM_complex {d : ℕ} (hd : 1 ≤ d)
         Sandpile.Continuum.heatKernelBM d ((n : ℝ) / R ^ 2)
           (Sandpile.External.Lclt.scaledSite R x)
           (Sandpile.External.Lclt.scaledSite R y) := by
-  have hJ := aux_lclt_gaussian_fourier_integral hd n hn (x - y)
-  have hF := aux_lclt_gaussian_fourier
+  have hJ := gaussian_fourier_integral_eq hd n hn (x - y)
+  have hF := gaussian_fourier_transform_eq
     (a := (n : ℝ) / (2 * (d : ℝ))) (by positivity : 0 < (n : ℝ) / (2 * (d : ℝ)))
     (WithLp.toLp 2 (fun i : Fin d => (((x i - y i : ℤ) : ℝ))))
-  have hB := aux_lclt_gaussian_fourier_heatKernelBM hd R hR n hn x y
+  have hB := gaussian_fourier_integral_eq_heatKernelBM hd R hR n hn x y
   have hnorm :
       ‖WithLp.toLp 2 (fun i : Fin d => (((x i - y i : ℤ) : ℝ)))‖ ^ 2 =
         ∑ i : Fin d, (((x i - y i : ℤ) : ℝ) ^ 2) := by
@@ -2288,7 +2392,7 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
     have hd1 : (1 : ℝ) ≤ d := by exact_mod_cast hd
     nlinarith
   obtain ⟨Rdec, hRdec, hRdec_bound⟩ :=
-    aux_lclt_uniform_scalar_decay hd δ η ε hδ hη0 hε
+    exists_uniform_error_bound_le hd δ η ε hδ hη0 hε
   let Rmin : ℝ := 2 / δ + 2
   refine ⟨max Rdec Rmin, by
     dsimp [Rmin]
@@ -2326,7 +2430,7 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
   have hsrw : 0 < LatticeProb.srwHeat d ell (x - y) := by
     rw [← LatticeProb.heatKernel_eq_srwHeat]
     exact hpos
-  have hpar := aux_lclt_positive_parity hsrw
+  have hpar := graphNorm_parity_eq_of_srwHeat_pos hsrw
   let z : LatticeProb.Site d := x - y
   let f : (Fin d → ℝ) → ℂ := fun θ =>
     (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I)) *
@@ -2340,17 +2444,17 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
   let J : ℂ := ∫ θ : Fin d → ℝ,
     (Real.exp (-(ell : ℝ) * (∑ i : Fin d, θ i ^ 2) / (2 * (d : ℝ))) : ℂ) *
       (∏ k, Complex.exp (Complex.ofReal (θ k * ((z k : ℤ) : ℝ)) * Complex.I))
-  have hcore := aux_lclt_core_identity (n := ell) hd η hη0 hηp z hpar
+  have hcore := torusBox_integral_eq_two_mul_zero_add_remainder (n := ell) hd η hη0 hηp z hpar
   have hcore' : ∫ θ in Tset, f θ =
       2 * (∫ θ in G, f θ) + ∫ θ in H, f θ := by
     simpa [f, Tset, G, C, H] using hcore
-  have hrem := aux_lclt_remainder_norm (d := d) (n := ell) hd η hη0 hηp z
+  have hrem := remainder_integral_norm_le (d := d) (n := ell) hd η hη0 hηp z
   have hrem' : ‖∫ θ in H, f θ‖ ≤
       (2 * Real.pi) ^ d *
           Real.exp (- (ell : ℝ) * (2 / (d : ℝ)) * η ^ 2 / Real.pi ^ 2) +
         (2 * Real.pi) ^ d * Real.exp (- (ell : ℝ) / (d : ℝ)) := by
     simpa [f, Tset, G, C, H] using hrem
-  have hnear := aux_lclt_near_gaussian_error (d := d) (n := ell) hd
+  have hnear := near_region_gaussian_error_le (d := d) (n := ell) hd
     (by exact_mod_cast (show 0 < ell by omega)) hn2 η hη0 hηp hη1 z
   have hnear' : ‖(∫ θ in G, f θ) - J‖ ≤
       2304 * (d : ℝ) / (ell : ℝ) *
@@ -2385,7 +2489,7 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
             (2 * Real.pi) ^ d * Real.exp (- (ell : ℝ) / (d : ℝ))) := by
             exact add_le_add (mul_le_mul_of_nonneg_left hnear' (by positivity)) hrem'
       _ = _ := by ring
-  have hfour := aux_lclt_fourier_inversion hd ell x y
+  have hfour := heatKernel_eq_fourierIntegral hd ell x y
   have hfour' : (Sandpile.heatKernel d ell x y : ℂ) =
       (2 * Real.pi)⁻¹ ^ d * ∫ θ in Tset, f θ := by
     calc
@@ -2406,7 +2510,7 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
                 _ = (((2 * Real.pi)⁻¹ ^ d : ℝ) : ℂ) := by rw [Complex.ofReal_pow]
             rw [hcoeff]
             simp [mul_comm]
-  have hBM := aux_lclt_gaussian_heatKernelBM_complex hd R hRpos ell
+  have hBM := discreteGaussianIntegral_eq_heatKernelBM hd R hRpos ell
     (by exact_mod_cast (show 0 < ell by omega)) x y
   have hdiff' : ((Sandpile.heatKernel d ell x y : ℂ) -
       ((2 / R ^ d * Sandpile.Continuum.heatKernelBM d ((ell : ℝ) / R ^ 2)
@@ -2483,7 +2587,8 @@ theorem Sandpile.External.localCLT : Sandpile.External.LocalCLT
                 have hcancel : (2 * Real.pi)⁻¹ ^ d * (2 * Real.pi) ^ d = 1 := by
                   rw [inv_pow]
                   field_simp
-                have htailcoef : 0 ≤ 2 * (4 * Real.pi * (d : ℝ) / (ell : ℝ)) ^ ((d : ℝ) / 2) := by positivity
+                have htailcoef :
+                    0 ≤ 2 * (4 * Real.pi * (d : ℝ) / (ell : ℝ)) ^ ((d : ℝ) / 2) := by positivity
                 have hexp : Real.exp (-(ell : ℝ) * η ^ 2 / (4 * (d : ℝ))) ≤
                     Real.exp (-(ell : ℝ) * (2 * η ^ 2 / ((d : ℝ) * Real.pi ^ 2))) := by
                   apply Real.exp_le_exp.mpr

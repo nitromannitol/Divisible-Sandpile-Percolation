@@ -1,21 +1,24 @@
-/-
-`eq:dgt4-band-increment-replacement` at the sandpile law
-(`sandpile.tex:6171-6181`), assembled.
+import Sandpile.Support.Dgt4ABandIndependence
+import Sandpile.Support.OriginKilled
 
-The one-step mean increment of the odometer at the origin is the mean overshoot
-of the scenery above the ORIGIN-FROZEN average `W_n`
-(`Sandpile.origin_frozen_identities`), that average is independent of the
-scenery value at the origin (`integral_posPart_eq_integral_scenery`), and
-replacing the random level `W_n` by the frozen mean level `b_n` costs what
-`integral_abs_posPart_sub_le` says it costs.  Putting the three together gives
+/-!
+# The increment replacement at the sandpile law
+
+`eq:dgt4-band-increment-replacement` at the sandpile law (`sandpile.tex:6171-6181`), assembled
+into `meanOdometer_increment_sub_frozen_le`. The one-step mean increment of the odometer at the
+origin is the mean overshoot of the scenery above the ORIGIN-FROZEN average `W_n`
+(`Sandpile.origin_frozen_identities`), that average is independent of the scenery value at the
+origin (`integral_posPart_eq_integral_scenery`), and replacing the random level `W_n` by the
+frozen mean level `b_n` costs what `integral_abs_posPart_sub_le` says it costs. Putting the
+three together gives
 
   `|E u_{n+1}(0) - E u_n(0) - E(ξ - b_n)_+| ≤ (below-band term) + (level term)`,
 
-which is the paper's increment replacement, with the level term carrying
-`E|W_n - b_n|` and not any identification of the two levels.
+which is the paper's increment replacement, with the level term carrying `E|W_n - b_n|` and not
+any identification of the two levels. `measure_contact_symmDiff_le` gives the analogous contact
+error `eq:dgt4-band-contact-error`, bounding the symmetric difference between the contact event
+at the origin and the threshold event at the frozen level `b`.
 -/
-import Sandpile.Support.Dgt4ABandIndependence
-import Sandpile.Support.OriginKilled
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

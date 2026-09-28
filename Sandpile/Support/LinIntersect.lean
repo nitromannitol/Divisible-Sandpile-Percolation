@@ -1,4 +1,10 @@
-/-
+import Sandpile.External.IntersectionSecondMoment
+import Sandpile.Support.ExitGreen
+import Sandpile.Support.LinReturn
+
+/-!
+# The intersection count of two walks, and its first moment
+
 The intersection count of two walks, and its first moment.
 
 `lem:dgt4-linearization-from-survival` uses at `sandpile.tex:5695-5709` the two
@@ -6,27 +12,22 @@ intersection moments of `ssec:green-estimates`, for
 
   "$\mathcal I(X,Y)\coloneqq\sum_{r,h\geq0}\one_{\{X_r=Y_h\}}$",
 
-the number of intersections of two independent walks.  The first of them
+the number of intersections of two independent walks. The first of them
 (`eq:dgt4-intersection-first-moment`, `sandpile.tex:1312-1317`) is the identity
 
   "$\mathbf E_x\mathbf E_y\sum_{i,j\geq0}\one_{\{X_i=Y_j\}}
       = \sum_{z\in\Z^d}G(x,z)G(y,z)$",
 
 which the paper attributes to Tonelli's theorem, together with the bound
-`≤ C(1+|x-y|)^{4-d}` of `Sandpile.External.GreenBoundsHigh`.  That identity is
-proved here.  The second moment is the cited input
-`Sandpile.External.IntersectionSecondMoment`.
+`≤ C(1+|x-y|)^{4-d}` of `Sandpile.External.GreenBoundsHigh`. That identity is proved here.
+The second moment is the cited input `Sandpile.External.IntersectionSecondMoment`.
 
-Everything is in `ℝ≥0∞`: the count is a `tsum` of indicators there, so an
-infinite count is `⊤` rather than a junk zero, and the expectations are lower
-integrals, which need no integrability hypothesis.  The route is the
-factorization of the count through the local times,
-`I(X,Y) = ∑_z L_X(z) L_Y(z)`, which turns the double walk average into a product
-of two one-walk averages and needs no product measure on a common space.
+Everything is in `ℝ≥0∞`: the count is a `tsum` of indicators there, so an infinite count
+is `⊤` rather than a junk zero, and the expectations are lower integrals, which need no
+integrability hypothesis. The route is the factorization of the count through the local
+times, `I(X,Y) = ∑_z L_X(z) L_Y(z)`, which turns the double walk average into a product of
+two one-walk averages and needs no product measure on a common space.
 -/
-import Sandpile.External.IntersectionSecondMoment
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.LinReturn
 
 open MeasureTheory
 open scoped ENNReal
@@ -92,6 +93,8 @@ theorem measurableSet_path_eq (i : ℕ) (z : Site d) :
   rw [hpre]
   exact measurable_pi_apply i (measurableSet_singleton z)
 
+/-- The indicator of `X i = z` as a `Set.indicator`, matching the cylinder of
+`measurableSet_path_eq`. -/
 theorem indicator_path_eq (i : ℕ) (z : Site d) :
     (fun X : ℕ → Site d => (if X i = z then (1 : ℝ≥0∞) else 0))
       = Set.indicator {X : ℕ → Site d | X i = z} (fun _ => (1 : ℝ≥0∞)) := by

@@ -1,16 +1,17 @@
-/-
-Markov's inequality in the form Steps 2 and 3 of `prop:d4-superdiffusive-limit`
-consume it (`sandpile.tex:3368-3404`).
-
-Both steps bound the `H^{-s}(D)` norm of a rescaled field by a constant times
-the square root of a nonnegative random variable whose expectation vanishes:
-Step 2 by the mesh sum of the squares of the smoothed error, Step 3 by the
-square of the centred window.  The paper states the conclusion as convergence of
-the expected squared norm; what the limit theorem needs is convergence to zero
-in probability, and Markov's inequality gives it directly from the expectation
-of the dominating variable, with no second moment of the norm itself.
--/
 import Sandpile.Support.TightNegSobolev
+
+/-!
+# Markov's inequality for a norm dominated by a square root
+
+This file proves Markov's inequality in the form Steps 2 and 3 of `prop:d4-superdiffusive-limit`
+consume it (`sandpile.tex:3368-3404`). Both steps bound the `H^{-s}(D)` norm of a rescaled
+field by a constant times the square root of a nonnegative random variable whose expectation
+vanishes: Step 2 by the mesh sum of the squares of the smoothed error, Step 3 by the square of
+the centred window. The paper states the conclusion as convergence of the expected squared
+norm, but what the limit theorem needs is convergence to zero in probability, and Markov's
+inequality gives it directly from the expectation of the dominating variable, with no second
+moment of the norm itself required.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

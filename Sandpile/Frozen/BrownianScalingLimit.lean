@@ -1,4 +1,13 @@
-/-
+import Sandpile.Support.MainExplScaling
+import Sandpile.Law
+import Sandpile.Continuum.Stopping
+import Sandpile.Support.ExplInterp
+import Sandpile.External.ContStoppingStability
+import Sandpile.External.LocalCLTProved
+
+/-!
+# The Brownian optimal-stopping scaling limit
+
 Theorem 1.3(i)(b) of sandpile.tex, frozen.  `sandpile.tex:216-236`
 (label `thm:main-explosion`, part (i)(b)):
 
@@ -67,12 +76,6 @@ That result is registered as `Sandpile.External.ContinuumStoppingStability` and 
 carried here as the explicit hypothesis `hStab`; nothing else about it is assumed,
 and the conclusion is unchanged.
 -/
-import Sandpile.Support.MainExplScaling
-import Sandpile.Law
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ExplInterp
-import Sandpile.External.ContStoppingStability
-import Sandpile.External.LocalCLTProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

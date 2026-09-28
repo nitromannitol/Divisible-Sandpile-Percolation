@@ -1,11 +1,14 @@
-/-
-`D_n` as a function of the finitely many coordinates of the box `Q(0,n+1)`, with its
-measurability and its coordinate Lipschitz bound `2G(0,z)` in that reading.  This is the
-form the product concentration bounds of `Support/Concentration.lean` consume.
--/
 import Sandpile.Support.Dgt4ASceneryBox
 import Sandpile.Support.Dgt4ASceneryLip
 import Sandpile.Support.BlockIncrement
+
+/-!
+# `D_n` as a function of finitely many box coordinates
+
+`D_n` as a function of the finitely many coordinates of the box `Q(0,n+1)`, with its
+measurability and its coordinate Lipschitz bound `2G(0,z)` in that reading. This is the form the
+product concentration bounds of `Support/Concentration.lean` consume.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -18,6 +21,9 @@ noncomputable def boxDeviation (n : ℕ)
     (ξ : Fin (boxFinset (0 : Site d) (n + 1)).card → ℝ) : ℝ :=
   sceneryDeviation d (siteExtend (boxFinset (0 : Site d) (n + 1)) ξ) n
 
+/-- `sceneryDeviation d · n` is measurable in the full scenery, being built from the
+coordinate projection at the origin, `odometerOf`, and the average of `odometerOf`, each of
+which is measurable. -/
 theorem measurable_sceneryDeviation (n : ℕ) :
     Measurable fun ζ : Site d → ℝ => sceneryDeviation d ζ n := by
   have havg : Measurable fun ζ : Site d → ℝ =>
@@ -27,9 +33,13 @@ theorem measurable_sceneryDeviation (n : ℕ) :
   exact (measurable_pi_apply (0 : Site d)).sub
     ((Sandpile.measurable_odometerOf n (0 : Site d)).sub havg)
 
+/-- The box-coordinate reading `boxDeviation` is measurable, as the composite of
+`measurable_sceneryDeviation` with the measurable extension map `siteExtend`. -/
 theorem measurable_boxDeviation (n : ℕ) : Measurable (boxDeviation (d := d) n) :=
   (measurable_sceneryDeviation n).comp (measurable_siteExtend _)
 
+/-- Evaluating `boxDeviation` at the coordinates a full scenery `ζ` has on the box, picked out
+via `siteEnum`, recovers `sceneryDeviation d ζ n` directly. -/
 theorem boxDeviation_pick (n : ℕ) (ζ : Site d → ℝ) :
     boxDeviation n (fun i => ζ (siteEnum (boxFinset (0 : Site d) (n + 1)) i))
       = sceneryDeviation d ζ n :=

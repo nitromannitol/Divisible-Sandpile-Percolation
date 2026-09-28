@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.BerryEsseen
+import LatticeProb.Prob.GaussOrthant
+
+/-!
+# Explicit Gaussian Persistence Ratio
+
 The Gaussian persistence bound with an explicit ratio.
 
 `sandpile.tex:1751-1758` bounds the probability that a Gaussian with nearly
@@ -9,14 +14,14 @@ that makes the bracket explicit.  Taking `η = 1` and
 `δ = (1-Φ(1))/(2+2Φ(1))` gives the bracket at most `√Φ(1) < 1`, since
 `(1+δ)/(1-δ) = (3+Φ(1))/(1+3Φ(1))` and `Φ(1)(3+Φ(1)) ≤ 1+3Φ(1)`.
 -/
-import Sandpile.External.BerryEsseen
-import LatticeProb.Prob.GaussOrthant
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal NNReal
 
 namespace Sandpile
 
+/-- The standard normal law puts mass strictly less than one on `Set.Iic η`, since its
+complement `Set.Ioi η` carries positive mass by absolute continuity with Lebesgue measure. -/
 theorem gaussianReal_Iic_lt_one (η : ℝ) :
     gaussianReal 0 1 (Set.Iic η) < 1 := by
   have hv : (1 : ℝ≥0) ≠ 0 := by norm_num
@@ -54,6 +59,7 @@ open Sandpile.External.BerryEsseen
 /-- The standard normal distribution function, as a real. -/
 noncomputable def gaussTail (η : ℝ) : ℝ := (gaussianReal 0 1 (Set.Iic η)).toReal
 
+/-- `gaussTail η < 1`, the real-valued restatement of `gaussianReal_Iic_lt_one`. -/
 theorem gaussTail_lt_one (η : ℝ) : gaussTail η < 1 := by
   have h := gaussianReal_Iic_lt_one η
   have hne : gaussianReal 0 1 (Set.Iic η) ≠ ⊤ :=
@@ -61,6 +67,8 @@ theorem gaussTail_lt_one (η : ℝ) : gaussTail η < 1 := by
   rw [gaussTail, ← ENNReal.toReal_lt_toReal hne ENNReal.one_ne_top] at *
   simpa using h
 
+/-- `0 < gaussTail η`, since the standard normal law puts positive mass on `Set.Iic η` (by
+absolute continuity with Lebesgue measure) and this mass is finite. -/
 theorem gaussTail_pos (η : ℝ) : 0 < gaussTail η := by
   have hv : (1 : ℝ≥0) ≠ 0 := by norm_num
   have hne0 : gaussianReal 0 1 (Set.Iic η) ≠ 0 := by
@@ -72,6 +80,8 @@ theorem gaussTail_pos (η : ℝ) : 0 < gaussTail η := by
     ne_top_of_le_ne_top ENNReal.one_ne_top prob_le_one
   exact ENNReal.toReal_pos hne0 hne
 
+/-- `gaussTail` is monotone: `x ≤ y` implies `gaussTail x ≤ gaussTail y`, since `Set.Iic x ⊆
+Set.Iic y`. -/
 theorem gaussTail_mono {x y : ℝ} (h : x ≤ y) : gaussTail x ≤ gaussTail y := by
   have hne : gaussianReal 0 1 (Set.Iic y) ≠ ⊤ :=
     ne_top_of_le_ne_top ENNReal.one_ne_top prob_le_one
@@ -89,21 +99,25 @@ noncomputable def persistDelta : ℝ := (1 - gaussTail 1) / (2 + 2 * gaussTail 1
 `√((1+δ)/(1-δ)) Φ(η/√(1+δ))` at `η = 1` is at most `√Φ(1) < 1`. -/
 noncomputable def persistKappa : ℝ := Real.sqrt (gaussTail 1)
 
+/-- `0 < persistDelta`, since `gaussTail 1` lies strictly between `0` and `1`. -/
 theorem persistDelta_pos : 0 < persistDelta := by
   have h1 := gaussTail_lt_one 1
   have h2 := gaussTail_pos 1
   rw [persistDelta]
   positivity
 
+/-- `persistDelta < 1`, since `gaussTail 1` lies strictly between `0` and `1`. -/
 theorem persistDelta_lt_one : persistDelta < 1 := by
   have h1 := gaussTail_lt_one 1
   have h2 := gaussTail_pos 1
   rw [persistDelta, div_lt_one (by linarith)]
   linarith
 
+/-- `0 < persistKappa`, the square root of the positive quantity `gaussTail 1`. -/
 theorem persistKappa_pos : 0 < persistKappa :=
   Real.sqrt_pos.mpr (gaussTail_pos 1)
 
+/-- `persistKappa < 1`, since `gaussTail 1 < 1` and the square root is monotone. -/
 theorem persistKappa_lt_one : persistKappa < 1 := by
   have h1 := gaussTail_lt_one 1
   have h2 : Real.sqrt (gaussTail 1) < Real.sqrt 1 :=
@@ -167,6 +181,8 @@ namespace Sandpile
 open LatticeProb Matrix
 open Sandpile.External.BerryEsseen
 
+/-- The matrix dot product `v ⬝ᵥ S *ᵥ v` equals the quadratic form `quadForm S v`, both being the
+double sum `∑ i j, S i j * v i * v j`. -/
 theorem dotProduct_eq_quadForm {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ)
     (v : EuclideanSpace ℝ (Fin m)) :
     v ⬝ᵥ S *ᵥ v = quadForm S v := by
@@ -174,6 +190,7 @@ theorem dotProduct_eq_quadForm {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ)
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/-- The squared Euclidean norm of `v` is the sum of the squares of its coordinates. -/
 theorem euclidean_norm_sq {m : ℕ} (v : EuclideanSpace ℝ (Fin m)) :
     ‖v‖ ^ 2 = ∑ j, v j ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun j _ => by positivity)]

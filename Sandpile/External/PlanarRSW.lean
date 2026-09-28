@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.PlanarLaw
+
+/-! # Planar RSW for Site Percolation
+
 The lattice site specialization of Köhler-Schindler and Tassion,
 Crossing probabilities for planar percolation, Theorem 1 and Comment 1
 (arXiv 2011.04618v1, pages 1-2), cited at sandpile.tex:400,2064,2218,2235.
@@ -17,7 +20,6 @@ The map depends only on the aspect ratio, before the law, scale and level.
 No quantitative rectangle estimate or Gaussian estimate is included in this
 input; those consequences require separate proofs.
 -/
-import Sandpile.Support.PlanarLaw
 
 open MeasureTheory Set
 

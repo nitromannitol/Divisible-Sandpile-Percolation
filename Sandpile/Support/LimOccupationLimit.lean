@@ -1,11 +1,14 @@
-/-
+import Sandpile.External.BallOccupationDensity
+import Sandpile.Support.LimBallSurvival
+import Sandpile.Support.ExplBallExit
+
+/-!
+# Capped ball-occupation rewards and their limit
+
 Bounded test functions of the occupation measure stopped on exiting a ball.
 The occupation formula gives an integrable exit time, and the capped rewards
 converge to the Green pairing with all integrability conditions explicit.
 -/
-import Sandpile.External.BallOccupationDensity
-import Sandpile.Support.LimBallSurvival
-import Sandpile.Support.ExplBallExit
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal
@@ -13,6 +16,9 @@ open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
 namespace Sandpile.Support
 
+/-- Specializing the occupation-density hypothesis `hOcc` to the constant test function `1`
+gives that the ball exit time is integrable, with expectation `2d` times the total mass
+`∫ ballKernel d s u`. -/
 theorem integrable_ball_exitTime_of_occupation
     (hOcc : Sandpile.External.BallOccupationDensity)
     {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s) (u : Space 2)
@@ -35,7 +41,8 @@ theorem intervalIntegrable_brownian_bounded_reward
     IntervalIntegrable (fun t => φ (B t.toNNReal ω)) volume a b := by
   apply (IntegrableOn.of_bound (s := Set.uIcc a b) (isCompact_uIcc.measure_lt_top)
     ((hφ.comp ((hc ω).measurable.comp measurable_real_toNNReal)).aestronglyMeasurable)
-    M (Eventually.of_forall fun t => by simpa only [Real.norm_eq_abs, Function.comp_def] using hb _)).intervalIntegrable
+    M (Eventually.of_forall fun t => by
+      simpa only [Real.norm_eq_abs, Function.comp_def] using hb _)).intervalIntegrable
 
 /-- The capped occupation reward is a measurable random variable. -/
 theorem stronglyMeasurable_ball_capped_occupation
@@ -112,7 +119,8 @@ theorem tendsto_ball_capped_occupation
     (f := fun ω => ∫ t in (0 : ℝ)..
       (LatticeProb.exitTime B (planePoint u) s ω).toReal, φ (B t.toNNReal ω))
     (Eventually.of_forall fun T =>
-      (stronglyMeasurable_ball_capped_occupation B hc hm (planePoint u) s T φ hφ).aestronglyMeasurable)
+      (stronglyMeasurable_ball_capped_occupation
+        B hc hm (planePoint u) s T φ hφ).aestronglyMeasurable)
     (Eventually.of_forall fun T => ?_) (ht.const_mul M) ?_
   · rw [(hOcc d hd s hs u Ω P B hB hc hm φ hφ ⟨M, hb⟩).2] at hlimit
     exact hlimit
@@ -126,7 +134,8 @@ theorem tendsto_ball_capped_occupation
       simpa using h
     have hbnd := intervalIntegral.norm_integral_le_of_norm_le_const
       (a := (0 : ℝ)) (b := (LatticeProb.exitTimeTrunc B (planePoint u) s T ω : ℝ))
-      (fun t _ => show ‖φ (B t.toNNReal ω)‖ ≤ M by simpa only [Real.norm_eq_abs, Function.comp_def] using hb _)
+      (fun t _ => show ‖φ (B t.toNNReal ω)‖ ≤ M by
+        simpa only [Real.norm_eq_abs, Function.comp_def] using hb _)
     simp only [sub_zero, abs_of_nonneg (NNReal.coe_nonneg _)] at hbnd
     exact hbnd.trans (mul_le_mul_of_nonneg_left hτle hM)
   · filter_upwards [hfinite] with ω hω
@@ -136,7 +145,8 @@ theorem tendsto_ball_capped_occupation
     have hle : LatticeProb.exitTime B (planePoint u) s ω ≤ (T : ℝ≥0∞) := by
       rw [← ENNReal.coe_toNNReal hω.ne]
       exact_mod_cast hT
-    have he := congrArg ENNReal.toReal (LatticeProb.coe_exitTimeTrunc_of_le B (planePoint u) s T ω hle)
+    have he := congrArg ENNReal.toReal
+      (LatticeProb.coe_exitTimeTrunc_of_le B (planePoint u) s T ω hle)
     simp only [ENNReal.coe_toReal] at he
     rw [he]
 
@@ -167,7 +177,8 @@ theorem tendsto_ball_capped_occupation_L1
         φ (B t.toNNReal ω))|)
     (f := fun _ => (0 : ℝ))
     (Eventually.of_forall fun T =>
-      ((stronglyMeasurable_ball_capped_occupation B hc hm (planePoint u) s T φ hφ).aestronglyMeasurable.sub
+      ((stronglyMeasurable_ball_capped_occupation
+        B hc hm (planePoint u) s T φ hφ).aestronglyMeasurable.sub
         hfull.aestronglyMeasurable).norm)
     (Eventually.of_forall fun T => ?_) (ht.const_mul (2 * M)) ?_
   · simpa using hlimit
@@ -201,7 +212,8 @@ theorem tendsto_ball_capped_occupation_L1
     have hle : LatticeProb.exitTime B (planePoint u) s ω ≤ (T : ℝ≥0∞) := by
       rw [← ENNReal.coe_toNNReal hω.ne]
       exact_mod_cast hT
-    have he := congrArg ENNReal.toReal (LatticeProb.coe_exitTimeTrunc_of_le B (planePoint u) s T ω hle)
+    have he := congrArg ENNReal.toReal
+      (LatticeProb.coe_exitTimeTrunc_of_le B (planePoint u) s T ω hle)
     simp only [ENNReal.coe_toReal] at he
     simp only [he, sub_self, abs_zero]
 

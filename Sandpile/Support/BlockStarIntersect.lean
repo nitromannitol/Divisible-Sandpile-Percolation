@@ -1,10 +1,14 @@
-/-
-The planar intersection step of the block-adjacency argument: a left-right
-nearest-neighbour walk and a bottom-top nearest-neighbour walk of the same
-lattice rectangle share a site.
--/
 import Sandpile.Support.BlockGeometry
 import Sandpile.Support.RectangleIntersection
+
+/-!
+# The planar intersection of a crossing star
+
+The planar intersection step of the block-adjacency argument: a left-right nearest-neighbour walk
+and a bottom-top nearest-neighbour walk of the same lattice rectangle must share a site. The proof
+reduces the bottom-top walk to the nearest-neighbour star of `nnWalkToStar` and applies
+`rectangle_nn_star_intersect` to locate the shared site.
+-/
 
 open scoped NNReal
 noncomputable section

@@ -1,4 +1,18 @@
-/-
+import Sandpile.Law
+import Sandpile.Support.Crit23Scale
+import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.External.VarianceScaleProved
+import Sandpile.External.PlanarRSW
+import Sandpile.External.LSSDomination
+import Sandpile.External.ExteriorBoundaryConnected
+import Sandpile.External.LocalCLTProved
+import Sandpile.Support.Crit23MainAssembly
+
+/-!
+# Critical-level percolation
+
 Theorem 1.2 of sandpile.tex, frozen.  `sandpile.tex:113-126`
 (label `thm:main-critical-level-percolation`):
 
@@ -26,17 +40,6 @@ cited, but each is proved unconditionally in this repository
 (`Sandpile.External.greenBoundsHigh`, `Sandpile.External.varianceScale`), so
 neither is carried here as an explicit hypothesis.
 -/
-import Sandpile.Law
-import Sandpile.Support.Crit23Scale
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.BallGreenBoundsProved
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.External.VarianceScaleProved
-import Sandpile.External.PlanarRSW
-import Sandpile.External.LSSDomination
-import Sandpile.External.ExteriorBoundaryConnected
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.Crit23MainAssembly
 
 open MeasureTheory ProbabilityTheory
 

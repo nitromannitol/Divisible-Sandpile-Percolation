@@ -1,30 +1,26 @@
-/-
-The dependence range of the unit-scale field (`sandpile.tex:2110`), and the
-independence it gives across separated regions of the plane.
-
-  "The unit-scale field `𝒳_1` is stationary, sign-symmetric, invariant under
-   rotations by `π/2` and coordinate reflections, and has dependence range 2."
-
-Step 1 of `prop:fixed-scale-crossings` uses this: "choosing a logarithmic number
-of such annuli separated by distance greater than the dependence range of `𝒳_1`
-makes these circuit events independent" (`sandpile.tex:2229-2231`).
-
-The dependence range is the diameter of the support of the kernel: `𝒳_s(u)` is
-the white noise tested against `ballKernel d s u`, which vanishes outside the
-ball of radius `s` about the lift of `u`, so two field values at plane points at
-distance at least `2s` are tested against functions with disjoint supports.  For
-a white noise those two variables are jointly Gaussian with covariance the `L²`
-inner product of the kernels, which is then zero, and uncorrelated jointly
-Gaussian families are independent.  That last step is Mathlib's
-`ProbabilityTheory.IsGaussianProcess.iIndepFun_of_covariance_eq_zero`; nothing is
-assumed here beyond `Sandpile.Continuum.IsWhiteNoise`.
-
-The conclusion is stated twice: as the independence of the families of field
-values over the regions, and as the independence of events each of which is
-measurable with respect to one such family, which is the form the circuit events
-of separated annuli are used in.
--/
 import Sandpile.Support.CrossBallMemLp
+
+/-!
+# The dependence range of the unit-scale field
+
+The dependence range of the unit-scale field (`sandpile.tex:2110`), and the independence it
+gives across separated regions of the plane: the unit-scale field `𝒳_1` is stationary,
+sign-symmetric, invariant under rotations by `π/2` and coordinate reflections, and has
+dependence range `2`. Step 1 of `prop:fixed-scale-crossings` uses this: choosing a logarithmic
+number of such annuli separated by distance greater than the dependence range of `𝒳_1` makes
+these circuit events independent (`sandpile.tex:2229-2231`). The dependence range is the
+diameter of the support of the kernel: `𝒳_s(u)` is the white noise tested against
+`ballKernel d s u`, which vanishes outside the ball of radius `s` about the lift of `u`, so two
+field values at plane points at distance at least `2s` are tested against functions with
+disjoint supports. For a white noise those two variables are jointly Gaussian with covariance
+the `L²` inner product of the kernels, which is then zero, and uncorrelated jointly Gaussian
+families are independent, which is Mathlib's
+`ProbabilityTheory.IsGaussianProcess.iIndepFun_of_covariance_eq_zero`; nothing is assumed here
+beyond `Sandpile.Continuum.IsWhiteNoise`. The conclusion is stated twice: as the independence
+of the families of field values over the regions, and as the independence of events each of
+which is measurable with respect to one such family, which is the form the circuit events of
+separated annuli are used in.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -156,7 +152,8 @@ theorem iIndepFun_ballField_of_separated {Ω : Type} [MeasurableSpace Ω] {d : �
     (hW : Sandpile.Continuum.IsWhiteNoise d W P) {s : ℝ} (hs : 0 < s)
     {ι : Type} (Reg : ι → Set (Sandpile.Continuum.Space 2))
     (hsep : ∀ i j, i ≠ j → ∀ u ∈ Reg i, ∀ v ∈ Reg j, 2 * s ≤ ‖u - v‖) :
-    iIndepFun (fun (i : ι) (ω : Ω) (u : Reg i) => ballField d W s (u : Sandpile.Continuum.Space 2) ω)
+    iIndepFun
+      (fun (i : ι) (ω : Ω) (u : Reg i) => ballField d W s (u : Sandpile.Continuum.Space 2) ω)
       P := by
   have hd2 : 2 ≤ d := by rcases hd with h | h <;> omega
   refine iIndepFun_whiteNoise_of_disjoint hW

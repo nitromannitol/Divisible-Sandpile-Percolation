@@ -1,14 +1,22 @@
-/-
+import Sandpile.Support.StopWeakCoupling
+import Sandpile.Support.StopPathSpace
+
+/-!
+# Random field couplings uniformly close on a compact set
+
 Couplings of random fields that are uniformly close on a compact set.
 Finite-dimensional convergence, equicontinuity in probability, and almost-sure
 continuity of the limit suffice, with outer-measure control of the discrepancy.
 -/
-import Sandpile.Support.StopWeakCoupling
-import Sandpile.Support.StopPathSpace
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- For an a.s.-continuous random field `g : Ω → E → ℝ` on a compact metric space `E`, and
+tolerances `η₀, ε, δ > 0`, there is a finite `η`-net (`η ≤ η₀`) of `E` such that the
+net-interpolation `LatticeProb.netApprox` of `g` at the net points stays within `ε` of `g`
+everywhere except on an event of probability at most `δ`, obtained from finite-dimensional
+convergence of the net approximation and its equicontinuity in probability. -/
 theorem Sandpile.Continuum.exists_net_close_in_probability
     {E : Type*} [MetricSpace E] [CompactSpace E]
     {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
@@ -36,7 +44,8 @@ theorem Sandpile.Continuum.exists_net_close_in_probability
   let G : Ω → C(E, ℝ) := fun ω => ContinuousMap.mkD (g ω) 0
   have hF : ∀ n, AEMeasurable (F n) P := by
     intro n
-    exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n) (hnet n)).continuous.measurable
+    exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n)
+      (hnet n)).continuous.measurable
       |>.comp_aemeasurable (aemeasurable_pi_lambda _ fun k => hg (x n k))
   have hlim : ∀ᵐ ω ∂P, Tendsto (fun n => F n ω) atTop (𝓝 (G ω)) := by
     filter_upwards [hc] with ω hω
@@ -59,6 +68,13 @@ theorem Sandpile.Continuum.exists_net_close_in_probability
     Real.dist_eq] at hd
   exact hy.le.trans hd
 
+/-- Given finite-dimensional convergence in distribution of `f i` to `g` along `L` and uniform
+tightness of the modulus of continuity of `f i` (`htight`), produces, eventually in `i`, a
+coupling `P` of `μ i` and `ν` on which `f i` and `g` are uniformly close on `E`: the coupled
+processes differ by more than `ε` only on an event of `P`-probability at most `δ`. Built by
+coupling `f i` and `g` at the finite net from `exists_net_close_in_probability` and a union
+bound over the three sources of discrepancy (net approximation error for `f`, coupling error
+at the net, and net approximation error for `g`). -/
 theorem Sandpile.Continuum.exists_field_coupling_on_compact
     {ι E : Type*} [MetricSpace E] [CompactSpace E]
     {Ω : ι → Type*} [∀ i, MeasurableSpace (Ω i)] {Ω' : Type*} [MeasurableSpace Ω']
@@ -115,7 +131,8 @@ theorem Sandpile.Continuum.exists_field_coupling_on_compact
       exact le_of_not_gt (fun h => hFbad ⟨x k, y, hk.trans_le hηρ, h⟩)
     have h2 : |LatticeProb.netApprox x η (fun k => f i p.1 (x k)) y -
         LatticeProb.netApprox x η (fun k => g p.2 (x k)) y| ≤ ε / 3 :=
-      LatticeProb.abs_netApprox_sub_netApprox_le (LatticeProb.tentSum_pos (hnet y (mem_univ y))) hcoeff
+      LatticeProb.abs_netApprox_sub_netApprox_le
+        (LatticeProb.tentSum_pos (hnet y (mem_univ y))) hcoeff
     have h3 : |LatticeProb.netApprox x η (fun k => g p.2 (x k)) y - g p.2 y| ≤ ε / 3 :=
       le_of_not_gt (fun h => hGbad ⟨y, h⟩)
     have ha := abs_sub_le (f i p.1 y)

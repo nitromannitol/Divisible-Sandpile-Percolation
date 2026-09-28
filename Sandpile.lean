@@ -962,3 +962,15 @@ import Sandpile.Support.ContSelfSimilarMesh
 import Sandpile.Support.ContSelfSimilarMoments
 import Sandpile.Support.ContSelfSimilarFromScaling
 import Sandpile.MainTheorems
+
+/-!
+# The divisible sandpile percolation development
+
+This file collects, in dependency order, every module of the formalization: the discrete
+sandpile odometer and its scenery (`Sandpile.Basic`, `Sandpile.Law`, `Sandpile.Walk`), the
+continuum membrane and white-noise limits (`Sandpile.Continuum.*`), the results cited from the
+literature together with the library theorems that discharge them (`Sandpile.External.*`), the
+frozen statements transcribing the paper's lemmas and theorems verbatim (`Sandpile.Frozen.*`),
+and the supporting lemmas assembled to prove them (`Sandpile.Support.*`).
+`Sandpile.MainTheorems` assembles the paper's final results from these pieces.
+-/

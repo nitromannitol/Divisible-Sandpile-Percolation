@@ -9,11 +9,11 @@ the new paper-internal node of `lem:brownian-ball-localization` (`sandpile.tex:1
 the Gaussian heat potential `Z`, the Brownian value `𝒰_Z(s,z)` is at most `𝒰_Z(T,z)` whenever
 `0 ≤ s ≤ T`.
 
-The proof case-splits on the dimension. For `1 ≤ d ≤ 3`,
-`horizonFree_and_bddAbove_positive_dim` supplies both hypotheses of the horizon-monotonicity
-lemma `Sandpile.Continuum.brownianValue_mono_horizon` (`Sandpile/Support/ExplHorizon.lean`) from
-the samplewise polynomial growth of the field and the backward heat-increment martingale along
-the motion. For `d = 0`, `Space 0` is a single point and the field is exactly affine in time, so
+The proof case-splits on the dimension. For `1 ≤ d ≤ 3`, `horizonFree_and_bddAbove_positive_dim`
+supplies both hypotheses of the horizon-monotonicity lemma
+`Sandpile.Continuum.brownianValue_mono_horizon` (`Sandpile/Support/ExplHorizon.lean`) from the
+samplewise polynomial growth of the field and the backward heat-increment martingale along the
+motion. For `d = 0`, `Space 0` is a single point and the field is exactly affine in time, so
 `horizonFree_and_bddAbove_zero_dim` supplies the same two hypotheses by direct computation.
 `Sandpile.Continuum.brownianValue_mono_horizon` then finishes both cases identically.
 -/

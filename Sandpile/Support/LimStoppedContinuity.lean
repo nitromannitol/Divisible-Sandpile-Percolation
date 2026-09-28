@@ -1,23 +1,20 @@
-/-
-The ball-stopped field is continuous in the plane point.
-
-This is not structural.  The family of motions `B` is arbitrary, so the motions
-`B (planePoint u)` and `B (planePoint v)` started at two nearby points need have
-nothing to do with each other, and the expected reward at the exit from the ball
-is a priori an arbitrary function of `u`.  It is continuous because the expected
-reward depends only on the LAW of the motion
-(`Sandpile.Support.integral_stoppedState_eq`): the expectation at `u` may be
-computed along ONE motion, the one started at a fixed base point, with the whole
-dependence on `u` moved into the reward, where it is the continuity of the heat
-potential in space.
-
-The reward has to be made bounded before the transfer can be applied, and that is
-where the stopped position is used: the motion has not left the ball of radius `s`
-when it is stopped (`norm_stopped_le`), so multiplying the reward by a cutoff which
-is one on that ball changes nothing.
--/
 import Sandpile.Support.LimStoppedTransfer
 import Sandpile.Support.LimStoppedKernel
+
+/-!
+# Continuity of the ball-stopped field in the plane point
+
+The family of motions `B` is arbitrary, so the motions `B (planePoint u)` and
+`B (planePoint v)` started at two nearby points need have nothing to do with each other,
+and the expected reward at the exit from the ball is a priori an arbitrary function of
+`u`. It is continuous because the expected reward depends only on the law of the motion
+(`integral_stoppedState_eq`): the expectation at `u` may be computed along one motion, the
+one started at a fixed base point, with the whole dependence on `u` moved into the reward,
+where it is the continuity of the heat potential in space. The reward has to be made
+bounded before the transfer can be applied, which is where the stopped position is used:
+the motion has not left the ball of radius `s` when it is stopped (`norm_stopped_le`), so
+multiplying the reward by a cutoff `ballCutoff` that is one on that ball changes nothing.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -32,23 +29,29 @@ ball of radius `s + 1`. -/
 noncomputable def ballCutoff {d : ℕ} (s : ℝ) (z : Space d) : ℝ :=
   max 0 (min 1 (s + 1 - ‖z‖))
 
+/-- `ballCutoff s` is continuous, being built from `max`, `min` and the norm. -/
 theorem continuous_ballCutoff (d : ℕ) (s : ℝ) : Continuous (ballCutoff (d := d) s) := by
   unfold ballCutoff
   fun_prop
 
+/-- `ballCutoff s` equals `1` on the closed ball of radius `s`. -/
 theorem ballCutoff_eq_one {d : ℕ} {s : ℝ} {z : Space d} (h : ‖z‖ ≤ s) :
     ballCutoff s z = 1 := by
   unfold ballCutoff
   rw [min_eq_left (by linarith), max_eq_right zero_le_one]
 
+/-- `ballCutoff s` vanishes outside the closed ball of radius `s + 1`. -/
 theorem ballCutoff_eq_zero {d : ℕ} {s : ℝ} {z : Space d} (h : s + 1 ≤ ‖z‖) :
     ballCutoff s z = 0 := by
   unfold ballCutoff
   rw [min_eq_right (by linarith), max_eq_left (by linarith)]
 
+/-- `ballCutoff s z` is nonnegative, being the outer `max` with `0`. -/
 theorem ballCutoff_nonneg {d : ℕ} (s : ℝ) (z : Space d) : 0 ≤ ballCutoff s z :=
   le_max_left _ _
 
+/-- `ballCutoff s z` is at most `1`, being the outer `max` of `0` with something bounded
+above by the inner `min 1 _`. -/
 theorem ballCutoff_le_one {d : ℕ} (s : ℝ) (z : Space d) : ballCutoff s z ≤ 1 :=
   max_le zero_le_one (min_le_left _ _)
 
@@ -112,14 +115,19 @@ noncomputable def stoppedReward {ΩW : Type*} (d : ℕ) (Z : ℝ → Space d →
     (s T : ℝ) (u : Space 2) (p : ℝ≥0 × Space d) : ℝ :=
   -Z (T - min (p.1 : ℝ) T) (p.2 + planePoint u) ω * ballCutoff s p.2
 
+/-- `stoppedReward d Z ω s T u` is a continuous function of the stopped state, being a
+continuous cutoff applied to a heat potential composed with continuous maps of the
+state. -/
 theorem continuous_stoppedReward {ΩW : Type*} {d : ℕ} {Z : ℝ → Space d → ΩW → ℝ} {ω : ΩW}
     {T : ℝ} (hT : 0 ≤ T)
     (hZω : ContinuousOn (fun p : ℝ × Space d => Z p.1 p.2 ω) (Set.Icc 0 T ×ˢ Set.univ))
     (s : ℝ) (u : Space 2) : Continuous (stoppedReward d Z ω s T u) := by
-  have hmap : Continuous fun p : ℝ≥0 × Space d => ((T - min (p.1 : ℝ) T), p.2 + planePoint u) := by
+  have hmap : Continuous fun p : ℝ≥0 × Space d =>
+      ((T - min (p.1 : ℝ) T), p.2 + planePoint u) := by
     fun_prop
   have hmem : ∀ p : ℝ≥0 × Space d,
-      ((T - min (p.1 : ℝ) T), p.2 + planePoint u) ∈ Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Space d)) := by
+      ((T - min (p.1 : ℝ) T), p.2 + planePoint u)
+        ∈ Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Space d)) := by
     intro p
     refine ⟨⟨?_, ?_⟩, Set.mem_univ _⟩
     · have : min (p.1 : ℝ) T ≤ T := min_le_right _ _
@@ -132,6 +140,8 @@ theorem continuous_stoppedReward {ΩW : Type*} {d : ℕ} {Z : ℝ → Space d �
   exact (h1.neg).mul ((continuous_ballCutoff d s).comp continuous_snd)
 
 
+/-- `planePoint (d := d)` embedding a point of the plane `Space 2` into `Space d` by
+padding with zero coordinates is continuous. -/
 theorem continuous_planePoint (d : ℕ) : Continuous (planePoint (d := d)) := by
   unfold planePoint
   refine (EuclideanSpace.equiv (Fin d) ℝ).symm.continuous.comp ?_

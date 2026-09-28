@@ -1,22 +1,20 @@
-/-
-From small moments to a small supremum on a box.
-
-`LatticeProb.kolmogorovBoundPi` (the library's quantitative Kolmogorov-Chentsov
-boundedness theorem) turns a `p`-th moment
-Hölder bound with constant `M` on a box of dimension `k < q`, together with a moment
-bound at the box's corner, into an explicit level `B` which the field does not exceed
-anywhere on the box, off an event of probability at most a prescribed `ε`.
-
-The level `B` it produces does not tend to zero with `M`; what does is the field
-itself, and rescaling converts one into the other.  Applying the theorem to `X/η`
-with `η` chosen so that `η·B ≤ c` gives: there is a THRESHOLD `M₀ > 0`, depending
-only on the box, the exponents, the level `c` and the probability `ε`, such that any
-field whose two moment bounds are below `M₀` stays below `c` on the whole box off an
-event of probability at most `ε`.  That is the shape the crossing argument needs,
-since the moment bounds of the difference field tend to zero with the horizon.
--/
 import LatticeProb.Prob.KolmogorovBound
 import Mathlib
+
+/-!
+# From small moments to a small supremum on a box
+
+The library's quantitative Kolmogorov-Chentsov boundedness result `LatticeProb.kolmogorovBoundPi`
+turns a `p`-th moment Hölder bound with constant `M` on a box of dimension `k < q`, together with
+a moment bound at the box's corner, into an explicit level `B` that the field does not exceed
+anywhere on the box, off an event of probability at most a prescribed `ε`. The level `B` it
+produces does not tend to zero with `M`; what does is the field itself, and rescaling converts
+one into the other. Applying the result to `X / η` with `η` chosen so that `η * B ≤ c` produces a
+threshold `M₀ > 0`, depending only on the box, the exponents, the level `c` and the probability
+`ε`, such that any field whose two moment bounds are below `M₀` stays below `c` on the whole box
+off an event of probability at most `ε`. That is the shape the crossing argument needs, since the
+moment bounds of the difference field tend to zero with the horizon.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

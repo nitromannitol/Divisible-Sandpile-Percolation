@@ -1,29 +1,21 @@
-/-
-The distinctness clause of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`),
-which the paper states and proves at `sandpile.tex:983-987`: "for every `T > 0`
-and every nonzero nonnegative test function `φ`, `Var(ℋ_{κ,T}(φ))` is strictly
-decreasing in `κ`".
-
-The covariance `weightedMembraneCov d ν2 κ T φ φ` is written in the paper's
-order, a double space integral of a double time integral against the Brownian
-heat kernel.  In that order the comparison in `κ` is not available: the kernel
-is singular on the diagonal `x = y` as the time tends to zero, and in dimension
-five and above the double time integral there diverges, so the inner integrand
-is at its junk value on the diagonal.  Moving the inner space integral through
-the two time integrals, which is `integral_swap_time`, replaces the kernel by
-its pairing `K_φ(t,x) = ∫ p_t^{BM}(x,y)φ(y)dy`, which is bounded by the sup norm
-of `φ` uniformly in the time and in the point, because the kernel has total mass
-one.  With the time integrals outside there is no singularity, and the
-comparison is elementary: `K_φ` is strictly positive whenever `φ` is nonnegative
-and not almost everywhere zero, and the product of the two time weights is
-strictly decreasing in `κ` on the open square (`membraneWeight_mul_lt`).
-
-So `κ ↦ weightedMembraneCov d ν2 κ T φ φ` is strictly decreasing for such a `φ`,
-and in particular injective, which is the clause the theorem needs.
--/
 import Sandpile.Support.ContTimeSwap
 import Sandpile.Support.ContMembraneWeight
 import Sandpile.Support.ContCell
+
+/-!
+# The membrane covariance is strictly decreasing in the exponent `κ`
+
+Proves the distinctness clause of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`, stated at
+`sandpile.tex:983-987`): for every `T > 0` and every nonzero nonnegative test function `φ`,
+`Var(ℋ_{κ,T}(φ))` is strictly decreasing in `κ`. The paper's covariance
+`weightedMembraneCov d ν2 κ T φ φ` writes a double space integral of a double time integral
+against the Brownian heat kernel, which is singular on the diagonal and where the comparison in
+`κ` is unavailable; moving the inner space integral through the two time integrals
+(`integral_swap_time`) replaces the kernel by its bounded pairing
+`K_φ(t,x) = ∫ p_t^{BM}(x,y)φ(y)dy`, after which the comparison becomes elementary because `K_φ` is
+strictly positive and the product of the two time weights is strictly decreasing in `κ`
+(`membraneWeight_mul_lt`).
+-/
 
 open MeasureTheory Filter Topology
 
@@ -89,26 +81,35 @@ zero and one, and it is bounded by one everywhere, which is what the exchange of
 the space and time integrals asks of it. -/
 noncomputable def cutWeight (T κ r : ℝ) : ℝ := (min 1 (max 0 (1 - r / T))) ^ κ
 
+/-- On the open interval `(0, T)`, `cutWeight` agrees with the uncut weight `(1 - r / T) ^ κ`,
+since the base `1 - r / T` already lies in `[0, 1]` there. -/
 theorem cutWeight_eq {T κ r : ℝ} (hT : 0 < T) (hr : r ∈ Set.Ioo (0:ℝ) T) :
     cutWeight T κ r = (1 - r / T) ^ κ := by
   obtain ⟨h0, h1⟩ := Sandpile.Support.membraneWeight_base_mem hT hr.1 hr.2
   rw [cutWeight, max_eq_right h0.le, min_eq_right h1.le]
 
+/-- `cutWeight T κ r` is always nonnegative, being a real power of the clamp
+`min 1 (max 0 (1 - r / T))`, which lies in `[0, 1]`. -/
 theorem cutWeight_nonneg (T κ r : ℝ) : 0 ≤ cutWeight T κ r :=
   Real.rpow_nonneg (le_min zero_le_one (le_max_left _ _)) _
 
+/-- `cutWeight T κ r` is at most `1` for `κ ≥ 0`, since its base already lies in `[0, 1]`. -/
 theorem cutWeight_le_one {T κ : ℝ} (hκ : 0 ≤ κ) (r : ℝ) : cutWeight T κ r ≤ 1 :=
   Real.rpow_le_one (le_min zero_le_one (le_max_left _ _)) (min_le_left _ _) hκ
 
+/-- `cutWeight T κ` is measurable in `r`. -/
 theorem measurable_cutWeight (T κ : ℝ) : Measurable (cutWeight T κ) := by
   unfold cutWeight
   fun_prop
 
+/-- The product `cutWeight T κ r * cutWeight T κ r'` is jointly measurable in `(r, r')`. -/
 theorem measurable_cutWeight_pair (T κ : ℝ) :
     Measurable (Function.uncurry fun r r' : ℝ => cutWeight T κ r * cutWeight T κ r') := by
   unfold Function.uncurry cutWeight
   fun_prop
 
+/-- The product `cutWeight T κ r * cutWeight T κ r'` is bounded by `1` in absolute value for
+`κ ≥ 0`, since each factor lies in `[0, 1]`. -/
 theorem abs_cutWeight_mul_le {T κ : ℝ} (hκ : 0 ≤ κ) (r r' : ℝ) :
     |cutWeight T κ r * cutWeight T κ r'| ≤ 1 := by
   rw [abs_of_nonneg (mul_nonneg (cutWeight_nonneg T κ r) (cutWeight_nonneg T κ r'))]
@@ -161,6 +162,8 @@ theorem measurable_inner_time (d : ℕ) (φ : Space d → ℝ)
 
 /-! ### The exchange -/
 
+/-- The interval integral `∫ r in (0:ℝ)..T, f r` agrees with the set integral over
+`Set.Ioo 0 T`, for `T ≥ 0`. -/
 theorem intervalIntegral_to_Ioo {T : ℝ} (hT : 0 ≤ T) (f : ℝ → ℝ) :
     ∫ r in (0:ℝ)..T, f r = ∫ r in Set.Ioo (0:ℝ) T, f r := by
   rw [intervalIntegral.integral_of_le hT, MeasureTheory.integral_Ioc_eq_integral_Ioo]

@@ -1,4 +1,19 @@
-/-
+import Sandpile.Law
+import Sandpile.External.BallGreenBounds
+import Sandpile.External.BallGreenBoundsProved
+import Sandpile.External.PlanarRSW
+import Sandpile.External.LSSDomination
+import Sandpile.External.VarianceScale
+import Sandpile.Support.D4PlaneEmbed
+import Sandpile.Support.D4CritBlockEstimate
+import Sandpile.Support.D4CritRange
+import Sandpile.Support.D4CritScale
+import Sandpile.Support.D4GoodBlock
+import Sandpile.Support.D4OdometerComponent
+
+/-!
+# Critical-level percolation in dimension four
+
 Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:4023-4039`
 (label `thm:d4-critical-level-percolation`):
 
@@ -25,18 +40,6 @@ exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
 non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
-import Sandpile.Law
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.BallGreenBoundsProved
-import Sandpile.External.PlanarRSW
-import Sandpile.External.LSSDomination
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.D4CritBlockEstimate
-import Sandpile.Support.D4CritRange
-import Sandpile.Support.D4CritScale
-import Sandpile.Support.D4GoodBlock
-import Sandpile.Support.D4OdometerComponent
 
 open MeasureTheory ProbabilityTheory
 

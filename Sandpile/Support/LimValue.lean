@@ -1,39 +1,42 @@
-/-
+import Sandpile.Support.LimExtraction
+import Sandpile.Support.CrossBrownian
+import Sandpile.Continuum.Stopping
+
+/-!
+# The localized value and its approximation hypothesis
+
 `thm:limiting-odometer-crossing` (`sandpile.tex:2515-2530`) and the paragraph
 that prepares it (`sandpile.tex:2495-2511`).
 
   "Recall […] that `𝒰_{Z,1}` is the Brownian stopping value from
    `eq:continuum-membrane-stopping-value`, with stopping rules killed on exiting
-   the unit ball around the starting point.  In `d=3` we identify `u∈ℝ²` with
-   `(u,0)`.  For `0<s<1` and `T<∞`, let `𝒳_{s,T}(u)` be `(2d)^{-1}` times the
+   the unit ball around the starting point. In `d=3` we identify `u∈ℝ²` with
+   `(u,0)`. For `0<s<1` and `T<∞`, let `𝒳_{s,T}(u)` be `(2d)^{-1}` times the
    white-noise average against the expected occupation density of Brownian
    motion, started at `u`, stopped at time `T` or when it exits the ball of
-   radius `s` around `u`.  This rule is admissible for `𝒰_{Z,1}`, so for every
-   `0<s<1` and `T>0`, `2d 𝒳_{s,T}(u) ≤ 𝒰_{Z,1}(T,u)`.  As `T→∞`, the fields
+   radius `s` around `u`. This rule is admissible for `𝒰_{Z,1}`, so for every
+   `0<s<1` and `T>0`, `2d 𝒳_{s,T}(u) ≤ 𝒰_{Z,1}(T,u)`. As `T→∞`, the fields
    `𝒳_{s,T}` converge to `𝒳_s` uniformly in probability on compact rectangles,
    for each fixed finite set of scales."
 
 and the proof itself:
 
-  "Apply Lemma [finite-scale extraction] with error `ε/2`.  This gives `c>0` and
+  "Apply Lemma [finite-scale extraction] with error `ε/2`. This gives `c>0` and
    rational scales `s_1,…,s_k∈(0,1)` such that
-   `P(⋂_j H_{𝓡_j}(4c; max_i 𝒳_{s_i})) ≥ 1-ε/2`.  Choose `T` so large that
-   `P(max_i sup_{u∈⋃_j 𝓡_j} |𝒳_{s_i,T}(u)-𝒳_{s_i}(u)| > c) ≤ ε/2`.  On the
+   `P(⋂_j H_{𝓡_j}(4c; max_i 𝒳_{s_i})) ≥ 1-ε/2`. Choose `T` so large that
+   `P(max_i sup_{u∈⋃_j 𝓡_j} |𝒳_{s_i,T}(u)-𝒳_{s_i}(u)| > c) ≤ ε/2`. On the
    intersection of these two events, `eq:ball-green-lower-brownian-value` implies
    that `{u : 𝒰_{Z,1}(T,u) > 5dc}` crosses every prescribed rectangle in its
-   prescribed direction.  This proves the theorem with `H=5dc`."
+   prescribed direction. This proves the theorem with `H=5dc`."
 
 The two facts of the preparatory paragraph are used only through their
 combination: off an event of probability at most `δ`, the localized value at `u`
 dominates `2d(𝒳_{s_i}(u)-c)` for every prescribed scale and every `u` in the
-rectangles.  That combination is `LocalizedValueApproximation` below, with the
-horizon bound before the spaces, as the theorem's own statement binds it.  The
+rectangles. That combination is `LocalizedValueApproximation` below, with the
+horizon bound before the spaces, as the theorem's own statement binds it. The
 rest of the proof is the two-event argument and the deterministic step, which is
 `crossing_of_extraction_and_value`.
 -/
-import Sandpile.Support.LimExtraction
-import Sandpile.Support.CrossBrownian
-import Sandpile.Continuum.Stopping
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

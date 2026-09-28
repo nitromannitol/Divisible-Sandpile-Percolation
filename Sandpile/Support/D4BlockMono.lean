@@ -1,22 +1,31 @@
-/-
-Monotonicity of the crossing values and of the good-block event in the field
-and the level: this is Step 3 of the dimension-four proof
-(`sandpile.tex:4048-4065`) read on the block event, where the implication
-`𝓑_r > -ε₀ log r ⟹ 𝓑_{r,N} + Y_r > b₀ log r / 2` turns crossings of the ball
+import Sandpile.Support.D4BlockGood
+
+/-!
+# Monotonicity of crossing values and the good-block event
+
+Monotonicity of the crossing values and of the good-block event in the field and the level: this
+is Step 3 of the dimension-four proof (`sandpile.tex:4048-4065`) read on the block event, where
+the implication `𝓑_r > -ε₀ log r ⟹ 𝓑_{r,N} + Y_r > b₀ log r / 2` turns crossings of the ball
 field into crossings of the block field.
 -/
-import Sandpile.Support.D4BlockGood
 
 noncomputable section
 namespace Sandpile
 
 
+/-- Monotonicity of `crossingValue` in the field and the level: if every site with `F`-value at
+least `ℓ` has `G`-value at least `ℓ'`, then a crossing of `F` at level `ℓ` is a crossing of `G`
+at level `ℓ'`. -/
 lemma crossingValue_mono_of_level {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
-    (hN : Q.Nonempty) (F G : Q → ℝ) (ℓ ℓ' : ℝ) (h : ∀ u : Q, ℓ ≤ F u → ℓ' ≤ G u)
+    (hN : Q.Nonempty) (F G : Q → ℝ) (ℓ ℓ' : ℝ)
+    (h : ∀ u : Q, ℓ ≤ F u → ℓ' ≤ G u)
     (hF : ℓ ≤ crossingValue Q F) : ℓ' ≤ crossingValue Q G := by
   obtain ⟨a, b, p, ha, hb, hp⟩ := (le_crossingValue_iff_exists_walk hQ hN F ℓ).mp hF
   exact le_crossingValue_of_walk hQ p ha hb (fun z hz => h z (hp z hz))
 
+/-- The vertical analogue of `crossingValue_mono_of_level`, obtained by unfolding
+`verticalCrossingValue` and reducing to `crossingValue_mono_of_level` on the underlying
+rectangle. -/
 lemma verticalCrossingValue_mono_of_level (w h' : ℕ)
     (F G : planeRectangle w h' → ℝ) (ℓ ℓ' : ℝ)
     (h : ∀ u : planeRectangle w h', ℓ ≤ F u → ℓ' ≤ G u)

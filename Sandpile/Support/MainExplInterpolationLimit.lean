@@ -1,13 +1,15 @@
-/-
-Passage from lattice odometer couplings to the multilinear interpolation in
-Theorem 1.3(i)(b). The interpolation error is bounded by the oscillation in one
-mesh cell, uniformly over a compact set.
--/
 import Sandpile.Support.MainExplAssemblyZ
 import Sandpile.Support.MainExplContValueMeas
 import Sandpile.Support.MainExplInterp
 import Sandpile.Support.MainExplOscGeneral
 import Sandpile.Support.MainExplWeak
+
+/-! # Lattice-to-interpolation coupling for Theorem 1.3(i)(b)
+
+Passage from lattice odometer couplings to the multilinear interpolation in
+Theorem 1.3(i)(b). The interpolation error is bounded by the oscillation in one
+mesh cell, uniformly over a compact set.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

@@ -1,22 +1,22 @@
-/-
-A white noise whose ball fields are almost surely continuous.
-
-`Sandpile.Frozen.limiting_odometer_crossing` assumes this continuity as a bare
-hypothesis, and nothing in the repository builds a noise that satisfies it: the
-condition occurs only ever as a hypothesis.  The node is therefore sound as an
-implication while its antecedent has no known instance, which for this program is
-the same standing as an unchecked cited input.
-
-The route is Kolmogorov-Chentsov, one scale at a time.  The `L²` modulus of the
-ball kernel is already proved, so at each scale the field has a continuous
-modification on the plane; transferring the modification back to the noise needs
-the kernel to determine the scale and centre, and the congruence lemma for the
-white-noise property.
--/
 import Sandpile.Support.LimVacuity
 import Sandpile.Support.LimKernelShift
 import Sandpile.Continuum.WhiteNoiseExists
 import Sandpile.Support.LimNoiseModification
+
+/-!
+# A white noise with continuous ball fields
+
+A white noise whose ball fields are almost surely continuous. `Sandpile.Frozen.
+limiting_odometer_crossing` assumes this continuity as a bare hypothesis, and nothing in
+the repository builds a noise that satisfies it: the condition occurs only ever as a
+hypothesis. The node is therefore sound as an implication while its antecedent has no
+known instance, which for this program is the same standing as an unchecked cited input.
+
+The route is Kolmogorov-Chentsov, one scale at a time. The `L²` modulus of the ball
+kernel is already proved, so at each scale the field has a continuous modification on
+the plane; transferring the modification back to the noise needs the kernel to determine
+the scale and centre, and the congruence lemma for the white-noise property.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

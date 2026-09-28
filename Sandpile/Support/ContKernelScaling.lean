@@ -1,4 +1,9 @@
-/-
+import Sandpile.Continuum.Kernel
+import Mathlib
+
+/-!
+# Parabolic Scaling of the Brownian Kernels
+
 Parabolic scaling of the Brownian kernels of `eq:brownian-heat-green-kernels`.
 
 The proof of `prop:continuum-value-selfsimilar` (`sandpile.tex:1985-1993`) rests
@@ -12,8 +17,6 @@ the kernels themselves:
 together with the translation invariance `p_t^{BM}(x+a,y+a) = p_t^{BM}(x,y)` and
 the same for `g`.
 -/
-import Sandpile.Continuum.Kernel
-import Mathlib
 
 open MeasureTheory
 

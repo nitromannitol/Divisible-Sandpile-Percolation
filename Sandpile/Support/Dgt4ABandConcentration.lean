@@ -1,11 +1,19 @@
-/-
-The origin-frozen concentration estimate in Step 2 of the many-limits theorem
-(`sandpile.tex:6060-6079`). The estimate is uniform over every time whose mean
-height lies below the band level. All expectations below are integrable.
--/
 import Sandpile.Support.Dgt4OriginProb
 import Sandpile.Support.LinJacobianFirstConjunct
 import Sandpile.External.GreenBoundsHighProved
+
+/-!
+# The origin-frozen concentration estimate
+
+The average of the origin-frozen odometer over the centered mass law concentrates around its
+mean at the rate `meanOdometer / green d 0 0`, uniformly over every time `n` whose mean height
+lies below a diverging band level. `band_origin_error_le` bounds the mean absolute deviation by
+any positive multiple of the mean height plus a time-independent constant, and
+`band_origin_concentration` turns this into the epsilon formulation used against diverging band
+levels. `band_origin_lower_tail` gives an exponential lower-tail estimate for the deviation
+below the mean, and `integrable_band_origin_average` shows the underlying expectations are
+integrable in the first place.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

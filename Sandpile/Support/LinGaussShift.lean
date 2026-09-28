@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinGaussBridge
+import Sandpile.Support.LinGreenTail
+import Sandpile.Support.LinStationary
+
+/-! # Gaussian Threshold Shift
+
 Translation invariance of the threshold events in the GAUSSIAN branch,
 `sandpile.tex:5453-5454`:
 
@@ -35,9 +40,6 @@ measure preservation holds on every set, not only on the measurable ones: the
 threshold event of the Gaussian branch is not known to be measurable, since the
 field is only almost everywhere measurable.
 -/
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.LinGreenTail
-import Sandpile.Support.LinStationary
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -130,7 +132,8 @@ theorem infiniteGreenField_shift_of_mem (y : Site d) (zeta : Site d → ℝ)
         - infiniteGreenFieldPartial n (fun z => zeta (z + y)) 0) atTop (𝓝 0)) :
     infiniteGreenField (fun z => zeta (z + y)) 0 = infiniteGreenField zeta y := by
   obtain ⟨L, hL⟩ := h1
-  have hB : Tendsto (fun n => infiniteGreenFieldPartial n (fun z => zeta (z + y)) 0) atTop (𝓝 L) := by
+  have hB : Tendsto (fun n => infiniteGreenFieldPartial n (fun z => zeta (z + y)) 0) atTop
+      (𝓝 L) := by
     have hsub := hL.sub h2
     simpa [sub_sub_cancel] using hsub
   have hexA : ∃ M : ℝ, Tendsto (fun n => infiniteGreenFieldPartial n zeta y) atTop (𝓝 M) := ⟨L, hL⟩

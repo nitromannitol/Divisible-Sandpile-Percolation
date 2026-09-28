@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LimTransfer
+import Sandpile.Support.CrossSymmetry
+
+/-!
+# Symmetry transfer for the fixed-scale crossing bound
+
 From the crossing bound on the rectangles `[-al,al]×[0,2h]` in the left-right
 direction to the same bound on an arbitrary axis-parallel rectangle in either
 coordinate direction.
@@ -26,8 +31,6 @@ The symmetry that does the work is `rectSymmetry`: the plane symmetry which
 interchanges the two coordinates when the prescribed direction is the vertical
 one and then translates the centred rectangle onto the prescribed one.
 -/
-import Sandpile.Support.LimTransfer
-import Sandpile.Support.CrossSymmetry
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -61,11 +64,15 @@ noncomputable def rectSymmetry (a b : Fin 2 → ℝ) (i : Fin 2) :
   sign_eq := fun _ => Or.inl rfl
   shift := fun k => if k = i then (a i + b i) / 2 else a k
 
+/-- The `i`-coordinate of the symmetry's image is the input's `0`-coordinate, shifted to
+the midpoint of `a i` and `b i`. -/
 theorem rectSymmetry_apply_i (a b : Fin 2 → ℝ) (i : Fin 2) (p : Sandpile.Continuum.Space 2) :
     (rectSymmetry a b i).toFun p i = p 0 + (a i + b i) / 2 := by
   have h : (Equiv.swap (0 : Fin 2) i) i = 0 := by fin_cases i <;> decide
   simp [Sandpile.Continuum.PlaneSymmetry.toFun_apply, rectSymmetry, h]
 
+/-- The swapped coordinate of the symmetry's image is the input's `1`-coordinate, shifted
+by `a (swapIdx i)`. -/
 theorem rectSymmetry_apply_swap (a b : Fin 2 → ℝ) (i : Fin 2)
     (p : Sandpile.Continuum.Space 2) :
     (rectSymmetry a b i).toFun p (swapIdx i) = p 1 + a (swapIdx i) := by
@@ -80,17 +87,24 @@ noncomputable def centLo (a b : Fin 2 → ℝ) (i : Fin 2) : Fin 2 → ℝ := ![
 noncomputable def centHi (a b : Fin 2 → ℝ) (i : Fin 2) : Fin 2 → ℝ :=
   ![(b i - a i) / 2, 2 * ((b (swapIdx i) - a (swapIdx i)) / 2)]
 
+/-- The `0`-coordinate of the centred rectangle's lower corner. -/
 theorem centLo_zero (a b : Fin 2 → ℝ) (i : Fin 2) :
     centLo a b i 0 = -((b i - a i) / 2) := rfl
 
+/-- The `1`-coordinate of the centred rectangle's lower corner is `0`. -/
 theorem centLo_one (a b : Fin 2 → ℝ) (i : Fin 2) : centLo a b i 1 = 0 := rfl
 
+/-- The `0`-coordinate of the centred rectangle's upper corner. -/
 theorem centHi_zero (a b : Fin 2 → ℝ) (i : Fin 2) :
     centHi a b i 0 = (b i - a i) / 2 := rfl
 
+/-- The `1`-coordinate of the centred rectangle's upper corner, twice its half-height. -/
 theorem centHi_one (a b : Fin 2 → ℝ) (i : Fin 2) :
     centHi a b i 1 = 2 * ((b (swapIdx i) - a (swapIdx i)) / 2) := rfl
 
+/-- `rectSymmetry a b i` carries the centred rectangle `rectSet (centLo a b i) (centHi a b
+i)` into `rectSet a b`, by evaluating both coordinates via `rectSymmetry_apply_i` and
+`rectSymmetry_apply_swap`. -/
 theorem rectSymmetry_maps_rect (a b : Fin 2 → ℝ) (i : Fin 2)
     (p : Sandpile.Continuum.Space 2) (hp : p ∈ rectSet (centLo a b i) (centHi a b i)) :
     (rectSymmetry a b i).toFun p ∈ rectSet a b := by
@@ -105,6 +119,8 @@ theorem rectSymmetry_maps_rect (a b : Fin 2 → ℝ) (i : Fin 2)
   · rw [rectSymmetry_apply_swap]
     constructor <;> linarith [h1.1, h1.2]
 
+/-- The symmetry sends the centred rectangle's lower `0`-face onto the `i`-coordinate
+value `a i`. -/
 theorem rectSymmetry_face_lo (a b : Fin 2 → ℝ) (i : Fin 2)
     (p : Sandpile.Continuum.Space 2) (hp : p 0 = centLo a b i 0) :
     ((rectSymmetry a b i).toFun p) i = a i := by
@@ -112,6 +128,8 @@ theorem rectSymmetry_face_lo (a b : Fin 2 → ℝ) (i : Fin 2)
   rw [rectSymmetry_apply_i, hp]
   ring
 
+/-- The symmetry sends the centred rectangle's upper `0`-face onto the `i`-coordinate
+value `b i`. -/
 theorem rectSymmetry_face_hi (a b : Fin 2 → ℝ) (i : Fin 2)
     (p : Sandpile.Continuum.Space 2) (hp : p 0 = centHi a b i 0) :
     ((rectSymmetry a b i).toFun p) i = b i := by
@@ -137,7 +155,8 @@ theorem measure_crossing_general_of_symmetric {Ω : Type*} [MeasurableSpace Ω] 
     exact hω.comp (continuous_planeSymmetry T)
   have hlaw : Sandpile.Continuum.fieldLaw P X = Sandpile.Continuum.fieldLaw P Y := by
     have h := hsym T 1 (Or.inl rfl)
-    have hfun : (fun (u : Sandpile.Continuum.Space 2) (ω : Ω) => (1 : ℝ) * X (T.toFun u) ω) = Y := by
+    have hfun :
+        (fun (u : Sandpile.Continuum.Space 2) (ω : Ω) => (1 : ℝ) * X (T.toFun u) ω) = Y := by
       funext u ω; rw [one_mul]
     rw [hfun] at h
     exact h.symm

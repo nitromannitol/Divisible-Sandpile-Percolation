@@ -1,20 +1,20 @@
-/-
-The three clauses of `thm:dgt4-height-lower` (`sandpile.tex:4124-4147`).
-
-The first two are compositions of what is already proved: the uniform lower-tail
-bound of `sandpile.tex:4180-4186` feeds the uniform mean lower bound, and the
-pointwise concentration is `eq:dgt4-pointwise-concentration` in the mass-field
-language.  The third clause is the ratio limit `u_t(x)/E u_t(0) → 1`.  In `L²`
-it is the variance bound divided by the square of the mean, which diverges.
-Almost surely it is a Borel-Cantelli argument along the scales
-`t_k = ⌈e^{√k}⌉`, whose logarithm is at least `√k`, so that the mean at `t_k` is
-at least a constant times `k^{1/d}` and the concentration bound is summable in
-`k`; the passage from the scales to all times uses that the mean is concave and
-vanishes at time zero, so that `t ↦ E u_t(0)/t` is nonincreasing and the mean
-grows by at most the factor `t_{k+1}/t_k`, which tends to one.
--/
 import Sandpile.Support.MassConc
 import Sandpile.Support.UniformTail
+
+/-!
+# The three clauses of the height lower bound `thm:dgt4-height-lower`
+
+The three clauses of `thm:dgt4-height-lower` (`sandpile.tex:4124-4147`). The first two are
+compositions of what is already proved: the uniform lower-tail bound of `sandpile.tex:4180-4186`
+feeds the uniform mean lower bound, and the pointwise concentration is
+`eq:dgt4-pointwise-concentration` in the mass-field language. The third clause is the ratio limit
+`u_t(x)/E u_t(0) → 1`. In `L²` it is the variance bound divided by the square of the mean, which
+diverges. Almost surely it is a Borel-Cantelli argument along the scales `t_k = ⌈e^{√k}⌉`, whose
+logarithm is at least `√k`, so that the mean at `t_k` is at least a constant times `k^{1/d}` and
+the concentration bound is summable in `k`; the passage from the scales to all times uses that
+the mean is concave and vanishes at time zero, so that `t ↦ E u_t(0)/t` is nonincreasing and the
+mean grows by at most the factor `t_{k+1}/t_k`, which tends to one.
+-/
 
 open LatticeProb
 
@@ -202,6 +202,8 @@ theorem concave_seq_mul_le (a : ℕ → ℝ)
 
 /-! ### The scales `t_k = t₀ + ⌈e^{√k}⌉` -/
 
+/-- The increment of `Real.sqrt` is bounded by `1 / Real.sqrt x`, via the identity
+`(√(x + 1) - √x)(√(x + 1) + √x) = 1`. -/
 theorem sqrt_succ_sub_sqrt_le (x : ℝ) (hx : 0 < x) :
     Real.sqrt (x + 1) - Real.sqrt x ≤ 1 / Real.sqrt x := by
   have hs : 0 < Real.sqrt x := Real.sqrt_pos.mpr hx
@@ -219,10 +221,13 @@ theorem sqrt_succ_sub_sqrt_le (x : ℝ) (hx : 0 < x) :
   rw [le_div_iff₀ hs]
   exact hkey
 
+/-- `Real.sqrt` of the natural numbers tends to infinity. -/
 theorem tendsto_sqrt_natCast_atTop :
     Tendsto (fun k : ℕ => Real.sqrt (k : ℝ)) atTop atTop :=
   Real.tendsto_sqrt_atTop.comp tendsto_natCast_atTop_atTop
 
+/-- The increments `√(k + 1) - √k` tend to zero, squeezed between `0` and `1 / √k` via
+`sqrt_succ_sub_sqrt_le`. -/
 theorem tendsto_sqrt_succ_sub_sqrt :
     Tendsto (fun k : ℕ => Real.sqrt ((k : ℝ) + 1) - Real.sqrt (k : ℝ)) atTop (𝓝 0) := by
   have hinv : Tendsto (fun k : ℕ => 1 / Real.sqrt (k : ℝ)) atTop (𝓝 0) :=
@@ -239,13 +244,16 @@ theorem tendsto_sqrt_succ_sub_sqrt :
 `t₀` from which the mean lower bound holds. -/
 noncomputable def scaleTime (t₀ k : ℕ) : ℕ := t₀ + ⌈Real.exp (Real.sqrt k)⌉₊
 
+/-- `scaleTime t₀ k` is at least `t₀`, since it adds a nonnegative ceiling term to `t₀`. -/
 theorem le_scaleTime (t₀ k : ℕ) : t₀ ≤ scaleTime t₀ k := Nat.le_add_right _ _
 
+/-- `scaleTime t₀ k` is at least one, since `⌈exp (√k)⌉₊` is strictly positive. -/
 theorem one_le_scaleTime (t₀ k : ℕ) : 1 ≤ scaleTime t₀ k := by
   have h : 0 < ⌈Real.exp (Real.sqrt (k : ℝ))⌉₊ := Nat.ceil_pos.mpr (Real.exp_pos _)
   rw [scaleTime]
   omega
 
+/-- `exp (√k)` is at most `scaleTime t₀ k`, from `Nat.le_ceil` together with `t₀ ≥ 0`. -/
 theorem exp_sqrt_le_scaleTime (t₀ k : ℕ) :
     Real.exp (Real.sqrt (k : ℝ)) ≤ (scaleTime t₀ k : ℝ) := by
   have h := Nat.le_ceil (Real.exp (Real.sqrt (k : ℝ)))
@@ -254,6 +262,7 @@ theorem exp_sqrt_le_scaleTime (t₀ k : ℕ) :
   push_cast
   linarith
 
+/-- `√k` is at most `log (scaleTime t₀ k)`, taking logarithms of `exp_sqrt_le_scaleTime`. -/
 theorem sqrt_le_log_scaleTime (t₀ k : ℕ) :
     Real.sqrt (k : ℝ) ≤ Real.log (scaleTime t₀ k : ℝ) := by
   have h := exp_sqrt_le_scaleTime t₀ k
@@ -261,10 +270,14 @@ theorem sqrt_le_log_scaleTime (t₀ k : ℕ) :
   calc Real.sqrt (k : ℝ) = Real.log (Real.exp (Real.sqrt (k : ℝ))) := (Real.log_exp _).symm
     _ ≤ Real.log (scaleTime t₀ k : ℝ) := Real.log_le_log hpos h
 
+/-- `exp (√k)` tends to infinity, as `Real.exp` composed with `√·` tending to infinity on the
+naturals. -/
 theorem tendsto_exp_sqrt_natCast_atTop :
     Tendsto (fun k : ℕ => Real.exp (Real.sqrt (k : ℝ))) atTop atTop :=
   Real.tendsto_exp_atTop.comp tendsto_sqrt_natCast_atTop
 
+/-- `scaleTime t₀` tends to infinity, since it is bounded below by `exp (√k)`
+(`exp_sqrt_le_scaleTime`), which itself tends to infinity. -/
 theorem tendsto_scaleTime (t₀ : ℕ) : Tendsto (scaleTime t₀) atTop atTop := by
   refine tendsto_atTop.2 fun b => ?_
   filter_upwards [tendsto_exp_sqrt_natCast_atTop.eventually_ge_atTop ((b : ℝ))] with k hk
@@ -314,6 +327,8 @@ theorem scaleTime_ratio (t₀ : ℕ) {δ : ℝ} (hδ : 0 < δ) :
 
 /-! ### Summability of the stretched-exponential tail -/
 
+/-- The stretched-exponential tail `exp (-(α k ^ p))` is summable for any `α, p > 0`, by
+comparison with `1 / k ^ 2` past an index where `log k = o(k ^ p)` forces `2 log k ≤ α k ^ p`. -/
 theorem summable_exp_neg_rpow {α p : ℝ} (hα : 0 < α) (hp : 0 < p) :
     Summable (fun k : ℕ => Real.exp (-(α * (k : ℝ) ^ p))) := by
   obtain ⟨N₀, hN₀⟩ := (_root_.isLittleO_log_rpow_atTop hp).def (show (0 : ℝ) < α / 2 by positivity)
@@ -424,6 +439,8 @@ theorem tendsto_ratio_of_scales {u m : ℕ → ℝ} {n : ℕ → ℕ}
 
 /-! ### The mean odometer along the scales -/
 
+/-- The mean of `odometerOf` at the origin is monotone in `t`, from the pointwise monotonicity
+`odometerOf_le_succ`. -/
 theorem meanOdometerOf_mono (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) :
     Monotone fun t : ℕ => ∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν) :=
@@ -431,17 +448,22 @@ theorem meanOdometerOf_mono (ν : Measure ℝ) [IsProbabilityMeasure ν]
     integral_mono (integrable_odometerOf d ν hpos n 0)
       (integrable_odometerOf d ν hpos (n + 1) 0) fun ζ => odometerOf_le_succ ζ n 0
 
+/-- `meanOdometer` is monotone in `t`, transported from `meanOdometerOf_mono` via
+`meanOdometer_eq`. -/
 theorem meanOdometer_mono (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) :
     Monotone fun t : ℕ => meanOdometer (centeredMassLaw d ν) t := by
   simp only [meanOdometer_eq d ν hd]
   exact meanOdometerOf_mono ν hpos
 
+/-- The mean odometer vanishes at time zero. -/
 theorem meanOdometer_zero (d : ℕ) (ν : Measure ℝ) :
     meanOdometer (centeredMassLaw d ν) 0 = 0 := by
   rw [meanOdometer]
   simp [Sandpile.odometer]
 
+/-- `meanOdometer` is concave: its increments over `t` are nonincreasing, transported from
+`meanOdometerOf_concave` via `meanOdometer_eq`. -/
 theorem meanOdometer_concave (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0)
     (hpos : Integrable (fun z => max z 0) ν) (t : ℕ) :

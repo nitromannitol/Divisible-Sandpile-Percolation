@@ -1,34 +1,35 @@
-/-
+import Sandpile.Support.ExplBallGap
+
+/-!
+# The cube-killed Brownian stopping value
+
 The cube-killed Brownian stopping value `𝒰_{Z,□}` of `rem:dlt4-killed-scaling`
 (`sandpile.tex:1929-1950`).
 
 The remark reads: "Let `𝒰_{Z,□}(T,u)` be the Brownian stopping value from
-`eq:continuum-membrane-stopping-value`, with stopping rules killed on exiting the
-cube `u+[-1,1]^d`."  That value is defined here in exactly the shape of
-`Sandpile.Continuum.brownianDiscountBall` and `brownianValueBall`, with the
-Euclidean ball condition `‖B_s - u‖ ≤ A` replaced by the cube condition
-`∀ i, |B_s(i) - u(i)| ≤ L`; the remark's cube is the case `L = 1`, since
-`u+[-1,1]^d` is the set of points whose coordinates differ from those of `u` by at
-most one.
+`eq:continuum-membrane-stopping-value`, with stopping rules killed on exiting the cube
+`u+[-1,1]^d`." That value is defined here in exactly the shape of
+`Sandpile.Continuum.brownianDiscountBall` and `brownianValueBall`, with the Euclidean ball
+condition `‖B_s - u‖ ≤ A` replaced by the cube condition `∀ i, |B_s(i) - u(i)| ≤ L`; the remark's
+cube is the case `L = 1`, since `u+[-1,1]^d` is the set of points whose coordinates differ from
+those of `u` by at most one.
 
-The remark's own inequality `𝒰_{Z,□}(T,u) ≥ 𝒰_{Z,1}(T,u)`, "since the Euclidean
-unit ball is contained in this cube", is `brownianValueBall_le_brownianValueCube`:
-a coordinate of a vector is bounded by its Euclidean norm, so a stopping rule that
-has not left the ball of radius `A` has not left the cube of half-width `L` as soon
-as `A ≤ L`, and the attainable set of the ball value is a subset of the attainable
-set of the cube value.  That statement asks the payoffs of the unrestricted family to be
-bounded above; `brownianValueBall_le_brownianValueCube_of_bddAbove_cube` asks only that the
-cube payoffs be, which is what a continuous reward provides.
+The remark's own inequality `𝒰_{Z,□}(T,u) ≥ 𝒰_{Z,1}(T,u)`, "since the Euclidean unit ball is
+contained in this cube", is `brownianValueBall_le_brownianValueCube`: a coordinate of a vector is
+bounded by its Euclidean norm, so a stopping rule that has not left the ball of radius `A` has not
+left the cube of half-width `L` as soon as `A ≤ L`, and the attainable set of the ball value is a
+subset of the attainable set of the cube value. That statement asks the payoffs of the
+unrestricted family to be bounded above; `brownianValueBall_le_brownianValueCube_of_bddAbove_cube`
+asks only that the cube payoffs be, which is what a continuous reward provides.
 
 The cube value is positively homogeneous in the reward (`brownianValueCube_const_mul`); with the
 identification of the potential of variance `v` as `√v` times the potential of unit variance,
 that is the remark's sentence that the limit for a scenery law of variance `ν²` is `ν` times the
 value for unit-variance scenery.
 
-No node of the ledger is registered for the remark; these are the objects its
-coupling will be stated with.
+No node of the ledger is registered for the remark; these are the objects its coupling will be
+stated with.
 -/
-import Sandpile.Support.ExplBallGap
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -57,10 +58,12 @@ noncomputable def brownianValueCube (B : ℝ≥0 → ΩB → Space d) (P : Measu
     (h : ℝ → Space d → ℝ) (T L : ℝ) (u : Space d) : ℝ :=
   h T u + brownianDiscountCube B P h T L u
 
+/-- `brownianDiscountCube` unfolds to the supremum of `cubeStoppingPayoffs`. -/
 theorem brownianDiscountCube_eq_sSup (B : ℝ≥0 → ΩB → Space d) (P : Measure ΩB)
     (h : ℝ → Space d → ℝ) (T L : ℝ) (u : Space d) :
     brownianDiscountCube B P h T L u = sSup (cubeStoppingPayoffs B P h T L u) := rfl
 
+/-- `brownianValueCube` unfolds to `h T u` plus the cube-killed discount. -/
 theorem brownianValueCube_eq (B : ℝ≥0 → ΩB → Space d) (P : Measure ΩB)
     (h : ℝ → Space d → ℝ) (T L : ℝ) (u : Space d) :
     brownianValueCube B P h T L u = h T u + brownianDiscountCube B P h T L u := rfl

@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.LimUnconditional
+import Sandpile.Support.LimScaleZeroOne
+import Sandpile.Support.LimValueApproximation
+import Sandpile.External.GaussianLawCovarianceProved
+import Sandpile.Frozen.LimitingOdometerCrossing
+
+/-!
+# Reducing the crossing theorem to the ball-stopped approximation
+
 `thm:limiting-odometer-crossing` (`sandpile.tex:2515-2530`) from the ball-stopped
 approximation alone.
 
@@ -7,18 +15,14 @@ Step 1 of the theorem is the almost-sure crossing at every small rational scale,
 Step 2 replaces the infinite-horizon ball fields by the finite-horizon payoffs of the rules
 that stop the Brownian motion at the exit from a ball, which is
 `Sandpile.Support.LocalizedValueApproximation`, and that follows from
-`Sandpile.Support.BallStoppedApproximation` by `localizedValueApproximation_of_ballStoppedApproximation`.
+`Sandpile.Support.BallStoppedApproximation` by
+`localizedValueApproximation_of_ballStoppedApproximation`.
 The Gaussian law is determined by its covariance, proved in
 `Sandpile/External/GaussianLawCovarianceProved.lean`.
 
 So the whole theorem rests on `BallStoppedApproximation d` and nothing else: that is the
 content of the theorem below, whose conclusion is the conclusion of the frozen node, verbatim.
 -/
-import Sandpile.Support.LimUnconditional
-import Sandpile.Support.LimScaleZeroOne
-import Sandpile.Support.LimValueApproximation
-import Sandpile.External.GaussianLawCovarianceProved
-import Sandpile.Frozen.LimitingOdometerCrossing
 
 open MeasureTheory ProbabilityTheory Filter
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings

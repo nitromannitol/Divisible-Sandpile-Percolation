@@ -1,4 +1,13 @@
-/-
+import Sandpile.Support.ContInterpSpace
+import Sandpile.Support.ContHeatPotential
+import Sandpile.Support.ContGreenIncrementSum
+import Sandpile.Support.ContPairedGradient
+import Sandpile.Support.ContInterpBound
+import LatticeProb.Support.ContSums
+
+/-!
+# `ℓ²` Bound on the Coefficient-Vector Increment
+
 The `ℓ²` norm of the increment of the coefficient vector of the interpolated
 rescaled field `Z_R^{\rm lin}`, at two arbitrary points of `[0,∞) × ℝ^d`.
 
@@ -23,12 +32,6 @@ index, so the first three lemmas here restate the space modulus with the bound
 asked only at time indices at most `N`, which is all the interpolation at a time
 `r` with `⌊R^2 r⌋ + 1 ≤ N` ever reads.
 -/
-import Sandpile.Support.ContInterpSpace
-import Sandpile.Support.ContHeatPotential
-import Sandpile.Support.ContGreenIncrementSum
-import Sandpile.Support.ContPairedGradient
-import Sandpile.Support.ContInterpBound
-import LatticeProb.Support.ContSums
 
 open LatticeProb
 
@@ -170,7 +173,8 @@ theorem exists_tsum_heatKernel_sq_le (hHK : Sandpile.External.HeatKernelBounds) 
     have hn0 : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
     have hexp : Real.exp (-c * Sandpile.External.latticeDist x z ^ 2 / (n : ℝ)) ≤ 1 := by
       refine Real.exp_le_one_iff.mpr ?_
-      have hnum : -c * Sandpile.External.latticeDist x z ^ 2 ≤ 0 := by nlinarith [sq_nonneg (Sandpile.External.latticeDist x z)]
+      have hnum : -c * Sandpile.External.latticeDist x z ^ 2 ≤ 0 := by
+        nlinarith [sq_nonneg (Sandpile.External.latticeDist x z)]
       exact div_nonpos_of_nonpos_of_nonneg hnum hn0.le
     have hpos : (0 : ℝ) ≤ C * (n : ℝ) ^ (-(d : ℝ) / 2) := by positivity
     have hb : Sandpile.heatKernel d n x z ≤ C * (n : ℝ) ^ (-(d : ℝ) / 2) := by
@@ -202,7 +206,8 @@ theorem linInterp_coeffDiff_sub (R r r' : ℝ) (w w' : Sandpile.Continuum.Space 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /-- **Cauchy-Schwarz for the mesh increment.**  For a scenery supported in `s`,
-the increment of the mesh value between two mesh points is at most the `ℓ²` increment of the Green kernels times the `ℓ²` norm of the scenery. -/
+the increment of the mesh value between two mesh points is at most the `ℓ²`
+increment of the Green kernels times the `ℓ²` norm of the scenery. -/
 theorem abs_meshValue_sub_le_cauchy (R : ℝ) (a : Site d → ℝ) {s : Finset (Site d)}
     (ha : ∀ z ∉ s, a z = 0) (k k' : ℕ) (z z' : Site d) :
     |meshValue d R a k' z' - meshValue d R a k z|

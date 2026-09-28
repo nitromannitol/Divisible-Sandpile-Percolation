@@ -1,4 +1,9 @@
-/-
+import Sandpile.Law
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.Support.RefinedIncrement
+
+/-! # Refined High-Dimensional Height Upper Tail
+
 Theorem (Refined high-dimensional upper bound) of sandpile.tex, frozen.
 `sandpile.tex:4528-4539` (label `thm:dgt4-height-upper-tail`):
 
@@ -23,9 +28,6 @@ and not on `t`.  The threshold `t ≥ 2` is the paper's, and it keeps
 `Real.log t` positive, so the junk value `Real.log 0 = Real.log 1 = 0` cannot
 make the bound trivial.
 -/
-import Sandpile.Law
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.RefinedIncrement
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

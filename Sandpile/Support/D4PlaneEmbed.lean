@@ -1,10 +1,17 @@
-/-
+import Sandpile.Support.PercolationEvents
+
+/-!
+# The coordinate plane embedding into `ℤ⁴`
+
 The coordinate plane `Π = ℤ² × {0}² ⊂ ℤ⁴` of `eq:d4-coordinate-plane`
 (`sandpile.tex:3432-3434`), presented as an embedding of `ℤ²`, together with
 the transfer of an infinite nearest-neighbour component of the plane to one of
-the ambient lattice.
+the ambient lattice. The embedding `planeEmbed` is shown injective (`planeEmbed_injective`),
+compatible with the standard basis vectors (`planeEmbed_add_unit`), and a graph homomorphism of
+the nearest-neighbour lattices (`planeEmbedHom`, from `planeEmbed_adj`); the last fact is used
+in `hasInfiniteComponent_planeEmbed` to transport an infinite nearest-neighbour component of the
+embedded plane to one of `ℤ⁴`.
 -/
-import Sandpile.Support.PercolationEvents
 
 namespace Sandpile
 
@@ -13,22 +20,32 @@ presented as the embedding of `ℤ²` that sends `(z₀, z₁)` to `(z₀, z₁,
 def planeEmbed (z : Sandpile.Site 2) : Sandpile.Site 4 :=
   fun i => if h : (i : ℕ) < 2 then z ⟨(i : ℕ), h⟩ else 0
 
+/-- On a coordinate `i < 2`, the plane embedding just copies the corresponding coordinate of
+`z`, unfolding the `dif_pos` branch of `planeEmbed`. -/
 lemma planeEmbed_apply_lt (z : Site 2) (i : Fin 4) (hi : (i : ℕ) < 2) :
     planeEmbed z i = z ⟨(i : ℕ), hi⟩ := by
   simp [planeEmbed, hi]
 
+/-- On a coordinate `i ≥ 2`, the plane embedding pads with zero, unfolding the `dif_neg` branch
+of `planeEmbed`. -/
 lemma planeEmbed_apply_ge (z : Site 2) (i : Fin 4) (hi : ¬ (i : ℕ) < 2) :
     planeEmbed z i = 0 := by
   simp [planeEmbed, hi]
 
+/-- The `0`-th coordinate of `planeEmbed v` is `v 0`. -/
 lemma planeEmbed_zero (v : Site 2) : planeEmbed v 0 = v 0 := rfl
 
+/-- The `1`-st coordinate of `planeEmbed v` is `v 1`. -/
 lemma planeEmbed_one (v : Site 2) : planeEmbed v 1 = v 1 := rfl
 
+/-- The `2`-nd coordinate of `planeEmbed v` is `0`, padding beyond the plane. -/
 lemma planeEmbed_two (v : Site 2) : planeEmbed v 2 = 0 := rfl
 
+/-- The `3`-rd coordinate of `planeEmbed v` is `0`, padding beyond the plane. -/
 lemma planeEmbed_three (v : Site 2) : planeEmbed v 3 = 0 := rfl
 
+/-- The plane embedding `planeEmbed` is injective: `z` is recovered from `planeEmbed z` by
+reading off its first two coordinates, which is exactly `z`. -/
 lemma planeEmbed_injective : Function.Injective planeEmbed := by
   intro z w h
   funext i
@@ -37,6 +54,8 @@ lemma planeEmbed_injective : Function.Injective planeEmbed := by
   simp only [planeEmbed, hi, dif_pos] at hh
   simpa using hh
 
+/-- The plane embedding sends translation by a standard basis vector `unit i` of `ℤ²` to
+translation by the corresponding basis vector of `ℤ⁴`, matched up by `i ↦ ⟨i, _⟩ : Fin 4`. -/
 lemma planeEmbed_add_unit (z : Site 2) (i : Fin 2) :
     planeEmbed (z + unit i) =
       planeEmbed z + unit (⟨(i : ℕ), by have := i.isLt; omega⟩ : Fin 4) := by

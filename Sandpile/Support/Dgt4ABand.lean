@@ -1,26 +1,20 @@
-/-
-Step 2 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:6051-6275`): the
-estimates for `P(u_n(0)=0)` and the comparison with the threshold event,
-uniformly for `δ R_k^2 ≤ n ≤ T R_k^2`.
-
-The paper's Step 2 produces two limits, `eq:dgt4-band-contact-rate` and
-`eq:dgt4-band-contact-comparison`, each a supremum over the band
-`δ R_k^2 ≤ n ≤ T R_k^2` tending to zero.  The band exponents `ϑ_k` vary with the
-index, so `κ_k = 1 + 1/ϑ_k` moves with the scale: the two limits are read along a
-SEQUENCE of scales `R_k`, against a sequence of exponents, and that is the form
-`uniformContactThresholdsAlong_of_band` consumes.  Both predicates below are
-stated that way.  The paper's fixed-`κ` reading is recovered at a constant
-exponent sequence by `bandContactRate_const` and `bandContactComparison_const`.
-
-The Step-2 output consumed by Step 3 is the uniform contact-threshold estimate
-`eq:dgt4-uniform-contact-thresholds`, whose index range is `⌈ε n_R⌉ ≤ m ≤ n_R`.
-`uniformContactThresholds_of_band` performs the passage between the two index
-ranges at a fixed real scale, which is the sentence at `sandpile.tex:6305`:
-"with `δ = ε T/2`".
--/
 import Sandpile.Support.ManyLStep3
 import Sandpile.Support.Dgt4ABandLaw
 import Sandpile.Support.Dgt4ABandIndex
+
+/-!
+# The band contact-rate and contact-comparison estimates
+
+Two limits over the band `δ R_k^2 ≤ n ≤ ⌊R_k^2 T⌋`: the contact rate `BandContactRate`, comparing
+the threshold probability at the level `E u_{n-1}(0)` against `G(0,0)κ_k/n`, and the contact
+comparison `BandContactComparison`, comparing the contact event `{u_n(0) = 0}` against the
+threshold event. Both are stated along a sequence of scales `R_k` against a sequence of
+exponents `κ_k`, since the band exponents vary with the index; the constant-exponent readings are
+recovered by `bandContactRate_const` and `bandContactComparison_const`. Finally
+`uniformContactThresholds_of_band` passes from the two band limits at a fixed real scale to the
+uniform contact-threshold estimate `UniformContactThresholds` on the index range
+`⌈ε n_R⌉ ≤ m ≤ n_R`, taking `δ = εT/2`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

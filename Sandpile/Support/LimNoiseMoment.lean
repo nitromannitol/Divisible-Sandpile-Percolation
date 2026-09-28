@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MeanAGauss
+
+/-!
+# Absolute moments of a white-noise pairing increment
+
 The absolute moments of an increment of a white-noise pairing.
 
 `MeanAGauss.lean` computes the absolute moments of an increment of the Gaussian heat
@@ -10,7 +14,6 @@ square integrable kernels: the law of `W f − W g` is the centred Gaussian of v
 on `p`.  This is what turns an `L²` modulus of the kernels into a `p`-th moment modulus
 of the field.
 -/
-import Sandpile.Support.MeanAGauss
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

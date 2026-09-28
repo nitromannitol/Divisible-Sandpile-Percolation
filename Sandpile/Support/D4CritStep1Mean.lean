@@ -1,16 +1,23 @@
-/-
-Step 1a of the dimension-four percolation proof assembled
-(`sandpile.tex:4008-4020`): with the localization radius `A_loc` of
-`cor:mean-localization` and the exit horizon `A_ex` chosen once for the whole
-law class, the mean of the localized exit value `Y_R` is at least
-`2 b₀ log R` with `b₀ = c₀/16`, uniformly in the site and in the law.
--/
 import Sandpile.Support.D4CritConstants
 import Sandpile.Support.D4CritLocalize
 import Sandpile.Support.D4CritStep1
 import Sandpile.Support.D4CritExitProb
 import Sandpile.Frozen.CriticalTopplingD4
 import LatticeProb.Prob.SubGaussian
+
+/-!
+# Step 1a of the dimension-four percolation proof
+
+Step 1a of the dimension-four percolation proof assembled
+(`sandpile.tex:4008-4020`): with the localization radius `A_loc` of
+`cor:mean-localization` and the exit horizon `A_ex` chosen once for the whole
+law class, the mean of the localized exit value `Y_R` is at least
+`2 b₀ log R` with `b₀ = c₀/16`, uniformly in the site and in the law. The single theorem
+`exists_step1_mean` assembles the critical toppling estimate `critical_toppling_d4`, the uniform
+localized mean lower bound `uniform_localized_mean_lower_thresh`, and the exit-probability
+estimate `exists_exit_prob_cube` through the arithmetic step `exit_value_tail_arith` into this
+uniform lower bound on the exit-value mean.
+-/
 
 open LatticeProb
 

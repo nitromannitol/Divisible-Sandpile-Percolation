@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinTestedGreen
+
+/-! # A discrete Young's inequality for the coefficient replacement
+
 `eq:dgt4-linear-coefficient-replacement` (`sandpile.tex:5831-5841`) as an
 inequality about coefficient arrays.
 
@@ -10,7 +13,6 @@ square of the `ℓ¹` mass of the difference.  This is where the paper's factor
 `R^{-4}` comes from, through `eq:dgt4-tested-cell-l2`; the `ℓ¹` norm of the
 weights would be too weak.
 -/
-import Sandpile.Support.LinTestedGreen
 
 open Filter Topology
 

@@ -1,17 +1,18 @@
-/-
-A one-point absolute moment bound for the Gaussian heat potential, uniform over
-the whole strip `[0,T] × ℝ^d`: neither the time (as long as it stays in `[0,T]`)
-nor the space point moves the bound.
-
-`Sandpile.Support.gaussianPotential_zero_time` (`MeanAZeroTime.lean`) already
-records that the potential vanishes at `t = 0` at every point.  The one-point
-moment of `Z(t,x)` is therefore the moment of the increment `Z(t,x) - Z(0,x)`,
-which `MeanAGauss.integral_abs_rpow_gaussianPotential_sub` computes exactly, and
-`MeanAIncrement.integral_greenTimeBM_sq_le` bounds the variance of that
-increment uniformly in `x` and in `t ≤ T`.
--/
 import Sandpile.Support.MeanAGauss
 import Sandpile.Support.MeanAZeroTime
+
+/-!
+# A uniform one-point moment bound for the Gaussian heat potential
+
+A one-point absolute moment bound for the Gaussian heat potential, uniform over the whole strip
+`[0, T] × ℝ^d`: neither the time (as long as it stays in `[0, T]`) nor the space point moves the
+bound. `Sandpile.Support.gaussianPotential_zero_time` (`MeanAZeroTime.lean`) already records that
+the potential vanishes at `t = 0` at every point. The one-point moment of `Z(t, x)` is therefore
+the moment of the increment `Z(t, x) - Z(0, x)`, which
+`MeanAGauss.integral_abs_rpow_gaussianPotential_sub` computes exactly, and
+`MeanAIncrement.integral_greenTimeBM_sq_le` bounds the variance of that increment uniformly in
+`x` and in `t ≤ T`.
+-/
 
 open MeasureTheory ProbabilityTheory
 

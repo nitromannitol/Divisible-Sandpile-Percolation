@@ -1,4 +1,16 @@
-/-
+import Sandpile.Continuum.Stopping
+import Sandpile.Support.ContinuumPlanar
+import Sandpile.External.ContinuumRSW
+import Sandpile.External.PittGaussianFKG
+import Sandpile.External.BallOccupationDensity
+import Sandpile.External.GaussianLawCovarianceProved
+import Sandpile.Support.LimUnconditional
+import Sandpile.Support.LimScaleZeroOne
+import Sandpile.Support.LimApproxAssembly
+
+/-!
+# Localized Brownian crossings of the limiting odometer
+
 Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2542-2557`
 (label `thm:limiting-odometer-crossing`):
 
@@ -80,15 +92,6 @@ the RSW theorem of Köhler-Schindler and Tassion at `sandpile.tex:2218`.  By
 standing convention R1 the cited comparison is an explicit hypothesis,
 `Sandpile.External.ContinuumRSW`.
 -/
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ContinuumPlanar
-import Sandpile.External.ContinuumRSW
-import Sandpile.External.PittGaussianFKG
-import Sandpile.External.BallOccupationDensity
-import Sandpile.External.GaussianLawCovarianceProved
-import Sandpile.Support.LimUnconditional
-import Sandpile.Support.LimScaleZeroOne
-import Sandpile.Support.LimApproxAssembly
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

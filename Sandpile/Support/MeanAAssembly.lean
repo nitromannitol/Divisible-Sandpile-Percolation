@@ -1,36 +1,26 @@
-/-
-`cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`) assembled from the two
-statements the paper derives it from: the parabolic scaling limit
-`thm:main-explosion`(i)(b) (`sandpile.tex:217-235`) and the self-similarity and
-uniform exponential moment of `prop:continuum-value-selfsimilar`
-(`sandpile.tex:1961-1980`).
-
-The paper's sentence is "The uniform exponential moment in
-Proposition~\ref{prop:continuum-value-selfsimilar} immediately implies the
-following corollary" (`sandpile.tex:2030-2032`).  The route is the one that
-sentence describes, with one economy: the corollary is stated at every `(T,x)`,
-but the scaling limit is only ever used at `(1,0)`, because the rescaled
-odometer satisfies the parabolic scaling identities
-
-  `E𝒰_R(T,x) = T^{(4-d)/4}E𝒰_{R√T}(1,0)`,  `Var𝒰_R(T,x) = T^{(4-d)/2}Var𝒰_{R√T}(1,0)`
-
-EXACTLY, for every `R ≥ 0` and `T > 0` (`MeanAScale`), and the limit satisfies the
-corresponding identities by the law identity of clause 1 of
-`prop:continuum-value-selfsimilar`.  At `(1,0)` the rescaled odometer IS the
-interpolated field of part (i)(b) read at the point `0`, with no interpolation
-error, since the mesh point of the origin is the origin itself (`MeanAInterp`).
-So the two limits at a general `(T,x)` follow from the two limits at `(1,0)`
-without any modulus-of-continuity argument.
-
-The positivity of the limiting variance is `MeanAPosVar`, and the positivity of
-the limiting mean follows from it and the nonnegativity of the value.
--/
 import Sandpile.Support.MeanALimit
 import Sandpile.Support.MeanAPosVar
 import Sandpile.Support.MeanAInterp
 import Sandpile.Support.MeanAScale
 import Sandpile.Support.ContValueMemLp
 import Sandpile.Support.ContLawTransfer
+
+/-!
+# Assembling `cor:dlt4-mean-asymptotic` from the scaling limit and self-similarity
+
+`cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`) assembled from the two statements the
+paper derives it from: the parabolic scaling limit `thm:main-explosion`(i)(b) and the
+self-similarity and uniform exponential moment of `prop:continuum-value-selfsimilar`. The
+corollary is stated at every `(T,x)`, but the scaling limit is only ever used at `(1,0)`,
+because the rescaled odometer satisfies the parabolic scaling identities
+`E𝒰_R(T,x) = T^{(4-d)/4}E𝒰_{R√T}(1,0)` and `Var𝒰_R(T,x) = T^{(4-d)/2}Var𝒰_{R√T}(1,0)` exactly
+(`MeanAScale`), and the limit satisfies the corresponding identities by the law identity of
+`prop:continuum-value-selfsimilar`. At `(1,0)` the rescaled odometer is the interpolated field
+of part (i)(b) read at the origin with no interpolation error (`MeanAInterp`), so the two
+limits at a general `(T,x)` follow from the two limits at `(1,0)`. The positivity of the
+limiting variance is `MeanAPosVar`, and the positivity of the limiting mean follows from it and
+the nonnegativity of the value.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

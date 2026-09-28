@@ -1,5 +1,17 @@
 import Mathlib
 
+/-!
+# The first scale-separation bound
+
+For `R ≥ 2` and `α > 2`, with `t_R = ⌊R^α⌋₊` and `n_R = ⌊R √t_R⌋₊`, this module proves
+`scale_sep_first_bound`: `R^2 (1 + log log t_R) / n_R ≤ 4 (1 + log log t_R) / R^(α/2 - 1)`,
+up to the explicit constant `4`. The proof turns on two `rpow`/floor comparisons: `n_R` is
+sandwiched between `R^(α/2+1)/4` and `2 R^(α/2+1)` by combining `R √t_R ≤ R^(α/2+1)`
+(`Nat.floor_le`, using `t_R ≤ R^α`) with the reverse bound `R^(α/2) ≤ √t_R + 1`
+(from `t_R + 1 > R^α`), and the target inequality is then just `R^2 · R^(α/2-1) = R^(α/2+1)`
+(`Real.rpow_add`) rearranged against those bounds, with `1 + log log t_R ≥ 0` supplied by a
+crude lower bound `t_R ≥ 4 > e`.
+-/
 
 open Real
 
@@ -142,9 +154,11 @@ theorem scale_sep_first_bound (α : ℝ) (hα : 2 < α) (R : ℝ) (hR : 2 ≤ R)
           rw [hC] at hD4
           linarith
         have hE : R * Real.sqrt (⌊R ^ α⌋₊ : ℝ) + R
-            ≤ (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1 + ((⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1) := by
+            ≤ (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1 +
+              ((⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1) := by
           have hF : R ≤ (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1 := hRb
-          have hG : R * Real.sqrt (⌊R ^ α⌋₊ : ℝ) ≤ (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1 := hNlow
+          have hG : R * Real.sqrt (⌊R ^ α⌋₊ : ℝ) ≤
+              (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) + 1 := hNlow
           linarith
         have hH : R ^ (α / 2 + 1) ≤ R * Real.sqrt (⌊R ^ α⌋₊ : ℝ) + R := by
           rw [hA]
@@ -152,10 +166,13 @@ theorem scale_sep_first_bound (α : ℝ) (hα : 2 < α) (R : ℝ) (hR : 2 ≤ R)
         have hI : (1:ℝ) ≤ (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) := hn
         linarith
       have hJ : (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) * R ^ (α / 2 + 1)
-          ≤ (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) * (4 * (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ)) :=
+          ≤ (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) *
+              (4 * (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ)) :=
         mul_le_mul_of_nonneg_left hchain hL
-      have hK : (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) * (4 * (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ))
-          = 4 * (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) * (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) := by ring
+      have hK : (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) *
+          (4 * (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ))
+        = 4 * (1 + Real.log (Real.log (⌊R ^ α⌋₊ : ℝ))) *
+            (⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ : ℝ) := by ring
       rw [hK] at hJ
       exact hJ
     exact h13

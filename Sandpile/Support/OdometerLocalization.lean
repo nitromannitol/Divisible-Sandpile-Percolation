@@ -1,8 +1,16 @@
-/-
-Conditional odometer localization from the Green tail outside a box.
--/
 import Sandpile.Support.GreenSceneryTail
 import Sandpile.Support.PinnedConcentration
+
+/-!
+# Conditional odometer localization from the Green tail outside a box
+
+Conditional odometer localization from the Green tail outside a box. The Green-time tail
+bounds of `External.GreenBoundsHigh` outside a ball of radius `r` are transported to give
+`exists_greenTime_outside_box_bounds`, a uniform pointwise and squared-sum bound on the Green
+time outside the box; feeding this into the general conditional concentration inequality
+`conditional_finite_concentration` gives `odometer_condExp_tail`, concentration of the odometer
+about its conditional expectation given the values on any set containing the box.
+-/
 
 open LatticeProb
 
@@ -13,6 +21,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The ℓ^∞ box distance `boxDist y x` is bounded by the Euclidean `External.latticeNorm (y - x)`,
+since each coordinate difference is at most the Euclidean norm of the whole vector. -/
 lemma boxDist_cast_le_latticeNorm_sub [NeZero d] (y x : Site d) :
     (boxDist y x : ℝ) ≤ External.latticeNorm (y - x) := by
   have hcoord (i : Fin d) : |(((y - x) i : ℤ) : ℝ)| ≤ External.latticeNorm (y - x) := by
@@ -26,6 +36,8 @@ lemma boxDist_cast_le_latticeNorm_sub [NeZero d] (y x : Site d) :
   rw [hi, ← Int.cast_natCast, Int.natCast_natAbs, Int.cast_abs]
   exact hcoord i
 
+/-- The origin-based bound `greenTime_le_green` shifted to base point `x`, via the translation
+invariance `greenTime_add_right` of `greenTime`. -/
 lemma greenTime_le_green_shift (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
     (t : ℕ) (x y : Site d) : greenTime d t x y ≤ green d 0 (y - x) := by
   have he : greenTime d t x y = greenTime d t 0 (y - x) := by
@@ -34,6 +46,11 @@ lemma greenTime_le_green_shift (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
   rw [he]
   exact greenTime_le_green hGH hd t (y - x)
 
+/-- **Uniform Green-time tail bounds outside a box.** For `r ≥ 1`, both the pointwise bound
+`greenTime d t x y ≤ C r^{2-d}` at every `y` with `boxDist y x > r`, and the squared-sum bound
+`∑ greenTime d t x y ^ 2 ≤ C r^{4-d}` over any finite set restricted to such `y`, uniformly in
+`t` and `x`; obtained from `External.GreenBoundsHigh`'s origin tail bounds transported by
+`greenTime_le_green_shift` and `boxDist_cast_le_latticeNorm_sub`. -/
 lemma exists_greenTime_outside_box_bounds (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d) :
     ∃ C : ℝ, 0 < C ∧ ∀ r : ℝ, 1 ≤ r → ∀ (t : ℕ) (x : Site d),
       (∀ y : Site d, r < (boxDist y x : ℝ) →
@@ -85,6 +102,11 @@ lemma exists_greenTime_outside_box_bounds (hGH : External.GreenBoundsHigh) (hd :
       _ ≤ C * (N : ℝ) ^ (4 - (d : ℝ)) := (htail N hN).2.1
       _ ≤ C * r ^ (4 - (d : ℝ)) := mul_le_mul_of_nonneg_left hpow4 hC.le
 
+/-- **Conditional concentration of the odometer about its conditional mean.** For any set `S`
+containing the ball of radius `r ≥ 1` around `x`, the odometer at `x` concentrates about its
+conditional expectation given the values on `S`, with a two-scale exponential tail governed by
+`r` via the outside-box Green tail bounds of `exists_greenTime_outside_box_bounds` fed into the
+general inequality `conditional_finite_concentration`. -/
 lemma odometer_condExp_tail (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
     (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c : ℝ, 0 < c ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →

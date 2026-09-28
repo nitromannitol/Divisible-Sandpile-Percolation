@@ -1,10 +1,16 @@
-/-
-The pointwise bound of the summed profile of Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6223-6250`): the arithmetic core `abs_div_sub_le_of_sum_bound`
-applied to the summed increment bound `abs_sub_sum_le_of_increments`.
--/
 import Sandpile.Support.Dgt4ABandArith
 import Sandpile.Support.Dgt4ABandSumBound
+
+/-!
+# The pointwise profile bound of Step 2
+
+The pointwise bound of the summed profile of Step 2 of `thm:dgt4-many-limits`
+(`sandpile.tex:6223-6250`): the arithmetic core `abs_div_sub_le_of_sum_bound` applied to the
+summed increment bound `abs_sub_sum_le_of_increments` gives `abs_profile_le_of_increments`.
+`abs_profile_le_of_increments_offset` is the version started at an offset `s`, needed because
+the paper sums the one-step profile from the hitting time `τ_k`, where the profile is `O(1)`,
+so the index at which the profile is read is within `1 + τ_k` of `t R_k^2`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

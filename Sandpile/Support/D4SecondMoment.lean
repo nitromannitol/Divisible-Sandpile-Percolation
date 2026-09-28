@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D4PointwiseTail
+import Sandpile.Support.D4SubGaussianMoment
+
+/-!
+# Second Moment of the Dimension-Four Linearization Error
+
 The second moment of the linearization error in dimension four, the estimate
 Step 2 of `prop:d4-superdiffusive-limit` opens with (`sandpile.tex:3372`):
 
@@ -6,16 +11,14 @@ Step 2 of `prop:d4-superdiffusive-limit` opens with (`sandpile.tex:3372`):
 
 The input is the concentration bound of `prop:d4-pointwise-linearization`,
 `P(|E_t(x)| > λ) ≤ C exp(-c min(λ²/ℓ, λ))` with `ℓ := 1 + log log t`, which is
-uniform in `x`.  Integrating it over the level with the Gaussian branch below
+uniform in `x`. Integrating it over the level with the Gaussian branch below
 the crossover `λ = ℓ` gives a bound LINEAR in `ℓ`; the exponential branch alone
-would give `ℓ²`, a whole logarithm too weak.  That integration is
+would give `ℓ²`, a whole logarithm too weak. That integration is
 `exists_square_bound_of_subgaussian_tail`.
 
 The threshold `3 ≤ t` is what makes `ℓ ≥ 1`: it is `1 ≤ log t`, which needs
 `e ≤ t`.
 -/
-import Sandpile.Support.D4PointwiseTail
-import Sandpile.Support.D4SubGaussianMoment
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

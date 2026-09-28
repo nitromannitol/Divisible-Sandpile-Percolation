@@ -1,18 +1,18 @@
-/-
-Stochastic Fubini for white noise along Bochner-integrable spatial L2 families.
-
-The white-noise linear isometry commutes with the Bochner integral. Its proof
-uses finite simple families and linearity, then continuity in the L1 norm of the
-parameter measure with values in L2. On a probability space Cauchy--Schwarz gives
-L1 <= L2, so any joint version is integrable on the product. Testing the L2
-integral against indicators identifies it with the scalar iterated integral.
-
-The weak jointMeas clause supplies a version equal almost surely at each
-parameter. Replacing that version by the actual evaluations requires actual
-joint measurability; the final corollary states this hypothesis explicitly.
--/
 import LatticeProb.Prob.L2JointVersion
 import Sandpile.Support.LimNoiseCoordinates
+
+/-!
+# Stochastic Fubini for white noise along Bochner-integrable spatial `L²` families
+
+The white-noise linear isometry `whiteNoiseLinearIsometry` commutes with the Bochner integral
+of an integrable `U`-indexed family of `L²` test functions, proved by testing against finite
+simple families and passing to the limit in the `L¹` norm, which Cauchy-Schwarz compares to
+the `L²` norm on a probability space. Any jointly measurable version of the noise agreeing
+almost surely at each parameter with the resulting field is then integrable on the product
+space and satisfies the same integral identity, first when such a joint version is merely
+assumed to exist and finally, in `whiteNoise_integral_comm_of_jointMeasurable`, when the noise
+evaluations themselves are already jointly measurable.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal RealInnerProductSpace InnerProductSpace
@@ -143,7 +143,8 @@ theorem whiteNoise_integral_comm_of_version {Ω U : Type*} [MeasurableSpace Ω] 
 
 universe vΩ vU
 
-/-- White noise commutes with the integral of an L1 family of spatial L2 functions, using a joint version. -/
+/-- White noise commutes with the integral of an `L¹` family of spatial `L²` functions,
+using a joint version. -/
 theorem whiteNoise_integral_comm {Ω : Type vΩ} {U : Type vU}
     [MeasurableSpace Ω] [MeasurableSpace U] {d : ℕ}
     {P : Measure Ω} [IsProbabilityMeasure P] {W : (Space d → ℝ) → Ω → ℝ}
@@ -159,7 +160,11 @@ theorem whiteNoise_integral_comm {Ω : Type vΩ} {U : Type vU}
   have hi := whiteNoise_integral_comm_of_version hW μ f hf hF g hg hgeq
   exact ⟨g, hg, hgeq, hi.1, hi.2⟩
 
-theorem whiteNoise_integral_comm_of_jointMeasurable {Ω U : Type*} [MeasurableSpace Ω] [MeasurableSpace U]
+/-- The Fubini identity `whiteNoise_integral_comm_of_version` specialized to the case where
+the actual evaluations `(u, ω) ↦ W (f u) ω` are already jointly strongly measurable, so no
+separate joint version `g` is needed. -/
+theorem whiteNoise_integral_comm_of_jointMeasurable
+    {Ω U : Type*} [MeasurableSpace Ω] [MeasurableSpace U]
     {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
     (μ : Measure U) [SigmaFinite μ] (f : U → Space d → ℝ)

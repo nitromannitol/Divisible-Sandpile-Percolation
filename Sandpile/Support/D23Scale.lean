@@ -1,11 +1,18 @@
-/-
+import Mathlib
+
+/-!
+# Scale arithmetic for the dimension two/three percolation proof
+
 The scale arithmetic of the dimension-two and dimension-three percolation proof
 (`sandpile.tex:2606-2612`): at time `t` the block scale is
 `R = ⌊√(t/T)⌋`, so the block horizon `⌊R²T⌋` is at most `t`, the block scale is
 as large as required once `t` is large, and `t` is at most `4TR²`, which is what
-makes `R^{2-d/2}` comparable to `t^{(4-d)/4}`.
+makes `R^{2-d/2}` comparable to `t^{(4-d)/4}`. `d23_sq_floor_sqrt_le`,
+`d23_le_floor_sqrt` and `d23_le_four_sq_floor_sqrt` record these three floor-arithmetic facts
+about `R`, `d23_rpow_two_sub_half` rewrites the exponent `R^{2-d/2}` as a power of `R²`, and
+`d23_level_lt` assembles them into the comparison between the block-scale level `cR^{2-d/2}`
+and the time-scale level `c't^{(4-d)/4}`.
 -/
-import Mathlib
 
 noncomputable section
 namespace Sandpile

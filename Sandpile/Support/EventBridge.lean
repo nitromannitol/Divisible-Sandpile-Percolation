@@ -1,15 +1,18 @@
-/-
-The event bridge.
-
-The lower event of the odometer at time `t` is contained in the event that the
-membrane field lies below the same threshold at every earlier time, and that
-event reads only the finitely many sites of a box.  Reading those sites carries
-the i.i.d. law of the scenery to the finite product of the one-site law, which
-is the measure the multivariate Berry-Esseen comparison is stated on.
--/
 import Sandpile.Support.Spectral
 import Sandpile.Support.MembraneStopping
 import Sandpile.Support.SceneryBridge
+
+/-!
+# The event bridge
+
+The lower event of the odometer at time `t` is contained in the event that the
+membrane field lies below the same threshold at every earlier time, and that
+event reads only the finitely many sites of a box. Reading those sites carries
+the i.i.d. law of the scenery to the finite product of the one-site law, which
+is the measure the multivariate Berry-Esseen comparison is stated on.
+`measurable_membrane` and the two `measurableSet_*` lemmas supply the measurability this
+needs, and `measure_odometer_le_pi` is the bridge itself.
+-/
 
 open LatticeProb
 
@@ -19,6 +22,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The membrane field `membrane ζ t x` is measurable in the scenery `ζ`, being a finite sum
+of coordinate projections by `membrane_eq_sum_boxEnum`. -/
 theorem measurable_membrane (t : ℕ) (x : Site d) :
     Measurable fun ζ : Site d → ℝ => membrane ζ t x := by
   have hrep : (fun ζ : Site d → ℝ => membrane ζ t x)
@@ -35,6 +40,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The event that the membrane field at the origin stays below `h` at each of finitely many
+times `ns j` is measurable, as a finite intersection of measurable half-spaces. -/
 theorem measurableSet_membrane_le {m : ℕ} (ns : Fin m → ℕ) (h : ℝ) :
     MeasurableSet {ζ : Site d → ℝ | ∀ j, membrane ζ (ns j) 0 ≤ h} := by
   have : {ζ : Site d → ℝ | ∀ j, membrane ζ (ns j) 0 ≤ h}
@@ -44,6 +51,8 @@ theorem measurableSet_membrane_le {m : ℕ} (ns : Fin m → ℕ) (h : ℝ) :
   exact MeasurableSet.iInter fun j =>
     measurableSet_le (measurable_membrane (ns j) 0) measurable_const
 
+/-- The set of `ξ` satisfying finitely many linear inequalities `∑ i, a i j * ξ i ≤ c j` is
+measurable, as a finite intersection of measurable half-spaces. -/
 theorem measurableSet_linear_le {N m : ℕ} (a : Fin N → Fin m → ℝ) (c : Fin m → ℝ) :
     MeasurableSet {ξ : Fin N → ℝ | ∀ j, ∑ i, a i j * ξ i ≤ c j} := by
   have : {ξ : Fin N → ℝ | ∀ j, ∑ i, a i j * ξ i ≤ c j}
@@ -100,7 +109,8 @@ theorem measure_odometer_le_pi (ν : Measure ℝ) [IsProbabilityMeasure ν] (hd 
         centeredMassLaw_scenery_preimage d ν hd (measurableSet_membrane_le ns h)
     _ = (Measure.pi fun _ : Fin s.card => ν) B := by
         rw [hAB]
-        exact (LatticeProb.measurePreserving_pick _ ν (siteEnum s) (siteEnum_injective s)).measure_preimage
+        exact (LatticeProb.measurePreserving_pick _ ν (siteEnum s)
+            (siteEnum_injective s)).measure_preimage
           (measurableSet_linear_le _ _).nullMeasurableSet
 
 end Sandpile

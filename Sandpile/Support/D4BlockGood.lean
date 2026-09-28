@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D4BlockCrossing
+import Sandpile.Support.RectangleTranspose
+
+/-!
+# The deterministic good-block event in dimension four
+
 The good-block event of the dimension-four percolation argument, in its
 deterministic form: the four crossing values of the block of a coarse site are
 above a level as soon as the low set of the field has no `∗`-connected
@@ -6,8 +11,6 @@ top-bottom crossing of the four translated rectangles of
 `sandpile.tex:3436-3440`.  The two bottom-top clauses are read through the
 reflection of the coordinate plane in the diagonal through the block corner.
 -/
-import Sandpile.Support.D4BlockCrossing
-import Sandpile.Support.RectangleTranspose
 
 noncomputable section
 namespace Sandpile
@@ -17,6 +20,9 @@ namespace Sandpile
 def swapPlaneAbout (x : Site 4) (y : Site 4) : Site 4 :=
   ![x 0 + (y 1 - x 1), x 1 + (y 0 - x 0), y 2, y 3]
 
+/-- `swapPlaneAbout` commutes with translation from `x` up to swapping the two coordinates of
+`v`: reflecting the diagonal-translated point about `x` gives the same result as translating the
+coordinate-swapped `v` from `x`. -/
 lemma swapPlaneAbout_planeTranslate (x : Site 4) (v : Site 2) :
     swapPlaneAbout x (planeTranslate x v) =
       planeTranslate x (permuteSite (Equiv.swap (0 : Fin 2) 1) v) := by

@@ -1,21 +1,20 @@
-/-
-Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2334-2400`) with the exploration
-abstracted away: Pinsker's inequality applied to the adaptive Cameron--Martin tilt of
-`Sandpile/Support/CrossStoppingSet.lean`.
-
-The paper's display `sandpile.tex:2392-2398` is
-  `P_{L/R}(E_R(θ)) - P_0(E_R(θ)) ≤ (L/(2𝔪R))√(𝔼_0 𝒩)`,
-and that is exactly `tilted_cm_level_loss` below with `a = L/(𝔪R)` and `N` a bound for the
-expected number `𝔼_0 𝒩` of revealed coordinates: the left-hand side is the difference of the
-probabilities of the same event under the FULL shift and under the unshifted law, and the
-right-hand side is `|a|/2` times `√N`.
-
-What the crossing proof still has to supply is the exploration itself: a stopping set for
-the cubes, decided by the coordinates it reveals, whose expected size is `O(R^{2-α₁})`, and
-the identification of the fully tilted measure with the law of the shifted white noise.
--/
 import Sandpile.Support.CrossStoppingSet
 import Sandpile.External.Pinsker
+
+/-!
+# Pinsker bound for the adaptive Cameron-Martin tilt
+
+Step 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2334-2400`) with the exploration
+abstracted away: Pinsker's inequality applied to the adaptive Cameron-Martin tilt of
+`Sandpile/Support/CrossStoppingSet.lean`. The paper's display `sandpile.tex:2392-2398`,
+`P_{L/R}(E_R(θ)) - P_0(E_R(θ)) ≤ (L/(2𝔪R))√(𝔼_0 𝒩)`, is exactly `tilted_cm_level_loss` below
+with `a = L/(𝔪R)` and `N` a bound for the expected number `𝔼_0 𝒩` of revealed coordinates: the
+left-hand side is the difference of the probabilities of the same event under the fully
+shifted law and under the unshifted law, and the right-hand side is `|a|/2` times `√N`. What
+the crossing proof still has to supply is the exploration itself: a stopping set for the
+cubes, decided by the coordinates it reveals, whose expected size is `O(R^{2-α₁})`, and the
+identification of the fully tilted measure with the law of the shifted white noise.
+-/
 
 open MeasureTheory ProbabilityTheory
 

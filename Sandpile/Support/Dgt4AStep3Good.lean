@@ -1,20 +1,23 @@
-/-
+import Sandpile.Support.Dgt4AHeightOrder
+import Sandpile.Support.Dgt4ACondTail
+import Sandpile.Support.IncrementBall
+import Sandpile.Support.Dgt4AStep2LipHorizon
+
+/-!
+# Step 3 of case (a): the good event
+
 **The good event of Step 3** (`eq:dgt4-gaussian-positive-off-origin`,
 `sandpile.tex:5184-5197`): the conditional probability that the field `V_\infty+\E u_n(0)`
 fails to be positive somewhere on the punctured box of radius `k_n+1` tends to zero,
 
   `Ck_n^d\exp\{-c(\E u_n(0))^2\}\longrightarrow0` .
 
-`measure_resid_exists_nonpos_le` is the union bound with the explicit constant.  What is
+`measure_resid_exists_nonpos_le` is the union bound with the explicit constant. What is
 added here is the arithmetic that its right-hand side vanishes: the box has
 `(2k+1)^d` sites, the horizon `k_n` is a power of `\log(n+2)`, and the height is at least
 `c\sqrt{\log n}` by `exists_sqrt_log_le_meanOdometer`, so the bound is a power of a
 logarithm against a power of `n`, and `isLittleO_log_rpow_rpow_atTop` settles it.
 -/
-import Sandpile.Support.Dgt4AHeightOrder
-import Sandpile.Support.Dgt4ACondTail
-import Sandpile.Support.IncrementBall
-import Sandpile.Support.Dgt4AStep2LipHorizon
 
 open MeasureTheory ProbabilityTheory Filter Topology Set Asymptotics
 open scoped ENNReal NNReal

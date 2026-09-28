@@ -1,16 +1,20 @@
-/-
-The circuit probability of Step 1 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2213-2235`): the FKG inequality applied to the four sides of a
-circuit, each of which has probability at least `c`.
-
-  "`eq:fixed-scale-zero-crossing` and the FKG inequality give a uniformly
-   positive probability of a `{𝒳₁ ≥ 0}` circuit in every annulus."
-
-The four sides are the crossing events of the four rectangles of the annulus;
-they are increasing events of the field, so FKG bounds the probability of their
-intersection below by the product of their probabilities.
--/
 import Sandpile.Support.CrossFKG
+
+/-!
+# The FKG circuit probability of Step 1
+
+The circuit probability of Step 1 of `prop:fixed-scale-crossings` (`sandpile.tex:2213-2235`):
+the FKG inequality applied to the four sides of a circuit, each of which has probability at
+least `c`.
+
+  "`eq:fixed-scale-zero-crossing` and the FKG inequality give a uniformly positive probability
+   of a `{𝒳₁ ≥ 0}` circuit in every annulus."
+
+The four sides are the crossing events of the four rectangles of the annulus; they are
+increasing events of the field, so FKG (`fkg_prod_const_le`) bounds the probability of their
+intersection below by the product of their probabilities, giving `c ^ 4` for the circuit
+(`circuit_probability`, `circuit_probability_annulus`).
+-/
 
 open MeasureTheory Set
 

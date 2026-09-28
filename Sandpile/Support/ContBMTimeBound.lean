@@ -1,18 +1,17 @@
-/-
-The time integral of the Brownian heat kernel away from the diagonal.
-
-The kernel `p^{BM}_s(x,y) = (4\pi s/(2d))^{-d/2}e^{-d|x-y|^2/(2s)}` is singular
-as `s → 0` only on the diagonal: for `x ≠ y` the Gaussian factor kills the
-prefactor, and `e^{-u} ≤ (d/u)^d` turns the two into the bound
-`p^{BM}_s(x,y) ≤ (2\pi/d)^{-d/2}(2/|x-y|^2)^d s^{d/2}`, uniform over `s ≤ t`.
-So `s ↦ p^{BM}_s(x,y)` is integrable on `(0,t)` and the finite-time Green kernel
-`g^{BM}_t(x,y) = ∫_0^t p^{BM}_s(x,y)\,ds` is the honest integral there, not the
-junk value the interval integral takes where the integrand fails to be
-integrable.  This is the first step of the square-integrability of
-`g^{BM}_t(x,·)` in dimensions one to three, which is what the white noise asks
-of its index in `prop:dlt4-heat-potential-invariance`.
--/
 import Sandpile.Support.ContBMChapman
+
+/-!
+# The time integral of the Brownian heat kernel away from the diagonal
+
+The kernel `p^{BM}_s(x,y) = (4\pi s/(2d))^{-d/2}e^{-d|x-y|^2/(2s)}` is singular as `s → 0` only on
+the diagonal: for `x ≠ y` the Gaussian factor kills the prefactor, and `e^{-u} ≤ (d/u)^d` turns
+the two into the bound `p^{BM}_s(x,y) ≤ (2\pi/d)^{-d/2}(2/|x-y|^2)^d s^{d/2}`, uniform over
+`s ≤ t`. So `s ↦ p^{BM}_s(x,y)` is integrable on `(0,t)` and the finite-time Green kernel
+`g^{BM}_t(x,y) = ∫_0^t p^{BM}_s(x,y)\,ds` is the honest integral there, not the junk value the
+interval integral takes where the integrand fails to be integrable. This is the first step of the
+square-integrability of `g^{BM}_t(x,·)` in dimensions one to three, which is what the white noise
+asks of its index in `prop:dlt4-heat-potential-invariance`.
+-/
 
 open MeasureTheory
 open scoped NNReal Real

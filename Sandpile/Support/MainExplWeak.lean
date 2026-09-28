@@ -1,26 +1,17 @@
-/-
-From a coupling at every scale to convergence in distribution.
+import Sandpile.Support.StopWeakCoupling
+
+/-!
+# From a coupling at every scale to convergence in distribution
 
 The parabolic scaling limit of `thm:main-explosion`(i)(b) is produced by
-`Sandpile.dlt4_scaling_of_inputs` in COUPLING form: for every accuracy and every
-probability there is a threshold beyond which the rescaled odometer and the
-Brownian value can be realized on one space so that they differ by more than the
-accuracy with probability at most the one prescribed.  The frozen statement asks
-for weak convergence.  This module is the bridge, and it is the quantitative half
-of the Portmanteau theorem read in the easy direction.
-
-For a closed set `F`, a coupling with error `(ε, δ)` gives
-`μ_R(F) ≤ ν(F^ε) + δ`, because on the event that the two are within `ε` the first
-lying in `F` forces the second into the closed `ε`-thickening.  Letting `δ → 0`
-and then `ε → 0`, and using that the measure of the closed thickening of a closed
-set tends to the measure of the set, gives `limsup_R μ_R(F) ≤ ν(F)`, which is one
-of the equivalent formulations of weak convergence.
-
-This is the converse of `Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution`,
-which the repository already has and which the killed route used in the other
-direction.
+`Sandpile.dlt4_scaling_of_inputs` in coupling form: for every accuracy and every probability
+there is a threshold beyond which the rescaled odometer and the Brownian value can be realized
+on one space so that they differ by more than the accuracy with probability at most the one
+prescribed. The frozen statement asks for weak convergence, so this file supplies the bridge,
+the quantitative half of the Portmanteau theorem read in the easy direction: for a closed set
+`F`, a coupling with error `(ε, δ)` gives `μ_R(F) ≤ ν(F^ε) + δ`, and letting `δ → 0` and then
+`ε → 0` yields `limsup_R μ_R(F) ≤ ν(F)`.
 -/
-import Sandpile.Support.StopWeakCoupling
 
 open MeasureTheory ProbabilityTheory Filter Topology Metric
 open scoped ENNReal NNReal

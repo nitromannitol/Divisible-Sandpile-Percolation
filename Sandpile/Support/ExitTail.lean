@@ -3,12 +3,26 @@ import Sandpile.Support.ExitGreen
 import Sandpile.Support.IncrementBall
 import LatticeProb.Invariance
 
+/-!
+# Exit tail from a box
+
+A polynomial tail bound for the walk's exit time from a centered box: `exists_exit_tail`
+shows that the probability the walk has not yet left the box `[-r,r]^d` by time `A * r^2`
+decays like `C / A^(d/2)` for a dimension-dependent constant `C`, uniformly in the radius `r`.
+The proof reduces (`exitTime_gt_implies_mem`) the tail event to the walk still occupying the
+box at time `n = A * r^2`, bounds that probability by a sum of the heat kernel over the box
+using the Gaussian sup bound `LatticeProb.srwHeat_sup_bound`, and closes with the purely
+arithmetic comparison `exit_tail_arith` between the box cardinality `(2r+1)^d` and the time
+scaling `A^(d/2)`. `walkLaw_univ` records that the walk's law is a probability measure.
+-/
+
 set_option maxHeartbeats 1000000
 open MeasureTheory
 open scoped NNReal ENNReal
 noncomputable section
 namespace Sandpile
 
+/-- The law of the simple random walk from `x` is a probability measure. -/
 theorem walkLaw_univ {d : ℕ} (hd : 1 ≤ d) (x : Site d) : (walkLaw d x) Set.univ = 1 := by
   haveI : ∀ i : ℕ, IsProbabilityMeasure (stepLaw d) := fun i => by
     have h := LatticeProb.instructionLaw_isProbability hd (0 : Site d)
@@ -17,6 +31,9 @@ theorem walkLaw_univ {d : ℕ} (hd : 1 ≤ d) (x : Site d) : (walkLaw d x) Set.u
   simp
   exact MeasurableSet.univ
 
+/-- The arithmetic comparison at the core of the exit tail bound: the box factor `(2r+1)^d`
+times a Gaussian sup bound scaled by `A * r^2` is at most `3^d` times the same sup bound scaled
+by `A` alone, since `(2r+1)/r ≤ 3` for `r ≥ 1`. -/
 theorem exit_tail_arith (d : ℕ) (r A : ℕ) (gc : ℝ) (hr : 1 ≤ r) (hA : 1 ≤ A)
     (hgc : 0 ≤ gc) :
     (2*r+1:ℝ)^d * (Real.sqrt 2 ^ d * gc * ((A:ℝ)*(r:ℝ)^2)^(-(d:ℝ)/2)) ≤
@@ -65,6 +82,8 @@ theorem exit_tail_arith (d : ℕ) (r A : ℕ) (gc : ℝ) (hr : 1 ≤ r) (hA : 1 
           mul_le_mul_of_nonneg_right hkey (le_of_lt hpos)
       _ = 3^d * (√2 ^ d * gc * (A:ℝ)^(-(d:ℝ)/2)) := by ring
 
+/-- If the walk has not exited `D` by time `n`, then it still lies in `D` at time `n`; this
+unfolds directly from the `sInf` definition of `exitTime`. -/
 theorem exitTime_gt_implies_mem {d : ℕ} (D : Set (Site d)) (n : ℕ) :
     {X : ℕ → Site d | exitTime D X > ((n : ℕ) : ℕ∞)} ⊆ {X : ℕ → Site d | X n ∈ D} := by
   intro X hX
@@ -73,6 +92,9 @@ theorem exitTime_gt_implies_mem {d : ℕ} (D : Set (Site d)) (n : ℕ) :
     ⟨n, rfl, h⟩
   exact absurd (sInf_le hmem) (not_le.mpr hX)
 
+/-- **The exit tail bound.** There is a constant `C`, uniform in the radius `r` and the time
+scale `A`, such that the walk remains confined to the box of radius `r` for `A * r^2` steps
+with probability at most `C / A^(d/2)`. -/
 theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
     ∃ C : ℝ, 0 < C ∧ ∀ (r A : ℕ), 1 ≤ r → 1 ≤ A →
       (walkLaw d 0) {X : ℕ → Site d |
@@ -135,7 +157,8 @@ theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
       measure_walk_mem_finset hd 0 n (boxFinset 0 r)
     -- bound each heat kernel value by the Gaussian sup bound
     have hsup : ∀ y ∈ boxFinset 0 r,
-        heatKernel d n 0 y ≤ Real.sqrt 2 ^ d * LatticeProb.greenConst d * (n : ℝ) ^ (-(d : ℝ) / 2) := by
+        heatKernel d n 0 y ≤ Real.sqrt 2 ^ d * LatticeProb.greenConst d *
+            (n : ℝ) ^ (-(d : ℝ) / 2) := by
       intro y _
       rw [Sandpile.External.heatKernel_eq_srwHeat d n 0 y]
       have hn1 : 1 ≤ n := by
@@ -144,11 +167,14 @@ theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
       exact LatticeProb.srwHeat_sup_bound (by omega) hn1 _
     -- sum bound
     have hsum : ∑ y ∈ boxFinset 0 r, heatKernel d n 0 y ≤
-        (boxFinset (0 : Site d) r).card * (Real.sqrt 2 ^ d * LatticeProb.greenConst d * (n : ℝ) ^ (-(d : ℝ) / 2)) := by
+        (boxFinset (0 : Site d) r).card *
+          (Real.sqrt 2 ^ d * LatticeProb.greenConst d * (n : ℝ) ^ (-(d : ℝ) / 2)) := by
       calc ∑ y ∈ boxFinset 0 r, heatKernel d n 0 y
-          ≤ ∑ y ∈ boxFinset 0 r, (Real.sqrt 2 ^ d * LatticeProb.greenConst d * (n : ℝ) ^ (-(d : ℝ) / 2)) :=
+          ≤ ∑ y ∈ boxFinset 0 r, (Real.sqrt 2 ^ d * LatticeProb.greenConst d *
+              (n : ℝ) ^ (-(d : ℝ) / 2)) :=
             Finset.sum_le_sum fun y hy => hsup y hy
-        _ = (boxFinset (0 : Site d) r).card * (Real.sqrt 2 ^ d * LatticeProb.greenConst d * (n : ℝ) ^ (-(d : ℝ) / 2)) :=
+        _ = (boxFinset (0 : Site d) r).card * (Real.sqrt 2 ^ d * LatticeProb.greenConst d *
+              (n : ℝ) ^ (-(d : ℝ) / 2)) :=
             by simp [Finset.sum_const]
     -- card bound
     have hcard : (boxFinset (0 : Site d) r).card = (2 * r + 1) ^ d := by
@@ -161,7 +187,8 @@ theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
       ne_of_lt (lt_of_le_of_lt (measure_mono (Set.subset_univ _))
         (by rw [walkLaw_univ hd 0]; exact ENNReal.one_lt_top))
     have hmeas2 : (walkLaw d 0) {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)} =
-        ENNReal.ofReal ((walkLaw d 0).real {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)}) := by
+        ENNReal.ofReal ((walkLaw d 0).real
+          {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)}) := by
       rw [Measure.real, ENNReal.ofReal_toReal htop]
     have harith := exit_tail_arith d r A _ hr hA hgc
     have hbound : (((2 * r + 1 : ℕ) ^ d) : ℝ) * (Real.sqrt 2 ^ d * LatticeProb.greenConst d *
@@ -215,7 +242,8 @@ theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
       exact le_add_of_nonneg_right (by positivity)
     calc (walkLaw d 0) {X : ℕ → Site d | exitTime D X > ((n : ℕ) : ℕ∞)}
         ≤ (walkLaw d 0) {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)} := hle1
-      _ = ENNReal.ofReal ((walkLaw d 0).real {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)}) := hmeas2
+      _ = ENNReal.ofReal ((walkLaw d 0).real
+          {X : ℕ → Site d | X n ∈ (boxFinset (0 : Site d) r)}) := hmeas2
       _ = ENNReal.ofReal (∑ y ∈ boxFinset (0 : Site d) r, heatKernel d n 0 y) := by rw [hreal]
       _ ≤ ENNReal.ofReal ((3:ℝ) ^ d * (Real.sqrt 2 ^ d * LatticeProb.greenConst d *
           (A : ℝ) ^ (-(d : ℝ) / 2))) := hle2

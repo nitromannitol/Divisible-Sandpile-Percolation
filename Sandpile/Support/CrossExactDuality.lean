@@ -1,6 +1,10 @@
-/- Exact planar duality for closed and open level crossings. -/
 import Sandpile.Support.CrossRectangleWalk
 import Sandpile.Support.CrossZeroLimit
+
+/-! # Exact planar crossing duality
+
+Exact planar duality for closed and open level crossings.
+-/
 
 open Set Filter Topology MeasureTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings

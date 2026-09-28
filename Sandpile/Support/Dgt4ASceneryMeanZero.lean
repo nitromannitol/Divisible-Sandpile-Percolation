@@ -1,12 +1,13 @@
-/-
-`\E D_n=0` (`sandpile.tex:5055`), read off the finite-coordinate form
-`D_n=\zeta(0)-(u_n(0)-Pu_n(0))`: the scenery is centred and the mean odometer does not
-depend on the site, so the neighbour average has the same mean as the odometer itself.
--/
 import Sandpile.Support.Dgt4ADeviationScenery
 import Sandpile.Support.Dgt4AAvgIntegral
 import Sandpile.Support.IncrementBall
 import Sandpile.Support.BlockIncrement
+
+/-!
+`\E D_n=0` (`sandpile.tex:5055`), read off the finite-coordinate form
+`D_n=\zeta(0)-(u_n(0)-Pu_n(0))`: the scenery is centred and the mean odometer does not
+depend on the site, so the neighbour average has the same mean as the odometer itself.
+-/
 
 open MeasureTheory Filter Topology Set
 

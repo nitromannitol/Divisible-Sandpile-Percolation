@@ -1,31 +1,32 @@
-/-
-The pairing of the time-weighted membrane field against a test function as a
-finite linear functional of the scenery, and the bound on its coefficients.
-
-This is the first display of the proof of `prop:weighted-membrane-limit`
-(`sandpile.tex:4717-4723`):
-
-  "For `φ ∈ C_c^∞(ℝ^d)`, write `𝓕_R(φ) = ∑_{z∈ℤ^d} a_R(z) ζ(z)`,
-   `sup_z |a_R(z)| ≤ C(φ) R^{-d/2}`, where the coefficient bound follows from
-   the Gaussian upper bound."
-
-The coefficient is `a_R(z) = ∑_x w(x,z) ∫_{cell(x)} φ`, with `w` the weighted
-kernel `∑_{j<t} q(j) p_j(x,z)` and the cells those of `Sandpile.Support.cell`.
-The bound proved here is the elementary one: the weighted kernel is dominated
-by `Q` times the finite-time Green kernel, whose total mass in the first
-variable is exactly the horizon `t`, and each cell carries mass at most
-`‖φ‖_∞ R^{-d}`; so `|a_R(z)| ≤ Q ‖φ‖_∞ t R^{-d}`, which at `t = ⌊R^2T⌋` and
-after the prefactor `R^{(d-4)/2}` is `Q ‖φ‖_∞ T R^{-d/2}`, the paper's bound.
-
-The second half of the file is the Chapman-Kolmogorov identity for the weighted
-kernel,
-  `∑_z w(x,z) w(y,z) = ∑_{a<t} ∑_{b<t} q(a) q(b) p_{a+b}(x,y)`,
-which is the paper's `Cov(P^iζ(x), P^jζ(y)) = Var(ζ(0)) p_{i+j}(x,y)` summed
-against the weights, and is what the local central limit theorem is applied to
-in the Riemann-sum step.
--/
 import Sandpile.Support.ContCell
 import Sandpile.Support.TightWeightedMembrane
+
+/-!
+# Coefficients of the weighted-membrane pairing
+
+The pairing of the time-weighted membrane field against a test function as a finite linear
+functional of the scenery, and the bound on its coefficients. This is the first display of the
+proof of `prop:weighted-membrane-limit` (`sandpile.tex:4717-4723`):
+
+  "For `φ ∈ C_c^∞(ℝ^d)`, write `𝓕_R(φ) = ∑_{z∈ℤ^d} a_R(z) ζ(z)`, `sup_z |a_R(z)| ≤ C(φ) R^{-d/2}`,
+   where the coefficient bound follows from the Gaussian upper bound."
+
+The coefficient is `a_R(z) = ∑_x w(x,z) ∫_{cell(x)} φ`, with `w` the weighted kernel
+`∑_{j<t} q(j) p_j(x,z)` (`pairCoeff`) and the cells those of `Sandpile.Support.cell`. The bound
+proved here (`abs_pairCoeff_le`, `abs_scaled_pairCoeff_le`) is the elementary one: the weighted
+kernel is dominated by `Q` times the finite-time Green kernel, whose total mass in the first
+variable is exactly the horizon `t`, and each cell carries mass at most `‖φ‖_∞ R^{-d}`; so
+`|a_R(z)| ≤ Q ‖φ‖_∞ t R^{-d}`, which at `t = ⌊R^2T⌋` and after the prefactor `R^{(d-4)/2}` is
+`Q ‖φ‖_∞ T R^{-d/2}`, the paper's bound.
+
+The second half of the file proves the Chapman-Kolmogorov identity for the weighted kernel
+(`tsum_weightedKernel_mul_weightedKernel`),
+  `∑_z w(x,z) w(y,z) = ∑_{a<t} ∑_{b<t} q(a) q(b) p_{a+b}(x,y)`,
+which is the paper's `Cov(P^iζ(x), P^jζ(y)) = Var(ζ(0)) p_{i+j}(x,y)` summed against the
+weights, and expresses the total sum of squares of the coefficients (`tsum_pairCoeff_sq`) as the
+Riemann sum, in the two space and the two time variables, to which the local central limit
+result of `sandpile.tex:4719-4724` applies.
+-/
 
 open MeasureTheory Filter Topology
 

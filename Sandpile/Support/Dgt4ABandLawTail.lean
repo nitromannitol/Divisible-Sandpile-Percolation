@@ -1,16 +1,18 @@
-/-
-The two-sided linear log tail `eq:dgt4-band-tail-order` of the constructed
-one-site law, the fourth analytic clause of `thm:dgt4-many-limits`
-(`sandpile.tex:5905-5911`, `sandpile.tex:5980-5995`).
-
-The paper's argument is exactly the one here.  Markov's inequality applied to the
-exponential moment gives `P(ζ(0) ≤ -r) ≤ Ce^{-θr}`, hence the LOWER bound
-`cr ≤ -log P(ζ(0) ≤ -r)`.  For the UPPER bound, take the least `j` with
-`ℓ_1 a_j ≥ r`: the whole `j`th band then lies below `-r`, so
-`P(ζ(0) ≤ -r) ≥ ω_j = c_0e^{-a_j}`, while minimality gives `a_j ≤ Ar/ℓ_1`, so
-`-log P(ζ(0) ≤ -r) ≤ Ar/ℓ_1 - log c_0 ≤ Cr`.
--/
 import Sandpile.Support.Dgt4ABandLawMoment
+
+/-!
+# The two-sided linear log tail of the constructed law
+
+The two-sided linear log tail `eq:dgt4-band-tail-order` of the constructed one-site law, the
+fourth analytic clause of `thm:dgt4-many-limits` (`sandpile.tex:5905-5911`,
+`sandpile.tex:5980-5995`), proved as `exists_log_tail_law`.
+
+The paper's argument is exactly the one here. Markov's inequality applied to the exponential
+moment gives `P(ζ(0) ≤ -r) ≤ C e^{-θ r}`, hence the LOWER bound `c r ≤ -log P(ζ(0) ≤ -r)`. For
+the UPPER bound, take the least `j` with `ℓ_1 a_j ≥ r` (`exists_band_below`): the whole `j`th
+band then lies below `-r`, so `P(ζ(0) ≤ -r) ≥ ω_j = c_0 e^{-a_j}` (`weight_le_bandLaw_Iic`),
+while minimality gives `a_j ≤ Ar/ℓ_1`, so `-log P(ζ(0) ≤ -r) ≤ Ar/ℓ_1 - log c_0 ≤ Cr`.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

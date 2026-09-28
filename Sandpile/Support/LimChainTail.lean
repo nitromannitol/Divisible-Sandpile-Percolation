@@ -1,15 +1,22 @@
-/-
+import Sandpile.Support.LimTailEvents
+
+/-!
+# Crossing chains under almost-sure equality and Kolmogorov's zero-one law
+
 Countable crossing chains respect coordinatewise almost-everywhere equality and
 uniformly bounded perturbations at the crossing scale. Measurable representatives
 in every coordinate tail have one representative in the tail intersection,
 where Kolmogorov's zero-one law applies.
 -/
-import Sandpile.Support.LimTailEvents
 
 open MeasureTheory ProbabilityTheory Set Filter InnerProductSpace
 open Sandpile.Continuum Sandpile.Support Sandpile.Frozen.FixedScaleCrossings
 open scoped ENNReal NNReal RealInnerProductSpace
 
+/-- The path event `pathEvent X l n v` depends on the field `X` only through its
+almost-sure equivalence class: if `X u =ᵐ[P] Y u` for every `u`, then `pathEvent X`
+and `pathEvent Y` agree almost everywhere, since the event only reads finitely
+many rational-point values `X (segPt (v j) (v (j+1)) q)`. -/
 theorem Sandpile.Support.pathEvent_ae_eq {Ω : Type*} [MeasurableSpace Ω]
     {P : Measure Ω} {X Y : Space 2 → Ω → ℝ}
     (heq : ∀ u, X u =ᵐ[P] Y u) (l : ℝ) (n : ℕ) (v : ℕ → Space 2) :
@@ -22,6 +29,10 @@ theorem Sandpile.Support.pathEvent_ae_eq {Ω : Type*} [MeasurableSpace Ω]
   simp only [pathEvent]
   exact forall_congr' fun j => forall_congr' fun q => by rw [hω j q]
 
+/-- `crossApprox X a b i l` inherits the almost-sure equality of `pathEvent_ae_eq`:
+a countable union, over the countably many good chains, of path events that are
+each almost surely unchanged by replacing `X` with an almost-everywhere-equal
+`Y`. -/
 theorem Sandpile.Support.crossApprox_ae_eq {Ω : Type*} [MeasurableSpace Ω]
     {P : Measure Ω} {X Y : Space 2 → Ω → ℝ}
     (heq : ∀ u, X u =ᵐ[P] Y u) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
@@ -36,6 +47,10 @@ theorem Sandpile.Support.crossApprox_ae_eq {Ω : Type*} [MeasurableSpace Ω]
   simp only [crossApprox, Set.mem_iUnion]
   exact exists_congr fun ch => iff_of_eq (hω ch)
 
+/-- `crossApprox` is monotone under a pointwise field comparison on the rectangle:
+if every field value `X u ω ≥ l` on `rectSet a b` forces `Y u ω ≥ l'`, then a
+crossing witnessed by `X` at level `l` is also a crossing witnessed by `Y` at
+level `l'`, using the same chain. -/
 theorem Sandpile.Support.crossApprox_mono_on_rectangle {Ω : Type*} [MeasurableSpace Ω]
     {X Y : Space 2 → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {l l' : ℝ} {ω : Ω}
     (hXY : ∀ u ∈ rectSet a b, l ≤ X u ω → l' ≤ Y u ω)
@@ -49,6 +64,11 @@ theorem Sandpile.Support.crossApprox_mono_on_rectangle {Ω : Type*} [MeasurableS
   apply Set.mem_biUnion (Finset.mem_range.mpr hj)
   exact ⟨(q : ℝ), ⟨by exact_mod_cast hq0, by exact_mod_cast hq1⟩, rfl⟩
 
+/-- Membership in the scale-chain intersection `⋂ n, scaleChainEvent d W a b i n`
+transfers along a uniformly bounded perturbation: if `W` and `W'` differ by at
+most `C · crossScale d s` at every rational scale `s ∈ (0,1)` on the rectangle,
+then it survives at every level `n`, via `crossApprox_mono_on_rectangle` applied
+after enlarging the level to absorb the perturbation. -/
 theorem Sandpile.Support.scaleChainIntersection_of_bounded_perturbation {Ω : Type*}
     [MeasurableSpace Ω] {d : ℕ} {W W' : (Space d → ℝ) → Ω → ℝ}
     {a b : Fin 2 → ℝ} {i : Fin 2} {ω : Ω} {C : ℝ} (hC : 0 ≤ C)
@@ -74,6 +94,11 @@ theorem Sandpile.Support.scaleChainIntersection_of_bounded_perturbation {Ω : Ty
   have hp : 0 < crossScale d (s : ℝ) := crossScale_pos (by exact_mod_cast hs.1)
   nlinarith
 
+/-- `crossApprox X a b i l` has a representative measurable in a coarser
+`σ`-algebra `m`, whenever `X` itself is `m`-almost-strongly-measurable at every
+point: take the `m`-measurable modification `Y u = (hX u).mk (X u)` of `X`, whose
+`crossApprox` is `m`-measurable and equals the original almost everywhere by
+`crossApprox_ae_eq`. -/
 theorem Sandpile.Support.exists_crossApprox_representative {Ω : Type*} [mΩ : MeasurableSpace Ω]
     {P : Measure Ω} (m : MeasurableSpace Ω) {X : Space 2 → Ω → ℝ}
     (hX : ∀ u, AEStronglyMeasurable[m] (X u) P)
@@ -87,6 +112,12 @@ theorem Sandpile.Support.exists_crossApprox_representative {Ω : Type*} [mΩ : M
   · exact @Sandpile.Support.crossApprox_ae_eq Ω mΩ P Y X
       (fun u => (hX u).ae_eq_mk.symm) a b i l
 
+/-- The scale-chain intersection `⋂ n, scaleChainEvent d W a b i n` has an
+`m`-measurable representative whenever every ball field `ballField d W s` is
+`m`-almost-strongly-measurable: apply `exists_crossApprox_representative` at
+each rational scale and level to get a family of representatives, then take
+their diagonal intersection-union, which is `m`-measurable and agrees with the
+scale-chain intersection almost everywhere. -/
 theorem Sandpile.Support.exists_scaleChainIntersection_representative {Ω : Type*}
     [mΩ : MeasurableSpace Ω] {P : Measure Ω} {d : ℕ}
     (m : MeasurableSpace Ω) {W : (Space d → ℝ) → Ω → ℝ}
@@ -123,6 +154,12 @@ theorem Sandpile.Support.exists_scaleChainIntersection_representative {Ω : Type
     · rintro ⟨s, hs, hF⟩
       exact ⟨⟨s, hs.1⟩, hs.2, (iff_of_eq (hω n ⟨s, hs.1⟩)).mpr hF⟩
 
+/-- An event `E` with an `m n`-measurable representative for every `n`, along an
+antitone family `m` of `σ`-algebras, has a representative measurable in the tail
+`⨅ n, m n`: take `limsup` of the individual representatives `F n`, which lands
+in every tail `σ`-algebra `m n` since dropping finitely many terms of an
+antitone sequence does not change a `limsup`, and equals `E` almost everywhere
+since each `F n` does. -/
 theorem Sandpile.Support.exists_common_tail_representative {Ω : Type*}
     [mΩ : MeasurableSpace Ω] (P : Measure Ω) (m : ℕ → MeasurableSpace Ω)
     (hm : Antitone m) {E : Set Ω}
@@ -139,6 +176,10 @@ theorem Sandpile.Support.exists_common_tail_representative {Ω : Type*}
   exact MeasurableSet.measurableSet_limsup fun k =>
     (hm (Nat.le_add_left n k)) _ (hFm (k + n))
 
+/-- Independence of `σ`-algebras `m₁` and `m₂` transfers to events `E` and `F`
+that merely agree almost everywhere with `m₁`- and `m₂`-measurable sets `A` and
+`B`: `P (E ∩ F) = P E * P F`, by rewriting each measure through the a.e.
+equalities and applying independence to `A` and `B`. -/
 theorem Sandpile.Support.measure_inter_eq_mul_of_ae_representatives {Ω : Type*}
     [mΩ : MeasurableSpace Ω] (P : Measure Ω) (m₁ m₂ : MeasurableSpace Ω)
     (hI : Indep m₁ m₂ P) {E F A B : Set Ω}
@@ -148,6 +189,12 @@ theorem Sandpile.Support.measure_inter_eq_mul_of_ae_representatives {Ω : Type*}
   rw [measure_congr (hEA.inter hFB), measure_congr hEA, measure_congr hFB]
   exact ((ProbabilityTheory.Indep_iff m₁ m₂ P).mp hI) A B hA hB
 
+/-- **Kolmogorov's zero-one law for a cutoff-indexed tail.** For an independent
+family `m` of `σ`-algebras and a cutoff function `cut : ι → ℕ`, any event
+measurable in the tail `limsup m (comap cut atTop)` (equivalently, in every
+`σ`-algebra generated by the indices with `cut i` large) has probability `0` or
+`1`. Proved by specializing the general `measure_zero_or_one_of_measurableSet_limsup`
+to the filter base of finite subsets of `ι` ordered by their image under `cut`. -/
 theorem Sandpile.Support.measure_zero_or_one_of_cut_tail {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] (P : Measure Ω) (m : ι → MeasurableSpace Ω)
     (hm : ∀ i, m i ≤ mΩ) (hi : iIndep m P) (cut : ι → ℕ) {E : Set Ω}
@@ -168,6 +215,9 @@ theorem Sandpile.Support.measure_zero_or_one_of_cut_tail {Ω ι : Type*}
       Finset.coe_subset.mpr (Finset.subset_union_right)⟩)
     (fun s => s.finite_toSet) (fun i => ⟨{i}, by simp⟩) hE
 
+/-- The cutoff-indexed tail `limsup m (comap cut atTop)` equals the explicit
+`σ`-algebra intersection `⨅ n, ⨆ (i with n ≤ cut i), m i`: both compute the same
+`limsup` along the `atTop` filter basis pulled back through `cut`. -/
 theorem Sandpile.Support.cut_tail_eq_iInf {Ω ι : Type*}
     (m : ι → MeasurableSpace Ω) (cut : ι → ℕ) :
     Filter.limsup m (Filter.comap cut Filter.atTop) =
@@ -175,6 +225,13 @@ theorem Sandpile.Support.cut_tail_eq_iInf {Ω ι : Type*}
   simpa only [Set.mem_preimage, Set.mem_Ici, iInf_true] using
     (Filter.atTop_basis.comap cut).limsup_eq_iInf_iSup (u := m)
 
+/-- **The zero-one law upgraded to almost-sure membership.** If an event `E` of
+positive probability has, at every cutoff level `n`, a representative measurable
+in the `σ`-algebra generated by the indices with `cut i ≥ n`, then `P E = 1` and
+in fact `E` holds almost surely: package the representatives into one tail
+representative via `exists_common_tail_representative`, identify the tail with
+the `cut`-indexed one via `cut_tail_eq_iInf`, and apply
+`measure_zero_or_one_of_cut_tail` to rule out `P E = 0`. -/
 theorem Sandpile.Support.ae_mem_of_cut_tail_representatives {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
     (m : ι → MeasurableSpace Ω) (hm : ∀ i, m i ≤ mΩ) (hi : iIndep m P)

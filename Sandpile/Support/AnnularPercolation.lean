@@ -1,20 +1,34 @@
-/-
-The exponential bound for failure of the origin box to connect to infinity.
--/
 import Sandpile.Support.PercolationEvents
 import Sandpile.Support.AnnularSum
 import Sandpile.Frozen.DGT4BlockingToCrossing
 import Sandpile.Frozen.DGT4Cascade
+
+/-!
+# Exponential bound for failure of the origin to connect to infinity
+
+This file bounds the probability that the origin fails to lie in an infinite component of
+`{x | m/2 < u_t(x)}`, where `m` is the mean odometer at the origin. The failure event splits into
+the unit box around the origin not clearing the level `m/2` (`measure_unit_box_failure_le`, a
+union bound over finitely many sites) and the unit box clearing it while its component stays
+finite (`measure_blocked_odometer_le`), which the blocking-to-crossing dichotomy embeds into a
+union of annular low-crossing events summed geometrically (`Sandpile.AnnularSum`). Both pieces
+decay like `exp(-b m)` for some `b > 0`, giving the exponential bound
+`exists_odometer_origin_connection`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- The event that the unit box about the origin lies entirely above level `s` in the odometer
+field at time `t`, and the origin's component of `{x | s < odometerOf ω t x}` is infinite. -/
 def odometerOriginConnectEvent {d : ℕ} (t : ℕ) (s : ℝ) : Set (Site d → ℝ) :=
   {ω | Frozen.DGT4BlockingToCrossing.boxAt (0 : Site d) 1 ⊆ {x | s < odometerOf ω t x} ∧
     (LatticeProb.componentIn {x | s < odometerOf ω t x} (0 : Site d)).Infinite}
 
+/-- `odometerOriginConnectEvent` is measurable, as the intersection of a countable intersection of
+level-set events and the measurable event that a component is infinite. -/
 lemma measurableSet_odometerOriginConnectEvent {d : ℕ} (t : ℕ) (s : ℝ) :
     MeasurableSet (odometerOriginConnectEvent (d := d) t s) := by
   have hO (x : Site d) : MeasurableSet {ω : Site d → ℝ | s < odometerOf ω t x} :=
@@ -32,6 +46,9 @@ lemma measurableSet_odometerOriginConnectEvent {d : ℕ} (t : ℕ) (s : ℝ) :
   exact hsub.inter (measurableSet_infinite_componentIn
     (fun ω => {x | s < odometerOf ω t x}) hO 0)
 
+/-- If the unit box about the origin clears level `m/2` but the origin's component stays finite,
+then some annulus around the origin carries a low-crossing event at scale `64^n`, by the
+blocking-to-crossing dichotomy `Frozen.dgt4_blocking_to_crossing`. -/
 lemma blocked_odometer_subset_annular_union (hBoundary : External.ExteriorBoundaryConnected)
     {d : ℕ} (hd : 5 ≤ d) (t : ℕ) (m : ℝ) :
     {ω : Site d → ℝ | Frozen.DGT4BlockingToCrossing.boxAt (0 : Site d) 1 ⊆
@@ -53,6 +70,7 @@ lemma blocked_odometer_subset_annular_union (hBoundary : External.ExteriorBounda
   change odometerOf ω t y - m ≤ -(m / 2)
   linarith [not_lt.mp hh]
 
+/-- The number of centers `x` with `boxDist 0 x ≤ 4 · 64^(n+1)` is at most `9^d · (64^d)^(n+1)`. -/
 lemma card_annular_centers_le (d n : ℕ) :
     ((boxFinset (0 : Site d) (4 * 64 ^ (n + 1))).card : ℝ) ≤
       (9 : ℝ) ^ d * ((64 : ℝ) ^ d) ^ (n + 1) := by
@@ -64,6 +82,10 @@ lemma card_annular_centers_le (d n : ℕ) :
       pow_le_pow_left₀ (by positivity) (by linarith) d
     _ = _ := by rw [mul_pow, ← pow_mul, Nat.mul_comm, pow_mul]
 
+/-- Given a uniform bound `hcross` on each scale-`64^n` annular low-crossing probability by
+`C exp(-b m 2^n)`, the probability of the blocked event (unit box clears `m/2` but the origin's
+component is finite) is at most the sum over scales of that bound times the number of centers
+at that scale, via `blocked_odometer_subset_annular_union` and `card_annular_centers_le`. -/
 lemma measure_blocked_odometer_le (hBoundary : External.ExteriorBoundaryConnected)
     {d : ℕ} (hd : 5 ≤ d) (ν : Measure ℝ) (t : ℕ) (m b C : ℝ) (hC : 0 ≤ C)
     (hcross : ∀ n : ℕ, (⨆ x : Site d, (LatticeProb.iidLaw d ν)
@@ -100,6 +122,9 @@ lemma measure_blocked_odometer_le (hBoundary : External.ExteriorBoundaryConnecte
             (show 0 ≤ C * Real.exp (-(b * m * (2 : ℝ) ^ n)) by positivity)
           nlinarith
 
+/-- Given a per-site concentration bound `hpoint` on `|odometerOf ω t x - m| ≥ m/2` by
+`C exp(-bm)`, the probability that the unit box about the origin fails to clear level `m/2`
+somewhere is at most `3^d C exp(-bm)`, by a union bound over the `3^d` sites of the box. -/
 lemma measure_unit_box_failure_le {d : ℕ} (ν : Measure ℝ) (t : ℕ) (m b C : ℝ)
     (hC : 0 ≤ C)
     (hpoint : ∀ x : Site d, (LatticeProb.iidLaw d ν)
@@ -135,6 +160,12 @@ lemma measure_unit_box_failure_le {d : ℕ} (ν : Measure ℝ) (t : ℕ) (m b C 
       push_cast
       ring
 
+/-- **Exponential bound for failure of the origin to connect to infinity.** There are `b, C > 0`
+and `M ≥ 1`, depending only on `d, θ, K`, such that whenever the mean odometer at the origin at
+time `t` is at least `M`, the probability of its complementary connection event
+(`odometerOriginConnectEvent`) is at most `C exp(-b · (mean odometer))`. This combines
+`measure_unit_box_failure_le` and `measure_blocked_odometer_le` through the concentration bound
+`exists_odometerOf_conc` and the cascade estimate `Frozen.dgt4_cascade`. -/
 lemma exists_odometer_origin_connection (hBoundary : External.ExteriorBoundaryConnected)
     (hGH : External.GreenBoundsHigh) (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ b C M : ℝ, 0 < b ∧ 0 < C ∧ 1 ≤ M ∧
@@ -190,7 +221,8 @@ lemma exists_odometer_origin_connection (hBoundary : External.ExteriorBoundaryCo
         {x | m / 2 < odometerOf ω t x}
     · exact Or.inr ⟨hS, fun hi => hω ⟨hS, hi⟩⟩
     · exact Or.inl hS
-  apply (measure_mono hsub).trans ((measure_union_le _ _).trans ((add_le_add hbox hblocked).trans ?_))
+  apply (measure_mono hsub).trans
+    ((measure_union_le _ _).trans ((add_le_add hbox hblocked).trans ?_))
   rw [← ENNReal.ofReal_add (by positivity) (by positivity)]
   apply ENNReal.ofReal_le_ofReal
   have he₀ : Real.exp (-(b₀ * m)) ≤ Real.exp (-(b * m)) := Real.exp_le_exp.mpr
@@ -203,6 +235,8 @@ lemma exists_odometer_origin_connection (hBoundary : External.ExteriorBoundaryCo
   dsimp only [C]
   nlinarith
 
+/-- If the complement of `odometerOriginConnectEvent` has probability at most `r`, then the event
+itself has probability at least `1 - r`. -/
 lemma origin_connection_lower_of_compl_le {d : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (t : ℕ) (s r : ℝ) (hr : 0 ≤ r)
     (h : (LatticeProb.iidLaw d ν) (odometerOriginConnectEvent (d := d) t s)ᶜ ≤ ENNReal.ofReal r) :

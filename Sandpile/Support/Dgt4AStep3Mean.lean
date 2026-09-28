@@ -1,4 +1,6 @@
-/-
+import Sandpile.Support.Dgt4AStep3Point
+
+/-!
 **Step 3 of case (a), from the pointwise comparison to the conditional mean**
 (`eq:dgt4-gaussian-reflected-limit`, `sandpile.tex:5233-5251`).
 
@@ -15,7 +17,6 @@ error explicit, so that the limit is taken once in `Support/Dgt4AStep3Limit.lean
 exceptional set the integrand is within `δ` of its limit, and on the exceptional set it is
 bounded by `c+L+Y`, so the mean deviates by at most `δ+(c+L)\rho(A)+\E Y`.
 -/
-import Sandpile.Support.Dgt4AStep3Point
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

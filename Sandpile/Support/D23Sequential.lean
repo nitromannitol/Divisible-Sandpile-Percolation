@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D23Input
+import Sandpile.Support.ExponentialMoments
+
+/-!
+# The sequential-contradiction reduction, dimensions two and three
+
 The contradiction step of the dimension-two and dimension-three percolation proof
 (`sandpile.tex:2613-2620`):
 
@@ -11,8 +16,6 @@ The contradiction step of the dimension-two and dimension-three percolation proo
 Both halves are here: the uniform variance bound from the exponential moment, and the
 reduction of the uniform block-crossing estimate to the absence of such a sequence.
 -/
-import Sandpile.Support.D23Input
-import Sandpile.Support.ExponentialMoments
 
 open LatticeProb
 

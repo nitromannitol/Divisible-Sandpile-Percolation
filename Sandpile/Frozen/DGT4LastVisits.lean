@@ -1,4 +1,9 @@
-/-
+import Sandpile.Walk
+import Sandpile.Support.LinLastVisit
+
+/-!
+# Weighted last-visits lemma
+
 Lemma of sandpile.tex, frozen.  `sandpile.tex:4831-4847`
 (label `lem:dgt4-weighted-last-visits`):
 
@@ -33,8 +38,6 @@ subtraction is in `ℝ`, not truncated).  The sum `∑_{i=0}^j` is over
 `G(0,0)` is `Sandpile.green d 0 0`, the genuine Green function because `d ≥ 5`;
 the paper's subsection fixes `d ≥ 5` throughout.
 -/
-import Sandpile.Walk
-import Sandpile.Support.LinLastVisit
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

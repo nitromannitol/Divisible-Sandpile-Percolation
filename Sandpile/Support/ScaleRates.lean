@@ -1,16 +1,18 @@
-/-
-The rates at the geometric scales.
-
-The third-moment estimate of `sandpile.tex:1784-1790` needs the supremum of the
-Green kernel divided by its own standard deviation, `S(n)/n^{(4-d)/4}`, summed
-over the scales `n_j = N q^j`.  That quantity decays geometrically with ratio
-`q^{-1/4}` in every dimension one to three, so its sum is at most six times its
-first term.  In dimension two the extra logarithm is absorbed by the same
-inequality `1 + l log q ≤ 3 q^{l/4}` that carries the correlation bound.
--/
 import Sandpile.Support.CorrelationRow
 import Sandpile.Support.GeomRow
 import Sandpile.Support.GreenSup
+
+/-!
+# The rates at the geometric scales
+
+The rates at the geometric scales.
+
+The third-moment estimate of `sandpile.tex:1784-1790` needs the supremum of the Green kernel
+divided by its own standard deviation, `S(n)/n^{(4-d)/4}`, summed over the scales `n_j = N q^j`.
+That quantity decays geometrically with ratio `q^{-1/4}` in every dimension one to three, so its
+sum is at most six times its first term. In dimension two the extra logarithm is absorbed by the
+same inequality `1 + l log q ≤ 3 q^{l/4}` that carries the correlation bound.
+-/
 
 namespace Sandpile
 
@@ -33,6 +35,8 @@ divided by its own standard deviation. -/
 noncomputable def supOverSd (d n : ℕ) : ℝ :=
   greenSupRate d n / (n : ℝ) ^ (((4 : ℝ) - (d : ℝ)) / 4)
 
+/-- `supOverSd d n` is nonnegative, being a ratio of nonnegative quantities (`greenSupRate` over
+a nonnegative power). -/
 theorem supOverSd_nonneg (d n : ℕ) : 0 ≤ supOverSd d n := by
   rw [supOverSd]
   exact div_nonneg (greenSupRate_nonneg d n) (Real.rpow_nonneg (Nat.cast_nonneg n) _)
@@ -57,12 +61,18 @@ theorem rpow_geom_scale {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N) (j : ℕ) (α 
 
 variable {d : ℕ}
 
+/-- The square root commutes with a natural-number power: `sqrt (x ^ j) = sqrt x ^ j`, proved
+by induction on `j` using `Real.sqrt_mul`. -/
 theorem sqrt_pow_nat {x : ℝ} (hx : 0 ≤ x) (j : ℕ) :
     Real.sqrt (x ^ j) = Real.sqrt x ^ j := by
   induction j with
   | zero => simp
   | succ n ih => rw [pow_succ, Real.sqrt_mul (by positivity), ih, pow_succ]
 
+/-- At the geometric scale `N q^j`, the Green-kernel supremum rate `greenSupRate d (N q^j)` is at
+most `3 * greenSupRate d N * (q ^ ((4-d)/4 - 1/4))^j`, verified case by case in dimensions one to
+three: an exact identity in dimension one and three, and the logarithmic inequality
+`1 + l log q ≤ 3 q^{l/4}` (`one_add_mul_log_le`) absorbing the extra term in dimension two. -/
 theorem greenSupRate_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N)
     (j : ℕ) :
     greenSupRate d (N * q ^ j)
@@ -117,6 +127,9 @@ theorem greenSupRate_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 
 
 variable {d : ℕ}
 
+/-- The third-moment rate `supOverSd d (N q^j)` at the geometric scale `N q^j` is at most
+`3 * supOverSd d N * (geomRatio q)^j`, dividing the numerator bound `greenSupRate_geom_le` by the
+denominator identity `rpow_geom_scale` and simplifying the resulting power ratio to `geomRatio`. -/
 theorem supOverSd_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N)
     (j : ℕ) :
     supOverSd d (N * q ^ j) ≤ 3 * supOverSd d N * (geomRatio q) ^ j := by
@@ -144,6 +157,10 @@ theorem supOverSd_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 ≤
   rw [hfinal]
   exact hnum
 
+/-- **Summing the third-moment rate over the geometric scales.** If the geometric ratio
+`geomRatio q ≤ 1/2`, the sum `∑_{j<m} supOverSd d (N q^j)` is at most `6 * supOverSd d N`,
+bounding each term by `supOverSd_geom_le` and summing the resulting geometric series
+`∑ (geomRatio q)^j ≤ 2`. -/
 theorem sum_supOverSd_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 ≤ q) (hN : 1 ≤ N)
     (hr : geomRatio q ≤ 1 / 2) (m : ℕ) :
     ∑ j ∈ Finset.range m, supOverSd d (N * q ^ j) ≤ 6 * supOverSd d N := by

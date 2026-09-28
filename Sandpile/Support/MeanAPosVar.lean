@@ -1,28 +1,19 @@
-/-
-The limiting variance is positive: `sandpile.tex:2024-2026` and the last clause
-of `cor:dlt4-mean-asymptotic` (`sandpile.tex:2043`).
-
-The paper's sentence is that `𝒰(1,0) ≥ max{Z(1,0),0}` and that `Z(1,0)` is a
-nondegenerate centred Gaussian, so the value is not almost surely constant.
-Three steps are needed.
-
-* The law of `Z(1,0)` is the centred Gaussian of variance
-  `Var(ζ(0))‖g_1^{BM}(0,·)‖²`, which is the law of the increment of the field
-  between `(1,0)` and `(0,0)` because the field vanishes at time zero.
-* That variance is positive: the `L²` pairing of the Green kernel with itself is
-  the double time integral of the heat kernel on the diagonal
-  (`integral_greenTimeBM_mul_prod`), the heat kernel on the diagonal is
-  decreasing in time, and the time square has unit area, so the pairing is at
-  least `p_2^{BM}(0,0) > 0`.
-* A centred Gaussian of positive variance charges every half-line `(M,∞)`,
-  because Lebesgue measure is absolutely continuous with respect to it.
-
-With `𝒰(1,0) ≥ Z(1,0)` from `MeanAZeroTime`, a variable dominating an unbounded
-variable has positive variance, which is `variance_pos_of_ae_le_unbounded`.
--/
 import Sandpile.Support.MeanAGauss
 import Sandpile.Support.MeanAZeroTime
 import Sandpile.Support.MeanAPositive
+
+/-!
+# Positivity of the limiting variance
+
+The limiting variance is positive: `sandpile.tex:2024-2026` and the last clause of
+`cor:dlt4-mean-asymptotic` (`sandpile.tex:2043`). The field value `𝒰(1,0)` dominates `Z(1,0)`,
+the centred Gaussian increment of the field between `(1,0)` and `(0,0)`, whose variance
+`Var(ζ(0))‖g_1^{BM}(0,·)‖²` is positive because the `L²` pairing of the Green kernel with
+itself is a double time integral of the heat kernel on the diagonal, bounded below by
+`p_2^{BM}(0,0)`. A centred Gaussian of positive variance charges every half-line, so `Z(1,0)`
+is unbounded above, and a variable dominating an unbounded variable has positive variance
+(`variance_pos_of_ae_le_unbounded`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

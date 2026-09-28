@@ -1,10 +1,13 @@
-/-
+import Sandpile.Support.TightWeightedMembrane
+
+/-!
+# Tightness of the odometer/weighted-linear-field difference
+
 The difference of the rescaled centred odometer and the weighted linear field is
 tight in `H^{-s}_loc(ℝ^d)`: both families are tight, so their difference is, by
 `tight_sub`.  This is the tightness half of the second conjunct of
 `lem:dgt4-linearization-from-survival` (`sandpile.tex:5841-5849`).
 -/
-import Sandpile.Support.TightWeightedMembrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -35,6 +38,7 @@ theorem dgt4_difference_tight (hGH : Sandpile.External.GreenBoundsHigh)
   exact Sandpile.Support.tight_sub s (Sandpile.centeredMassLaw d ν) _ _
     (Sandpile.Support.dgt4_odometer_tight hGH hBesov hd ν hsq hpos T hT s hs)
     (Sandpile.Support.weighted_membrane_tight hGH hBesov hd ν
-      ((MeasureTheory.memLp_two_iff_integrable_sq aestronglyMeasurable_id).mpr hsq) hmean T hT q Q hQ0 hQ s hs)
+      ((MeasureTheory.memLp_two_iff_integrable_sq aestronglyMeasurable_id).mpr hsq) hmean T hT q Q
+      hQ0 hQ s hs)
 
 end Sandpile.Support

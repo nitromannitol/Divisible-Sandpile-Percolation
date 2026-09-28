@@ -1,4 +1,20 @@
 import Sandpile.Support.ExplFieldSemigroup
+
+/-!
+# Continuity lemmas and the common heat-semigroup event
+
+Elementary continuity lemmas used to promote the heat-semigroup identity for the Gaussian
+potential `gaussianPotential` from a fixed-parameter almost-everywhere statement to a single
+event valid for all times and points: continuity under the integral sign from local dominated
+envelopes, gluing strip-wise continuity to nonnegative times, and joint continuity of the
+Brownian heat kernel `heatKernelBM` away from time `0`. Combining these with separability of
+the parameter space and `ae_forall_eq_of_continuous_modifications` produces
+`gaussianPotential_heat_semigroup_common_of_local_envelopes`, a single almost-sure event on
+which the semigroup identity holds for every positive time and point, and
+`gaussianPotential_increment_semigroup` derives from it the corresponding identity for
+increments of the potential.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
@@ -19,6 +35,9 @@ theorem ae_forall_eq_of_continuous_modifications {E Ω : Type*}
   have hfg := (TopologicalSpace.denseRange_denseSeq E).equalizer hFω hGω (funext heω)
   exact fun x => congrFun hfg x
 
+/-- If `F x` is a.e. strongly measurable for each `x`, `u ↦ F x u` is a.e. jointly continuous
+in `x`, and every `x` has a neighborhood on which `F` is dominated by a fixed integrable
+envelope `D`, then `x ↦ ∫ u, F x u ∂μ` is continuous. -/
 theorem continuous_integral_of_local_envelopes {E U : Type*}
     [TopologicalSpace E] [FirstCountableTopology E] [MeasurableSpace U]
     (μ : Measure U) (F : E → U → ℝ)
@@ -33,6 +52,9 @@ theorem continuous_integral_of_local_envelopes {E U : Type*}
   exact continuousAt_of_dominated (Eventually.of_forall hm) hb hD
     (hc.mono fun u hu => hu.continuousAt)
 
+/-- If `Z` is jointly continuous on every strip `[0, n+1] × Space d`, then its restriction to
+nonnegative times `ℝ≥0 × Space d` is continuous, by patching the strips at each point using
+the one strip that contains it. -/
 theorem continuous_nonnegative_time_of_bounded_strips {d : ℕ}
     (Z : ℝ → Space d → ℝ)
     (hc : ∀ n : ℕ, ContinuousOn (fun q : ℝ × Space d => Z q.1 q.2)
@@ -51,6 +73,9 @@ theorem continuous_nonnegative_time_of_bounded_strips {d : ℕ}
   have he := (isOpen_lt ht (continuous_const (y := (n : ℝ) + 1))).mem_nhds hq
   exact Filter.mem_of_superset he (fun p hp => ⟨⟨p.1.property, hp.le⟩, Set.mem_univ _⟩)
 
+/-- For fixed `y`, the Brownian heat kernel `heatKernelBM d r x y` is jointly continuous in
+`(r, x)` on `{r : ℝ // 0 < r} × Space d`, as it is built from continuous power, exponential,
+and norm operations while `r` stays positive. -/
 theorem continuous_heatKernelBM_positive {d : ℕ} (hd : 1 ≤ d) (y : Space d) :
     Continuous (fun q : {r : ℝ // 0 < r} × Space d => heatKernelBM d q.1.1 q.2 y) := by
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
@@ -101,7 +126,8 @@ theorem gaussianPotential_heat_semigroup_common_of_local_envelopes
   have hmeas (ω : Ω) (hω : Continuous (fun q : ℝ≥0 × Space d => Z q.1 q.2 ω)) (q : E) :
       AEStronglyMeasurable (fun y => heatKernelBM d q.1.1 q.2.2 y * Z q.2.1 y ω) volume := by
     have hm : Measurable (heatKernelBM d q.1.1 q.2.2) := by unfold heatKernelBM; fun_prop
-    exact (hm.mul (hω.comp (show Continuous (fun y : Space d => (q.2.1, y)) by fun_prop)).measurable).aestronglyMeasurable
+    exact (hm.mul (hω.comp (show Continuous (fun y : Space d => (q.2.1, y)) by
+      fun_prop)).measurable).aestronglyMeasurable
   have hF : ∀ᵐ ω ∂P, Continuous (fun q => F q ω) := by
     filter_upwards [hZ, hdom] with ω hω hD
     apply continuous_integral_of_local_envelopes volume _ (hmeas ω hω) _ hD
@@ -119,10 +145,12 @@ theorem gaussianPotential_heat_semigroup_common_of_local_envelopes
       dsimp [E]; fun_prop)
     convert h1.sub h2 using 1
     funext q
-    simp only [G, Pi.sub_apply, Function.comp_apply, NNReal.coe_add, Real.coe_toNNReal _ q.1.property.le]
+    simp only [G, Pi.sub_apply, Function.comp_apply, NNReal.coe_add,
+      Real.coe_toNNReal _ q.1.property.le]
   have he : ∀ q : E, F q =ᵐ[P] G q := by
     intro q
-    exact (gaussianPotential_heat_semigroup hd hd3 hW ν2 Z hmod hc q.1.property q.2.1.property q.2.2).mono
+    exact (gaussianPotential_heat_semigroup hd hd3 hW ν2 Z hmod hc
+      q.1.property q.2.1.property q.2.2).mono
       fun ω hω => hω.2
   have hall := ae_forall_eq_of_continuous_modifications P F G hF hG he
   filter_upwards [hall, hZ, hdom] with ω hω hzc hD
@@ -131,6 +159,10 @@ theorem gaussianPotential_heat_semigroup_common_of_local_envelopes
   obtain ⟨D, hi, hb⟩ := hD q
   exact ⟨hi.mono' (hmeas ω hzc q) hb.self_of_nhds, hω q⟩
 
+/-- The heat semigroup identity for an increment of the Gaussian potential: almost surely, the
+convolution of `heatKernelBM d r x` against `Z (s + δ) - Z s` is integrable and equals
+`Z (r + s + δ) x - Z (r + s) x`, obtained by subtracting the semigroup identity at `s + δ` from
+the one at `s`. -/
 theorem gaussianPotential_increment_semigroup {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)

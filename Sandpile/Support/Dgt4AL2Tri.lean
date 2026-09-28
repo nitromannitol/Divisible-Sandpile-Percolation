@@ -1,10 +1,13 @@
-/-
+import Mathlib
+
+/-!
+# Triangle inequality for the L² norm
+
 The triangle inequality for the `L²` norm of a sum of two square-integrable functions,
-with the explicit constant `√2`: `‖f+g‖₂ ≤ √2(‖f‖₂+‖g‖₂)`.  It is the elementary step
+with the explicit constant `√2`: `‖f+g‖₂ ≤ √2(‖f‖₂+‖g‖₂)`. It is the elementary step
 of the `L²` assembly of `eq:dgt4-centered-value-decay` of case (a) Step 1 of
 `prop:dgt4-contact-asymptotics` (`sandpile.tex:5074-5077`).
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 
@@ -39,7 +42,8 @@ theorem sqrt_integral_sq_add_le {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
     nlinarith [mul_nonneg hsa hsb]
   calc Real.sqrt (∫ ω, (f ω + g ω) ^ 2 ∂μ)
       ≤ Real.sqrt (2 * ∫ ω, f ω ^ 2 ∂μ + 2 * ∫ ω, g ω ^ 2 ∂μ) := Real.sqrt_le_sqrt hle
-    _ ≤ Real.sqrt ((Real.sqrt 2 * (Real.sqrt (∫ ω, f ω ^ 2 ∂μ) + Real.sqrt (∫ ω, g ω ^ 2 ∂μ))) ^ 2) :=
+    _ ≤ Real.sqrt
+          ((Real.sqrt 2 * (Real.sqrt (∫ ω, f ω ^ 2 ∂μ) + Real.sqrt (∫ ω, g ω ^ 2 ∂μ))) ^ 2) :=
         Real.sqrt_le_sqrt hsq
     _ = Real.sqrt 2 * (Real.sqrt (∫ ω, f ω ^ 2 ∂μ) + Real.sqrt (∫ ω, g ω ^ 2 ∂μ)) :=
         Real.sqrt_sq (by positivity)

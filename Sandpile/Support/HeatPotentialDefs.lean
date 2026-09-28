@@ -1,15 +1,16 @@
-/-
-The rescaled linear field `Z_R` and its standard interpolation `Z_R^{\rm lin}`
-of `sandpile.tex:1833-1839`, the objects of
-`prop:dlt4-heat-potential-invariance`.
-
-These two definitions are the running-text definitions the proposition is about;
-they are kept here, rather than beside the frozen statement, so that the
-support modules that prove the proposition can use them without importing the
-frozen statement itself.  The fully qualified names are unchanged.
--/
 import Sandpile.Walk
 import Sandpile.Continuum.Kernel
+
+/-!
+# The rescaled linear field `Z_R` and its standard interpolation `Z_R^{\rm lin}`
+
+The rescaled linear field `Z_R` and its standard interpolation `Z_R^{\rm lin}` of
+`sandpile.tex:1833-1839`, the objects of `prop:dlt4-heat-potential-invariance`. These two
+definitions are the running-text definitions the proposition is about; they are kept here,
+rather than beside the frozen statement, so that the support modules that prove the proposition
+can use them without importing the frozen statement itself. The fully qualified names are
+unchanged.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,4 +1,7 @@
-/-
+import LatticeProb.Gauss.TailMills
+
+/-! # Sharp Mills Asymptotics
+
 The sharp Mills asymptotics that case (a) of `prop:dgt4-contact-asymptotics` opens with
 (`sandpile.tex:4969` ff.).  The paper uses two displays about the Gaussian threshold field
 `J = -V_∞`, of variance `Σ² = Var(ζ(0))∑_z G(0,z)²`:
@@ -19,7 +22,6 @@ multiplied by `t/v`, and the limit it forces,
 
 which IS the paper's `φ_v(t) ∼ (t/v) P(Z>t)`, since `-d/dt P(Z>t) = φ_v(t)`.
 -/
-import LatticeProb.Gauss.TailMills
 
 open LatticeProb.GaussTail
 

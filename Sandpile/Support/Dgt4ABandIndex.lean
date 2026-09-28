@@ -1,22 +1,16 @@
-/-
-The index range of Step 2 of `thm:dgt4-many-limits`.
-
-Two separate things live here.  The first is the arithmetic of
-`sandpile.tex:6305`: for `0 < ε < 1` and `T > 0`, the lower end `⌈ε⌊R²T⌋⌉` of
-the uniform index range dominates the lower end `(εT/2)R²` of the band, for all
-large `R`.
-
-The second is the persistence of `eq:dgt4-band-index-range`
-(`sandpile.tex:6229-6237`).  The paper argues that the lower bound cannot first
-fail at any `n ≤ TR_k²`: if it held through `n-1` then the summed profile would
-apply at `n` and would give it at `n` too.  That is strong induction, and it is
-stated here as such, for an arbitrary sequence compared with an arbitrary
-barrier from an arbitrary starting index.  The upper bound persists for a
-different reason, that `z_{k,n}` is nonincreasing, which is
-`bandLevelCoord_antitone` together with the monotonicity of `x ↦ x^ϑ` recorded
-here as `rpow_le_two_rpow_neg`.
--/
 import Mathlib
+
+/-!
+# The index range of the band construction
+
+Two separate things live here. The first is a piece of real arithmetic: for `0 < ε < 1` and
+`T > 0`, the lower end `⌈ε⌊R²T⌋⌉` of the uniform index range dominates the lower end `(εT/2)R²`
+of the band, for all large `R`. The second is the persistence of the band index range, argued by
+strong induction: the lower bound cannot first fail at any index, since if it held throughout
+the range up to `n - 1` then a step hypothesis gives it at `n` too, and this is stated for an
+arbitrary sequence compared with an arbitrary barrier from an arbitrary starting index. The upper
+bound persists for a different, monotonicity reason, recorded as `rpow_le_two_rpow_neg`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

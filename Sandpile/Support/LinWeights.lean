@@ -1,18 +1,16 @@
-/-
-The time weight `(1 - j/(R²T))^κ` of `prop:dgt4-linearization`
-(`sandpile.tex:4738-4754`), and the two vocabularies in which the survival
-indicator `S_{n,j}(X)` of `sandpile.tex:5448-5451` is written.
-
-`prop:dgt4-linearization` is `lem:dgt4-linearization-from-survival` applied to
-`q_{R,j} = (1 - j/(R²T))^κ`, so the deterministic array of that lemma has to be
-shown to lie in `[0,1]` on the index range `0 ≤ j < ⌊R²T⌋`, which is what
-`timeWeight_mem_Icc` says, and the exponent has to be positive, which is
-`kappa_pos`.  The survival indicator is declared twice, once in each frozen
-file; the two declarations are the same function, which is `survival_eq`.
--/
 import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Frozen.DGT4PathSurvival
+
+/-!
+# The time weight of the diffusive-membrane linearization
+
+The deterministic array `q_{R,j} = (1 - j/(R²T))^κ` that the linearization proposition applies
+to `lem:dgt4-linearization-from-survival` must lie in `[0,1]` on the index range
+`0 ≤ j < ⌊R²T⌋`, and its exponent `κ` must satisfy `0 < κ ≤ 1`. These facts are established
+in both cases of the diffusive-membrane theorem: the Gaussian case, where `κ = 1`, and the
+stable case, where `κ = 1 - 1/α` for a tail index `α > 2`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

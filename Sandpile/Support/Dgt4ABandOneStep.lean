@@ -1,21 +1,17 @@
-/-
-The Taylor step of the one-step profile of Step 2 of `thm:dgt4-many-limits`
-(`eq:dgt4-band-one-step-profile`, `sandpile.tex:6201-6217`).
-
-The paper's sentence is "Taylor's formula gives the second line because the
-relative change in `z_{k,n}` is `O(ω_k z_{k,n}^{ϑ_k}) = o(1)`": the mean
-increment `E u_{n+1}(0) - E u_n(0)` decreases `z_{k,n}` by
-`ω_k z_{k,n}^{ϑ_k+1}/(G(0,0)(ϑ_k+1))` to leading order, and the reciprocal power
-`y_{k,n} = z_{k,n}^{-ϑ_k}` therefore increases by `ω_k/(G(0,0)κ_k)` to leading
-order, with `κ_k = 1 + 1/ϑ_k`.
-
-Nothing here is probabilistic: it is the real-analytic identity that turns the
-integrated profile into the constant increments that
-`scaledProfile_of_increments` sums.  Both directions come from Bernoulli's
-inequality for real exponents, applied to `(1-u)^{-ϑ}` once through
-`(1-u)^{-1} = 1 + u/(1-u)` and once through `1 - ϑu ≤ (1-u)^{ϑ}`.
--/
 import Mathlib
+
+/-!
+# The Taylor step of the one-step profile
+
+If the mean increment decreases `z` to `z - δ`, with the decrement `δ` equal to
+`c z^{θ + 1}` up to a relative error `ε`, then the reciprocal power `z^{-θ}` increases by `θ c` up
+to an error `θ c ε` plus a quadratic term in `c`; this is `abs_oneStep_increment_le`, restated in
+the paper's own coefficients by `abs_oneStep_increment_le'`. Nothing here is probabilistic: it is
+the real-analytic identity that turns the integrated profile into the constant increments that a
+later summation step sums. Both directions come from Bernoulli's inequality for real exponents,
+applied to `(1 - u)^{-θ}` once through `(1 - u)^{-1} = 1 + u / (1 - u)` and once through
+`1 - θu ≤ (1 - u)^θ`, recorded as `abs_rpow_neg_one_sub_le`.
+-/
 
 open Filter Topology
 

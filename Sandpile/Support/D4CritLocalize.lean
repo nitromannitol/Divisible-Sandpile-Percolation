@@ -1,14 +1,16 @@
-/-
-The mean-localization bound of `lem:mean-localization` with its constants bound
-before the scenery law, as the dimension-four percolation argument needs them:
-the localization radius `A_loc` is chosen once for the whole law class, so the
-deficit constants must not depend on the law.  The constants are those of the
-maximal-displacement bound of `eq:rw-max-displacement`, which is a statement
-about simple random walk alone.
--/
 import Sandpile.Frozen.MeanLocalization
 import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.Support.D4CriticalAssembly
+
+/-!
+# Mean-localization bound with uniform constants
+
+The mean-localization bound of `lem:mean-localization` with its constants bound before the
+scenery law, as the dimension-four percolation argument needs them: the localization radius
+`A_loc` is chosen once for the whole law class, so the deficit constants must not depend on the
+law. The constants are those of the maximal-displacement bound of `eq:rw-max-displacement`,
+which is a statement about simple random walk alone.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -141,11 +143,13 @@ beyond a threshold `t₁`, as `thm:critical-toppling-d4` gives them. -/
 theorem uniform_localized_mean_lower_thresh
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (_hmean : ∫ z, z ∂ν = 0)
     (_hpos : Integrable (fun z => max z 0) ν)
-    (c₀ C₀ c₁ C₁ Aloc : ℝ) (r t₁ : ℕ) (hrt : t₁ ≤ r ^ 2) (hc₀ : 0 < c₀) (_hC₀ : 0 < C₀) (_hc₁ : 0 < c₁) (hC₁ : 0 < C₁)
+    (c₀ C₀ c₁ C₁ Aloc : ℝ) (r t₁ : ℕ) (hrt : t₁ ≤ r ^ 2) (hc₀ : 0 < c₀) (_hC₀ : 0 < C₀)
+    (_hc₁ : 0 < c₁) (hC₁ : 0 < C₁)
     (hAloc : 1 ≤ Aloc) (hr : 2 ≤ r)
     (hlow : ∀ t : ℕ, t₁ ≤ t → c₀ * Real.log t ≤
         Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t)
-    (hup : ∀ t : ℕ, t₁ ≤ t → Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t ≤ C₀ * Real.log t)
+    (hup : ∀ t : ℕ, t₁ ≤ t →
+      Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t ≤ C₀ * Real.log t)
     (hloc : ∀ A : ℝ, 1 ≤ A → ∀ R : ℝ, 1 ≤ R → ∀ t : ℕ, (t : ℝ) ≤ 1 * R ^ 2 →
         ∀ x : Sandpile.Site 4,
           0 ≤ (∫ ζ, Sandpile.odometerOf ζ t 0 ∂(LatticeProb.iidLaw 4 ν)) -

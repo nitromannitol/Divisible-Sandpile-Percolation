@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4ABandLawLower
+import Sandpile.Support.Dgt4ABandIntegrated
+
+/-!
+# Integrated band profile of the constructed law
+
 The integrated band profile `eq:dgt4-band-integrated-profile` for the
 constructed one-site law.
 
@@ -12,8 +17,6 @@ contributes at most its own level `a_j`, and `∑_j ω_j a_j < ∞`.
 Combining it with `bandProfile_law` and `bandUpperIsolation_law` gives the
 integrated profile for the constructed law itself.
 -/
-import Sandpile.Support.Dgt4ABandLawLower
-import Sandpile.Support.Dgt4ABandIntegrated
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

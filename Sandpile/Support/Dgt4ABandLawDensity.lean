@@ -1,18 +1,17 @@
-/-
-The Step-1 density bound `eq:dgt4-band-density` of `thm:dgt4-many-limits`
-(`sandpile.tex:5930-6055`) for the constructed one-site law.
-
-The estimate is read on the band of the NEGATED variable: `eq:dgt4-band-density`
-bounds the difference quotients of `t ↦ P(-ζ(0) ≤ t)` on `(ℓ_1 a_k, a_k]`, so the
-mass to bound is the one the law puts on `[-(t+ε),-t]`.
-
-There the components below the `k`th band contribute exactly nothing, because
-their carriers end at `-a_j ≤ -ℓ_1 a_k < -t`.  Every component at or above the
-`k`th band has density at most `2M/((1-ℓ_1)a_k)`, so together they contribute at
-most that times their total weight, which is `(1+o(1))ω_k`.  The positive
-summand's density there is at most `Ce^{-2a_k} = o(ω_k/a_k)`.
--/
 import Sandpile.Support.Dgt4ABandLawParameters
+
+/-!
+# The Step-1 density bound for the constructed one-site law
+
+The estimate is read on the band of the negated variable: it bounds the difference quotients of
+`t ↦ P(-ζ(0) ≤ t)` on `(ℓ_1 a_k, a_k]`, so the mass to bound is the one the constructed law
+`bandLaw` puts on `[-(t + ε), -t]`. There the components below the `k`th band contribute exactly
+nothing, since their carriers end at `-a_j ≤ -ℓ_1 a_k < -t`, while every component at or above the
+`k`th band has density at most `2M / ((1 - ℓ_1) a_k)`, so together they contribute at most that
+times their total weight, which is `(1 + o(1)) ω_k`. The Gaussian summand's density there is at
+most `C e^{-2 a_k} = o(ω_k / a_k)`. `bandDensity_law` assembles these pieces into the density bound
+`BandDensity`.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

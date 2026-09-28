@@ -1,15 +1,15 @@
-/-
-The third absolute moment of the standardized coefficients.
-
-`sandpile.tex:1784-1790` bounds `∑_x |a(x)|³` by `m^{1/2}` times the sum over
-the scales of `∑_x |a_j(x)|³`, and each of those by the supremum of the Green
-kernel against its own square sum.  The first step is the `ℓ²`-`ℓ³` comparison
-`(∑ c_j²)³ ≤ m (∑ c_j³)²`, which follows from two applications of the
-Cauchy-Schwarz inequality after the substitution `c_j = e_j²`, so that every
-exponent is a natural number.  The variance of the one-site law cancels out of
-the whole estimate.
--/
 import Sandpile.Support.EventBridge
+
+/-!
+# The third absolute moment of the standardized coefficients
+
+`sandpile.tex:1784-1790` bounds `∑_x |a(x)|³` by `m^{1/2}` times the sum over the scales of
+`∑_x |a_j(x)|³`, and each of those by the supremum of the Green kernel against its own square
+sum. The first step is the `ℓ²`-`ℓ³` comparison `(∑ c_j²)³ ≤ m (∑ c_j³)²` (`sum_sq_cube_le`),
+which follows from two applications of the Cauchy-Schwarz inequality after the substitution
+`c_j = e_j²`, so that every exponent is a natural number. The variance of the one-site law
+cancels out of the whole estimate, as `third_moment_bound` shows.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.External.BerryEsseen
@@ -18,6 +18,10 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- **The `ℓ²`-`ℓ³` comparison.** For nonnegative reals `c_j`, `(∑ c_j²)³ ≤ m (∑ c_j³)²`: apply
+Cauchy-Schwarz twice after substituting `c_j = e_j²` so that every exponent is a natural number,
+first to compare `∑ e_j⁴` with `√(∑ e_j²) · √(∑ e_j⁶)` and then to compare `∑ e_j²` with
+`√m · √(∑ e_j⁴)`. -/
 theorem sum_sq_cube_le {m : ℕ} (c : Fin m → ℝ) (hc : ∀ j, 0 ≤ c j) :
     (∑ j, c j ^ 2) ^ 3 ≤ (m : ℝ) * (∑ j, c j ^ 3) ^ 2 := by
   set e : Fin m → ℝ := fun j => Real.sqrt (c j) with hedef
@@ -57,6 +61,9 @@ theorem sum_sq_cube_le {m : ℕ} (c : Fin m → ℝ) (hc : ∀ j, 0 ≤ c j) :
       nlinarith [h1, h2', hcs2, sq_nonneg (∑ j, e j ^ 6)]
     nlinarith [hfour, hpos]
 
+/-- The cube sum `∑_i g_n(x, siteEnum s i)³` over an enumeration of a finite set `s` containing
+`boxFinset x n` equals the full infinite sum `∑'_z g_n(x, z)³`, since `greenTime` vanishes outside
+the box `boxFinset x n` and hence outside `s`. -/
 theorem sum_siteEnum_greenTime_cube {s : Finset (Site d)} {n : ℕ} {x : Site d}
     (hsub : boxFinset x n ⊆ s) :
     ∑ i : Fin s.card, greenTime d n x (siteEnum s i) ^ 3
@@ -70,6 +77,9 @@ theorem sum_siteEnum_greenTime_cube {s : Finset (Site d)} {n : ℕ} {x : Site d}
     exact hz (hsub (mem_boxFinset (greenTime_support n x hne)))
   simp [hg]
 
+/-- The Green cube sum `∑'_x g_n(0,x)³` is bounded by the supremum `M` of the Green kernel times
+`greenSq d n = ∑'_x g_n(0,x)²`: bound each `g_n(0,x)³ ≤ M · g_n(0,x)²` termwise and sum over the
+finite support box. -/
 theorem tsum_greenTime_cube_le (n : ℕ) (M : ℝ) (hM : ∀ x : Site d, greenTime d n 0 x ≤ M) :
     (∑' x : Site d, greenTime d n 0 x ^ 3) ≤ M * greenSq d n := by
   rw [greenSq, tsum_greenTime_sq_eq_sum]
@@ -85,6 +95,9 @@ theorem tsum_greenTime_cube_le (n : ℕ) (M : ℝ) (hM : ∀ x : Site d, greenTi
   have h0 := greenTime_nonneg n (0 : Site d) x
   nlinarith [hM x, sq_nonneg (greenTime d n 0 x)]
 
+/-- The cube of a coefficient's Euclidean norm, `coeffNorm a i ^ 3`, is bounded by `√m` times the
+sum of the cubed absolute values of its `m` entries: apply `sum_sq_cube_le` to `|a i j|` and take
+square roots. -/
 theorem coeffNorm_cube_le {N m : ℕ} (a : Fin N → Fin m → ℝ) (i : Fin N) :
     coeffNorm a i ^ 3 ≤ Real.sqrt (m : ℝ) * ∑ j, |a i j| ^ 3 := by
   set S : ℝ := ∑ j, a i j ^ 2 with hS
@@ -113,6 +126,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The real power identity `x ^ (3/2) = x · √x` for positive `x`, used to expand
+`variance ν ^ (3/2)` and `membraneSd d ν (ns j) ^ 3` in `third_moment_bound`. -/
 theorem rpow_three_half {x : ℝ} (hx : 0 < x) : x ^ ((3 : ℝ) / 2) = x * Real.sqrt x := by
   rw [Real.sqrt_eq_rpow, show (3 : ℝ) / 2 = 1 + 1 / 2 by ring,
     Real.rpow_add hx, Real.rpow_one]

@@ -1,12 +1,19 @@
-/-
-The exponential lower bound and second-moment argument used for the block
-tail in `sandpile.tex:2827-2881`.  A fixed amount of mass on a negative
-half-line gives a quadratic lower bound for the one-site moment generating
-function, uniformly over the law.  Independence multiplies these bounds.
--/
 import LatticeProb.Prob.WeightedConc
 import Sandpile.Support.Norms
 import Sandpile.Support.UniformTail
+
+/-!
+# Exponential lower bounds for the block-tail moment generating function
+
+These lemmas supply the exponential lower bound and second-moment argument used for the block
+tail estimate of `sandpile.tex:2827-2881`. A fixed amount `q` of mass on a negative half-line
+`Set.Iic (-a)` forces a quadratic lower bound `1 + q * a ^ 2 / 4 * s ^ 2` on the one-site moment
+generating function `∫ z, Real.exp (-(s * z)) ∂ν`, uniformly over mean-zero laws `ν`; taking
+logarithms and multiplying across independent coordinates upgrades this to a lower bound on the
+moment generating function of a weighted sum. The file closes with two second-moment tail
+estimates, `measure_lower_tail_of_moments` and `measure_neg_tail_of_exp_moments`, which convert
+such moment bounds into lower bounds on tail probabilities.
+-/
 
 open LatticeProb
 
@@ -15,6 +22,8 @@ open scoped ENNReal
 
 namespace Sandpile
 
+/-- For `u ≥ 0`, the quadratic `1 + u + u ^ 2 / 4` lower-bounds `Real.exp u`, obtained by squaring
+the elementary bound `1 + u / 2 ≤ Real.exp (u / 2)`. -/
 theorem quadratic_le_exp_nonneg {u : ℝ} (hu : 0 ≤ u) :
     1 + u + u ^ 2 / 4 ≤ Real.exp u := by
   have h : 1 + u / 2 ≤ Real.exp (u / 2) := by
@@ -25,6 +34,10 @@ theorem quadratic_le_exp_nonneg {u : ℝ} (hu : 0 ≤ u) :
   rw [heq] at hsq
   nlinarith
 
+/-- For a mean-zero law `ν` carrying at least mass `q` on `Set.Iic (-a)`, the moment generating
+function `∫ z, Real.exp (-(s * z)) ∂ν` is at least the quadratic `1 + q * a ^ 2 / 4 * s ^ 2`, from
+a pointwise lower bound on `Real.exp (-(s * z))` by a parabola matching it on `Set.Iic (-a)` and by
+`Real.add_one_le_exp` elsewhere. -/
 theorem integral_exp_neg_lower (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
     {a q s : ℝ} (ha : 0 < a) (hs : 0 ≤ s)
@@ -65,12 +78,17 @@ theorem integral_exp_neg_lower (ν : Measure ℝ) [IsProbabilityMeasure ν]
   · exact (integrable_const 1).sub (hint.const_mul s)
   · exact hi.const_mul _
 
+/-- For `0 ≤ v ≤ 1`, `v / 2 ≤ Real.log (1 + v)`, a quantitative version of
+`Real.le_log_one_add_of_nonneg` valid on the unit interval. -/
 theorem half_le_log_one_add {v : ℝ} (hv : 0 ≤ v) (hv1 : v ≤ 1) :
     v / 2 ≤ Real.log (1 + v) := by
   refine le_trans ?_ (Real.le_log_one_add_of_nonneg hv)
   rw [le_div_iff₀ (by linarith : 0 < v + 2)]
   nlinarith
 
+/-- Under the sub-Gaussian hypothesis `SubGaussianOn id c s₀ ν`, the exponential of the weighted
+sum `s * ∑ i, ℓ i * ξ i` is integrable on the product measure `Measure.pi fun _ => ν`, being a
+finite product of the one-coordinate integrable exponentials `Real.exp (s * ℓ i * ξ i)`. -/
 theorem integrable_exp_weighted_sum {N : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     {c s₀ : ℝ} (hSG : SubGaussianOn id c s₀ ν) (ℓ : Fin N → ℝ) (s : ℝ)
     (hs : ∀ i, |s * ℓ i| ≤ s₀) :
@@ -84,6 +102,9 @@ theorem integrable_exp_weighted_sum {N : ℕ} (ν : Measure ℝ) [IsProbabilityM
   congr 1
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/-- Taking logarithms in `integral_exp_neg_lower` and applying `half_le_log_one_add` to the
+resulting quadratic, which lies in `[0, 1]` once `q * a ^ 2 * s ^ 2 ≤ 4`, gives the log-moment
+bound `q * a ^ 2 / 8 * s ^ 2 ≤ Real.log (∫ z, Real.exp (-(s * z)) ∂ν)`. -/
 theorem log_integral_exp_neg_lower (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
     {a q s : ℝ} (ha : 0 < a) (hq : 0 ≤ q) (hs : 0 ≤ s)
@@ -97,6 +118,12 @@ theorem log_integral_exp_neg_lower (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (integral_exp_neg_lower ν hint hmean ha hs htail hexp)
   nlinarith
 
+/-- For independent coordinates each satisfying the tail hypothesis of `integral_exp_neg_lower`,
+the product moment generating function
+`∫ ξ, Real.exp (-(θ * ∑ i, ℓ i * ξ i)) ∂(Measure.pi fun _ => ν)` is at least
+`Real.exp (q * a ^ 2 / 8 * θ ^ 2 * ∑ i, ℓ i ^ 2)`, obtained by factoring the exponential of a sum
+into a product over coordinates and multiplying the per-coordinate lower bounds from
+`log_integral_exp_neg_lower`. -/
 theorem integral_exp_neg_weighted_lower {N : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
     {a q θ : ℝ} (ha : 0 < a) (hq : 0 ≤ q) (hθ : 0 ≤ θ)

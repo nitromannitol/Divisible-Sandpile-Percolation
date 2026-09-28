@@ -1,18 +1,19 @@
-/-
-The heat semigroup applied to a finite-time Brownian Green kernel.
-
-Chapman--Kolmogorov and Fubini give
-  integral p_r(x,y) g_s(z,y) dy = integral_0^s p_(r+u)(x,z) du.
-For r > 0 the time integrand has a uniform bound, so this interchange is an
-ordinary integrable Fubini identity. Away from x = z, splitting the Green time
-integrals gives g_(r+s)(x,z) - g_r(x,z). The resulting identity of spatial test
-functions holds almost everywhere, which is the appropriate input for L2 and
-white-noise evaluation. On the diagonal, raw Green time integrals can have junk
-values in dimensions at least two, so the subtraction identity is not asserted
-pointwise there.
--/
 import Mathlib
 import Sandpile.Support.ContBMGreenIdentity
+
+/-!
+# The heat semigroup applied to a finite-time Brownian Green kernel
+
+Chapman-Kolmogorov and Fubini give `integral p_r(x,y) g_s(z,y) dy = integral_0^s p_(r+u)(x,z) du`
+(`integral_heatKernelBM_mul_greenTimeBM`). For `r > 0` the time integrand has a uniform bound
+(`heatKernelBM_later_le`), so this interchange is an ordinary integrable Fubini identity. Away
+from `x = z`, splitting the Green time integrals
+gives `g_(r+s)(x,z) - g_r(x,z)` (`integral_heatKernelBM_mul_greenTimeBM_eq_sub`). The resulting
+identity of spatial test functions holds almost everywhere
+(`integral_heatKernelBM_mul_greenTimeBM_ae_eq_sub`), which is the appropriate input for L2 and
+white-noise evaluation. On the diagonal, raw Green time integrals can have junk values in
+dimensions at least two, so the subtraction identity is not asserted pointwise there.
+-/
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum
@@ -20,6 +21,9 @@ open scoped NNReal ENNReal
 
 namespace Sandpile.Support
 
+/-- The heat kernel at a later time `r + u` (for `u ≥ 0`) is bounded by the on-diagonal value at
+time `r`, obtained from `heatKernelBM_le` by monotonicity of the base in the sign of the
+exponent `-d/2`. -/
 theorem heatKernelBM_later_le {d : ℕ} (hd : 1 ≤ d) {r u : ℝ}
     (hr : 0 < r) (hu : 0 ≤ u) (x z : Space d) :
     heatKernelBM d (r + u) x z ≤ (4 * Real.pi * r / (2 * d)) ^ (-(d : ℝ) / 2) := by
@@ -32,6 +36,12 @@ theorem heatKernelBM_later_le {d : ℕ} (hd : 1 ≤ d) {r u : ℝ}
   · have hn : (0 : ℝ) ≤ d := Nat.cast_nonneg d
     linarith
 
+/-- **Chapman-Kolmogorov applied to a finite-time Green kernel.** The spatial integral of
+`heatKernelBM d r x y * greenTimeBM d s z y` against `y` equals `∫ u in (0, s), heatKernelBM d
+(r + u) x z`: writing `greenTimeBM d s z` as a time integral of the heat kernel, applying Fubini
+(justified by `heatKernelBM_later_le` for the uniform bound in `u`, via
+`integral_integral_swap`), and integrating the inner heat-kernel convolution with
+`integral_heatKernelBM_mul_two`. -/
 theorem integral_heatKernelBM_mul_greenTimeBM {d : ℕ} (hd : 1 ≤ d) {r s : ℝ}
     (hr : 0 < r) (hs : 0 ≤ s) (x z : Space d) :
     (∫ y : Space d, heatKernelBM d r x y * greenTimeBM d s z y) =
@@ -70,6 +80,12 @@ theorem integral_heatKernelBM_mul_greenTimeBM {d : ℕ} (hd : 1 ≤ d) {r s : �
         filter_upwards [ae_restrict_mem measurableSet_Ioo] with u hu
         exact integral_heatKernelBM_mul_two hd hr hu.1 x z
 
+/-- Away from the diagonal (`x ≠ z`), the Chapman-Kolmogorov integral of
+`integral_heatKernelBM_mul_greenTimeBM` simplifies to the difference `greenTimeBM d (r + s) x z -
+greenTimeBM d r x z`: the interval `(0, s)` integral of `heatKernelBM d (r + ·) x z` is a
+translate of the interval `(r, r + s)` integral, which
+`intervalIntegral.integral_interval_sub_left` splits against `(0, r)` using that both intervals
+are integrable off the diagonal (`integrableOn_heatKernelBM_time`). -/
 theorem integral_heatKernelBM_mul_greenTimeBM_eq_sub {d : ℕ} (hd : 1 ≤ d) {r s : ℝ}
     (hr : 0 < r) (hs : 0 ≤ s) {x z : Space d} (hxz : x ≠ z) :
     (∫ y : Space d, heatKernelBM d r x y * greenTimeBM d s z y) =
@@ -86,10 +102,14 @@ theorem integral_heatKernelBM_mul_greenTimeBM_eq_sub {d : ℕ} (hd : 1 ≤ d) {r
         rw [intervalIntegral.integral_of_le hs, integral_Ioc_eq_integral_Ioo]
     _ = ∫ u in r..(r + s), heatKernelBM d u x z := by
         simpa only [add_zero] using
-          intervalIntegral.integral_comp_add_left (fun u => heatKernelBM d u x z) r (a := 0) (b := s)
+          intervalIntegral.integral_comp_add_left (fun u => heatKernelBM d u x z) r
+            (a := 0) (b := s)
     _ = greenTimeBM d (r + s) x z - greenTimeBM d r x z :=
       (intervalIntegral.integral_interval_sub_left hIrs hIr).symm
 
+/-- The subtraction identity of `integral_heatKernelBM_mul_greenTimeBM_eq_sub` holds for
+almost every `z` (the diagonal `z = x` is a null set), which is the form needed for L2 and
+white-noise evaluation. -/
 theorem integral_heatKernelBM_mul_greenTimeBM_ae_eq_sub {d : ℕ} (hd : 1 ≤ d) {r s : ℝ}
     (hr : 0 < r) (hs : 0 ≤ s) (x : Space d) :
     (fun z => ∫ y : Space d, heatKernelBM d r x y * greenTimeBM d s z y) =ᵐ[volume]

@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Membrane
+
+/-!
+# The one-step Markov property of the walk
+
 Towards the Markov property of the walk of `Sandpile/Walk.lean`.
 
 The optimal-stopping statements of `sandpile.tex` (`thm:RW`,
@@ -42,7 +46,6 @@ side; that truncation is the remaining step towards
 observation that a stopping time bounded by `t` factors through the first `t`
 increments.
 -/
-import Sandpile.Support.Membrane
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
@@ -51,11 +54,15 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- `walkPath x`, the walk started at `x` as a function of its increment sequence, is measurable:
+each coordinate is a finite sum of measurable coordinate projections. -/
 theorem measurable_walkPath (x : Site d) : Measurable (walkPath x) := by
   refine measurable_pi_lambda _ fun k => ?_
   unfold walkPath
   fun_prop
 
+/-- The step law `stepLaw d`, the uniform distribution on the `2d` unit vectors, is a probability
+measure: its total mass `d · (1 + 1) / (2d)` simplifies to `1`. -/
 theorem isProbabilityMeasure_stepLaw (hd : 1 ≤ d) :
     IsProbabilityMeasure (stepLaw d) := by
   have hd0 : (d : ℝ≥0∞) ≠ 0 := by
@@ -168,6 +175,8 @@ theorem integral_prefix_step (hd : 1 ≤ d) (n : ℕ)
 def prefixPos (x : Site d) (n : ℕ) (u : ↥(Finset.range n) → Site d) : Site d :=
   x + ∑ j ∈ (Finset.range n).attach, u j
 
+/-- The walk's position at time `n` depends on the increment sequence `ξ` only through its
+restriction to the first `n` indices, matching `prefixPos`. -/
 theorem walkPath_eq_prefixPos (x : Site d) (n : ℕ) (ξ : ℕ → Site d) :
     walkPath x ξ n = prefixPos x n ((Finset.range n).restrict ξ) := by
   unfold walkPath prefixPos
@@ -216,6 +225,7 @@ theorem walk_one_step (hd : 1 ≤ d) (x : Site d) (n : ℕ)
         simp only []
         rw [integral_const_mul, integral_stepLaw, walkPath_eq_prefixPos]
 
+/-- The walk started at `x` is at `x` at time `0`, regardless of the increment sequence. -/
 theorem walkPath_zero (x : Site d) (ξ : ℕ → Site d) : walkPath x ξ 0 = x := by
   simp [walkPath]
 
@@ -253,6 +263,8 @@ theorem boxDist_add_le_of_unit (x y u : Site d) (hu : ∀ j, (u j).natAbs ≤ 1)
   simp only [Pi.add_apply]
   omega
 
+/-- Every coordinate of a unit vector `unit i` has absolute value at most one: it is `1` at
+coordinate `i` and `0` elsewhere. -/
 theorem natAbs_unit_le (i j : Fin d) : ((unit i : Site d) j).natAbs ≤ 1 := by
   by_cases h : i = j
   · simp [unit, h]
@@ -261,6 +273,8 @@ theorem natAbs_unit_le (i j : Fin d) : ((unit i : Site d) j).natAbs ≤ 1 := by
 /-- The `2d` steps the walk can take. -/
 def stepSet (d : ℕ) : Set (Site d) := {v | ∃ i : Fin d, v = unit i ∨ v = -unit i}
 
+/-- The step law gives zero mass to the complement of `stepSet d`: it is a finite sum of Dirac
+masses each already concentrated on `stepSet d`. -/
 theorem stepLaw_stepSet_compl (d : ℕ) : stepLaw d (stepSet d)ᶜ = 0 := by
   unfold stepLaw LatticeProb.instructionLaw
   simp only [Measure.smul_apply, Measure.coe_finsetSum, Finset.sum_apply, Measure.coe_add,
@@ -317,6 +331,7 @@ theorem ae_boxDist_walkPath (hd : 1 ≤ d) (x : Site d) :
         simp only [Pi.neg_apply, Int.natAbs_neg]
         exact this
 
+/-- The confinement bound `ae_boxDist_walkPath` specialized to a single fixed time `n`. -/
 theorem boxDist_walkPath_le (hd : 1 ≤ d) (x : Site d) (n : ℕ) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d),
       boxDist x (walkPath x ξ n) ≤ n := by

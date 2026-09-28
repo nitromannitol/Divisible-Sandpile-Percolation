@@ -1,24 +1,27 @@
-/-
+import Sandpile.Support.LimOccupationIdentity
+
+/-!
+# Bounds on the ball-stopped kernel
+
 The two bounds the occupation identity gives on the kernel of the ball-stopped
 field, and the convergence of its mass.
 
 Testing `ballStoppedKernel` against the indicator of a measurable set makes the
 occupation identity of `Sandpile/Support/LimOccupationIdentity.lean` say that the
 kernel integrates over that set to the expected time the stopped motion spends
-there.  That time is nonnegative, and it is at most the time the motion spends
+there. That time is nonnegative, and it is at most the time the motion spends
 there before leaving the ball at all, which by the cited Green-function input
 (`Sandpile.External.BallOccupationDensity`) is the integral of
-`2d · ballKernel` over the same set.  Two applications of
+`2d · ballKernel` over the same set. Two applications of
 `ae_nonneg_of_forall_setIntegral_nonneg` therefore give
 
   `0 ≤ ballStoppedKernel ≤ 2d · ballKernel`   almost everywhere,
 
 and the constant test function gives the mass of the kernel, the expected value of
 the truncated exit time, which converges to `2d ∫ ballKernel` as the horizon grows
-(`tendsto_ball_capped_occupation`).  These are the three facts the `L²` estimate of
+(`tendsto_ball_capped_occupation`). These are the three facts the `L²` estimate of
 the next module needs.
 -/
-import Sandpile.Support.LimOccupationIdentity
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -32,13 +35,17 @@ section
 
 variable [MeasurableSpace ΩB] {d : ℕ}
 
+/-- The ball-stopped kernel `ballStoppedKernel d PB B s T u` is integrable in
+the space variable: it is a difference of the stopped Green-time kernel and the
+stopped Green kernel, both integrable by the cited Green-time estimates. -/
 theorem integrable_ballStoppedKernel (hd : 1 ≤ d) (PB : Measure ΩB) [IsProbabilityMeasure PB]
     {B : Space d → ℝ≥0 → ΩB → Space d} (hBc : ∀ y ω, Continuous fun t => B y t ω)
     (hBm : ∀ y t, StronglyMeasurable (B y t)) {s T : ℝ} (hT : 0 < T) (u : Space 2) :
     Integrable (ballStoppedKernel d PB B s T u) (volume : Measure (Space d)) := by
   have hK : Integrable (stoppedGreenKernel d PB B s T u) (volume : Measure (Space d)) :=
     (integrable_greenTimeBM_stopped hd PB (hBc _) (hBm _) (ballStopTime d B s T u)
-      (measurable_ballStopTime hBc hBm s T u) hT (ballStopTime_le_real B hT.le u)).integral_prod_right
+      (measurable_ballStopTime hBc hBm s T u) hT
+      (ballStopTime_le_real B hT.le u)).integral_prod_right
   exact (integrable_greenTimeBM_and_integral_eq hd hT.le (planePoint u)).1.sub hK
 
 /-- The integral of the kernel over a measurable set is the expected time the stopped
@@ -84,11 +91,17 @@ end
 
 /-! ### Integrability of the ball kernel -/
 
+/-- `centredKernel d s` vanishes outside the ball of radius `s`: it is defined
+by an `if ‖y‖ < s then ... else 0` split, and `s ≤ ‖y‖` selects the `else`
+branch. -/
 theorem centredKernel_eq_zero_of_le {d : ℕ} {s : ℝ} {y : Space d} (hy : s ≤ ‖y‖) :
     centredKernel d s y = 0 := by
   unfold centredKernel
   rw [if_neg (not_lt.mpr hy)]
 
+/-- `centredKernel d s` is integrable for `d ∈ {2,3}` and `s > 0`: it is in `L²`
+by `memLp_centredKernel`, supported on the finite-measure ball of radius `s` by
+`centredKernel_eq_zero_of_le`, so it drops to `L¹`. -/
 theorem integrable_centredKernel_of_pos {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s) :
     Integrable (centredKernel d s) (volume : Measure (Space d)) := by
   have hmem : MemLp (centredKernel d s) 2 (volume : Measure (Space d)) :=
@@ -102,6 +115,9 @@ theorem integrable_centredKernel_of_pos {d : ℕ} (hd : d = 2 ∨ d = 3) {s : �
   exact memLp_one_iff_integrable.mp
     (hmem.mono_exponent_of_measure_support_ne_top hzero hfin (by norm_num))
 
+/-- `ballKernel d s u` is integrable for `d ∈ {2,3}` and `s > 0`: it is the
+translate of `centredKernel d s` by the measure-preserving reflection around
+`planePoint u`, so integrability transfers from `integrable_centredKernel_of_pos`. -/
 theorem integrable_ballKernel {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s)
     (u : Space 2) : Integrable (ballKernel d s u) (volume : Measure (Space d)) := by
   have hmp : MeasurePreserving
@@ -157,7 +173,8 @@ theorem ae_ballStoppedKernel_le (hOcc : Sandpile.External.BallOccupationDensity)
     have hKint : Integrable (fun b => ∫ r in (0 : ℝ)..((ballStopTime d B s T u b : ℝ)),
         A.indicator (fun _ => (1 : ℝ)) (B (planePoint u) r.toNNReal b)) PB :=
       integrable_reward_upTo PB (hBc _) (hBm _) _ hφm hφb
-        (fun b => ((ballStopTime d B s T u b : ℝ))) (measurable_ballStopTime hBc hBm s T u).coe_nnreal_real
+        (fun b => ((ballStopTime d B s T u b : ℝ)))
+        (measurable_ballStopTime hBc hBm s T u).coe_nnreal_real
         (fun b => (ballStopTime d B s T u b).coe_nonneg) (ballStopTime_le_real B hT.le u)
     have hsplit : (∫ y in A, (2 * (d : ℝ) * ballKernel d s u y
           - ballStoppedKernel d PB B s T u y))
@@ -198,6 +215,8 @@ theorem integral_ballStoppedKernel [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d
   exact h
 
 
+/-- `Real.toNNReal` tends to `atTop` along `atTop`: for every `N`, the reals
+past `(N : ℝ≥0) : ℝ` truncate to an `NNReal` at least `N`. -/
 theorem tendsto_real_toNNReal_atTop : Tendsto Real.toNNReal atTop atTop := by
   refine tendsto_atTop.2 fun N => ?_
   filter_upwards [eventually_ge_atTop ((N : ℝ≥0) : ℝ)] with T hT

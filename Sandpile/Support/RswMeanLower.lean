@@ -1,7 +1,3 @@
-/-
-The RSW mean lower bound for Gaussian far-field rectangle crossings, and the
-final polynomial lower tail for fixed-aspect rectangles.
--/
 import Sandpile.Support.RswSquareHalf
 import Sandpile.Support.RswHardStep
 import Sandpile.Support.RswRectangleLower
@@ -9,6 +5,13 @@ import Sandpile.Support.RpowNegSmall
 import Sandpile.Support.GaussianCrossingUpper
 import Sandpile.Support.GaussianBottleneck
 import Sandpile.External.PlanarRSW
+
+/-!
+# The RSW mean lower bound for Gaussian rectangle crossings
+
+The RSW mean lower bound for Gaussian far-field rectangle crossings, and the final polynomial
+lower tail for fixed-aspect rectangles.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped NNReal ENNReal
@@ -69,7 +72,8 @@ lemma exists_gaussian_rectangle_mean_lower (hRSW : External.PlanarRSW)
       (fun w => planeTranslate x (w : Site 2)) v V hv ((a / 4) * Real.log r)
       (by positivity)
     rw [← hE] at hconc'
-    have hlow' := hr₁ r L (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hr) hL φ hφ x v hv
+    have hlow' :=
+      hr₁ r L (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hr) hL φ hφ x v hv
     have hchain : ENNReal.ofReal q ≤ ENNReal.ofReal
       (Real.exp (-((a / 4) * Real.log r) ^ 2 / (C * V * Real.log r))) := by
       refine le_trans hlow' ?_

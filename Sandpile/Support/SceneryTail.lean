@@ -1,14 +1,19 @@
-/-
-The exponential Chebyshev bound for a Green average of the scenery, which is the
-last step of `lem:dgt4-stretched-green-scenery-tail` (`sandpile.tex:4391-4397`).
-The bound is stated on the finite product law and then transported to the
-lattice through the finite-coordinate bridge, since the Green kernel
-`g_m(0, ·)` is supported in the box of radius `m`.
--/
 import Sandpile.Support.FiniteCoord
 import LatticeProb.Prob.LaplaceTransform
 import LatticeProb.Prob.WeightedConc
 import Sandpile.Support.Norms
+
+/-!
+# Exponential Chebyshev bound for the Green average of the scenery
+
+The exponential Chebyshev bound for a Green average of the scenery, which is the last step of
+`lem:dgt4-stretched-green-scenery-tail` (`sandpile.tex:4391-4397`). The bound is stated first on a
+finite product law (`measure_pi_weighted_neg_le`, via the moment-generating-function form of
+Chebyshev's inequality) and then transported to the lattice through the finite-coordinate bridge
+(`iidLaw_greenTime_tail_le`), since the Green kernel `g_m(0, ·)` is supported in the box of radius
+`m`; `prod_siteEnum` is the reindexing lemma that identifies a product over an enumerated finite
+set of sites with the product over the set itself.
+-/
 
 open LatticeProb
 

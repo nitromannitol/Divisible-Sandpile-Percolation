@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ContBMKernel
+
+/-!
+# The Continuous Time Cutoff
+
 The continuous time cutoff that removes the small times from the double time sum
 of `prop:weighted-membrane-limit` (`sandpile.tex:4724-4729`).
 
@@ -9,7 +13,6 @@ the weight by a continuous function which vanishes below `δ` and is one above
 theorems need, and the pairs of times it changes number at most `4δT R⁴`, so the
 change it makes to the sum is `O(δ)` uniformly in the scale.
 -/
-import Sandpile.Support.ContBMKernel
 
 open Filter Topology
 
@@ -18,16 +21,22 @@ namespace Sandpile.Support
 /-- The continuous cutoff: zero below `δ`, one above `2δ`, and values in `[0,1]`. -/
 noncomputable def cutoffFn (δ r : ℝ) : ℝ := max 0 (min 1 (r / δ - 1))
 
+/-- `cutoffFn δ` is continuous, being built from `max`, `min` and the continuous
+affine map `r ↦ r / δ - 1`. -/
 theorem continuous_cutoffFn (δ : ℝ) : Continuous (cutoffFn δ) := by
   unfold cutoffFn
   exact continuous_const.max
     (continuous_const.min ((continuous_id.div_const δ).sub continuous_const))
 
+/-- `cutoffFn δ r` is nonnegative, since it is a `max` with `0`. -/
 theorem cutoffFn_nonneg (δ r : ℝ) : 0 ≤ cutoffFn δ r := le_max_left _ _
 
+/-- `cutoffFn δ r ≤ 1`, since it is a `max` of `0` with a `min` capped at `1`. -/
 theorem cutoffFn_le_one (δ r : ℝ) : cutoffFn δ r ≤ 1 :=
   max_le zero_le_one (min_le_left _ _)
 
+/-- `|cutoffFn δ r| ≤ 1`, combining nonnegativity (`cutoffFn_nonneg`) with the
+upper bound `cutoffFn_le_one`. -/
 theorem abs_cutoffFn_le_one (δ r : ℝ) : |cutoffFn δ r| ≤ 1 := by
   rw [abs_of_nonneg (cutoffFn_nonneg δ r)]
   exact cutoffFn_le_one δ r
@@ -65,14 +74,20 @@ theorem abs_mul_cutoffFn_le {δ r Q : ℝ} {q : ℝ → ℝ} (hQ0 : 0 ≤ Q) (hQ
         mul_le_mul (hQ r) (abs_cutoffFn_le_one δ r) (abs_nonneg _) hQ0
     _ = Q := mul_one Q
 
+/-- Above `2δ` the cutoff is `1` (`cutoffFn_eq_one`), so multiplying `q r` by it
+leaves `q r` unchanged. -/
 theorem mul_cutoffFn_eq_of_ge {δ r : ℝ} (hδ : 0 < δ) (h : 2 * δ ≤ r) (q : ℝ → ℝ) :
     q r * cutoffFn δ r = q r := by
   rw [cutoffFn_eq_one hδ h, mul_one]
 
+/-- Below `δ` the cutoff vanishes (`cutoffFn_eq_zero`), so multiplying `q r` by
+it gives `0`. -/
 theorem mul_cutoffFn_eq_zero {δ r : ℝ} (hδ : 0 < δ) (h : r ≤ δ) (q : ℝ → ℝ) :
     q r * cutoffFn δ r = 0 := by
   rw [cutoffFn_eq_zero hδ h, mul_zero]
 
+/-- A function continuous on the compact interval `[0, T]` is bounded there, by
+the extreme value theorem applied to `|q|`. -/
 theorem exists_bound_of_continuousOn_Icc {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ → ℝ)
     (hq : ContinuousOn q (Set.Icc 0 T)) :
     ∃ Q : ℝ, 0 ≤ Q ∧ ∀ r ∈ Set.Icc (0:ℝ) T, |q r| ≤ Q := by
@@ -81,6 +96,9 @@ theorem exists_bound_of_continuousOn_Icc {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ
   obtain ⟨x, hx, hmax⟩ := hcpt.exists_isMaxOn hne hq.abs
   exact ⟨|q x|, abs_nonneg _, fun r hr => hmax hr⟩
 
+/-- The number of pairs `(p.1, p.2) ∈ range N × range N` with at least one
+coordinate below `M` is at most `2 * (M * N)`, by covering that set with two
+`M × N` rectangles and applying the union bound. -/
 theorem card_edge_block_le (N M : ℕ) :
     (((Finset.range N) ×ˢ (Finset.range N)).filter
       (fun p : ℕ × ℕ => p.1 < M ∨ p.2 < M)).card ≤ 2 * (M * N) := by
@@ -99,6 +117,8 @@ theorem card_edge_block_le (N M : ℕ) :
   rw [Nat.mul_comm N M]
   omega
 
+/-- A function continuous on `[0, T]` extends to a globally continuous function
+that agrees with it on `[0, T]`, via `Set.IccExtend`. -/
 theorem exists_continuous_extension {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ → ℝ)
     (hq : ContinuousOn q (Set.Icc 0 T)) :
     ∃ q' : ℝ → ℝ, Continuous q' ∧ (∀ r ∈ Set.Icc (0:ℝ) T, q' r = q r) := by

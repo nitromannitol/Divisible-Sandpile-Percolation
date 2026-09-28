@@ -1,14 +1,16 @@
-/-
-The two properties of the hitting index that the summed profile consumes.
-
-`scaledProfile_bound_family` needs exactly two things of its starts `s k`: that
-the profile is bounded at the start, and that the start is of smaller order than
-the square of the scale.  At the sandpile law the start is the hitting index
-`τ_k` of the band, and both properties come from the generic hitting-index
-lemmas once the band parameters are supplied.
--/
 import Sandpile.Support.Dgt4ABandDiverge
 import Sandpile.Support.Dgt4ABandScaled
+
+/-!
+# The hitting-index properties the summed profile consumes
+
+The two properties of the hitting index that the summed profile consumes.
+`scaledProfile_bound_family` needs exactly two things of its starts `s k`: that the profile is
+bounded at the start, and that the start is of smaller order than the square of the scale. At the
+sandpile law the start is the hitting index `τ_k` of the band (`bandTau`), and both properties
+(`bandTau_profile_bounded`, `bandTau_div_scaleSq_tendsto`) come from the generic hitting-index
+lemmas once the band parameters are supplied.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

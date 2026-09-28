@@ -1,19 +1,22 @@
-/-
-The tested field IS the scaled lattice pairing.
-
-`sandpile.tex:5665-5668` writes `F_R = ∑_x a_R(x) u_{n_R}(x)` with
-`a_R(x) = R^{(d-4)/2} φ_R(x)` and `φ_R(x)` the mass of the test function on the
-cell of `x`.  Since `φ` has compact support, the pairing
-`R^{(d-4)/2}(u_{n_R})^{(R)}(φ)` is exactly that finite sum, and the centring
-constant `R^{(d-4)/2}(E u_{n_R}(0))^{(R)}(φ)` is exactly `E F_R`, because the
-mean odometer does not depend on the site.
--/
 import Sandpile.Support.LinTestedField
 import Sandpile.Support.LinScaledPairing
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.Stationary
 import Sandpile.Support.Iterate
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# The tested field is the scaled lattice pairing
+
+The tested field IS the scaled lattice pairing.
+
+`sandpile.tex:5665-5668` writes `F_R = ∑_x a_R(x) u_{n_R}(x)` with
+`a_R(x) = R^{(d-4)/2} φ_R(x)` and `φ_R(x)` the mass of the test function on the
+cell of `x`. Since `φ` has compact support, the pairing
+`R^{(d-4)/2}(u_{n_R})^{(R)}(φ)` is exactly that finite sum, and the centring
+constant `R^{(d-4)/2}(E u_{n_R}(0))^{(R)}(φ)` is exactly `E F_R`, because the
+mean odometer does not depend on the site.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum

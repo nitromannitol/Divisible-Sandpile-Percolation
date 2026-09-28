@@ -1,22 +1,17 @@
-/-
-Translation invariance of the threshold events, `sandpile.tex:5453-5454`:
-
-  "In either case, the pair $(J,(u_m)_{m\geq0})$ has a translation-invariant
-   law."
-
-Step 2 of `lem:dgt4-path-survival` uses it at `sandpile.tex:5532-5550` to replace
-the contact event at the site `X_r` visited at time `r` by the contact event at
-the origin, which is what the hypothesis `eq:dgt4-uniform-contact-thresholds`
-controls.
-
-The shift `σ ↦ σ(· + y)` preserves the i.i.d. mass law and carries the odometer
-and the scenery at `y` to the odometer and the scenery at the origin, so any
-event written in those two carries over.  In the independent branch of
-`IsThresholdField` the threshold field is a function of the scenery at the site,
-so the threshold events translate as well; that is the case proved here.
--/
 import Sandpile.Support.Translation
 import Sandpile.Support.LinFactor
+
+/-!
+# Translation invariance of the threshold events
+
+The shift `σ ↦ σ (· + y)` preserves the i.i.d. mass law and carries the odometer and the scenery
+at `y` to the odometer and the scenery at the origin, so any event written in those two carries
+over: this file records that the centred mass law is invariant under `shiftField`, and that in the
+independent branch of `IsThresholdField`, where the threshold field is a function of the scenery
+at the site, the symmetric difference of a contact event and its threshold event has the same
+probability at every site as at the origin. This is the translation-invariance step used to
+replace the contact event at the site visited at a given time by the contact event at the origin.
+-/
 
 open MeasureTheory
 

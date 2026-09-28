@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.LinJacobianCovInput
+import Sandpile.Support.LinJacobianStep1Bridge
+import Sandpile.Support.LinJacobianCell
+import Sandpile.Support.LinJacobianCellGeneral
+
+/-! # Jacobian Step 1 at the Tested Weight
+
 Step 1 of `lem:dgt4-linearization-from-survival`
 (`eq:dgt4-derivative-variance-limit`, `sandpile.tex:5710-5783`) at the tested
 weight `a_R(x) = R^{(d-4)/2}φ_R(x)` itself.
@@ -16,10 +22,6 @@ nonnegative only for a positive scale, and every statement here is a limit as
 The test function is nonnegative, which is what makes the odometer functional
 convex in the scenery; a signed test function is the difference of two such.
 -/
-import Sandpile.Support.LinJacobianCovInput
-import Sandpile.Support.LinJacobianStep1Bridge
-import Sandpile.Support.LinJacobianCell
-import Sandpile.Support.LinJacobianCellGeneral
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -33,10 +35,13 @@ variable {d : ℕ}
 noncomputable def testedWeightCut (d : ℕ) (R L : ℝ) (φ : Space d → ℝ) (x : Site d) : ℝ :=
   if 1 ≤ R then testedWeight d R L φ x else 0
 
+/-- For `R ≥ 1` the cut weight agrees with the uncut tested weight. -/
 theorem testedWeightCut_eq {R : ℝ} (hR : 1 ≤ R) (L : ℝ) (φ : Space d → ℝ) (x : Site d) :
     testedWeightCut d R L φ x = testedWeight d R L φ x := by
   rw [testedWeightCut, if_pos hR]
 
+/-- The cut weight is nonnegative when the test function `φ` is, at every scale
+`R` (including `R < 1`, where it is zero). -/
 theorem testedWeightCut_nonneg (R L : ℝ) {φ : Space d → ℝ} (hφ : ∀ z, 0 ≤ φ z) (x : Site d) :
     0 ≤ testedWeightCut d R L φ x := by
   rw [testedWeightCut]
@@ -44,6 +49,7 @@ theorem testedWeightCut_nonneg (R L : ℝ) {φ : Space d → ℝ} (hφ : ∀ z, 
   · exact testedWeight_nonneg (by linarith) L hφ x
   · exact le_refl 0
 
+/-- The cut weight vanishes outside the support box `Support.supportBox d R L`. -/
 theorem testedWeightCut_eq_zero_of_notMem (R L : ℝ) (φ : Space d → ℝ) {x : Site d}
     (hx : x ∉ Sandpile.Support.supportBox d R L) : testedWeightCut d R L φ x = 0 := by
   rw [testedWeightCut]
@@ -51,6 +57,8 @@ theorem testedWeightCut_eq_zero_of_notMem (R L : ℝ) (φ : Space d → ℝ) {x 
   · exact testedWeight_eq_zero_of_notMem R L φ hx
   · rfl
 
+/-- The squares of the cut weight form a summable family over the lattice, since the
+weight vanishes outside the finite support box. -/
 theorem summable_sq_testedWeightCut (R L : ℝ) (φ : Space d → ℝ) :
     Summable fun x : Site d => (testedWeightCut d R L φ x) ^ 2 := by
   classical

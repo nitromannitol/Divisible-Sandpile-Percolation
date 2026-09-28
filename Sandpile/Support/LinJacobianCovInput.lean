@@ -1,18 +1,20 @@
-/-
-The covariance hypothesis of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5635-5650`) in the form the early display of Step 1 consumes.
-
-The lemma states the bound for deterministic paths, with the intersection sum
-written over the two time ranges the paths run through; Step 1 works with the
-conditional covariance `covSurvival` and with the real intersection count of the
-whole pair of paths.  `Support/LinJacobianCovBridge.lean` identifies the two
-covariances, `Support/LinJacobianInter.lean` majorizes the finite intersection
-sum by the real count where that count is finite, and in `d ≥ 5` that is almost
-every pair of paths under the law of two independent walks.  The constant is
-replaced by its positive part, which only weakens the bound.
--/
 import Sandpile.Support.LinJacobianTestedInputs
 import Sandpile.Support.LinNNPath
+
+/-!
+# The covariance hypothesis of Step 1, from deterministic paths to real intersection counts
+
+This module proves the covariance hypothesis of `lem:dgt4-linearization-from-survival`
+(`sandpile.tex:5635-5650`) in the form the early display of Step 1 consumes.
+
+The lemma states the bound for deterministic paths, with the intersection sum written over the
+two time ranges the paths run through; Step 1 works with the conditional covariance
+`covSurvival` and with the real intersection count of the whole pair of paths.
+`Support/LinJacobianCovBridge.lean` identifies the two covariances,
+`Support/LinJacobianInter.lean` majorizes the finite intersection sum by the real count where
+that count is finite, and in `d ≥ 5` that is almost every pair of paths under the law of two
+independent walks. The constant is replaced by its positive part, which only weakens the bound.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

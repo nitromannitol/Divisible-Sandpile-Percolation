@@ -1,6 +1,10 @@
-/-
-The near/far pair arithmetic of Step 1 of `lem:dgt4-path-survival`
-(`sandpile.tex:5516-5527`).
+import Sandpile.Support.LinProduct
+import Sandpile.External.GreenBoundsHigh
+
+/-!
+# Near/far pair arithmetic of Step 1 of the path-survival lemma
+
+The near/far pair arithmetic of Step 1 of `lem:dgt4-path-survival` (`sandpile.tex:5516-5527`).
 
 The normal comparison inequality `Sandpile.External.NormalComparison` bounds the
 factorization defect of `eq:dgt4-path-threshold-factorization` by
@@ -20,7 +24,7 @@ The inversion of the Gaussian tail (`LatticeProb.GaussTail.log_le_of_gaussianRea
 
   `b_x²/Var(J(0)) ≥ 4 log R - log log R - C₀`
 
-that both bullets use.  This file proves the four ingredients and assembles them:
+that both bullets use. This file proves the four ingredients and assembles them:
 
 * `pair_term_le`: one term of the comparison sum, with the level `B` inserted and the
   correlation replaced by an upper bound for it;
@@ -37,8 +41,6 @@ in the near case by `-(4/(1+ρ_*) - 2) L + log L + C₀`, which is summable agai
 because `ρ_* < 1` forces `4/(1+ρ_*) > 2`; in the far case by `4C/L + log L + C₀`, whose
 exponential is `L exp(4C/L)`, leaving `C exp(C₀) exp(4C/L)/L`.
 -/
-import Sandpile.Support.LinProduct
-import Sandpile.External.GreenBoundsHigh
 
 open Filter Topology Asymptotics
 

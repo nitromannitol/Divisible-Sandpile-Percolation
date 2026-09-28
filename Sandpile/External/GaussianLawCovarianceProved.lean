@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.GaussianLawCovariance
+import LatticeProb.Prob.GaussianLaw
+
+/-!
+# Gaussian law determined by covariance, proved
+
 The determination of the law of a centred Gaussian process by its covariance is
 no longer assumed.
 
@@ -13,8 +18,6 @@ unconditional.
 The only content is that `Sandpile.Continuum.fieldLaw` is the pushforward the
 library's conclusion names.
 -/
-import Sandpile.External.GaussianLawCovariance
-import LatticeProb.Prob.GaussianLaw
 
 open MeasureTheory ProbabilityTheory
 

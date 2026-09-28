@@ -1,19 +1,22 @@
-/-
+import Sandpile.Support.Dgt4CaseBProb
+import Sandpile.Support.Localization
+import LatticeProb.Prob.IidSplit
+
+/-!
+# Fubini for the i.i.d. field split at one site
+
 "Since $Pw_n(0)$ is independent of the atomless $\zeta(0)$" (`sandpile.tex:5405`), the
 sentence with which Step 2 of case (b) of `prop:dgt4-contact-asymptotics` turns the two
 identities of `lem:dgt4-origin-frozen` into the two displayed estimates.
 
 `Pw_n(0)` is the average over the neighbours of the origin of the odometer with the walk
 KILLED at the origin, so it is a function of the scenery that never reads the coordinate at
-the origin.  The step is therefore Fubini for the i.i.d. field split at one site, and the
+the origin. The step is therefore Fubini for the i.i.d. field split at one site, and the
 form proved here is the one the two call sites use: resampling a single coordinate of the
 i.i.d. field with an independent draw leaves its law unchanged, so an integral of
 `f(\zeta(i), W(\zeta))` with `W` blind to the coordinate `i` integrates `f` in its first
 argument against `\nu` alone.
 -/
-import Sandpile.Support.Dgt4CaseBProb
-import Sandpile.Support.Localization
-import LatticeProb.Prob.IidSplit
 
 open LatticeProb
 

@@ -1,5 +1,11 @@
-/-
-The field half of the cutoff error of `sandpile.tex:1908-1921`: the bound on the
+import Sandpile.Support.MainExplLattice
+import Sandpile.Support.ExplWalkCutoff
+import Sandpile.Support.ExplValueGap
+
+/-!
+# The field half of the cutoff error: the bound on the dyadic annuli
+
+This is the field half of the cutoff error of `sandpile.tex:1908-1921`: the bound on the
 dyadic annuli.
 
 `Sandpile.Support.exists_walk_cutoff_stoppingSup_gap` turns a bound of the reward
@@ -9,12 +15,9 @@ Its hypothesis `hV` is the only thing the unkilled route of `thm:main-explosion`
 (i)(b) still has to supply, and here it is supplied with the power one, from the
 linear envelope of the interpolated field: on the annulus of index `j` the radius
 is at most `2^{j+1}A` and at least `A ≥ 1`, so the envelope `K(1+|y|)` is at most
-`2K` times the radius.  The failure probability is the one of the envelope, so it
+`2K` times the radius. The failure probability is the one of the envelope, so it
 is the accuracy asked for, uniformly in the scale.
 -/
-import Sandpile.Support.MainExplLattice
-import Sandpile.Support.ExplWalkCutoff
-import Sandpile.Support.ExplValueGap
 
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal

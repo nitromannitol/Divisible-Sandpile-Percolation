@@ -1,5 +1,10 @@
-/-
-Step 1 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5695`),
+import Sandpile.Support.LinIntersect
+import Sandpile.Support.OdometerPathDerivative
+
+/-!
+# The triangle-inequality bound of Step 1, `eq:dgt4-mean-gradient-approximation`
+
+This module proves Step 1 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5695`),
 `eq:dgt4-mean-gradient-approximation`:
 
   "$R^{-2}\sum_{z\in\Z^d}\left|\E[\partial_{\zeta(z)}u_{n_R}(0)]
@@ -9,22 +14,20 @@ Step 1 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5695`),
    $R^{-2}\sum_{j=0}^{n_R-1}\mathbf E_0|\P(S_{n_R,j}(X)=1\mid X)-q_{R,j}|$,
    which tends to zero by hypothesis."
 
-By `eq:odometer-derivative` (`Support/OdometerPathDerivative.lean`) the mean
-gradient is `∑_{j<n} E_0[1_{X_j=z} P(S_{n,j}(X)=1 | X)]`, so the difference at
-`z` is `∑_{j<n} E_0[1_{X_j=z}(P(S_{n,j}(X)=1|X) - q_j)]`, and the sum over `z` of
-its absolute value is at most `∑_{j<n} E_0|P(S_{n,j}(X)=1|X) - q_j|`, which is the
-hypothesis of the lemma.  The reason is that the indicators `1_{X_j=z}` at a
-fixed time `j` are disjoint in `z`: over any finite set of sites their sum is at
-most one, so every finite partial sum over `z` is bounded by the right-hand side,
-and the series inherits the bound.
+By `eq:odometer-derivative` (`Support/OdometerPathDerivative.lean`) the mean gradient is
+`∑_{j<n} E_0[1_{X_j=z} P(S_{n,j}(X)=1 | X)]`, so the difference at `z` is
+`∑_{j<n} E_0[1_{X_j=z}(P(S_{n,j}(X)=1|X) - q_j)]`, and the sum over `z` of its absolute value is
+at most `∑_{j<n} E_0|P(S_{n,j}(X)=1|X) - q_j|` (`tsum_abs_sum_indicator_integral_le`), which is
+the hypothesis of the lemma. The reason is that the indicators `1_{X_j=z}` at a fixed time `j`
+are disjoint in `z`: over any finite set of sites their sum is at most one
+(`sum_abs_sum_indicator_integral_le`), so every finite partial sum over `z` is bounded by the
+right-hand side, and the series inherits the bound.
 
-The estimate below is stated for an arbitrary integrable path functional, since
-that is what makes the sum over the sites finite; the identification of the
-functional with `P(S_{n,j}(X)=1|X) - q_j` and of `E_0[1_{X_j=z}]` with the heat
-kernel `p_j(0,z)` are the last two lemmas.
+The estimate is stated for an arbitrary integrable path functional, since that is what makes the
+sum over the sites finite; the identification of the functional with `P(S_{n,j}(X)=1|X) - q_j`
+(`integral_indicator_sub_const`) and of `E_0[1_{X_j=z}]` with the heat kernel `p_j(0,z)`
+(`indicator_forall_eq_prod`, `pathOdometerDerivative_eq_sum_survival`) are the last two lemmas.
 -/
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.OdometerPathDerivative
 
 open MeasureTheory Filter Topology
 

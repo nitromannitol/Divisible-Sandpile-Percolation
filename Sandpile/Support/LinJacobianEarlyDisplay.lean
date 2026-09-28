@@ -1,19 +1,22 @@
-/-
+import Sandpile.Support.LinJacobianStep1Limit
+import Sandpile.Support.LinJacobianLateDisplay
+
+/-!
+# The early display of Step 1, and Step 1 itself
+
 The early display of Step 1 of `lem:dgt4-linearization-from-survival`
-(`eq:dgt4-early-derivative-variance`, `sandpile.tex:5731-5753`) in the form the
-assembly of `Support/LinJacobianStep1Limit.lean` asks for, and Step 1 itself.
+(`eq:dgt4-early-derivative-variance`, `sandpile.tex:5731-5753`) in the form the assembly
+of `Support/LinJacobianStep1Limit.lean` asks for, and Step 1 itself.
 
 The paper combines the covariance hypothesis of the lemma with the two tested
 intersection moments `eq:dgt4-tested-intersection-moments` to get
 
   "`∑_z Var(D^{≤}_{R,z}) ≤ C(φ)ε_R(δ) + C(φ)/(δR²)`".
 
-Here the covariance hypothesis is used at the times of the early sum, where it
-applies, and the intersection count `I(X,Y)` is any real-valued majorant of the
-time-restricted intersection sums with the two moment bounds.
+Here the covariance hypothesis is used at the times of the early sum, where it applies,
+and the intersection count `I(X,Y)` is any real-valued majorant of the time-restricted
+intersection sums with the two moment bounds.
 -/
-import Sandpile.Support.LinJacobianStep1Limit
-import Sandpile.Support.LinJacobianLateDisplay
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -85,8 +88,9 @@ theorem early_display_of_moments {l : Filter ℝ} [IsProbabilityMeasure μ] (n :
 (`eq:dgt4-derivative-variance-limit`, `sandpile.tex:5705-5778`) from the
 covariance hypothesis of the lemma, the two tested intersection moments and
 `eq:dgt4-tested-cell-l2`. -/
-theorem tendsto_tsum_variance_of_moments {l : Filter ℝ} [IsProbabilityMeasure μ] (hd : 1 ≤ d) (n : ℝ → ℕ)
-    (s : ℝ → Finset (Site d)) (a : ℝ → Site d → ℝ) (ha : ∀ (R : ℝ) (x : Site d), 0 ≤ a R x)
+theorem tendsto_tsum_variance_of_moments {l : Filter ℝ} [IsProbabilityMeasure μ] (hd : 1 ≤ d)
+    (n : ℝ → ℕ) (s : ℝ → Finset (Site d)) (a : ℝ → Site d → ℝ)
+    (ha : ∀ (R : ℝ) (x : Site d), 0 ≤ a R x)
     (hsupp : ∀ R : ℝ, ∀ x ∉ s R, a R x = 0)
     (hsq : ∀ R : ℝ, Summable fun z : Site d => (a R z) ^ 2)
     (I : (ℕ → Site d) → (ℕ → Site d) → ℝ) (hI0 : ∀ X Y, 0 ≤ I X Y)
@@ -120,8 +124,8 @@ theorem tendsto_tsum_variance_of_moments {l : Filter ℝ} [IsProbabilityMeasure 
   have hC : 0 ≤ C := le_trans hCphi (le_max_right _ _)
   refine tendsto_tsum_variance_odometerJacobian (hl := hl) μ hd n s a ha hsupp hsq C hC δ₀ hδ₀ ?_ ?_
   · intro δ hδ hδlt
-    obtain ⟨eps, heps0, hepstend, hepsbd⟩ := early_display_of_moments (hl := hl) μ n s a ha I hI0 hsumI
-      C₀ C₁ C₂ hC₀ hC₁ hC₂ hI1 hI2 hint1 hint2 hint3 δ₀ hcov δ hδ hδlt
+    obtain ⟨eps, heps0, hepstend, hepsbd⟩ := early_display_of_moments (hl := hl) μ n s a ha I hI0
+      hsumI C₀ C₁ C₂ hC₀ hC₁ hC₂ hI1 hI2 hint1 hint2 hint3 δ₀ hcov δ hδ hδlt
     refine ⟨eps, hepstend, ?_⟩
     filter_upwards [hepsbd, (eventually_gt_atTop (0 : ℝ)).filter_mono hl] with R hR hRpos
     have hδR : (0 : ℝ) < δ * R ^ 2 := by positivity

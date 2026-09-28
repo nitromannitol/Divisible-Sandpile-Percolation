@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ManyLManyLimits
+import Sandpile.Support.ContLogisticLaw
+
+/-! # Naming Step 3's subsequential-convergence input
+
 The Step-3 input of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`), named.
 
 `ManyLStep3Input d ν` is the subsequential convergence of the rescaled centred
@@ -8,8 +12,6 @@ the scenery law discharged from `exists_scenery_law`, so the frozen theorem
 follows by one application the moment `ManyLStep3Input` is available at that
 law.
 -/
-import Sandpile.Support.ManyLManyLimits
-import Sandpile.Support.ContLogisticLaw
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

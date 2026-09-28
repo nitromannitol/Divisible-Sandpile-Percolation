@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4AIterateConst
+import Sandpile.Support.Dgt4AIterateMulConst
+
+/-!
+# The `P^j` telescoping identity
+
 The `P^j` telescoping of Step 1 of case (a) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5074-5077`): "Telescoping and conditional Jensen's inequality now yield ...".
 For the deviation `w=V_\infty-u_n` and a constant `c`,
@@ -7,8 +12,6 @@ For the deviation `w=V_\infty-u_n` and a constant `c`,
 
 because the sum telescopes to `w-P^jw` and `P` is linear.
 -/
-import Sandpile.Support.Dgt4AIterateConst
-import Sandpile.Support.Dgt4AIterateMulConst
 
 open MeasureTheory Filter Topology Set
 

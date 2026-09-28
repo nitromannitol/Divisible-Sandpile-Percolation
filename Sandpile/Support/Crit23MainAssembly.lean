@@ -1,24 +1,3 @@
-/-
-The assembly of Theorem 1.2 of `sandpile.tex` (`sandpile.tex:113-126`,
-`thm:main-critical-level-percolation`) from its three regime theorems: the
-dimension-two-and-three theorem `thm:d23-critical-level-percolation`
-(`sandpile.tex:2560-2575`), the dimension-four theorem
-`thm:d4-critical-level-percolation` (`sandpile.tex:3952-3968`) and the
-high-dimensional theorem `thm:dgt4-nontriviality` (`sandpile.tex:6625-6647`),
-exactly as the paper's proof at `sandpile.tex:130-142` does.
-
-The paper writes `ζ := (σ-1)/(2d)`; the mass law of `μ` is the centred mass law
-of the law of `(s-1)/(2d)` (`crit23_centeredMassLaw_map_centering`), the
-hypotheses of the main theorem on `μ` become the hypotheses of the regime
-theorems on that law (`crit23_integral_centering_eq_zero`,
-`crit23_evariance_centering_le`, `crit23_integrable_exp_centering`,
-`crit23_integral_exp_centering`), and the regime conclusions, which place the
-infinite component inside a coordinate plane, are pushed to the ambient lattice
-by `hasInfiniteComponent_criticalScale_of_plane` (dimensions two and three) and
-`hasInfiniteComponent_planeEmbed` (dimension four).  The high-dimensional
-theorem is stated in the scenery language, so its conclusion is transported by
-`odometer_eq_odometerOf` and `map_scenery_centeredMassLaw`.
--/
 import Sandpile.Frozen.D23CriticalLevelPercolation
 import Sandpile.Frozen.D4CriticalLevelPercolation
 import Sandpile.Frozen.DGT4Nontriviality
@@ -27,6 +6,27 @@ import Sandpile.Support.D23Component
 import Sandpile.Support.D4Centering
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.ExponentialMoments
+
+/-!
+# Assembling Theorem 1.2 from its three regime theorems
+
+The assembly of Theorem 1.2 of `sandpile.tex` (`sandpile.tex:113-126`,
+`thm:main-critical-level-percolation`) from its three regime theorems: the
+dimension-two-and-three theorem `thm:d23-critical-level-percolation` (`sandpile.tex:2560-2575`),
+the dimension-four theorem `thm:d4-critical-level-percolation` (`sandpile.tex:3952-3968`) and
+the high-dimensional theorem `thm:dgt4-nontriviality` (`sandpile.tex:6625-6647`), exactly as
+the paper's proof at `sandpile.tex:130-142` does. The paper writes `ζ := (σ-1)/(2d)`; the mass
+law of `μ` is the centred mass law of the law of `(s-1)/(2d)`
+(`crit23_centeredMassLaw_map_centering`), the hypotheses of the main theorem on `μ` become the
+hypotheses of the regime theorems on that law (`crit23_integral_centering_eq_zero`,
+`crit23_evariance_centering_le`, `crit23_integrable_exp_centering`,
+`crit23_integral_exp_centering`), and the regime conclusions, which place the infinite
+component inside a coordinate plane, are pushed to the ambient lattice by
+`hasInfiniteComponent_criticalScale_of_plane` (dimensions two and three) and
+`hasInfiniteComponent_planeEmbed` (dimension four). The high-dimensional theorem is stated in
+the scenery language, so its conclusion is transported by `odometer_eq_odometerOf` and
+`map_scenery_centeredMassLaw`.
+-/
 
 open LatticeProb
 

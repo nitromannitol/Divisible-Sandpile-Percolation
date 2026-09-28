@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Stopping
+
+/-!
+# Brownian Ball Localization Bounds
+
 What `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) asks about, in
 the form the paper's argument uses it.
 
@@ -23,7 +27,6 @@ the strong Markov property at `τ_{u,A}` that turns the gap into
 at distance `A` from `K` on the right-hand side of the lemma.  `IsBrownian`
 carries no filtration, and `Support/StrongMarkov.lean` is the lattice walk only.
 -/
-import Sandpile.Continuum.Stopping
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4AStep1
+
+/-!
+# Step 1 of case (a): the centred-value decay bound
+
 `eq:dgt4-centered-value-decay` (`sandpile.tex:5031-5034`), the conclusion of Step 1 of case
 (a) of `prop:dgt4-contact-asymptotics`, at the horizon `j=\lceil n^{1/d}\rceil`.
 
@@ -10,10 +14,9 @@ The three terms of `Support/Dgt4AStep1.lean` are bounded by
 
 and `(4-d)/(2d)=2/d-1/2` is exactly the exponent the first term produces once the growth
 `\E u_n(0)\leq K\sqrt{\log n}` of `eq:dgt4-gaussian-height-order` (`sandpile.tex:5035-5037`)
-is absorbed into `n^{1/6}`.  The `1/6` of slack is what the interpolation `T=n^{1/3}` of
+is absorbed into `n^{1/6}`. The `1/6` of slack is what the interpolation `T=n^{1/3}` of
 `Support/Dgt4AL2Cube.lean` buys in place of the paper's Gaussian concentration.
 -/
-import Sandpile.Support.Dgt4AStep1
 
 open LatticeProb
 

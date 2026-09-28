@@ -1,7 +1,15 @@
-/-
-Approximation of connected planar sets by walks that remain in their rectangle.
--/
 import Sandpile.Support.CrossFixBlocking
+
+/-!
+# Rectangle-confined walk approximations of connected sets
+
+Approximation of connected planar sets by walks that remain in their rectangle: a compact
+connected set inside a mesh-aligned square yields a nearest-neighbour walk of the rounded
+lattice sites that stays inside the square and within `3t` of the set at every vertex
+(`exists_rectangle_walk_connected`), and this is used to show that two compact connected
+crossings of a rectangle in opposite directions must intersect
+(`rectangle_crossings_intersect`, `not_crosses_opposite_levels`).
+-/
 
 open Set
 namespace Sandpile.Support
@@ -207,7 +215,8 @@ theorem rectangle_crossings_intersect {a b : Fin 2 → ℝ} (hab : ∀ i, a i < 
   let f (u : Space 2) : Space 2 := WithLp.toLp 2 (fun i => (u i - a i) / (b i - a i))
   have hf : Continuous f := by
     apply (PiLp.continuous_toLp 2 _).comp
-    exact continuous_pi fun i => ((PiLp.continuous_apply 2 (fun _ : Fin 2 => ℝ) i).sub continuous_const).div_const _
+    exact continuous_pi fun i =>
+      ((PiLp.continuous_apply 2 (fun _ : Fin 2 => ℝ) i).sub continuous_const).div_const _
   have hinj : Function.Injective f := by
     intro u v huv
     ext i

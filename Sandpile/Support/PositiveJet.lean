@@ -1,8 +1,24 @@
-/-
-Positive envelopes for the first three coordinate derivatives of smooth max/min
-compositions, with dimension-independent sums and multiplicative stability.
--/
 import LatticeProb.Analysis.SoftStability
+
+/-!
+# Positive derivative envelopes for smooth max/min compositions
+
+Positive envelopes for the first three coordinate derivatives of smooth max/min compositions,
+with dimension-independent sums and multiplicative stability. A `PositiveJet` packages, for a
+function `f`, pointwise nonnegative bounds `one`, `two`, `three` on its first, second and third
+coordinate partial derivatives; `PositiveJet.Bounds` upgrades this to a full certificate
+(`SmoothBottleneckBound`-style summed bounds, smoothness of `f` and of the envelope entries, and
+`ExpStable` multiplicative stability of the envelope entries under field perturbations). The
+`softCompose`/`softOne`/`softTwo`/`softThree` construction builds the envelope of a softmax
+`softMaximum β (fun i => f i x)` from the envelopes of the `f i`, by the product and chain rules
+applied to the softmax weight `softWeight`, and `PositiveJet.Bounds.softMaximum` (with its mirror
+image `PositiveJet.Bounds.softMinimum`) shows this construction indeed satisfies `Bounds` at depth
+one more than the family it composes. `HasPositiveJet β n f` is the existential closure (some
+envelope realizing `Bounds`), and its closure lemmas (`HasPositiveJet.softMaximum`,
+`HasPositiveJet.softMinimum`, `HasPositiveJet.softMinimum_pair`) let it be built up recursively
+from the coordinate projections (`hasPositiveJet_coordinate`), exactly matching the recursive
+construction of `smoothBoundedBottleneck` in `BoundedBottleneck.lean`.
+-/
 
 open LatticeProb
 
@@ -10,6 +26,10 @@ open scoped BigOperators
 
 namespace Sandpile
 
+/-- A pointwise nonnegative envelope for the first three coordinate partial derivatives of a
+function `(V → ℝ) → ℝ`: `one j` bounds `|∂_j f|`, `two j k` bounds `|∂_j ∂_k f|`, and
+`three j k l` bounds `|∂_j ∂_k ∂_l f|`. Paired with `Bounds`, this is the structure the smoothed
+bottleneck recursion propagates through soft-maximum and soft-minimum compositions. -/
 structure PositiveJet (V : Type*) where
   one : V → (V → ℝ) → ℝ
   two : V → V → (V → ℝ) → ℝ
@@ -19,15 +39,24 @@ namespace PositiveJet
 
 variable {V I : Type*} [Fintype I] [Nonempty I]
 
+/-- The first-derivative envelope of a softmax composition: a softmax-weighted average of the
+first-derivative envelopes of the composed family, matching the chain rule for
+`coordPartial (softMaximum β f)`. -/
 noncomputable def softOne (β : ℝ) (f : I → (V → ℝ) → ℝ)
     (A : I → PositiveJet V) (j : V) (x : V → ℝ) : ℝ :=
   ∑ i, softWeight β (fun i => f i x) i * (A i).one j x
 
+/-- The second-derivative envelope of a softmax composition: a softmax-weighted average of each
+branch's second-derivative envelope plus a correction term `|β| * (·) * (·)` from differentiating
+the softmax weight itself, matching `coordPartial_softComposition_two`. -/
 noncomputable def softTwo (β : ℝ) (f : I → (V → ℝ) → ℝ)
     (A : I → PositiveJet V) (j k : V) (x : V → ℝ) : ℝ :=
   ∑ i, softWeight β (fun i => f i x) i *
     ((A i).two j k x + |β| * ((A i).one k x + softOne β f A k x) * (A i).one j x)
 
+/-- The third-derivative envelope of a softmax composition: a softmax-weighted average of each
+branch's third-derivative envelope plus the correction terms produced by differentiating the
+softmax weight up to three times, matching `coordPartial_softComposition_three`. -/
 noncomputable def softThree (β : ℝ) (f : I → (V → ℝ) → ℝ)
     (A : I → PositiveJet V) (j k l : V) (x : V → ℝ) : ℝ :=
   ∑ i, softWeight β (fun i => f i x) i *
@@ -38,6 +67,8 @@ noncomputable def softThree (β : ℝ) (f : I → (V → ℝ) → ℝ)
       β ^ 2 * ((A i).one l x + softOne β f A l x) *
         ((A i).one k x + softOne β f A k x) * (A i).one j x)
 
+/-- Packages `softOne`, `softTwo` and `softThree` into a single `PositiveJet` for a softmax
+composition, given the family's individual envelopes `A`. -/
 noncomputable def softCompose (β : ℝ) (f : I → (V → ℝ) → ℝ)
     (A : I → PositiveJet V) : PositiveJet V where
   one := softOne β f A
@@ -46,6 +77,11 @@ noncomputable def softCompose (β : ℝ) (f : I → (V → ℝ) → ℝ)
 
 variable [Fintype V] [DecidableEq V]
 
+/-- A full certificate that `A : PositiveJet V` is a valid derivative envelope for `f` at
+"softmax depth" `n` and softness parameter `β`: `f` and each entry of `A` are smooth, `f` is
+field-nonexpansive, each entry of `A` is `ExpStable` with the constant scaling expected for its
+derivative order and depth, `A` really dominates the corresponding derivative of `f` pointwise,
+and the entries of `A` obey the same summed bounds as `SmoothBottleneckBound`. -/
 structure Bounds (A : PositiveJet V) (β : ℝ) (n : ℕ) (f : (V → ℝ) → ℝ) : Prop where
   smooth : ContDiff ℝ (⊤ : ℕ∞) f
   nonexpansive : FieldNonexpansive f
@@ -62,6 +98,9 @@ structure Bounds (A : PositiveJet V) (β : ℝ) (n : ℕ) (f : (V → ℝ) → �
   sum_two : ∀ x, ∑ j, ∑ k, A.two j k x ≤ 2 * |β| * n
   sum_three : ∀ x, ∑ j, ∑ k, ∑ l, A.three j k l x ≤ 6 * β ^ 2 * (n : ℝ) ^ 2
 
+/-- `softOne β f A j` is `ExpStable` with constant `2|β|(n+1)`: a sum of products of the
+`ExpStable` softmax weight (constant `2|β|`, from field-nonexpansiveness of each `f i`) and the
+`ExpStable` envelope entry `(A i).one j` (constant `2|β|n`, from `hA`), so the constants add. -/
 lemma Bounds.stable_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j : V) :
@@ -71,6 +110,10 @@ lemma Bounds.stable_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
       ((hA i).stable_one j))
   convert h using 1 <;> first | rfl | (push_cast; ring)
 
+/-- `softTwo β f A j k` is `ExpStable` with constant `4|β|(n+1)`: each softmax-weighted summand
+splits into the original `(A i).two j k` term (constant `4|β|n + 2|β|` after accounting for the
+softmax weight) plus the correction product built from `softOne`, and both pieces combine via
+`ExpStable.add` and `ExpStable.mul`. -/
 lemma Bounds.stable_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k : V) :
@@ -92,6 +135,9 @@ lemma Bounds.stable_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     (expStable_softWeightComposition hβ (fun i => (hA i).nonexpansive) i).mul (hrow i))
   convert h using 1 <;> first | rfl | (push_cast; ring)
 
+/-- `softThree β f A j k l` is `ExpStable` with constant `6|β|(n+1)`: each softmax-weighted
+summand is the original `(A i).three j k l` term together with the three correction products
+built from `softOne` and `softTwo`, all combined by `ExpStable.add` and `ExpStable.mul`. -/
 lemma Bounds.stable_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k l : V) :
@@ -134,6 +180,8 @@ lemma Bounds.stable_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
   push_cast
   ring
 
+/-- `softOne β f A j` is smooth: a finite sum of products of the smooth softmax weight
+composition and the smooth envelope entries `(A i).one j`. -/
 lemma Bounds.smooth_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j : V) :
@@ -141,6 +189,8 @@ lemma Bounds.smooth_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
   exact ContDiff.sum (fun i _ =>
     (contDiff_softWeightComposition hβ (fun i => (hA i).smooth) i).mul ((hA i).smooth_one j))
 
+/-- `softTwo β f A j k` is smooth: built from the smooth softmax weight composition,
+`(A i).two j k`, and the smooth `softOne` entries by sums and products. -/
 lemma Bounds.smooth_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k : V) :
@@ -151,6 +201,8 @@ lemma Bounds.smooth_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
         ((contDiff_const.mul (((hA i).smooth_one k).add (Bounds.smooth_softOne hβ hA k))).mul
           ((hA i).smooth_one j))))
 
+/-- `softThree β f A j k l` is smooth: built from the smooth softmax weight composition,
+`(A i).three j k l`, and the smooth `softOne`/`softTwo` entries by sums and products. -/
 lemma Bounds.smooth_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k l : V) :
@@ -165,6 +217,9 @@ lemma Bounds.smooth_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
         ((contDiff_const.mul (hd i k l)).mul ((hA i).smooth_one j))).add
         (((contDiff_const.mul (hr i l)).mul (hr i k)).mul ((hA i).smooth_one j))))
 
+/-- `softOne β f A j` really dominates `|coordPartial (softMaximum β f) j|` pointwise: expand the
+partial derivative via `coordPartial_softComposition`, bound the softmax-weighted sum termwise by
+`(hA i).bound_one`, and sum. -/
 lemma Bounds.bound_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j : V) (x : V → ℝ) :
@@ -177,6 +232,9 @@ lemma Bounds.bound_softOne {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     _ ≤ _ := Finset.sum_le_sum fun i _ =>
       mul_le_mul_of_nonneg_left ((hA i).bound_one j x) (softWeight_pos β _ i).le
 
+/-- `softTwo β f A j k` really dominates `|coordPartial (coordPartial (softMaximum β f) j) k|`
+pointwise: expand via `coordPartial_softComposition_two`, bound each softmax-weighted summand
+termwise using `(hA i).bound_two`, `(hA i).bound_one` and `bound_softOne`, and sum. -/
 lemma Bounds.bound_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k : V) (x : V → ℝ) :
@@ -203,6 +261,10 @@ lemma Bounds.bound_softTwo {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
         (abs_nonneg _) (mul_nonneg (abs_nonneg β)
           (add_nonneg (((hA i).stable_one k).nonneg x) ((Bounds.stable_softOne hβ hA k).nonneg x))))
 
+/-- `softThree β f A j k l` really dominates the third coordinate partial derivative of
+`softMaximum β f` pointwise: expand via `coordPartial_softComposition_three`, bound each
+softmax-weighted summand termwise using `(hA i).bound_three`, `bound_softOne` and `bound_softTwo`
+for the correction terms, and sum. -/
 lemma Bounds.bound_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (j k l : V) (x : V → ℝ) :
@@ -258,6 +320,9 @@ lemma Bounds.bound_softThree {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
             (abs_nonneg _) (mul_nonneg (sq_nonneg β) (hr0 i l))) ((hA i).bound_one j x)
           (abs_nonneg _) (mul_nonneg (mul_nonneg (sq_nonneg β) (hr0 i l)) (hr0 i k))
 
+/-- The sum `∑_j softOne β f A j x` is at most `1`: swap the order of summation to sum each
+`softWeight` against the bound `(hA i).sum_one`, which is `≤ 1`, and the softmax weights
+themselves sum to `1` (`sum_softWeight`). -/
 lemma Bounds.sum_softOne {β : ℝ} {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (x : V → ℝ) :
@@ -270,6 +335,9 @@ lemma Bounds.sum_softOne {β : ℝ} {n : ℕ}
       mul_le_mul_of_nonneg_left ((hA i).sum_one x) (softWeight_pos β _ i).le
     _ = 1 := by simp only [mul_one, sum_softWeight]
 
+/-- The double sum `∑_j ∑_k softTwo β f A j k x` is at most `2|β|(n+1)`: bound each branch's own
+contribution by `(hA i).sum_two` and the correction term's contribution using `sum_softOne`
+(which bounds `∑_j r i j` by `2`), then average over `i` against the softmax weights. -/
 lemma Bounds.sum_softTwo {β : ℝ} {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (x : V → ℝ) :
@@ -308,6 +376,9 @@ lemma Bounds.sum_softTwo {β : ℝ} {n : ℕ}
       Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hrow i) (softWeight_pos β _ i).le
     _ = _ := by rw [← Finset.sum_mul, sum_softWeight, one_mul]
 
+/-- The triple sum `∑_j ∑_k ∑_l softThree β f A j k l x` is at most `6β²(n+1)²`: bound each
+branch's own contribution by `(hA i).sum_three` and the three correction terms' contributions
+using `sum_softOne` and `sum_softTwo`, then average over `i` against the softmax weights. -/
 lemma Bounds.sum_softThree {β : ℝ} {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) (x : V → ℝ) :
@@ -370,7 +441,8 @@ lemma Bounds.sum_softThree {β : ℝ} {n : ℕ}
         _ = _ := by ring
     dsimp only [U]
     simp only [Finset.sum_add_distrib]
-    apply (add_le_add (add_le_add (add_le_add (add_le_add ((hA i).sum_three x) hb2) hb3) hb4) hb5).trans_eq
+    apply (add_le_add (add_le_add (add_le_add
+      (add_le_add ((hA i).sum_three x) hb2) hb3) hb4) hb5).trans_eq
     push_cast
     nlinarith [sq_abs β]
   change (∑ j, ∑ k, ∑ l, ∑ i, softWeight β (fun i => f i x) i * U i j k l) ≤ _
@@ -387,6 +459,10 @@ lemma Bounds.sum_softThree {β : ℝ} {n : ℕ}
       Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hrow i) (softWeight_pos β _ i).le
     _ = _ := by rw [← Finset.sum_mul, sum_softWeight, one_mul]
 
+/-- **The softmax composition satisfies `Bounds` at depth one more than the composed family.**
+Assembles the ten fields of `Bounds` for `softCompose β f A` and `softMaximum β f` from the
+lemmas above: smoothness, field-nonexpansiveness, the three `ExpStable` stability bounds, the
+three pointwise domination bounds, and the two summed bounds. -/
 lemma Bounds.softMaximum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) :
@@ -407,6 +483,9 @@ lemma Bounds.softMaximum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
   sum_three := Bounds.sum_softThree hA
 
 omit [Fintype I] [Nonempty I] in
+/-- `Bounds` is insensitive to the sign of `β`: negating `β` leaves every field of `Bounds`
+unchanged or unchanged up to `abs_neg`/`neg_sq`, since the derivative bounds and smoothness of `f`
+and `A` do not mention `β` and the `ExpStable`/summed bounds only see `|β|` or `β²`. -/
 lemma Bounds.neg_beta {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ} {A : PositiveJet V}
     (hA : A.Bounds β n f) : A.Bounds (-β) n f where
   smooth := hA.smooth
@@ -424,14 +503,22 @@ lemma Bounds.neg_beta {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ} {A : Positi
   sum_two x := by simpa only [abs_neg] using hA.sum_two x
   sum_three x := by simpa only [neg_sq] using hA.sum_three x
 
+/-- **The softmin composition satisfies `Bounds` at depth one more than the composed family.**
+The mirror image of `Bounds.softMaximum`: negate `β`, apply `softMaximum` to the negated family
+(whose `Bounds.neg_beta` restores the original `β`), and undo via `softMinimum`'s definition as a
+negated `softMaximum`. -/
 lemma Bounds.softMinimum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} {A : I → PositiveJet V}
     (hA : ∀ i, (A i).Bounds β n (f i)) :
-    (softCompose (-β) f A).Bounds β (n + 1) (fun y => LatticeProb.softMinimum β (fun i => f i y)) := by
+    (softCompose (-β) f A).Bounds β (n + 1)
+      (fun y => LatticeProb.softMinimum β (fun i => f i y)) := by
   have h := (Bounds.softMaximum (neg_ne_zero.mpr hβ) (fun i => (hA i).neg_beta)).neg_beta
   simpa only [neg_neg, LatticeProb.softMinimum] using h
 
 omit [Fintype I] [Nonempty I] in
+/-- `Bounds` is monotone in the depth `n`: a certificate at depth `n` remains one at any larger
+depth `m`, since the pointwise domination bounds are depth-independent and the `ExpStable`
+constants and summed bounds only grow with `n`. -/
 lemma Bounds.mono {β : ℝ} {n m : ℕ} {f : (V → ℝ) → ℝ} {A : PositiveJet V}
     (hA : A.Bounds β n f) (hnm : n ≤ m) : A.Bounds β m f where
   smooth := hA.smooth
@@ -450,6 +537,9 @@ lemma Bounds.mono {β : ℝ} {n m : ℕ} {f : (V → ℝ) → ℝ} {A : Positive
   sum_three x := (hA.sum_three x).trans (by gcongr)
 
 omit [Fintype I] [Nonempty I] in
+/-- A `PositiveJet` certificate is in particular a `SmoothBottleneckBound`: the summed bounds of
+`Bounds` follow from summing the pointwise domination of each envelope entry over its indices and
+combining with `hA.sum_one`/`sum_two`/`sum_three`. -/
 lemma Bounds.smoothBottleneckBound {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ} {A : PositiveJet V}
     (hA : A.Bounds β n f) : SmoothBottleneckBound β n f := by
   refine ⟨hA.smooth, fun x => ⟨?_, ?_, ?_⟩⟩
@@ -460,12 +550,18 @@ lemma Bounds.smoothBottleneckBound {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ
       Finset.sum_le_sum (fun l _ => hA.bound_three j k l x)))).trans (hA.sum_three x)
 
 omit [Fintype I] [Nonempty I] in
+/-- The exact `PositiveJet` of a coordinate projection `fun x => x i`: its first derivative is the
+indicator of `i = j` and its higher derivatives vanish identically, since the projection is
+already linear. -/
 def coordinate (i : V) : PositiveJet V where
   one j _ := if i = j then 1 else 0
   two _ _ _ := 0
   three _ _ _ _ := 0
 
 omit [Fintype I] [Nonempty I] in
+/-- `coordinate i` satisfies `Bounds β 0` for the coordinate projection `fun x => x i`: the
+projection is smooth, field-nonexpansive and has the exact vanishing higher derivatives computed
+by `coordinate`, so every field of `Bounds` reduces to a direct case split on whether `i = j`. -/
 lemma bounds_coordinate (β : ℝ) (i : V) :
     (coordinate i).Bounds β 0 (fun x : V → ℝ => x i) := by
   have hpartial (j : V) (x : V → ℝ) :
@@ -485,9 +581,11 @@ lemma bounds_coordinate (β : ℝ) (i : V) :
     simpa only [Nat.cast_zero, mul_zero, coordinate] using
       expStable_const (V := V) (show 0 ≤ (if i = j then 1 else 0 : ℝ) by split_ifs <;> norm_num)
   · intro j k
-    simpa only [Nat.cast_zero, mul_zero, coordinate] using expStable_const (V := V) (le_refl (0 : ℝ))
+    simpa only [Nat.cast_zero, mul_zero, coordinate] using
+      expStable_const (V := V) (le_refl (0 : ℝ))
   · intro j k l
-    simpa only [Nat.cast_zero, mul_zero, coordinate] using expStable_const (V := V) (le_refl (0 : ℝ))
+    simpa only [Nat.cast_zero, mul_zero, coordinate] using
+      expStable_const (V := V) (le_refl (0 : ℝ))
   · intro j x
     simp [hpartial, coordinate, apply_ite abs]
   · intro j k x
@@ -511,15 +609,21 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def HasPositiveJet (β : ℝ) (n : ℕ) (f : (V → ℝ) → ℝ) : Prop :=
   ∃ A : PositiveJet V, A.Bounds β n f
 
+/-- The coordinate projection `fun x => x i` has a `PositiveJet` at depth `0`, for any softness
+`β`: witnessed by `PositiveJet.coordinate i` via `PositiveJet.bounds_coordinate`. -/
 lemma hasPositiveJet_coordinate (β : ℝ) (i : V) :
     HasPositiveJet β 0 (fun x : V → ℝ => x i) :=
   ⟨PositiveJet.coordinate i, PositiveJet.bounds_coordinate β i⟩
 
+/-- `HasPositiveJet` is monotone in the depth `n`: extract a witnessing envelope and apply
+`PositiveJet.Bounds.mono` to it. -/
 lemma HasPositiveJet.mono {β : ℝ} {n m : ℕ} {f : (V → ℝ) → ℝ}
     (hf : HasPositiveJet β n f) (hnm : n ≤ m) : HasPositiveJet β m f := by
   obtain ⟨A, hA⟩ := hf
   exact ⟨A, hA.mono hnm⟩
 
+/-- A function with a `PositiveJet` also satisfies the coarser `SmoothBottleneckBound`: extract a
+witnessing envelope and apply `PositiveJet.Bounds.smoothBottleneckBound` to it. -/
 lemma HasPositiveJet.smoothBottleneckBound {β : ℝ} {n : ℕ} {f : (V → ℝ) → ℝ}
     (hf : HasPositiveJet β n f) : SmoothBottleneckBound β n f := by
   obtain ⟨A, hA⟩ := hf
@@ -527,6 +631,9 @@ lemma HasPositiveJet.smoothBottleneckBound {β : ℝ} {n : ℕ} {f : (V → ℝ)
 
 variable {I : Type*} [Fintype I] [Nonempty I]
 
+/-- The existential closure of `PositiveJet.Bounds.softMaximum`: if every `f i` has a
+`PositiveJet` at depth `n`, then their softmax has one at depth `n + 1`, choosing witnessing
+envelopes for each `f i` and composing them via `softCompose`. -/
 lemma HasPositiveJet.softMaximum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} (hf : ∀ i, HasPositiveJet β n (f i)) :
     HasPositiveJet β (n + 1) (fun x => LatticeProb.softMaximum β (fun i => f i x)) := by
@@ -534,6 +641,8 @@ lemma HasPositiveJet.softMaximum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
   choose A hA using hf
   exact ⟨_, PositiveJet.Bounds.softMaximum hβ hA⟩
 
+/-- The existential closure of `PositiveJet.Bounds.softMinimum`: if every `f i` has a
+`PositiveJet` at depth `n`, then their softmin has one at depth `n + 1`. -/
 lemma HasPositiveJet.softMinimum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f : I → (V → ℝ) → ℝ} (hf : ∀ i, HasPositiveJet β n (f i)) :
     HasPositiveJet β (n + 1) (fun x => LatticeProb.softMinimum β (fun i => f i x)) := by
@@ -542,6 +651,9 @@ lemma HasPositiveJet.softMinimum {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
   exact ⟨_, PositiveJet.Bounds.softMinimum hβ hA⟩
 
 omit [Fintype I] [Nonempty I] in
+/-- The binary special case of `HasPositiveJet.softMinimum`: if `f` and `g` each have a
+`PositiveJet` at depth `n`, so does the soft minimum of the pair `![f F, g F]`, at depth `n + 1`.
+Reduces to `HasPositiveJet.softMinimum` on the two-element family `![f, g]`. -/
 lemma HasPositiveJet.softMinimum_pair {β : ℝ} (hβ : β ≠ 0) {n : ℕ}
     {f g : (V → ℝ) → ℝ} (hf : HasPositiveJet β n f) (hg : HasPositiveJet β n g) :
     HasPositiveJet β (n + 1) (fun F => LatticeProb.softMinimum β ![f F, g F]) := by

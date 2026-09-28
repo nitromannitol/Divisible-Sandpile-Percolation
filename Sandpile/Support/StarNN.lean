@@ -1,15 +1,22 @@
-/-
-Replacement of star steps by one or two nearest-neighbor steps in a rectangle.
-The inserted corner loses at most the largest nearest-neighbor increment,
-independently of the length of the original walk.
--/
 import Sandpile.Support.RectangleIncrement
 import Sandpile.Support.StarCrossings
+
+/-!
+# Replacing star steps by nearest-neighbor steps
+
+Replacement of star steps by one or two nearest-neighbor steps in a rectangle. The inserted
+corner loses at most the largest nearest-neighbor increment, independently of the length of the
+original walk.
+-/
 
 open scoped BigOperators
 noncomputable section
 namespace Sandpile
 
+/-- **Edge-by-edge walk replacement.** If every `G`-edge whose endpoints are at least `level`
+can be replaced by an `H`-walk staying at least `level - loss`, then any `G`-walk staying at
+least `level` can be replaced by an `H`-walk staying at least `level - loss`, by induction on
+the walk and concatenating the edge-by-edge replacements. -/
 lemma walk_replace_edges {V : Type*} (G H : SimpleGraph V) (F : V → ℝ)
     {level loss : ℝ} (hloss : 0 ≤ loss)
     (hstep : ∀ x y, G.Adj x y → level ≤ F x → level ≤ F y →
@@ -33,6 +40,8 @@ lemma walk_replace_edges {V : Type*} (G H : SimpleGraph V) (F : V → ℝ)
     · exact hq z hz
     · exact hq' z hz
 
+/-- Two sites that agree in every coordinate except `i`, where they differ by exactly `1`, are
+adjacent in the nearest-neighbor lattice graph `lattice d`. -/
 lemma lattice_adj_of_one_coordinate {d : ℕ} {z w : Site d} (i : Fin d)
     (hsame : ∀ j, j ≠ i → w j = z j) (hstep : |w i - z i| = 1) : (lattice d).Adj z w := by
   rcases le_total (z i) (w i) with hi | hi
@@ -55,6 +64,8 @@ lemma lattice_adj_of_one_coordinate {d : ℕ} {z w : Site d} (i : Fin d)
     · simp only [Pi.add_apply, unit, Pi.single_eq_of_ne hj, add_zero]
       exact (hsame j hj).symm
 
+/-- In a lattice rectangle `Q`, the "corner" point built from the first coordinate of `w` and
+the second coordinate of `z` also lies in `Q`, since `Q` is a coordinatewise interval. -/
 lemma rectangle_corner_mem {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q) (z w : Q) :
     (![w.val 0, z.val 1] : Site 2) ∈ Q := by
   obtain ⟨lo, hi, hQ⟩ := hQ
@@ -64,9 +75,14 @@ lemma rectangle_corner_mem {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q) (z 
   · exact (hQ w).mp w.property 0
   · exact (hQ z).mp z.property 1
 
+/-- Inside a lattice rectangle `Q`, any star-graph edge `z ~ w` (differing by at most `1` in each
+coordinate) is either already a nearest-neighbor edge, or can be replaced by two nearest-neighbor
+edges through the corner point `rectangle_corner_mem`, according to whether `z` and `w` already
+agree in one coordinate. -/
 lemma rectangle_star_adj_one_or_two_steps {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     {z w : Q} (hzw : ((starLatticeGraph 2).induce (Q : Set (Site 2))).Adj z w) :
-    (rectangleGraph Q).Adj z w ∨ ∃ m : Q, (rectangleGraph Q).Adj z m ∧ (rectangleGraph Q).Adj m w := by
+    (rectangleGraph Q).Adj z w ∨
+      ∃ m : Q, (rectangleGraph Q).Adj z m ∧ (rectangleGraph Q).Adj m w := by
   have hdiff (i : Fin 2) : |(w : Site 2) i - (z : Site 2) i| ≤ 1 := by
     have hh : (((z : Site 2) i - (w : Site 2) i).natAbs : ℤ) ≤ 1 := by
       exact_mod_cast hzw.2 i
@@ -125,6 +141,11 @@ lemma rectangle_star_adj_one_or_two_steps {Q : Finset (Site 2)} (hQ : IsLatticeR
           have hp : 0 < |(w : Site 2) 1 - (z : Site 2) 1| := abs_pos.mpr hn
           omega
 
+/-- **Star-to-nearest-neighbor walk replacement in a rectangle.** Any star-graph walk in `Q`
+staying at least `level` can be replaced by a nearest-neighbor (`rectangleGraph Q`) walk staying
+at least `level - edgeOscillation (rectangleGraph Q) F`, combining the edge replacement
+`rectangle_star_adj_one_or_two_steps` (one or two nearest-neighbor steps per star step) with the
+general walk lifting `walk_replace_edges`. -/
 lemma rectangle_star_walk_to_nn {Q : Finset (Site 2)} [Nonempty Q] (hQ : IsLatticeRectangle Q)
     (F : Q → ℝ) {level : ℝ} {a b : Q}
     (p : ((starLatticeGraph 2).induce (Q : Set (Site 2))).Walk a b)
@@ -137,7 +158,8 @@ lemma rectangle_star_walk_to_nn {Q : Finset (Site 2)} [Nonempty Q] (hQ : IsLatti
   rcases rectangle_star_adj_one_or_two_steps hQ hzw with hzw | ⟨m, hzm, hmw⟩
   · refine ⟨SimpleGraph.Walk.cons hzw SimpleGraph.Walk.nil, ?_⟩
     intro x hx
-    simp only [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil, List.mem_cons, List.not_mem_nil, or_false] at hx
+    simp only [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil, List.mem_cons,
+      List.not_mem_nil, or_false] at hx
     rcases hx with rfl | rfl <;> linarith
   · have hm : level - edgeOscillation (rectangleGraph Q) F ≤ F m := by
       have hh := abs_sub_le_edgeOscillation (rectangleGraph Q) F hzm
@@ -145,7 +167,8 @@ lemma rectangle_star_walk_to_nn {Q : Finset (Site 2)} [Nonempty Q] (hQ : IsLatti
       linarith
     refine ⟨SimpleGraph.Walk.cons hzm (SimpleGraph.Walk.cons hmw SimpleGraph.Walk.nil), ?_⟩
     intro x hx
-    simp only [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil, List.mem_cons, List.not_mem_nil, or_false] at hx
+    simp only [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil, List.mem_cons,
+      List.not_mem_nil, or_false] at hx
     rcases hx with rfl | rfl | rfl <;> linarith
 
 end Sandpile

@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LimPathHit
+
+/-!
+# Transferring the ball-stopped reward across motions
+
 The law of the stopped state of a ball-exit rule depends only on the law of the
 motion, hence not on the starting point beyond the translation, nor on the space.
 
@@ -11,7 +15,6 @@ depends only on the law of the centred path, which is the same for every motion
 (`map_centredPath_eq`).  Letting the resolution grow and using the continuity of the
 reward and of the paths gives the same for the undiscretized reward.
 -/
-import Sandpile.Support.LimPathHit
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -23,12 +26,14 @@ open Classical in
 /-- The `j`-th point of the dyadic grid of `[0,T]` at resolution `n`. -/
 noncomputable def gridTime (T : ℝ≥0) (n j : ℕ) : ℝ≥0 := T * j / 2 ^ n
 
+/-- Grid times are monotone in the grid index. -/
 theorem gridTime_mono (T : ℝ≥0) (n : ℕ) {j k : ℕ} (h : j ≤ k) :
     gridTime T n j ≤ gridTime T n k := by
   have hjk : (j : ℝ≥0) ≤ (k : ℝ≥0) := by exact_mod_cast h
   unfold gridTime
   gcongr
 
+/-- The grid time at an index within the resolution `2^n` does not exceed the horizon `T`. -/
 theorem gridTime_le (T : ℝ≥0) (n : ℕ) {j : ℕ} (h : j ≤ 2 ^ n) : gridTime T n j ≤ T := by
   unfold gridTime
   rw [div_le_iff₀ (by positivity)]
@@ -36,12 +41,15 @@ theorem gridTime_le (T : ℝ≥0) (n : ℕ) {j : ℕ} (h : j ≤ 2 ^ n) : gridTi
   calc T * (j : ℝ≥0) ≤ T * ((2 ^ n : ℕ) : ℝ≥0) := by gcongr
     _ = T * 2 ^ n := by push_cast; ring
 
+/-- Consecutive grid points differ by one mesh width `T / 2^n`. -/
 theorem gridTime_succ (T : ℝ≥0) (n j : ℕ) :
     gridTime T n (j + 1) = gridTime T n j + T / 2 ^ n := by
   unfold gridTime
   push_cast
   rw [mul_add, mul_one, add_div]
 
+/-- Grid times at resolution `n` are injective in the index, provided the horizon `T` is
+nonzero: the grid spacing `T / 2^n` is nonzero, so distinct indices give distinct points. -/
 theorem gridTime_injOn (T : ℝ≥0) (hT : T ≠ 0) (n : ℕ) {j k : ℕ}
     (h : gridTime T n j = gridTime T n k) : j = k := by
   unfold gridTime at h
@@ -65,6 +73,8 @@ noncomputable def gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (ξ : �
 noncomputable def gridStop (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (ξ : ℝ≥0 → Space d) : ℝ≥0 :=
   gridTime T n (gridCount d s T n ξ)
 
+/-- The grid count never exceeds the total number of grid points `2^n`, being the
+cardinality of a filtered subset of `Finset.range (2^n)`. -/
 theorem gridCount_le (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (ξ : ℝ≥0 → Space d) :
     gridCount d s T n ξ ≤ 2 ^ n := by
   classical
@@ -77,6 +87,9 @@ theorem gridCount_down (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (ξ : ℝ≥0
     ξ ∉ pathHit d s (gridTime T n j) :=
   fun h => hk (pathHit_mono d s (gridTime_mono T n hjk) h)
 
+/-- Every grid index below the grid count is itself an unused grid point: a converse
+direction to `gridCount_down`, proved by a cardinality argument on the finset of unused
+indices below `2^n`. -/
 theorem not_mem_pathHit_of_lt_gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ)
     (ξ : ℝ≥0 → Space d) {j : ℕ} (hj : j < gridCount d s T n ξ) :
     ξ ∉ pathHit d s (gridTime T n j) := by
@@ -94,6 +107,10 @@ theorem not_mem_pathHit_of_lt_gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : �
   rw [Finset.card_range] at h2
   omega
 
+/-- If the grid count is below the full resolution `2^n`, the path HAS used the grid
+point right at the grid count: the point where the "not yet used" count stops counting
+is itself a used point, by a pigeonhole/cardinality argument dual to
+`not_mem_pathHit_of_lt_gridCount`. -/
 theorem mem_pathHit_gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (ξ : ℝ≥0 → Space d)
     (h : gridCount d s T n ξ < 2 ^ n) :
     ξ ∈ pathHit d s (gridTime T n (gridCount d s T n ξ)) := by
@@ -190,6 +207,8 @@ noncomputable def gridPayoff (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) (F : �
   ∑ j ∈ Finset.range (2 ^ n + 1),
     if gridStop d s T n ξ = gridTime T n j then F (gridTime T n j, ξ (gridTime T n j)) else 0
 
+/-- The grid count is measurable, rewritten as a finite sum of `if`/`then`/`else`
+indicators of the measurable sets `pathHit d s (gridTime T n k)`. -/
 theorem measurable_gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) :
     Measurable (gridCount d s T n) := by
   classical
@@ -202,10 +221,14 @@ theorem measurable_gridCount (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) :
   exact Measurable.ite (measurableSet_pathHit d s (gridTime T n k)).compl
     measurable_const measurable_const
 
+/-- The discretized stopping time is measurable, as the composite of the measurable
+grid count and the (finitely many values, hence measurable) function `gridTime T n`. -/
 theorem measurable_gridStop (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) :
     Measurable (gridStop d s T n) :=
   (measurable_from_top (f := gridTime T n)).comp (measurable_gridCount d s T n)
 
+/-- The discretized reward is measurable, as a finite sum of `if`/`then`/`else` terms
+each measurable in the path. -/
 theorem measurable_gridPayoff (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) {F : ℝ≥0 × Space d → ℝ}
     (hF : Measurable F) : Measurable (gridPayoff d s T n F) := by
   classical
@@ -214,6 +237,9 @@ theorem measurable_gridPayoff (d : ℕ) (s : ℝ) (T : ℝ≥0) (n : ℕ) {F : �
   · exact (measurable_gridStop d s T n) (measurableSet_singleton (gridTime T n j))
   · exact hF.comp (measurable_const.prodMk (measurable_pi_apply (gridTime T n j)))
 
+/-- The sum defining `gridPayoff` collapses to its single nonzero term, the reward read
+off at the discretized stopped time and position, using injectivity of grid times
+(`gridTime_injOn`, which needs `T ≠ 0`). -/
 theorem gridPayoff_eq {T : ℝ≥0} (hT : T ≠ 0) (s : ℝ) (n : ℕ) (F : ℝ≥0 × Space d → ℝ)
     (ξ : ℝ≥0 → Space d) :
     gridPayoff d s T n F ξ = F (gridStop d s T n ξ, ξ (gridStop d s T n ξ)) := by
@@ -233,6 +259,7 @@ section Limit
 
 variable {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
 
+/-- The mesh width `T / 2^n` tends to `0` as the resolution `n` grows. -/
 theorem tendsto_div_pow_two (T : ℝ≥0) : Tendsto (fun n : ℕ => T / 2 ^ n) atTop (𝓝 0) := by
   rw [← NNReal.tendsto_coe]
   push_cast

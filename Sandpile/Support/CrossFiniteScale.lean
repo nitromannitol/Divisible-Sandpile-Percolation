@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.CrossRescaleCrossing
+
+/-! # Finite-scale extraction, Step 1
+
 Step 1 of `lem:finite-scale-extraction` (`sandpile.tex:2431-2484`), as far as the
 rescaled crossing estimate carries it.
 
@@ -11,7 +14,6 @@ depend on the bound or on the level parameter `L`.  The 0-1 argument that raises
 that constant to one is the tail-field argument of `sandpile.tex:2455-2482`,
 which is not carried out here.
 -/
-import Sandpile.Support.CrossRescaleCrossing
 
 open MeasureTheory Set Filter
 open scoped ENNReal Topology

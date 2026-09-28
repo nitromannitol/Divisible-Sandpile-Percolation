@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.BlockIncrement
+import Sandpile.Support.D4BlockTail
+import Mathlib.Data.Nat.Sqrt
+
+/-!
+# Uniform Logarithmic Mean-Odometer Lower Bound in Dimension Four
+
 The uniform logarithmic lower bound on the mean odometer in dimension four,
 from the negative membrane tail and the block increment inequality. The block
 length and the number of blocks are both the integer square root of time.
 -/
-import Sandpile.Support.BlockIncrement
-import Sandpile.Support.D4BlockTail
-import Mathlib.Data.Nat.Sqrt
 
 open LatticeProb
 
@@ -14,6 +17,8 @@ open scoped ENNReal
 
 namespace Sandpile
 
+/-- `log t ≤ 4 log(√t)` for `t ≥ 4` (with `√t = Nat.sqrt t`), since `t < (√t + 1)²`, and
+`√t + 1 ≤ (√t)²` once `√t ≥ 2` squares to `(√t + 1)² ≤ (√t)⁴`, giving `t ≤ (√t)⁴`. -/
 theorem log_time_le_four_log_sqrt (t : ℕ) (ht : 4 ≤ t) :
     Real.log (t : ℝ) ≤ 4 * Real.log (Nat.sqrt t : ℝ) := by
   have hk : 2 ≤ Nat.sqrt t := Nat.le_sqrt'.mpr (by norm_num; exact ht)
@@ -27,6 +32,13 @@ theorem log_time_le_four_log_sqrt (t : ℕ) (ht : 4 ≤ t) :
   calc Real.log (t : ℝ) ≤ Real.log ((Nat.sqrt t : ℝ) ^ 4) := Real.log_le_log htR h4
     _ = 4 * Real.log (Nat.sqrt t : ℝ) := by rw [Real.log_pow]; norm_num
 
+/-- **Uniform mean-odometer lower bound in dimension four.** There is a constant `c > 0`
+and a time `t₀` such that for every mean-zero law `ν` with variance at least `ν₀²`,
+exponential moment `θ₀` bounded by `K₀`, and every `t ≥ t₀`, the mean odometer at time
+`t` in dimension `4` is at least `c log t`. The proof splits time into blocks of length
+`√t`, applies the negative membrane tail bound `exists_membrane_negative_tail_four` on
+each block, and feeds the resulting per-block probability into
+`mean_ge_of_block_probability`. -/
 theorem exists_log_mean_lower_four (hVS : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ c : ℝ, 0 < c ∧ ∃ t₀ : ℕ,
@@ -117,7 +129,8 @@ theorem exists_log_mean_lower_four (hVS : Sandpile.External.VarianceScale)
         le_div_iff₀ (show 0 < 16 * E by positivity)]
       nlinarith
     exact h1.trans (mul_le_mul_of_nonneg_left htail' hk0.le)
-  have hblock := mean_ge_of_block_probability (by norm_num) ν hint hmean hpos k k (by omega) hh hcount
+  have hblock :=
+    mean_ge_of_block_probability (by norm_num) ν hint hmean hpos k k (by omega) hh hcount
   have hkt : k * k ≤ t := Nat.sqrt_le t
   have hmeanmono := meanOdometerOf_mono (d := 4) ν hpos hkt
   have ht4 : 4 ≤ t := by nlinarith

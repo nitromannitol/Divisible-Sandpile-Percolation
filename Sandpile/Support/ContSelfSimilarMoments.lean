@@ -1,7 +1,11 @@
-/- Positive power moments of the continuum value from its exponential moment and law. -/
 import Sandpile.Support.MainExplAnnulus
 import Sandpile.Support.MeanAPosVar
 import Sandpile.Support.ContClause3
+
+/-! # Continuum value power moments
+
+Positive power moments of the continuum value from its exponential moment and law.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

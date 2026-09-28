@@ -1,10 +1,17 @@
-/-
-Elementary properties of the negative Sobolev norm and of the lattice pairing:
-the norm is monotone in the size of the functional, tightness only reads the
-family at scales at least one, and the pairing is homogeneous in the field.
--/
 import Sandpile.Continuum.Membrane
 import LatticeProb.Analysis.Sobolev.Basic
+
+/-!
+# Elementary properties of the negative Sobolev norm
+
+Elementary properties of the negative Sobolev norm and of the lattice pairing: the norm is
+monotone in the size of the functional, tightness only reads the family at scales at least one,
+and the pairing is homogeneous in the field. These facts (`tight_congr_ge_one`,
+`latticePairing_const_mul`, `negSobolevNorm_le_const_mul`, `tight_of_abs_le`, `tight_sub`,
+`negSobolevNorm_mono_domain`) reduce tightness of a functional to tightness of a dominating or
+approximating one, which is how tightness in `H^{-s}_loc` is established elsewhere from more
+elementary tight families.
+-/
 
 open MeasureTheory Filter Topology
 open scoped NNReal ENNReal
@@ -66,7 +73,8 @@ theorem tight_of_abs_le {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (s : ℝ)
   intro R hR
   refine le_trans (measure_mono ?_) (hMR R hR)
   intro ω hω
-  exact lt_of_lt_of_le hω (LatticeProb.Sobolev.negSobolevNorm_le_of_abs_le s D (F R ω) (G R ω) (hFG R hR ω))
+  exact lt_of_lt_of_le hω
+    (LatticeProb.Sobolev.negSobolevNorm_le_of_abs_le s D (F R ω) (G R ω) (hFG R hR ω))
 
 /-- Tightness in `H^{-s}_loc` passes to the difference of two tight families: the
 norm of a difference is at most the sum of the norms, so the event where the

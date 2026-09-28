@@ -1,11 +1,15 @@
-/-
-Deterministic scaling arithmetic for the final step of the proof of
-`thm:d4-critical-level-percolation` (`sandpile.tex:4067-4071`): with
-`r = ⌊√(t/(A_ex+1))⌋` one has `(A_ex+1) r² ≤ t`, and `log r ≥ (1/3) log t`
-for all large `t`, so a level `c log r` bounds the level `c/3 log t` from
-above and the odometer is monotone in time.
--/
 import Mathlib
+
+/-!
+# Block-scaling arithmetic for level monotonicity
+
+Deterministic scaling arithmetic for the final step of the proof of
+`thm:d4-critical-level-percolation` (`sandpile.tex:4067-4071`). With `r = ⌊√(t/(A_ex+1))⌋`,
+`floor_sqrt_mul_le` shows `(A_ex+1) r² ≤ t`, and `exists_log_floor_sqrt` shows that `r ≥ 2` and
+`log r ≥ (1/4) log t` for all sufficiently large `t`. Together these let a level `c log r` bound
+the level `(c/4) log t` from above, which is the fact used to show the odometer is monotone in
+time.
+-/
 
 open MeasureTheory
 
@@ -35,7 +39,8 @@ theorem floor_sqrt_mul_le (Aex : ℕ) (t : ℕ) :
 /-- For `A_ex ≥ 1` and all large `t`, the scale `r = ⌊√(t/(A_ex+1))⌋` is at
 least `2` and `log r ≥ (1/4) log t`. -/
 theorem exists_log_floor_sqrt (Aex : ℕ) :
-    ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → 2 ≤ Nat.floor (Real.sqrt ((t : ℝ) / (Aex + 1))) ∧
+    ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t →
+      2 ≤ Nat.floor (Real.sqrt ((t : ℝ) / (Aex + 1))) ∧
       (1 / 4 : ℝ) * Real.log t
         ≤ Real.log (Nat.floor (Real.sqrt ((t : ℝ) / (Aex + 1)))) := by
   refine ⟨256 * (Aex + 1) ^ 4 + 1, ?_⟩

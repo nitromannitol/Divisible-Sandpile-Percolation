@@ -1,23 +1,27 @@
-/-
-The two `L²` inputs of the box bound for the difference field, with constants below any
-threshold.
-
-The difference of the ball field and the ball-stopped field is the white noise paired
-with `f_{T,u} = 2d·ballKernel_u − ballStoppedKernel_{T,u}`.  Two estimates on that kernel
-are available: its `L²` norm decays geometrically in the horizon (`LimStoppedRate.lean`),
-and its increment in the centre has a spatial modulus whose constant grows with the
-horizon only polynomially (`LimStoppedModulus.lean`, `LimKernelShift.lean`).  Neither
-alone is what a chaining estimate needs: the first has no modulus and the second has no
-smallness.  Interpolating the two, `min(X,Y) ≤ X^{1/2}Y^{1/2}`, produces a modulus whose
-constant is the geometric mean of a geometric sequence and a polynomial one, hence tends
-to zero, at the cost of halving the exponent.  That is the form the Kolmogorov box bound
-consumes: both of its inputs are then below any prescribed threshold once the horizon is
-large, uniformly in the Brownian model.
--/
 import Sandpile.Support.LimStoppedRate
 import Sandpile.Support.LimStoppedModulus
 import Sandpile.Support.LimNoiseMoment
 import Sandpile.Support.ContGreenIncrement
+
+/-!
+# The two `L²` inputs of the box bound for the difference field
+
+The two `L²` inputs of the box bound for the difference field, with constants below any
+threshold.
+
+The difference of the ball field and the ball-stopped field is the white noise paired with
+`f_{T,u} = 2d·ballKernel_u − ballStoppedKernel_{T,u}`. Two estimates on that kernel are available:
+its `L²` norm decays geometrically in the horizon (`Sandpile.Support.LimStoppedRate`), and its
+increment in the centre has a spatial modulus whose constant grows with the horizon only
+polynomially (`Sandpile.Support.LimStoppedModulus`, `Sandpile.Support.LimKernelShift`). Neither
+alone is what a chaining estimate needs: the first has no modulus and the second has no
+smallness. Interpolating the two, `min(X,Y) ≤ X^{1/2}Y^{1/2}`, produces a modulus whose constant
+is the geometric mean of a geometric sequence and a polynomial one, hence tends to zero, at the
+cost of halving the exponent (`eventually_diffKernel_bounds`). That is the form the Kolmogorov box
+bound consumes: both of its inputs are then below any prescribed threshold once the horizon is
+large, uniformly in the Brownian model. `eventually_diffField_moment_bounds` restates the same
+fact as moment bounds on the white-noise pairing itself, for a general exponent `p`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -27,6 +31,8 @@ namespace Sandpile.Support
 
 /-! ### The geometric factor beats the polynomial one -/
 
+/-- The cube root of the geometric sequence `blockRatio ^ n` still tends to `0`, since
+`blockRatio ∈ (0,1)` makes `blockRatio ^ (1/3) ∈ (0,1)` as well. -/
 theorem tendsto_blockRatio_rpow_third :
     Tendsto (fun n : ℕ => (blockRatio ^ n) ^ ((1 : ℝ) / 3)) atTop (𝓝 0) := by
   have hr : (blockRatio ^ ((1 : ℝ) / 3)) ^ 1 = blockRatio ^ ((1 : ℝ) / 3) := pow_one _
@@ -45,6 +51,8 @@ theorem tendsto_blockRatio_rpow_third :
   simp_rw [heq]
   exact tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs
 
+/-- A linear factor `n + c` does not stop `(blockRatio ^ n) ^ (1/3)` from tending to `0`: the
+polynomial growth is beaten by the geometric decay. -/
 theorem tendsto_linear_mul_blockRatio (c : ℝ) :
     Tendsto (fun n : ℕ => ((n : ℝ) + c) * (blockRatio ^ n) ^ ((1 : ℝ) / 3)) atTop (𝓝 0) := by
   have habs : |blockRatio ^ ((1 : ℝ) / 3)| < 1 := by
@@ -69,6 +77,8 @@ theorem tendsto_linear_mul_blockRatio (c : ℝ) :
 
 /-! ### The modulus constant is at most linear in the horizon -/
 
+/-- A real power `T ^ b` with exponent `b ∈ [0,1]` is bounded by the linear function `1 + T`,
+splitting on whether `T ≤ 1` or `T ≥ 1`. -/
 theorem rpow_le_one_add {T b : ℝ} (hT : 0 ≤ T) (hb0 : 0 ≤ b) (hb1 : b ≤ 1) :
     T ^ b ≤ 1 + T := by
   rcases le_total T 1 with h | h
@@ -83,6 +93,8 @@ noncomputable def greenModulusCoeff (d : ℕ) : ℝ :=
   2 * (greenDiffConst d * (2 : ℝ) ^ (-(2 * (d : ℝ) + 1) / 4))
     / (1 - (2 * (d : ℝ) + 1) / 8) ^ 2
 
+/-- The coefficient `greenModulusCoeff d` is nonnegative for `1 ≤ d ≤ 3`, since it is built from
+the nonnegative `greenDiffConst d` and a positive denominator. -/
 theorem greenModulusCoeff_nonneg {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     0 ≤ greenModulusCoeff d := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -91,6 +103,9 @@ theorem greenModulusCoeff_nonneg {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
   rw [greenModulusCoeff]
   positivity
 
+/-- **The Green modulus constant `greenModulusConst d T` is bounded by an affine function of the
+horizon `T`**, with coefficient `greenModulusCoeff d`, for `2 ≤ d ≤ 3`: its square is a power of
+`T` with exponent at most `1`, which `rpow_le_one_add` bounds by `1 + T`. -/
 theorem greenModulusConst_le_linear {d : ℕ} (hd : 1 ≤ d) (hd2 : 2 ≤ d) (hd3 : d ≤ 3)
     {T : ℝ} (hT : 0 ≤ T) :
     greenModulusConst d T ≤ greenModulusCoeff d * (1 + T) := by
@@ -125,6 +140,8 @@ theorem greenModulusConst_le_linear {d : ℕ} (hd : 1 ≤ d) (hd2 : 2 ≤ d) (hd
   rw [hrw1, hrw2, div_le_div_iff_of_pos_right ha2]
   exact mul_le_mul_of_nonneg_left hpow hC0
 
+/-- `greenModulusConst d T` is monotone nondecreasing in the horizon `T`, since the underlying
+`greenModulusFactor d T` is. -/
 theorem greenModulusConst_mono {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {T T' : ℝ} (hT : 0 ≤ T)
     (hTT : T ≤ T') : greenModulusConst d T ≤ greenModulusConst d T' := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -143,6 +160,9 @@ theorem greenModulusConst_mono {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {T T' : 
 
 /-! ### A square-integrable increment -/
 
+/-- The elementary inequality `(f-g)^2 ≤ 2f^2 + 2g^2` integrated: if `f^2`, `g^2` and `(f-g)^2` are
+all integrable, the integral of `(f-g)^2` is at most twice the sum of the integrals of `f^2` and
+`g^2`. -/
 theorem integral_sq_sub_le_two {α : Type*} [MeasurableSpace α] {μ : Measure α} {f g : α → ℝ}
     (hf : Integrable (fun y => f y ^ 2) μ) (hg : Integrable (fun y => g y ^ 2) μ)
     (hfg : Integrable (fun y => (f y - g y) ^ 2) μ) :
@@ -196,7 +216,8 @@ theorem eventually_diffKernel_bounds (hOcc : Sandpile.External.BallOccupationDen
     have h1 : 0 ≤ kernelShiftL2Const d s := by
       have h2 : (0 : ℝ) ≤ kernelShiftL1Const d s ^ ((1 : ℝ) / 3) :=
         Real.rpow_nonneg (kernelShiftL1Const_nonneg hdd s) _
-      have h3 : (0 : ℝ) ≤ 2 ^ ((7 : ℝ) / 2) * ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2) := by
+      have h3 : (0 : ℝ) ≤
+          2 ^ ((7 : ℝ) / 2) * ∫ z : Space d, centredKernel d s z ^ ((5 : ℝ) / 2) := by
         have := centredKernel_rpow_nonneg_integral hdd s
         positivity
       rw [kernelShiftL2Const]
@@ -417,6 +438,9 @@ theorem eventually_diffKernel_bounds (hOcc : Sandpile.External.BallOccupationDen
 
 /-! ### The moment form -/
 
+/-- The white noise applied to the zero test function is almost surely zero, since
+`IsWhiteNoise.smul` applied with scalar `0` collapses `W (0 • 0) = W 0` to the zero random
+variable. -/
 theorem ae_whiteNoise_zero {ΩW : Type*} [MeasurableSpace ΩW] {d : ℕ} {PW : Measure ΩW}
     {W : (Space d → ℝ) → ΩW → ℝ} (hW : IsWhiteNoise d W PW) :
     W (fun _ => (0 : ℝ)) =ᵐ[PW] fun _ => (0 : ℝ) := by

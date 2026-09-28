@@ -1,20 +1,20 @@
-/-
-The moment hypothesis of the multi-parameter Kolmogorov criterion for the
-interpolated rescaled field, uniformly in the scale.
-
-`ContLinMoment` prices the centred `p`-th moment of the increment of the field by
-the `ℓ²` norm of the increment of its coefficient vector, and `ContCoeffCoarse`
-prices that `ℓ²` norm by a power of the distance with a constant free of the
-scale.  This module joins the two, and removes the centring: the scenery of a
-centred mass field has mean zero, so the field itself has mean zero, and the
-centred moment is the moment.  What comes out is exactly the hypothesis
-`∫ |X u - X v|^p ≤ M dist(u,v)^q` of the criterion, with `q = p β` and `M` free
-of the scale, together with the one-point moment bound the criterion's
-uniform-norm clause asks for.
--/
 import Sandpile.Support.ContCoeffCoarse
 import Sandpile.Support.ContLinMoment
 import LatticeProb.Support.ContSums
+
+/-!
+# The moment hypothesis of the Kolmogorov criterion, uniform in the scale
+
+`exists_moment_linInterp_sub_le` prices the centred `p`-th moment of the increment of the
+interpolated rescaled field by the `ℓ²` norm of the increment of its coefficient vector, and
+the coefficient estimates of `ContCoeffCoarse` price that `ℓ²` norm by a power of the distance
+with a constant free of the scale. This file joins the two and removes the centring: the
+scenery of a centred mass field has mean zero, so the field itself has mean zero, and the
+centred moment is the moment. What results is exactly the increment hypothesis
+`∫ |X u - X v| ^ p ≤ M * dist u v ^ q` of the multi-parameter Kolmogorov criterion, with
+`q = p * β` and `M` free of the scale, together with the one-point moment bound the criterion's
+uniform-norm clause needs.
+-/
 
 open LatticeProb
 

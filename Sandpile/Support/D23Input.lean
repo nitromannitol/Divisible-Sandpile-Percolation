@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.D23Range
+
+/-!
+# The block-crossing estimate for dimensions two and three
+
 The block-crossing estimate of the dimension-two and dimension-three
 percolation proof, `eq:d23-block-crossing-estimate` (`sandpile.tex:2605-2612`):
 
@@ -16,9 +20,9 @@ the four of the block construction, so `E_R` at the coarse site `z` is
 paper's proof orders them: `δ` comes from the dependence range of the block
 event through \citet[Corollary~1.4]{LSS}, then
 Theorem~\ref{thm:limiting-odometer-crossing} with error `δ/4` gives the time `T`
-and the level `H`, and only then is `c = ν₀H/2` fixed.
+and the level `H`, and only then is `c = ν₀H/2` fixed. The statement
+`D23BlockCrossing` is the `Prop` that packages this quantifier order.
 -/
-import Sandpile.Support.D23Range
 
 open MeasureTheory ProbabilityTheory
 

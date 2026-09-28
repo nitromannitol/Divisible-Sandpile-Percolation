@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossCellShift
+import Sandpile.Support.CrossLevelLoss
+
+/-!
+# Level loss from an adaptive cell exploration
+
 Steps 2 and 3 of `prop:fixed-scale-crossings` (`sandpile.tex:2248-2400`) assembled: from an
 adaptive exploration of the unit cells with a subquadratic expected count, the level loss the
 proposition needs.
@@ -18,10 +23,10 @@ value of the rectangle by the same amount `a𝔪` (`sandpile.tex:2337-2345`).
 
 Everything else - the adaptive Cameron--Martin identity, Pinsker, the identification of the
 tilt with the shift, and the passage from the measurable representative of the crossing to the
-crossing itself - is proved.
+crossing itself - is proved. `cross_level_loss_of_cell_exploration` gives the raw level-shift
+bound and `cross_zero_level_loss_of_cell_exploration` specializes it to the level `L / R` shape
+the proposition consumes.
 -/
-import Sandpile.Support.CrossCellShift
-import Sandpile.Support.CrossLevelLoss
 
 open MeasureTheory ProbabilityTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings

@@ -1,28 +1,23 @@
-/-
-The second conclusion of `lem:dgt4-path-survival`, `eq:dgt4-positive-path-covariance`
-(`sandpile.tex:5584-5610`).
-
-`Support/LinStep3Cov.lean` proves the estimate along one pair of paths, with the threshold
-replacement, the three factorizations and the weight bound as hypotheses.  Here they are
-supplied.  The paper fixes `\delta\in(0,T)` and observes that `n_R-\delta R^2\leq(1-\delta/(2T))n_R`
-for all large `R`, so the window hypothesis `eq:dgt4-uniform-contact-thresholds` at
-`\varepsilon=\delta/(2T)` covers every time the two paths visit; the weights are then at most
-`2G(0,0)\kappa/(\delta R^2)`, which is the paper's `C/(\delta R^2)` with `C=4G(0,0)\kappa`,
-and at least `G(0,0)\kappa/(2n_R)`, which is what Step 1 needs at the lower end.
-
-`fact_on_finset` reads Step 1 on a finset of sites with a level attached to each, through the
-enumeration of `Support/LinStep3Sites.lean`.  The factorization is applied three times, to the
-sites of `X`, to those of `Y`, and to those of both, whence the bound `2TR^2` on the size of
-the family.
-
-The paper's "collecting the uniform errors into `\varepsilon_R(\delta)\to0`" is
-`exists_tendsto_zero_of_eventually`: a bound that holds eventually in `R` at every positive
-target, and trivially at the target one, holds at a nonnegative target that tends to zero.
--/
 import Sandpile.Support.LinStep3Cov
 import Sandpile.Support.LinStep2Core
 import Sandpile.Support.LinGaussShift
 import Sandpile.Support.LinStationary
+
+/-!
+# The positive-path-covariance conclusion of the path-survival lemma
+
+The covariance estimate is proved along one pair of paths given the threshold replacement,
+three applications of the threshold factorization (to the sites of `X`, to those of `Y`, and to
+those of both), and a two-sided weight bound, all supplied here from the window hypothesis on
+the uniform contact thresholds. Fixing `δ ∈ (0,T)` and observing that `n_R - δR² ≤ (1 -
+δ/(2T)) n_R` for all large `R` makes the window hypothesis at `ε = δ/(2T)` cover every time the
+two paths visit before their horizon; on that window the weights lie between `G(0,0)κ/(2n_R)`,
+which the factorization step needs at the lower end, and `2G(0,0)κ/(δR²)`, giving the constant
+`C = 4G(0,0)κ` in the covariance bound `C/(δR²)`. The uniform errors collected along the way
+are combined into a single error function tending to zero via `exists_tendsto_zero_of_eventually`,
+which upgrades a bound holding eventually at every positive target into one at a target that
+itself tends to zero.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -255,7 +250,8 @@ theorem exists_cov_bound_core [NeZero d] {l : Filter ℝ}
       linarith
     clear_value theta eta
     filter_upwards [hthresholds ε ⟨hε0, hε1⟩ eta hetap, hfactev theta hthetap K hK,
-      (hsq.eventually_ge_atTop 2).filter_mono hl, (eventually_gt_atTop (0 : ℝ)).filter_mono hl] with R h_thr h_fact h_RT h_R0
+      (hsq.eventually_ge_atTop 2).filter_mono hl, (eventually_gt_atTop (0 : ℝ)).filter_mono hl]
+      with R h_thr h_fact h_RT h_R0
     intro i j hi hj X Y
     have hRT0 : (0 : ℝ) < R ^ 2 * T := by linarith
     set n : ℕ := ⌊R ^ 2 * T⌋₊ with hndef
@@ -439,8 +435,9 @@ theorem exists_cov_bound_core [NeZero d] {l : Filter ℝ}
     rw [hcoef] at hmain
     linarith [hmain, hetaL, hthetaE, hcount]
 
-/-- **`eq:dgt4-positive-path-covariance` in both branches of the threshold-field dichotomy of `sandpile.tex:5449-5450`**
-(`sandpile.tex:5579-5605`).  The constant is `C = 4G(0,0)\kappa`. -/
+/-- **`eq:dgt4-positive-path-covariance` in both branches of the threshold-field
+dichotomy of `sandpile.tex:5449-5450`** (`sandpile.tex:5579-5605`).  The constant
+is `C = 4G(0,0)\kappa`. -/
 theorem exists_cov_bound [NeZero d]
     (hNormal : External.NormalComparison) (hd : 5 ≤ d) (ν : Measure ℝ)
     [IsProbabilityMeasure ν] (hatom : ∀ z : ℝ, ν {z} = 0)

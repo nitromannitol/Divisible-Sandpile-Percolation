@@ -1,14 +1,15 @@
-/-
-The normalized threshold.
-
-`sandpile.tex:1747-1750` needs the thresholds `h/√Var(V_{n_j}(0))` below the
-fixed `η` of the persistence bound.  With `h = t^{(4-d)/4}/L`, the variance floor
-of the scenery and `N ≥ tL^{-a}/2`, that quotient is at most a constant times
-`L^{-(1-a(4-d)/4)}`, and the exponent is positive exactly because
-`a < 4/(4-d)`; `Sandpile.exists_threshold` then produces the `L₀` past which the
-thresholds are below one.
--/
 import Sandpile.Support.RemainderRate
+
+/-!
+# The normalized threshold rate
+
+Bounds the normalized threshold `h / √Var(V_{n_j}(0))` needed below a fixed level for the
+persistence argument. With `h = t^{(4-d)/4}/L`, a variance floor for the scenery, and
+`N ≥ t L^{-a}/2`, the quotient is bounded by a constant multiple of `L^{-(1 - a(4-d)/4)}`, and
+this exponent is positive exactly when `a < 4/(4-d)`. The two lemmas here isolate the algebraic
+steps: turning the lower bound on `N` into a power bound, and combining it with a variance floor
+to get the final decay rate in `L`.
+-/
 
 namespace Sandpile
 

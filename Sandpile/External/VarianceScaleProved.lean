@@ -1,4 +1,11 @@
-/-
+import Sandpile.External.VarianceScale
+import LatticeProb.Walk.VarianceScale
+import LatticeProb.Walk.WindowD4
+import LatticeProb.Walk.Correlation
+
+/-!
+# The finite-time variance scale is proved
+
 The finite-time variance scale is no longer assumed.
 
 `Sandpile/External/VarianceScale.lean` states the random-walk estimates of
@@ -15,13 +22,12 @@ Everything after that is `funext`, the shift invariance of a sum over the
 lattice, and the fact that the variance and correlation rates of the two
 developments are definitionally equal.
 -/
-import Sandpile.External.VarianceScale
-import LatticeProb.Walk.VarianceScale
-import LatticeProb.Walk.WindowD4
-import LatticeProb.Walk.Correlation
 
 open LatticeProb
 
+/-- The paper's two-point heat kernel `Sandpile.heatKernel` agrees with the library's
+translation-invariant `LatticeProb.srwHeat`, by induction on the time using the same
+nearest-neighbor recursion on both sides. -/
 theorem Sandpile.heatKernel_eq_srwHeat (d : ℕ) : ∀ (k : ℕ) (x y : Sandpile.Site d),
     Sandpile.heatKernel d k x y = LatticeProb.srwHeat d k (y - x) := by
   intro k
@@ -49,6 +55,8 @@ theorem Sandpile.heatKernel_eq_srwHeat (d : ℕ) : ∀ (k : ℕ) (x y : Sandpile
       rw [h1, h2]
       ring
 
+/-- `Sandpile.greenTime`, summed from the origin, agrees with the library's
+`LatticeProb.srwGreen`, termwise via `heatKernel_eq_srwHeat`. -/
 theorem Sandpile.greenTime_eq_srwGreen (d t : ℕ) (y : Sandpile.Site d) :
     Sandpile.greenTime d t 0 y = LatticeProb.srwGreen d t y := by
   show (∑ k ∈ Finset.range t, Sandpile.heatKernel d k 0 y) = LatticeProb.srwGreen d t y
@@ -56,6 +64,8 @@ theorem Sandpile.greenTime_eq_srwGreen (d t : ℕ) (y : Sandpile.Site d) :
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [heatKernel_eq_srwHeat d k 0 y, sub_zero]
 
+/-- The file's `varianceRate` and the library's `LatticeProb.varianceRate` are the same
+`if`-chain on the dimension, definitionally. -/
 theorem Sandpile.varianceRate_eq (d t : ℕ) :
     Sandpile.External.Variance.varianceRate d t = LatticeProb.varianceRate d t := rfl
 
@@ -78,22 +88,31 @@ theorem Sandpile.variance_clause_one :
   rw [hfun, varianceRate_eq]
   exact h t ht
 
+/-- The two-argument form of `greenTime_eq_srwGreen`: the paper's Green sum between
+arbitrary sites `x` and `y` agrees with the library's translation-invariant `srwGreen`
+evaluated at the difference `y - x`. -/
 theorem Sandpile.greenTime_eq_srwGreen' (d t : ℕ) (x y : Sandpile.Site d) :
     Sandpile.greenTime d t x y = LatticeProb.srwGreen d t (y - x) := by
   show (∑ k ∈ Finset.range t, Sandpile.heatKernel d k x y) = LatticeProb.srwGreen d t (y - x)
   rw [LatticeProb.srwGreen]
   exact Finset.sum_congr rfl fun k _ => heatKernel_eq_srwHeat d k x y
 
+/-- The file's `windowKernel` (a finite time-window sum of the two-point heat kernel)
+agrees with the library's translation-invariant `LatticeProb.srwWindow`. -/
 theorem Sandpile.windowKernel_eq_srwWindow (m n : ℕ) (x z : Sandpile.Site 4) :
     Sandpile.External.Variance.windowKernel m n x z = LatticeProb.srwWindow 4 m n (z - x) := by
   rw [Sandpile.External.Variance.windowKernel, LatticeProb.srwWindow]
   exact Finset.sum_congr rfl fun k _ => heatKernel_eq_srwHeat 4 k x z
 
+/-- Summing `g` over `z - x` for `z` ranging over the lattice is the same as summing `g`
+directly, by the library's shift invariance `LatticeProb.tsum_shift`. -/
 theorem Sandpile.tsum_shift_sub {d : ℕ} (x : Sandpile.Site d) (g : Sandpile.Site d → ℝ) :
     ∑' z : Sandpile.Site d, g (z - x) = ∑' y : Sandpile.Site d, g y := by
   have h := LatticeProb.tsum_shift (-x) g
   simpa [sub_eq_add_neg] using h
 
+/-- The file's `corrRate` and the library's `LatticeProb.corrRate` are the same `if`-chain
+on the dimension, definitionally. -/
 theorem Sandpile.corrRate_eq (d m n : ℕ) :
     Sandpile.External.Variance.corrRate d m n = LatticeProb.corrRate d m n := rfl
 

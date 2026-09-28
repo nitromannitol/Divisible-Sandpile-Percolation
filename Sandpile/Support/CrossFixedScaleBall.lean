@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.CrossFixedScale
+import Sandpile.Support.CrossBallSym
+import Sandpile.External.GaussianLawCovarianceProved
+
+/-!
+# `prop:fixed-scale-crossings` for the ball field
+
 `prop:fixed-scale-crossings` (`sandpile.tex:2121-2128`) for the ball field
 itself, reduced to exactly four inputs.
 
@@ -35,9 +41,6 @@ and before the space, which is where the paper binds it; that is what
 `uniform_crossing_constant` makes possible, since the RSW comparison map of
 `External.ContinuumRSW` is chosen from the aspect ratio alone.
 -/
-import Sandpile.Support.CrossFixedScale
-import Sandpile.Support.CrossBallSym
-import Sandpile.External.GaussianLawCovarianceProved
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -46,7 +49,9 @@ namespace Sandpile.Support
 
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
-/-
+/-- `prop:fixed-scale-crossings` for the actual field `ballField d W 1`, with `hloss` tied to
+that field rather than to an abstract `X`.
+
 Vacuity check: the hypothesis this theorem
 used to take, quantifying `hloss` over an ARBITRARY field `X` satisfying only
 measurability, a.s.-continuity, `IsSymmetricField` and `IsAssociatedField`, is

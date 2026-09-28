@@ -1,24 +1,17 @@
-/-
-An everywhere-defined representative of the rank-one reduction of `sandpile.tex:5270-5271`.
-
-Step 4 of case (a) conditions the Gaussian scenery on the linear functional
-`-V_\infty(0)` and asserts that the concentration bound survives the conditioning,
-"since conditioning replaces its covariance by a rank-one reduction".  What carries
-that sentence is that the reduction is an orthogonal projection, hence a contraction
-for the `\ell^2` distance, so a functional Lipschitz for that distance stays Lipschitz
-with the same constant after the conditioning.
-
-`residField` of `Support/Dgt4ACondition.lean` is the reduction as the conditioning
-needs it, but it is built from `condCoord`, an arbitrary representative of an `L^2`
-class, and no representative of an `L^2` class is a contraction at every
-configuration.  The projection is therefore rebuilt here at every configuration: the
-pairing with the conditioned direction is the limit of the box partial sums where
-that limit exists and is zero elsewhere, and the two configurations of a pair at
-finite `\ell^2` distance either both have the limit or both do not, because their
-partial sums differ by an absolutely convergent series.  The rebuilt projection is
-measurable, is almost everywhere `residField`, and is a contraction everywhere.
--/
 import Sandpile.Support.Dgt4ACondTail
+
+/-!
+# An everywhere-defined rank-one projection onto the conditioned direction
+
+The reduction `residField` used to condition the Gaussian scenery on the linear functional
+`-V_∞(0)` is built from `condCoord`, an arbitrary `L²` representative, and no representative
+of an `L²` class is a contraction for the `ℓ²` distance at every configuration. This file
+rebuilds the rank-one projection `projUnit` so that it is defined and a contraction at
+literally every configuration: the pairing `unitPairing` with the conditioned direction is
+the limit of the box partial sums `unitPartial` where that limit exists (the set
+`unitConv`) and is zero otherwise. The rebuilt projection agrees with `residField` almost
+everywhere, so the everywhere-defined and `L²` pictures coincide as measures.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -30,6 +23,8 @@ variable {d : ℕ}
 noncomputable def unitPartial (d : ℕ) (hd : 5 ≤ d) (n : ℕ) (ω : Site d → ℝ) : ℝ :=
   ∑ z ∈ boxFinset (0 : Site d) n, (greenUnit d hd : Site d → ℝ) z * ω z
 
+/-- The box partial sum `unitPartial d hd n` is measurable, being a finite sum of the
+measurable coordinate projections `ω ↦ ω z` each scaled by a constant. -/
 theorem measurable_unitPartial (hd : 5 ≤ d) (n : ℕ) : Measurable (unitPartial d hd n) := by
   unfold unitPartial
   exact Finset.measurable_sum _ fun z _ => (measurable_pi_apply z).const_mul _
@@ -39,6 +34,8 @@ converge. -/
 def unitConv (d : ℕ) (hd : 5 ≤ d) : Set (Site d → ℝ) :=
   {ω | ∃ L : ℝ, Tendsto (fun n => unitPartial d hd n ω) atTop (𝓝 L)}
 
+/-- The convergence set `unitConv d hd` is measurable, since it is the set on which a
+sequence of measurable functions (`unitPartial d hd`) admits a limit. -/
 theorem measurableSet_unitConv (hd : 5 ≤ d) : MeasurableSet (unitConv d hd) := by
   exact MeasureTheory.measurableSet_exists_tendsto (fun n => measurable_unitPartial hd n)
 
@@ -47,16 +44,20 @@ configuration. -/
 noncomputable def unitPairing (d : ℕ) (hd : 5 ≤ d) : (Site d → ℝ) → ℝ :=
   Set.indicator (unitConv d hd) fun ω => limUnder atTop fun n => unitPartial d hd n ω
 
+/-- If the box partial sums at `ω` converge to `L`, then `unitPairing d hd ω` equals `L`. -/
 theorem unitPairing_eq_of_tendsto (hd : 5 ≤ d) {ω : Site d → ℝ} {L : ℝ}
     (h : Tendsto (fun n => unitPartial d hd n ω) atTop (𝓝 L)) :
     unitPairing d hd ω = L := by
   have hmem : ω ∈ unitConv d hd := ⟨L, h⟩
   rw [unitPairing, Set.indicator_of_mem hmem, h.limUnder_eq]
 
+/-- Outside the convergence set `unitConv d hd`, the pairing `unitPairing d hd` is zero. -/
 theorem unitPairing_of_notMem (hd : 5 ≤ d) {ω : Site d → ℝ} (hω : ω ∉ unitConv d hd) :
     unitPairing d hd ω = 0 := by
   rw [unitPairing, Set.indicator_of_notMem hω]
 
+/-- At a configuration in the convergence set, the box partial sums of the conditioned
+direction tend to `unitPairing d hd ω`, so the definition matches the limit it names. -/
 theorem tendsto_unitPartial_unitPairing (hd : 5 ≤ d) {ω : Site d → ℝ}
     (hω : ω ∈ unitConv d hd) :
     Tendsto (fun n => unitPartial d hd n ω) atTop (𝓝 (unitPairing d hd ω)) := by
@@ -64,6 +65,8 @@ theorem tendsto_unitPartial_unitPairing (hd : 5 ≤ d) {ω : Site d → ℝ}
   rw [unitPairing_eq_of_tendsto hd hL]
   exact hL
 
+/-- The everywhere-defined pairing `unitPairing d hd` is measurable, as the pointwise limit
+of the measurable partial-sum indicators over the measurable convergence set. -/
 theorem measurable_unitPairing (hd : 5 ≤ d) : Measurable (unitPairing d hd) := by
   refine measurable_of_tendsto_metrizable
     (f := fun n => (unitConv d hd).indicator (unitPartial d hd n))
@@ -80,10 +83,15 @@ theorem measurable_unitPairing (hd : 5 ≤ d) : Measurable (unitPairing d hd) :=
 noncomputable def projUnit (d : ℕ) (hd : 5 ≤ d) (ω : Site d → ℝ) : Site d → ℝ :=
   fun z => ω z - unitPairing d hd ω * (greenUnit d hd : Site d → ℝ) z
 
+/-- The rank-one projection `projUnit d hd` is measurable, being the difference of a
+coordinate projection and a measurable scalar multiple of the fixed direction. -/
 theorem measurable_projUnit (hd : 5 ≤ d) : Measurable (projUnit d hd) := by
   refine measurable_pi_iff.2 fun z => ?_
   exact (measurable_pi_apply z).sub ((measurable_unitPairing hd).mul_const _)
 
+/-- Under the standard Gaussian product law, `unitPairing d hd` agrees almost everywhere
+with `condCoord d hd`: the box partial sums converge a.e. to the isonormal image of the
+conditioned direction, which is `condCoord` after rescaling by `‖greenLp d hd 0‖⁻¹`. -/
 theorem ae_unitPairing_eq_condCoord (hd : 5 ≤ d) :
     ∀ᵐ ω ∂(LatticeProb.gaussLaw (Site d)), unitPairing d hd ω = condCoord d hd ω := by
   have hcoe : ∀ z : Site d, (greenUnit d hd : Site d → ℝ) z
@@ -109,6 +117,8 @@ theorem ae_unitPairing_eq_condCoord (hd : 5 ≤ d) :
     exact h1.const_mul _
   rw [unitPairing_eq_of_tendsto hd htend, condCoord, hsmul, h2, Pi.smul_apply, smul_eq_mul]
 
+/-- The everywhere-defined projection `projUnit d hd` agrees almost everywhere with the
+`L²` representative `residField d hd`, as a consequence of `ae_unitPairing_eq_condCoord`. -/
 theorem ae_projUnit_eq_residField (hd : 5 ≤ d) :
     projUnit d hd =ᵐ[LatticeProb.gaussLaw (Site d)] residField d hd := by
   filter_upwards [ae_unitPairing_eq_condCoord hd] with ω hω

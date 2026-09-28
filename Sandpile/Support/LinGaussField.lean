@@ -1,4 +1,8 @@
-/-
+import LatticeProb.Gauss.IsonormalSum
+import Sandpile.Support.LinGreenTail
+
+/-! # Gaussian Green Field
+
 The Gaussian Green field of `eq:dgt4-infinite-green-field` as an isonormal
 process.
 
@@ -13,8 +17,6 @@ makes `infiniteGreenField` a genuine Gaussian field rather than the junk value
 of a divergent series, and it is what the proof of `lem:dgt4-path-survival`
 uses when it applies the normal comparison inequality to `(J(x))_{x∈Λ}`.
 -/
-import LatticeProb.Gauss.IsonormalSum
-import Sandpile.Support.LinGreenTail
 
 open LatticeProb.Isonormal
 
@@ -33,6 +35,8 @@ noncomputable def greenLp (d : ℕ) (hd : 5 ≤ d) (x : Site d) : lp (fun _ : Si
     rw [show ((2 : ℝ≥0∞)).toReal = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast,
       Real.norm_eq_abs, sq_abs]⟩
 
+/-- The coercion of `greenLp d hd x` back to a function on `Site d` recovers the Green
+function `z ↦ green d x z`, by definitional unfolding. -/
 theorem coeFn_greenLp (hd : 5 ≤ d) (x : Site d) :
     ((greenLp d hd x : lp (fun _ : Site d => ℝ) 2) : Site d → ℝ) = fun z => green d x z := rfl
 

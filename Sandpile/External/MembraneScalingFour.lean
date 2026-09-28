@@ -1,4 +1,10 @@
-/-
+import Sandpile.Law
+import Sandpile.Continuum.Membrane
+import Sandpile.Support.D4PotentialKernel
+
+/-!
+# The four-dimensional discrete membrane scaling limit
+
 External input: the scaling limit of the four-dimensional discrete membrane
 field.  Step 1 of the proof of `prop:d4-superdiffusive-limit` records at
 `sandpile.tex:3341-3342` that
@@ -42,9 +48,6 @@ through the junk value zero of a divergent real series.  The scenery law carries
 mean zero and a variance that is positive and finite, which are the hypotheses of
 the cited theorems; no exponential moment is needed for them.
 -/
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.Support.D4PotentialKernel
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

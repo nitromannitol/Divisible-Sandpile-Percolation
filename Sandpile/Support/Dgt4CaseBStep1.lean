@@ -1,18 +1,19 @@
-/-
-Step 1 of case (b) of `prop:dgt4-contact-asymptotics` as the single residual of the
-heavy-tailed branch.
-
-`eq:dgt4-small-origin-neighbor-average` (`sandpile.tex:5349-5351`) reads
-`\P(Pw_n(0)\leq\E Pw_n(0)/6)/\P(-\zeta(0)>\E Pw_n(0))\to0`, with the neighbour average
-compared with a fraction of ITS OWN mean and the lower tail evaluated at that mean.  The
-rest of case (b) consumes the same estimate with both quantities replaced by the
-deterministic level `\E u_n(0)/G(0,0)`.  The two forms are interchangeable because
-`\E Pw_n(0)\sim\E u_n(0)/G(0,0)` (`eq:dgt4-origin-fixed-mean`, a clause of the sealed
-`lem:dgt4-origin-frozen`) and the lower tail is regularly varying, so its values at two
-asymptotic levels have ratio tending to one; that ratio is `tendsto_ratio_one_of_near`
-below, the deterministic form of the monotone squeeze of `Support/Dgt4CaseBReplace.lean`.
--/
 import Sandpile.Support.Dgt4OriginProb
+
+/-!
+# Step 1 of case (b): the single residual of the heavy-tailed branch
+
+`SmallOriginNeighborAverage` records `eq:dgt4-small-origin-neighbor-average`, that the
+neighbour average of the odometer killed at the origin falls below a sixth of its own mean with
+probability negligible against the lower tail at that mean, with the neighbour average compared
+against its OWN mean rather than a deterministic level. The rest of case (b) consumes the same
+estimate at the deterministic level `𝔼 u_n(0)/G(0,0)`; the two forms are interchangeable because
+the neighbour-average mean is asymptotic to that deterministic level and the lower tail is
+regularly varying, so its values at two asymptotic levels have ratio tending to one
+(`tendsto_ratio_one_of_near`, the deterministic form of the monotone squeeze of
+`Support/Dgt4CaseBReplace.lean`). The file also collects the summability of the Green-ratio
+weights and pairwise independence facts that Step 1's counting argument uses.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

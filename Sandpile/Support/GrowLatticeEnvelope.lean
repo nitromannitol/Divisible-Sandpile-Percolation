@@ -1,20 +1,19 @@
-/-
-Borel-Cantelli over the shells of the integer lattice: the continuous version
-of the Gaussian heat potential has, almost surely, a random linear envelope on
-every strip `[0,T] × ℝ^d`.
-
-The construction covers `ℝ^d` by the unit boxes centred at the points of
-`ℤ^d`, exactly as `Sandpile.Support.exists_global_envelope`
-(`MainExplLattice.lean`) covers it for the discrete interpolated field; the
-combinatorics (`shellFinset`, `summable_shell_weight`) are the same and are
-reused from that module. The potential's box tail
-(`exists_potential_box_tail`) is uniform in the box's centre and carries no
-scale parameter, so the amplitude `n` of the Borel-Cantelli events can be read
-off directly, with no need to solve for a threshold amplitude at a target
-accuracy first.
--/
 import Sandpile.Support.GrowBoxTail
 import Sandpile.Support.MainExplLattice
+
+/-!
+# An almost-sure linear envelope for the continuous potential
+
+Runs a Borel-Cantelli argument over the shells of the integer lattice to show that the
+continuous version of the Gaussian heat potential has, almost surely, a random linear envelope
+on every strip `[0, T] × ℝ^d`. The construction covers `ℝ^d` by the unit boxes centred at the
+points of `ℤ^d`, exactly as `Sandpile.Support.exists_global_envelope` covers it for the discrete
+interpolated field, and reuses that module's combinatorics `shellFinset` and
+`summable_shell_weight`. Because the potential's box tail `exists_potential_box_tail` is uniform
+in the box's centre and carries no scale parameter, the amplitude of the Borel-Cantelli events
+can be read off directly, with no need to solve for a threshold amplitude at a target accuracy
+first.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -160,7 +159,8 @@ theorem exists_ae_linear_envelope (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
         have hcast : (((m + 1 : ℕ) : ℝ)) = (m : ℝ) + 1 := by push_cast; ring
         simp only [Function.comp_apply, hcast]
       simpa [div_eq_mul_inv] using h2
-    have := ENNReal.ofReal_tsum_of_nonneg (fun m => by positivity : ∀ m : ℕ, (0:ℝ) ≤ B ^ p * S / ((m:ℝ)+1) ^ p) hpsum
+    have := ENNReal.ofReal_tsum_of_nonneg
+      (fun m => by positivity : ∀ m : ℕ, (0:ℝ) ≤ B ^ p * S / ((m:ℝ)+1) ^ p) hpsum
     rw [← this]
     exact ENNReal.ofReal_ne_top
   have hae := MeasureTheory.ae_eventually_notMem (μ := PW) hGsum

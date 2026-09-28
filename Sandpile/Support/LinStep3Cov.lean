@@ -1,26 +1,29 @@
-/-
+import Sandpile.Support.LinStep3Sites
+import Sandpile.Support.LinStep2Pi
+import Sandpile.Support.LinHarmonicWindow
+
+/-!
+# The Step 3 covariance estimate along one pair of paths
+
 The covariance estimate of Step 3 of `lem:dgt4-path-survival` along one pair of paths
 (`sandpile.tex:5584-5610`).
 
-The paper's argument is four estimates in a row.  The threshold replacement
+The paper's argument is four estimates in a row. The threshold replacement
 `eq:dgt4-path-contact-replacement` is applied to `X`, to `Y`, and to the two together
-(`abs_measureReal_inter_sub_le`), which costs the two harmonic errors twice.  The
+(`abs_measureReal_inter_sub_le`), which costs the two harmonic errors twice. The
 factorization `eq:dgt4-path-threshold-factorization` is applied to the sites visited by `X`,
 to those visited by `Y`, and to those visited by at least one of them, which costs `\theta`
 three times; here the events are read through their last visits indexed by SITES
 (`Support/LinStep3Sites.lean`), the joint one carrying the smaller of the two levels at a
-shared site.  The two factorized products then differ by at most the sum of the two
+shared site. The two factorized products then differ by at most the sum of the two
 thresholds over the shared sites, which is the deterministic estimate of
 `Support/LinStep3Product.lean`, and the passage from shared sites to shared times is its
-counting lemma.  Finally the product of the two marginals is compared with the product of the
+counting lemma. Finally the product of the two marginals is compared with the product of the
 two factorizations by `|ab-a'b'|\leq|a-a'|+|b-b'|` for numbers in `[0,1]`.
 
 The total is `C/(\delta R^2)\sum_{r\leq i}\sum_{h\leq j}\one_{\{X_r=Y_h\}}` plus the collected
 uniform errors, which is `eq:dgt4-positive-path-covariance`.
 -/
-import Sandpile.Support.LinStep3Sites
-import Sandpile.Support.LinStep2Pi
-import Sandpile.Support.LinHarmonicWindow
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -28,6 +31,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- For `a, b'` in `[0,1]`, `|ab - a'b'| ≤ |a-a'| + |b-b'|`: writing `ab - a'b' = a(b-b') +
+(a-a')b'` and bounding the coefficients `|a| ≤ 1` and `|b'| ≤ 1`. This is the comparison of
+the two marginal products against the two factorized products in Step 3. -/
 theorem abs_mul_sub_mul_le (a b a' b' : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1)
     (hb'0 : 0 ≤ b') (hb'1 : b' ≤ 1) :
     |a * b - a' * b'| ≤ |a - a'| + |b - b'| := by

@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.LinGaussFactor
+import Sandpile.Support.LinPairSum
+import Sandpile.Support.LinLastVisit
+
+/-!
+# The Gaussian correlation gap
+
 The correlation gap `eq:dgt4-gaussian-correlation-gap` (`sandpile.tex:5160-5162`):
 
   "For each $z\ne0$, the Gaussians $V_\infty(z)$ and $V_\infty(0)$ are not
@@ -33,9 +39,6 @@ paper's own: the covariance decay of `eq:dgt4-intersection-first-moment` makes
 the ratio at most `1/2` outside a box, the box holds finitely many sites, and a
 maximum over a finite set of numbers each below one is below one.
 -/
-import Sandpile.Support.LinGaussFactor
-import Sandpile.Support.LinPairSum
-import Sandpile.Support.LinLastVisit
 
 open Filter Topology
 

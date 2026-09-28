@@ -1,30 +1,41 @@
-/-
+import Sandpile.Support.D23Mesh
+import Sandpile.Support.BlockVerticalWalk
+
+/-!
+# Rectangle confinement in the continuum-to-discrete percolation step
+
 Rectangle confinement in the continuum-to-discrete percolation step,
 `sandpile.tex:2645-2660`. Coordinate projection preserves nearest-neighbor
 walks after repeated vertices are removed. Applied to the continuous field
 composed with the rectangle projection, this gives crossings at every
 sufficiently fine aligned mesh, and hence all four good-block conditions.
 -/
-import Sandpile.Support.D23Mesh
-import Sandpile.Support.BlockVerticalWalk
 
 open Set
 namespace Sandpile.Support
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
+/-- The coordinatewise clamp of a continuum point into the rectangle `[0, 0] × b`,
+sending `u` to `u` unchanged inside the rectangle and to the nearest boundary point
+outside it. -/
 noncomputable def rectClamp (b : Fin 2 → ℝ) (u : Space 2) : Space 2 :=
   WithLp.toLp 2 (fun i => max 0 (min (b i) (u i)))
 
+/-- The coordinatewise clamp of a lattice site into the finite rectangle
+`planeRectangle w h`, the discrete analogue of `rectClamp`. -/
 noncomputable def latticeClamp (w h : ℕ) (z : Site 2) : planeRectangle w h :=
   ⟨fun i => max 0 (min (![w, h] i : ℤ) (z i)), by
     rw [mem_planeRectangle]
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     omega⟩
 
+/-- `rectClamp b` is continuous, being built coordinatewise from continuous `max`
+and `min` of the identity and constants. -/
 theorem continuous_rectClamp (b : Fin 2 → ℝ) : Continuous (rectClamp b) := by
   apply (PiLp.continuous_toLp 2 (fun _ => ℝ)).comp
   exact continuous_pi fun i => continuous_const.max (continuous_const.min (by fun_prop))
 
+/-- `rectClamp b` fixes every point already inside the rectangle `[0, 0] × b`. -/
 theorem rectClamp_eq {b : Fin 2 → ℝ} {u : Space 2}
     (hu : u ∈ rectSet ![0, 0] b) : rectClamp b u = u := by
   apply PiLp.ext
@@ -34,6 +45,8 @@ theorem rectClamp_eq {b : Fin 2 → ℝ} {u : Space 2}
   simp only [hz] at hi
   exact (congrArg (max 0) (min_eq_right hi.2)).trans (max_eq_right hi.1)
 
+/-- Clamping into the lattice rectangle and embedding into the grid at scale `t`
+commute, once the continuum rectangle is scaled to `t * w` by `t * h`. -/
 theorem gridPt_latticeClamp {t : ℝ} (ht : 0 ≤ t) (w h : ℕ) (z : Site 2) :
     gridPt t (latticeClamp w h z) = rectClamp ![t * w, t * h] (gridPt t z) := by
   apply PiLp.ext
@@ -44,6 +57,10 @@ theorem gridPt_latticeClamp {t : ℝ} (ht : 0 ≤ t) (w h : ℕ) (z : Site 2) :
   rw [mul_max_of_nonneg _ _ ht, mul_min_of_nonneg _ _ ht, mul_zero]
   fin_cases i <;> rfl
 
+/-- Clamping a nearest-neighbor edge of the full lattice either collapses it to a single
+point of the rectangle (when both endpoints clamp to the same site) or produces an edge
+of the rectangle graph, found by comparing the clamped values of the one coordinate the
+edge moves in. -/
 theorem latticeClamp_adj_or_eq (w h : ℕ) {z v : Site 2}
     (hzv : (lattice 2).Adj z v) :
     (latticeClamp w h z = latticeClamp w h v) ∨
@@ -86,6 +103,10 @@ theorem latticeClamp_adj_or_eq (w h : ℕ) {z v : Site 2}
     change max 0 (min (![w, h] i : ℤ) (z i)) ≠ max 0 (min (![w, h] i : ℤ) (v i)) at hne
     omega
 
+/-- Clamping every vertex of a lattice walk from `z` to `v` and dropping the repeated
+vertices this can create (via `latticeClamp_adj_or_eq`) produces a walk in the rectangle
+graph from `latticeClamp w h z` to `latticeClamp w h v`, all of whose vertices are clamps
+of vertices on the original walk. Proved by induction on the walk. -/
 theorem exists_rectangle_walk_of_lattice_walk (w h : ℕ) {z v : Site 2}
     (p : (lattice 2).Walk z v) :
     ∃ q : (rectangleGraph (planeRectangle w h)).Walk (latticeClamp w h z) (latticeClamp w h v),
@@ -107,6 +128,9 @@ theorem exists_rectangle_walk_of_lattice_walk (w h : ℕ) {z v : Site 2}
       · obtain ⟨b, hb, hab⟩ := hq a ha
         exact ⟨b, by simp [hb], hab⟩
 
+/-- If a continuum coordinate `x i` sits exactly at the left face `0` or the right face
+`t * (w or h)` of the scaled box, the `i`-th coordinate of the clamped, rounded lattice
+site sits at the corresponding face, `0` or `w`/`h`, of the lattice rectangle. -/
 theorem latticeClamp_roundSite_face {t : ℝ} (ht : 0 < t) (w h : ℕ)
     (x : Space 2) (i : Fin 2) :
     (x i = 0 → (latticeClamp w h (roundSite t x) : Site 2) i = 0) ∧

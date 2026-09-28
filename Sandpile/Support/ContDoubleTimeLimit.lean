@@ -1,29 +1,29 @@
-/-
-The double time sum of `prop:dlt4-heat-potential-invariance` converges to the
-double time integral of the Brownian heat kernel, in dimensions one to three.
-
-This is the one statement the finite-dimensional clause of
-`prop:dlt4-heat-potential-invariance` still rested on after
-`Sandpile.Support.heat_potential_fd_of_double_time`.  The obstacle is that the
-local central limit theorem is uniform only above a fixed multiple of `R^2`,
-whereas the double time sum starts at time zero, and that the theorem reads a
-continuous weight in each time variable, whereas the double time sum reads the
-indicator of an initial segment.
-
-The two are reconciled by the trapezoidal weights of `ContTimeCut`.  At
-resolution `n` the weighted double sum is below the plain one, since the weight
-vanishes outside the range of the two time indices, and above it by two errors,
-one for each time variable: a microscopic error, over the times below `2/n R^2`,
-which the near-diagonal bound of `ContSmallTime` controls by `n^{-1/4}`, and a
-band error, over the times within `5/n R^2` of the horizon, which the band bound
-of `ContSmallTime` controls by `1/n`.  Letting `n` grow, the weighted double sums
-converge to the continuum double time integrals against the same weights, and
-those increase to the double time integral of the proposition.
--/
 import LatticeProb.Support.TimeCut
 import Sandpile.Support.ContSmallTime
 import Sandpile.Support.ContLcltTwo
 import Sandpile.Support.ContDominated
+
+/-!
+# The double time limit of the heat-kernel sum
+
+The double time sum of `prop:dlt4-heat-potential-invariance` converges to the double time
+integral of the Brownian heat kernel, in dimensions one to three.
+
+This is the one statement the finite-dimensional clause of `prop:dlt4-heat-potential-invariance`
+still rested on after `Sandpile.Support.heat_potential_fd_of_double_time`. The obstacle is that
+the local central limit theorem is uniform only above a fixed multiple of `R^2`, whereas the
+double time sum starts at time zero, and that the theorem reads a continuous weight in each time
+variable, whereas the double time sum reads the indicator of an initial segment.
+
+The two are reconciled by the trapezoidal weights of `ContTimeCut`. At resolution `n` the
+weighted double sum is below the plain one, since the weight vanishes outside the range of the
+two time indices, and above it by two errors, one for each time variable: a microscopic error,
+over the times below `2/n R^2`, which the near-diagonal bound of `ContSmallTime` controls by
+`n^{-1/4}`, and a band error, over the times within `5/n R^2` of the horizon, which the band bound
+of `ContSmallTime` controls by `1/n`. Letting `n` grow, the weighted double sums converge to the
+continuum double time integrals against the same weights, and those increase to the double time
+integral of the proposition.
+-/
 
 open LatticeProb.TimeCut
 
@@ -37,6 +37,10 @@ variable {d : ℕ}
 
 /-! ### Comparing a weighted double sum with the plain one -/
 
+/-- A weighted double sum with weights in `[0,1]` that vanish past `k`, `k'` respectively is
+bounded above by the plain (unweighted) double sum restricted to the smaller range
+`[0,k) × [0,k')`, since the weights only shrink a nonnegative summand and the range where they
+vanish contributes nothing to the left side. -/
 theorem weighted_le_plain {M k k' : ℕ} (hk : k ≤ M) (hk' : k' ≤ M)
     (g₁ g₂ : ℕ → ℝ) (hg₁1 : ∀ a, g₁ a ≤ 1) (hg₂1 : ∀ b, g₂ b ≤ 1)
     (hg₁0 : ∀ a, 0 ≤ g₁ a) (hg₂0 : ∀ b, 0 ≤ g₂ b)
@@ -73,6 +77,9 @@ theorem weighted_le_plain {M k k' : ℕ} (hk : k ≤ M) (hk' : k' ≤ M)
   have h2 : 0 ≤ g₁ a * g₂ b := mul_nonneg (hg₁0 a) (hg₂0 b)
   nlinarith [hp a b]
 
+/-- The plain double sum exceeds the weighted double sum (weights in `[0,1]`) by at most the sum
+of the two one-variable weight-error sums, `∑(1-g₁ a) p a b` and `∑(1-g₂ b) p a b`, using
+`1 - g₁ a * g₂ b ≤ (1-g₁ a) + (1-g₂ b)` from `(1-g₁ a)(1-g₂ b) ≥ 0`. -/
 theorem plain_sub_weighted_le {k k' : ℕ}
     (g₁ g₂ : ℕ → ℝ) (hg₁1 : ∀ a, g₁ a ≤ 1) (hg₂1 : ∀ b, g₂ b ≤ 1)
     (p : ℕ → ℕ → ℝ) (hp : ∀ a b, 0 ≤ p a b) :
@@ -88,6 +95,9 @@ theorem plain_sub_weighted_le {k k' : ℕ}
     mul_nonneg (by linarith [hg₁1 a]) (by linarith [hg₂1 b])
   nlinarith [hp a b]
 
+/-- If `g` equals `1` on the middle range `[A₁, A₂)`, the weight-error sum
+`∑_{a<k} (1-g a) S a` is bounded by the sum of `S` on the two outer windows `[0,A₁)` and
+`[A₂,k)`, since `1 - g a ≤ 1` there and `1 - g a = 0` in between. -/
 theorem sum_one_sub_le {k A₁ A₂ : ℕ} (g : ℕ → ℝ) (hg0 : ∀ a, 0 ≤ g a)
     (hone : ∀ a : ℕ, A₁ ≤ a → a < A₂ → g a = 1)
     (S : ℕ → ℝ) (hS : ∀ a, 0 ≤ S a) :
@@ -127,6 +137,8 @@ theorem sum_one_sub_le {k A₁ A₂ : ℕ} (g : ℕ → ℝ) (hg0 : ∀ a, 0 ≤
 
 /-! ### The rate at which the resolution improves -/
 
+/-- `(1/(n+1))^p → 0` as `n → ∞`, for any exponent `p > 0`, by continuity of `x ↦ x^p` at `0`
+composed with `1/(n+1) → 0`. -/
 theorem tendsto_rpow_inv_succ {p : ℝ} (hp : 0 < p) :
     Tendsto (fun n : ℕ => ((1:ℝ) / ((n : ℝ) + 1)) ^ p) atTop (𝓝 0) := by
   have hbase : Tendsto (fun n : ℕ => (1:ℝ) / ((n : ℝ) + 1)) atTop (𝓝 0) :=
@@ -354,6 +366,8 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
 
 /-! ### The double time limit -/
 
+/-- Restricting a double sum's outer range from `M` down to `k, k'` does not change its value
+when the weights `g₁, g₂` vanish past `k, k'` respectively: the extra terms are all zero. -/
 theorem weighted_sum_eq {M k k' : ℕ} (hk : k ≤ M) (hk' : k' ≤ M)
     (g₁ g₂ : ℕ → ℝ) (hz₁ : ∀ a, k ≤ a → g₁ a = 0) (hz₂ : ∀ b, k' ≤ b → g₂ b = 0)
     (p : ℕ → ℕ → ℝ) :

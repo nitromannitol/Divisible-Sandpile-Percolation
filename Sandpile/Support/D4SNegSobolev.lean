@@ -1,22 +1,22 @@
-/-
-The `H^{-s}(D)` norm of the `ω`-representative of a rescaled lattice field, in
-the form Steps 2 and 3 of `prop:d4-superdiffusive-limit` use it
-(`sandpile.tex:3368-3404`).
-
-The norm is the supremum of `|f^{(R)}(φ̃)|` over test functions with
-`‖φ‖_{H^s}\leq1`, and `φ̃ = φ-ω∫_Dφ` is supported in `D` for every one of them.
-Two facts make the supremum computable.  First, the `H^s` unit ball sits inside
-the `L²` unit ball (Plancherel), so `∫φ̃²` is bounded by a constant of `D` and
-`ω` alone.  Second, Cauchy-Schwarz over the cells of the mesh separates the
-field from the test function.  Together they bound the norm by
-`K\sqrt{R^{-d}∑_x f(x)^2}` over the cells that `D` meets, a finite sum of the
-field's values and hence a random variable whose expectation is controlled by
-the uniform second moment of the field.
--/
 import Sandpile.Support.D4SCellL2
 import Sandpile.Support.D4SPlancherel
 import Sandpile.Support.D4DefectOmega
 import Sandpile.Support.TightNegSobolev
+
+/-!
+# The `H^{-s}(D)` norm of the `ω`-representative of a rescaled lattice field
+
+This file bounds the `H^{-s}(D)` norm of the `ω`-representative of a rescaled lattice field,
+in the form Steps 2 and 3 of `prop:d4-superdiffusive-limit` use it (`sandpile.tex:3368-3404`).
+The norm is the supremum of `|f^{(R)}(φ̃)|` over test functions with `‖φ‖_{H^s}≤1`, and
+`φ̃ = φ-ω∫_Dφ` is supported in `D` for every one of them. Two facts make the supremum
+computable. First, the `H^s` unit ball sits inside the `L²` unit ball (Plancherel), so `∫φ̃²`
+is bounded by a constant of `D` and `ω` alone. Second, Cauchy-Schwarz over the cells of the
+mesh separates the field from the test function. Together they bound the norm by
+`K√(R^{-d}∑_x f(x)^2)` over the cells that `D` meets, a finite sum of the field's values and
+hence a random variable whose expectation is controlled by the uniform second moment of the
+field.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal
@@ -143,7 +143,8 @@ theorem exists_negSobolevNorm_omegaRep_le {s : ℝ} (hs : 0 ≤ s)
   have hrep : omegaRep D w (latticePairing R g) φ = latticePairing R g (omegaShift D w φ) := rfl
   rw [hrep]
   refine ENNReal.ofReal_le_ofReal (le_trans hpair ?_)
-  have hA : (0:ℝ) ≤ ∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2 :=
+  have hA : (0:ℝ) ≤
+      ∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2 :=
     Finset.sum_nonneg fun x _ => sq_nonneg _
   have hB : (0:ℝ) ≤ R⁻¹ ^ d := by positivity
   have hC : (0:ℝ) ≤ ∫ z : Space d, omegaShift D w φ z ^ 2 :=
@@ -151,8 +152,9 @@ theorem exists_negSobolevNorm_omegaRep_le {s : ℝ} (hs : 0 ≤ s)
   have hCK : ∫ z : Space d, omegaShift D w φ z ^ 2 ≤ K0 := hK0b φ hφ hn
   calc Real.sqrt (∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2) *
         Real.sqrt (R⁻¹ ^ d * ∫ z : Space d, omegaShift D w φ z ^ 2)
-      = Real.sqrt ((∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2) *
-          (R⁻¹ ^ d * ∫ z : Space d, omegaShift D w φ z ^ 2)) := (Real.sqrt_mul hA _).symm
+      = Real.sqrt
+          ((∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2) *
+            (R⁻¹ ^ d * ∫ z : Space d, omegaShift D w φ z ^ 2)) := (Real.sqrt_mul hA _).symm
     _ ≤ Real.sqrt (K0 * (R⁻¹ ^ d *
           ∑ x ∈ Sandpile.boxFinset (0 : Sandpile.Site d) (⌈|R| * max r 0⌉₊ + 1), g x ^ 2)) := by
         refine Real.sqrt_le_sqrt ?_

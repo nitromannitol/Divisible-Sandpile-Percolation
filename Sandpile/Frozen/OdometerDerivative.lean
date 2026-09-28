@@ -1,39 +1,21 @@
-/-
-Lemma of sandpile.tex giving the derivative of the odometer in one coordinate of
-the scenery, frozen.  `sandpile.tex:868-881` (label `lem:odometer-derivative`):
-
-  "Suppose $(\zeta(x))_{x\in\Z^d}$ are independent and atomless. Then,
-   $\P$-almost surely, for every $n\geq1$ and $x,z\in\Z^d$,
-   $\partial_{\zeta(z)}u_n(x)
-    = \mathbf E_x\sum_{j=0}^{n-1}\one_{\{X_j=z\}}
-      \prod_{i=0}^j\one_{\{u_{n-i}(X_i)>0\}}
-    = \mathbf E_x\sum_{j=0}^{n-1}\one_{\{X_j=z\}}\one_{\{\tau_n^*>j\}}$."
-
-The scenery is independent and atomless, and, as in the paper, the coordinates are
-not assumed identically distributed.  The law of the scenery is therefore the product
-measure `Measure.infinitePi ν` of an arbitrary family `ν : Site d → Measure ℝ` of
-one-site laws, one for each site, each a probability measure, and atomlessness of the
-law at a site is `NullSingletonClass (ν x)`.  The identically distributed field is the
-constant family, `LatticeProb.iidLaw d ν = Measure.infinitePi fun _ => ν`.  Independence
-is carried by the product structure and atomlessness is what excludes ties, which is
-proved one coordinate at a time.  The partial derivative in the single coordinate `ζ(z)` is `HasDerivAt` of
-`h ↦ u_n(x)` computed from the field `Function.update ζ z h`, at the point
-`ζ z`.  Both right-hand sides of the paper's chain are transcribed: the first
-uses only `Sandpile.odometerOf`, and the second uses `Sandpile.optimalStop`, the
-`τ_n^*` of `thm:RW`, which is why this file imports `Sandpile.External.BPSH`
-for that definition alone and not for its assumed statement.  Indicators are
-`Set.indicator` of the corresponding path sets, so no decidability instance
-enters the statement.  In `u_{n-i}` the index is a truncated subtraction, which
-agrees with the paper because `i ≤ j ≤ n - 1`.
-
-The paper's proof reads the second right-hand side off the optimal-stopping
-representation, which is a cited result rather than a theorem of the paper.  It
-is proved unconditionally in this repository, `Sandpile.External.optimalStopping`
-(`Sandpile/External/BPSHProved.lean`), so it is no longer carried here as an
-explicit hypothesis, exactly as in the frozen `thm:RW`.
--/
 import Sandpile.External.BPSHProved
 import Sandpile.Support.OdometerPathDerivative
+
+/-!
+# The odometer derivative in one scenery coordinate, frozen
+
+Lemma of `sandpile.tex` giving the derivative of the odometer in one coordinate of the scenery,
+frozen (`sandpile.tex:868-881`, label `lem:odometer-derivative`): for independent, atomless
+scenery, almost surely, for every `n ≥ 1` and `x, z ∈ ℤ^d`, the partial derivative
+`∂_{ζ(z)} u_n(x)` equals the walk expectation `E_x ∑_j 1_{X_j=z} ∏_i 1_{u_{n-i}(X_i)>0}`, which in
+turn equals `E_x ∑_j 1_{X_j=z} 1_{τ_n^* > j}` via the optimal-stopping time `τ_n^*`. Since the
+paper's scenery coordinates need not be identically distributed, the law is the product measure
+`Measure.infinitePi ν` over an arbitrary family of one-site laws, with atomlessness at a site
+recorded as `NullSingletonClass (ν x)`; the derivative itself is `HasDerivAt` of `h ↦ u_n(x)`
+computed from `Function.update ζ z h` at the point `ζ z`. The second equality reads off the
+optimal-stopping representation of the odometer, a cited result now proved unconditionally as
+`Sandpile.External.optimalStopping`, so it is no longer carried as an explicit hypothesis.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

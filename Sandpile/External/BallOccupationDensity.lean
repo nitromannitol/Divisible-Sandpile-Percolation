@@ -1,4 +1,10 @@
-/-
+import Sandpile.Continuum.Stopping
+import Sandpile.Support.ContinuumPlanar
+import LatticeProb.Prob.BrownianExitTime
+
+/-!
+# The ball Green function in occupation-density form
+
 The Green function of a Euclidean ball for Brownian motion, in the
 occupation-density form `thm:limiting-odometer-crossing`'s proof consumes
 (`sandpile.tex:2074-2088` defines `𝒳_s` by the closed-form kernel;
@@ -45,9 +51,6 @@ time from `B(0,1)` is almost surely finite (proved in this repository,
 genuine, a.s. finite random variable for every bounded `φ` and the identity is
 a real assertion, not one satisfied for a vacuous reason.
 -/
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ContinuumPlanar
-import LatticeProb.Prob.BrownianExitTime
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

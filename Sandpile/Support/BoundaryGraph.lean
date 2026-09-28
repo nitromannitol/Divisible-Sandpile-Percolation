@@ -1,10 +1,22 @@
-/-
-Adjoining two boundary vertices and recovering a connection between the underlying boundary sets.
--/
 import Mathlib
+
+/-!
+# Adjoining boundary vertices
+
+Adjoining two boundary vertices and recovering a connection between the underlying boundary
+sets.  `boundaryGraph G S` augments `G` with two new vertices, joined respectively to the
+vertex sets `S false` and `S true`, so that reachability between the two new vertices in the
+augmented graph is equivalent to the existence of a `G`-path between the two sets
+(`boundaryGraph_reachable_iff`).  This reduces set-to-set connection questions to ordinary
+vertex-to-vertex reachability.
+-/
 
 namespace Sandpile
 
+/-- The graph on `Bool ⊕ V` obtained from `G` by adjoining two new boundary vertices
+`inl false` and `inl true`: `inl b` is adjacent to `inr z` exactly when `z ∈ S b`, two
+`inr`-vertices are adjacent exactly when they are `G`-adjacent, and the two boundary vertices
+are never adjacent to each other. -/
 def boundaryGraph {V : Type*} (G : SimpleGraph V) (S : Bool → Set V) : SimpleGraph (Bool ⊕ V) where
   Adj x y := match x, y with
     | .inl b, .inr z => z ∈ S b
@@ -26,6 +38,9 @@ def boundaryGraph {V : Type*} (G : SimpleGraph V) (S : Bool → Set V) : SimpleG
     · exact id
     · exact G.loopless.irrefl _
 
+/-- A predicate `P` preserved along every edge of `G` (`hstep`) propagates along
+reachability: if `P a` holds and `b` is `G`-reachable from `a`, then `P b` holds, proved by
+induction on the underlying walk. -/
 lemma reachable_preserves_predicate {V : Type*} (G : SimpleGraph V) (P : V → Prop)
     (hstep : ∀ x y, G.Adj x y → P x → P y) {a b : V}
     (h : G.Reachable a b) (ha : P a) : P b := by
@@ -37,6 +52,12 @@ lemma reachable_preserves_predicate {V : Type*} (G : SimpleGraph V) (P : V → P
     intro ha
     exact ih (hstep a b hab ha)
 
+/-- The two boundary vertices of `boundaryGraph G S` are reachable from each other exactly
+when some point of `S false` is `G`-reachable to some point of `S true`.  Proved forward by
+propagating, via `reachable_preserves_predicate`, the predicate "reachable in `G` from some
+point of `S false`" along the boundary-graph reachability path, and backward by concatenating
+the two boundary edges with the given `G`-path (mapped into `boundaryGraph G S` along
+`Sum.inr`). -/
 lemma boundaryGraph_reachable_iff {V : Type*} (G : SimpleGraph V) (S : Bool → Set V) :
     (boundaryGraph G S).Reachable (.inl false) (.inl true) ↔
       ∃ a ∈ S false, ∃ b ∈ S true, G.Reachable a b := by

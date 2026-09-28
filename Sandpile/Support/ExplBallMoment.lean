@@ -1,13 +1,16 @@
-/-
-The polynomial moment of the compact-time Brownian maximum, with a constant that
-does not depend on the starting point, the horizon or the motion.
-
-`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) needs the moment bound
-uniformly in the starting point, because the supremum over the points of `K` is
-taken after the probability.  The tail of `brownian_pathRadius_tail` is uniform in
-the starting point and the horizon, so the sum of the tail bounds is a constant.
--/
 import Sandpile.Support.ExplBrownianEnvelope
+
+/-!
+# A uniform polynomial moment for the Brownian path radius
+
+The polynomial moment of the compact-time Brownian maximum, with a constant that does not
+depend on the starting point, the horizon or the motion (`exists_uniform_pathRadius_moment`).
+
+`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) needs the moment bound uniformly in
+the starting point, because the supremum over the points of `K` is taken after the probability.
+The tail of `brownian_pathRadius_tail` is uniform in the starting point and the horizon, so the
+sum of the tail bounds is a constant.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -17,13 +20,19 @@ open Sandpile.Support
 
 variable {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
 
+/-- The `p`-th moment of `1 + brownianPathRadius` up to time `T` is bounded by a constant `M`
+that depends only on `d`, `T` and `p`, uniformly over the starting point, the motion and the
+probability space: the shells `{n ≤ R < n + 1}` partition the space, the exit tail
+`brownian_pathRadius_tail` bounds the mass of each shell, and the resulting series is summable
+by `summable_polynomial_mul_gaussian`. -/
 theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
     ∃ M : ℝ, ∀ (Ω : Type*) [MeasurableSpace Ω] (P : Measure Ω), IsProbabilityMeasure P →
       ∀ (x : Space d) (B : ℝ≥0 → Ω → Space d), IsBrownian d x B P →
       (∀ s, Measurable (B s)) → (∀ ω, Continuous fun s => B s ω) →
       ∫ ω, (1 + brownianPathRadius B x T ω) ^ p ∂P ≤ M := by
   obtain ⟨C, c, hC, hc, htail⟩ := brownian_pathRadius_tail d
-  refine ⟨max C 1 * ∑' n : ℕ, ((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)), ?_⟩
+  refine ⟨max C 1 * ∑' n : ℕ,
+    ((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)), ?_⟩
   intro Ω _ P hP x B hB hm hBc
   let R := brownianPathRadius B x T
   have hR (ω : Ω) : 0 ≤ R ω := (norm_nonneg (B 0 ω - x)).trans
@@ -67,14 +76,17 @@ theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
         field_simp; ring
       rw [he] at ht
       have hh := ENNReal.toReal_mono ENNReal.ofReal_ne_top ht
-      have h1 : P.real {ω | (n : ℝ) ≤ R ω} ≤ C * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)) := by
-        simpa only [Measure.real, ENNReal.toReal_ofReal (mul_nonneg hC.le (Real.exp_nonneg _))] using hh
+      have h1 : P.real {ω | (n : ℝ) ≤ R ω} ≤
+          C * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)) := by
+        simpa only [Measure.real, ENNReal.toReal_ofReal (mul_nonneg hC.le (Real.exp_nonneg _))]
+          using hh
       exact h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_nonneg _))
   have hbound (n : ℕ) : ∫ ω in S n, ‖(1 + R ω) ^ p‖ ∂P ≤
       max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) := by
     have hTnn : (0 : ℝ) ≤ (T : ℝ) := T.2
     calc (∫ ω in S n, ‖(1 + R ω) ^ p‖ ∂P)
-        ≤ ∫ _ in S n, ((n : ℝ) + 2) ^ p ∂P := integral_mono_ae (hi n).norm (integrable_const _) (hb n)
+        ≤ ∫ _ in S n, ((n : ℝ) + 2) ^ p ∂P :=
+          integral_mono_ae (hi n).norm (integrable_const _) (hb n)
       _ = ((n : ℝ) + 2) ^ p * P.real (S n) := by
           rw [integral_const, smul_eq_mul, mul_comm, Measure.real, Measure.restrict_apply_univ]
           rfl
@@ -82,14 +94,18 @@ theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
           apply mul_le_mul_of_nonneg_left (measureReal_mono (fun ω hω => hω.1)); positivity
       _ ≤ ((n : ℝ) + 2) ^ p * (max C 1 * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) := by
           apply mul_le_mul_of_nonneg_left (htail' n); positivity
-      _ = max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) := by ring
+      _ = max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) := by
+          ring
   have hle (n : ℕ) : ∫ ω in S n, (1 + R ω) ^ p ∂P ≤
       max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) := by
-    refine (integral_mono_ae (hi n) (hi n).norm (Filter.Eventually.of_forall fun ω => le_abs_self _)).trans ?_
+    refine (integral_mono_ae (hi n) (hi n).norm
+        (Filter.Eventually.of_forall fun ω => le_abs_self _)).trans ?_
     exact hbound n
   have hsum : Summable (fun n : ℕ => ∫ ω in S n, (1 + R ω) ^ p ∂P) := by
-    apply Summable.of_nonneg_of_le (fun _ => integral_nonneg fun ω => pow_nonneg (by linarith [hR ω] : (0:ℝ) ≤ 1 + R ω) _) _
-      ((summable_polynomial_mul_gaussian p (a := c / (4 * ((T : ℝ) + 1))) (div_pos hc (by positivity))).mul_left (max C 1))
+    apply Summable.of_nonneg_of_le
+      (fun _ => integral_nonneg fun ω => pow_nonneg (by linarith [hR ω] : (0:ℝ) ≤ 1 + R ω) _) _
+      ((summable_polynomial_mul_gaussian p (a := c / (4 * ((T : ℝ) + 1)))
+          (div_pos hc (by positivity))).mul_left (max C 1))
     intro n
     exact hle n
   have hsum' : Summable (fun n : ℕ => ∫ ω in S n, ‖(1 + R ω) ^ p‖ ∂P) := by
@@ -118,9 +134,13 @@ theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
     simpa only [Measure.restrict_univ] using h
   rw [hint]
   calc ∑' n : ℕ, ∫ ω in S n, (1 + R ω) ^ p ∂P
-      ≤ ∑' n : ℕ, max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) :=
-        Summable.tsum_le_tsum hle hsum ((summable_polynomial_mul_gaussian p (a := c / (4 * ((T : ℝ) + 1))) (div_pos hc (by positivity))).mul_left (max C 1))
-    _ = max C 1 * ∑' n : ℕ, ((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)) :=
+      ≤ ∑' n : ℕ,
+          max C 1 * (((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2))) :=
+        Summable.tsum_le_tsum hle hsum
+          ((summable_polynomial_mul_gaussian p (a := c / (4 * ((T : ℝ) + 1)))
+              (div_pos hc (by positivity))).mul_left (max C 1))
+    _ = max C 1 * ∑' n : ℕ,
+          ((n : ℝ) + 2) ^ p * Real.exp (-(c / (4 * ((T : ℝ) + 1)) * (n : ℝ) ^ 2)) :=
         tsum_mul_left
 
 end Sandpile.Continuum

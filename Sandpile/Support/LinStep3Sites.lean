@@ -1,23 +1,27 @@
-/-
-The site bookkeeping of Step 3 of `lem:dgt4-path-survival` (`sandpile.tex:5584-5610`).
+import Sandpile.Support.LinStep3Product
+import Sandpile.Support.LinThresholdNull
+
+/-!
+# The site bookkeeping of Step 3 of `lem:dgt4-path-survival`
+
+This is the site bookkeeping needed for Step 3 of `lem:dgt4-path-survival`
+(`sandpile.tex:5584-5610`).
 
 Step 2 reads the threshold event of ONE path through its last visits, indexed by TIME
-(`Support/LinThreshold.lean`).  Step 3 compares the joint event of two paths with the product
+(`Support/LinThreshold.lean`). Step 3 compares the joint event of two paths with the product
 of the two marginal events, and there the natural index is the SITE: the two products run over
-the visited sites and agree off the shared ones.  `lastTimeOf i X x` is the last time at most
+the visited sites and agree off the shared ones. `lastTimeOf i X x` is the last time at most
 `i` at which `X` is at `x`, with the value `i` when `x` is not visited, so that every site of
 the lattice carries a time at most `i`; `iInter_single_eq_image` and `iInter_joint_eq_image`
 rewrite the two events as intersections over sites, the joint one carrying at a shared site the
 SMALLER of the two last-visit levels, which is the paper's `1-\max\{\pi_{R,r},\pi_{R,h}\}` once
 `thresholdProb_antitone` and `antitone_min_eq_max` are applied.
 
-`abs_measureReal_inter_sub_le` is the joint threshold replacement.  Replacing the two factors
+`abs_measureReal_inter_sub_le` is the joint threshold replacement. Replacing the two factors
 of the intersection one at a time costs the two union bounds of
 `eq:dgt4-path-contact-replacement` separately, and, as in `Support/LinThresholdNull.lean`, no
 measurability is needed: every step is monotonicity or subadditivity of an outer measure.
 -/
-import Sandpile.Support.LinStep3Product
-import Sandpile.Support.LinThresholdNull
 
 open MeasureTheory Filter Topology
 
@@ -102,10 +106,15 @@ theorem abs_measureReal_inter_sub_le {alpha iota : Type*} [MeasurableSpace alpha
     (mu.real ((⋂ i ∈ s, A' i) ∩ ⋂ i ∈ t, B' i))
   linarith
 
+/-- The last time at most `i` at which the path `X` visits `x`, or `i` itself when `x` is not
+among the sites `X` visits by time `i`; this is the site-indexed bookkeeping that lets the
+threshold events of `iInter_single_eq_image` and `iInter_joint_eq_image` be read off site by
+site instead of time by time. -/
 noncomputable def lastTimeOf [DecidableEq α] (i : ℕ) (X : ℕ → α) (x : α) : ℕ :=
   if h : ((Finset.range (i + 1)).filter (fun r => X r = x)).Nonempty
   then ((Finset.range (i + 1)).filter (fun r => X r = x)).max' h else i
 
+/-- `lastTimeOf i X x` never exceeds the horizon `i`. -/
 theorem lastTimeOf_le [DecidableEq α] (i : ℕ) (X : ℕ → α) (x : α) : lastTimeOf i X x ≤ i := by
   classical
   rw [lastTimeOf]
@@ -115,6 +124,8 @@ theorem lastTimeOf_le [DecidableEq α] (i : ℕ) (X : ℕ → α) (x : α) : las
     omega
   · exact le_rfl
 
+/-- The site `X r` visited at time `r ≤ i` is revisited at its own last-visit time
+`lastTimeOf i X (X r)`, which is itself at least `r`. -/
 theorem lastTimeOf_spec [DecidableEq α] (i : ℕ) (X : ℕ → α) (r : ℕ) (hr : r ≤ i) :
     r ≤ lastTimeOf i X (X r) ∧ X (lastTimeOf i X (X r)) = X r := by
   classical
@@ -127,6 +138,8 @@ theorem lastTimeOf_spec [DecidableEq α] (i : ℕ) (X : ℕ → α) (r : ℕ) (h
   rw [Finset.mem_filter] at hm
   exact hm.2
 
+/-- If `x` lies in the image of `X` over `Finset.range (i + 1)`, then `X` really does visit `x`
+at the last-visit time `lastTimeOf i X x`, via `lastTimeOf_spec`. -/
 theorem eq_lastTimeOf_image [DecidableEq α] (i : ℕ) (X : ℕ → α) (x : α)
     (hx : x ∈ (Finset.range (i + 1)).image X) : X (lastTimeOf i X x) = x := by
   classical

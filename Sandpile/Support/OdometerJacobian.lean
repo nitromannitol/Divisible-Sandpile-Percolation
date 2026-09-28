@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.OriginKilled
+import Sandpile.Support.Concentration
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
+
+/-!
+# Coordinate derivatives of the finite-time odometer
+
 Coordinate derivatives of the finite-time odometer. Independent atomless scenery
 excludes all preactivation ties, and the derivative obeys the linear recursion on
 active sites.
@@ -12,10 +19,6 @@ does not require the coordinates to share a law.  The identically distributed fi
 is the constant family, recorded as a corollary.  The derivative recursion
 `hasDerivAt_odometerOf` is pathwise and does not mention a law.
 -/
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.Concentration
-import Mathlib.Analysis.Calculus.Deriv.Add
-import Mathlib.Analysis.Calculus.Deriv.Mul
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

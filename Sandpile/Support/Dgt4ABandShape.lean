@@ -1,18 +1,17 @@
-/-
-The smooth band profile of Step 1 of `thm:dgt4-many-limits`
-(`sandpile.tex:5930-6055`).
-
-The paper's `k`th band variable has the tail `((1-y)/(1-ℓ₁))^{ϑ_k}` on
-`[ℓ₁,1]` (`eq:dgt4-band-tail`), whose density is not smooth at the endpoints,
-while the one-site law of the theorem must have a `C^∞` density.  The profile
-built here is a smooth nondecreasing function that vanishes below `0`, equals
-one above `1`, approximates `r ↦ r^ϑ` uniformly on `[0,1]` to within `2/m`, and
-whose density is bounded by a constant that does not depend on `m` or on `ϑ`.
-That accuracy is all Step 1 uses: `eq:dgt4-band-profile` only asks for the
-profile up to a vanishing error, and `eq:dgt4-band-density` only asks for a
-density bound.
--/
 import Sandpile.Support.Dgt4ABandBump
+
+/-!
+# The smooth band profile
+
+The exact band tail `((1 - y) / (1 - ℓ₁))^θ` has a density that is not smooth at the endpoints,
+while the one-site law being constructed must have a `C^∞` density. `bandShape θ m` is a smooth
+replacement: a smooth nondecreasing function of `m` equal steps that vanishes on `(-∞, 0]`,
+equals `1` on `[1, ∞)`, approximates `r ↦ r^θ` uniformly on `[0, 1]` to within `2/m`
+(`abs_bandShape_sub_rpow_le`), and whose derivative `bandShapeDensity θ m` is bounded by a
+constant depending on neither `m` nor `θ` (`bandShapeDensity_le`) and integrates to one
+(`integral_bandShapeDensity`). That accuracy is all that is needed: the profile is only required
+up to a vanishing error, and the density only needs a uniform bound.
+-/
 
 open Set Filter MeasureTheory
 open scoped Topology
@@ -25,6 +24,7 @@ namespace Sandpile.Support
 def bandCoeff (θ : ℝ) (m i : ℕ) : ℝ :=
   (((i : ℝ) + 1) / (m : ℝ)) ^ θ - ((i : ℝ) / (m : ℝ)) ^ θ
 
+/-- `bandCoeff θ m i` is nonnegative, since `r ↦ r ^ θ` is monotone and `i / m ≤ (i + 1) / m`. -/
 lemma bandCoeff_nonneg {θ : ℝ} (hθ : 0 ≤ θ) (m i : ℕ) : 0 ≤ bandCoeff θ m i := by
   have h : ((i : ℝ) / (m : ℝ)) ≤ (((i : ℝ) + 1) / (m : ℝ)) := by
     rcases Nat.eq_zero_or_pos m with hm | hm
@@ -48,6 +48,8 @@ lemma sum_bandCoeff_range {θ : ℝ} (hθ : 0 < θ) (m j : ℕ) :
   rw [h]
   simp [Real.zero_rpow hθ.ne']
 
+/-- The `m` coefficients `bandCoeff θ m i` sum to `1`, since `sum_bandCoeff_range` at `j = m`
+gives `(m / m) ^ θ = 1`. -/
 lemma sum_bandCoeff {θ : ℝ} (hθ : 0 < θ) {m : ℕ} (hm : 0 < m) :
     ∑ i ∈ Finset.range m, bandCoeff θ m i = 1 := by
   rw [sum_bandCoeff_range hθ m m]
@@ -127,17 +129,23 @@ def bandShape (θ : ℝ) (m : ℕ) (r : ℝ) : ℝ :=
 def bandShapeDensity (θ : ℝ) (m : ℕ) (r : ℝ) : ℝ :=
   ∑ i ∈ Finset.range m, bandCoeff θ m i * (m : ℝ) * bandBump (r * (m : ℝ) - (i : ℝ))
 
+/-- `bandShape θ m` is smooth, as a finite sum of scaled translates
+`bandStep (r * m - i)` of the smooth function `bandStep`. -/
 lemma contDiff_bandShape (θ : ℝ) (m : ℕ) : ContDiff ℝ (⊤ : ℕ∞) (bandShape θ m) := by
   refine ContDiff.sum (fun i _ => ?_)
   exact contDiff_const.mul
     (contDiff_bandStep.comp ((contDiff_id.mul contDiff_const).sub contDiff_const))
 
+/-- `bandShapeDensity θ m` is smooth, as a finite sum of scaled translates
+`bandBump (r * m - i)` of the smooth function `bandBump`. -/
 lemma contDiff_bandShapeDensity (θ : ℝ) (m : ℕ) :
     ContDiff ℝ (⊤ : ℕ∞) (bandShapeDensity θ m) := by
   refine ContDiff.sum (fun i _ => ?_)
   exact contDiff_const.mul
     (contDiff_bandBump.comp ((contDiff_id.mul contDiff_const).sub contDiff_const))
 
+/-- `bandShape θ m` has derivative `bandShapeDensity θ m r` at every point `r`, obtained term
+by term from `hasDerivAt_bandStep` and the chain rule for the affine map `x ↦ x * m - i`. -/
 lemma hasDerivAt_bandShape (θ : ℝ) (m : ℕ) (r : ℝ) :
     HasDerivAt (bandShape θ m) (bandShapeDensity θ m r) r := by
   have h : ∀ i ∈ Finset.range m,
@@ -161,6 +169,8 @@ lemma hasDerivAt_bandShape (θ : ℝ) (m : ℕ) (r : ℝ) :
   rw [heq, bandShapeDensity]
   exact HasDerivAt.sum h
 
+/-- `bandShape θ m` vanishes on `(-∞, 0]`: every term's argument `r * m - i` is nonpositive
+there, and `bandStep` vanishes there. -/
 lemma bandShape_eq_zero_of_nonpos {θ : ℝ} {m : ℕ} {r : ℝ} (hr : r ≤ 0) :
     bandShape θ m r = 0 := by
   refine Finset.sum_eq_zero fun i _ => ?_
@@ -171,6 +181,8 @@ lemma bandShape_eq_zero_of_nonpos {θ : ℝ} {m : ℕ} {r : ℝ} (hr : r ≤ 0) 
     linarith
   rw [bandStep_eq_zero_of_nonpos this, mul_zero]
 
+/-- `bandShapeDensity θ m` vanishes on `(-∞, 0]`: every term's argument `r * m - i` is
+nonpositive there, and `bandBump` vanishes there. -/
 lemma bandShapeDensity_eq_zero_of_nonpos {θ : ℝ} {m : ℕ} {r : ℝ} (hr : r ≤ 0) :
     bandShapeDensity θ m r = 0 := by
   refine Finset.sum_eq_zero fun i _ => ?_
@@ -181,6 +193,9 @@ lemma bandShapeDensity_eq_zero_of_nonpos {θ : ℝ} {m : ℕ} {r : ℝ} (hr : r 
     linarith
   rw [bandBump_eq_zero_of_nonpos this, mul_zero]
 
+/-- `bandShape θ m` equals `1` on `[1, ∞)`: every term's argument `r * m - i` is at least `1`
+there, so `bandStep` contributes each term's full coefficient `bandCoeff θ m i`, and these sum
+to `1` by `sum_bandCoeff`. -/
 lemma bandShape_eq_one_of_one_le {θ : ℝ} (hθ : 0 < θ) {m : ℕ} (hm : 0 < m) {r : ℝ}
     (hr : 1 ≤ r) : bandShape θ m r = 1 := by
   have : ∀ i ∈ Finset.range m,
@@ -196,6 +211,8 @@ lemma bandShape_eq_one_of_one_le {θ : ℝ} (hθ : 0 < θ) {m : ℕ} (hm : 0 < m
   simp only [bandShape]
   rw [Finset.sum_congr rfl this, sum_bandCoeff hθ hm]
 
+/-- `bandShapeDensity θ m` vanishes on `[1, ∞)`: every term's argument `r * m - i` is at least
+`1` there, and `bandBump` vanishes there. -/
 lemma bandShapeDensity_eq_zero_of_one_le {θ : ℝ} {m : ℕ} {r : ℝ} (hm : 0 < m) (hr : 1 ≤ r) :
     bandShapeDensity θ m r = 0 := by
   refine Finset.sum_eq_zero fun i hi => ?_
@@ -207,11 +224,15 @@ lemma bandShapeDensity_eq_zero_of_one_le {θ : ℝ} {m : ℕ} {r : ℝ} (hm : 0 
     linarith
   rw [bandBump_eq_zero_of_one_le this, mul_zero]
 
+/-- `bandShapeDensity θ m` is nonnegative, as a sum of products of the nonnegative
+`bandCoeff θ m i`, `m`, and `bandBump`. -/
 lemma bandShapeDensity_nonneg {θ : ℝ} (hθ : 0 ≤ θ) (m : ℕ) (r : ℝ) :
     0 ≤ bandShapeDensity θ m r :=
   Finset.sum_nonneg fun i _ =>
     mul_nonneg (mul_nonneg (bandCoeff_nonneg hθ m i) (Nat.cast_nonneg m)) (bandBump_nonneg _)
 
+/-- `bandShape θ m` is monotone, as a sum of scalings of the monotone function `bandStep` by the
+nonnegative coefficients `bandCoeff θ m i`. -/
 lemma bandShape_monotone {θ : ℝ} (hθ : 0 ≤ θ) (m : ℕ) : Monotone (bandShape θ m) := by
   intro a b hab
   refine Finset.sum_le_sum fun i _ => ?_
@@ -222,9 +243,13 @@ lemma bandShape_monotone {θ : ℝ} (hθ : 0 ≤ θ) (m : ℕ) : Monotone (bandS
 
 
 
+/-- `bandShape θ m` is nonnegative, as a sum of products of the nonnegative `bandCoeff θ m i`
+and `bandStep`. -/
 lemma bandShape_nonneg {θ : ℝ} (hθ : 0 ≤ θ) (m : ℕ) (r : ℝ) : 0 ≤ bandShape θ m r :=
   Finset.sum_nonneg fun i _ => mul_nonneg (bandCoeff_nonneg hθ m i) (bandStep_nonneg _)
 
+/-- `bandShape θ m` is at most `1`: term by term `bandStep ≤ 1`, and the coefficients
+`bandCoeff θ m i` sum to `1` by `sum_bandCoeff`. -/
 lemma bandShape_le_one {θ : ℝ} (hθ : 0 < θ) {m : ℕ} (hm : 0 < m) (r : ℝ) :
     bandShape θ m r ≤ 1 := by
   rw [← sum_bandCoeff hθ hm]

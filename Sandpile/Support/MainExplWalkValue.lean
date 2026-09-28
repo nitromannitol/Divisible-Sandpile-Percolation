@@ -1,18 +1,19 @@
-/-
-Attainable values of the unkilled walk at a bounded horizon.
+import Sandpile.Support.StoppedOdometer
+import Sandpile.Support.ExplStability
+
+/-!
+# Attainable values of the unkilled walk at a bounded horizon
 
 The optimal-stopping value `stoppingSup n x F` is a supremum over walk stopping
 times bounded by `n`, so the junk value of an unbounded supremum is excluded as
-soon as the set of attainable payoffs is bounded above.  For a reward that reads
+soon as the set of attainable payoffs is bounded above. For a reward that reads
 the walk only through its position at the stopping time, the bound is free: the
 walk run for `n` steps stays in the lattice box of radius `n` about its start, so
 the payoff is at most the sum of the finitely many values of the reward on that
-box.  This is the unkilled analogue of `Sandpile.bddAbove_killedSet_stopped_value`
+box. This is the unkilled analogue of `Sandpile.bddAbove_killedSet_stopped_value`
 and it is what makes the two suprema of the four-term bound of
 `sandpile.tex:1881-1890` legitimate at rewards with no global bound.
 -/
-import Sandpile.Support.StoppedOdometer
-import Sandpile.Support.ExplStability
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal

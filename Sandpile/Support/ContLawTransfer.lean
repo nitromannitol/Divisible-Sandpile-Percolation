@@ -1,14 +1,20 @@
-/-
-Two elementary consequences of an identity of laws, used by the scaling argument
-of `prop:continuum-value-selfsimilar` (`sandpile.tex:1985-1993`).
-
-The paper's proof transfers the law of the stopping value along the scaling of
-the field.  Once the two laws are known to agree, the power moments and the
-variance of the value agree as well; these are the two steps, each a single
-rewrite with `MeasureTheory.integral_map` and `ProbabilityTheory.variance_map`.
--/
 import Sandpile.Support.MeanAValue
 import Mathlib
+
+/-!
+# Moment and variance identities transferred along an identity of laws
+
+The scaling argument of `prop:continuum-value-selfsimilar` (`sandpile.tex:1985-1993`) transfers
+the law of the stopping value along the scaling of the field, and then needs the power moments
+and the variance to agree once the two laws are known to be equal. `integral_rpow_of_map_eq` and
+`variance_of_map_eq` give these two elementary consequences for any pair of real random variables
+sharing a law, each a single rewrite with `MeasureTheory.integral_map` or
+`ProbabilityTheory.variance_map`. `integral_continuumValue_of_map_eq` and
+`variance_continuumValue_of_map_eq` specialize them to the continuum value `𝒰(T,x)`: when its law
+equals the law of `T ^ β * 𝒰(1,0)`, its mean and variance are related to those of `𝒰(1,0)` by the
+factors `T ^ β` and `(T ^ β) ^ 2`, which are the sixth and eighth clauses of
+`cor:dlt4-mean-asymptotic`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

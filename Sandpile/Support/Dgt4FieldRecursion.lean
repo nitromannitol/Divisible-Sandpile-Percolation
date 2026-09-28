@@ -1,18 +1,22 @@
-/-
-The recursion `V_\infty-PV_\infty=\zeta` of the infinite Green field
-(`sandpile.tex:5042`), the identity the optimal-stopping representation of the first step of
-the Gaussian case rests on.
-
-The field is the limit of the sums over the boxes `Q(0,n)`.  The neighbour average commutes
-with each finite sum, and the Green function is harmonic away from the diagonal, so the
-average of the partial sum is the partial sum less the scenery at the site, as soon as the
-box contains that site; the recursion is the limit of that identity.
--/
 import Sandpile.Support.ExitGreen
 import Sandpile.Support.InfiniteGreenField
 import Sandpile.Support.RefinedIncrement
 import Sandpile.Support.LinGaussField
 import Sandpile.Support.MeanLocalization
+
+/-!
+# The recursion of the infinite Green field, and its optimal-stopping form
+
+This file proves the recursion `V_∞ - PV_∞ = ζ` of the infinite Green field, the identity the
+optimal-stopping representation of the first step of the Gaussian case rests on. The field is
+the limit of the sums over the boxes `Q(0,n)`; the neighbour average commutes with each finite
+sum, and the Green function is harmonic away from the diagonal, so the average of the partial
+sum is the partial sum less the scenery at the site, as soon as the box contains that site, and
+the recursion is the limit of that identity. From the recursion the file derives the
+optimal-stopping representation `V_∞(x) - u_n(x) = inf_{τ≤n} 𝔼_x V_∞(X_τ)`, a coordinatewise
+Lipschitz bound for `V_∞ - u_n` in the scenery, and the almost-sure form of the recursion at a
+Gaussian scenery.
+-/
 
 open MeasureTheory Filter Topology Set
 

@@ -1,22 +1,23 @@
-/-
-The sharper form of the strong Markov step, in which the cost is paid only where
-the capped time differs from the time.
-
-The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) pays nothing
-on `{τ ≤ τ_D}`, where the capped time IS the time, and on `{τ_D < τ}` it pays
-the conditional reward after the exit.  The estimate that comes out of that split
-therefore carries the probability of `{τ_{u,A} < τ}`, not of `{τ_{u,A} < T}`.
-For a stopping time bounded by the horizon the first event is inside the second,
-so the sharper estimate implies `BallExcessStep` and hence the lemma.
-
-The split itself is carried out here as well: the two payoffs agree off
-`{τ_{u,A} < τ}`, so their difference is a set integral over that event, and
-`BallExcessStep` follows from the integrability of each payoff together with the
-bound on that set integral.  That bound is exactly the conditional statement the
-strong Markov property at `τ_{u,A}` supplies, and it is the only thing left
-between this repository and `lem:brownian-ball-localization`.
--/
 import Sandpile.Support.ExplBallSplit
+
+/-!
+# The strong Markov step, sharpened to the capped-time exit cost
+
+The sharper form of the strong Markov step, in which the cost is paid only where the capped time
+differs from the time.
+
+The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) pays nothing on `{τ ≤ τ_D}`,
+where the capped time IS the time, and on `{τ_D < τ}` it pays the conditional reward after the
+exit. The estimate that comes out of that split therefore carries the probability of
+`{τ_{u,A} < τ}`, not of `{τ_{u,A} < T}`. For a stopping time bounded by the horizon the first
+event is inside the second, so the sharper estimate implies `BallExcessStep` and hence the lemma.
+
+The split itself is carried out here as well: the two payoffs agree off `{τ_{u,A} < τ}`, so their
+difference is a set integral over that event, and `BallExcessStep` follows from the integrability
+of each payoff together with the bound on that set integral. That bound is exactly the conditional
+statement the strong Markov property at `τ_{u,A}` supplies, and it is the only thing left between
+this repository and `lem:brownian-ball-localization`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

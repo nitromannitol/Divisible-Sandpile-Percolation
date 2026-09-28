@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Membrane
+
+/-!
+# Convexity and Lipschitz dependence of the odometer on the scenery
+
 How the odometer depends on the scenery.
 
 `sandpile.tex` uses two facts about that dependence throughout, in
@@ -9,12 +13,11 @@ the scenery with coefficients at most the finite-time Green kernel,
   `|u_t(x; ζ) - u_t(x; η)| ≤ ∑_y g_t(x,y) |ζ(y) - η(y)|`.
 
 Both are proved here by induction on the recursion, with no optimal-stopping
-representation needed.  The Green kernel is finitely supported, so every sum is
-summable whatever the sceneries.  The `ℓ²` form the paper states follows by
+representation needed. The Green kernel is finitely supported, so every sum is
+summable whatever the sceneries. The `ℓ²` form the paper states follows by
 Cauchy-Schwarz, and the single-coordinate form is the resampling bound every
 application of `lem:weighted-exp-conc` needs.
 -/
-import Sandpile.Support.Membrane
 
 namespace Sandpile
 

@@ -1,16 +1,15 @@
-/-
-The mean of the constructed one-site law, and the shift that makes it zero: the
-first analytic clause of `thm:dgt4-many-limits` (`sandpile.tex:5903`, and
-"choose `μ ∈ ℝ` so that `ζ(0) := μ + η + Γ` has mean zero" at
-`sandpile.tex:5972-5977`).
-
-The mean splits over the summands: the Gaussian summand contributes `w_0 μ` and
-the `j`th band component contributes `ω_j` times its own mean, which lies in
-`[-a_j, -ℓ_1a_j]`; the band series converges because `∑_j ω_j a_j < ∞`.  The
-shift `μ` enters only through the Gaussian summand, so solving for it is one
-division, and the band carriers do not move.
--/
 import Sandpile.Support.Dgt4ABandLawMoment
+
+/-!
+# The mean of the constructed one-site law, and the shift that centers it
+
+The mean of the constructed one-site law splits over its summands: the Gaussian summand
+contributes `w0 * mu` and the `j`th band component contributes `w j` times its own mean
+`bandMean l1 (a j) (θ j) (m j)`, which lies in `[-a j, -l1 * a j]`, and the resulting band series
+converges because `∑ w j * a j < ∞`. The shift `mu` enters only through the Gaussian summand, so
+solving for the value that centers the law at zero is a single division, and this shift leaves
+the band carriers untouched, so all four band estimates continue to hold at the centered law.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -61,6 +60,8 @@ theorem integral_gaussianPDFReal_mul_id (mu : ℝ) (v : ℝ≥0) (hv : v ≠ 0) 
 /-- The mean of a band component. -/
 def bandMean (l1 a θ : ℝ) (m : ℕ) : ℝ := ∫ x : ℝ, bandComponent l1 a θ m x * x
 
+/-- The integrand `x ↦ bandComponent l1 a θ m x * x` of the band mean `bandMean l1 a θ m` is
+integrable, since `bandComponent l1 a θ m` is continuous with compact support. -/
 theorem integrable_bandComponent_mul_id {l1 a θ : ℝ} {m : ℕ}
     (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) :
     Integrable fun x : ℝ => bandComponent l1 a θ m x * x := by

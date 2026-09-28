@@ -1,26 +1,31 @@
-/-
-Brownian scaling and stationarity of the white noise of
-`ssec:continuum-membrane-fields`, and the resulting exact scaling of the Gaussian
-heat potential `Z`.
-
-The proof of `prop:continuum-value-selfsimilar` at `sandpile.tex:1985-1993` reads:
-"Stationarity of white noise gives $\mathcal U(T,x)\stackrel d=\mathcal U(T,0)$.
-Brownian scaling then gives
-$\{Z(Ts,\sqrt Ty)\}\stackrel d=\{T^{1-d/4}Z(s,y)\}$."
-
-Both statements are one identity here.  For `T>0` and `x∈ℝ^d` put
-`ψ(w) = T^{-1/2}(w-x)`; the map `f ↦ T^{-d/4} 𝒲(f∘ψ)` is again a white noise,
-because `ψ` scales Lebesgue measure by `T^{-d/2}` and the two factors
-`T^{-d/4}` square to the reciprocal of that.  The kernel scaling of
-`Sandpile.Support.greenTimeBM_mul_time` then turns the index of `Z` at the
-scaled point into the index of the transformed noise at the unscaled point,
-`g^{BM}_{Ts}(x+\sqrt Ty,\cdot) = T^{1-d/2}\,g^{BM}_s(y,\psi(\cdot))`, and the
-two powers combine to `T^{1-d/4}`.
--/
 import Sandpile.Support.ContKernelScaling
 import Sandpile.Support.ContScaleMeasure
 import Sandpile.Support.ContWhiteNoise
 import Sandpile.Support.ContBMSquare
+
+/-!
+# Brownian scaling and stationarity of the white noise
+
+Brownian scaling and stationarity of the white noise of `ssec:continuum-membrane-fields`,
+and the resulting exact scaling of the Gaussian heat potential `Z`.
+
+The proof of `prop:continuum-value-selfsimilar` at `sandpile.tex:1985-1993` reads:
+"Stationarity of white noise gives $\mathcal U(T,x)\stackrel d=\mathcal U(T,0)$. Brownian
+scaling then gives $\{Z(Ts,\sqrt Ty)\}\stackrel d=\{T^{1-d/4}Z(s,y)\}$."
+
+Both statements are one identity here. For `T>0` and `x∈ℝ^d` put `ψ(w) = T^{-1/2}(w-x)`;
+the map `f ↦ T^{-d/4} 𝒲(f∘ψ)` (`scaledNoise`) is again a white noise
+(`isWhiteNoise_scaledNoise`), because `ψ` scales Lebesgue measure by `T^{-d/2}` and the two
+factors `T^{-d/4}` square to the reciprocal of that. The kernel scaling of
+`Sandpile.Support.greenTimeBM_mul_time` then turns the index of `Z` at the scaled point
+into the index of the transformed noise at the unscaled point,
+`g^{BM}_{Ts}(x+\sqrt Ty,\cdot) = T^{1-d/2}\,g^{BM}_s(y,\psi(\cdot))` (`greenTimeBM_scaled_index`
+and `greenTimeBM_scaled_fun`), and the two powers combine to `T^{1-d/4}`
+(`gaussianPotential_scaled`, `gaussianPotential_scaled_pi`), giving the equality in law of
+`map_gaussianPotential_scaled_combination` and, at a single point,
+`map_gaussianPotential_point_scaled`. `integral_greenTimeBM_scaled` records the matching
+scaling of the covariance kernel.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -307,7 +312,8 @@ theorem integral_greenTimeBM_scaled (d : ℕ) {T : ℝ} (hT : 0 < T)
     ring
   simp only [hpt]
   rw [MeasureTheory.integral_const_mul,
-    integral_comp_scaleShift d hc x (fun u : Space d => greenTimeBM d s y u * greenTimeBM d s' y' u),
+    integral_comp_scaleShift d hc x
+      (fun u : Space d => greenTimeBM d s y u * greenTimeBM d s' y' u),
     inv_pow_rpow_neg_half d hT, ← mul_assoc, hpow]
 
 /-- The law of the Gaussian heat potential at `(T,x)` is the law of `T^{1-d/4}` times its

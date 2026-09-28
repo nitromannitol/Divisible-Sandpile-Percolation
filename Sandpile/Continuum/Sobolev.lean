@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Kernel
+import Mathlib
+
+/-! # Sobolev Norms on Test Functions
+
 Test functions, the Sobolev norms of `sandpile.tex`, `ssec:notation`, and the
 piecewise-constant embedding `f^{(R)}(z) = f(⌊Rz⌋)`.
 
@@ -16,8 +20,6 @@ How the paper's objects are modelled here:
 - A lattice field enters through `latticePairing R f φ = ∫ f(⌊Rz⌋) φ(z) dz`,
   which is `f^{(R)}(φ)` in the paper's notation.
 -/
-import Sandpile.Continuum.Kernel
-import Mathlib
 
 open MeasureTheory
 open scoped ENNReal FourierTransform

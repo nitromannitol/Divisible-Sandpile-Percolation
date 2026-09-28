@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ContGreenFubini
+import Sandpile.Support.ContHeatPotentialCoeff
+import Sandpile.Support.ContBMGreenIdentity
+
+/-!
+# The Finite-Dimensional Clause Reduced to Double Time Convergence
+
 The finite-dimensional clause of `prop:dlt4-heat-potential-invariance`
 (`sandpile.tex:1841-1848`) in dimensions one to three, reduced to a single
 convergence statement.
@@ -21,9 +27,6 @@ So what is left is the comparison of the two, one pair of mesh points at a time:
 which is the local central limit theorem of `ssec:green-estimates` together with
 the Riemann-sum convergence, and nothing else.
 -/
-import Sandpile.Support.ContGreenFubini
-import Sandpile.Support.ContHeatPotentialCoeff
-import Sandpile.Support.ContBMGreenIdentity
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -42,6 +45,10 @@ noncomputable def interpDoubleTimeSum (d : ℕ) (R r r' : ℝ) (w w' : Space d) 
         ∑ a ∈ Finset.range (timeIndex R r p.2), ∑ b ∈ Finset.range (timeIndex R r' q.2),
           Sandpile.heatKernel d (a + b) (cornerSite d R w p.1) (cornerSite d R w' q.1))
 
+/-- `sum_interp_sq_eq` restated in terms of `interpDoubleTimeSum`: the sum over
+the interpolation box of the square of a linear combination `∑ i, t i * interpCoeff ...`
+of coefficient values equals the double sum of `t i * t j * interpDoubleTimeSum`
+at the corresponding pair of mesh points. -/
 theorem sum_interp_sq_eq' (d : ℕ) {R : ℝ} (hR : 0 < R) (L : ℝ) {m : ℕ} (r : Fin m → ℝ)
     (w : Fin m → Space d) (hw : ∀ i, ‖w i‖ ≤ L) (t : Fin m → ℝ) :
     ∑ k : Fin (interpBox d R L r).card,

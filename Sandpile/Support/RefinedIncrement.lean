@@ -1,18 +1,19 @@
-/-
-The refined increment bound `eq:dgt4-reduction-increment` of
-`sandpile.tex:4503-4582` and the resulting refined upper bound.
-
-Iterating `u_{n+1} ≥ ζ + P u_n` peels the last `m` steps off the odometer:
-`ζ(0) + P u_t(0) ≥ ∑_{k≤m} P^k ζ(0) + P^{m+1} u_{t-m}(0)`, and the first sum is
-the Green average `∑_y g_{m+1}(0,y) ζ(y)`.  With `m` proportional to the level
-`h`, the mean moves by at most `h/8` over the last `m` steps, so the event that
-`ζ(0)+Pu_t(0)` falls `h` below the mean forces one of the two summands to fall
-`7h/16` below its own mean; the first is
-`lem:dgt4-stretched-green-scenery-tail` and the second is
-`lem:dgt4-smoothed-odometer-tail`.
--/
 import Sandpile.Support.CrudeIncrement
 import Sandpile.Frozen.DGT4GreenSceneryTail
+
+/-!
+# The refined increment bound
+
+The refined increment bound `eq:dgt4-reduction-increment` of `sandpile.tex:4503-4582` and the
+resulting refined upper bound.
+
+Iterating `u_{n+1} ≥ ζ + P u_n` peels the last `m` steps off the odometer:
+`ζ(0) + P u_t(0) ≥ ∑_{k≤m} P^k ζ(0) + P^{m+1} u_{t-m}(0)`, and the first sum is the Green
+average `∑_y g_{m+1}(0,y) ζ(y)`. With `m` proportional to the level `h`, the mean moves by at
+most `h/8` over the last `m` steps, so the event that `ζ(0)+Pu_t(0)` falls `h` below the mean
+forces one of the two summands to fall `7h/16` below its own mean; the first is
+`lem:dgt4-stretched-green-scenery-tail` and the second is `lem:dgt4-smoothed-odometer-tail`.
+-/
 
 open LatticeProb
 
@@ -25,6 +26,8 @@ variable {d : ℕ}
 
 /-! ### Algebra of the averaging operator and its iterates -/
 
+/-- The neighborhood-average operator `avg` is additive: `avg (f + g) = avg f + avg g`, by
+splitting the defining sum over the `2d` neighbors. -/
 theorem avg_add (f g : Site d → ℝ) (x : Site d) :
     avg (fun y => f y + g y) x = avg f x + avg g x := by
   show (∑ i : Fin d, ((f (x + unit i) + g (x + unit i)) + (f (x - unit i) + g (x - unit i))))
@@ -35,6 +38,8 @@ theorem avg_add (f g : Site d → ℝ) (x : Site d) :
   congr 1
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/-- The `k`-fold iterate of `avg` is additive, extending `avg_add` to `avg^[k]` by induction
+on `k`. -/
 theorem avg_iterate_add : ∀ (k : ℕ) (f g : Site d → ℝ) (x : Site d),
     (avg^[k] fun y => f y + g y) x = (avg^[k] f) x + (avg^[k] g) x := by
   intro k
@@ -46,6 +51,9 @@ theorem avg_iterate_add : ∀ (k : ℕ) (f g : Site d → ℝ) (x : Site d),
       rw [Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, h]
       exact ih (avg f) (avg g) x
 
+/-- The `k`-fold iterate of `avg` is monotone: a pointwise inequality `f ≤ g` is preserved by
+`avg^[k]`, proved by induction on `k` using that `avg` itself preserves the order
+(`avg_mono_le`). -/
 theorem avg_iterate_mono : ∀ (k : ℕ) {f g : Site d → ℝ}, (∀ y, f y ≤ g y) →
     ∀ x, (avg^[k] f) x ≤ (avg^[k] g) x := by
   intro k
@@ -301,7 +309,8 @@ theorem exists_refined_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
     have hnn : (0 : ℝ) ≤ CG * Real.exp (-(cG * s ^ β)) := by positivity
     rw [hA₁, Measure.real, ← ENNReal.toReal_ofReal hnn]
     exact ENNReal.toReal_mono ENNReal.ofReal_ne_top hmm
-  have hb₂ : P.real A₂ ≤ CS * Real.exp (-(cS * min (s ^ 2 * (((mh + 1 : ℕ)) : ℝ) ^ (((d : ℝ) - 4) / 2))
+  have hb₂ : P.real A₂ ≤ CS * Real.exp (-(cS * min
+      (s ^ 2 * (((mh + 1 : ℕ)) : ℝ) ^ (((d : ℝ) - 4) / 2))
       (s * (((mh + 1 : ℕ)) : ℝ) ^ (((d : ℝ) - 2) / 2)))) := by
     have hmm := hStail (mh + 1) (by omega) n s hs1
     have hnn : (0 : ℝ) ≤ CS * Real.exp (-(cS * min
@@ -406,6 +415,9 @@ theorem exists_log_rpow_le_linear {K L β : ℝ} (hK : 0 < K) (hL : 0 < L) (hβ 
 
 /-! ### The stretched-exponential integral -/
 
+/-- The stretched-exponential density `x ↦ exp(-b x^p)` is integrable on `(0, ∞)` for `p ≥ 1`
+and `b > 0`, obtained from `integrableOn_rpow_mul_exp_neg_mul_rpow` with exponent `s = 0` and
+simplifying the resulting factor `x^0`. -/
 theorem integrableOn_exp_neg_mul_rpow' {b p : ℝ} (hp : 1 ≤ p) (hb : 0 < b) :
     IntegrableOn (fun x : ℝ => Real.exp (-b * x ^ p)) (Set.Ioi 0) := by
   have h := integrableOn_rpow_mul_exp_neg_mul_rpow (s := 0) (p := p) (b := b)

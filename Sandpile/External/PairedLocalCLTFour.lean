@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Kernel
+
+/-! # Paired Local CLT in Dimension Four
+
 External input from Lawler–Limic, Random Walk: A Modern Introduction,
 Theorem 2.1.3, Eq. (2.8), cited in `sandpile.tex:1145-1161` and used in
 `sandpile.tex:1171-1172` to prove `lem:d4-double-heat-kernel`.
@@ -15,7 +18,6 @@ summable remainder. The constant is bound before time and both sites.
 The squared Euclidean distance is written as its coordinate sum, and all
 denominators are nonzero because `1 ≤ n`.
 -/
-import Sandpile.Support.Kernel
 
 /-- The dimension-four specialization of the paired local limit estimate,
 Lawler–Limic Theorem 2.1.3, Eq. (2.8). Assumed, not proved. -/

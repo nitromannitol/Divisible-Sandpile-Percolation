@@ -1,9 +1,18 @@
-/-
-Applications of critical dimension-four growth to a fixed scenery law.
-The eventual comparison extends to every time at least two using concavity.
--/
 import Sandpile.Frozen.CriticalTopplingD4
 import Sandpile.External.VarianceScaleProved
+
+/-!
+# Logarithmic growth of the odometer for a fixed scenery law in dimension four
+
+This file specializes the critical dimension-four growth theorem `Frozen.critical_toppling_d4`
+to a single fixed scenery law `ν`: `exists_critical_bounds_fixed_four` gives logarithmic upper
+and lower bounds on the mean odometer eventually in time together with `L²` and almost-sure
+convergence of the odometer to its mean. `logarithmic_bounds_of_eventual` then shows that an
+eventually logarithmic-bounded, monotone, eventually concave sequence in fact satisfies
+logarithmic bounds at every time at least two, using concavity to extend the comparison down from
+the eventual threshold. Combining the two, `exists_log_mean_bounds_fixed_four` upgrades the
+eventual logarithmic bounds on the mean odometer to bounds valid for every `t ≥ 2`.
+-/
 
 open LatticeProb
 
@@ -11,6 +20,10 @@ open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- For a fixed scenery law `ν` with mean zero, finite positive variance, and an
+exponential-moment bound, there are constants `c, C > 0` and a time `t₀` beyond which the mean
+odometer is squeezed between `c * log t` and `C * log t`, and at every site the odometer,
+normalized by the mean odometer, converges to `1` both in `L²` and almost surely. -/
 theorem exists_critical_bounds_fixed_four (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :
@@ -21,7 +34,8 @@ theorem exists_critical_bounds_fixed_four (ν : Measure ℝ) [IsProbabilityMeasu
         Tendsto (fun t : ℕ => ∫ σ, (odometer σ t x /
           meanOdometer (centeredMassLaw 4 ν) t - 1) ^ 2 ∂centeredMassLaw 4 ν) atTop (𝓝 0) ∧
         ∀ᵐ σ ∂centeredMassLaw 4 ν,
-          Tendsto (fun t : ℕ => odometer σ t x / meanOdometer (centeredMassLaw 4 ν) t) atTop (𝓝 1)) := by
+          Tendsto (fun t : ℕ => odometer σ t x / meanOdometer (centeredMassLaw 4 ν) t)
+            atTop (𝓝 1)) := by
   have hv : 0 < (evariance id ν).toReal := ENNReal.toReal_pos hvar.ne' hvar'.ne
   have hs : 0 < Real.sqrt (evariance id ν).toReal := Real.sqrt_pos.mpr hv
   have hvb : ENNReal.ofReal (Real.sqrt (evariance id ν).toReal ^ 2) ≤ evariance id ν := by
@@ -60,7 +74,8 @@ theorem logarithmic_bounds_of_eventual (M : ℕ → ℝ) (hzero : M 0 = 0)
       hbt.2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hlog.le)⟩
   · have htT : t ≤ T := (lt_of_not_ge hlarge).le
     have hlogle : Real.log (t : ℝ) ≤ Real.log T := Real.log_le_log ht0 (by exact_mod_cast htT)
-    have hlog2 : Real.log (2 : ℝ) ≤ Real.log t := Real.log_le_log (by norm_num) (by exact_mod_cast ht)
+    have hlog2 : Real.log (2 : ℝ) ≤ Real.log t :=
+      Real.log_le_log (by norm_num) (by exact_mod_cast ht)
     constructor
     · calc min c (M 1 / Real.log T) * Real.log t ≤ (M 1 / Real.log T) * Real.log t :=
             mul_le_mul_of_nonneg_right (min_le_right _ _) hlog.le
@@ -68,11 +83,16 @@ theorem logarithmic_bounds_of_eventual (M : ℕ → ℝ) (hzero : M 0 = 0)
         _ = M 1 := div_mul_cancel₀ _ hlogT.ne'
         _ ≤ M t := hmono (by omega)
     · calc M t ≤ M T := hmono htT
-        _ = (M T / Real.log 2) * Real.log 2 := (div_mul_cancel₀ _ (Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne').symm
+        _ = (M T / Real.log 2) * Real.log 2 :=
+            (div_mul_cancel₀ _ (Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne').symm
         _ ≤ (M T / Real.log 2) * Real.log t := mul_le_mul_of_nonneg_left hlog2 (by positivity)
         _ ≤ max C (M T / Real.log 2) * Real.log t :=
             mul_le_mul_of_nonneg_right (le_max_right _ _) hlog.le
 
+/-- Combining `exists_critical_bounds_fixed_four` with `logarithmic_bounds_of_eventual`, the mean
+odometer of a fixed scenery law with mean zero, finite positive variance, and an
+exponential-moment bound satisfies logarithmic upper and lower bounds at every time `t ≥ 2`, not
+just eventually. -/
 theorem exists_log_mean_bounds_fixed_four (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
     (θ : ℝ) (hθ : 0 < θ) (hexp : Integrable (fun z => Real.exp (θ * |z|)) ν) :

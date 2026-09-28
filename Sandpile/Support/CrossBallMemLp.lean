@@ -1,30 +1,34 @@
-/-
-Square integrability of the ball kernel of `sandpile.tex:2076-2088`.
-
-Every clause of `Sandpile.Continuum.IsWhiteNoise` is stated for square
-integrable test functions, so nothing at all can be said about the ball field
-`𝒳_s` until the kernel is known to be in `L²`.  That is proved here, for the two
-dimensions the crossing statements fix.
-
-The kernel depends on the point of the plane and the integration variable only
-through `planePoint u - z`, so it is the kernel at the origin composed with
-`z ↦ planePoint u - z`, which preserves Lebesgue measure; the statement for a
-general centre follows from the statement at the origin.
-
-At the origin the square of the kernel is dominated by a power of `1/‖y‖` below
-the dimension, which is exactly the hypothesis of
-`MeasureTheory.integrableOn_ball_of_norm_le_rpow`.  In dimension three the
-kernel is `(1/‖y‖ - 1/s)/4π` inside the ball, so its square is at most
-`‖y‖^{-2}/(4π)²`, and `2 < 3`.  In dimension two it is `log(s/‖y‖)/2π`, and
-`log x ≤ 2√x` for `x ≥ 0` gives `log(s/‖y‖)² ≤ 4 s/‖y‖`, so the square is at most
-`(4s/(2π)²)‖y‖^{-1}`, and `1 < 2`.  Outside the ball the kernel vanishes, so
-integrability on the ball is integrability on the plane.
-
-The one point where the bound fails is the centre in dimension three, where the
-junk value `1/0 = 0` makes the kernel `-1/(4πs)` while `‖0‖^{-2} = 0`; a point
-is null, so the hypothesis is taken almost everywhere.
--/
 import Sandpile.Support.CrossBallGauss
+
+/-!
+# Square integrability of the ball kernel
+
+Square integrability of the ball kernel of `sandpile.tex:2076-2088`. Every clause of
+`Sandpile.Continuum.IsWhiteNoise` is stated for square integrable test functions, so
+nothing at all can be said about the ball field `𝒳_s` until the kernel is known to be in
+`L²`. That is proved here, for the two dimensions the crossing statements fix.
+
+The kernel depends on the point of the plane and the integration variable only through
+`planePoint u - z`, so it is the kernel at the origin (`centredKernel`) composed with
+`z ↦ planePoint u - z`, which preserves Lebesgue measure; the statement for a general
+centre (`memLp_ballKernel`) follows from the statement at the origin
+(`memLp_centredKernel`).
+
+At the origin the square of the kernel is dominated by a power of `1/‖y‖` below the
+dimension, which is exactly the hypothesis of
+`MeasureTheory.integrableOn_ball_of_norm_le_rpow`. In dimension three the kernel is
+`(1/‖y‖ - 1/s)/4π` inside the ball, so its square is at most `‖y‖^{-2}/(4π)²`
+(`centredKernel_three_sq_le`), and `2 < 3`. In dimension two it is `log(s/‖y‖)/2π`, and
+`log x ≤ 2√x` for `x ≥ 0` gives `log(s/‖y‖)² ≤ 4 s/‖y‖`, so the square is at most
+`(4s/(2π)²)‖y‖^{-1}` (`centredKernel_two_sq_le`), and `1 < 2`. Outside the ball the kernel
+vanishes, so integrability on the ball (`integrableOn_centredKernel_sq`) is integrability
+on the plane (`integrable_centredKernel_sq`).
+
+The one point where the bound fails is the centre in dimension three, where the junk value
+`1/0 = 0` makes the kernel `-1/(4πs)` while `‖0‖^{-2} = 0`; a point is null, so the
+hypothesis is taken almost everywhere. `isAssociatedField_ballField_of_whiteNoise`
+discharges the last remaining hypothesis of positive association for the ball field.
+-/
 
 open MeasureTheory Metric Set
 
@@ -38,9 +42,13 @@ noncomputable def centredKernel (d : ℕ) (s : ℝ) (y : Sandpile.Continuum.Spac
      else (1 / (4 * Real.pi)) * (1 / ‖y‖ - 1 / s))
   else 0
 
+/-- The ball kernel at a general centre `u` is definitionally the centred kernel composed
+with the shift `z ↦ planePoint u - z`. -/
 theorem ballKernel_eq_centredKernel (d : ℕ) (s : ℝ) (u : Sandpile.Continuum.Space 2) :
     ballKernel d s u = fun z => centredKernel d s (planePoint (d := d) u - z) := rfl
 
+/-- `centredKernel` is measurable: it is built from the measurable norm by a case split on
+the dimension, a `log` or a subtraction of reciprocals, and an indicator of the ball. -/
 theorem measurable_centredKernel (d : ℕ) (s : ℝ) :
     Measurable (centredKernel d s) := by
   have hnorm : Measurable (fun y : Sandpile.Continuum.Space d => ‖y‖) :=

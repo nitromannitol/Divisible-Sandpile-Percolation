@@ -1,9 +1,15 @@
-/-
-Arithmetic helpers for the RSW amplification: eventual polynomial smallness
-and the square-cardinality bound.
--/
 import Sandpile.Support.PlaneRectangle
 import Mathlib
+
+/-!
+# Arithmetic helpers for the RSW amplification
+
+Two elementary arithmetic facts used to drive the RSW (Russo-Seymour-Welsh) amplification
+argument: `eventually_rpow_neg_le` shows a negative real power `r ^ (-c)` is eventually at most
+any fixed positive bound, and `card_double_square_le_cube` bounds the number of sites in a
+`2r × 2r` plane square by `r ^ 3` once `r ≥ 7`, the cardinality estimate needed to control the
+Gaussian union bound over a square's sites.
+-/
 
 open MeasureTheory Filter
 open scoped NNReal ENNReal

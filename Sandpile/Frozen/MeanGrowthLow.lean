@@ -1,4 +1,13 @@
-/-
+import Sandpile.Law
+import Sandpile.Support.MeanAExplosionA
+import Sandpile.External.ContStoppingStability
+import Sandpile.External.VarianceScaleProved
+import Sandpile.External.ContinuumOptimalStopping
+import Sandpile.External.LocalCLTProved
+
+/-!
+# Mean growth rate below dimension four
+
 Theorem 1.3(i)(a) of sandpile.tex, frozen.  `sandpile.tex:213-215`
 (label `thm:main-explosion`, part (i)(a)):
 
@@ -36,12 +45,6 @@ of Brownian motions, so on a space that carries none it says nothing.  For the
 same reason the stability input is taken at the universe of those constructed
 spaces, `Type 0`, and not at an unrelated one.
 -/
-import Sandpile.Law
-import Sandpile.Support.MeanAExplosionA
-import Sandpile.External.ContStoppingStability
-import Sandpile.External.VarianceScaleProved
-import Sandpile.External.ContinuumOptimalStopping
-import Sandpile.External.LocalCLTProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

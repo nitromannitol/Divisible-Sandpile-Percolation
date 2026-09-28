@@ -1,32 +1,31 @@
-/-
-The strong Markov step of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the strong Markov property at the exit time of the ball and the polynomial
-growth of the field.
-
-The strong Markov property at the exit time is the External
-`Sandpile.External.BrownianExitStep`, version 3: it needs an integrable envelope of
-the field along the motions started near `K`, and its conclusion bounds the excess
-by the supremum of the value over every remaining horizon `s ∈ [0, T]`, not only
-`s = T`.  The envelope is built here from the samplewise polynomial growth of the
-field and the uniform moment bound of the compact-time Brownian maximum
-(`exists_uniform_pathRadius_moment`), recentred at each starting point exactly as
-the growth is recentred at `u` elsewhere in this development; the bound on its
-integral does not depend on the starting point because the growth amplitude is
-bounded on the compact `A`-neighbourhood of `K`.  Passing from the supremum over
-every remaining horizon to the supremum at `T` alone uses the monotonicity of the
-Brownian value of the Gaussian heat potential in the horizon,
-`Sandpile.Frozen.brownian_value_mono_horizon`, the one dependency of this file that
-is still a registered `sorry`.  That dependency is isolated to the thin wrapper
-`ballStepResidual_of_exitStep`: the bulk of the argument,
-`ballStepResidual_of_exitStep_of_mono`, takes the monotonicity fact as an explicit
-hypothesis and is sorry-free.
--/
 import Sandpile.Support.ExplBallConditional
 import Sandpile.Support.ExplBallFarUniform
 import Sandpile.Support.ExplBrownianEnvelope
 import Sandpile.Support.ExplBallMoment
 import Sandpile.External.BrownianExitStep
 import Sandpile.Frozen.BrownianValueMonotone
+
+/-!
+# The strong Markov step at the ball's exit time
+
+The strong Markov step of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) from the
+strong Markov property at the exit time of the ball and the polynomial growth of the field.
+
+The strong Markov property at the exit time is the external `Sandpile.External.BrownianExitStep`,
+version 3: it needs an integrable envelope of the field along the motions started near `K`, and
+its conclusion bounds the excess by the supremum of the value over every remaining horizon
+`s ∈ [0, T]`, not only `s = T`. The envelope is built here from the samplewise polynomial growth
+of the field and the uniform moment bound of the compact-time Brownian maximum
+(`exists_uniform_pathRadius_moment`), recentred at each starting point exactly as the growth is
+recentred at `u` elsewhere in this development; the bound on its integral does not depend on the
+starting point because the growth amplitude is bounded on the compact `A`-neighbourhood of `K`.
+Passing from the supremum over every remaining horizon to the supremum at `T` alone uses the
+monotonicity of the Brownian value of the Gaussian heat potential in the horizon,
+`Sandpile.Frozen.brownian_value_mono_horizon`, the one dependency of this file that is still a
+registered `sorry`. That dependency is isolated to the thin wrapper
+`ballStepResidual_of_exitStep`: the bulk of the argument, `ballStepResidual_of_exitStep_of_mono`,
+takes the monotonicity fact as an explicit hypothesis and is sorry-free.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

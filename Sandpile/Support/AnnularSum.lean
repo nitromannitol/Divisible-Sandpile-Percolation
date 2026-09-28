@@ -1,12 +1,21 @@
-/-
-Geometrically weighted sums of double-exponential annular probabilities.
--/
 import Sandpile.Support.DoubleExponential
+
+/-!
+# Geometrically weighted sums of double-exponential annular probabilities
+
+This file sums a geometrically growing weight `A^(n+1)` against a doubly-exponentially decaying
+term `exp(-b m 2^n)` over scales `n`. Once the parameter `m` exceeds a threshold `M` depending
+only on `A` and `b`, the ratio `A exp(-bm)` is at most `1/2`, so the weighted sum telescopes into
+a geometric series and is bounded by twice its leading term, `2 K A exp(-bm)`.
+-/
 
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- For `m` past a threshold `M` depending only on `A ≥ 1` and `b > 0`, the sum
+`∑' n, K A^(n+1) exp(-bm·2^n)` is at most `2 K A exp(-bm)`, by comparison with the geometric series
+in the ratio `A exp(-bm) ≤ 1/2`. -/
 lemma exists_weighted_double_exp_sum_bound (A b : ℝ) (hA : 1 ≤ A) (hb : 0 < b) :
     ∃ M : ℝ, 1 ≤ M ∧ ∀ m : ℝ, M ≤ m → ∀ K : ℝ, 0 ≤ K →
       (∑' n : ℕ, ENNReal.ofReal (K * A ^ (n + 1) * Real.exp (-(b * m * (2 : ℝ) ^ n)))) ≤

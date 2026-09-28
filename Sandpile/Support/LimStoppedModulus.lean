@@ -1,12 +1,18 @@
-/-
-The spatial modulus of the ball-stopped kernel.
+import Sandpile.Support.LimStoppedKernel
+import Sandpile.Support.LimStoppedTransfer
+import Sandpile.Support.MeanAIncrement
+import Sandpile.Support.LimKernelShift
+import Sandpile.Support.LimStoppedContinuity
+
+/-!
+# The spatial modulus of the ball-stopped kernel
 
 The kernel of the ball-stopped field is `g_T(u,·)` minus the expected Green kernel from
-the stopped position.  The first term has the Green kernel's own spatial modulus
-(`MeanAIncrement.lean`).  The second term is an expectation along a motion started at `u`,
+the stopped position. The first term has the Green kernel's own spatial modulus
+(`MeanAIncrement.lean`). The second term is an expectation along a motion started at `u`,
 so two centres are compared along two different motions; what makes them comparable is
 that the expectation of a bounded continuous reward of the stopped state does not depend
-on the motion, only on its starting point (`LimStoppedTransfer.lean`).  Pairing the kernel
+on the motion, only on its starting point (`LimStoppedTransfer.lean`). Pairing the kernel
 with a square integrable test function turns the Green kernel into such a reward, since
 the pairing is bounded and continuous in the stopped state by the Green kernel's `L²`
 modulus, and the transfer then rewrites the two expectations along one common motion,
@@ -15,11 +21,6 @@ where the two rewards differ only by a shift of the starting point.
 The result is a modulus of exponent `1/8` in `L²` for the ball-stopped kernel, with a
 constant that grows with the horizon but only polynomially.
 -/
-import Sandpile.Support.LimStoppedKernel
-import Sandpile.Support.LimStoppedTransfer
-import Sandpile.Support.MeanAIncrement
-import Sandpile.Support.LimKernelShift
-import Sandpile.Support.LimStoppedContinuity
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -29,6 +30,8 @@ namespace Sandpile.Support
 
 /-! ### A quadratic bound for a pairing -/
 
+/-- The elementary quadratic (AM-GM) bound `|f g| ≤ (a f² + b g²)/2` for reals
+`a, b` with `a > 0` and `a b = 1`, from `(a|f| - |g|)² ≥ 0`. -/
 theorem abs_mul_le_quad {f g a b : ℝ} (ha : 0 < a) (hab : a * b = 1) :
     |f * g| ≤ (a * f ^ 2 + b * g ^ 2) / 2 := by
   have h1 : (0 : ℝ) ≤ (a * |f| - |g|) ^ 2 := sq_nonneg _
@@ -45,6 +48,10 @@ theorem abs_mul_le_quad {f g a b : ℝ} (ha : 0 < a) (hab : a * b = 1) :
   rw [abs_mul]
   nlinarith [key, ha, mul_nonneg (abs_nonneg f) (abs_nonneg g)]
 
+/-- The integral form of `abs_mul_le_quad`: for square-integrable `f` and `g`,
+`|∫ f g| ≤ (a ∫ f² + b ∫ g²)/2` whenever `a > 0` and `a b = 1`, obtained by
+integrating the pointwise quadratic bound after checking `f * g` is
+integrable. -/
 theorem abs_integral_mul_le_quad {α : Type*} [MeasurableSpace α] {μ : Measure α}
     {f g : α → ℝ} (hf : Integrable (fun x => f x ^ 2) μ)
     (hg : Integrable (fun x => g x ^ 2) μ)
@@ -83,6 +90,8 @@ variable {d : ℕ}
 noncomputable def greenModulusFactor (d : ℕ) (T : ℝ) : ℝ :=
   T ^ (1 - (2 * (d : ℝ) + 1) / 8) / (1 - (2 * (d : ℝ) + 1) / 8)
 
+/-- `greenModulusFactor d T` is nonnegative for `d ≤ 3` and `T ≥ 0`, since both
+its numerator `T ^ (1 - (2d+1)/8)` and its denominator `1 - (2d+1)/8` are. -/
 theorem greenModulusFactor_nonneg (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) :
     0 ≤ greenModulusFactor d T := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -90,6 +99,9 @@ theorem greenModulusFactor_nonneg (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) :
   rw [greenModulusFactor]
   exact div_nonneg (Real.rpow_nonneg hT _) hc.le
 
+/-- `∫_0^t s^{-(2d+1)/8} ds ≤ greenModulusFactor d T` for `0 ≤ t ≤ T` and `d ≤ 3`:
+the exponent `-(2d+1)/8 > -1` makes the power rule for `rpow` integrals apply,
+and the resulting antiderivative is monotone in `t`. -/
 theorem integral_Ioo_rpow_le_modulusFactor (hd3 : d ≤ 3) {t T : ℝ} (ht : 0 ≤ t) (htT : t ≤ T) :
     (∫ s in Set.Ioo (0 : ℝ) t, s ^ (-(2 * (d : ℝ) + 1) / 8)) ≤ greenModulusFactor d T := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -110,6 +122,9 @@ horizon only polynomially. -/
 noncomputable def greenModulusConst (d : ℕ) (T : ℝ) : ℝ :=
   2 * (greenDiffConst d * (2 : ℝ) ^ (-(2 * (d : ℝ) + 1) / 4)) * greenModulusFactor d T ^ 2
 
+/-- `greenModulusConst d T` is nonnegative for `1 ≤ d ≤ 3` and `T ≥ 0`: it is a
+product of the positive constant `greenDiffConst d`, a positive power of `2`,
+and the square of the nonnegative `greenModulusFactor d T`. -/
 theorem greenModulusConst_nonneg (hd : 1 ≤ d) (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) :
     0 ≤ greenModulusConst d T := by
   have h1 := (greenDiffConst_pos hd).le
@@ -153,6 +168,9 @@ noncomputable def greenSqBound (d : ℕ) (T : ℝ) : ℝ :=
   (2 * Real.pi / (d : ℝ)) ^ (-(d : ℝ) / 2) * 2 ^ (-(d : ℝ) / 2) *
     (greenTimeFactor d T * greenTimeFactor d T)
 
+/-- The `L²` norm of the Green kernel `greenTimeBM d t x` is bounded uniformly
+in `t ≤ T` and `x` by the explicit constant `greenSqBound d T`, restating
+`integral_greenTimeBM_sq_le` as a product `f * f` rather than `f ^ 2`. -/
 theorem integral_greenTimeBM_sq_le' (hd : 1 ≤ d) (hd3 : d ≤ 3) {t T : ℝ} (ht : 0 ≤ t)
     (htT : t ≤ T) (x : Space d) :
     (∫ w : Space d, greenTimeBM d t x w ^ 2) ≤ greenSqBound d T := by
@@ -255,6 +273,10 @@ section Reward
 
 variable {d : ℕ}
 
+/-- The reward `greenReward d ψ T x p` is uniformly bounded by
+`((∫ ψ²) + greenSqBound d T) / 2`, by `abs_integral_mul_le_quad` applied with
+`a = b = 1` to the pairing of `ψ` with the Green kernel at the remaining time
+`max (T - p.1) 0` from `x + p.2`. -/
 theorem abs_greenReward_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {T : ℝ} (hT : 0 ≤ T) {ψ : Space d → ℝ}
     (hψm : Measurable ψ) (hψ : Integrable (fun y => ψ y ^ 2) (volume : Measure (Space d)))
     (x : Space d) (p : ℝ≥0 × Space d) :
@@ -454,6 +476,11 @@ section Modulus
 
 variable {ΩB : Type} [MeasurableSpace ΩB] {d : ℕ}
 
+/-- The stopped Green kernel `stoppedGreenKernel d PB B s T u` is strongly
+measurable in the space variable: it is the expectation over the stopped
+space-time point `((T - ballStopTime), B(ballStopTime))`, and the joint Green
+kernel `greenTimeBM` is jointly measurable in the space-time point and the
+target, so its expectation integrates to a strongly measurable function. -/
 theorem stronglyMeasurable_stoppedGreenKernel (_hd : 1 ≤ d) (PB : Measure ΩB)
     [IsProbabilityMeasure PB] {B : Space d → ℝ≥0 → ΩB → Space d}
     (hBc : ∀ y ω, Continuous fun t => B y t ω) (hBm : ∀ y t, StronglyMeasurable (B y t))
@@ -566,7 +593,8 @@ theorem integral_sq_stoppedGreenKernel_sub_le (hd : 1 ≤ d) (hd3 : d ≤ 3) (PB
     (hB : ∀ y, IsBrownian d y (B y) PB) (hBc : ∀ y ω, Continuous fun t => B y t ω)
     (hBm : ∀ y t, StronglyMeasurable (B y t)) {s T : ℝ} (hT : 0 < T) (u v : Space 2) :
     (∫ y : Space d, (stoppedGreenKernel d PB B s T u y - stoppedGreenKernel d PB B s T v y) ^ 2)
-      ≤ greenModulusConst d T * ‖planePoint (d := d) u - planePoint (d := d) v‖ ^ ((1 : ℝ) / 2) := by
+      ≤ greenModulusConst d T
+          * ‖planePoint (d := d) u - planePoint (d := d) v‖ ^ ((1 : ℝ) / 2) := by
   classical
   obtain ⟨M, hM, hMod⟩ := exists_greenTimeBM_holder hd hd3 hT
   set ψ : Space d → ℝ := fun y =>

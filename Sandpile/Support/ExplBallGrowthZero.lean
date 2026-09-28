@@ -1,4 +1,14 @@
 import Sandpile.Support.ExplBallFinal
+
+/-!
+# The growth residual in dimension zero
+
+`Sandpile.Continuum.ballGrowthResidual_zero` establishes `BallGrowthResidual 0`: in dimension
+zero `Space 0` is a single point, so a continuous field on a compact time strip is automatically
+bounded above by its supremum there, and the samplewise polynomial growth bound the residual asks
+for holds with exponent `p = 0` and constant that supremum norm.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 

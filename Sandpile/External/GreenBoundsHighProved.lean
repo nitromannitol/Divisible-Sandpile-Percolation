@@ -1,4 +1,10 @@
-/-
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.VarianceScaleProved
+import LatticeProb.Walk.GreenPointwise
+
+/-!
+# The high-dimensional Green estimates are proved
+
 The high-dimensional Green estimates are no longer assumed.
 
 `Sandpile/External/GreenBoundsHigh.lean` states the estimates of
@@ -15,9 +21,6 @@ Euclidean norm of the notation section is the library's, and the real exponents
 `4-d`, `2-d`, `(2-d)/2` and `(4-d)/2` are the natural powers `k+1`, `k+3`,
 `k+3` and `k+1` in the square root, where `d = k+5`.
 -/
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.VarianceScaleProved
-import LatticeProb.Walk.GreenPointwise
 
 open LatticeProb
 
@@ -25,16 +28,25 @@ namespace Sandpile.External
 
 /-! ### The vocabulary -/
 
+/-- The paper's two-point Green function `Sandpile.green` agrees with the library's
+translation-invariant `LatticeProb.srwGreenInf`, via the heat-kernel identification
+`Sandpile.heatKernel_eq_srwHeat`. -/
 theorem green_eq_srwGreenInf (d : ℕ) (x y : Sandpile.Site d) :
     Sandpile.green d x y = LatticeProb.srwGreenInf d (y - x) :=
   tsum_congr fun k => Sandpile.heatKernel_eq_srwHeat d k x y
 
+/-- The notation section's `latticeNorm` is definitionally the library's `euclidNorm`. -/
 theorem latticeNorm_eq_euclidNorm {d : ℕ} (z : Sandpile.Site d) :
     Sandpile.External.latticeNorm z = LatticeProb.euclidNorm z := rfl
 
+/-- A negative natural power of a positive real, written as an `rpow`, is the inverse of the
+corresponding natural power. -/
 theorem rpow_cast_neg {x : ℝ} (hx : 0 < x) (n : ℕ) : x ^ (-(n : ℝ)) = (x ^ n)⁻¹ := by
   rw [Real.rpow_neg hx.le, Real.rpow_natCast]
 
+/-- A negative half-integer `rpow` of a positive real is the inverse of the corresponding
+natural power of the square root, converting the paper's exponents `(2-d)/2` and `(4-d)/2` into
+powers of `Real.sqrt`. -/
 theorem rpow_half_neg {x : ℝ} (hx : 0 < x) (n : ℕ) :
     x ^ (-(n : ℝ) / 2) = (Real.sqrt x ^ n)⁻¹ := by
   rw [neg_div, Real.rpow_neg hx.le]

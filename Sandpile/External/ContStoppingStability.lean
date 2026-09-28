@@ -1,4 +1,10 @@
-/-
+import Sandpile.Continuum.Stopping
+import Sandpile.External.LocalCLT
+import Sandpile.Walk
+
+/-!
+# Optimal-stopping value stability under uniform reward convergence
+
 External input: the stability of optimal-stopping values under uniform
 convergence of bounded rewards, together with the invariance principle for the
 stopped walk, in the form cited at `sandpile.tex:1900-1907`.  The paper proves
@@ -94,9 +100,6 @@ fixes before the limit, then the two reward families, then the accuracy
 `\varepsilon`, and last the threshold `R_0`.  The threshold therefore depends on
 everything the paper allows it to depend on and on nothing else.
 -/
-import Sandpile.Continuum.Stopping
-import Sandpile.External.LocalCLT
-import Sandpile.Walk
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

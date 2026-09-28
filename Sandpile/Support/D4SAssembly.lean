@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.D4SStepsPairing
+import Sandpile.Support.SceneryBridge
+import Sandpile.Support.D4Step1
+
+/-!
+# Assembly of the dimension-four superdiffusive limit's first clause
+
 The assembly of `prop:d4-superdiffusive-limit` (`sandpile.tex:3330-3340`,
 `3405-3406`).
 
@@ -8,11 +14,14 @@ identifies the limit of the first summand and Steps 2 and 3 send the other two
 to zero.  The pairing is linear in the field, so the three summands separate;
 the scenery bridge carries the two error terms from the i.i.d.\ law of the
 scenery to the mass law of the statement, through `le_map_apply`, which needs no
-measurability of the events.
+measurability of the events. `d4_field_decomposition` gives the pointwise decomposition of the
+centered odometer into `membrane`, `smoothedError` and `windowField`; `tendsto_errors_massLaw`
+uses the linearity `latticePairing_add`, the measurability `measurable_latticePairing`, and the
+scenery-to-mass-law transport to show the two error terms vanish in probability under the mass
+law; and `d4_superdiffusive_first_clause` combines this with Step 1's convergence in
+distribution via `tendstoInMeasure_of_tendsto_abs` and Slutsky's theorem to prove the first
+clause of `prop:d4-superdiffusive-limit`.
 -/
-import Sandpile.Support.D4SStepsPairing
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.D4Step1
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

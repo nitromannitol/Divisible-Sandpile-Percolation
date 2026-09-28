@@ -1,4 +1,8 @@
-/-
+import LatticeProb.Gauss.Coords
+
+/-!
+# Gaussian concentration for a Lipschitz functional
+
 Gaussian concentration for a Lipschitz functional of the scenery, the one
 analytic input of case (a) of `prop:dgt4-contact-asymptotics` that the paper
 takes from outside itself.
@@ -51,7 +55,6 @@ junk value `0` of a divergent integral; both are implied by the Lipschitz
 condition, and carrying them explicitly is what keeps the proposition true as
 stated.
 -/
-import LatticeProb.Gauss.Coords
 
 open MeasureTheory ProbabilityTheory
 

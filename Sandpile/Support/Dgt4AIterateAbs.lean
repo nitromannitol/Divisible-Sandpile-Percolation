@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.Dgt4AIterateSub
+
+/-!
+# Iterated average of a pointwise bound
+
 The `j`-step average of a pointwise bound: if `|f y - g y| ≤ c y * h` for every site `y`, then
-`P^j|f-g|(0) ≤ P^j c(0) * h`.  It is the last step of the `j`-step Lipschitz bound of
+`P^j|f-g|(0) ≤ P^j c(0) * h`. It is the last step of the `j`-step Lipschitz bound of
 `sandpile.tex:5063-5065`.
 -/
-import Sandpile.Support.Dgt4AIterateSub
 
 open MeasureTheory Filter Topology Set
 

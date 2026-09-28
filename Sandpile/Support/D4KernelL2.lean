@@ -1,16 +1,16 @@
-/-
-The `ℓ²` size of a heat-kernel increment in dimension four.
-
-Step 1 of `prop:d4-superdiffusive-limit` needs the time truncation in `V_{t_R}`
-to wash out, and the quantity that measures it is the `ℓ²` norm in the second
-variable of `∑_{j≥t}(p_j(x,y) - p_j(0,y))`.  At a single time the two registered
-heat-kernel inputs interpolate: the Gaussian upper bound `eq:rw-gaussian-upper`
-gives `|p_j(x,·) - p_j(w,·)| ≤ Cj^{-2}` in `ℓ^∞`, the total-variation gradient
-bound `eq:rw-tv-gradient` gives `C|x-w|j^{-1/2}` in `ℓ¹`, and `‖f‖₂² ≤ ‖f‖_∞‖f‖₁`
-turns the pair into `C|x-w|j^{-5/2}` in `ℓ²`.
--/
 import Sandpile.Support.D4PotentialKernel
 import Sandpile.Support.Iterate
+
+/-!
+# The ℓ² size of a heat-kernel increment
+
+Step 1 of `prop:d4-superdiffusive-limit` needs the time truncation in `V_{t_R}` to wash out, and
+the quantity that measures it is the `ℓ²` norm in the second variable of
+`∑_{j≥t}(p_j(x,y) - p_j(0,y))`. At a single time the two registered heat-kernel inputs
+interpolate: the Gaussian upper bound `eq:rw-gaussian-upper` gives `|p_j(x,·) - p_j(w,·)| ≤
+Cj^{-2}` in `ℓ^∞`, the total-variation gradient bound `eq:rw-tv-gradient` gives
+`C|x-w|j^{-1/2}` in `ℓ¹`, and `‖f‖₂² ≤ ‖f‖_∞‖f‖₁` turns the pair into `C|x-w|j^{-5/2}` in `ℓ²`.
+-/
 
 open MeasureTheory Filter Topology
 

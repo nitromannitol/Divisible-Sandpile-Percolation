@@ -1,16 +1,27 @@
-/-
-Horizon-free rewards of the continuous Gaussian heat potential.
-
-The stopped increment identity holds simultaneously for all bounded natural
-stopping times. Integrability of the individual lower-horizon reward then gives
-integrability at the upper horizon and permits separation of the two integrals.
--/
 import Sandpile.Support.ExplGaussianMartingale
 import Sandpile.Support.ExplHorizon
+
+/-!
+# Horizon-free rewards of the continuous Gaussian heat potential
+
+The stopped increment identity holds simultaneously for all bounded natural stopping times.
+Integrability of the individual lower-horizon reward then gives integrability at the upper horizon
+and permits separation of the two integrals:
+`gaussianPotential_horizonFreeIncrement_of_stopped_integrability` turns this into
+`HorizonFreeIncrement` for the Gaussian heat potential.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
+
 namespace Sandpile.Continuum
 open Sandpile.Support
+
+/-- **The Gaussian heat potential has a horizon-free stopped increment.** Given the stopped
+increment identity `gaussianPotential_stopped_increment_integral` and integrability of the
+lower-horizon reward at every admissible stop bounded by `t`, the upper-horizon reward is also
+integrable there and the two payoffs' difference matches `h T x - h t x`, i.e.
+`HorizonFreeIncrement`. -/
 theorem gaussianPotential_horizonFreeIncrement_of_stopped_integrability {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}
@@ -25,7 +36,8 @@ theorem gaussianPotential_horizonFreeIncrement_of_stopped_integrability {ΩW ΩB
       (∀ τ : ΩB → ℝ≥0, IsBrownianStopping B τ → (∀ b, τ b ≤ t) →
         Integrable (fun b => Z ((t : ℝ) - τ b) (B (τ b) b) ω) PB) →
       HorizonFreeIncrement B PB (fun s y => Z s y ω) t T x := by
-  filter_upwards [gaussianPotential_stopped_increment_integral hd hd3 hW ν2 Z hmod hc hB hBm hBc] with ω hω
+  filter_upwards [gaussianPotential_stopped_increment_integral hd hd3 hW ν2 Z hmod hc hB hBm hBc]
+    with ω hω
   intro t T htT hI τ hτ hτt
   have hbt : ∀ b, τ b ≤ t := hτt
   have hinc := hω t (T - t) τ hτ hbt

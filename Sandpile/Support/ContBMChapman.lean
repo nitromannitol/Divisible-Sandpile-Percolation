@@ -1,21 +1,23 @@
-/-
-Chapman-Kolmogorov for the Brownian heat kernel of
-`eq:brownian-heat-green-kernels` (`sandpile.tex:963-968`):
+import Sandpile.Support.ContBMMass
+
+/-!
+# Chapman-Kolmogorov for the Brownian heat kernel
+
+Chapman-Kolmogorov for the Brownian heat kernel of `eq:brownian-heat-green-kernels`
+(`sandpile.tex:963-968`):
 
   `∫ p^{BM}_s(x,y) p^{BM}_{s'}(x,y) dy = p^{BM}_{s+s'}(x,x)`.
 
-The kernel factors as a product of one-dimensional Gaussian densities
-(`heatKernelBM_eq_prod`), so the identity reduces to the one-dimensional
-statement that the integral of the product of two Gaussian densities with a
-common mean and variances `v` and `v'` is the value at the mean of the density
-of variance `v+v'`.  That in turn is the translated Gaussian integral.
+The kernel factors as a product of one-dimensional Gaussian densities (`heatKernelBM_eq_prod`),
+so the identity reduces to the one-dimensional statement that the integral of the product of two
+Gaussian densities with a common mean and variances `v` and `v'` is the value at the mean of the
+density of variance `v+v'`. That in turn is the translated Gaussian integral.
 
-This is what turns the `L²` norm of the finite-time Green kernel
-`g^{BM}_t(x,·)` into the double time integral of `p^{BM}_{s+s'}(x,x)`, which is
-finite exactly when `d < 4`; it is the identity behind the square-integrability
-the white noise asks of its index in the dimension one-to-three chain.
+This is what turns the `L²` norm of the finite-time Green kernel `g^{BM}_t(x,·)` into the double
+time integral of `p^{BM}_{s+s'}(x,x)`, which is finite exactly when `d < 4`; it is the identity
+behind the square-integrability the white noise asks of its index in the dimension one-to-three
+chain.
 -/
-import Sandpile.Support.ContBMMass
 
 open MeasureTheory
 open scoped NNReal Real

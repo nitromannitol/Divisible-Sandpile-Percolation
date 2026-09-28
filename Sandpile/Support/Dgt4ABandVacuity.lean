@@ -1,16 +1,3 @@
-/-
-Vacuity checks for the band construction of `thm:dgt4-many-limits`
-(`sandpile.tex:5900-6335`).
-
-Each clause of the Step-1 band predicates, and each estimate of the Step-2
-assembly, is instantiated at a concrete object here, so that none of them is
-satisfied by a junk value: the bump has positive mass, the profile really rises
-from zero to one, the band sits strictly on the negative axis and carries no
-mass on the positive one, the band range of the density clause is nonempty, the
-exponential trades are strict information at a positive argument, and the
-hypotheses of the hitting-time lemmas are simultaneously satisfiable at a
-sequence whose hitting time is positive.
--/
 import Sandpile.Support.Dgt4ABandLawParameters
 import Sandpile.Support.Dgt4ABandParameters
 import Sandpile.Support.Dgt4ABandLawDensity
@@ -29,6 +16,18 @@ import Sandpile.Support.Dgt4ABandTau
 import Sandpile.Support.Dgt4ABandScaled
 import Sandpile.Support.Dgt4ABandInvert
 import Sandpile.Support.Dgt4ABandIndex
+
+/-!
+# Vacuity checks for the band construction
+
+Each clause of the Step-1 band predicates, and each estimate of the Step-2 assembly, is
+instantiated here at a concrete object, so that none of them is satisfied by a junk value: the
+bump has positive mass, the profile really rises from zero to one, the band sits strictly on the
+negative axis and carries no mass on the positive one, the band range of the density clause is
+nonempty, the exponential trades are strict information at a positive argument, and the
+hypotheses of the hitting-time lemmas are simultaneously satisfiable at a sequence whose hitting
+time is positive.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -373,7 +372,8 @@ example : ∀ ζ : ℝ, 0 < ζ → ∀ᶠ k : ℕ in Filter.atTop, ∀ t ∈ Set
   · filter_upwards with k t ht
     exact ht.1
   · intro ζ hζ
-    obtain ⟨N, hN⟩ := Metric.tendsto_atTop.mp (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)) ζ hζ
+    obtain ⟨N, hN⟩ :=
+      Metric.tendsto_atTop.mp (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)) ζ hζ
     filter_upwards [Filter.eventually_ge_atTop N] with k hk t _
     have hd := hN k hk
     rw [Real.dist_eq, sub_zero] at hd

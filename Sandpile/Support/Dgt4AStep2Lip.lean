@@ -1,26 +1,29 @@
-/-
+import Sandpile.Support.Dgt4AGaussTailLp
+import Sandpile.Support.LinGaussFactor
+
+/-!
+# The Lipschitz constant of Step 2, case (a)
+
 The Lipschitz constant of Step 2 of case (a) (`sandpile.tex:5114-5124`):
 
   "propagating this by `P^{k_n+1}` bounds this Lipschitz constant by
    `P^{k_n+1}\Cov(V_\infty(\cdot),V_\infty(0))(0)/\Sigma^2
     =(\Var\zeta(0)/\Sigma^2)\sum_{\ell\geq k_n+1}(\ell-k_n)p_\ell(0,0)\leq Ck_n^{-(d-4)/2}`."
 
-`P^j` applied to `x\mapsto\Cov(V_\infty(x),V_\infty(0))` at the origin is, after the
-one-site variance is divided out, the inner product of the `j`-step average of the Green
-coefficient families with the Green coefficients at the origin, and that average is the
-tail kernel (`Support/Dgt4AGaussTailLp.lean`).  So the Lipschitz constant is
+`P^j` applied to `x\mapsto\Cov(V_\infty(x),V_\infty(0))` at the origin is, after the one-site
+variance is divided out, the inner product of the `j`-step average of the Green coefficient
+families with the Green coefficients at the origin, and that average is the tail kernel
+(`Support/Dgt4AGaussTailLp.lean`). So the Lipschitz constant is
 `\langle\text{tail}_j,G(0,\cdot)\rangle/\sum_zG(0,z)^2`, and Cauchy-Schwarz with
 `eq:dgt4-tail-kernel` bounds it by `Cj^{(4-d)/4}`.
 
 The paper's exponent is `(4-d)/2`, obtained from the semigroup identity
-`\langle\text{tail}_j,\text{tail}_j\rangle=\langle\text{tail}_{2j},G(0,\cdot)\rangle`
-rather than from Cauchy-Schwarz.  The weaker exponent proved here is all that Steps 2 and 4
-consume: both uses are of the form `(\E u_n(0))^2k_n^{-\theta}\to0`, and with the paper's
-horizon `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil` the exponent `\theta=(d-4)/4` already gives
+`\langle\text{tail}_j,\text{tail}_j\rangle=\langle\text{tail}_{2j},G(0,\cdot)\rangle` rather than
+from Cauchy-Schwarz. The weaker exponent proved here is all that Steps 2 and 4 consume: both uses
+are of the form `(\E u_n(0))^2k_n^{-\theta}\to0`, and with the paper's horizon
+`k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil` the exponent `\theta=(d-4)/4` already gives
 `k_n^{\theta}=(\log(n+2))^{3/2}`, against `(\E u_n(0))^2\asymp\log n`.
 -/
-import Sandpile.Support.Dgt4AGaussTailLp
-import Sandpile.Support.LinGaussFactor
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal
@@ -29,6 +32,10 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The `j`-step average, at the origin, of `x ↦ ⟨G(x,·), G(0,·)⟩` equals the inner product of
+the tail kernel `tailKernelLp` (the `j`-step average of the Green coefficients themselves) with
+`G(0,·)`, obtained by pushing the average through the finite-sum expansion of `avg^[j]` and the
+identity `sum_smul_greenLp_eq_tailKernelLp`. -/
 theorem avgIterate_innerGreenLp_eq (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     {j : ℕ} (hj : 1 ≤ j) :
     (avg^[j] (fun x => (inner ℝ (greenLp d hd x) (greenLp d hd 0) : ℝ))) 0
@@ -36,6 +43,10 @@ theorem avgIterate_innerGreenLp_eq (hGH : Sandpile.External.GreenBoundsHigh) (hd
   rw [avg_iterate_eq_finsetSum, ← sum_smul_greenLp_eq_tailKernelLp hGH hd hj, sum_inner]
   exact Finset.sum_congr rfl fun x _ => by rw [real_inner_smul_left]
 
+/-- Cauchy-Schwarz bound on the `j`-step averaged Green inner product: there is `C > 0` with
+`|avg^[j] (⟨G(·,·), G(0,·)⟩) 0| ≤ C j^{(4-d)/4}` for all `j ≥ 1`, obtained from
+`avgIterate_innerGreenLp_eq`, `abs_real_inner_le_norm`, and the `L²` tail-kernel bound supplied
+by `GreenBoundsHigh`. -/
 theorem exists_abs_avgIterate_innerGreenLp_le (hGH : Sandpile.External.GreenBoundsHigh)
     (hd : 5 ≤ d) :
     ∃ C : ℝ, 0 < C ∧ ∀ j : ℕ, 1 ≤ j →

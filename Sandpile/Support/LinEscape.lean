@@ -1,18 +1,19 @@
-/-
-The escape probability of the simple random walk is the reciprocal of the Green
-function at the origin, in the form the last-visit estimate
-`sandpile.tex:4760-4776` (label `lem:dgt4-weighted-last-visits`) needs: the
-paper's proof uses that the mean of `I_i^∞` is
+import Sandpile.Support.LinCov
+
+/-!
+# Escape probability of the simple random walk
+
+The escape probability of the simple random walk is the reciprocal of the Green function at the
+origin, in the form the last-visit estimate `sandpile.tex:4760-4776` (label
+`lem:dgt4-weighted-last-visits`) needs: the paper's proof uses that the mean of `I_i^∞` is
 `P_0(tau_0^+ = infinity) = G(0,0)^{-1}`.
 
-The identity is the one-step decomposition of the walk.  Splitting the
-increments at time one, the walk returns to the origin exactly when the walk
-started at its first increment ever reaches the origin, and the chance of that
-is `G(x,0)/G(0,0)` by the hitting-probability theorem of the shared library.
-Averaging over the `2d` first increments and using the Green function equation
-at the origin turns this into `1 - G(0,0)^{-1}`.
+The identity `escProb_eq` is the one-step decomposition of the walk. Splitting the increments at
+time one, the walk returns to the origin exactly when the walk started at its first increment
+ever reaches the origin, and the chance of that is `G(x,0)/G(0,0)` by the shared library's
+hitting-probability theorem. Averaging over the `2d` first increments and using the Green
+function equation at the origin turns this into `1 - G(0,0)^{-1}`.
 -/
-import Sandpile.Support.LinCov
 
 open MeasureTheory Filter Topology
 
@@ -22,11 +23,15 @@ variable {d : ℕ}
 /-- The set of increment sequences whose walk from `y` ever reaches the origin. -/
 def hitSet (y : Site d) : Set (ℕ → Site d) := {η | ∃ s : ℕ, walkPath y η s = 0}
 
+/-- `walkPath y η s` is a measurable function of the increment sequence `η`, being a finite sum of
+coordinate projections shifted by the constant `y`. -/
 theorem measurable_walkPath_apply (y : Site d) (s : ℕ) :
     Measurable fun η : ℕ → Site d => walkPath y η s := by
   unfold walkPath
   exact measurable_const.add (Finset.measurable_sum _ fun j _ => measurable_pi_apply j)
 
+/-- `hitSet y` is measurable, being the countable union over `s` of the measurable preimages of
+`{0}` under `walkPath y · s`. -/
 theorem measurableSet_hitSet (y : Site d) : MeasurableSet (hitSet (d := d) y) := by
   have h : hitSet (d := d) y = ⋃ s : ℕ, (fun η : ℕ → Site d => walkPath y η s) ⁻¹' {0} := by
     ext η; simp [hitSet]
@@ -38,6 +43,8 @@ theorem measurableSet_hitSet (y : Site d) : MeasurableSet (hitSet (d := d) y) :=
 def hitPair (d : ℕ) : Set ((ℕ → Site d) × (ℕ → Site d)) :=
   {p | ∃ s : ℕ, walkPath (p.1 0) p.2 s = 0}
 
+/-- `hitPair d` is measurable, by the same countable-union-of-preimages argument as
+`measurableSet_hitSet` applied to the joint coordinate. -/
 theorem measurableSet_hitPair : MeasurableSet (hitPair d) := by
   have h : hitPair d = ⋃ s : ℕ,
       (fun p : (ℕ → Site d) × (ℕ → Site d) => p.1 0 + ∑ j ∈ Finset.range s, p.2 j) ⁻¹' {0} := by
@@ -50,6 +57,10 @@ theorem measurableSet_hitPair : MeasurableSet (hitPair d) := by
       (Finset.measurable_sum _ fun j _ => (measurable_pi_apply j).comp measurable_snd)
   exact hm (measurableSet_singleton 0)
 
+/-- Under the i.i.d. increment law, the expectation of the indicator of `hitSet y` equals the
+simple random walk's hitting probability `LatticeProb.srwHitProb d y`, obtained by transporting
+the indicator along `walkPath` to `LatticeProb.hitOrigin` and reading off
+`siteWalkLaw_hitOrigin`. -/
 theorem integral_indHitSet [NeZero d] (hd : 1 ≤ d) (y : Site d) :
     ∫ η, Set.indicator (hitSet y) (fun _ => (1:ℝ)) η ∂(LatticeProb.incPathLaw d)
       = LatticeProb.srwHitProb d y := by
@@ -65,12 +76,17 @@ theorem integral_indHitSet [NeZero d] (hd : 1 ≤ d) (y : Site d) :
     LatticeProb.siteWalkLaw_hitOrigin hd y,
     ENNReal.toReal_ofReal (LatticeProb.srwHitProb_nonneg y)]
 
+/-- Shifting the increment sequence by one and restarting the walk at `ξ 0` reproduces the
+origin-started walk one step later: `walkPath (ξ 0) (shiftInc 1 ξ) s = walkPath 0 ξ (s + 1)`. -/
 theorem walkPath_shift_one (ξ : ℕ → Site d) (s : ℕ) :
     walkPath (ξ 0) (LatticeProb.shiftInc 1 ξ) s = walkPath (0 : Site d) ξ (s + 1) := by
   simp only [walkPath, LatticeProb.shiftInc, zero_add]
   rw [show s + 1 = 1 + s from Nat.add_comm s 1, Finset.sum_range_add]
   simp
 
+/-- The one-step decomposition: the split pair of the first increment and the shifted tail lies
+in `hitPair d` exactly when the origin-started walk along `ξ` eventually leaves `noRetEver d`,
+i.e. returns to the origin at some positive time. -/
 theorem hitPair_iff (ξ : ℕ → Site d) :
     ((LatticeProb.truncInc 1 ξ, LatticeProb.shiftInc 1 ξ) ∈ hitPair d)
       ↔ walkPath (0 : Site d) ξ ∉ noRetEver d := by
@@ -87,6 +103,10 @@ theorem hitPair_iff (ξ : ℕ → Site d) :
     obtain ⟨s, rfl⟩ : ∃ s, r = s + 1 := ⟨r - 1, by omega⟩
     exact ⟨s, by rw [walkPath_shift_one ξ s]; simpa using hr2⟩
 
+/-- **Main theorem.** For `d ≥ 3`, the escape probability `escProb d` equals `1 / green d 0 0`.
+The proof splits the increments at time one via `hitPair_iff` to express the survival indicator
+as `1` minus a hitting indicator, integrates using `integral_indHitSet` and the independence of
+the increments, and identifies the result with `Sandpile.External.Sec16.return_probability`. -/
 theorem escProb_eq [NeZero d] (hd : 3 ≤ d) : escProb d = 1 / green d 0 0 := by
   classical
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd

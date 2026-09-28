@@ -1,15 +1,3 @@
-/-
-The probability that the walk hits a two-point set, and the lower bound on the mean of the
-odometer killed at the origin and at one further site (`sandpile.tex:5366-5376`).
-
-The paper reads the bound off the hitting probability
-`P_x(\tau_{\{0,z\}}<\infty)=(G(x,0)+G(x,z))/(G(0,0)+G(0,z))`.  Only an upper bound on that
-probability is needed, and an upper bound needs no potential theory: the right-hand side is
-nonnegative, equals one at the two points, and is harmonic elsewhere, so the probability of
-hitting the set by time `k` is below it by induction on `k`.  Averaged over the neighbours of
-the origin the bound is `1-1/(G(0,0)+G(0,z))`, and `lem:localization-killing` turns that into
-the lower bound on the mean.
--/
 import Sandpile.Support.Dgt4Deviation
 import Sandpile.Support.Dgt4OriginProb
 import Sandpile.Support.MeanLocalization
@@ -17,6 +5,20 @@ import Sandpile.Support.ExitGreen
 import Sandpile.Support.HitProb
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.OriginProfile
+
+/-!
+# The probability of hitting a two-point set, and the mean of the odometer killed there
+
+This file bounds the probability that the walk hits a two-point set `{0, z}`, and uses that
+bound to lower-bound the mean of the odometer killed at the origin and at one further site `z`.
+The hitting probability is `P_x(τ_{0,z} < ∞) = (G(x,0) + G(x,z))/(G(0,0) + G(0,z))`
+(`pairPotential`), but only an upper bound is needed, and an upper bound needs no potential
+theory: the right-hand side is nonnegative, equals one at the two points, and is harmonic
+elsewhere, so the probability of hitting the set by time `k` is below it by induction on `k`
+(`walkLaw_hitSetBy_le`). Averaged over the neighbours of the origin the bound is
+`1 - 1/(G(0,0) + G(0,z))`, and `lem:localization-killing` turns that into the lower bound on the
+mean, `mean_avg_pairOdometer_ge`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal
@@ -30,6 +32,8 @@ variable {d : ℕ}
 /-- The event that the walk has visited `A` by time `k`. -/
 def hitSetBy (A : Set (Site d)) (k : ℕ) : Set (ℕ → Site d) := {X | ∃ j ≤ k, X j ∈ A}
 
+/-- `hitSetBy A k` is measurable: it is a finite union, over `j ≤ k`, of preimages of `A` under
+the coordinate projections `X ↦ X j`. -/
 theorem measurableSet_hitSetBy (A : Set (Site d)) (k : ℕ) :
     MeasurableSet (hitSetBy A k) := by
   have h : hitSetBy A k
@@ -42,12 +46,16 @@ theorem measurableSet_hitSetBy (A : Set (Site d)) (k : ℕ) :
   exact MeasurableSet.biUnion (Finset.range (k + 1)).countable_toSet
     fun j _ => (measurable_pi_apply j) (Set.to_countable A).measurableSet
 
+/-- If `x` already lies in `A`, the walk from `x` has hit `A` by any positive time, so the
+preimage of `hitSetBy A (k + 1)` under `sitePath x` is all of the sample space. -/
 theorem preimage_hitSetBy_succ_of_mem (A : Set (Site d)) {x : Site d} (hx : x ∈ A) (k : ℕ) :
     LatticeProb.sitePath x ⁻¹' hitSetBy A (k + 1) = Set.univ := by
   ext ξ
   simp only [Set.mem_preimage, Set.mem_univ, iff_true, hitSetBy, Set.mem_setOf_eq]
   exact ⟨0, by omega, by rw [LatticeProb.sitePath_zero]; exact hx⟩
 
+/-- If `x` does not lie in `A`, hitting `A` by time `k + 1` from `x` is the same event as
+hitting `A` by time `k` from the walk's position one step later. -/
 theorem preimage_hitSetBy_succ_of_notMem (A : Set (Site d)) {x : Site d} (hx : x ∉ A) (k : ℕ) :
     LatticeProb.sitePath x ⁻¹' hitSetBy A (k + 1)
       = {ξ : ℕ → Site d |
@@ -157,21 +165,31 @@ theorem walkLaw_hitSetBy_le (hd : 1 ≤ d) [NeZero d] (A : Set (Site d)) (ψ : S
 noncomputable def pairPotential (d : ℕ) (z x : Site d) : ℝ :=
   (green d x 0 + green d x z) / (green d 0 0 + green d 0 z)
 
+/-- The denominator `G(0,0) + G(0,z)` of `pairPotential` is positive, since `G(0,0) ≥ 1` and
+`G(0,z) ≥ 0`. -/
 theorem pair_denom_pos (hd : 3 ≤ d) (z : Site d) : 0 < green d 0 0 + green d 0 z :=
-  lt_of_lt_of_le zero_lt_one (le_trans (one_le_green hd) (le_add_of_nonneg_right (green_nonneg _ _)))
+  lt_of_lt_of_le zero_lt_one
+    (le_trans (one_le_green hd) (le_add_of_nonneg_right (green_nonneg _ _)))
 
+/-- `pairPotential d z x` is nonnegative, as a ratio of nonnegative Green values. -/
 theorem pairPotential_nonneg (hd : 3 ≤ d) (z x : Site d) : 0 ≤ pairPotential d z x :=
   div_nonneg (add_nonneg (green_nonneg _ _) (green_nonneg _ _)) (pair_denom_pos hd z).le
 
+/-- `pairPotential d z` equals one at the origin. -/
 theorem pairPotential_origin (hd : 3 ≤ d) (z : Site d) : pairPotential d z 0 = 1 := by
   rw [pairPotential, div_self (pair_denom_pos hd z).ne']
 
+/-- `pairPotential d z` equals one at `z`, by the shift symmetry `G(z,z) = G(0,0)` and
+`G(z,0) = G(0,z)`. -/
 theorem pairPotential_site (hd : 3 ≤ d) (z : Site d) : pairPotential d z z = 1 := by
   have h1 : green d z z = green d 0 0 := by rw [green_shift, sub_self, green_shift, sub_zero]
   have h2 : green d z 0 = green d 0 z := green_symm (by omega) z 0
   rw [pairPotential, h1, h2, add_comm (green d 0 z) (green d 0 0),
     div_self (pair_denom_pos hd z).ne']
 
+/-- `pairPotential d z` is harmonic away from `{0, z}`: its neighbour average at a site
+`x ≠ 0, z` equals its own value there, since each of `G(·,0)` and `G(·,z)` is harmonic off its
+own pole. -/
 theorem walkOp_pairPotential (hd : 3 ≤ d) (z : Site d) {x : Site d} (hx0 : x ≠ 0) (hxz : x ≠ z) :
     LatticeProb.walkOp (pairPotential d z) x = pairPotential d z x := by
   show LatticeProb.walkOp
@@ -183,6 +201,9 @@ theorem walkOp_pairPotential (hd : 3 ≤ d) (z : Site d) {x : Site d} (hx0 : x �
   rw [Sandpile.avg_add, avg_green hd x 0, avg_green hd x z, if_neg hx0, if_neg hxz]
   ring
 
+/-- The neighbour average of `pairPotential d z` at the origin falls short of one by at least
+`1/(G(0,0) + G(0,z))`, the size of the one-step Green correction in the Poisson-kernel
+identity. -/
 theorem one_sub_avg_pairPotential_origin (hd : 3 ≤ d) (z : Site d) :
     1 / (green d 0 0 + green d 0 z)
       ≤ 1 - LatticeProb.walkOp (pairPotential d z) 0 := by
@@ -222,6 +243,9 @@ theorem pairPotential_hyps (hd : 3 ≤ d) (z : Site d) :
     simp only [Set.mem_setOf_eq, not_or] at hx
     exact walkOp_pairPotential hd z hx.1 hx.2
 
+/-- **`lem:localization-killing` at a two-point killing set, pointwise.** The mean at `x` of the
+odometer killed on hitting `{0, z}` is at least `(1 - pairPotential d z x)` times the mean at
+the origin of the free odometer. -/
 theorem mean_pairOdometer_ge (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun y : ℝ => max y 0) ν) (n : ℕ) (z x : Site d) :
     (1 - pairPotential d z x) * (∫ ζ, odometerOf ζ n 0 ∂(LatticeProb.iidLaw d ν))

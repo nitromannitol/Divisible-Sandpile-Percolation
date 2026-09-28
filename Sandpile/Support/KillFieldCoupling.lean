@@ -1,17 +1,30 @@
-/-
-Couplings of the rescaled heat potential and its continuous Gaussian limit.
-The finite-dimensional convergence and equicontinuity clauses give probability
-measures with the original scenery and white-noise marginals and uniform control
-on each compact subset of the time strip.
--/
 import Sandpile.Support.StopFieldCoupling
 import Sandpile.Support.HeatPotentialDefs
 import Sandpile.Continuum.WhiteNoise
 import Sandpile.Law
 
+/-!
+# Coupling the rescaled heat potential with its Gaussian limit
+
+Couplings of the rescaled heat potential and its continuous Gaussian limit.
+The finite-dimensional convergence and equicontinuity clauses give probability
+measures with the original scenery and white-noise marginals and uniform control
+on each compact subset of the time strip.
+-/
+
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- Given finite-dimensional convergence in distribution of the rescaled linear
+interpolant `linInterp d R (scenery d σ)` to the Gaussian potential
+`gaussianPotential d (variance id ν) W` at every finite tuple of points in the
+time strip, together with uniform tightness and uniform equicontinuity of the
+interpolant on each compact subset `K` of the strip, there is for every large
+enough `R` a coupling `P` of the original scenery law and the white-noise law
+`PW` under which the two fields are within `ε` of each other on `K`, off an
+event of measure at most `δ`. Proved via
+`Sandpile.Continuum.exists_field_coupling_on_compact`, applied to the
+functions `f` and `g` restricted to the compact set `K`. -/
 theorem Sandpile.Continuum.heat_field_coupling :
 ∀ (d : ℕ), 1 ≤ d →
     ∀ (ν : Measure ℝ) [IsProbabilityMeasure ν],

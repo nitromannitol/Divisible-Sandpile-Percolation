@@ -1,29 +1,21 @@
-/-
-The parabolic scaling of the Brownian optimal-stopping value, and the field
-congruence behind it.
-
-`sandpile.tex:1991-1993` reads "Rescaling time by $T$ identifies Brownian stopping
-times bounded by $T$ with Brownian stopping times bounded by $1$, and the stopping
-value scales by the same factor."  That sentence is an exact algebraic identity, and
-it needs nothing of the field: for every field `h`, every `β`, every `T > 0` and
-every `x`,
-
-  `𝒰_h(T,x) = T^β 𝒰_{h'}(1,0)` for the rescaled motion,
-
-where `h'(s,z) = T^{-β} h(Ts, x + √T z)`.  The two sets of attainable values are
-carried onto one another by multiplication by `T^β`, because `τ ↦ τ/T` is a bijection
-between the two families of stopping times and the integrands correspond exactly.
-
-Two fields that agree on the range of arguments a stopping problem can reach have the
-same optimal-stopping value.
-
-The stopping value `𝒟_h(t,x)` of `ssec:brownian-stopping` reads `h` only at times
-`t - τ` with `0 ≤ τ ≤ t`, so it depends on `h` only through its restriction to
-`[0,t] × ℝ^d`.  This is the elementary step that lets the scaling of
-`prop:continuum-value-selfsimilar` replace one field by another.
--/
 import Sandpile.Support.ContBrownianScale
 import Sandpile.Support.ContNoiseScaling
+
+/-!
+# Parabolic scaling of the Brownian optimal-stopping value
+
+Rescaling time by `T` identifies Brownian stopping times bounded by `T` with Brownian stopping
+times bounded by `1`, and the optimal-stopping value scales by `T^β`: for every field `h`, every
+exponent `β`, every `T > 0` and every `x`, `brownianValue B P h T x` equals `T^β` times the value
+of the rescaled motion `scaledMotion d T x B` against the rescaled field `scaledField d T β x h`
+at horizon `1` and the origin (`brownianValue_scaled`). The proof needs no regularity of the
+field: the two sets of attainable values correspond under multiplication by `T^β` because
+`τ ↦ τ / T` is a bijection between the two families of stopping times
+(`attainable_scaled`), and the stopping discount `brownianDiscount` depends on a field only
+through its restriction to `[0, t] × Space d` (`brownianDiscount_congr`). The final theorems
+identify the rescaled field, at the exponent `β = 1 - d/4`, with the Gaussian heat potential of
+the rescaled white noise.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal Pointwise

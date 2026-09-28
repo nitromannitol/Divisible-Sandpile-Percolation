@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossPath
+
+/-!
+# Admissible-vertex approximation of crossings
+
 The approximating chains of `Sandpile/Support/CrossPath.lean` can be taken with
 vertices in a countable set, which is what turns the outer approximation of a
 crossing into a countable union of events.
@@ -21,7 +25,6 @@ field values.  The sandwich is not exact: the inner bound is at the level `l`
 and the outer bound at the level `l - ε`, and only the levels can be closed up,
 by monotonicity in the level, and not the two bounds at one fixed level.
 -/
-import Sandpile.Support.CrossPath
 
 open MeasureTheory Set
 
@@ -130,6 +133,12 @@ theorem segSet_subset_thickening' {δ ρ : ℝ} {Γ : Set (Sandpile.Continuum.Sp
     _ < δ + ρ := by linarith
     _ = ρ + δ := by ring
 
+/-- **The outer approximation with admissible vertices.** A crossing of a continuous field at
+level `l` carries, for every `ε > 0`, a chain of `VertexOK` vertices inside the rectangle, from
+one side to the opposite side, on which the field is at least `l - ε`: `exists_vertex_close`
+replaces each point of the chain `reflTransGen_of_isPreconnected`/`exists_vertices_of_reflTransGen`
+extract from the crossing set by a nearby admissible vertex, and `segSet_subset_thickening'`
+keeps the perturbed chain inside the open superlevel set. -/
 theorem exists_vertex_path_of_crosses {X : Sandpile.Continuum.Space 2 → ℝ} (hX : Continuous X)
     {a b : Fin 2 → ℝ} (ha0 : a 0 < b 0) (ha1 : a 1 < b 1) {i : Fin 2} {l ε : ℝ} (hε : 0 < ε)
     (h : Crosses a b i {u | l ≤ X u}) :

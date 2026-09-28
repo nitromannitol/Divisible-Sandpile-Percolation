@@ -1,16 +1,18 @@
-/-
-The limit of a family with a UNIFORM exponential moment has the same exponential
-moment.  This is the paper's own sentence at `sandpile.tex:2005-2007`, "Passing to
-the limit along bounded truncations of `e^{θx}` gives `E e^{θ𝒰(1,0)} < ∞`": each
-truncation `y ↦ e^{θ(0∨(y∧M))}` is bounded and continuous, so weak convergence sees
-it, and each is below `e^{θy}` on the nonnegative half-line; monotone convergence in
-`M` then transfers the bound to the limit.
-
-Together with `Sandpile.Support.MeanAMoment` this makes the CONTINUUM exponential
-moment a consequence of the DISCRETE one, so that no property of the limiting field
-beyond its being the limit is used.
--/
 import Sandpile.Support.MeanAMoment
+
+/-!
+# The limit of a uniform exponential moment has the same moment
+
+The limit of a family with a uniform exponential moment has the same exponential moment.
+This is the paper's own sentence at `sandpile.tex:2005-2007`, "Passing to the limit along
+bounded truncations of `e^{θx}` gives `E e^{θ𝒰(1,0)} < ∞`": each truncation
+`y ↦ e^{θ(0∨(y∧M))}` (`expTruncBdd`) is bounded and continuous, so weak convergence sees it
+(`integral_expTruncBdd_le`), and each is below `e^{θy}` on the nonnegative half-line
+(`expTruncBdd_le`); monotone convergence in the truncation level `M` then transfers the bound
+to the limit (`integrable_exp_of_uniform_exp`). Together with `Sandpile.Support.MeanAMoment`
+this makes the continuum exponential moment a consequence of the discrete one, so that no
+property of the limiting field beyond its being the limit is used.
+-/
 
 open MeasureTheory Filter Topology ProbabilityTheory
 open scoped NNReal ENNReal
@@ -44,6 +46,7 @@ noncomputable def expTruncBdd (θ M : ℝ) : BoundedContinuousFunction ℝ ℝ :
       rw [Real.dist_eq, abs_le]
       constructor <;> linarith)
 
+/-- The bounded continuous function `expTruncBdd` unfolds to its defining formula. -/
 @[simp] theorem expTruncBdd_apply (θ M y : ℝ) :
     expTruncBdd θ M y = Real.exp (θ * max 0 (min y M)) := rfl
 

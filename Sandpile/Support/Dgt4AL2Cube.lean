@@ -1,12 +1,14 @@
-/-
-The second moment of `D_n` at the optimized horizon `T=n^{1/3}`:
-`\E[D_n^2]\leq(2\E u_n(0)+M)n^{-2/3}`, so `(\E[D_n^2])^{1/2}\leq Cn^{-1/3}(\log(n+2))^{1/4}`
-once `\E u_n(0)\leq C\sqrt{\log(n+2)}` (`eq:dgt4-gaussian-height-order`,
-`sandpile.tex:5035-5037`).  The exponent `1/3` is larger than the `1/4` that Step 1 needs
-after the telescoping, which is why the fourth moment suffices in place of the paper's
-Gaussian concentration.
--/
 import Sandpile.Support.Dgt4AL2Bound
+
+/-!
+# The second moment of `D_n` at the optimized horizon
+
+The second moment of `D_n` at the optimized horizon `T=n^{1/3}`:
+`\E[D_n^2]\leq(2\E u_n(0)+M)n^{-2/3}`, so `(\E[D_n^2])^{1/2}\leq Cn^{-1/3}(\log(n+2))^{1/4}` once
+`\E u_n(0)\leq C\sqrt{\log(n+2)}` (`eq:dgt4-gaussian-height-order`, `sandpile.tex:5035-5037`). The
+exponent `1/3` is larger than the `1/4` that Step 1 needs after the telescoping, which is why the
+fourth moment suffices in place of the paper's Gaussian concentration.
+-/
 
 open MeasureTheory Filter Topology Set
 

@@ -1,24 +1,21 @@
-/-
-The Riemann sums in time of `prop:weighted-membrane-limit`
-(`sandpile.tex:4724-4729`): "the local central limit theorem, followed by a
-Riemann-sum argument".
-
-The time sums of that proof run over the mesh `R^{-2}ℤ` inside `[0,T]`, and the
-Riemann-sum argument is the statement that
-
-  `∑_{a<N} g(a h) h ⟶ ∫_0^T g`  as `h → 0` with `N h → T`.
-
-The proof here writes the Riemann sum as an honest integral: the step function
-`r ↦ g(h⌊r/h⌋)` is constant on each mesh interval `[a h, (a+1) h)`, so its
-integral over `[0, N h)` is exactly the Riemann sum, and it converges pointwise
-to `g` with the uniform bound `‖g‖_∞`.  Dominated convergence then gives the
-limit, with no Riemann-integration theory needed.
-
-The mesh point `h⌊r/h⌋` is measurable for EVERY `g`, measurable or not, because
-it factors through the floor, which lands in the discrete space `ℤ`; that is why
-no measurability hypothesis appears in `integral_meshFloor_eq_sum`.
--/
 import Mathlib
+
+/-!
+# Riemann sums of the time mesh as integrals
+
+The time sums of the heat-potential limit run over the mesh `R^{-2} ℤ` inside `[0, T]`, and the
+underlying Riemann-sum fact is that `∑_{a<N} g(a h) h → ∫_0^T g` as `h → 0` with `N h → T`. This
+file writes the Riemann sum as an honest integral: the step function `r ↦ g(h⌊r/h⌋)` is constant
+on each mesh interval `[a h, (a+1) h)`, so its integral over `[0, N h)` is exactly the Riemann
+sum (`integral_meshFloor_eq_sum`), and the step function converges pointwise to `g` with the
+uniform bound `‖g‖_∞`, so dominated convergence gives the limit (`tendsto_integral_meshFloor`)
+with no Riemann-integration theory needed. The mesh point `h⌊r/h⌋` is measurable for every `g`,
+because it factors through the floor into the discrete space `ℤ`. The bulk of the file develops
+the two-dimensional analogue needed for the double time sum: endpoint-comparison estimates, the
+double Riemann sum over families of mesh-like maps with independent horizons and offsets in each
+coordinate, and the parity-restricted sums (`tendsto_sum2_even_parity`, `tendsto_sum2_odd_parity`)
+that each converge to half the double time integral.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -173,7 +170,8 @@ theorem abs_integral_Ico_sub_le {a b : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (F : 
     simp [min_eq_left hab]
   have hcover : Set.Ico (0 : ℝ) a ∪ Set.Ico a b = Set.Ico (0 : ℝ) b :=
     Set.Ico_union_Ico_eq_Ico ha hab
-  rw [← hcover, MeasureTheory.setIntegral_union hdisj measurableSet_Ico (hbdd _ hfin1) (hbdd _ hfin2)]
+  rw [← hcover,
+    MeasureTheory.setIntegral_union hdisj measurableSet_Ico (hbdd _ hfin1) (hbdd _ hfin2)]
   have hb := MeasureTheory.norm_setIntegral_le_of_norm_le_const (f := F)
     (s := Set.Ico a b) (μ := volume) (C := M) (lt_top_iff_ne_top.mpr hfin2)
     (fun x _ => by simpa using hM x)
@@ -572,6 +570,8 @@ mesh of width `2h`, and the odd indices `a = 2k+1` over the same mesh shifted by
 `h`.  These two reindexings are what turns a parity-restricted sum into a
 Riemann sum for the mesh of width `2h`. -/
 
+/-- The sum of `F` over the even indices below `N` reindexes, via `a = 2k`, to the sum of
+`F (2k)` over `k < (N + 1) / 2`. -/
 theorem sum_range_filter_even (N : ℕ) (F : ℕ → ℝ) :
     ∑ a ∈ (Finset.range N).filter (fun a => Even a), F a
       = ∑ k ∈ Finset.range ((N + 1) / 2), F (2 * k) := by
@@ -599,6 +599,8 @@ theorem sum_range_filter_even (N : ℕ) (F : ℕ → ℝ) :
     congr 1
     omega
 
+/-- The sum of `F` over the odd indices below `N` reindexes, via `a = 2k+1`, to the sum of
+`F (2k+1)` over `k < N / 2`. -/
 theorem sum_range_filter_odd (N : ℕ) (F : ℕ → ℝ) :
     ∑ a ∈ (Finset.range N).filter (fun a => ¬ Even a), F a
       = ∑ k ∈ Finset.range (N / 2), F (2 * k + 1) := by
@@ -937,6 +939,8 @@ noncomputable def evenHorizon (T : ℝ) (R : ℝ) : ℕ := (⌊R ^ 2 * T⌋₊ +
 /-- The odd-index horizon of the time mesh. -/
 noncomputable def oddHorizon (T : ℝ) (R : ℝ) : ℕ := ⌊R ^ 2 * T⌋₊ / 2
 
+/-- Twice the even-index horizon, rescaled by the width-`2` mesh, converges to `T`: it is
+within one unit of `⌊R^2 T⌋`, so `tendsto_abs_horizon` applies. -/
 theorem tendsto_evenHorizon (hT : 0 ≤ T) :
     Tendsto (fun R : ℝ => |(evenHorizon T R : ℝ) * (2 * (R ^ 2)⁻¹) - T|) atTop (𝓝 0) := by
   have hconv : ∀ R : ℝ, (evenHorizon T R : ℝ) * (2 * (R ^ 2)⁻¹)
@@ -952,6 +956,8 @@ theorem tendsto_evenHorizon (hT : 0 ≤ T) :
     unfold evenHorizon; omega
   rcases hcase with hc | hc <;> rw [hc] <;> push_cast <;> rw [abs_le] <;> constructor <;> linarith
 
+/-- Twice the odd-index horizon, rescaled by the width-`2` mesh, converges to `T`: it is
+within one unit of `⌊R^2 T⌋`, so `tendsto_abs_horizon` applies. -/
 theorem tendsto_oddHorizon (hT : 0 ≤ T) :
     Tendsto (fun R : ℝ => |(oddHorizon T R : ℝ) * (2 * (R ^ 2)⁻¹) - T|) atTop (𝓝 0) := by
   have hconv : ∀ R : ℝ, (oddHorizon T R : ℝ) * (2 * (R ^ 2)⁻¹)

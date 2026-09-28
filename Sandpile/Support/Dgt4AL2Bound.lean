@@ -1,13 +1,16 @@
-/-
-The second moment of `D_n`.  Its coordinate Lipschitz coefficients `2G(0,z)` are square
-summable and bounded, so `D_n` has moments of every order the one-site law has, uniformly
-in `n`; interpolating between the first moment `2\E u_n(0)/n` and the fourth moment turns
-the first into a bound on `(\E[D_n^2])^{1/2}` (`sandpile.tex:5053-5057`).
--/
 import Sandpile.Support.Dgt4ASceneryFirstMoment
 import Sandpile.Support.Dgt4AMoment4
 import Sandpile.Support.Dgt4AL2Interp
 import LatticeProb.Prob.LpSmooth
+
+/-!
+# The second moment of the centred deviation `D_n`
+
+The second moment of `D_n`. Its coordinate Lipschitz coefficients `2G(0,z)` are square summable
+and bounded, so `D_n` has moments of every order the one-site law has, uniformly in `n`;
+interpolating between the first moment `2\E u_n(0)/n` and the fourth moment turns the first into
+a bound on `(\E[D_n^2])^{1/2}` (`sandpile.tex:5053-5057`).
+-/
 
 open LatticeProb
 
@@ -17,6 +20,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The coordinate Lipschitz coefficient `2G(0,z)` of `D_n` in the box reading is nonnegative,
+since the Green function is. -/
 theorem green_two_nonneg (z : Site d) : (0 : ℝ) ≤ 2 * green d 0 z := by
   have := green_nonneg (0 : Site d) z
   linarith

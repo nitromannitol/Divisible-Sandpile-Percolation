@@ -1,19 +1,18 @@
-/-
-The law of the white noise of `ssec:continuum-membrane-fields`
-(`sandpile.tex:954-1069`) at a square-integrable index, and at a finite linear
-combination of square-integrable indices.
-
-`Sandpile.Continuum.IsWhiteNoise` asks that the finite-dimensional laws of `W` be
-Gaussian, that each `W f` be centred with `∫ (W f)(W g) = ∫ f g`, and that `W` be
-linear in its index almost surely.  Those four clauses determine the law of every
-finite linear combination of the values of `W`: it is the centred Gaussian whose
-variance is the square of the `L²` norm of the combination of the indices.  This
-is what identifies the limit in the finite-dimensional convergence of
-`prop:dlt4-heat-potential-invariance`, where the limit is written as the field
-`Z = √Var(ζ(0)) 𝒲(g^{BM}(x,·))` and the Lindeberg-Feller theorem produces a
-`gaussianReal`.
--/
 import Sandpile.Continuum.WhiteNoise
+
+/-!
+# The law of the white noise at square-integrable indices
+
+`Sandpile.Continuum.IsWhiteNoise` asks that the finite-dimensional laws of `W` be Gaussian,
+that each `W f` be centred with `∫ (W f) (W g) = ∫ f g`, and that `W` be linear in its index
+almost surely. These clauses determine the law of `W` at a single square-integrable index
+`f` to be the centred Gaussian of variance `∫ f * f` (`map_whiteNoise_eq_gaussianReal`), and
+the law of any finite linear combination `∑ i, c i * W (f i)` to be the centred Gaussian whose
+variance is the squared `L²` norm of the combination `∑ i, c i • f i` of the indices
+(`map_whiteNoise_combination`), after identifying that combination with the almost-sure linear
+combination of the values of `W` (`whiteNoise_finsetSum_ae`). This identifies the limiting field
+in the finite-dimensional convergence of the heat-potential invariance principle.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

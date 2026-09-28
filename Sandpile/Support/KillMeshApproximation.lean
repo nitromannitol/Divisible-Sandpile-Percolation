@@ -1,14 +1,21 @@
-/-
-The parabolic lattice mesh approaches every space-time point uniformly in the
-spatial point and the nonnegative horizon. The errors are bounded by the mesh
-width in time and by the spatial mesh width times the square root of dimension.
--/
 import Sandpile.Support.ContMeshPoint
 import Mathlib
+
+/-!
+# Uniform parabolic mesh approximation threshold
+
+The parabolic lattice mesh approaches every space-time point uniformly in the spatial point
+and the nonnegative horizon. The errors are bounded by the mesh width in time and by the
+spatial mesh width times the square root of dimension.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- For every `η > 0` there is a threshold `R₀` beyond which the discrete parabolic-mesh
+point `(⌊R² T⌋ / R², meshPoint R u)` lies within `η` of the continuum point `(T, u)`,
+uniformly over every horizon `T ≥ 0` and spatial point `u`; the time error is controlled by
+`1/R` and the space error by `norm_meshPoint_sub_le` using `√d / R`. -/
 theorem Sandpile.exists_parabolic_mesh_threshold (d : ℕ) (η : ℝ) (hη : 0 < η) :
     ∃ R₀ : ℝ, 0 < R₀ ∧ ∀ R : ℝ, R₀ ≤ R → ∀ T : ℝ, 0 ≤ T →
       ∀ u : Sandpile.Continuum.Space d,

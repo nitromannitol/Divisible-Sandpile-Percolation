@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.Smoothed
+import Sandpile.Frozen.WeightedExpConcentration
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
+
+/-!
+# Lower tail of the smoothed centred odometer
+
 Lemma (lower tail of the smoothed centred odometer) of sandpile.tex, frozen.
 `sandpile.tex:4488-4499` (label `lem:dgt4-smoothed-odometer-tail`):
 
@@ -23,10 +30,6 @@ are bound after `ν`.  The probability is compared in `ℝ≥0∞` against
 `m^{(d-4)/2}` and `m^{(d-2)/2}` are real powers of the natural number `m`,
 which is at least one.
 -/
-import Sandpile.Support.Smoothed
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

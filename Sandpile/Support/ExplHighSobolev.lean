@@ -1,4 +1,8 @@
-/-
+import Sandpile.Frozen.DGT4DiffusiveMembrane
+
+/-!
+# High-Sobolev Limit From the Diffusive Membrane Theorem
+
 Theorem 1.3(iii)(c) of `sandpile.tex` (`sandpile.tex:275-289`) assembled from
 `thm:dgt4-diffusive-membrane` (`sandpile.tex:4616-4639`), which the proof of
 `thm:main-explosion` names at `sandpile.tex:307-308`: "part (iii)(c) is
@@ -22,7 +26,6 @@ The time index differs by the order of a product: Theorem 1.3(iii)(c) writes
 `⌊T R²⌋` and `thm:dgt4-diffusive-membrane` writes `⌊R² T⌋`.  They are the same
 natural number.
 -/
-import Sandpile.Frozen.DGT4DiffusiveMembrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

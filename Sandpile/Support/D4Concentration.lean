@@ -1,9 +1,20 @@
-/-
-The uniform pointwise concentration and logarithmic variance bound in dimension
-four, from the square sum and supremum of the finite-time Green coefficients.
--/
 import Sandpile.Support.D4Difference
 import Sandpile.Support.HeightLower
+
+/-!
+# Uniform pointwise concentration and logarithmic variance in dimension four
+
+This file derives the uniform pointwise concentration bound and the logarithmic variance bound
+for the dimension-four odometer, from the square sum and supremum of the finite-time Green
+coefficients (`exists_greenTime_norm_bounds_four`). `exists_odometerOf_conc_four` and its
+`centeredMassLaw` reformulation `exists_odometer_conc_four` give a two-regime sub-Gaussian and
+sub-exponential tail bound for the deviation of the odometer from its mean, uniform over all
+scenery laws with a common exponential-moment bound, by transferring the coordinatewise
+concentration inequality `Sandpile.Frozen.weighted_exp_concentration` through the finite window of
+sites actually touched by the odometer. `exists_odometer_variance_bound_four` then extracts from
+the same coefficient bounds that the variance of the odometer grows at most logarithmically in
+time.
+-/
 
 open LatticeProb
 
@@ -20,6 +31,10 @@ theorem log_add_two_le_two_log (t : ℕ) (ht : 2 ≤ t) :
     (show (t : ℝ) + 2 ≤ (t : ℝ) ^ 2 by nlinarith)
   rwa [Real.log_pow] at h
 
+/-- For every exponential-moment rate `θ₀` and bound `K₀` there are constants `c, C > 0` giving a
+uniform, two-regime tail bound `C * exp(-c * min(s ^ 2 / log t, s))` on the probability that the
+`iidLaw`-sampled odometer at a site and time `t ≥ 2` deviates from its mean by at least `s`, over
+every law `ν` with that exponential moment. -/
 theorem exists_odometerOf_conc_four (hVS : Sandpile.External.VarianceScale)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
@@ -135,6 +150,8 @@ theorem exists_odometerOf_conc_four (hVS : Sandpile.External.VarianceScale)
         refine mul_le_mul (le_max_left _ _) (Real.exp_le_exp.mpr (by linarith))
           (Real.exp_nonneg _) (le_trans hC₀.le (le_max_left _ _))
 
+/-- The `centeredMassLaw` form of `exists_odometerOf_conc_four`: the same two-regime tail bound
+for the deviation of the odometer, sampled by `centeredMassLaw`, from the mean odometer. -/
 theorem exists_odometer_conc_four (hVS : Sandpile.External.VarianceScale)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧

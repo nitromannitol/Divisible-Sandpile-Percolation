@@ -1,10 +1,13 @@
-/-
+import Sandpile.Support.KillFieldCoupling
+import Sandpile.Support.D23UniformTightness
+
+/-!
+# Sequential heat-potential coupling from tightness and finite-dimensional convergence
+
 Coupling the heat potentials along a sequence of scenery laws. Uniform
 exponential moments supply compact equicontinuity; the remaining input is
 finite-dimensional convergence for the same sequence (`sandpile.tex:1950-1955`).
 -/
-import Sandpile.Support.KillFieldCoupling
-import Sandpile.Support.D23UniformTightness
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

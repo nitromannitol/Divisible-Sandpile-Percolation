@@ -1,18 +1,28 @@
-/-
+import Sandpile.Support.D4StarDuality
+import Sandpile.Support.D4PlaneEmbed
+import Sandpile.Support.BlockVerticalWalk
+
+/-!
+# Good-block crossing clauses in dimension four
+
 The good-block crossing clauses of the dimension-four percolation argument:
 the block of a coarse site is the translate by `2rz` of the square of side
 `2r` in the coordinate plane, so the crossing values of the block event are
 crossing values of the field in the translated rectangles `R_{1,2r}` and
 `R_{2,2r}` of `sandpile.tex:3436-3440`, and each is bounded below as soon as
-the low set has no `∗`-connected top-bottom crossing there.
+the low set has no `∗`-connected top-bottom crossing there. `planeEmbed_blockShift` records the
+compatibility of the plane embedding with block shifting that makes this translation identity
+precise, and `le_crossingValue_square_of_not_star`/`le_crossingValue_wide_of_not_star` derive the
+two crossing-value lower bounds from the absence of a `∗`-connected top-bottom crossing, via
+`lt_crossingValue_of_not_star`.
 -/
-import Sandpile.Support.D4StarDuality
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.BlockVerticalWalk
 
 noncomputable section
 namespace Sandpile
 
+/-- The plane embedding commutes with block shifting: `planeEmbed (blockShift r z w)` is the
+translate of `planeEmbed w` by the vector `2rz` in the coordinate plane, checked coordinate by
+coordinate using `planeEmbed_zero`/`_one`/`_two`/`_three`. -/
 lemma planeEmbed_blockShift (r : ℕ) (z w : Site 2) :
     planeEmbed (blockShift r z w) =
       planeTranslate (planeEmbed ![2 * (r : ℤ) * z 0, 2 * (r : ℤ) * z 1]) w := by

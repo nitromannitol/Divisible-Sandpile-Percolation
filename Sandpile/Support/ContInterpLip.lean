@@ -1,26 +1,19 @@
-/-
-The one-dimensional piecewise-linear interpolation from the integer mesh, and the
-Lipschitz bound its mesh values give it.
-
-The tightness clause of `prop:dlt4-heat-potential-invariance` quantifies the
-modulus of continuity over ALL pairs of points of a compact set, at every scale
-`R ≥ 1`.  Comparing the interpolated field at two points through the mesh values
-at the corners of their cells enlarges the separation by the mesh diameter, which
-is of order `1/R` and is not small when `R` is close to one, so the modulus at the
-small scales has to come from the interpolant's own Lipschitz constant.
-
-`linInterp` (the frozen definition of the proposition) is a multilinear
-interpolation, and changing one of its `d+1` variables with the others held fixed
-leaves a convex combination of one-dimensional interpolations of the kind studied
-here: `interp1 F u` is affine on each interval between consecutive integers, with
-slope the mesh increment `F(n+1)-F(n)`, and continuous across them.  A family of
-mesh values bounded by `M` therefore gives a `2M`-Lipschitz interpolant, with no
-constraint relating `u` and `v`.  The proof is an induction on the number of cells
-between `u` and `v`, the step being that the interpolant agrees with the mesh value
-at each integer.
--/
 import Sandpile.Support.ContInterpBound
 import LatticeProb.Support.ContSums
+
+/-!
+# Lipschitz bound for the one-dimensional mesh interpolation
+
+The one-dimensional piecewise-linear interpolation `interp1 F u` from an integer-indexed
+family `F` is affine on each interval between consecutive integers, with slope the mesh
+increment `F(n+1) - F(n)`, and continuous across them; a family bounded by `M` is therefore
+`2M`-Lipschitz (`abs_interp1_sub_le`), with no constraint relating the two points, by induction
+on the number of mesh cells separating them. Since the multilinear interpolation `linInterp`
+of the rescaled linear field is, in each variable separately, a convex combination of such
+one-dimensional interpolations, this yields its Lipschitz bound in the time variable
+(`abs_linInterp_sub_time_le`), needed for the tightness of the field at scales where the mesh
+diameter itself is not small.
+-/
 
 open LatticeProb
 

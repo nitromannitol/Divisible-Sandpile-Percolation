@@ -1,5 +1,12 @@
-/-
-Lemma of sandpile.tex, frozen.  `sandpile.tex:4909-4945`
+import Sandpile.Support.OriginConcentration
+import Sandpile.Law
+import Sandpile.Walk
+import Sandpile.External.GreenBoundsHigh
+
+/-!
+# The frozen origin lemma of `sandpile.tex:4909-4945`
+
+This module states and proves the lemma of `sandpile.tex:4909-4945`
 (label `lem:dgt4-origin-frozen`):
 
   "Assume that $d\geq5$ and that the scenery is i.i.d., atomless, centered,
@@ -50,10 +57,6 @@ after `λ`, as the paper's notation demands, and `r` ranges over the nonnegative
 reals.  Probabilities are `ℝ≥0∞`-valued measures of the events, compared with
 `ENNReal.ofReal` of the nonnegative right-hand side.
 -/
-import Sandpile.Support.OriginConcentration
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,4 +1,7 @@
-/-
+import LatticeProb.Prob.Karamata
+
+/-! # Lower-Tail Moment and Multiplicity Bounds
+
 "Fix $p\in(\max\{2,\alpha/2\},\alpha)$; regular variation of the lower tail and the upper
 bound on the scenery give $\E|\zeta(0)|^p<\infty$" (`sandpile.tex:5352-5353`), the moment
 hypothesis with which Step 1 of case (b) of `prop:dgt4-contact-asymptotics` opens.
@@ -16,7 +19,6 @@ The module also carries the two other elementary inputs of the opening of Step 1
 inequality for the lower tail at the exponent `p`, and the bound on the probability that at
 least two of finitely many independent events occur.
 -/
-import LatticeProb.Prob.Karamata
 
 open scoped Classical ENNReal
 open MeasureTheory Filter Topology Set

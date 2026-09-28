@@ -1,24 +1,29 @@
-/-
-Bounded optional sampling for continuous martingales and an integrable form of
-Brownian restart.
-
-Countable stopping times follow from conditional expectation. Upper dyadic
-approximations of a bounded stopping time converge along continuous sample paths;
-a common integrable envelope permits dominated convergence of the expectations.
-Stopping-time measurability is an explicit hypothesis.
-
-The restart identity for an integrable functional follows from the product law
-of the past and the restarted path, by the map formula and ordinary Fubini.
--/
 import Mathlib
 import LatticeProb.Prob.StoppingDyadic
 import LatticeProb.Prob.BrownianRestartIntegral
+
+/-!
+# Bounded optional sampling and an integrable Brownian restart identity
+
+Optional sampling for a countable-range stopping time follows directly from the stopped-value
+characterization of conditional expectation. For a bounded, continuous martingale, upper
+dyadic approximations of an arbitrary bounded stopping time have countable range and converge
+along continuous paths, so a common integrable envelope over `[0, T + 1]` lets dominated
+convergence pass optional sampling to the general bounded stopping time, giving
+`integrable_stopped_martingale_and_integral_eq`. The restart identity
+`setIntegral_restart_of_integrable` for an integrable functional of the restarted path follows
+instead from the product law of the past and the restarted increment, by the map formula for
+integrals and ordinary Fubini.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 
 namespace Sandpile.Support
 
+/-- Optional sampling for a martingale `M` at a bounded stopping time `τ ≤ T` with countable
+range: `∫ ω, M (τ ω) ω ∂P = ∫ ω, M T ω ∂P`, via the stopped-value characterization of
+conditional expectation. -/
 theorem integral_stopped_martingale_eq_of_countable_range {Ω : Type*} [mΩ : MeasurableSpace Ω]
     (P : Measure Ω) [IsProbabilityMeasure P] (𝔽 : Filtration ℝ≥0 mΩ)
     (M : ℝ≥0 → Ω → ℝ) (hM : Martingale M 𝔽 P)
@@ -35,6 +40,11 @@ theorem integral_stopped_martingale_eq_of_countable_range {Ω : Type*} [mΩ : Me
     exact hω
   rw [integral_congr_ae he', integral_condExp hτ.measurableSpace_le]
 
+/-- For a continuous martingale `M` and a bounded, measurable stopping time `τ ≤ T` dominated
+on `[0, T + 1]` by an integrable envelope `D`, the stopped value `M (τ ω) ω` is integrable and
+`∫ ω, M (τ ω) ω ∂P = ∫ ω, M 0 ω ∂P`, obtained from
+`integral_stopped_martingale_eq_of_countable_range` along the upper dyadic approximations of
+`τ` and dominated convergence. -/
 theorem integrable_stopped_martingale_and_integral_eq {Ω : Type*} [mΩ : MeasurableSpace Ω]
     (P : Measure Ω) [IsProbabilityMeasure P] (𝔽 : Filtration ℝ≥0 mΩ)
     (M : ℝ≥0 → Ω → ℝ) (hM : Martingale M 𝔽 P)
@@ -70,7 +80,8 @@ theorem integrable_stopped_martingale_and_integral_eq {Ω : Type*} [mΩ : Measur
     refine tendsto_integral_of_dominated_convergence D
       (fun n => (hjoint.comp_measurable ((hσm n).prodMk measurable_id)).aestronglyMeasurable)
       hD (fun n => hdom.mono fun ω hω => hω (σ n ω) (hσb n ω)) ?_
-    exact Eventually.of_forall fun ω => (hMc ω).tendsto (τ ω) |>.comp (LatticeProb.tendsto_dyUp (τ ω))
+    exact Eventually.of_forall fun ω =>
+      (hMc ω).tendsto (τ ω) |>.comp (LatticeProb.tendsto_dyUp (τ ω))
   have he : (∫ ω, M (τ ω) ω ∂P) = ∫ ω, M (T + 1) ω ∂P := by
     apply tendsto_nhds_unique hlim
     simpa only [hσI] using (tendsto_const_nhds : Tendsto (fun _ : ℕ => ∫ ω, M (T + 1) ω ∂P)
@@ -84,6 +95,10 @@ open LatticeProb
 
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
 
+/-- For a strong Markov restart `h` and a set `E` measurable at the stopping time `τ`, the set
+integral of `F` applied to `(Y, B (τ + ·) - B τ)` over `E` equals the set integral over `E` of
+`∫ z, F (Y ω, z)` against the increment law `P.map (fun ω t => B t ω - B 0 ω)`, from the
+restart's product-law identity and ordinary Fubini. -/
 theorem setIntegral_restart_of_integrable [IsProbabilityMeasure P] {d : ℕ}
     {B : ℝ≥0 → Ω → EuclideanSpace ℝ (Fin d)}
     {𝔽 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω)}

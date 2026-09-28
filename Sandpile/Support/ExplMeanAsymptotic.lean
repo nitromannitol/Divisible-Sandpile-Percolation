@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MeanAValue
+
+/-!
+# The mean and variance asymptotic from the rescaled corollary
+
 The last two clauses of `cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`)
 from the first two.  The corollary asserts
 
@@ -23,7 +27,6 @@ Both asymptotics are ratios, so both need their limit constant to be nonzero;
 the corollary supplies `Var 𝒰(1,0) > 0` itself, and `E𝒰(1,0) > 0` is the third
 clause of `prop:continuum-value-selfsimilar` at `p = 1`.
 -/
-import Sandpile.Support.MeanAValue
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal

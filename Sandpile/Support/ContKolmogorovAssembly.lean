@@ -1,22 +1,19 @@
-/-
-The tightness clause of `prop:dlt4-heat-potential-invariance` against the
-quantitative multi-parameter Kolmogorov criterion.
-
-The criterion is stated for a process indexed by a compact box of `ℝ^k`; the
-clause is about a process indexed by a compact subset of `ℝ × ℝ^d`.  This module
-carries the one to the other: the coordinates of `ℝ × ℝ^d` assembled into a point
-of `ℝ^{d+1}`, the box that contains the image of a compact set of times in
-`[0,T]`, the comparison of the two distances, and the two hypotheses of the
-criterion for the interpolated field, uniformly in the scale.  What is left is a
-one-line application of the criterion.
-
-The two statements of the criterion are taken here as explicit hypotheses.  Their
-quantifier order is the point of the clause: the modulus `δ` and the bound `B`
-are chosen BEFORE the process, so that one choice serves every scale `R`.
--/
 import Sandpile.Support.ContMomentModulus
 import Sandpile.Support.ContKolmogorovMoments
 import LatticeProb.Prob.KolmogorovBound
+
+/-!
+# The tightness clause via the multi-parameter Kolmogorov criterion
+
+The quantitative multi-parameter Kolmogorov criterion is stated for a process indexed by a
+compact box of `ℝ^k`, while the tightness clause of the heat-potential invariance principle is
+about a process indexed by a compact subset of `ℝ × Space d`. This file assembles the
+coordinates of `ℝ × Space d` into a point of `ℝ^{d+1}` (`toPi`, `ofPi`), builds the box that
+contains the image of a compact set of times in `[0, T]` and space points of norm at most `L`
+(`boxLo`, `boxHi`), compares the two distance functions, and transports the moment, measurability
+and continuity hypotheses of the criterion to the interpolated field `piField`, uniformly in the
+mesh scale `R`. `heat_potential_tightness_of_criterion` then applies the criterion in one step.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Frozen.HeatPotentialInvariance
@@ -30,8 +27,10 @@ variable {d : ℕ}
 noncomputable def toPi (p : ℝ × Sandpile.Continuum.Space d) : Fin (d + 1) → ℝ :=
   Fin.cons p.1 (fun j => p.2 j)
 
+/-- The zeroth coordinate of `toPi p` is the time coordinate `p.1`. -/
 @[simp] theorem toPi_zero (p : ℝ × Sandpile.Continuum.Space d) : toPi p 0 = p.1 := rfl
 
+/-- The `j.succ`-th coordinate of `toPi p` is the space coordinate `p.2 j`. -/
 @[simp] theorem toPi_succ (p : ℝ × Sandpile.Continuum.Space d) (j : Fin d) :
     toPi p j.succ = p.2 j := rfl
 
@@ -39,6 +38,7 @@ noncomputable def toPi (p : ℝ × Sandpile.Continuum.Space d) : Fin (d + 1) →
 noncomputable def ofPi (u : Fin (d + 1) → ℝ) : ℝ × Sandpile.Continuum.Space d :=
   (u 0, WithLp.toLp 2 (fun j : Fin d => u j.succ))
 
+/-- Reading `ofPi` off `toPi p` recovers the original point of `ℝ × Space d`. -/
 theorem ofPi_toPi (p : ℝ × Sandpile.Continuum.Space d) : ofPi (toPi p) = p := rfl
 
 /-- The sup distance of the assembled coordinates is at most the distance of the
@@ -84,6 +84,8 @@ noncomputable def boxLo (d : ℕ) (L : ℝ) : Fin (d + 1) → ℝ := Fin.cons 0 
 /-- The upper corner of that box. -/
 noncomputable def boxHi (d : ℕ) (T L : ℝ) : Fin (d + 1) → ℝ := Fin.cons T (fun _ => L)
 
+/-- The lower corner `boxLo d L` is at most the upper corner `boxHi d T L` coordinatewise,
+provided `T` and `L` are nonnegative. -/
 theorem boxLo_le_boxHi (d : ℕ) (L T : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L) :
     boxLo d L ≤ boxHi d T L := by
   intro i
@@ -91,6 +93,8 @@ theorem boxLo_le_boxHi (d : ℕ) (L T : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L) :
   · simpa [boxLo, boxHi] using hT
   · intro j; simpa [boxLo, boxHi] using hL
 
+/-- A point of `ℝ^{d+1}` lies in the box `Set.Icc (boxLo d L) (boxHi d T L)` exactly when its
+zeroth coordinate lies in `[0, T]` and every other coordinate lies in `[-L, L]`. -/
 theorem mem_box_iff (T L : ℝ) (u : Fin (d + 1) → ℝ) :
     u ∈ Set.Icc (boxLo d L) (boxHi d T L) ↔
       ((0 ≤ u 0 ∧ u 0 ≤ T) ∧ ∀ j : Fin d, -L ≤ u j.succ ∧ u j.succ ≤ L) := by
@@ -108,6 +112,8 @@ theorem mem_box_iff (T L : ℝ) (u : Fin (d + 1) → ℝ) :
       · exact h0T
       · intro j; exact (hj j).2
 
+/-- The assembled coordinates `toPi p` of a point `p` with time in `[0, T]` and space part of
+norm at most `L` lie in the box `Set.Icc (boxLo d L) (boxHi d T L)`. -/
 theorem toPi_mem_box {T L : ℝ} {p : ℝ × Sandpile.Continuum.Space d}
     (h0 : 0 ≤ p.1) (hT : p.1 ≤ T) (hL : ‖p.2‖ ≤ L) :
     toPi p ∈ Set.Icc (boxLo d L) (boxHi d T L) := by
@@ -120,6 +126,8 @@ theorem toPi_mem_box {T L : ℝ} {p : ℝ × Sandpile.Continuum.Space d}
 noncomputable def piField (d : ℕ) (R : ℝ) (u : Fin (d + 1) → ℝ) (σ : Site d → ℝ) : ℝ :=
   linInterp d R (Sandpile.scenery d σ) (ofPi u).1 (ofPi u).2
 
+/-- The interpolated field `piField` at the assembled coordinates `toPi p` agrees with
+`linInterp` applied directly to the time and space components of `p`. -/
 theorem piField_toPi (R : ℝ) (p : ℝ × Sandpile.Continuum.Space d) (σ : Site d → ℝ) :
     piField d R (toPi p) σ = linInterp d R (Sandpile.scenery d σ) p.1 p.2 := by
   rw [piField, ofPi_toPi]
@@ -212,6 +220,8 @@ theorem integrable_piField_sub_rpow (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabi
     (ofPi u).2 (ofPi v).2 s hps hqs
   simpa only [piField] using h
 
+/-- The `p`-th power of the interpolated field itself is integrable, for `p ≥ 1`, as soon as
+the one-site law has a `p`-th moment. -/
 theorem integrable_piField_rpow (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     {p : ℝ} (hp : 1 ≤ p) (hint : Integrable (fun z => |z| ^ p) ν)
     (R T L : ℝ) (u : Fin (d + 1) → ℝ)
@@ -228,6 +238,9 @@ theorem integrable_piField_rpow (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbability
   have h := integrable_linInterp_rpow hd ν hp hint R (ofPi u).1 (ofPi u).2 s hps
   simpa only [piField] using h
 
+/-- **The moment-increment bound of the Kolmogorov criterion for the interpolated field
+indexed by `ℝ^{d+1}`**, with Hölder exponent `p * min(1 - d/4, (1-θ)/4)` and a constant
+depending only on `T`, `L`, `p` and `θ`, uniform in the mesh scale `R ≥ 1`. -/
 theorem exists_pi_moment_modulus
     (hHK : Sandpile.External.HeatKernelBounds) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {θ : ℝ} (hθ0 : 0 < θ) (hθ1 : θ < 1) (p : ℝ) (hp : 2 ≤ p)
@@ -278,6 +291,8 @@ theorem exists_pi_moment_modulus
         * Sandpile.resampleMoment ν p
         * dist u v ^ (p * min (1 - (d : ℝ) / 4) ((1 - θ) / 4)) := by ring
 
+/-- `ofPi` is continuous: its time component is a coordinate projection, and its space
+component is the inverse of the `Space d` equivalence composed with coordinate projections. -/
 theorem continuous_ofPi : Continuous (ofPi (d := d)) := by
   refine Continuous.prodMk (continuous_apply 0) ?_
   exact (EuclideanSpace.equiv (Fin d) ℝ).symm.continuous.comp

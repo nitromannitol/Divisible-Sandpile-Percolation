@@ -1,23 +1,25 @@
-/-
-Versions of the field coupling and the deterministic growth bound for a
-CONTINUOUS VERSION of the Gaussian heat potential.
-
-The binder `hZmod` of `thm:main-explosion`(i)(b) only identifies the field `Z`
-with the Gaussian potential `gaussianPotential` almost surely at each point, and
-the binders `hZcont` and `hZgrow` are about `Z` itself.  The coupling
-`Sandpile.Continuum.heat_field_coupling` and the growth bound
-`Sandpile.Support.exists_deterministic_growth_ae` ask for continuity and
-measurability of the Gaussian potential, which a modification does not have:
-they are redone here with the almost-surely-continuous field `Z` itself, whose
-point evaluations are only almost-everywhere measurable.  The
-finite-dimensional convergence is transported from the Gaussian potential to
-`Z` by the almost sure equality at each of the finitely many points, and the
-growth events are only null measurable, which suffices for the decreasing
-intersection argument.
--/
 import Sandpile.Support.KillFieldCoupling
 import Sandpile.Support.MainExplGrowth
 import Sandpile.Support.ContBMSquare
+
+/-!
+# Field coupling and growth bounds for a continuous version
+
+Versions of the field coupling and the deterministic growth bound for a continuous version of
+the Gaussian heat potential. The binder `hZmod` of `thm:main-explosion`(i)(b) only identifies
+the field `Z` with the Gaussian potential `gaussianPotential` almost surely at each point, and
+the binders `hZcont` and `hZgrow` are about `Z` itself. The coupling
+`Sandpile.Continuum.heat_field_coupling` and the growth bound
+`Sandpile.Support.exists_deterministic_growth_ae` ask for continuity and measurability of the
+Gaussian potential, which a modification does not have: they are redone here with the
+almost-surely-continuous field `Z` itself, whose point evaluations are only
+almost-everywhere measurable, in `Sandpile.Continuum.heat_field_coupling_of_version` and
+`Sandpile.Support.exists_deterministic_growth_of_version`. The finite-dimensional convergence
+is transported from the Gaussian potential to `Z` by the almost sure equality at each of the
+finitely many points, and the growth events are only null measurable
+(`Sandpile.Support.nullMeasurableSet_exists_strip_lt`), which suffices for the decreasing
+intersection argument.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

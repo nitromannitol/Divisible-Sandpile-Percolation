@@ -1,13 +1,17 @@
-/-
-Step 3 of the dimension-four percolation proof in probability
-(`sandpile.tex:4048-4065`): intersecting the crossing event of the ball field
-with the future-height event of Step 1 and the time-truncation event of Step 2
-on the sites of one block gives the good-block event of the block field
-`𝓑_{2r,N} + Y_{2r}` at level `b₀ log(2r)/2`.
--/
 import Sandpile.Support.D4CritBlock
 import Sandpile.Support.D4CritTimeTail
 import Sandpile.Support.D4PlaneEmbed
+
+/-!
+# Combining three block events into a good-block event of the block field
+
+Step 3 of the dimension-four percolation proof in probability (`sandpile.tex:4048-4065`)
+intersects the crossing event of the ball field with the future-height event of Step 1 and
+the time-truncation event of Step 2, on every site of one block. The complement of the
+resulting good-block event of the block field `𝓑_{2r,N} + Y_{2r}` at level `b₀ log(2r)/2`
+is then bounded by the sum of the three individual failure probabilities, a union bound
+over the crossing failure and the two per-site events summed over the block's sites.
+-/
 
 open MeasureTheory
 

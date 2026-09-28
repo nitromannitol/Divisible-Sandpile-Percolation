@@ -1,4 +1,12 @@
-/-
+import Sandpile.Support.CrossArmDecay
+import Sandpile.Support.CrossCircuit
+import Sandpile.Support.CrossBallMemLp
+import Sandpile.Support.CrossArmIndep
+import Sandpile.Support.CrossBallMemLp
+
+/-!
+# The arm bound of Step 1 via independent blocking circuits
+
 The arm bound of Step 1 of `prop:fixed-scale-crossings`
 (`sandpile.tex:2229-2235`), in the form the blocking argument uses it.
 
@@ -14,11 +22,6 @@ states it in the shape the geometry of the annuli produces: the blocking events
 are indexed by the scale, and the arm avoids the one at every scale whose
 annulus fits inside the ball of radius `r₂`.
 -/
-import Sandpile.Support.CrossArmDecay
-import Sandpile.Support.CrossCircuit
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.Support.CrossArmIndep
-import Sandpile.Support.CrossBallMemLp
 
 open MeasureTheory Set
 
@@ -190,6 +193,7 @@ theorem arm_bound_ballField_final2 {Ω : Type} [MeasurableSpace Ω] {d : ℕ} {P
     (hS : ∀ i : ℕ, 4 * κ ^ i * r₁ ≤ r₂ →
       S ⊆ (⋂ j, crossApprox (ballField d W s) (a i j) (b i j) (dir i j) (lev i j))ᶜ) :
     P S ≤ ENNReal.ofReal ((1 - c ^ 4)⁻¹ * (r₁ / r₂) ^ armExponent (c ^ 4) κ) := by
-  exact Sandpile.Support.arm_bound_ballField hd hW hPitt hs a b dir lev hc hc1 hcA hind κ hκ r₁ r₂ hr₁ hr S hS
+  exact Sandpile.Support.arm_bound_ballField hd hW hPitt hs a b dir lev hc hc1 hcA hind κ hκ r₁ r₂
+    hr₁ hr S hS
 
 end Sandpile.Support

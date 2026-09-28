@@ -1,15 +1,26 @@
-/-
-Polynomial near-low point and bad-box probabilities after a uniform
-choice of the mesoscopic cutoff exponent.
--/
 import Sandpile.Support.FarOscillation
 import Sandpile.Support.NearTail
+
+/-!
+# Near-field tail and bad-box probabilities
+
+Polynomial tail bounds for the near-field kernel `nearKernel`, established after a uniform
+choice of the mesoscopic cutoff exponent `α`. `exists_near_point_bound` gives a single-site
+large-deviation bound `P (nearKernel-field ≤ -η log r) ≤ C r ^ (-b)` for measures with a finite
+exponential moment and mean zero, and `exists_near_bad_box_bound` extends it by a union bound
+over a box `S` of side `⌊r ^ α⌋₊ + 1`. The auxiliary lemmas `eventually_near_log_bound` and
+`near_tail_logarithmic_regime` control how the cutoff exponent `α` must scale with `r` for the
+logarithmic tail bound to stay effective.
+-/
 
 open MeasureTheory Set Filter
 open scoped Topology
 
 namespace Sandpile
 
+/-- For every `α > 0`, eventually in `r`: `2 ≤ r`, `2 ≤ ⌊r ^ α⌋₊`, and
+`log (2 * ⌊r ^ α⌋₊ + 2) ≤ 2 * α * log r`; this keeps the mesoscopic box size `⌊r ^ α⌋₊`
+controlled by a logarithm of `r`. -/
 lemma eventually_near_log_bound {α : ℝ} (hα : 0 < α) :
     ∀ᶠ r : ℕ in atTop, 2 ≤ r ∧ 2 ≤ ⌊(r : ℝ) ^ α⌋₊ ∧
       Real.log (2 * (⌊(r : ℝ) ^ α⌋₊ : ℝ) + 2) ≤ 2 * α * Real.log r := by
@@ -30,22 +41,31 @@ lemma eventually_near_log_bound {α : ℝ} (hα : 0 < α) :
   calc
     _ ≤ Real.log (4 * (r : ℝ) ^ α) := Real.log_le_log (by positivity) (by linarith)
     _ = Real.log 4 + α * Real.log (r : ℝ) := by
-      rw [Real.log_mul (by norm_num : (4 : ℝ) ≠ 0) (Real.rpow_pos_of_pos hrpos α).ne', Real.log_rpow hrpos]
+      rw [Real.log_mul (by norm_num : (4 : ℝ) ≠ 0) (Real.rpow_pos_of_pos hrpos α).ne',
+        Real.log_rpow hrpos]
     _ ≤ _ := by linarith
 
+/-- Under the log bound `log (2 * L + 2) ≤ 2 * α * log r` and `4 * α ≤ η`, the minimum of
+`((η / 2) * log r) ^ 2 / log (2 * L + 2)` and `(η / 2) * log r` collapses to its second
+argument, so the Bernstein-type tail rate reduces to the linear term. -/
 lemma near_tail_logarithmic_regime {r L : ℕ} {α η : ℝ}
     (hr : 2 ≤ r) (_hα : 0 < α) (hη : 0 < η) (hsmall : 4 * α ≤ η)
     (hlog : Real.log (2 * (L : ℝ) + 2) ≤ 2 * α * Real.log r) :
     min (((η / 2) * Real.log r) ^ 2 / Real.log (2 * (L : ℝ) + 2))
       ((η / 2) * Real.log r) = (η / 2) * Real.log r := by
   have hrlog : 0 < Real.log (r : ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < r))
-  have hLlog : 0 < Real.log (2 * (L : ℝ) + 2) := Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) L; linarith)
+  have hLlog : 0 < Real.log (2 * (L : ℝ) + 2) :=
+    Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) L; linarith)
   apply min_eq_right
   apply (le_div_iff₀ hLlog).mpr
   have hh := mul_le_mul_of_nonneg_left hlog (by positivity : 0 ≤ (η / 2) * Real.log (r : ℝ))
   have hs := mul_nonneg (sub_nonneg.mpr hsmall) (sq_nonneg (Real.log (r : ℝ)))
   nlinarith [mul_nonneg hη.le hs]
 
+/-- Given `External.BallGreenBounds` and `θ, K, η > 0`, produces `b, α₀, C > 0` such that for
+every small enough cutoff exponent `α ≤ α₀` there is a threshold `r₀` past which, for any
+zero-mean measure `μ` with `∫ exp (θ * |x|) ∂μ ≤ K`, cutoff `φ`, and site `z`, the probability
+that `finiteKernelField (nearKernel r ⌊r ^ α⌋₊ φ) ζ z ≤ -η * log r` is at most `C * r ^ (-b)`. -/
 lemma exists_near_point_bound (hBall : External.BallGreenBounds)
     (θ K η : ℝ) (hθ : 0 < θ) (hη : 0 < η) :
     ∃ b α₀ C : ℝ, 0 < b ∧ 0 < α₀ ∧ 0 < C ∧ ∀ α : ℝ, 0 < α → α ≤ α₀ →
@@ -53,7 +73,8 @@ lemma exists_near_point_bound (hBall : External.BallGreenBounds)
         Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →
         (∫ x : ℝ, Real.exp (θ * |x|) ∂μ) ≤ K → (∫ x : ℝ, x ∂μ) = 0 →
         ∀ r : ℕ, r₀ ≤ r → ∀ φ : ℝ → ℝ, External.BallGreen.IsCutoff φ → ∀ z : Site 4,
-          (LatticeProb.iidLaw 4 μ) {ζ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r} ≤
+          (LatticeProb.iidLaw 4 μ)
+            {ζ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r} ≤
             ENNReal.ofReal (C * (r : ℝ) ^ (-b)) := by
   obtain ⟨c, C, hc, hC, htail⟩ := exists_near_field_tail hBall θ K hθ
   refine ⟨c * η / 2, η / 4, C, by positivity, by positivity, hC, ?_⟩
@@ -65,7 +86,8 @@ lemma exists_near_point_bound (hBall : External.BallGreenBounds)
   have hrpos : (0 : ℝ) < r := by exact_mod_cast (by omega : 0 < r)
   have hlogpos : 0 < Real.log (r : ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < r))
   have htpos : 0 < (η / 2) * Real.log (r : ℝ) := by positivity
-  have hsub : {ζ : Site 4 → ℝ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r} ⊆
+  have hsub :
+      {ζ : Site 4 → ℝ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r} ⊆
       {ζ | (η / 2) * Real.log r < |finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z|} := by
     intro ζ hζ
     change finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r at hζ
@@ -79,6 +101,8 @@ lemma exists_near_point_bound (hBall : External.BallGreenBounds)
     ring
   exact (measure_mono hsub).trans (by simpa only [he] using hh)
 
+/-- A finite set `S` of sites with `S.card ≤ (⌊r ^ α⌋₊ + 1) ^ 2` has cardinality at most
+`4 * r ^ (2 * α)`, obtained by squaring the elementary bound `⌊r ^ α⌋₊ ≤ r ^ α` on the floor. -/
 lemma near_box_card_bound {r : ℕ} {α : ℝ} (hr : 2 ≤ r) (hα : 0 < α)
     (S : Finset (Site 4)) (hcard : S.card ≤ (⌊(r : ℝ) ^ α⌋₊ + 1) ^ 2) :
     (S.card : ℝ) ≤ 4 * (r : ℝ) ^ (2 * α) := by
@@ -96,6 +120,10 @@ lemma near_box_card_bound {r : ℕ} {α : ℝ} (hr : 2 ≤ r) (hα : 0 < α)
     mul_nonneg (show 0 ≤ 2 * (r : ℝ) ^ α - ((⌊(r : ℝ) ^ α⌋₊ : ℝ) + 1) by linarith)
       (show 0 ≤ 2 * (r : ℝ) ^ α + ((⌊(r : ℝ) ^ α⌋₊ : ℝ) + 1) by positivity)]
 
+/-- Union-bound strengthening of `exists_near_point_bound`: for a box `S` of at most
+`(⌊r ^ α⌋₊ + 1) ^ 2` sites, the probability that `finiteKernelField (nearKernel r ⌊r ^ α⌋₊ φ) ζ z`
+drops below `-η * log r` at some `z ∈ S` is still at most `C * r ^ (-b)`, the box-size factor
+from `near_box_card_bound` being absorbed into the constant. -/
 lemma exists_near_bad_box_bound (hBall : External.BallGreenBounds)
     (θ K η : ℝ) (hθ : 0 < θ) (hη : 0 < η) :
     ∃ α b C : ℝ, 0 < α ∧ α < 1 ∧ 0 < b ∧ 0 < C ∧ ∃ r₀ : ℕ, 2 ≤ r₀ ∧
@@ -118,7 +146,8 @@ lemma exists_near_bad_box_bound (hBall : External.BallGreenBounds)
   intro μ hμ hexp hK hmean r hr φ hφ S hcard
   have hr2 : 2 ≤ r := hr₀.trans hr
   have hrpos : (0 : ℝ) < r := by exact_mod_cast (by omega : 0 < r)
-  let E (z : Site 4) := {ζ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r}
+  let E (z : Site 4) :=
+    {ζ | finiteKernelField (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ) ζ z ≤ -η * Real.log r}
   have he : {ζ | ∃ z ∈ S, ζ ∈ E z} = ⋃ z ∈ S, E z := by ext ζ; simp
   change (LatticeProb.iidLaw 4 μ) {ζ | ∃ z ∈ S, ζ ∈ E z} ≤ _
   rw [he]
@@ -127,7 +156,8 @@ lemma exists_near_bad_box_bound (hBall : External.BallGreenBounds)
     _ ≤ ∑ _z ∈ S, ENNReal.ofReal (C * (r : ℝ) ^ (-b)) :=
       Finset.sum_le_sum (fun z _ => htail μ hμ hexp hK hmean r hr φ hφ z)
     _ = ENNReal.ofReal ((S.card : ℝ) * C * (r : ℝ) ^ (-b)) := by
-      simp only [Finset.sum_const, nsmul_eq_mul, ENNReal.ofReal_mul (Nat.cast_nonneg S.card), ENNReal.ofReal_natCast, mul_assoc]
+      simp only [Finset.sum_const, nsmul_eq_mul, ENNReal.ofReal_mul (Nat.cast_nonneg S.card),
+        ENNReal.ofReal_natCast, mul_assoc]
     _ ≤ _ := by
       apply ENNReal.ofReal_le_ofReal
       calc

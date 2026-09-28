@@ -1,16 +1,16 @@
-/-
-The scales, the standardized coefficients, and the correlation matrix.
-
-`thm:critical-toppling` tests the odometer against the membrane field at the
-geometric times `n_j = N q^j`, standardized by their own standard deviations.
-This file builds those coefficients, computes the covariance matrix of the
-standardized fields, and shows that it is the correlation matrix of the Green
-kernels: the variance of the one-site law cancels.
--/
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.GreenSup
 import Sandpile.Support.Gram
 import Sandpile.Support.Schur
+
+/-!
+# Scales, standardized coefficients, and the correlation matrix
+
+`thm:critical-toppling` tests the odometer against the membrane field at the geometric
+times `n_j = N q^j`, standardized by their own standard deviations. This file builds those
+coefficients, computes the covariance matrix of the standardized fields, and shows that it
+is the correlation matrix of the Green kernels: the variance of the one-site law cancels.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -18,12 +18,17 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- `Q_n = Σ_y g_n(0,y)²`, the sum of squares of the finite-time Green kernel at the
+origin, which is the Green-kernel factor in the variance of the membrane field. -/
 noncomputable def greenSq (d n : ℕ) : ℝ := ∑' y : Site d, greenTime d n 0 y ^ 2
 
+/-- `greenSq` is a sum of squares, hence nonnegative. -/
 theorem greenSq_nonneg (d n : ℕ) : 0 ≤ greenSq d n := by
   rw [greenSq, tsum_greenTime_sq_eq_sum]
   exact Finset.sum_nonneg fun z _ => sq_nonneg _
 
+/-- For `n ≥ 1`, the diagonal finite-time Green kernel `g_n(0,0)` is at least `1`, since the
+time-zero heat kernel contributes exactly `1` to the sum defining it. -/
 theorem one_le_greenTime_diag {n : ℕ} (hn : 1 ≤ n) : (1 : ℝ) ≤ greenTime d n 0 0 := by
   show (1 : ℝ) ≤ ∑ k ∈ Finset.range n, heatKernel d k (0 : Site d) 0
   have h0 : heatKernel d 0 (0 : Site d) 0 = 1 := by
@@ -33,6 +38,8 @@ theorem one_le_greenTime_diag {n : ℕ} (hn : 1 ≤ n) : (1 : ℝ) ≤ greenTime
   rw [h0] at this
   exact this
 
+/-- For `n ≥ 1`, `greenSq d n ≥ 1`, since the diagonal term `g_n(0,0)²` alone already
+exceeds `1` by `one_le_greenTime_diag`. -/
 theorem one_le_greenSq {n : ℕ} (hn : 1 ≤ n) : (1 : ℝ) ≤ greenSq d n := by
   rw [greenSq, tsum_greenTime_sq_eq_sum]
   have hmem : (0 : Site d) ∈ boxFinset (0 : Site d) n := mem_boxFinset (by simp [boxDist_self])
@@ -41,6 +48,7 @@ theorem one_le_greenSq {n : ℕ} (hn : 1 ≤ n) : (1 : ℝ) ≤ greenSq d n := b
   have h1 := one_le_greenTime_diag (d := d) hn
   nlinarith
 
+/-- For `n ≥ 1`, `greenSq d n` is strictly positive, since it is at least `1`. -/
 theorem greenSq_pos {n : ℕ} (hn : 1 ≤ n) : 0 < greenSq d n :=
   lt_of_lt_of_le zero_lt_one (one_le_greenSq hn)
 
@@ -48,10 +56,14 @@ theorem greenSq_pos {n : ℕ} (hn : 1 ≤ n) : 0 < greenSq d n :=
 noncomputable def membraneSd (d : ℕ) (ν : Measure ℝ) (n : ℕ) : ℝ :=
   Real.sqrt (variance id ν * greenSq d n)
 
+/-- `membraneSd` is strictly positive whenever the one-site law has positive variance and
+`n ≥ 1`, since `greenSq` is then also positive. -/
 theorem membraneSd_pos (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ → ℝ) ν)
     {n : ℕ} (hn : 1 ≤ n) : 0 < membraneSd d ν n :=
   Real.sqrt_pos.mpr (mul_pos hvar (greenSq_pos hn))
 
+/-- `membraneSd` factors as the product of the square root of the one-site variance and the
+square root of `greenSq`, by `Real.sqrt_mul`. -/
 theorem membraneSd_eq (ν : Measure ℝ) (hvar : 0 ≤ variance (id : ℝ → ℝ) ν) (n : ℕ) :
     membraneSd d ν n = Real.sqrt (variance id ν) * Real.sqrt (greenSq d n) := by
   rw [membraneSd, Real.sqrt_mul hvar]

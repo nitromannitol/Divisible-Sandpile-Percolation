@@ -1,20 +1,20 @@
-/-
-`cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`) wired to the two frozen
-statements it is derived from, on realization spaces where both apply.
-
-`MeanAAssembly` proves the corollary's ten clauses from four inputs: the
-convergence in distribution of the rescaled odometer at the origin, the
-measurability and the law identity of the continuum value, and the two
-exponential moments.  Here those inputs are supplied by
-`thm:main-explosion`(i)(b) at `T = 1` and by the three clauses of
-`prop:continuum-value-selfsimilar`, so that nothing is assumed beyond the two
-statements the paper's own sentence names (`sandpile.tex:2030-2032`) and the
-cited inputs those two carry.
--/
 import Sandpile.Support.MeanAAssembly
 import Sandpile.Support.Dgt4OriginProb
 import Sandpile.Frozen.BrownianScalingLimit
 import Sandpile.Frozen.ContinuumValueSelfSimilar
+
+/-!
+# `cor:dlt4-mean-asymptotic` wired to its two frozen inputs
+
+`cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`) wired to the two frozen statements it is
+derived from, on realization spaces where both apply. `MeanAAssembly` proves the corollary's
+ten clauses from four inputs: the convergence in distribution of the rescaled odometer at the
+origin, the measurability and the law identity of the continuum value, and the two exponential
+moments. Here those inputs are supplied, in `dlt4_mean_asymptotic_wired`, by
+`thm:main-explosion`(i)(b) at `T = 1` and by the three clauses of
+`prop:continuum-value-selfsimilar`, so that nothing is assumed beyond the two statements the
+paper's own sentence names (`sandpile.tex:2030-2032`) and the cited inputs those two carry.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

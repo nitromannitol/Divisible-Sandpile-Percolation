@@ -1,34 +1,23 @@
-/-
-Step 3 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`,
-proof at `sandpile.tex:6275-6305`): from the uniform contact thresholds of
-Step 2, `lem:dgt4-path-survival` and `lem:dgt4-linearization-from-survival`
-give the linearization of the rescaled centred odometer along the subsequence
-`R_{k_ℓ}`, and `prop:weighted-membrane-limit` identifies the limit of the
-time-weighted field.
-
-`UniformContactThresholds` is the Step-2 output
-(`sandpile.tex:6051-6275`, equations `eq:dgt4-band-contact-rate` and
-`eq:dgt4-band-contact-comparison`), stated for the threshold field
-`J = -G(0,0)ζ` of the constructed scenery.  It is the one input of Step 3 that
-is not one of the frozen dgt4 nodes.
-
-`dgt4_linearization_of_survival` discharges the frozen
-`prop:dgt4-linearization` from that input: `lem:dgt4-path-survival` supplies
-the two hypotheses of `lem:dgt4-linearization-from-survival` at the weight
-`q(r) = (1-r/T)^κ`, and the latter's first conjunct is the frozen linearization
-verbatim.
-
-`dgt4_many_limits_of_scenery_and_sub` is the whole node with the scenery
-existentially quantified: `exists_scenery_law` produces the law and its four
-analytic properties, and the Step-3 subsequential convergence is the
-hypothesis.
--/
 import Sandpile.Support.ManyLManyLimits
 import Sandpile.Support.ContLogisticLaw
 import Sandpile.Frozen.DGT4PathSurvival
 import Sandpile.Frozen.DGT4LinearizationFromSurvival
 import Sandpile.Frozen.WeightedMembraneLimit
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# Step 3 of `thm:dgt4-many-limits`: linearization from uniform contact thresholds
+
+Step 3 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`, proof at
+`sandpile.tex:6275-6305`): from the uniform contact thresholds of Step 2
+(`UniformContactThresholds`, the one input of Step 3 that is not one of the frozen dgt4 nodes),
+`lem:dgt4-path-survival` and `lem:dgt4-linearization-from-survival` give the linearization of
+the rescaled centred odometer along the subsequence `R_{k_ℓ}` (`dgt4_linearization_of_survival`),
+and `prop:weighted-membrane-limit` identifies the limit of the time-weighted field. The whole
+node with the scenery existentially quantified, `dgt4_many_limits_of_scenery_and_sub`, combines
+this with `exists_scenery_law`, which produces the law and its four analytic properties, applied
+to the Step-3 subsequential convergence hypothesis.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

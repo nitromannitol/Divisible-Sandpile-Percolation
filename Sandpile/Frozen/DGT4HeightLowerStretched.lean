@@ -1,30 +1,22 @@
-/-
-Proposition (Refined lower bound under a stretched-exponential lower-tail
-bound) of sandpile.tex, frozen.  `sandpile.tex:4366-4377`
-(label `prop:dgt4-height-lower-stretched`):
-
-  "Suppose \eqref{eq:dgt4-exp-moment} holds.  Suppose also that there are
-   $\gamma,a,A,s_{0}>0$ such that for every $s\geq s_{0}$,
-     $\P(\zeta(0)\leq -s)\geq ae^{-As^\gamma}$.
-   There is $c>0$ such that, for all large $t$,
-     $\E u_t(0)\geq c(\log t)^{1/\min\{\gamma,d/2\}}$."
-
-The cited hypothesis `eq:dgt4-exp-moment` of `sandpile.tex:4104-4106` is
-  "$\E e^{\theta_0|\zeta(0)|}\leq K_0$"
-for some `θ₀ > 0` and `K₀ < ∞`; it is transcribed here as integrability of
-`exp (θ₀ |z|)` together with the bound `≤ K₀`, so that a non-integrable law
-cannot satisfy it through the junk value `∫ = 0`.  The remaining standing
-hypotheses of the section, `E ζ(0) = 0` and `0 < Var(ζ(0)) < ∞`, are listed
-too.  The law of `ζ(0)` is `ν` and the mass field is `σ = 1 + 2dζ`, so the law
-of `σ` is `centeredMassLaw d ν` and `E u_t(0)` is `meanOdometer`.  "For all
-large `t`" is `∀ᶠ t in atTop` over `t : ℕ`.  Both `s ^ γ` and
-`(log t) ^ (1 / min γ (d/2))` are real powers.
--/
 import Sandpile.Law
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.Support.IncrementBall
 import Sandpile.Support.Increment
 import Sandpile.Support.SceneryBridge
+
+/-!
+# Height lower bound under a stretched-exponential tail
+
+This file proves the frozen statement of `prop:dgt4-height-lower-stretched`
+(`sandpile.tex:4366-4377`): under the exponential-moment hypothesis `eq:dgt4-exp-moment`
+(`sandpile.tex:4104-4106`) together with a stretched-exponential lower tail
+`P(ζ(0) ≤ -s) ≥ a e^{-A s^γ}` for `s ≥ s₀`, the mean
+odometer at the origin eventually satisfies `E u_t(0) ≥ c (log t)^{1/min{γ, d/2}}` for some
+`c > 0`. The scenery law is `ν`, carried in the mass normalization through `centeredMassLaw d ν`,
+and `E u_t(0)` is `meanOdometer`. The proof separates the case `d/2 ≤ γ`, handled by the
+finite-ball increment bound, from `γ < d/2`, handled by the stretched-tail increment step, and
+feeds both into a common logarithmic lower bound for a monotone diverging sequence.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

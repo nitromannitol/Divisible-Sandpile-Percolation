@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ACovStop
+import Sandpile.Support.Dgt4AConditionSite
+import Sandpile.Support.Dgt4FieldRecursion
+
+/-!
 **The Lipschitz step of Step 2** (`sandpile.tex:5111-5126`): "Raising `b` to `b+s` shifts
 `\zeta(z)` by `-s\Var(\zeta(0))G(0,z)/\Sigma^2` ... By
 \eqref{eq:dgt4-infinite-field-stopping}, the scenery shift then changes `V_\infty(x)-u_r(x)`
@@ -19,9 +23,6 @@ infimum over stopping times of two functions whose stopped expectations differ b
 constant differs by at most that constant, and the stopped expectation of the shift is at
 most its value at the start by `integral_stopped_greenCovariance_le`.
 -/
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.Dgt4AConditionSite
-import Sandpile.Support.Dgt4FieldRecursion
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -78,9 +79,12 @@ theorem abs_infiniteGreenField_sub_odometer_gap_le (hd : 3 ≤ d) (ξ η : Site 
 noncomputable def condScenery (d : ℕ) (hd : 5 ≤ d) (c : ℝ) (r : Site d → ℝ) (s : ℝ) :
     Site d → ℝ := fun z => c * (r z + s * (greenUnit d hd : Site d → ℝ) z)
 
+/-- Pointwise unfolding of `condScenery` at a site `z`. -/
 theorem condScenery_apply (hd : 5 ≤ d) (c : ℝ) (r : Site d → ℝ) (s : ℝ) (z : Site d) :
     condScenery d hd c r s z = c * (r z + s * (greenUnit d hd : Site d → ℝ) z) := rfl
 
+/-- Unfolding of `condScenery` as a function, the same identity as `condScenery_apply`
+without applying it to a site. -/
 theorem condScenery_eq (hd : 5 ≤ d) (c : ℝ) (r : Site d → ℝ) (s : ℝ) :
     condScenery d hd c r s = fun z => c * (r z + s * (greenUnit d hd : Site d → ℝ) z) := rfl
 

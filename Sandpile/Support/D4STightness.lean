@@ -1,16 +1,17 @@
-/-
-The tightness clause of `prop:d4-superdiffusive-limit` (`sandpile.tex:3324-3327`).
-
-The clause asks for a single level `M` above which the `H^{-s}(D)` norm of the
-`\omega`-representative of the rescaled centred odometer is unlikely, uniformly
-over every `R\geq1`.  Above a threshold `R_0` the decomposition
-`u_{t_R}-\E u_{t_R}(0)=V_{t_R}+P^{n_R}E_{t_R-n_R}+(S_R-\E S_R(0))` splits the
-norm into three, Step 1 supplies a tightness level for the membrane and Steps 2
-and 3 make the two error norms exceed one with small probability.  Below `R_0`
-the whole field is bounded crudely by its uniform second moment.
--/
 import Sandpile.Support.D4STightSmall
 import Sandpile.Support.D4SAssembly
+
+/-!
+# The tightness clause of `prop:d4-superdiffusive-limit`
+
+This file proves the tightness clause of `prop:d4-superdiffusive-limit` (`sandpile.tex:3324-3327`).
+The clause asks for a single level `M` above which the `H^{-s}(D)` norm of the
+`ω`-representative of the rescaled centred odometer is unlikely, uniformly over every `R≥1`.
+Above a threshold `R_0` the decomposition `u_{t_R}-E u_{t_R}(0)=V_{t_R}+P^{n_R}E_{t_R-n_R}+
+(S_R-E S_R(0))` splits the norm into three, Step 1 supplies a tightness level for the membrane
+and Steps 2 and 3 make the two error norms exceed one with small probability. Below `R_0` the
+whole field is bounded crudely by its uniform second moment.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

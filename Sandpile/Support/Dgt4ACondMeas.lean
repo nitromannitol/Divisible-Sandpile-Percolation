@@ -1,14 +1,15 @@
-/-
-Measurability of the conditioned field in the residual, which is what makes the comparison of
-Step 2 (`sandpile.tex:5125-5131`) an integral comparison at all.
-
-The box partial sums are finite sums of coordinates, hence measurable in the residual; the
-field itself is their limit wherever that limit exists, and
-`Support/Dgt4AConditionSite.lean` shows that the limit exists almost surely under the law of
-the residual field.  So the field is almost everywhere measurable, by the same route that
-`Support/LinGaussBridge.lean` uses for the i.i.d. scenery.
--/
 import Sandpile.Support.Dgt4AShiftLip
+
+/-!
+# Measurability of the conditioned Green field
+
+Measurability of the conditioned field in the residual, which is what makes the comparison of
+Step 2 (`sandpile.tex:5125-5131`) an integral comparison at all. The box partial sums are finite
+sums of coordinates, hence measurable in the residual; the field itself is their limit wherever
+that limit exists, and `Support/Dgt4AConditionSite.lean` shows that the limit exists almost
+surely under the law of the residual field. So the field is almost everywhere measurable, by the
+same route that `Support/LinGaussBridge.lean` uses for the i.i.d. scenery.
+-/
 
 open MeasureTheory Filter Topology Set
 

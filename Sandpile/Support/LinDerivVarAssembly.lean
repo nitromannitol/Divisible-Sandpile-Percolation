@@ -1,11 +1,14 @@
-/-
-Step 1 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5783`): the
-site sum of the derivative variances vanishes, from the mean-gradient
-approximation `eq:dgt4-mean-gradient-approximation` and the two displays
-`eq:dgt4-early-derivative-variance` and `eq:dgt4-late-derivative-variance`.
--/
 import Sandpile.Support.LinDerivVarLimit
 import Sandpile.Support.LinMeanGradientApprox
+
+/-!
+# Assembly of the vanishing derivative-variance sum
+
+The site sum of the derivative variances of the tested field vanishes as `R → ∞`. This
+assembles the mean-gradient approximation together with the early- and late-time
+derivative-variance bounds into a single application of the abstract convex-linear
+vanishing lemma `tendsto_zero_derivVar`.
+-/
 
 open MeasureTheory Filter Topology
 

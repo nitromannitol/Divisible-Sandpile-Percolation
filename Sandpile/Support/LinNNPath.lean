@@ -1,28 +1,31 @@
-/-
-The walk is nearest-neighbour almost surely.
-
-`lem:dgt4-linearization-from-survival` (`sandpile.tex:5615-5660`) states its
-covariance bound for deterministic nearest-neighbour paths, while Step 1 of its
-proof integrates that bound against the law of two independent simple random
-walks.  The bridge is that the law of the walk is carried by nearest-neighbour
-paths: `walkLaw d x` is the image of the i.i.d. step law under `walkPath`, the
-increments of `walkPath x ξ` are the coordinates of `ξ`, and `stepLaw d`, which
-is `LatticeProb.instructionLaw 0`, gives no mass to a displacement that is
-neither a unit vector nor the negative of one.  The conclusion is stated for
-every time horizon at once, since `IsNNPath n X` constrains only the first `n`
-increments and the increments are constrained one at a time.
--/
 import Sandpile.Support.StrongMarkov
 import Sandpile.Support.LinEarlyVar
 import Sandpile.Frozen.DGT4PathSurvival
+
+/-!
+# The walk is nearest-neighbour almost surely
+
+The walk is nearest-neighbour almost surely.
+
+`lem:dgt4-linearization-from-survival` (`sandpile.tex:5615-5660`) states its covariance
+bound for deterministic nearest-neighbour paths, while Step 1 of its proof integrates that
+bound against the law of two independent simple random walks. The bridge is that the law
+of the walk is carried by nearest-neighbour paths: `walkLaw d x` is the image of the i.i.d.
+step law under `walkPath`, the increments of `walkPath x ξ` are the coordinates of `ξ`, and
+`stepLaw d`, which is `LatticeProb.instructionLaw 0`, gives no mass to a displacement that
+is neither a unit vector nor the negative of one. The conclusion is stated for every time
+horizon at once, since `IsNNPath n X` constrains only the first `n` increments and the
+increments are constrained one at a time.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 
 namespace Sandpile.Support
 
-
 variable {d : ℕ}
 
+/-- The step law gives no mass to a displacement that is neither a unit vector nor the
+negative of one: `stepLaw d` is a finite sum of Dirac masses at the `±unit i`. -/
 theorem stepLaw_notUnit_eq_zero :
     stepLaw d {e : Site d | ¬ ∃ i : Fin d, e = unit i ∨ e = -unit i} = 0 := by
   classical
@@ -40,6 +43,9 @@ theorem stepLaw_notUnit_eq_zero :
   intro i _
   rw [Set.indicator_of_notMem (hmem i).1, Set.indicator_of_notMem (hmem i).2, add_zero]
 
+/-- Almost every increment sequence under the i.i.d. step law is unit-vector valued at
+every time, from `stepLaw_notUnit_eq_zero` applied coordinatewise via the marginal of the
+infinite product measure. -/
 theorem ae_step_mem_units (hd : 1 ≤ d) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d),
       ∀ r : ℕ, ∃ i : Fin d, ξ r = unit i ∨ ξ r = -unit i := by
@@ -55,10 +61,15 @@ theorem ae_step_mem_units (hd : 1 ≤ d) :
   rw [Measure.infinitePi_map_eval, stepLaw_notUnit_eq_zero] at hmap
   exact hmap.symm
 
+/-- The walk's one-step increment: `walkPath x ξ (r + 1) = walkPath x ξ r + ξ r`, from the
+definition of `walkPath` as a partial sum of `ξ`. -/
 theorem walkPath_succ (x : Site d) (ξ : ℕ → Site d) (r : ℕ) :
     walkPath x ξ (r + 1) = walkPath x ξ r + ξ r := by
   simp only [walkPath, Finset.sum_range_succ, add_assoc]
 
+/-- The set of paths whose every increment is a unit vector or its negative is
+measurable, being a countable intersection over `r` of a finite union over `i : Fin d` of
+measurable equality events. -/
 theorem measurableSet_allNN :
     MeasurableSet {X : ℕ → Site d |
       ∀ r : ℕ, ∃ i : Fin d, X (r + 1) = X r + unit i ∨ X (r + 1) = X r - unit i} := by
@@ -87,6 +98,9 @@ theorem measurableSet_allNN :
   · exact measurableSet_eq_fun (measurable_pi_apply (r + 1)) (hadd i r)
   · exact measurableSet_eq_fun (measurable_pi_apply (r + 1)) (hsub i r)
 
+/-- Almost every path under `walkLaw d x` is `Frozen.DGT4PathSurvival.IsNNPath n` for every
+time horizon `n`, transported from `ae_step_mem_units` along `walkPath` via
+`walkPath_succ`. -/
 theorem ae_walkLaw_isNNPath (hd : 1 ≤ d) (x : Site d) :
     ∀ᵐ X ∂(walkLaw d x), ∀ n : ℕ,
       Frozen.DGT4PathSurvival.IsNNPath n X := by

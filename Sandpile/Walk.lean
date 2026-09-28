@@ -1,28 +1,29 @@
-/-
-Simple random walk on `ℤ^d` and the optimal-stopping vocabulary of
-`sandpile.tex`, Section 1 (`ssec:notation`) and Section 2 (`sec:rw-rep`).
+import Sandpile.Basic
+import LatticeProb.Walk.LatticeGreen
+
+/-!
+# Simple random walk, its kernels, and the optimal-stopping vocabulary
+
+Simple random walk on `ℤ^d` and the optimal-stopping vocabulary of `sandpile.tex`, Section 1
+(`ssec:notation`) and Section 2 (`sec:rw-rep`).
 
 How the paper's objects are modelled here:
 
-- `heatKernel d k x y` is `p_k(x, y)`, defined by the averaging recursion; it
-  needs no path space.  `greenTime` is `g_t(x, y) = ∑_{k<t} p_k(x, y)` and
-  `green` is `G(x, y) = ∑_k p_k(x, y)`.  In dimensions one and two the last
-  series diverges and the `tsum` takes its junk value zero; every statement
-  that mentions `green` fixes `d ≥ 5`.
-- `killedKernel D k x y` is `P_x(X_k = y, k < τ_D)`, again by a recursion:
-  killing is the indicator of `D` in front of each step.
-- The walk itself is a measure on path space `ℕ → Site d`: the increments are
-  i.i.d. uniform on the `2d` unit vectors and `walkPath` accumulates them.
-  This is the object the optimal-stopping statements need.
-- A stopping time is a function of the path whose value at `k` is determined by
-  the first `k + 1` positions.  `stoppingSup n x F` is the supremum of
-  `E_x F(τ, X)` over stopping times bounded by `n`; `F` sees the whole path, so
-  both `sup_τ E_x ∑_{k<τ} ζ(X_k)` and `sup_τ E_x[-V_{t-τ}(X_τ)]` are instances.
-  The supremum is an `sSup` over a set of reals which is nonempty (take `τ = 0`)
+- `heatKernel d k x y` is `p_k(x, y)`, defined by the averaging recursion; it needs no path
+  space. `greenTime` is `g_t(x, y) = ∑_{k<t} p_k(x, y)` and `green` is `G(x, y) = ∑_k p_k(x,
+  y)`. In dimensions one and two the last series diverges and the `tsum` takes its junk value
+  zero; every statement that mentions `green` fixes `d ≥ 5`.
+- `killedKernel D k x y` is `P_x(X_k = y, k < τ_D)`, again by a recursion: killing is the
+  indicator of `D` in front of each step.
+- The walk itself is a measure on path space `ℕ → Site d`: the increments are i.i.d. uniform on
+  the `2d` unit vectors and `walkPath` accumulates them. This is the object the optimal-stopping
+  statements need.
+- A stopping time is a function of the path whose value at `k` is determined by the first `k + 1`
+  positions. `stoppingSup n x F` is the supremum of `E_x F(τ, X)` over stopping times bounded by
+  `n`; `F` sees the whole path, so both `sup_τ E_x ∑_{k<τ} ζ(X_k)` and `sup_τ E_x[-V_{t-τ}(X_τ)]`
+  are instances. The supremum is an `sSup` over a set of reals which is nonempty (take `τ = 0`)
   and, for a fixed scenery, bounded, since only finitely many sites are reached.
 -/
-import Sandpile.Basic
-import LatticeProb.Walk.LatticeGreen
 
 open MeasureTheory
 open scoped ENNReal
@@ -51,7 +52,8 @@ leaving `D`. -/
 noncomputable def killedKernel {d : ℕ} (D : Set (Site d)) : ℕ → Site d → Site d → ℝ
   | 0 => fun x y => D.indicator (fun z => if z = y then (1 : ℝ) else 0) x
   | k + 1 => fun x y => D.indicator (fun z =>
-      (∑ i : Fin d, (killedKernel D k (z + unit i) y + killedKernel D k (z - unit i) y)) / (2 * d)) x
+      (∑ i : Fin d,
+        (killedKernel D k (z + unit i) y + killedKernel D k (z - unit i) y)) / (2 * d)) x
 
 /-- The killed finite-time Green kernel `g_t^D(x, y)`. -/
 noncomputable def killedGreenTime {d : ℕ} (D : Set (Site d)) (t : ℕ) (x y : Site d) : ℝ :=

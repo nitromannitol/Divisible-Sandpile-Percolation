@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.TightD4Covariance
+import Sandpile.Support.ContMeanGrowth
+import Sandpile.Support.ExplMeanAsymptotic
+import Sandpile.Support.MeanAValue
+
+/-!
+# Square Integrability for the Mean-Asymptotic Corollary
+
 The square-integrability clauses of `cor:dlt4-mean-asymptotic`
 (`sandpile.tex:2034-2052`).
 
@@ -9,10 +16,6 @@ integrable under the centered mass law.  Both are the odometer's square
 integrability (`Sandpile.Support.memLp_two_odometer`) with the constant and the
 floor of the rescaling pulled out.
 -/
-import Sandpile.Support.TightD4Covariance
-import Sandpile.Support.ContMeanGrowth
-import Sandpile.Support.ExplMeanAsymptotic
-import Sandpile.Support.MeanAValue
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -21,7 +24,8 @@ namespace Sandpile.Support
 
 /-- **The rescaled odometer is square integrable.**  First clause of
 `cor:dlt4-mean-asymptotic`. -/
-theorem memLp_rescaledOdometer_centered (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
+theorem memLp_rescaledOdometer_centered (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ)
+    [IsProbabilityMeasure ν]
     (hsq : Integrable (fun z => z ^ 2) ν) (R T : ℝ) (x : Sandpile.Continuum.Space d) :
     MemLp (fun σ => Sandpile.Continuum.rescaledOdometer d R T x σ) 2
       (Sandpile.centeredMassLaw d ν) := by

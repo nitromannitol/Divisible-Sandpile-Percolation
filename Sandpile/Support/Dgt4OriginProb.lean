@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4CaseBRelError
+import Sandpile.Support.OriginConcentration
+import Sandpile.Frozen.DGT4OriginFrozen
+
+/-!
+# Convergence in probability of the neighbour average at the origin
+
 The convergence in probability of `sandpile.tex:5383`, "By
 \eqref{eq:dgt4-origin-fixed-mean} and Markov's inequality, $\E Pw_n(0)\sim\E u_n(0)/G(0,0)$
 and $Pw_n(0)/\E Pw_n(0)\to1$ in probability", discharged from the sealed
@@ -6,16 +12,13 @@ and $Pw_n(0)/\E Pw_n(0)\to1$ in probability", discharged from the sealed
 
 Two of the three inputs are clauses of that lemma: the mean ratio
 `G(0,0)\E Pw_n(0)/\E u_n(0)\to1` and the uniform second moment of
-`Pw_n(0)-\E Pw_n(0)`.  The third is the INTEGRABILITY of that second moment, which the
+`Pw_n(0)-\E Pw_n(0)`. The third is the integrability of that second moment, which the
 frozen statement does not carry, its moment clause being a bare inequality between
 integrals; it is proved here from the same coordinate-Lipschitz reading of `Pw_n(0)` that
 the concentration estimate uses, namely that the neighbour average of the odometer killed
 at the origin reads only the box `Q(0,n+1)` and moves by at most `G(0,z)/G(0,0)` when the
 scenery at `z` moves by one.
 -/
-import Sandpile.Support.Dgt4CaseBRelError
-import Sandpile.Support.OriginConcentration
-import Sandpile.Frozen.DGT4OriginFrozen
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

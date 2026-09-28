@@ -1,11 +1,3 @@
-/-
-The block estimate `eq:d4-positive-block-estimate` (`sandpile.tex:3981-3987`):
-for every deficit `δ` and all large `r`, the good block of the block field
-`𝓑_{2r,N} + Y_{2r}` at level `b₀ log(2r)/2` fails with probability at most `δ`,
-uniformly in the coarse site and over the law class.  The three steps of the
-paper's proof enter as the future-height tail, the time-truncation tail and the
-crossing estimate for the ball field.
--/
 import Sandpile.Support.D4CritStep1Mean
 import Sandpile.Support.D4CritStep1Prob
 import Sandpile.Support.D4CritCombine
@@ -13,12 +5,29 @@ import Sandpile.Support.D4CritLSS
 import Sandpile.Support.D4CritLimits
 import Sandpile.Support.D4BlockBallCrossing
 
+/-!
+# The dimension-four positive block estimate
+
+The block estimate `eq:d4-positive-block-estimate` (`sandpile.tex:3981-3987`):
+for every deficit `δ` and all large `r`, the good block of the block field
+`𝓑_{2r,N} + Y_{2r}` at level `b₀ log(2r)/2` fails with probability at most `δ`,
+uniformly in the coarse site and over the law class.  The three steps of the
+paper's proof enter as the future-height tail, the time-truncation tail and the
+crossing estimate for the ball field.
+-/
+
 open MeasureTheory ProbabilityTheory Filter
 open scoped ENNReal
 
 noncomputable section
 namespace Sandpile
 
+/-- For every deficit `δ` and all large `r`, the good block of the block field
+`𝓑_{2r,N} + Y_{2r}` at level `b₀ log(2r)/2` fails with probability at most `δ`, uniformly
+in the coarse site `z` and over the class of centered laws `ν` with variance at least `ν₀²`
+and an exponential moment bound `θ₀, K₀`, assembled from the future-height tail
+(`hstep1`), the time-truncation tail (`hstep2`) and the ball-field crossing estimate
+(`hstep3`) via `measure_not_blockGood_block_le`. -/
 theorem exists_block_estimate
     (hBallGreen : Sandpile.External.BallGreenBounds)
     (hRSW : Sandpile.External.PlanarRSW)

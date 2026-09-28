@@ -1,11 +1,17 @@
-/-
-The RSW step: a fixed positive lower bound for the hard-rectangle crossing
-probability of the planar image of an iid field, from a half bound for the
-easy rectangle containing a square.
--/
 import Sandpile.Support.KernelPlanarLaw
 import Sandpile.Support.RectangleMonotonicity
 import Sandpile.External.PlanarRSW
+
+/-!
+# The RSW hard-rectangle step
+
+Derives a fixed positive lower bound for the hard-rectangle crossing probability of the planar
+image of an iid field, from a half bound for the easy rectangle containing a square, using the
+external Russo-Seymour-Welsh input `External.PlanarRSW`. The planar image is the pushforward of
+the iid law under the map sending a field `ζ` to its cut-off Green field `finiteKernelField` on
+the coordinate plane `planeTranslate x`, and its crossing events agree with sublevel sets of
+`crossingValue`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal

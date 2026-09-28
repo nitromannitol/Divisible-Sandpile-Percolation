@@ -1,4 +1,10 @@
-/-
+import Sandpile.Law
+import Sandpile.Frozen.DGT4HeightLower
+import Sandpile.External.GreenBoundsHighProved
+
+/-!
+# First-order behavior of the height in dimension five and above
+
 Theorem 1.3(iii)(a) of sandpile.tex, frozen.  `sandpile.tex:263-265`
 (label `thm:main-explosion`, part (iii)(a)):
 
@@ -14,9 +20,6 @@ as an explicit hypothesis.  The variance lower bound `ν₀` and the
 exponential-moment bound `K₀` that `thm:dgt4-height-lower` quantifies over are
 read off the law itself here, since this statement fixes the law first.
 -/
-import Sandpile.Law
-import Sandpile.Frozen.DGT4HeightLower
-import Sandpile.External.GreenBoundsHighProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,21 +1,22 @@
-/-
-**The threshold field of `prop:dgt4-contact-asymptotics` in both cases**
-(`sandpile.tex:5454-5455`): "Set `J=-V_\infty` in case (a) and `J=-G(0,0)\zeta` in case (b)."
-
-Case (a) is `Support/Dgt4GaussTail.lean` once the two estimates of
-`sandpile.tex:4977-4984` are supplied, which is what Steps 1 to 4 of
-`Support/Dgt4AStep4Mean.lean` and `Support/Dgt4AStep4Rel.lean` do; case (b) is
-`Support/Dgt4PairHitting.lean` once its moment, regular-variation and summability inputs are
-read off the paper's hypothesis.  The moment is `integrable_abs_rpow_of_lowerTail` at an
-exponent strictly between `\alpha/2` and `\alpha`, and the summability of the site weights
-is the square summability of the Green function, because the weights `G(0,z)/G(0,0)` are at
-most one and the exponent is at least two.
--/
 import Sandpile.Support.Dgt4AStep4Rel
 import Sandpile.Support.Dgt4GaussTail
 import Sandpile.Support.Dgt4PairHitting
 import Sandpile.Support.Dgt4LowerTailMoment
 import Sandpile.Support.LinWeights
+
+/-!
+# The threshold field of the contact-time asymptotics, assembled from the case dichotomy
+
+The threshold field driving the contact-time asymptotics is `J = -V_∞` when the mass
+distribution `ν` is Gaussian and `J = -G(0, 0) * ζ` when it instead has a regularly varying
+lower tail of index `-α`. The Gaussian case is supplied by `Sandpile.Support.Dgt4GaussTail`
+once its two moment estimates are established, and the regularly varying case is supplied by
+`Sandpile.Support.Dgt4PairHitting` once its moment, regular-variation and summability
+hypotheses are read off from `ν`; the summability of the site weights `G(0, z) / G(0, 0)`
+follows from the square summability of the Green function since these weights are at most
+one. Combining both cases yields `prop:dgt4-contact-asymptotics` unconditionally on the case
+dichotomy.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

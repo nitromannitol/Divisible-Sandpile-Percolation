@@ -1,24 +1,22 @@
-/-
-Two elementary estimates used by the last-visit lemma `sandpile.tex:4760-4776`
-(label `lem:dgt4-weighted-last-visits`).
-
-The first is the paper's display
-`sup_{j ≤ (1-ε)n} |∑_{i=0}^{j} 1/(n-i) + log(1 - j/n)| ≤ C(ε) n^{-1}`, in the
-sharp form: the harmonic segment differs from the logarithm by at most one term,
-`1/(n-j)`.  Both bounds come from `log x ≤ x - 1` applied to the two ratios
-`(a+1)/a` and `(a-1)/a`, summed by telescoping.
-
-The second is the Cesaro statement behind "`∑_{k≤n} P_0(k < tau_0^+ < ∞) = o(n)`":
-a nonnegative sequence tending to zero has partial sums that are eventually
-smaller than any fixed multiple of the number of terms.
--/
 import Mathlib
+
+/-!
+# Harmonic-sum/logarithm comparison and a Cesàro smallness estimate
+
+The partial harmonic sum `∑_{i=0}^{j} 1/(n-i)` is sandwiched between `log n - log (n - j)` and
+`1/(n - j) + (log n - log (n - j))`, both bounds obtained from `log x ≤ x - 1` applied to the
+ratios `(a+1)/a` and `(a-1)/a` and summed by telescoping; combined, they show the harmonic segment
+differs from `-log (1 - j/n)` by at most the single term `1/(n - j)`. This file also proves a
+Cesàro smallness estimate: a sequence tending to zero has partial sums that are eventually smaller
+than any fixed positive multiple of the number of terms.
+-/
 
 open Finset
 open scoped Topology
 
 namespace Sandpile
 
+/-- The partial harmonic sum `∑_{i=0}^{j} 1/(n-i)` is at least `log n - log (n - j)`. -/
 theorem harm_tele_lower (n j : ℕ) (hj : j < n) :
     Real.log ((n : ℝ)) - Real.log ((n : ℝ) - (j : ℝ)) ≤
       ∑ i ∈ Finset.range (j + 1), (1 : ℝ) / ((n : ℝ) - (i : ℝ)) := by
@@ -57,6 +55,8 @@ theorem harm_tele_lower (n j : ℕ) (hj : j < n) :
     _ ≤ ∑ i ∈ Finset.range (j + 1), (1 : ℝ) / ((n : ℝ) - (i : ℝ)) :=
         Finset.sum_le_sum hterm
 
+/-- The partial harmonic sum `∑_{i=0}^{j} 1/(n-i)` is at most `1/(n - j) + (log n - log (n - j))`,
+the matching upper bound to `harm_tele_lower`. -/
 theorem harm_tele_upper (n j : ℕ) (hj : j < n) :
     ∑ i ∈ Finset.range (j + 1), (1 : ℝ) / ((n : ℝ) - (i : ℝ)) ≤
       1 / ((n : ℝ) - (j : ℝ)) + (Real.log ((n : ℝ)) - Real.log ((n : ℝ) - (j : ℝ))) := by
@@ -92,6 +92,8 @@ theorem harm_tele_upper (n j : ℕ) (hj : j < n) :
   rw [hsum, hh0, hhj] at hle
   linarith
 
+/-- Combining `harm_tele_lower` and `harm_tele_upper`: the partial harmonic sum
+`∑_{i=0}^{j} 1/(n-i)` differs from `-log (1 - j/n)` by at most the single term `1/(n - j)`. -/
 theorem abs_harm_log (n j : ℕ) (hj : j < n) (hn : 0 < n) :
     |(∑ i ∈ Finset.range (j + 1), (1 : ℝ) / ((n : ℝ) - (i : ℝ)))
         + Real.log (1 - (j : ℝ) / (n : ℝ))| ≤ 1 / ((n : ℝ) - (j : ℝ)) := by
@@ -111,6 +113,8 @@ theorem abs_harm_log (n j : ℕ) (hj : j < n) (hn : 0 < n) :
     linarith
 
 open Filter Topology in
+/-- **A Cesàro smallness estimate.** If `f` tends to `0`, then for every `η > 0` the partial
+sums `∑_{k=0}^{n} f k` are eventually at most `η * n`. -/
 theorem cesaro_small (f : ℕ → ℝ)
     (hf : Filter.Tendsto f Filter.atTop (nhds 0)) (η : ℝ) (hη : 0 < η) :
     ∀ᶠ n : ℕ in Filter.atTop, ∑ k ∈ Finset.range (n + 1), f k ≤ η * (n : ℝ) := by

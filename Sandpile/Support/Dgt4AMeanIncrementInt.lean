@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.SceneryBridge
+import Sandpile.Support.BlockIncrement
+
+/-!
+# Expectation of the odometer increment
+
 The expectation of the odometer increment at the origin is the increment of the mean
 odometer: the bridge `meanOdometer_eq` of `Support/SceneryBridge.lean` identifies the mean
 odometer with the integral of `odometerOf` under the i.i.d. scenery law, and the integral of
 a difference is the difference of the integrals.
 -/
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.BlockIncrement
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

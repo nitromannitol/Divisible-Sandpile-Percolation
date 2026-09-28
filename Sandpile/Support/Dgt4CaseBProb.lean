@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Dgt4CaseBReplace
+
+/-! # Case B Convergence in Probability
+
 The first half of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5383-5385`): "By \eqref{eq:dgt4-origin-fixed-mean} and Markov's
 inequality, $\E Pw_n(0)\sim\E u_n(0)/G(0,0)$ and $Pw_n(0)/\E Pw_n(0)\to1$ in
@@ -11,7 +14,6 @@ The second conclusion is the `hprob` hypothesis of the replacement theorem of
 deduction, with the centring `m_n` and the level `a_n` kept apart, since the paper
 centres at `\E Pw_n(0)` and divides by `\E u_n(0)/G(0,0)`.
 -/
-import Sandpile.Support.Dgt4CaseBReplace
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

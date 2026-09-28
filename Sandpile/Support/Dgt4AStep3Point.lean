@@ -1,8 +1,12 @@
-/-
-**Step 3 of case (a), the pointwise comparison** (`sandpile.tex:5201-5237`).
+import Sandpile.Support.Dgt4ATerminalDom
+import Sandpile.Support.Dgt4AConcBound
 
-At the conditioned level `-V_\infty(0)=a+\Sigma^2y/a` the paper reads the reflected
-increment `-\zeta(0)-Pu_n(0)` off two facts already in the repository: the identity
+/-!
+# Step 3 of case (a): the pointwise comparison
+
+Step 3 of case (a), the pointwise comparison (`sandpile.tex:5201-5237`). At the conditioned
+level `-V_\infty(0)=a+\Sigma^2y/a` the paper reads the reflected increment
+`-\zeta(0)-Pu_n(0)` off two facts already in the repository: the identity
 `eq:dgt4-gaussian-reflected-expression`
 
   `-\zeta(0)-Pu_n(0)=(-V_\infty(0)-a)+P(V_\infty-u_n+a)(0)`
@@ -10,10 +14,11 @@ increment `-\zeta(0)-Pu_n(0)` off two facts already in the repository: the ident
 (`neg_scenery_sub_avg_odometer_eq`), and the stopping comparison
 `eq:dgt4-gaussian-stopping-comparison`
 
-  `|P(V_\infty-u_n+a)(0)+\P_0(\tau_0^+\leq k)\,(-(V_\infty(0)+a))_+|\leq P^{k+1}|V_\infty-u_{n-k}+a|(0)`
+  `|P(V_\infty-u_n+a)(0)+\P_0(\tau_0^+\leq k)\,(-(V_\infty(0)+a))_+|
+     \leq P^{k+1}|V_\infty-u_{n-k}+a|(0)`
 
 (`abs_avg_infiniteGreenField_stop_compare`), valid at every residual where the payoff
-`V_\infty+a` is nonnegative on the punctured box of radius `k+1`.  Since the level fixes
+`V_\infty+a` is nonnegative on the punctured box of radius `k+1`. Since the level fixes
 `-(V_\infty(0)+a)=\Sigma^2y/a`, multiplying by `a/\Sigma^2` turns the two into
 
   `|\frac{a}{\Sigma^2}(-\zeta(0)-Pu_n(0))-(y-\P_0(\tau_0^+\leq k)\max(y,0))|
@@ -21,14 +26,10 @@ increment `-\zeta(0)-Pu_n(0)` off two facts already in the repository: the ident
 
 which is the whole of Step 3 in one inequality: the left term is what Step 4 integrates,
 the middle term tends to `y-(1-G(0,0)^{-1})\max(y,0)` by `tendsto_avg_srwHitBy`, and the
-right term tends to zero in conditional mean by Step 2.
-
-Terminal domination (`eq:dgt4-gaussian-terminal-domination`) gives the companion one-sided
-bound with no hypothesis on the payoff at all, which is what dominates the integrand of
-Step 4.
+right term tends to zero in conditional mean by Step 2. Terminal domination
+(`eq:dgt4-gaussian-terminal-domination`) gives the companion one-sided bound with no
+hypothesis on the payoff at all, which is what dominates the integrand of Step 4.
 -/
-import Sandpile.Support.Dgt4ATerminalDom
-import Sandpile.Support.Dgt4AConcBound
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -43,6 +44,8 @@ noncomputable def condReflected (d : ℕ) (hd : 5 ≤ d) (c s : ℝ) (t : ℕ)
     (r : Site d → ℝ) : ℝ :=
   -(condScenery d hd c r s) 0 - avg (odometerOf (condScenery d hd c r s) t) 0
 
+/-- `condReflected` is measurable in the residual `r`, being built from the measurable maps
+`condScenery` and `odometerOf` by coordinate projection, negation, addition and division. -/
 theorem measurable_condReflected (hd : 5 ≤ d) (c s : ℝ) (t : ℕ) :
     Measurable (condReflected d hd c s t) := by
   have hcs : Measurable (fun r : Site d → ℝ => condScenery d hd c r s) :=

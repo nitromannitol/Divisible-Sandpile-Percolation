@@ -1,5 +1,9 @@
-/-
-`eq:dgt4-mean-gradient-approximation` of `lem:dgt4-linearization-from-survival`
+import Sandpile.Support.LinSurvivalMeas
+
+/-!
+# `eq:dgt4-mean-gradient-approximation` of `lem:dgt4-linearization-from-survival`
+
+This module proves `eq:dgt4-mean-gradient-approximation`
 (`sandpile.tex:5680-5695`):
 
   "$R^{-2}\sum_{z\in\Z^d}\left|\E[\partial_{\zeta(z)}u_{n_R}(0)]
@@ -10,15 +14,14 @@
 
 The identity behind it is `eq:odometer-derivative`, which writes the coordinate
 derivative along a path as the sum over the times of the visit indicators weighted
-by the survival indicator.  Taking the expectation over the scenery and over the
+by the survival indicator. Taking the expectation over the scenery and over the
 path in the other order is the Fubini exchange proved here; it rests on the joint
 measurability of `Support/LinSurvivalMeas.lean` and on nothing else, since the
-survival indicator is bounded by one.  The triangle inequality is then
+survival indicator is bounded by one. The triangle inequality is then
 `tsum_abs_sum_indicator_integral_le` of `Support/LinMeanGradient.lean` applied to
 the path functionals `P(S_{n,j}(X)=1|X) - q_j`, and the profile term is the heat
 kernel through `integral_indicator_sub_const`.
 -/
-import Sandpile.Support.LinSurvivalMeas
 
 open LatticeProb.Fubini
 
@@ -32,23 +35,33 @@ variable {d : ℕ}
 noncomputable def survivalInd (σ : Site d → ℝ) (n j : ℕ) (X : ℕ → Site d) : ℝ :=
   Set.indicator {Y : ℕ → Site d | ∀ r ≤ j, 0 < odometer σ (n - r) (Y r)} (fun _ => (1 : ℝ)) X
 
+/-- `survivalInd σ n j` is measurable as a function of the path, by joint measurability of
+`measurable_uncurry_survival` at the fixed scenery `σ`. -/
 theorem measurable_survivalInd_path (σ : Site d → ℝ) (n j : ℕ) :
     Measurable (fun X : ℕ → Site d => survivalInd σ n j X) :=
   (measurable_uncurry_survival n j).comp (measurable_const.prodMk measurable_id)
 
+/-- `survivalInd · n j X` is measurable as a function of the scenery, by joint measurability of
+`measurable_uncurry_survival` at the fixed path `X`. -/
 theorem measurable_survivalInd_scenery (n j : ℕ) (X : ℕ → Site d) :
     Measurable (fun σ : Site d → ℝ => survivalInd σ n j X) :=
   (measurable_uncurry_survival n j).comp (measurable_id.prodMk measurable_const)
 
+/-- The survival indicator `survivalInd` is bounded by one in absolute value, restating
+`abs_survival_le_one` in this module's vocabulary. -/
 theorem abs_survivalInd_le_one (σ : Site d → ℝ) (n j : ℕ) (X : ℕ → Site d) :
     |survivalInd σ n j X| ≤ 1 := abs_survival_le_one σ n j X
 
+/-- The time-`j` visit indicator, weighted by the survival indicator, is measurable in the
+path. -/
 theorem measurable_visit_survivalInd_path (σ : Site d → ℝ) (n j : ℕ) (z : Site d) :
     Measurable (fun X : ℕ → Site d => (if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X) := by
   classical
   exact (Measurable.ite (measurableSet_path_eq (d := d) j z) measurable_const
     measurable_const).mul (measurable_survivalInd_path σ n j)
 
+/-- The visit-weighted survival indicator is bounded by one in absolute value, since both
+factors are. -/
 theorem abs_visit_survivalInd_le_one (σ : Site d → ℝ) (n j : ℕ) (z : Site d) (X : ℕ → Site d) :
     |(if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X| ≤ 1 := by
   rw [abs_mul]
@@ -56,6 +69,8 @@ theorem abs_visit_survivalInd_le_one (σ : Site d → ℝ) (n j : ℕ) (z : Site
   have h2 := abs_survivalInd_le_one σ n j X
   nlinarith [abs_nonneg ((if X j = z then (1 : ℝ) else 0)), abs_nonneg (survivalInd σ n j X)]
 
+/-- The visit-weighted survival indicator is integrable along the walk, from its measurability
+and the pointwise bound `abs_visit_survivalInd_le_one`. -/
 theorem integrable_visit_survivalInd_path [NeZero d] (σ : Site d → ℝ) (n j : ℕ) (z : Site d) :
     Integrable (fun X : ℕ → Site d => (if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X)
       (walkLaw d 0) := by
@@ -65,6 +80,8 @@ theorem integrable_visit_survivalInd_path [NeZero d] (σ : Site d → ℝ) (n j 
   rw [Real.norm_eq_abs]
   exact abs_visit_survivalInd_le_one σ n j z X
 
+/-- The visit-weighted survival indicator, at a fixed path, is integrable in the scenery, from
+its measurability and the pointwise bound `abs_visit_survivalInd_le_one`. -/
 theorem integrable_visit_survivalInd_scenery (μ : Measure (Site d → ℝ))
     [IsProbabilityMeasure μ] (n j : ℕ) (z : Site d) (X : ℕ → Site d) :
     Integrable (fun σ : Site d → ℝ => (if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X)
@@ -102,6 +119,8 @@ theorem pathOdometerDerivative_eq_sum_survivalInd (σ : Site d → ℝ) (n : ℕ
       = ∑ j ∈ Finset.range n, (if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X :=
   pathOdometerDerivative_eq_sum_survival σ n z X
 
+/-- The path integral of the visit-weighted survival indicator is bounded by one, since the
+integrand itself is (`abs_visit_survivalInd_le_one`). -/
 theorem norm_integral_visit_survivalInd_le [NeZero d] (σ : Site d → ℝ) (n j : ℕ) (z : Site d) :
     ‖∫ X, (if X j = z then (1 : ℝ) else 0) * survivalInd σ n j X ∂(walkLaw d 0)‖ ≤ 1 := by
   rw [Real.norm_eq_abs]
@@ -112,6 +131,9 @@ theorem norm_integral_visit_survivalInd_le [NeZero d] (σ : Site d → ℝ) (n j
           (fun X => abs_visit_survivalInd_le_one σ n j z X)
     _ = 1 := by simp
 
+/-- The scenery function `σ ↦ ∫ X, (visit-weighted survival indicator) ∂(walkLaw d 0)` is
+`μ`-integrable, from joint measurability of the integrand and the pointwise bound
+`norm_integral_visit_survivalInd_le`. -/
 theorem integrable_integral_visit_survivalInd [NeZero d] (μ : Measure (Site d → ℝ))
     [IsProbabilityMeasure μ] (n j : ℕ) (z : Site d) :
     Integrable (fun σ : Site d → ℝ =>
@@ -163,6 +185,8 @@ theorem measurable_integral_survivalInd (μ : Measure (Site d → ℝ)) [SFinite
     (measurable_uncurry_survival n j).comp measurable_swap
   exact (hswap.stronglyMeasurable.integral_prod_right' (ν := μ)).measurable
 
+/-- The scenery integral of the survival indicator is bounded by one, since the indicator
+itself is (`abs_survivalInd_le_one`). -/
 theorem abs_integral_survivalInd_le_one (μ : Measure (Site d → ℝ)) [IsProbabilityMeasure μ]
     (n j : ℕ) (X : ℕ → Site d) : |∫ σ, survivalInd σ n j X ∂μ| ≤ 1 := by
   refine abs_integral_le_integral_abs.trans ?_
@@ -176,6 +200,8 @@ theorem abs_integral_survivalInd_le_one (μ : Measure (Site d → ℝ)) [IsProba
           (integrable_const 1) (fun σ => abs_survivalInd_le_one σ n j X)
     _ = 1 := by simp
 
+/-- The scenery-averaged survival probability, minus a constant `c`, is integrable along the
+walk, from the pointwise bound `abs_integral_survivalInd_le_one`. -/
 theorem integrable_integral_survivalInd_sub [NeZero d] (μ : Measure (Site d → ℝ))
     [IsProbabilityMeasure μ] (n j : ℕ) (c : ℝ) :
     Integrable (fun X : ℕ → Site d => (∫ σ, survivalInd σ n j X ∂μ) - c) (walkLaw d 0) := by
@@ -237,6 +263,9 @@ theorem summable_abs_meanGradient_sub [NeZero d] (hd : 1 ≤ d) (μ : Measure (S
   exact Finset.sum_congr rfl fun z _ => by
     rw [sum_indicator_survivalInd_sub_eq hd μ n q z]
 
+/-- The unordered analogue of `summable_abs_meanGradient_sub`: the actual sum over sites of the
+mean-gradient deviation is bounded by the same total survival-probability deviation, via
+`tsum_abs_sum_indicator_integral_le`. -/
 theorem tsum_abs_meanGradient_sub_le [NeZero d] (hd : 1 ≤ d) (μ : Measure (Site d → ℝ))
     [IsProbabilityMeasure μ] (n : ℕ) (q : ℕ → ℝ) :
     ∑' z : Site d, |(∫ σ, odometerJacobian (scenery d σ) n 0 z ∂μ)

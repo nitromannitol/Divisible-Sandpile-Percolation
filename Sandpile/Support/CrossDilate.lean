@@ -1,25 +1,28 @@
-/-
-The geometric half of `eq:rescaled-crossing-estimate` (`sandpile.tex:2404-2413`):
-a crossing of a rectangle by a superlevel set of a field is the same thing as a
-crossing of the dilated rectangle by the superlevel set of the dilated field.
-
-  "Indeed, if `R = h/s`, then the event in `eq:rescaled-crossing-estimate` has
-   the same probability as `H_{[-(a/h)R,(a/h)R]×[0,2R]}(Lh/R)`."
-
-That sentence is the change of variables `u = s w` applied to the crossing
-event.  Here it is proved as a statement about the events themselves, in both
-directions, so nothing about the law of the field is used: a dilation of the
-plane is a homeomorphism, it carries a compact connected subset of a rectangle
-to a compact connected subset of the dilated rectangle, and it carries the
-superlevel set of `f` to the superlevel set of `w ↦ f(a⁻¹ w)`.
-
-What this does NOT do is compare the probabilities of the two events, which is
-where the scaling in law of `Sandpile/Support/CrossBallScaleLaw.lean` enters, and
-which has to pass through the chain events of
-`Sandpile/Support/CrossUnion.lean` because a crossing event is not known to be
-measurable.
--/
 import Sandpile.Support.CrossBallScaleLaw
+
+/-!
+# Dilating a crossing event
+
+The geometric half of `eq:rescaled-crossing-estimate` (`sandpile.tex:2404-2413`): a
+crossing of a rectangle by a superlevel set of a field is the same thing as a crossing of
+the dilated rectangle by the superlevel set of the dilated field.
+
+  "Indeed, if `R = h/s`, then the event in `eq:rescaled-crossing-estimate` has the same
+   probability as `H_{[-(a/h)R,(a/h)R]×[0,2R]}(Lh/R)`."
+
+That sentence is the change of variables `u = s w` applied to the crossing event. Here it
+is proved as a statement about the events themselves, in both directions
+(`crosses_smul_level` and its converse `crosses_of_smul_level`, built from `crosses_smul`
+and `image_smul_setOf`), so nothing about the law of the field is used: a dilation of the
+plane is a homeomorphism, it carries a compact connected subset of a rectangle to a compact
+connected subset of the dilated rectangle, and it carries the superlevel set of `f` to the
+superlevel set of `w ↦ f(a⁻¹ w)`.
+
+What this does NOT do is compare the probabilities of the two events, which is where the
+scaling in law of `Sandpile/Support/CrossBallScaleLaw.lean` enters, and which has to pass
+through the chain events of `Sandpile/Support/CrossUnion.lean` because a crossing event is
+not known to be measurable.
+-/
 
 open MeasureTheory Set
 

@@ -1,12 +1,15 @@
-/-
+import Sandpile.Support.Dgt4AIterateLip
+import Sandpile.Support.Dgt4ATailKernel
+
+/-!
+# The `j`-step Lipschitz bound with the tail kernel
+
 The `j`-step Lipschitz bound of Step 1 of case (a) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5063-5065`), in the form the paper uses: changing `\zeta(z)` by `h>0` changes
-`P^j(V_\infty-u_n)(0)` by at most `h\sum_{r\geq j}p_r(0,z)`.  The `j`-step average of the
+`P^j(V_\infty-u_n)(0)` by at most `h\sum_{r\geq j}p_r(0,z)`. The `j`-step average of the
 Green function at `z` is the tail kernel `\sum_{r\geq j}p_r(0,z)`, so the bound is the
 `j`-step Lipschitz bound with that coefficient.
 -/
-import Sandpile.Support.Dgt4AIterateLip
-import Sandpile.Support.Dgt4ATailKernel
 
 open MeasureTheory Filter Topology Set
 

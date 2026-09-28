@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.KillRep
+import Sandpile.Support.ExplKilledValue
+import Sandpile.Frozen.MeanLocalization
+import Sandpile.External.LocalCLT
+
+/-!
+# Killed optimal-stopping value stability on a cube
+
 External input: the stability of KILLED optimal-stopping values under uniform
 convergence of bounded rewards, together with the invariance principle for the
 killed stopped walk, in the form `rem:dlt4-killed-scaling` cites it.
@@ -36,10 +43,6 @@ half-width `1`, the supremum over the stopping rules which have not left
 uniform convergence, the compact set of starting points, the two horizons and the
 quantifier order are unchanged.
 -/
-import Sandpile.Support.KillRep
-import Sandpile.Support.ExplKilledValue
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.External.LocalCLT
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,34 +1,38 @@
-/-
-The connectors Step 2 of `lem:dgt4-path-survival` needs between the paper's data and the
-one-path chain (`sandpile.tex:5529-5571`).
+import Sandpile.Support.LinStep2Profile
+import Sandpile.Support.LinStep1Bridge
+import Sandpile.Support.LinThresholdNull
+
+/-!
+# Four connectors between the paper's Step 2 data and the one-path chain
+
+This module proves the connectors Step 2 of `lem:dgt4-path-survival` needs between the paper's
+data and the one-path chain (`sandpile.tex:5529-5571`).
 
 Four are recorded here.
 
 `measureReal_le_eq_one_sub` is the complement identity the paper writes as
-`\P(J(0)\leq b)=1-\pi`.  The threshold event of the Gaussian branch is only NULL measurable,
+`\P(J(0)\leq b)=1-\pi`. The threshold event of the Gaussian branch is only NULL measurable,
 since the Green field is defined by a case split on the existence of the box limit, so the
-identity is read through `measure_compl₀`; `nullMeasurableSet_threshold_field` supplies the
+identity is read through `measure_compl₀`; `nullMeasurableSet_threshold_indep` supplies the
 null measurability in the independent branch, and `Support/LinThresholdNull.lean` in
 the Gaussian one.
 
-`weight_ge_of_abs_le` is the lower half of the weight asymptotic `\pi_{R,r}=G(0,0)\kappa/(n_R-r)(1+o(1))`,
-the companion of `weight_le_of_abs_le`; Step 1 needs it because the normal comparison
-inequality is applied only to levels whose tail is between `1/(KR^2)` and `K/R^2`.
+`weight_ge_of_abs_le` is the lower half of the weight asymptotic
+`\pi_{R,r}=G(0,0)\kappa/(n_R-r)(1+o(1))`, the companion of `weight_le_of_abs_le`; Step 1 needs it
+because the normal comparison inequality is applied only to levels whose tail is between
+`1/(KR^2)` and `K/R^2`.
 
 `sqrt_le_of_gauss_tail_lt` removes the remaining level hypothesis of Step 1: a level whose
 Gaussian tail is below `e^{-2}/\sqrt{2\pi}` is at least one standard deviation, because the
-tail at one standard deviation is at least that number.  With it,
+tail at one standard deviation is at least that number. With it,
 `eventually_gauss_path_factorization_tails` is Step 1 with the two tail bounds alone.
 
 `stepLevel` is the paper's level `b_r=\E u_{n-r-1}(0)` of `sandpile.tex:5532`, clamped at the
-path length `j`.  The clamp changes nothing for `r\leq j`, which is the only range the
+path length `j`. The clamp changes nothing for `r\leq j`, which is the only range the
 threshold replacement and the weight asymptotic use, and it makes every level of every index
 of `ℕ` lie between `\E u_{n-j-1}(0)` and `\E u_{n-1}(0)`, which is what makes the tail bounds
 Step 1 asks for hold at EVERY index rather than only along the last visits.
 -/
-import Sandpile.Support.LinStep2Profile
-import Sandpile.Support.LinStep1Bridge
-import Sandpile.Support.LinThresholdNull
 
 open LatticeProb.GaussTail
 

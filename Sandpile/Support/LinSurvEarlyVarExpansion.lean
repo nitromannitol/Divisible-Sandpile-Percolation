@@ -1,15 +1,16 @@
-/-
-The expansion identity of `eq:dgt4-early-derivative-variance` over `walkPairLaw`
-(`sandpile.tex:5731-5753`), the first open piece of `eq:dgt4-derivative-variance-limit`.
-
-The site sum of the scenery variances of the early derivative `D^{≤}_{R,z}` is the
-double walk average of the intersection indicator against the conditional covariance
-of the two survivals.
--/
 import Sandpile.Support.LinEarlyVarDefs
 import Sandpile.Support.LinEarlyVarSite
 import Sandpile.Support.LinEarlyVarSum
 import Sandpile.Support.LinEarlyVarIntegrable
+
+/-!
+# The early-derivative variance expansion over `walkPairLaw`
+
+The expansion identity of `eq:dgt4-early-derivative-variance` over `walkPairLaw`
+(`sandpile.tex:5731-5753`), the first open piece of `eq:dgt4-derivative-variance-limit`. The
+site sum of the scenery variances of the early derivative `D^{≤}_{R,z}` is the double walk
+average of the intersection indicator against the conditional covariance of the two survivals.
+-/
 
 open MeasureTheory ProbabilityTheory
 

@@ -1,22 +1,17 @@
-/-
-The multilinear interpolation from the parabolic mesh `R^{-1}ℤ^d`, and the four
-facts about it that Theorem 1.3(i)(b) needs.
-
-The field of Theorem 1.3(i)(b) (`sandpile.tex:217-235`) is the interpolation
-from the mesh, not the piecewise-constant embedding `f^{(R)}` of every other
-clause; the paper flags the exception just before the theorem.  The definition
-lives here rather than beside the theorem because the support chain that proves
-the theorem must be able to name it without importing the file that states the
-theorem.
-
-The weights `∏_i (fract or 1 - fract)` sum to one over the `2^d` corners, which
-is the statement that the interpolation of a constant field is that constant;
-the interpolation is linear in the field; and at a mesh point every fractional
-part vanishes, so only the corner `ε = 0` survives and the interpolation returns
-the value of the field at that mesh point.
--/
 import Sandpile.Law
 import Sandpile.Continuum.Sobolev
+
+/-!
+# Multilinear interpolation from the parabolic mesh
+
+`multilinearInterp` interpolates a lattice field `f : Site d → ℝ` from the mesh `R⁻¹ℤ^d`
+by the multi-affine combination of the values of `f` at the `2^d` corners of the enclosing
+cell, with weights the products of coordinatewise fractional parts (`Int.fract`). These
+weights are nonnegative and sum to `1`, so the interpolation of a constant field is that
+constant, the interpolation is linear in `f`, and at a mesh point it recovers the value of
+`f` there exactly. The interpolation is also bounded by the sup norm of `f`, and locally by
+the largest of the `2^d` corner values.
+-/
 
 namespace Sandpile.Continuum
 

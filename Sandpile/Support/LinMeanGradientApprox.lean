@@ -1,19 +1,22 @@
-/-
+import Sandpile.Support.LinMeanGradient
+import Sandpile.Support.LinSurvivalGradient
+
+/-! # Mean Gradient Approximation
+
 `eq:dgt4-mean-gradient-approximation`, the first display of Step 1 of
 `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5695`).
 
 By `eq:odometer-derivative` the coordinate derivative of the odometer along a path is
 `\sum_{j<n}\one_{\{X_j=z\}}S_{n,j}(X)`, so the mean gradient at `z` is
 `\sum_{j<n}\mathbf E_0[\one_{\{X_j=z\}}\P(S_{n,j}(X)=1\mid X)]`, and its difference from
-`\sum_{j<n}q_{R,j}p_j(0,z)` is `\sum_{j<n}\mathbf E_0[\one_{\{X_j=z\}}(\P(S_{n,j}(X)=1\mid X)-q_{R,j})]`.
+`\sum_{j<n}q_{R,j}p_j(0,z)` is
+`\sum_{j<n}\mathbf E_0[\one_{\{X_j=z\}}(\P(S_{n,j}(X)=1\mid X)-q_{R,j})]`.
 Summing the absolute values over the sites costs nothing, because at a fixed time the indicators
 `\one_{\{X_j=z\}}` are disjoint in `z`; that is the bound of `Support/LinMeanGradient.lean`.
 What is added here is the identification of the two ends: the order of the two integrals is
 exchanged by `Support/LinSurvivalGradient.lean`, and the constant part of the summand is the
 heat kernel.
 -/
-import Sandpile.Support.LinMeanGradient
-import Sandpile.Support.LinSurvivalGradient
 
 open MeasureTheory Filter Topology
 

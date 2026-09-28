@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.MeanAGauss
+import Sandpile.Support.ExplFieldEvent
+import LatticeProb.Prob.ChentsovPiModification
+
+/-! # Kolmogorov continuity of the Gaussian heat potential
+
 The Kolmogorov condition of the Gaussian heat potential on a time strip.
 
 The frozen statements of `ssec:scaling-dlt4` quantify over a field `Z` that is a
@@ -16,9 +21,6 @@ clamped to the strip so that the condition holds at every pair of points of
 it does not spoil the bound, and it is the identity on the strip, so the field it
 produces is the potential there.
 -/
-import Sandpile.Support.MeanAGauss
-import Sandpile.Support.ExplFieldEvent
-import LatticeProb.Prob.ChentsovPiModification
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -32,14 +34,18 @@ variable {d : ℕ}
 /-- The time clamped to the strip `[0,T]`. -/
 noncomputable def clampTimeK (T t : ℝ) : ℝ := max 0 (min t T)
 
+/-- `clampTimeK T t` is always nonnegative, being an outer `max` against `0`. -/
 theorem clampTimeK_nonneg (T t : ℝ) : 0 ≤ clampTimeK T t := le_max_left _ _
 
+/-- `clampTimeK T t` never exceeds `T`, provided `T` itself is nonnegative. -/
 theorem clampTimeK_le {T : ℝ} (hT : 0 ≤ T) (t : ℝ) : clampTimeK T t ≤ T :=
   max_le hT (min_le_right _ _)
 
+/-- `clampTimeK T t` lies in `[0,T]`, combining `clampTimeK_nonneg` and `clampTimeK_le`. -/
 theorem clampTimeK_mem {T : ℝ} (hT : 0 ≤ T) (t : ℝ) : clampTimeK T t ∈ Set.Icc (0 : ℝ) T :=
   ⟨clampTimeK_nonneg T t, clampTimeK_le hT t⟩
 
+/-- `clampTimeK T` is the identity on `t` already inside `[0,T]`. -/
 theorem clampTimeK_eq_self {T t : ℝ} (ht : 0 ≤ t) (htT : t ≤ T) : clampTimeK T t = t := by
   rw [clampTimeK, min_eq_left htT, max_eq_right ht]
 

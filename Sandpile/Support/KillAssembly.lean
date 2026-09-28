@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.KillStability
+import Sandpile.Support.ExplValueGap
+import Sandpile.Support.ExplCutoffError
+
+/-!
+# Assembling the killed two-term bound
+
 The assembly of `rem:dlt4-killed-scaling`, in the shape of the four-term bound of the
 proof of Theorem 1.3(i)(b) (`Sandpile.abs_rescaled_odometer_sub_brownianValue_le`) with
 its two cutoff errors removed.
@@ -17,9 +23,6 @@ cited stability input: at a lattice point the rescaled position is a mesh point,
 interpolated field returns the mesh field there, and the cutoff is one at every site the
 killed walk can occupy.
 -/
-import Sandpile.Support.KillStability
-import Sandpile.Support.ExplValueGap
-import Sandpile.Support.ExplCutoffError
 
 open MeasureTheory
 open scoped NNReal

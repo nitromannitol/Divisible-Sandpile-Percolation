@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Kernel
+
+/-!
+# Heat-kernel bounds for simple random walk
+
 External input: the heat-kernel estimates for simple random walk collected in
 `ssec:green-estimates` of `sandpile.tex`.  The paper does not prove them; it
 records at `sandpile.tex:1117-1122` that
@@ -53,7 +57,6 @@ right-hand side.  The thresholds `1 ≤ n` and `1 ≤ R` are the paper's, and th
 keep the real powers `n^{-d/2}` and `n^{-1/2}` and the quotients `|x-y|^2/n`
 and `R^2/n` away from a zero base or a zero denominator.
 -/
-import Sandpile.Support.Kernel
 
 open MeasureTheory
 open scoped ENNReal

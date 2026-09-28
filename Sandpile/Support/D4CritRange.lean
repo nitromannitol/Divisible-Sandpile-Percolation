@@ -1,13 +1,15 @@
-/-
-The finite dependence range of the good-block process of the dimension-four
-percolation argument (`sandpile.tex:3989-3995`): by
-`lem:d4-finite-range-lower-bound` the block field at a site is measurable with
-respect to the scenery in a box of radius proportional to `r` about that site,
-so the good block at a coarse site reads only the scenery in one box about the
-block, and blocks far apart in the coarse lattice read disjoint boxes.
--/
 import Sandpile.Support.D4CritLSS
 import LatticeProb.Prob.Blocks
+
+/-!
+# Finite dependence range of the good-block process
+
+The finite dependence range of the good-block process of the dimension-four percolation argument
+(`sandpile.tex:3989-3995`): by `lem:d4-finite-range-lower-bound` the block field at a site is
+measurable with respect to the scenery in a box of radius proportional to `r` about that site, so
+the good block at a coarse site reads only the scenery in one box about the block, and blocks far
+apart in the coarse lattice read disjoint boxes.
+-/
 
 open MeasureTheory ProbabilityTheory
 

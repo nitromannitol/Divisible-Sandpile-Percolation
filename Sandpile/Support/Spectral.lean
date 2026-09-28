@@ -1,14 +1,17 @@
-/-
-The covariance matrix at the geometric scales is nearly isotropic.
-
-The diagonal of the correlation matrix is one, its rows carry off-diagonal mass
-at most `12 C q^{-1/4}`, and the Schur test turns that into the two-sided bound
-on the quadratic form that the Gaussian persistence estimate of
-`sandpile.tex:1745-1758` needs.  The ratio `q^{-1/4}` can be made as small as
-one likes, so the tolerance is whatever the persistence estimate asks for.
--/
 import Sandpile.Support.CorrelationRow
 import Sandpile.Support.GaussPersist
+
+/-!
+# The covariance matrix at the geometric scales is nearly isotropic
+
+The covariance matrix at the geometric scales is nearly isotropic.
+
+The diagonal of the correlation matrix is one, its rows carry off-diagonal mass at most
+`12 C q^{-1/4}`, and the Schur test turns that into the two-sided bound on the quadratic form
+that the Gaussian persistence estimate of `sandpile.tex:1745-1758` needs. The ratio `q^{-1/4}`
+can be made as small as one likes, so the tolerance is whatever the persistence estimate asks
+for.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.External.BerryEsseen
@@ -17,6 +20,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The Gram matrix of the standardized coefficients has unit diagonal: `gram ν (stdCoeff ...)
+j j = 1`, since the numerator `∑' z, greenTime d (ns j) 0 z ^ 2` is exactly `greenSq d (ns j)`,
+matching the normalizing square root in the denominator. -/
 theorem gram_stdCoeff_diag (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ → ℝ) ν)
     {s : Finset (Site d)} {m : ℕ} {ns : Fin m → ℕ} (hns : ∀ j, 1 ≤ ns j)
     (hsub : ∀ j, boxFinset (0 : Site d) (ns j) ⊆ s) (j : Fin m) :

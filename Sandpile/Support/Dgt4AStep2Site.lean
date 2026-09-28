@@ -1,15 +1,17 @@
-/-
-The stationarity input of Step 2 of case (a) (`sandpile.tex:5104-5107`): the mean of
-`|V_\infty-u_m+c|` does not depend on the site.
-
-Translating the scenery by `y` is measure preserving, and it carries the odometer at the
-origin to the odometer at `y` (`Support/Stationary.lean`).  The Green field is carried the
-same way, but only almost surely: the box exhaustion of `eq:dgt4-infinite-green-field` is
-centred at the origin, so the translated field is the limit along a translated exhaustion
-and the two limits agree on the almost sure agreement set of `Support/LinGaussShift.lean`.
--/
 import Sandpile.Support.LinGaussShift
 import Sandpile.Support.Dgt4AValueMemLp
+
+/-!
+# Site-independence of the case (a) stationarity input
+
+The stationarity input of Step 2 of case (a) (`sandpile.tex:5104-5107`): the mean of
+`|V_\infty-u_m+c|` does not depend on the site. Translating the scenery by `y` is measure
+preserving, and it carries the odometer at the origin to the odometer at `y`
+(`Support/Stationary.lean`). The Green field is carried the same way, but only almost surely: the
+box exhaustion of `eq:dgt4-infinite-green-field` is centred at the origin, so the translated field
+is the limit along a translated exhaustion and the two limits agree on the almost sure agreement
+set of `Support/LinGaussShift.lean`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

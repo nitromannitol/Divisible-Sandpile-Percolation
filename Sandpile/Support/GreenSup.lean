@@ -1,17 +1,17 @@
-/-
-The supremum of the truncated Green kernel in dimensions one to three.
-
-`thm:critical-toppling` normalizes the membrane field by its own standard
-deviation, and the third absolute moment of the resulting coefficients is
-controlled by `sup_x g_n(0,x)` against `∑_x g_n(0,x)^2`.  The supremum grows
-like `√n` in dimension one, like `1 + log n` in dimension two, and is bounded in
-dimension three; all three come from the on-diagonal bound
-`p_k(x,y) ≤ C k^{-d/2}` summed over `k < n`.
--/
 import Sandpile.Support.Kernel
 import Sandpile.External.VarianceScaleProved
 import LatticeProb.Walk.SRWSup
 import LatticeProb.Walk.Series
+
+/-!
+# The supremum of the truncated Green kernel in dimensions one to three
+
+`thm:critical-toppling` normalizes the membrane field by its own standard deviation, and the
+third absolute moment of the resulting coefficients is controlled by `sup_x g_n(0,x)` against
+`∑_x g_n(0,x)^2`. The supremum grows like `√n` in dimension one, like `1 + log n` in dimension
+two, and is bounded in dimension three; all three come from the on-diagonal bound
+`p_k(x,y) ≤ C k^{-d/2}` summed over `k < n`.
+-/
 
 namespace Sandpile
 
@@ -83,6 +83,8 @@ theorem greenTime_le_one_add_sum (hd : 1 ≤ d) (n : ℕ) (x y : Site d) :
 noncomputable def greenSupRate (d n : ℕ) : ℝ :=
   if d = 1 then Real.sqrt (n : ℝ) else if d = 2 then 1 + Real.log (n : ℝ) else 1
 
+/-- `greenSupRate d n` is nonnegative in every dimension, by cases on which of the three
+branches of its definition applies. -/
 theorem greenSupRate_nonneg (d n : ℕ) : 0 ≤ greenSupRate d n := by
   unfold greenSupRate
   split

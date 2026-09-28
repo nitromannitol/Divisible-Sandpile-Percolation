@@ -1,28 +1,3 @@
-/-
-The walk value at a translated starting site.
-
-The remaining estimate of `thm:main-explosion`(i)(b) is the oscillation of the
-rescaled odometer between two nearby lattice sites: clause 1 needs it to pass
-from the lattice value at `⌊Rx⌋`, which the coupling controls, to the multilinear
-interpolation at `x`, which is the convex combination of the values at the `2^d`
-corners of the cell; clause 2 is that oscillation at mesh distance `δR`.
-
-The exact identity of `sandpile.tex:1881-1890` splits the rescaled odometer at a
-site into the interpolated field there and the walk value there, and the field's
-oscillation is the equicontinuity clause of
-`prop:dlt4-heat-potential-invariance`.  What is left is the walk value's
-dependence on its STARTING SITE, and the lattice has what the Brownian side does
-not: the walk started at `x + y` is the walk started at `x` translated by `y`
-(`Sandpile.measurePreserving_pathTranslate`).  So the value at `x + y` is
-the value at `x` at the TRANSLATED reward, and since the value is 1-Lipschitz in
-the reward the two differ by at most the sup-norm oscillation of the reward under
-that translation, which for the cut-off reward of the proof is the equicontinuity
-of the field on a compact set again.
-
-This is where the two sides part company: `IsBrownian` relates the motions
-started at two different points in no way at all, so the Brownian value has no
-such identity; the lattice value does.
--/
 import Sandpile.Support.MainExplWalkValue
 import Sandpile.Support.ExplStability
 import Sandpile.Support.D4CritStationary
@@ -33,6 +8,20 @@ import Sandpile.Frozen.HeatPotentialInvariance
 import Sandpile.Support.MainExplAnnulus
 import Sandpile.Support.ExplWalkCutoff
 import Sandpile.External.HeatKernelBoundsProved
+
+/-!
+# The walk value at a translated starting site, and the oscillation of the odometer
+
+This proves the remaining estimate needed for the odometer's parabolic scaling limit: the
+oscillation of the rescaled odometer between two nearby lattice sites at unit lattice
+separation. The exact identity splitting the rescaled odometer at a site into the interpolated
+field there plus the walk value there reduces this to the field's oscillation, which is an
+equicontinuity clause supplied elsewhere, and to the walk value's dependence on its starting
+site. On the lattice, unlike for Brownian motion, the walk started at `x + y` is exactly the
+walk started at `x` translated by `y`, so the value at `x + y` is the value at `x` evaluated at
+the translated reward, and since the value is `1`-Lipschitz in the reward, translating the
+starting site moves the value by at most the oscillation of the reward under that translation.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped NNReal ENNReal
@@ -216,6 +205,11 @@ theorem abs_cutoff_sub_le (A : ℝ) (hA : 0 < A) (w w' : Space d) :
 
 end Continuum
 
+/-- **The oscillation of the cutoff-weighted mesh field between two lattice sites at unit
+lattice separation.** The cutoff factor changes by at most its Lipschitz constant `1/A` times
+the continuum-scaled separation `√d/R`, and the mesh field itself changes by at most `ε₀`;
+splitting the difference of the two products along these two changes bounds it by
+`√d/(RA) · M + ε₀`. -/
 theorem abs_cutoff_meshValue_translate_sub_le
     (hd : 1 ≤ d) (R : ℝ) (hR : 1 ≤ R) (A : ℝ) (hA : 0 < A)
     (ζ : Site d → ℝ) (n : ℕ) (e : Site d) (he : ∀ i, |e i| ≤ 1)
@@ -310,7 +304,8 @@ theorem abs_cutoff_meshValue_translate_sub_le
                 + Frozen.HeatPotentialInvariance.meshValue d R ζ n z|
           ≤ 1 * ε₀ := mul_le_mul h3 h4 (abs_nonneg _) zero_le_one
         _ = ε₀ := one_mul ε₀
-    have hsum := abs_add_le ((Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R (e + z))
+    have hsum := abs_add_le
+          ((Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R (e + z))
             - Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z)) *
             (-Frozen.HeatPotentialInvariance.meshValue d R ζ n (e + z)))
           (Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) *
@@ -337,6 +332,11 @@ theorem abs_cutoff_meshValue_translate_sub_le
     positivity
 
 set_option maxHeartbeats 1600000 in
+/-- **The oscillation of the rescaled odometer between two lattice sites at unit lattice
+separation `e`,** the estimate clause 1 of `thm:main-explosion`(i)(b) needs: with probability
+at least `1 - δ`, the difference `R^(d/2-2)(u_{⌊TR²⌋}(y+e) - u_{⌊TR²⌋}(y))` stays below any
+prescribed accuracy `ε`, uniformly over `y` in a box of radius `⌈Rρ⌉` and `e` with `|e_i| ≤ 1`,
+once the scale `R` is large enough. -/
 theorem exists_odometer_cell_oscillation
     (_hLocalCLT : Sandpile.External.LocalCLT) (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (ν : Measure ℝ) [IsProbabilityMeasure ν] (hmean : ∫ z, z ∂ν = 0)
@@ -346,7 +346,8 @@ theorem exists_odometer_cell_oscillation
     ∃ R₀ : ℝ, 0 < R₀ ∧ ∀ R : ℝ, R₀ ≤ R →
       Sandpile.centeredMassLaw d ν
         {σ | ∃ y e : Sandpile.Site d, (∀ i, |y i| ≤ ⌈R * ρ⌉) ∧ (∀ i, |e i| ≤ 1) ∧
-          ε < |R ^ ((d : ℝ) / 2 - 2) * Sandpile.odometerOf (Sandpile.scenery d σ) ⌊T * R ^ 2⌋₊ (y + e)
+          ε < |R ^ ((d : ℝ) / 2 - 2) *
+                Sandpile.odometerOf (Sandpile.scenery d σ) ⌊T * R ^ 2⌋₊ (y + e)
               - R ^ ((d : ℝ) / 2 - 2) * Sandpile.odometerOf (Sandpile.scenery d σ) ⌊T * R ^ 2⌋₊ y|}
         ≤ ENNReal.ofReal δ := by
   classical
@@ -382,8 +383,9 @@ theorem exists_odometer_cell_oscillation
   set M : ℝ := max M₀ 0 with hMdef
   have hM0 : (0 : ℝ) ≤ M := le_max_right _ _
   have hM : ∀ R : ℝ, 1 ≤ R →
-      (Sandpile.centeredMassLaw d ν) {σ | ∃ p ∈ C₂, M < |Frozen.HeatPotentialInvariance.linInterp d R
-        (Sandpile.scenery d σ) p.1 p.2|} ≤ ENNReal.ofReal (δ / 4) := by
+      (Sandpile.centeredMassLaw d ν)
+        {σ | ∃ p ∈ C₂, M < |Frozen.HeatPotentialInvariance.linInterp d R
+          (Sandpile.scenery d σ) p.1 p.2|} ≤ ENNReal.ofReal (δ / 4) := by
     intro R hR
     refine le_trans (measure_mono ?_) (hM₀ R hR)
     rintro σ ⟨p, hp, hv⟩
@@ -525,7 +527,8 @@ theorem exists_odometer_cell_oscillation
           - Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) n y| ≤ ε / 8 := by
         have h := le_of_not_gt (fun hlt => hnotA ⟨_, hp1, _, hq1, hdistpq, hlt⟩)
         simp only at h
-        have h1 := Sandpile.linInterp_scaledSite R hRne (Sandpile.scenery d σ) n 0 (Nat.zero_le n) (y + e)
+        have h1 := Sandpile.linInterp_scaledSite R hRne (Sandpile.scenery d σ) n 0
+          (Nat.zero_le n) (y + e)
         have h2 := Sandpile.linInterp_scaledSite R hRne (Sandpile.scenery d σ) n 0 (Nat.zero_le n) y
         simp only [Nat.cast_zero, sub_zero] at h1 h2
         rwa [h1, h2] at h
@@ -543,7 +546,8 @@ theorem exists_odometer_cell_oscillation
             div_le_div_of_nonneg_right h1 (by positivity)
           linarith [hnR2T]
         have hnk0 : (0 : ℝ) ≤ ((n - k : ℕ) : ℝ) / R ^ 2 := by positivity
-        have hp : ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R z) : ℝ × _) ∈ C₂ :=
+        have hp : ((((n - k : ℕ) : ℝ) / R ^ 2,
+              Sandpile.External.Lclt.scaledSite R z) : ℝ × _) ∈ C₂ :=
           ⟨⟨hnk0, hnkT⟩, by simp only [Metric.mem_closedBall, dist_zero_right]; exact hzC₂⟩
         have h := le_of_not_gt (fun hlt => hnotM ⟨_, hp, hlt⟩)
         simp only at h
@@ -553,7 +557,8 @@ theorem exists_odometer_cell_oscillation
       have hε₀b : ∀ k : ℕ, k ≤ n → ∀ z : Site d,
           ‖Sandpile.External.Lclt.scaledSite R z‖ ≤ 2 * A + 2 * Real.sqrt d + 1 →
           |Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) (n - k) (e + z)
-            - Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) (n - k) z| ≤ ε / 8 := by
+            - Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) (n - k) z|
+              ≤ ε / 8 := by
         intro k hk z hz
         have hzC₂ : ‖Sandpile.External.Lclt.scaledSite R z‖ ≤ 2 * A + 3 * Real.sqrt d + 1 := by
           linarith [hsd0]
@@ -566,7 +571,8 @@ theorem exists_odometer_cell_oscillation
               rw [hcast]
               exact_mod_cast he i)
           simpa using h
-        have hezC₂ : ‖Sandpile.External.Lclt.scaledSite R (e + z)‖ ≤ 2 * A + 3 * Real.sqrt d + 1 := by
+        have hezC₂ :
+            ‖Sandpile.External.Lclt.scaledSite R (e + z)‖ ≤ 2 * A + 3 * Real.sqrt d + 1 := by
           have h := norm_add_le (Sandpile.External.Lclt.scaledSite R (e + z)
             - Sandpile.External.Lclt.scaledSite R z) (Sandpile.External.Lclt.scaledSite R z)
           rw [sub_add_cancel] at h
@@ -577,12 +583,17 @@ theorem exists_odometer_cell_oscillation
             div_le_div_of_nonneg_right h1 (by positivity)
           linarith [hnR2T]
         have hnk0 : (0 : ℝ) ≤ ((n - k : ℕ) : ℝ) / R ^ 2 := by positivity
-        have hp : ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R (e + z)) : ℝ × _) ∈ C₂ :=
+        have hp : ((((n - k : ℕ) : ℝ) / R ^ 2,
+              Sandpile.External.Lclt.scaledSite R (e + z)) : ℝ × _) ∈ C₂ :=
           ⟨⟨hnk0, hnkT⟩, by simp only [Metric.mem_closedBall, dist_zero_right]; exact hezC₂⟩
-        have hq : ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R z) : ℝ × _) ∈ C₂ :=
+        have hq : ((((n - k : ℕ) : ℝ) / R ^ 2,
+              Sandpile.External.Lclt.scaledSite R z) : ℝ × _) ∈ C₂ :=
           ⟨⟨hnk0, hnkT⟩, by simp only [Metric.mem_closedBall, dist_zero_right]; exact hzC₂⟩
-        have hdistpq : dist ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R (e + z)) : ℝ × _)
-            ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R z) : ℝ × _) < δ₂ := by
+        have hdistpq :
+            dist ((((n - k : ℕ) : ℝ) / R ^ 2,
+                  Sandpile.External.Lclt.scaledSite R (e + z)) : ℝ × _)
+              ((((n - k : ℕ) : ℝ) / R ^ 2, Sandpile.External.Lclt.scaledSite R z) : ℝ × _)
+              < δ₂ := by
           rw [Prod.dist_eq, dist_self, max_eq_right dist_nonneg, dist_eq_norm]
           simp only
           have h2 : Real.sqrt d / R ≤ δ₂ / 2 := by
@@ -607,7 +618,8 @@ theorem exists_odometer_cell_oscillation
           F (fun τ hτ hτn => Sandpile.measurable_stopped_value n G hτ hτn) ?_
           (Sandpile.bddAbove_walk_stopped_value hd y n G)
           (Sandpile.bddAbove_walk_stopped_value hd y n
-            (fun k z => Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z))
+            (fun k z =>
+              Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z))
           (fun τ hτ hτn => Sandpile.integrable_stopped_value hd y n G hτ hτn)
           (fun τ hτ hτn => Sandpile.integrable_stopped_value hd y n
             (fun k z => Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z)
@@ -615,12 +627,14 @@ theorem exists_odometer_cell_oscillation
         intro τ hτn X j hj
         have h := hGwenv σ hG A hA1 n hnT' τ hτn X j hj
         simpa only [hGdef] using h
-      have hE₁' : |Sandpile.stoppingSup n (y + e) F - Sandpile.stoppingSup n (y + e) Gχ| ≤ ε / 4 := by
+      have hE₁' :
+          |Sandpile.stoppingSup n (y + e) F - Sandpile.stoppingSup n (y + e) Gχ| ≤ ε / 4 := by
         refine hA₁ A (le_max_left _ _) R hR1 (y + e) ρ' hρ'0 hyeρ' hAρ' n hn1' hnT'
           F (fun τ hτ hτn => Sandpile.measurable_stopped_value n G hτ hτn) ?_
           (Sandpile.bddAbove_walk_stopped_value hd (y + e) n G)
           (Sandpile.bddAbove_walk_stopped_value hd (y + e) n
-            (fun k z => Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z))
+            (fun k z =>
+              Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z))
           (fun τ hτ hτn => Sandpile.integrable_stopped_value hd (y + e) n G hτ hτn)
           (fun τ hτ hτn => Sandpile.integrable_stopped_value hd (y + e) n
             (fun k z => Sandpile.Continuum.cutoff A (Sandpile.External.Lclt.scaledSite R z) * G k z)
@@ -642,7 +656,8 @@ theorem exists_odometer_cell_oscillation
           rw [div_le_iff₀ (by positivity : (0:ℝ) < A * ε)] at hRM
           nlinarith [hRM, hA0, hε, hM0, hsd0]
         linarith [h, hMle]
-      have hb := Sandpile.abs_rescaled_odometer_translate_sub_le hd R hR0 (Sandpile.scenery d σ) n y e
+      have hb := Sandpile.abs_rescaled_odometer_translate_sub_le hd R hR0
+        (Sandpile.scenery d σ) n y e
         Gχ (ε / 8) (ε / 4) (ε / 4) (ε / 4) hE₀ hE₁ hE₁' hE₂
       have : ¬ (ε < |R ^ ((d : ℝ) / 2 - 2) * Sandpile.odometerOf (Sandpile.scenery d σ) n (y + e)
           - R ^ ((d : ℝ) / 2 - 2) * Sandpile.odometerOf (Sandpile.scenery d σ) n y|) := by
@@ -657,7 +672,8 @@ theorem exists_odometer_cell_oscillation
       ≤ centeredMassLaw d ν (badA ∪ badM ∪ badB ∪ Gwᶜ) := measure_mono hsub
     _ ≤ centeredMassLaw d ν (badA ∪ badM ∪ badB) + centeredMassLaw d ν Gwᶜ :=
         measure_union_le _ _
-    _ ≤ (centeredMassLaw d ν (badA ∪ badM) + centeredMassLaw d ν badB) + centeredMassLaw d ν Gwᶜ := by
+    _ ≤ (centeredMassLaw d ν (badA ∪ badM) + centeredMassLaw d ν badB)
+          + centeredMassLaw d ν Gwᶜ := by
         gcongr
         exact measure_union_le _ _
     _ ≤ ((centeredMassLaw d ν badA + centeredMassLaw d ν badM) + centeredMassLaw d ν badB)

@@ -1,17 +1,20 @@
-/-
-Stationarity of the mean gradient of `lem:dgt4-linearization-from-survival`
+import Sandpile.Support.LinTestedJacobian
+import Sandpile.Support.Stationary
+
+/-!
+# Stationarity of the mean odometer gradient
+
+This module proves stationarity of the mean gradient of `lem:dgt4-linearization-from-survival`
 (`sandpile.tex:5823-5827`):
 
   "By stationarity, `E[∂_{ζ(z)}F_R] = ∑_x a_R(x) c_R(z-x)`,"
 
-with `c_R(w) = E[∂_{ζ(w)}u_{n_R}(0)]`.  The Jacobian of `eq:odometer-derivative`
-commutes with translation of the scenery, and the i.i.d. law is invariant under
-translation, so the mean gradient at a site is the mean gradient at the origin
-of the displaced site, and the mean gradient of the tested field is the
-convolution of the weights with `c_R`.
+with `c_R(w) = E[∂_{ζ(w)}u_{n_R}(0)]`. The Jacobian of `eq:odometer-derivative`
+(`odometerJacobian_shiftField`) commutes with translation of the scenery, and the i.i.d. law is
+invariant under translation, so the mean gradient at a site is the mean gradient at the origin of
+the displaced site (`integral_odometerJacobian_shift`), and the mean gradient of the tested field
+is the convolution of the weights with `c_R` (`integral_meanGradient_testedField`).
 -/
-import Sandpile.Support.LinTestedJacobian
-import Sandpile.Support.Stationary
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

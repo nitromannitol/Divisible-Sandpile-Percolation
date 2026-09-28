@@ -1,27 +1,30 @@
-/-
-The continuum Green identity of `ssec:green-estimates` (`sandpile.tex:963-968`
-for the kernels themselves): for the finite-time Brownian Green kernel
-`g^{BM}_t(x,y) = ∫_0^t p^{BM}_s(x,y) ds` of `eq:brownian-heat-green-kernels`,
-
-  `∫_{ℝ^d} g^{BM}_t(x,y) g^{BM}_{t'}(x',y) dy
-     = ∫_0^t ∫_0^{t'} p^{BM}_{s+s'}(x,x') ds' ds`,
-
-with the two base points kept apart.  This is the `L²` inner product that the
-right-hand side of the hypothesis `hQvar` of
-`Sandpile.Support.heat_potential_fd_of_coeff` is built from: expanding the
-square of a finite linear combination of Green kernels
-(`integral_sum_greenTimeBM_mul`) leaves the matrix of these pairwise integrals,
-and the identity rewrites each entry as a double time integral of the heat
-kernel evaluated at the two mesh points, which is the continuum side of the
-Riemann sum the local central limit theorem produces on the lattice.
-
-The route is the Tonelli chain of `lintegral_greenTimeBM_sq_lt_top` with the two
-base points kept apart: Chapman-Kolmogorov for two base points collapses the
-space integral, the double time integral is finite below dimension four because
-the off-diagonal kernel is dominated by the on-diagonal one, and the lower
-integral may then be traded for the Bochner integral on both sides.
--/
 import Sandpile.Support.ContBMGreenApi
+
+/-!
+# The continuum Green identity for two base points
+
+The continuum Green identity of `ssec:green-estimates` (`sandpile.tex:963-968` for the kernels
+themselves): for the finite-time Brownian Green kernel `g^{BM}_t(x,y) = ∫_0^t p^{BM}_s(x,y) ds`
+of `eq:brownian-heat-green-kernels`,
+
+  `∫_{ℝ^d} g^{BM}_t(x,y) g^{BM}_{t'}(x',y) dy = ∫_0^t ∫_0^{t'} p^{BM}_{s+s'}(x,x') ds' ds`,
+
+with the two base points kept apart (`integral_greenTimeBM_mul_two`,
+`integral_greenTimeBM_mul_two_interval`). This is the `L²` inner product that the right-hand side
+of the hypothesis `hQvar` of `Sandpile.Support.heat_potential_fd_of_coeff` is built from:
+expanding the square of a finite linear combination of Green kernels
+(`integral_sum_greenTimeBM_mul`) leaves the matrix of these pairwise integrals, and the identity
+rewrites each entry as a double time integral of the heat kernel evaluated at the two mesh points
+(`integral_sum_greenTimeBM_sq_eq`), which is the continuum side of the Riemann sum the local
+central limit theorem produces on the lattice.
+
+The route is the Tonelli chain of `lintegral_greenTimeBM_sq_lt_top` with the two base points kept
+apart: Chapman-Kolmogorov for two base points collapses the space integral
+(`integral_heatKernelBM_mul_two`, `lintegral_heatKernelBM_mul_two`), the double time integral is
+finite below dimension four (`lintegral_double_time_two_lt_top`) because the off-diagonal kernel
+is dominated by the on-diagonal one (`heatKernelBM_add_le_two`), and the lower integral may then
+be traded for the Bochner integral on both sides (`integrable_pairKernel`).
+-/
 
 open MeasureTheory
 open scoped NNReal Real ENNReal
@@ -67,7 +70,8 @@ theorem integral_gaussianPDFReal_mul_two (m m' : ℝ) {v v' : ℝ≥0} (hv : (0:
   rw [MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall hint),
     MeasureTheory.integral_const_mul, integral_exp_neg_mul_sq_sub mu b]
   have hpib : Real.pi / b
-      = 2 * Real.pi * (v : ℝ) * (2 * Real.pi * (v' : ℝ)) / (2 * Real.pi * ((v : ℝ) + (v' : ℝ))) := by
+      = 2 * Real.pi * (v : ℝ) * (2 * Real.pi * (v' : ℝ)) /
+          (2 * Real.pi * ((v : ℝ) + (v' : ℝ))) := by
     rw [hb]
     field_simp
   have key : (Real.sqrt (2 * Real.pi * (v : ℝ)))⁻¹ * (Real.sqrt (2 * Real.pi * (v' : ℝ)))⁻¹ *
@@ -123,6 +127,9 @@ theorem heatKernelBM_add_le_two {d : ℕ} (hd : 1 ≤ d) {s s' : ℝ} (hs : 0 < 
 
 variable {d : ℕ}
 
+/-- The product of two Brownian heat kernels based at `x` and `x'`, as a function of the space
+variable, is integrable: it factors coordinatewise into a product of Gaussian densities, each
+of which is dominated by an integrable Gaussian density up to a bounded constant. -/
 theorem integrable_heatKernelBM_mul_space_two (hd : 1 ≤ d) {s s' : ℝ} (hs : 0 < s) (hs' : 0 < s')
     (x x' : Space d) :
     Integrable (fun y : Space d => heatKernelBM d s x y * heatKernelBM d s' x' y)
@@ -170,6 +177,10 @@ theorem lintegral_heatKernelBM_mul_two (hd : 1 ≤ d) {s s' : ℝ} (hs : 0 < s) 
     integral_heatKernelBM_mul_two hd hs hs' x x']
 
 
+/-- The two-base-point analogue of `lintegral_double_time_lt_top`: the double lower integral of
+the off-diagonal Brownian heat kernel `heatKernelBM d (s + u) x x'` over `(0, t) × (0, t')` is
+finite in dimensions one to three, by the same `heatKernelBM_add_le_two` split into two
+separately integrable factors bounded by `lintegral_rpow_neg_quarter_lt_top`. -/
 theorem lintegral_double_time_two_lt_top (hd : 1 ≤ d) (hd3 : d ≤ 3) {t t' : ℝ}
     (x x' : Space d) :
     ∫⁻ s in Set.Ioo (0 : ℝ) t, ∫⁻ u in Set.Ioo (0 : ℝ) t',
@@ -211,12 +222,19 @@ theorem lintegral_double_time_two_lt_top (hd : 1 ≤ d) (hd3 : d ≤ 3) {t t' : 
   exact ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hB) hA
 
 
+/-- The uncurried product of two Brownian heat kernels, `(q.1.1, q.1.2, q.2) ↦
+heatKernelBM d q.1.1 x q.2 * heatKernelBM d q.1.2 x' q.2`, is jointly measurable in the two
+time coordinates and the space coordinate. -/
 theorem measurable_uncurry_pairKernel (d : ℕ) (x x' : Space d) :
     Measurable (fun q : (ℝ × ℝ) × Space d =>
       heatKernelBM d q.1.1 x q.2 * heatKernelBM d q.1.2 x' q.2) := by
   unfold heatKernelBM
   fun_prop
 
+/-- The uncurried product `heatKernelBM d q.1.1 x q.2 * heatKernelBM d q.1.2 x' q.2` is
+integrable on `(0, t) × (0, t') × ℝ^d`, in dimensions one to three: by `lintegral_prod` its
+enorm-integral reduces to the fiberwise space integral computed by
+`lintegral_heatKernelBM_mul_two`, followed by `lintegral_double_time_two_lt_top`. -/
 theorem integrable_pairKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) {t t' : ℝ} (x x' : Space d) :
     Integrable (fun q : (ℝ × ℝ) × Space d =>
         heatKernelBM d q.1.1 x q.2 * heatKernelBM d q.1.2 x' q.2)

@@ -1,26 +1,26 @@
-/-
-Theorem 1.3(iii)(d) of `sandpile.tex` (`sandpile.tex:290-296`) assembled from
-`thm:dgt4-many-limits` (`sandpile.tex:5900-5928`), which the proof of
-`thm:main-explosion` names at `sandpile.tex:308-309`: "part (iii)(d) is
-Theorem~\ref{thm:dgt4-many-limits}".
-
-The sharper theorem produces the scenery, the scale sequence `R_k`, and for each
-`κ ∈ [3/2,2]` an extraction along which the diffusively rescaled fluctuations
-converge to `ℋ_{κ,T}`; Theorem 1.3(iii)(d) asks only for the scenery, an
-uncountable family of distinct subsequential limits, and nonconvergence.
-`Sandpile.Support.high_nonconvergence_of_sub` already derives the second and
-third from the subsequential convergence at variance one, so all that is left is
-to unpack the sharper theorem's existential and feed its clauses in: the index
-set is `[3/2,2]`, the covariance assignment is injective because the variances
-differ on a test function, and the tightness clause is the odometer's own.
-
-The two cited inputs the chain reaches are carried explicitly.  The local
-central limit theorem enters `thm:dgt4-many-limits` itself, and the tightness
-criterion of Furlan and Mourrat enters through `lem:sobolev-tightness`; both are
-`External` `Prop`s of this repository.
--/
 import Sandpile.Support.ContManyLimits
 import Sandpile.Frozen.DGT4ManyLimits
+
+/-!
+# Theorem 1.3(iii)(d) from the sharper many-limits theorem
+
+Theorem 1.3(iii)(d) of `sandpile.tex` (`sandpile.tex:290-296`) assembled from
+`thm:dgt4-many-limits` (`sandpile.tex:5900-5928`), which the proof of `thm:main-explosion` names
+at `sandpile.tex:308-309`: "part (iii)(d) is Theorem~\ref{thm:dgt4-many-limits}".
+
+The sharper theorem produces the scenery, the scale sequence `R_k`, and for each `κ ∈ [3/2,2]` an
+extraction along which the diffusively rescaled fluctuations converge to `ℋ_{κ,T}`; Theorem
+1.3(iii)(d) asks only for the scenery, an uncountable family of distinct subsequential limits, and
+nonconvergence. `Sandpile.Support.high_nonconvergence_of_sub` already derives the second and third
+from the subsequential convergence at variance one, so all that is left is to unpack the existential
+of the sharper theorem and feed its clauses in: the index set is `[3/2,2]`, the covariance
+assignment is injective because the variances differ on a test function, and the tightness
+clause is the odometer's own.
+
+The two cited inputs the chain reaches are carried explicitly. The local central limit theorem
+enters `thm:dgt4-many-limits` itself, and the tightness criterion of Furlan and Mourrat enters
+through `lem:sobolev-tightness`; both are `External` `Prop`s of this repository.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

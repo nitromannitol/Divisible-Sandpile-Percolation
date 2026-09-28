@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Iterate
+
+/-!
+# The killed heat kernel and killed Green time
+
 The walk killed on leaving a set: the elementary bounds on `p_k^D` and `g_t^D`.
 
 `ssec:d4-percolation` builds the finite-time killed Green field
@@ -10,12 +14,14 @@ weights of `lem:d4-exit-average-concentration` are read against; and it is
 translation covariant, which is what turns the field at `z` into the field at
 the origin.
 -/
-import Sandpile.Support.Iterate
 
 namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The killed heat kernel `p_k^D(x,y)` is nonnegative, by induction on `k`: the
+base case is an indicator function, and the step is an average of nonnegative
+terms restricted by the same indicator. -/
 theorem killedKernel_nonneg (D : Set (Site d)) :
     ∀ (k : ℕ) (x y : Site d), 0 ≤ killedKernel D k x y := by
   intro k
@@ -37,6 +43,9 @@ theorem killedKernel_nonneg (D : Set (Site d)) :
         exact Finset.sum_nonneg fun i _ => add_nonneg (ih _ _) (ih _ _)
       · rw [Set.indicator_of_notMem hx]
 
+/-- The killed heat kernel `p_k^D(x,y)` is dominated by the free heat kernel
+`heatKernel d k x y`, by induction on `k` using `killedKernel_nonneg` and
+`heatKernel_nonneg` off the domain `D`. -/
 theorem killedKernel_le_heatKernel (D : Set (Site d)) :
     ∀ (k : ℕ) (x y : Site d), killedKernel D k x y ≤ heatKernel d k x y := by
   intro k
@@ -69,6 +78,9 @@ theorem killedKernel_le_heatKernel (D : Set (Site d)) :
       · rw [Set.indicator_of_mem hx]; exact hle
       · rw [Set.indicator_of_notMem hx]; exact hnn
 
+/-- The killed kernel vanishes at time `k` past the sup-norm distance: if
+`k < boxDist x y` then `killedKernel D k x y = 0`, since it is squeezed between
+`0` and the free heat kernel, which already vanishes there. -/
 theorem killedKernel_eq_zero_of_lt (D : Set (Site d)) (k : ℕ) (x y : Site d)
     (h : k < boxDist x y) : killedKernel D k x y = 0 := by
   have h1 := killedKernel_le_heatKernel D k x y
@@ -76,19 +88,28 @@ theorem killedKernel_eq_zero_of_lt (D : Set (Site d)) (k : ℕ) (x y : Site d)
   rw [heatKernel_eq_zero_of_lt k x y h] at h1
   linarith
 
+/-- The killed kernel is supported in the box of radius `k`: the contrapositive
+of `killedKernel_eq_zero_of_lt`. -/
 theorem killedKernel_support (D : Set (Site d)) (k : ℕ) (x : Site d) {y : Site d}
     (h : killedKernel D k x y ≠ 0) : boxDist x y ≤ k := by
   by_contra hk
   exact h (killedKernel_eq_zero_of_lt D k x y (by simpa using Nat.lt_of_not_le hk))
 
+/-- The killed Green time `g_N^D(x,y) = ∑_{k<N} p_k^D(x,y)` is nonnegative, as a
+sum of nonnegative killed kernel terms. -/
 theorem killedGreenTime_nonneg (D : Set (Site d)) (N : ℕ) (x y : Site d) :
     0 ≤ killedGreenTime D N x y :=
   Finset.sum_nonneg fun k _ => killedKernel_nonneg D k x y
 
+/-- The killed Green time is dominated by the free Green time `greenTime d N x y`,
+term by term via `killedKernel_le_heatKernel`. -/
 theorem killedGreenTime_le_greenTime (D : Set (Site d)) (N : ℕ) (x y : Site d) :
     killedGreenTime D N x y ≤ greenTime d N x y :=
   Finset.sum_le_sum fun k _ => killedKernel_le_heatKernel D k x y
 
+/-- The killed Green time is supported in the box of radius `N`: if it is
+nonzero, some summand `killedKernel D k x y` with `k < N` is nonzero, so
+`boxDist x y ≤ k < N`. -/
 theorem killedGreenTime_support (D : Set (Site d)) (N : ℕ) (x : Site d) {y : Site d}
     (h : killedGreenTime D N x y ≠ 0) : boxDist x y ≤ N := by
   by_contra hk
@@ -97,6 +118,9 @@ theorem killedGreenTime_support (D : Set (Site d)) (N : ℕ) (x : Site d) {y : S
   have hkN : k < N := Finset.mem_range.mp hk'
   omega
 
+/-- The killed kernel has total mass at most one at each time `k`: it is
+dominated pointwise by the free heat kernel, whose finite-support total mass at
+time `k` equals one exactly (`tsum_heatKernel`). -/
 theorem tsum_killedKernel_le_one (hd : 1 ≤ d) (D : Set (Site d)) (k : ℕ) (x : Site d) :
     ∑' y : Site d, killedKernel D k x y ≤ 1 := by
   classical
@@ -117,6 +141,9 @@ theorem tsum_killedKernel_le_one (hd : 1 ≤ d) (D : Set (Site d)) (k : ℕ) (x 
         Finset.sum_le_sum fun y _ => killedKernel_le_heatKernel D k x y
     _ = 1 := hh.symm
 
+/-- The killed Green pairing `y ↦ g_N^D(x,y) f(y)` is summable for any `f`,
+since `killedGreenTime_support` makes it vanish off the finite box of radius
+`N` around `x`. -/
 theorem summable_killedGreenTime_mul (D : Set (Site d)) (N : ℕ) (x : Site d)
     (f : Site d → ℝ) : Summable fun y : Site d => killedGreenTime D N x y * f y := by
   classical
@@ -126,6 +153,10 @@ theorem summable_killedGreenTime_mul (D : Set (Site d)) (N : ℕ) (x : Site d)
     exact hy (mem_boxFinset (killedGreenTime_support D N x hne))
   simp [hz]
 
+/-- The killed Green time has total mass at most `N`: it is the sum over
+`k < N` of the killed kernel at time `k`, each of which has total mass at most
+one by `tsum_killedKernel_le_one`. This is the bound the influence weights of
+`lem:d4-exit-average-concentration` are read against. -/
 theorem tsum_killedGreenTime_le (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ) (x : Site d) :
     ∑' y : Site d, killedGreenTime D N x y ≤ (N : ℝ) := by
   classical
@@ -192,6 +223,8 @@ theorem killedKernel_translate (D : Set (Site d)) (w : Site d) :
       · rw [Set.indicator_of_notMem (by exact hx : x ∉ {u : Site d | u + w ∈ D}),
           Set.indicator_of_notMem hx]
 
+/-- The killed Green time is translation covariant, summing
+`killedKernel_translate` over the times `k < N`. -/
 theorem killedGreenTime_translate (D : Set (Site d)) (w : Site d) (N : ℕ) (x y : Site d) :
     killedGreenTime {u : Site d | u + w ∈ D} N x y = killedGreenTime D N (x + w) (y + w) :=
   Finset.sum_congr rfl fun k _ => killedKernel_translate D w k x y
@@ -209,6 +242,8 @@ the strong Markov property of the walk produces. -/
 noncomputable def killedPair (D : Set (Site d)) (k : ℕ) (f : Site d → ℝ) (x : Site d) : ℝ :=
   ∑' y : Site d, killedKernel D k x y * f y
 
+/-- `killedPair D k f x` reduces to a finite sum over the box of radius `k`
+around `x`, since the killed kernel `killedKernel D k x` vanishes outside it. -/
 theorem killedPair_eq_sum (D : Set (Site d)) (k : ℕ) (f : Site d → ℝ) (x : Site d) :
     killedPair D k f x = ∑ y ∈ boxFinset x k, killedKernel D k x y * f y := by
   classical
@@ -232,16 +267,22 @@ theorem killedPair_eq_sum_of_near (D : Set (Site d)) (k : ℕ) (f : Site d → �
       _ = k + 1 := by omega
   simp [hz]
 
+/-- `x` and its forward neighbour `x + unit i` are at sup-norm distance at most
+one, specializing `boxDist_add_unit_le` to `y = x + unit i`. -/
 theorem boxDist_add_unit_self (x : Site d) (i : Fin d) : boxDist x (x + unit i) ≤ 1 := by
   have h := boxDist_add_unit_le x (x + unit i) i
   rw [boxDist_self] at h
   omega
 
+/-- `x` and its backward neighbour `x - unit i` are at sup-norm distance at
+most one, specializing `boxDist_sub_unit_le` to `y = x - unit i`. -/
 theorem boxDist_sub_unit_self (x : Site d) (i : Fin d) : boxDist x (x - unit i) ≤ 1 := by
   have h := boxDist_sub_unit_le x (x - unit i) i
   rw [boxDist_self] at h
   omega
 
+/-- **The base case** `A_0(f) = 1_D · f`: at time zero the killed kernel is the
+diagonal indicator of `D`, so the pairing with `f` is `f` restricted to `D`. -/
 theorem killedPair_zero (D : Set (Site d)) (f : Site d → ℝ) (x : Site d) :
     killedPair D 0 f x = D.indicator f x := by
   classical
@@ -334,6 +375,9 @@ noncomputable def killedGreenPair (D : Set (Site d)) (N : ℕ) (f : Site d → �
     (x : Site d) : ℝ :=
   ∑' y : Site d, killedGreenTime D N x y * f y
 
+/-- The killed Green field is the sum over `k < N` of the killed pairings
+`killedPair D k f x`, by expanding `killedGreenTime` and swapping the two
+finite sums. -/
 theorem killedGreenPair_eq_sum (D : Set (Site d)) (N : ℕ) (f : Site d → ℝ) (x : Site d) :
     killedGreenPair D N f x = ∑ k ∈ Finset.range N, killedPair D k f x := by
   classical

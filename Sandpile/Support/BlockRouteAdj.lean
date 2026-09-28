@@ -1,30 +1,35 @@
-/-
-Routing across adjacent good coarse blocks: if `z` and `z + e₀` are both
-good for the field `F` at level `ℓ`, then for ANY bottom-top crossing walk
-`TB₁` of the square at `z` and ANY bottom-top crossing walk `TB₂` of the
-square at `z + e₀` (both with field values at least `ℓ`), the starts of
-`TB₁` and `TB₂` are joined by a nearest-neighbour walk whose every site has
-field value at least `ℓ`.
-
-The route: the wide left-right crossing of the block at `z` meets `TB₁`
-(both are crossings of the wide rectangle) at a site `u`, and meets the
-translate of `TB₂` at a site `u'`; the walk runs along `TB₁` from its start
-to `u`, along the wide crossing from `u` to `u'`, and along `TB₂` from `u'`
-to its start.
--/
 import Sandpile.Support.BlockAdjacency
 import Sandpile.Support.PercSquareToWide
 import Sandpile.Support.BlockVerticalWalk
 import Sandpile.Support.BlockSubwalk
+
+/-!
+# Routing across adjacent good coarse blocks
+
+Routing across adjacent good coarse blocks: `block_route_adj_e0` handles blocks at `z` and
+`z + e₀` (horizontally adjacent) and `block_route_adj_e1` handles blocks at `z` and `z + e₁`
+(vertically adjacent). If both blocks are good for the field `F` at level `ℓ`, then for any
+crossing walk of each square transverse to the adjacency direction (both with field values at
+least `ℓ`), the starts of the two walks are joined by a nearest-neighbour walk on the lattice
+whose every site has field value at least `ℓ`. The route runs along the first crossing walk to
+its intersection with the wide/tall crossing of the block at `z` (`nn_lr_tb_intersect`), along
+that wide/tall crossing to its intersection with the translate of the second crossing walk, and
+along the second crossing walk to its start.
+-/
 
 open scoped NNReal
 set_option maxHeartbeats 1000000
 noncomputable section
 namespace Sandpile
 
+/-- For horizontally adjacent good blocks at `z` and `z + e₀`, any two bottom-top crossing walks
+`TB₁`, `TB₂` of the respective squares (with field values at least `ℓ`) have their starts joined
+by a lattice walk of field values at least `ℓ`, routed through the wide left-right crossing of the
+block at `z`. -/
 theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
     (h1 : BlockGood r F ℓ z)
-    (c₁ d₁ : planeRectangle (2 * r) (2 * r)) (TB₁ : (rectangleGraph (planeRectangle (2 * r) (2 * r))).Walk c₁ d₁)
+    (c₁ d₁ : planeRectangle (2 * r) (2 * r))
+    (TB₁ : (rectangleGraph (planeRectangle (2 * r) (2 * r))).Walk c₁ d₁)
     (hc₁ : (c₁ : Site 2) 1 = 0) (hd₁ : (d₁ : Site 2) 1 = ↑(2 * r))
     (hTB₁ : ∀ u ∈ TB₁.support, ℓ ≤ F (blockShift r z u))
     (c₂ d₂ : planeRectangle (2 * r) (2 * r))
@@ -74,9 +79,11 @@ theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
   obtain ⟨u', hu'₁, hu'₂⟩ := nn_lr_tb_intersect p₁
     (TB₂.map (rectTranslateHom (2 * r) (2 * r) (2 * r) 0)) ha₁ hb₁
     (show (((rectTranslateHom (2 * r) (2 * r) (2 * r) 0) c₂ : Site 2)) 1 = 0 by
-      simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons, Matrix.vecTail, Matrix.vecHead] using hc₂)
+      simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.vecTail, Matrix.vecHead] using hc₂)
     (show (((rectTranslateHom (2 * r) (2 * r) (2 * r) 0) d₂ : Site 2)) 1 = ↑(2 * r) by
-      simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons, Matrix.vecTail, Matrix.vecHead] using hd₂)
+      simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.vecTail, Matrix.vecHead] using hd₂)
   -- Step 4: subtypes on the supports
   rw [List.mem_map] at hu₁
   obtain ⟨s₁, hs₁, rfl⟩ := hu₁
@@ -159,9 +166,14 @@ theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
     · exact hB u hu'
     · exact hC u (List.mem_of_mem_tail hu')
 
+/-- For vertically adjacent good blocks at `z` and `z + e₁`, any two left-right crossing walks
+`LR₁`, `LR₂` of the respective squares (with field values at least `ℓ`) have their starts joined
+by a lattice walk of field values at least `ℓ`, routed through the tall bottom-top crossing of the
+block at `z`. -/
 theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
     (h1 : BlockGood r F ℓ z)
-    (c₁ d₁ : planeRectangle (2 * r) (2 * r)) (LR₁ : (rectangleGraph (planeRectangle (2 * r) (2 * r))).Walk c₁ d₁)
+    (c₁ d₁ : planeRectangle (2 * r) (2 * r))
+    (LR₁ : (rectangleGraph (planeRectangle (2 * r) (2 * r))).Walk c₁ d₁)
     (hc₁ : (c₁ : Site 2) 0 = 0) (hd₁ : (d₁ : Site 2) 0 = ↑(2 * r))
     (hLR₁ : ∀ u ∈ LR₁.support, ℓ ≤ F (blockShift r z u))
     (c₂ d₂ : planeRectangle (2 * r) (2 * r))
@@ -215,12 +227,14 @@ theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
     (show (rectTranslateHom (2 * r) (2 * r) 0 (2 * r)) c₂
         ∈ rectangleLeft (planeRectangle (2 * r) (2 * r + 2 * r)) by
       have : ((rectTranslateHom (2 * r) (2 * r) 0 (2 * r)) c₂ : Site 2) 0 = 0 := by
-        simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons, Matrix.vecTail, Matrix.vecHead] using hc₂
+        simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons,
+          Matrix.vecTail, Matrix.vecHead] using hc₂
       exact (mem_rectangleLeft_planeRectangle _).mpr this)
     (show (rectTranslateHom (2 * r) (2 * r) 0 (2 * r)) d₂
         ∈ rectangleRight (planeRectangle (2 * r) (2 * r + 2 * r)) by
       have : ((rectTranslateHom (2 * r) (2 * r) 0 (2 * r)) d₂ : Site 2) 0 = ↑(2 * r) := by
-        simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons, Matrix.vecTail, Matrix.vecHead] using hd₂
+        simpa [rectTranslateHom, Pi.add_apply, Matrix.cons_val_one, Matrix.head_cons,
+          Matrix.vecTail, Matrix.vecHead] using hd₂
       exact (mem_rectangleRight_planeRectangle _).mpr this)
     ha₁ hb₁
   -- Step 4: unwrap the intersection sites to elements of the square walks
@@ -230,8 +244,10 @@ theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
   obtain ⟨v₁, hv₁, hvv⟩ := List.mem_map.mp hs₁
   obtain ⟨t₁, ht₁, hut₁⟩ := List.mem_map.mp hu₁'
   have hutw : (v₁ : Site 2) = (t₁ : Site 2) := by
-    have h1' : (v₁ : Site 2) = ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) := rfl
-    have h2' : ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) = (s₁ : Site 2) :=
+    have h1' : (v₁ : Site 2) =
+        ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) := rfl
+    have h2' : ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) =
+        (s₁ : Site 2) :=
       congrArg Subtype.val hvv
     rw [h1', h2']
     exact hut₁.symm

@@ -1,17 +1,28 @@
-/-
-Uniform Gaussian comparison for rectangle crossing bottlenecks, including
-finite-coefficient fields and the cut-off ball Green field.
--/
 import Sandpile.Support.BottleneckComparison
 import Sandpile.Support.StableBottleneck
 import Sandpile.Support.CrossingContinuity
 import Sandpile.Support.FiniteKernel
+
+/-!
+# Gaussian comparison for rectangle crossing values
+
+Specializes the abstract Gaussian comparison of
+`Sandpile.exists_gaussian_sublevel_comparison_constant` to crossing values `crossingValue Q` of
+lattice rectangles `Q`, using the positive-jet bottleneck approximation
+`exists_positive_rectangle_bottleneck` to control the error, and further specializes this to
+fields built from `finiteKernelField` against the cut-off ball-killed Green field
+`External.BallGreen.cutField`, using its finite-coefficient bounds `cutField_finite_coefficients`.
+The lemma `rectangle_comparison_scale_le` isolates the algebraic step bounding the resulting
+error constant.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped BigOperators NNReal
 
 namespace Sandpile
 
+/-- The combination `(Bl²/e)²n²/e + |Bl²/e|n/e² + 1/e³` arising from the sublevel comparison
+error is bounded by `(B⁴ + B²/l₀³ + 1/l₀⁶) l⁶/e³`, whenever `l₀ ≤ l` and `n ≤ Bl`. -/
 lemma rectangle_comparison_scale_le {B l₀ l e : ℝ} {n : ℕ}
     (hB : 0 ≤ B) (h₀ : 0 < l₀) (hl : l₀ ≤ l) (he : 0 < e)
     (hn : (n : ℝ) ≤ B * l) :
@@ -39,6 +50,11 @@ lemma rectangle_comparison_scale_le {B l₀ l e : ℝ} {n : ℕ}
       exact add_le_add (add_le_add le_rfl (mul_le_mul_of_nonneg_left h3 (sq_nonneg B))) h6
     _ = _ := by ring
 
+/-- The abstract sublevel Gaussian comparison specialized to the crossing value of a lattice
+rectangle `Q`: for a linear field `linearField W x` built from bounded, cube-summable
+coefficients `W`, the sublevel probability under an i.i.d. law with exponential moments is at
+most the corresponding Gaussian sublevel probability, up to a shift by `3 * error` in the level
+and an explicit error term in `Real.log Q.card`. -/
 lemma exists_gaussian_rectangle_comparison_constants (θ K : ℝ) (hθ : 0 < θ) :
     ∃ B ≥ (1 : ℝ), ∃ C > 0,
       ∀ Q : Finset (Site 2), IsLatticeRectangle Q → 2 ≤ Q.card →
@@ -96,9 +112,15 @@ lemma exists_gaussian_rectangle_comparison_constants (θ K : ℝ) (hθ : 0 < θ)
   calc
     _ ≤ G * (D * l ^ 6 / error ^ 3) * q :=
       mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_left (rectangle_comparison_scale_le hBpos.le hlog2 hl herr hnB) hG.le) hq
+        (mul_le_mul_of_nonneg_left
+          (rectangle_comparison_scale_le hBpos.le hlog2 hl herr hnB) hG.le) hq
     _ = _ := by ring
 
+/-- `exists_gaussian_rectangle_comparison_constants` specialized to fields obtained by
+`finiteKernelField` from the cut-off ball-killed Green field `External.BallGreen.cutField r L φ`:
+the crossing-value sublevel probability under an i.i.d. law with exponential moments is bounded
+by the corresponding Gaussian sublevel probability, shifted by `3 * error` in the level, plus an
+error term that now decays in the cutoff scale `L`. -/
 lemma exists_gaussian_far_rectangle_comparison_constants
     (hBall : External.BallGreenBounds) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ B ≥ (1 : ℝ), ∃ C > 0, ∃ D > 0,
@@ -112,9 +134,11 @@ lemma exists_gaussian_far_rectangle_comparison_constants
       ∀ (level error : ℝ), 0 < error → 1 ≤ B * (Real.log Q.card) ^ 2 / error →
         D * (Real.log Q.card) ^ 3 / (error * (L : ℝ) ^ 2) ≤ θ / 2 →
         (LatticeProb.iidLaw 4 μ).real
-          {ζ | crossingValue Q (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w)) ≤ level} ≤
+          {ζ | crossingValue Q (fun w =>
+            finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w)) ≤ level} ≤
         (LatticeProb.iidLaw 4 (gaussianReal 0 v)).real
-          {ζ | crossingValue Q (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w)) ≤ level + 3 * error} +
+          {ζ | crossingValue Q (fun w =>
+            finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w)) ≤ level + 3 * error} +
           C * (Real.log Q.card) ^ 6 / (error ^ 3 * (L : ℝ) ^ 2) := by
   classical
   obtain ⟨B, hB, C, hC, hcompare⟩ := exists_gaussian_rectangle_comparison_constants θ K hθ

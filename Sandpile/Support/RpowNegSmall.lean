@@ -1,13 +1,20 @@
-/-
-Eventual smallness of `r ^ (-k)`: for every positive `k` and `q` the negative
-power is eventually below `q`.
--/
 import Mathlib
+
+/-!
+# Eventual smallness of `r ^ (-k)`
+
+For every positive `k` and `q` the negative power `r ^ (-k)` is eventually below `q` as `r → ∞`.
+`exists_rpow_neg_small` makes this quantitative, producing an explicit threshold `r₀` past which
+`exp(-k log r) < q` for every natural `r`, by splitting on whether `q ≥ 1` (trivial past `r = 2`)
+or `q < 1` (where the threshold is `⌈(1/q)^(1/k)⌉ + 1`, found by inverting the exponential).
+-/
 
 open MeasureTheory
 
 namespace Sandpile
 
+/-- For every positive `k` and `q` there is a threshold `r₀` past which `r ^ (-k) < q`, stated
+in the form `exp(-k log r) < q`. -/
 lemma exists_rpow_neg_small (k q : ℝ) (hk : 0 < k) (hq : 0 < q) :
     ∃ r₀ : ℕ, ∀ r : ℕ, r₀ ≤ r → Real.exp (-k * Real.log r) < q := by
   by_cases hq1 : 1 ≤ q

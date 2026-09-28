@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4AConditionScenery
+
+/-!
+# Integrability of the conditional expectation in Step 2
+
 **The integrability that the comparison of Step 2 needs** (`sandpile.tex:5125-5131`).
 
 `abs_integral_sub_avgIntegral_le` compares the conditional expectation at a level with its
@@ -10,7 +14,6 @@ product, which is what `integral_gaussLaw_shift` already establishes inside its 
 supplies both: `Integrable.prod_right_ae` gives the inner one and
 `Integrable.integral_prod_left` the outer one.
 -/
-import Sandpile.Support.Dgt4AConditionScenery
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -81,6 +84,10 @@ theorem ae_integrable_iidLaw_gauss_shift (hd : 5 ≤ d) (v : ℝ≥0) (F : (Site
         ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
   ae_integrable_gaussLaw_shift hd _ (integrable_comp_scale v F hF)
 
+/-- The variance-`v` analogue of `integrable_integral_gaussLaw_shift`: the conditional
+expectation of an integrable functional `F` of the `iidLaw d (gaussianReal 0 v)`-scenery is
+integrable in the level `s`, by transporting `F` to the standard Gaussian product with
+`integrable_comp_scale` and applying `integrable_integral_gaussLaw_shift`. -/
 theorem integrable_integral_iidLaw_gauss_shift (hd : 5 ≤ d) (v : ℝ≥0) (F : (Site d → ℝ) → ℝ)
     (hF : Integrable F (LatticeProb.iidLaw d (gaussianReal 0 v))) :
     Integrable (fun s : ℝ =>

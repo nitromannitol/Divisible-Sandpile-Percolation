@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ContPairedGradient
+
+/-!
+# The `L²` Increment of the Truncated Green Coefficients
+
 The `L²` increment of the truncated Green coefficients at two lattice sites, term
 by term.
 
@@ -27,7 +31,6 @@ bound at the times below `|x-x'|²` and the paired bound above them, interpolate
 by `min_le_rpow_mul_rpow`, which is what removes the logarithm that the paired
 bound alone leaves in dimension three.
 -/
-import Sandpile.Support.ContPairedGradient
 
 open MeasureTheory Filter Topology
 

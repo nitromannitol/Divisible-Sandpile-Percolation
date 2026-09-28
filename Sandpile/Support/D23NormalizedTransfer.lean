@@ -1,11 +1,21 @@
-/-
-The normalization and marginal-law passage in `sandpile.tex:2640-2663`.
-The sequential killed coupling yields the exact bad-block probability estimate
-for the localized scenery field used by the percolation argument.
--/
 import Sandpile.Support.D23KilledCoupling
 import Sandpile.Support.D23Transfer
 import Sandpile.Support.D23Field
+
+/-!
+# Normalization and marginal-law passage for the localized scenery field
+
+This file carries out the normalization and marginal-law passage of `sandpile.tex:2640-2663`,
+transferring the sequential killed coupling into an exact bad-block probability estimate for the
+localized scenery field used by the percolation argument. Along the way it records that
+`BlockGood` is compatible with rescaling the field by a positive constant
+(`blockGood_pos_mul_iff`), that the planar embedding `planePoint` is continuous and its
+rescaled grid points recover the exact lattice sites of `planeSite`, and that at integer scales
+the killed value on the embedded mesh coincides with the localized field `d23Field`. The main
+result, `eventually_measure_bad_d23_block_lt_of_fdd`, combines these with the killed coupling and
+the four continuum crossing events to bound the probability of a bad block for the original
+scenery law and unscaled level.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal

@@ -1,24 +1,26 @@
-/-
-**The finite-time Brownian Green kernel is square integrable in dimensions one
-to three.**  This is the hypothesis `hmemg` of
-`Sandpile.Support.heat_potential_fd_of`: the white noise of
-`prop:dlt4-heat-potential-invariance` is defined on `L^2(R^d)`, and the index of
-the limiting Gaussian heat potential is `g^{BM}_t(x,·)`.
+import Sandpile.Support.ContBMDoubleTime
 
-The route is the one the paper's `ssec:green-estimates` uses on the lattice.
-Writing the kernel as the time integral of the heat kernel and squaring,
+/-!
+# Square integrability of the finite-time Brownian Green kernel
+
+**The finite-time Brownian Green kernel is square integrable in dimensions one to three**
+(`memLp_greenTimeBM`). This is the hypothesis `hmemg` of `Sandpile.Support.heat_potential_fd_of`:
+the white noise of `prop:dlt4-heat-potential-invariance` is defined on `L^2(R^d)`, and the index
+of the limiting Gaussian heat potential is `g^{BM}_t(x,·)`.
+
+The route is the one the paper's `ssec:green-estimates` uses on the lattice. Writing the kernel
+as the time integral of the heat kernel and squaring,
 
   `∫ g^{BM}_t(x,y)^2 dy = ∫_0^t ∫_0^t ∫ p^{BM}_s(x,y) p^{BM}_{s'}(x,y) dy ds ds'
                         = ∫_0^t ∫_0^t p^{BM}_{s+s'}(x,x) ds ds'`
 
-by Chapman-Kolmogorov, and the double time integral is finite exactly below
-dimension four.  Every step is taken in the lower integral, where Tonelli needs
-no integrability, and the junk value the interval integral takes on the diagonal
-for `d ≥ 2` is harmless because the chain only needs the inequality
-`g^{BM}_t(x,y) ≤ ∫_0^t p^{BM}_s(x,y) ds` in the lower integral, which holds
-everywhere.
+by Chapman-Kolmogorov (`lintegral_heatKernelBM_mul`), and the double time integral is finite
+exactly below dimension four (`lintegral_greenTimeBM_sq_lt_top`). Every step is taken in the
+lower integral, where Tonelli needs no integrability, and the junk value the interval integral
+takes on the diagonal for `d ≥ 2` is harmless because the chain only needs the inequality
+`g^{BM}_t(x,y) ≤ ∫_0^t p^{BM}_s(x,y) ds` in the lower integral (`ofReal_greenTimeBM_le`), which
+holds everywhere.
 -/
-import Sandpile.Support.ContBMDoubleTime
 
 open MeasureTheory
 open scoped NNReal Real ENNReal

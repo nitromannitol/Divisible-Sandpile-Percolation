@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.MeanAValue
+import Sandpile.Support.ContValueMeasurable
+import Sandpile.Support.ContValueTransfer
+
+/-!
+# Clause 1 of the Continuum Value Self-Similarity Proposition
+
 Clause 1 of `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`) from the
 two transfers the continuous modification buys.
 
@@ -7,9 +13,6 @@ The clause asks for a modification `U` of the value which is measurable at each
 `AEMeasurable.mk` of the value, which exists as soon as the value is almost
 everywhere measurable; the law then transfers along the almost-sure equality.
 -/
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ContValueMeasurable
-import Sandpile.Support.ContValueTransfer
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

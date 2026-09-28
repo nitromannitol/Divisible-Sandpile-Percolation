@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContBMGreenIdentity
+import Mathlib
+
+/-!
+# Measurable L2 Families of Brownian Green Kernels
+
 Measurable L2 families of Brownian Green kernels.
 
 Jointly measurable scalar kernels with L2 sections give strongly measurable L2
@@ -7,14 +12,15 @@ three, its L2 norm is independent of the spatial centre and increases with the
 horizon. Thus evaluating its L2 class along any measurable family of bounded
 times is Bochner integrable under a finite measure.
 -/
-import Sandpile.Support.ContBMGreenIdentity
-import Mathlib
 
 open MeasureTheory Filter Topology
 open scoped RealInnerProductSpace NNReal ENNReal
 
 namespace Sandpile.Support
 
+/-- A map into a nonempty, second-countable metric space is measurable as soon as its distance
+to every fixed point is measurable, proved by approximating `f` pointwise via a dense sequence
+`s` and the measurable selector `Measurable.find` choosing the first index within `(1/2)^n`. -/
 theorem measurable_of_measurable_dist {U E : Type*} [MeasurableSpace U]
     [Nonempty E] [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
     [SecondCountableTopology E] (f : U → E)
@@ -36,6 +42,10 @@ theorem measurable_of_measurable_dist {U E : Type*} [MeasurableSpace U]
 
 open scoped RealInnerProductSpace
 
+/-- If `f : U → X → ℝ` is jointly measurable and each section `f u` lies in `MemLp _ 2 μ`, then
+`u ↦ (hf u).toLp (f u)` is strongly measurable, proved by reducing to
+`measurable_of_measurable_dist` and computing the squared distance to any `v` as the measurable
+integral `∫ x, (f u x - v x)^2 ∂μ`. -/
 theorem stronglyMeasurable_toLp_of_uncurry {U X : Type*}
     [MeasurableSpace U] [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ]
     [SecondCountableTopology (Lp ℝ 2 μ)]
@@ -67,6 +77,9 @@ theorem stronglyMeasurable_toLp_of_uncurry {U X : Type*}
 open Sandpile.Continuum Sandpile.Support
 open scoped NNReal ENNReal
 
+/-- The uncurried Brownian Green kernel `(t, x, y) ↦ greenTimeBM d t x y` is jointly measurable,
+proved by rewriting it as the integral over `s` of an indicator-cut heat kernel `F` and applying
+Fubini-type measurability for the integral over the last coordinate. -/
 theorem measurable_uncurry_greenTimeBM (d : ℕ) :
     Measurable (fun p : (ℝ≥0 × Space d) × Space d => greenTimeBM d p.1.1 p.1.2 p.2) := by
   let F (p : ((ℝ≥0 × Space d) × Space d) × ℝ) : ℝ :=
@@ -80,12 +93,18 @@ theorem measurable_uncurry_greenTimeBM (d : ℕ) :
     · exact measurable_const
   have he (p : (ℝ≥0 × Space d) × Space d) :
       greenTimeBM d p.1.1 p.1.2 p.2 = ∫ s, F (p, s) := by
-    rw [greenTimeBM, intervalIntegral.integral_of_le (show (0 : ℝ) ≤ (p.1.1 : ℝ) from p.1.1.property), integral_Ioc_eq_integral_Ioo]
-    simpa only [F, Set.indicator] using (integral_indicator (μ := (volume : Measure ℝ)) (s := Set.Ioo (0 : ℝ) (p.1.1 : ℝ))
+    rw [greenTimeBM,
+      intervalIntegral.integral_of_le (show (0 : ℝ) ≤ (p.1.1 : ℝ) from p.1.1.property),
+      integral_Ioc_eq_integral_Ioo]
+    simpa only [F, Set.indicator] using (integral_indicator (μ := (volume : Measure ℝ))
+      (s := Set.Ioo (0 : ℝ) (p.1.1 : ℝ))
       (f := fun s => heatKernelBM d s p.1.2 p.2) measurableSet_Ioo).symm
   simp_rw [he]
   exact hm.stronglyMeasurable.integral_prod_right.measurable
 
+/-- The map `p ↦ (greenTimeBM d p.1 p.2).toLp` sending a time-space pair to the `L²` class of the
+Brownian Green kernel is strongly measurable, an instance of `stronglyMeasurable_toLp_of_uncurry`
+via the joint measurability from `measurable_uncurry_greenTimeBM`. -/
 theorem stronglyMeasurable_greenTimeBM_toLp {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     StronglyMeasurable (fun p : ℝ≥0 × Space d =>
       (memLp_greenTimeBM hd hd3 p.1.property p.2).toLp (greenTimeBM d p.1 p.2)) := by
@@ -95,6 +114,10 @@ theorem stronglyMeasurable_greenTimeBM_toLp {d : ℕ} (hd : 1 ≤ d) (hd3 : d �
     (fun p : ℝ≥0 × Space d => memLp_greenTimeBM hd hd3 p.1.property p.2)
     (measurable_uncurry_greenTimeBM d)
 
+/-- The `L²` norm of the Green kernel class at time `t ≤ T` and any spatial point `x` is bounded by
+its value at the later time `T` centred at `0`: the norm is spatially constant at each fixed time
+(by translation of `volume`) and increasing in time (`greenTimeBM_mono`), so the claim reduces to
+comparing pointwise via `Lp.norm_le_norm_of_ae_le`. -/
 theorem norm_greenTimeBM_toLp_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {t T : ℝ} (ht : 0 ≤ t) (htT : t ≤ T) (x : Space d) :
     ‖(memLp_greenTimeBM hd hd3 ht x).toLp (greenTimeBM d t x)‖ ≤
@@ -111,7 +134,8 @@ theorem norm_greenTimeBM_toLp_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
       ‖(memLp_greenTimeBM hd hd3 (ht.trans htT) 0).toLp (greenTimeBM d T 0)‖ := by
     have hs : ‖(memLp_greenTimeBM hd hd3 (ht.trans htT) x).toLp (greenTimeBM d T x)‖ ^ 2 =
         ‖(memLp_greenTimeBM hd hd3 (ht.trans htT) 0).toLp (greenTimeBM d T 0)‖ ^ 2 := by
-      rw [he T (ht.trans htT) x, he T (ht.trans htT) 0, integral_greenTimeBM_mul_two_interval hd hd3 (ht.trans htT) (ht.trans htT),
+      rw [he T (ht.trans htT) x, he T (ht.trans htT) 0,
+        integral_greenTimeBM_mul_two_interval hd hd3 (ht.trans htT) (ht.trans htT),
         integral_greenTimeBM_mul_two_interval hd hd3 (ht.trans htT) (ht.trans htT)]
       simp only [heatKernelBM, sub_self, norm_zero]
     nlinarith [norm_nonneg ((memLp_greenTimeBM hd hd3 (ht.trans htT) x).toLp (greenTimeBM d T x)),
@@ -124,9 +148,14 @@ theorem norm_greenTimeBM_toLp_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
   filter_upwards [hne, (memLp_greenTimeBM hd hd3 ht x).coeFn_toLp,
     (memLp_greenTimeBM hd hd3 (ht.trans htT) x).coeFn_toLp] with y hy ht' hT'
   rw [ht', hT', Real.norm_eq_abs, Real.norm_eq_abs,
-    abs_of_nonneg (greenTimeBM_nonneg d ht x y), abs_of_nonneg (greenTimeBM_nonneg d (ht.trans htT) x y)]
+    abs_of_nonneg (greenTimeBM_nonneg d ht x y),
+    abs_of_nonneg (greenTimeBM_nonneg d (ht.trans htT) x y)]
   exact greenTimeBM_mono hd ht htT hy.symm
 
+/-- Along any measurable family of time-space pairs `q` whose time coordinate is bounded by `T`,
+the resulting `L²` Green-kernel classes are Bochner integrable under a finite measure `μ`: they are
+strongly measurable (composing `stronglyMeasurable_greenTimeBM_toLp` with `q`) and dominated by the
+constant `‖(greenTimeBM d T 0).toLp‖` via `norm_greenTimeBM_toLp_le`. -/
 theorem integrable_greenTimeBM_toLp_of_bounded_time {U : Type*} [MeasurableSpace U]
     (μ : Measure U) [IsFiniteMeasure μ] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     (q : U → ℝ≥0 × Space d) (hq : Measurable q) (T : ℝ≥0)
@@ -136,6 +165,7 @@ theorem integrable_greenTimeBM_toLp_of_bounded_time {U : Type*} [MeasurableSpace
   have hs := (stronglyMeasurable_greenTimeBM_toLp hd hd3).comp_measurable hq
   apply (integrable_const ‖(memLp_greenTimeBM hd hd3 T.property 0).toLp
     (greenTimeBM d T 0)‖).mono' hs.aestronglyMeasurable
-  exact Eventually.of_forall fun u => norm_greenTimeBM_toLp_le hd hd3 (q u).1.property (hT u) (q u).2
+  exact Eventually.of_forall fun u =>
+    norm_greenTimeBM_toLp_le hd hd3 (q u).1.property (hT u) (q u).2
 
 end Sandpile.Support

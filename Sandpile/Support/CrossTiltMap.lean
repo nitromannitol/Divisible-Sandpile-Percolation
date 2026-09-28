@@ -1,4 +1,10 @@
-/-
+import Mathlib.MeasureTheory.Measure.Tilted
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.MeasureTheory.Integral.Prod
+
+/-!
+# Pushforward and product facts for exponential tilts
+
 Two facts about exponential tilts that Mathlib 4.32 does not have, needed for the
 Cameron--Martin shift of Step 3 of `prop:fixed-scale-crossings`
 (`sandpile.tex:2334-2350`).
@@ -12,9 +18,6 @@ Cameron--Martin shift of Step 3 of `prop:fixed-scale-crossings`
 
 Both are stated for arbitrary measurable spaces and import only Mathlib.
 -/
-import Mathlib.MeasureTheory.Measure.Tilted
-import Mathlib.MeasureTheory.Measure.Prod
-import Mathlib.MeasureTheory.Integral.Prod
 
 open MeasureTheory
 

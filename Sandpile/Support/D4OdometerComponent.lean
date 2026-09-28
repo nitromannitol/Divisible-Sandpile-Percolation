@@ -1,13 +1,16 @@
-/-
-The last step of the dimension-four percolation proof
-(`sandpile.tex:4079-4083`): the finite-range field is dominated by the odometer
-at the block horizon, so an infinite nearest-neighbour component of its
-superlevel set inside the coordinate plane is an infinite component of the
-superlevel set of the odometer at the later time `t`.
--/
 import Sandpile.Support.D4PlaneEmbed
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.Barrier
+
+/-!
+# Transferring an infinite component from a dominated field to the odometer
+
+This file proves the last step of the dimension-four percolation proof (`sandpile.tex:4079-4083`).
+The finite-range field is dominated pointwise by the odometer at the block horizon, so an
+infinite nearest-neighbour component of its superlevel set inside the coordinate plane is
+transferred, along the measure-preserving `scenery` map, to an infinite component of the
+superlevel set of the odometer itself at the later time `t`.
+-/
 
 open MeasureTheory
 

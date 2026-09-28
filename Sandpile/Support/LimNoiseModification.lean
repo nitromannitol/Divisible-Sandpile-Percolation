@@ -1,13 +1,21 @@
-/-
+import Sandpile.Continuum.WhiteNoise
+
+/-!
+# Modifications of white noise on null fibers
+
 White noise is preserved by separately almost-sure changes at each index.
 This does not give simultaneous equality at an uncountable set of indices.
 The null-fiber construction records both the measurability and the white-noise
 properties of such modifications.
 -/
-import Sandpile.Continuum.WhiteNoise
+
 open MeasureTheory ProbabilityTheory Set Filter
 open Sandpile.Continuum
 
+/-- **A family `W'` that agrees almost surely with white noise `W` at every test function,
+and is measurable at every square-integrable one, is itself white noise.** Every defining
+property of `IsWhiteNoise` (Gaussianity, mean, covariance, additivity, homogeneity, joint
+measurable versions) transfers along the a.e. equalities `heq`. -/
 theorem Sandpile.Support.isWhiteNoise_congr {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W W' : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (heq : ∀ f, W f =ᵐ[P] W' f)
@@ -36,6 +44,8 @@ theorem Sandpile.Support.isWhiteNoise_congr {Ω : Type*} [MeasurableSpace Ω]
       (fun q => (hW.gaussian.hasGaussianLaw_eval q).memLp_two) hW.cov f hf hs
     exact ⟨g, hg, fun u => (hgeq u).trans (heq (f u))⟩
 
+/-- Redefining `W i` on the null fibre `{V = c i}` does not change it almost surely,
+since that fibre has probability zero for every `i`. -/
 theorem Sandpile.Support.ae_eq_null_fiber_update {Ω I : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) (W A : I → Ω → ℝ) (V : Ω → ℝ) (c : I → ℝ)
     (hnull : ∀ i, P {ω | V ω = c i} = 0) (i : I) :
@@ -44,12 +54,17 @@ theorem Sandpile.Support.ae_eq_null_fiber_update {Ω I : Type*} [MeasurableSpace
   filter_upwards [hne] with ω hω
   simp only [if_neg hω]
 
+/-- The null-fiber update is measurable, being an `if`/`then`/`else` of measurable
+functions on the measurable set `{V = c i}`. -/
 theorem Sandpile.Support.measurable_null_fiber_update {Ω I : Type*} [MeasurableSpace Ω]
     (W A : I → Ω → ℝ) (V : Ω → ℝ) (c : I → ℝ)
     (hW : ∀ i, Measurable (W i)) (hA : ∀ i, Measurable (A i)) (hV : Measurable V)
     (i : I) : Measurable (fun ω => if V ω = c i then A i ω else W i ω) := by
   exact (hA i).ite (measurableSet_eq_fun hV measurable_const) (hW i)
 
+/-- **A null-fiber modification of white noise is again white noise**: combines
+`isWhiteNoise_congr` (transfer along the a.e. equality `ae_eq_null_fiber_update`) with
+measurability of the modified evaluation. -/
 theorem Sandpile.Support.isWhiteNoise_null_fiber_update {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (P : Measure Ω) (W A : (Space d → ℝ) → Ω → ℝ)
     (V : Ω → ℝ) (c : (Space d → ℝ) → ℝ) (hW : IsWhiteNoise d W P)

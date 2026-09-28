@@ -1,11 +1,27 @@
 import Sandpile.External.LocalCLT
 
+/-!
+# The Gaussian Fourier transform and the rescaled heat kernel
+
+`gaussian_fourier_transform_eq` proves the real finite-dimensional Gaussian Fourier identity
+`∫ exp(-a‖θ‖²) cos⟨θ,v⟫ = (π/a)^{d/2} exp(-‖v‖²/(4a))` by taking the real part of the complex
+Gaussian integral `GaussianFourier.integral_cexp_neg_mul_sq_norm_add`.
+`scaledSite_sub_norm_sq_div` computes the squared Euclidean distance between two rescaled
+lattice sites in terms of the unscaled integer difference, and
+`gaussian_fourier_integral_eq_heatKernelBM` combines the two to identify the rescaled Gaussian
+Fourier integral at frequency scale `ℓ/(2d)` with the Brownian heat kernel `heatKernelBM d
+(ℓ/R²)` evaluated at the rescaled sites.
+-/
+
 open MeasureTheory
 open InnerProductSpace
 open scoped RealInnerProductSpace
 
 /- The real form of the finite-dimensional Gaussian Fourier transform. -/
-theorem aux_lclt_gaussian_fourier
+/-- The real Gaussian Fourier transform: for `a > 0`, `∫ θ, exp(-a‖θ‖^2) * cos ⟨θ,v⟩ = (π/a)^(d/2) *
+exp(-‖v‖^2/(4a))`, obtained by taking the real part of the complex Gaussian integral from
+`GaussianFourier.integral_cexp_neg_mul_sq_norm_add`. -/
+theorem gaussian_fourier_transform_eq
     {d : ℕ} {a : ℝ} (ha : 0 < a) (v : EuclideanSpace ℝ (Fin d)) :
     ∫ θ : EuclideanSpace ℝ (Fin d),
         Real.exp (-a * ‖θ‖ ^ 2) * Real.cos (⟪θ, v⟫_ℝ) =
@@ -78,7 +94,10 @@ theorem aux_lclt_gaussian_fourier
       simp only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
         sub_zero, mul_zero]
 
-theorem aux_lclt_scaledSite_sub_norm_sq
+/-- The squared norm of the difference of two rescaled lattice sites, `‖scaledSite R x - scaledSite
+R y‖^2`, equals `‖x - y‖^2 / R^2` for the unscaled integer difference `x - y`, by unfolding
+`scaledSite` and simplifying the resulting sum of squares. -/
+theorem scaledSite_sub_norm_sq_div
     {d : ℕ} (R : ℝ) (hR : 0 < R) (x y : Sandpile.Site d) :
     ‖Sandpile.External.Lclt.scaledSite R x -
         Sandpile.External.Lclt.scaledSite R y‖ ^ 2 =
@@ -94,7 +113,11 @@ theorem aux_lclt_scaledSite_sub_norm_sq
   intro i hi
   field_simp [ne_of_gt hR]
 
-theorem aux_lclt_gaussian_fourier_heatKernelBM
+/-- The rescaled Gaussian Fourier integral at frequency scale `l/(2d)` equals the Brownian heat
+kernel `heatKernelBM d (l/R^2)` evaluated at the two rescaled sites, derived from
+`gaussian_fourier_transform_eq` and `scaledSite_sub_norm_sq_div` by matching the exponent and
+normalizing coefficient via `rpow` algebra. -/
+theorem gaussian_fourier_integral_eq_heatKernelBM
     {d : ℕ} (hd : 1 ≤ d) (R : ℝ) (hR : 0 < R) (ℓ : ℕ) (hℓ : 0 < ℓ)
     (x y : Sandpile.Site d) :
     (2 * Real.pi)⁻¹ ^ d *
@@ -110,9 +133,9 @@ theorem aux_lclt_gaussian_fourier_heatKernelBM
   have hdR : 0 < (d : ℝ) := by exact_mod_cast (Nat.zero_lt_of_lt hd)
   have hℓR : 0 < (ℓ : ℝ) := by exact_mod_cast hℓ
   have ha : 0 < (ℓ : ℝ) / (2 * (d : ℝ)) := by positivity
-  rw [aux_lclt_gaussian_fourier ha]
+  rw [gaussian_fourier_transform_eq ha]
   rw [Sandpile.Continuum.heatKernelBM]
-  rw [aux_lclt_scaledSite_sub_norm_sq R hR x y]
+  rw [scaledSite_sub_norm_sq_div R hR x y]
   have hexponent :
       -‖WithLp.toLp 2 (fun i : Fin d => ((x i - y i : ℤ) : ℝ))‖ ^ 2 /
           (4 * ((ℓ : ℝ) / (2 * (d : ℝ)))) =

@@ -1,13 +1,31 @@
-/-
-Weak convergence in a separable metric space admits couplings of the original
-sample spaces whose discrepancies tend to zero in probability. Continuity cells
-reduce the construction to finitely many matched submasses.
--/
 import Sandpile.Support.StopCoupling
+
+/-!
+# Couplings realizing weak convergence with small discrepancy
+
+Weak convergence in a separable metric space admits couplings of the original sample spaces
+whose discrepancies tend to zero in probability. Continuity cells reduce the construction to
+finitely many matched submasses. `exists_continuity_partition` builds a countable measurable
+partition of a finite measure space into bounded, small-diameter, null-frontier cells (by
+disjointifying balls around a dense sequence); `exists_coupling_close_of_tendstoInDistribution`
+uses the finitely many largest such cells, on which the pushforward measures converge by the
+Portmanteau theorem, to build (via `exists_coupling_matching_cells`) a coupling `P` whose bad set
+`{ε < dist(X i, Y)}` has probability eventually below any `δ`; the `_ae` variant transports this
+along a.e.-equal measurable modifications when `X` and `Y` are only assumed a.e.-measurable; and
+`measure_error_le_of_marginals` is the elementary set-theoretic estimate, bounding the measure of
+an event contained in `(fst⁻¹ A) ∪ C ∪ (snd⁻¹ B)` by `μ A + P C + ν B` from the marginal
+constraints on `P`, used to bound the discrepancy event by the off-diagonal coupling mass plus
+the tails of the two marginals outside the finite cell collection.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- A finite measure on a separable pseudometric space admits a countable measurable partition
+into bounded cells of diameter at most `ε`, each with `μ`-null frontier, covering the whole
+space. Built by picking, for each point of a countable dense set, a radius in `(ε/4, ε/2)` with
+null-measure sphere (`exists_null_frontier_thickening`), then disjointifying the resulting balls
+(`disjointed`) to make the cells pairwise disjoint while keeping their union all of `E`. -/
 theorem Sandpile.Continuum.exists_continuity_partition
     {E : Type*} [PseudoMetricSpace E] [MeasurableSpace E] [OpensMeasurableSpace E]
     [TopologicalSpace.SeparableSpace E] (μ : Measure E) [IsFiniteMeasure μ]
@@ -61,6 +79,14 @@ theorem Sandpile.Continuum.exists_continuity_partition
     obtain ⟨n, hn⟩ := mem_iUnion.1 hx
     exact mem_iUnion.2 ⟨n, lt_trans hn (hr n).1⟩
 
+/-- If `X i` converges in distribution to `Y` along `L`, then eventually along `L` there is a
+probability coupling `P` of `μ i` and `ν` under which `X i` and `Y` differ by at most `ε` outside
+an event of probability at most `δ`. Proved via `exists_continuity_partition` applied to the law
+of `Y`: the finitely many largest cells (chosen so their total mass exceeds `1 - δ`, using
+`ENNReal.summable`) each have pushforward mass converging by
+`ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'`, so
+`exists_coupling_matching_cells` matches them cellwise, and any two points landing in matched
+cells are within `ε` of each other by the cell's diameter bound. -/
 theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution
     {ι E : Type*} [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
     [TopologicalSpace.SeparableSpace E]
@@ -81,7 +107,8 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution
     rw [← measure_iUnion hAp hAm, hAu, measure_univ]
   have hpartial : Filter.Tendsto (fun N : ℕ => ∑ n ∈ Finset.range N, (ν.map Y) (A n))
       Filter.atTop (𝓝 (1 : ℝ≥0∞)) := by
-    simpa only [hsum] using (ENNReal.summable (f := fun n => (ν.map Y) (A n))).hasSum.tendsto_sum_nat
+    simpa only [hsum]
+      using (ENNReal.summable (f := fun n => (ν.map Y) (A n))).hasSum.tendsto_sum_nat
   have hlt : (1 : ℝ≥0∞) - ENNReal.ofReal δ < 1 :=
     ENNReal.sub_lt_self (by simp) (by simp) (ENNReal.ofReal_pos.2 hδ).ne'
   obtain ⟨N, hN⟩ := (hpartial.eventually (lt_mem_nhds hlt)).exists
@@ -120,6 +147,11 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution
     apply tsub_le_iff_right.mpr
     simpa only [add_comm] using (tsub_le_iff_right.mp hi.le)
 
+/-- The a.e.-measurable version of `exists_coupling_close_of_tendstoInDistribution`: `X` and `Y`
+need only be a.e.-measurable, not measurable. Proved by passing to measurable a.e.-equal
+representatives `X'`, `Y'` (`AEMeasurable.mk`), applying the measurable case to them, and
+transporting the resulting coupling's bad-set bound back to `X`, `Y` since the two bad sets agree
+`P`-a.e. by `ae_of_ae_map`. -/
 theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution_ae
     {ι E : Type*} [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
     [TopologicalSpace.SeparableSpace E]
@@ -155,6 +187,10 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution_ae
   rw [measure_congr he]
   exact hbad
 
+/-- If a coupling `P` of `μ` and `ν` has both marginals fixed (`P.map fst = μ`, `P.map snd = ν`),
+then any event `E` contained in `(fst⁻¹ A) ∪ C ∪ (snd⁻¹ B)` has `P`-measure at most
+`μ A + P C + ν B`, since each preimage term is controlled by the corresponding marginal via
+`Measure.le_map_apply` and the bound then follows from subadditivity of `P`. -/
 theorem Sandpile.Continuum.measure_error_le_of_marginals
     {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω']
     (μ : Measure Ω) (ν : Measure Ω') (P : Measure (Ω × Ω'))

@@ -1,14 +1,18 @@
-/-
+import Sandpile.Support.LinStep2Weights
+
+/-!
+# Step 2 of `lem:dgt4-path-survival` in uniform-window form
+
 Step 2 of `lem:dgt4-path-survival` along one path, with the errors in the form
 `eq:dgt4-uniform-contact-thresholds` supplies them (`sandpile.tex:5529-5583`).
 
 The paper's hypothesis is a bound on `|m\P(J(0)>\E u_{m-1}(0))/(G(0,0)\kappa)-1|` uniformly
-over the window `\lceil\varepsilon n_R\rceil\leq m\leq n_R`.  With `m=n_R-r` that is a
+over the window `\lceil\varepsilon n_R\rceil\leq m\leq n_R`. With `m=n_R-r` that is a
 RELATIVE bound on the weights, and `weights_of_window` reads off the two forms the chain
 consumes: the uniform upper bound `\pi_{R,r}\leq2G(0,0)\kappa/(n_R-r)` and the relative
 deviation from `G(0,0)\kappa/(n_R-r)`.
 
-The other two window bounds are the paper's two constants.  `harmonic_window_le` is
+The other two window bounds are the paper's two constants. `harmonic_window_le` is
 `\sum_{m=\lceil\varepsilon n_R\rceil}^{n_R}1/m\leq1+\log(1/\varepsilon)`, which is what
 multiplies the threshold-replacement error at `sandpile.tex:5545-5547`, and
 `neg_log_window_le` is `-\log(1-j/n_R)\leq\log(1/\varepsilon)`, which is what multiplies
@@ -20,10 +24,9 @@ mean by at most
 `\eta(1+\log(1/\varepsilon))+\theta+16(G(0,0)\kappa)^2/(\varepsilon n_R)
  +\kappa\eta'+\eta\kappa(\eta'+\log(1/\varepsilon))`,
 with `\eta` the window bound, `\theta` the factorization error of Step 1 and `\eta'` the
-mean last-visit defect of `lem:dgt4-weighted-last-visits`.  Every one of the four tends to
+mean last-visit defect of `lem:dgt4-weighted-last-visits`. Every one of the four tends to
 zero, which is the paper's "each summand tends to zero uniformly for `j\leq(1-\varepsilon)n_R`".
 -/
-import Sandpile.Support.LinStep2Weights
 
 open MeasureTheory Filter Topology
 

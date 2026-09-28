@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.CrossField
+
+/-! # Gaussian Law Determined by Covariance
+
 The determination of the law of a centred Gaussian process by its covariance,
 the one general fact the symmetry in law of the ball field of
 `sandpile.tex:2076-2104` waits on.
@@ -28,7 +31,6 @@ process has a Gaussian law, hence is integrable, and a pair of coordinates is
 jointly Gaussian, hence has an integrable product.  No junk value can therefore
 stand for one of these clauses (standing convention R2).
 -/
-import Sandpile.Support.CrossField
 
 open MeasureTheory ProbabilityTheory Set
 

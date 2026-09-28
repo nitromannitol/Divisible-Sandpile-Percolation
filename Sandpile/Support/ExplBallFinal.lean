@@ -1,16 +1,19 @@
-/-
-The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the two analytic residuals of its proof, with the two realization spaces bound
-explicitly as the frozen statement binds them.
-
-The first residual is samplewise polynomial growth of the field on the time strip,
-with an amplitude chosen after the noise sample; the second is the strong Markov
-step at the exit time of the ball.  Both are properties of the field and the
-motion alone, and the reduction below is the whole of the frozen conclusion.
--/
 import Sandpile.Support.ExplBallResidual
 import Sandpile.Support.ExplBallGaussian
 import Sandpile.Support.ExplBallBound
+
+/-!
+# Ball localization from its two analytic residuals
+
+The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) from the
+two analytic residuals of its proof, with the two realization spaces bound explicitly as the
+frozen statement binds them (`brownian_ball_localization_of_residuals_frozen`).
+
+The first residual is samplewise polynomial growth of the field on the time strip, with an
+amplitude chosen after the noise sample (`BallGrowthResidual`); the second is the strong Markov
+step at the exit time of the ball (`BallStepResidual`). Both are properties of the field and
+the motion alone, and the reduction below is the whole of the frozen conclusion.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -82,8 +85,10 @@ theorem brownian_ball_localization_of_residuals_frozen (d : ℕ) (_hd : d < 4)
   intro T hT A hA K hK ΩW mΩW PW hPW W hW ν2 hν2 ΩB mΩB PB hPB B hBrown hcont hmeas Z hmod hcontZ
   have hg := hgrowth ΩW PW W hW ν2 hν2 Z hmod hcontZ T hT
   have hs := hstep ΩW PW W hW ν2 hν2 Z hmod hcontZ T hT A hA K hK ΩB PB B hBrown hcont hmeas
-  have hfar := bddAbove_farValues_of_samplewise_growth_uniform hBrown hcont (fun y t => (hmeas y t).measurable) Z T A hT.le K hK hg (hcontZ T hT)
-  have hinput := ballInput_of_samplewise_growth hBrown hcont (fun y t => (hmeas y t).measurable) Z T A hT.le K hK hg (hcontZ T hT) hfar hs
+  have hfar := bddAbove_farValues_of_samplewise_growth_uniform hBrown hcont
+    (fun y t => (hmeas y t).measurable) Z T A hT.le K hK hg (hcontZ T hT)
+  have hinput := ballInput_of_samplewise_growth hBrown hcont
+    (fun y t => (hmeas y t).measurable) Z T A hT.le K hK hg (hcontZ T hT) hfar hs
   filter_upwards [hinput] with ω hω
   intro u hu
   exact hmain T hT A hA K ΩB PB B hBrown hcont (fun t z => Z t z ω) u hu (hω u hu)

@@ -1,30 +1,18 @@
-/-
-Case (a) of `prop:dgt4-contact-asymptotics` (`sandpile.tex:4969-5305`), above
-its four steps.
-
-The proof opens by announcing the two estimates it will verify in Steps 1-4,
-
-  `\P(\{u_{n+1}(0)=0\}\triangle\{-V_\infty(0)>\E u_n(0)\})/\P(-V_\infty(0)>\E u_n(0))\to0`
-  (`eq:dgt4-contact-threshold-relative-error`), and
-  `G(0,0)(\E u_{n+1}(0)-\E u_n(0))/\E(-V_\infty(0)-\E u_n(0))_+\to1`
-  (`eq:dgt4-contact-mean-increment`),
-
-and then says "As we now show, these two estimates imply the proposition"
-(`sandpile.tex:4990`).  That implication is what this module proves.  The first
-estimate is `ThresholdRelativeError` at `J=-V_\infty` character for character.
-The second, together with the Mills-ratio asymptotics of `Support/Dgt4Mills.lean`,
-gives the threshold asymptotic `\P(-V_\infty(0)>\E u_n(0))\sim G(0,0)/n` of
-`eq:dgt4-threshold-probability` through the chain of `Support/Dgt4TailChain.lean`;
-`\kappa=1` in this case.
-
-`InfiniteFieldGaussianTail d ν v` records that `-V_\infty(0)` is the mean-zero
-Gaussian of variance `v` of `sandpile.tex:4991`, in the only form the proof uses:
-the probability of exceeding a level is the Gaussian tail at that level.  This
-avoids any measurability hypothesis on the field, which the box-limit definition
-of `Support/InfiniteGreenField.lean` does not supply.
--/
 import Sandpile.Support.Dgt4Mills
 import Sandpile.Support.Dgt4MeanDiv
+
+/-!
+# Case (a) of the contact-threshold asymptotics: the Gaussian branch
+
+This file proves case (a) of `prop:dgt4-contact-asymptotics`, above its four steps, from the two
+estimates `ThresholdRelativeError` and `GaussianMeanIncrement` at `J = -V_∞`. The first estimate
+is `ThresholdRelativeError` at `J = -V_∞` character for character, and the second, together with
+the Mills-ratio asymptotics of `Support/Dgt4Mills.lean`, gives the threshold asymptotic
+`ℙ(-V_∞(0) > 𝔼 u_n(0)) ~ G(0,0)/n` through the chain of `Support/Dgt4TailChain.lean`, with
+`κ = 1` in this case. `InfiniteFieldGaussianTail d ν v` records that `-V_∞(0)` is the mean-zero
+Gaussian of variance `v`, in the only form the proof uses: the probability of exceeding a level
+is the Gaussian tail at that level, which avoids any measurability hypothesis on the field.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -37,7 +25,8 @@ variable {d : ℕ}
 read at the level of exceedance probabilities. -/
 def InfiniteFieldGaussianTail (d : ℕ) (ν : Measure ℝ) (v : ℝ≥0) : Prop :=
   ∀ t : ℝ, ((Sandpile.centeredMassLaw d ν)
-      {σ | t < -Sandpile.infiniteGreenField (Sandpile.scenery d σ) 0}).toReal = gaussianUpperTail v t
+      {σ | t < -Sandpile.infiniteGreenField (Sandpile.scenery d σ) 0}).toReal
+    = gaussianUpperTail v t
 
 /-- `eq:dgt4-contact-mean-increment` (`sandpile.tex:4976-4979`):
 `G(0,0)(\E u_{n+1}(0)-\E u_n(0))/\E(-V_\infty(0)-\E u_n(0))_+\to1`. -/
@@ -45,7 +34,8 @@ def GaussianMeanIncrement (d : ℕ) (ν : Measure ℝ) (v : ℝ≥0) : Prop :=
   Tendsto (fun n : ℕ => Sandpile.green d 0 0 *
       (Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) (n + 1) -
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) n) /
-      gaussianIntegratedTail v (Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) n)) atTop (𝓝 1)
+      gaussianIntegratedTail v
+        (Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) n)) atTop (𝓝 1)
 
 /-- `eq:dgt4-threshold-probability` (`sandpile.tex:5008-5010`):
 `\P(-V_\infty(0)>\E u_n(0))\sim G(0,0)/n`, with `\kappa=1`. -/

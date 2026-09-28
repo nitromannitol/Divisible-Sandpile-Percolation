@@ -1,13 +1,16 @@
-/-
-The RSW rectangle extension for Gaussian far-field crossing values: the final
-polynomial lower tail for fixed-aspect rectangles, combining the RSW mean
-lower bound with the sub-Gaussian lower concentration.
--/
 import Sandpile.Support.GaussianSquareMean
 import Sandpile.Support.GaussianCrossingUpper
 import Sandpile.Support.RswMeanLower
 import Sandpile.Support.PlaneRectangle
 import Sandpile.External.PlanarRSW
+
+/-!
+# RSW rectangle extension: polynomial lower tail
+
+The RSW rectangle extension for Gaussian far-field crossing values: the final
+polynomial lower tail for fixed-aspect rectangles, combining the RSW mean
+lower bound with the sub-Gaussian lower concentration.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal

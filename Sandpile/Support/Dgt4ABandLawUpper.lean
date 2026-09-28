@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ABandLawDensity
+
+/-!
+# Step-1 upper isolation for the band law
+
 The Step-1 upper isolation estimate `eq:dgt4-band-upper-isolation` of
 `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`) for the constructed one-site
 law: the mass, and the first moment, that the law puts beyond the `k`th band
@@ -8,7 +12,6 @@ Only the bands above the `k`th and the positive summand contribute; the bands
 below are carried by values above `-a_k`, where the integrand vanishes
 identically.
 -/
-import Sandpile.Support.Dgt4ABandLawDensity
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -30,6 +33,9 @@ theorem exp_neg_mul_gaussianPDFReal (hv : v ≠ 0) (x : ℝ) :
   field_simp
   ring_nf
 
+/-- The tilted density `e^{-x} * gaussianPDFReal mu v x` is integrable, being a constant
+multiple of the Gaussian density at the shifted mean `mu - v`
+(`exp_neg_mul_gaussianPDFReal`). -/
 theorem integrable_exp_neg_mul_gaussianPDFReal (hv : v ≠ 0) :
     Integrable fun x : ℝ => Real.exp (-x) * gaussianPDFReal mu v x := by
   have := (integrable_gaussianPDFReal (mu - (v : ℝ)) v).const_mul
@@ -37,6 +43,9 @@ theorem integrable_exp_neg_mul_gaussianPDFReal (hv : v ≠ 0) :
   exact this.congr (Filter.Eventually.of_forall fun x =>
     (exp_neg_mul_gaussianPDFReal (mu := mu) hv x).symm)
 
+/-- The integral of the tilted density `e^{-x} * gaussianPDFReal mu v x` equals
+`e^{-mu+v/2}`, from `exp_neg_mul_gaussianPDFReal` and the shifted Gaussian density
+integrating to one. -/
 theorem integral_exp_neg_mul_gaussianPDFReal (hv : v ≠ 0) :
     ∫ x : ℝ, Real.exp (-x) * gaussianPDFReal mu v x = Real.exp (-mu + (v : ℝ) / 2) := by
   rw [integral_congr_ae (Filter.Eventually.of_forall
@@ -56,14 +65,20 @@ theorem max_neg_sub_le_exp (c z : ℝ) : max (-z - c) 0 ≤ Real.exp (-(z + c)) 
 /-- The integrand of the first-moment half of `eq:dgt4-band-upper-isolation`. -/
 def upperExcess (c z : ℝ) : ℝ := max (-z - c) 0
 
+/-- `upperExcess c z` is nonnegative, being a maximum with `0`. -/
 lemma upperExcess_nonneg (c z : ℝ) : 0 ≤ upperExcess c z := le_max_right _ _
 
+/-- `upperExcess c` is continuous, as the maximum of the continuous function `z ↦ -z-c` and
+the constant `0`. -/
 lemma continuous_upperExcess (c : ℝ) : Continuous (upperExcess c) :=
   (continuous_neg.sub continuous_const).max continuous_const
 
+/-- `upperExcess c z` vanishes once `-z ≤ c`, i.e. once `z` is at or above the level `-c`. -/
 lemma upperExcess_eq_zero {c z : ℝ} (h : -z ≤ c) : upperExcess c z = 0 :=
   max_eq_right (by linarith)
 
+/-- `upperExcess c z ≤ d` whenever `d` is nonnegative and dominates `-z`, since
+`-z - c ≤ d - c ≤ d` once `c ≥ 0`. -/
 lemma upperExcess_le {c z d : ℝ} (hc : 0 ≤ c) (hd : 0 ≤ d) (h : -z ≤ d) :
     upperExcess c z ≤ d := by
   rcases le_or_gt (-z - c) 0 with hz | hz
@@ -88,6 +103,10 @@ theorem integrable_gauss_upperExcess (hv : v ≠ 0) (c : ℝ) :
         rw [show -(x + c) = -x + -c by ring, Real.exp_add]
         ring
 
+/-- The Gaussian expectation of `upperExcess c` is at most `e^{-c} * e^{-mu+v/2}`, by
+dominating the integrand pointwise with the tilted density
+`e^{-c} * (e^{-x} * gaussianPDFReal mu v x)` via `max_neg_sub_le_exp` and
+integrating. -/
 theorem integral_gauss_upperExcess_le (hv : v ≠ 0) (c : ℝ) :
     ∫ x : ℝ, gaussianPDFReal mu v x * upperExcess c x
       ≤ Real.exp (-c) * Real.exp (-mu + (v : ℝ) / 2) := by

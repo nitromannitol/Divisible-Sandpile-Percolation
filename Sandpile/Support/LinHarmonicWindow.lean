@@ -1,10 +1,15 @@
-/-
+import Sandpile.Support.LinProduct
+import Sandpile.Support.LinThresholdNull
+
+/-!
+# The harmonic bookkeeping of Step 2, and the time weight
+
 The harmonic bookkeeping of Step 2 of `lem:dgt4-path-survival` and the time weight of
 `prop:dgt4-linearization`.
 
-`eq:dgt4-path-contact-replacement` (`sandpile.tex:5532-5550`) bounds the probability that one
-of the contact events differs from its threshold event by
-`[max_m m P(…)] ∑_{m=⌈εn_R⌉}^{n_R} 1/m`.  Turning the uniform bound `m P(…) ≤ η` into that
+`eq:dgt4-path-contact-replacement` (`sandpile.tex:5532-5550`) bounds the probability that
+one of the contact events differs from its threshold event by
+`[max_m m P(…)] ∑_{m=⌈εn_R⌉}^{n_R} 1/m`. Turning the uniform bound `m P(…) ≤ η` into that
 product is `sum_le_of_mul_le`, and reindexing the sum over the times `r ≤ j` as a sum over
 the levels `m = n_R - r` is `sum_inv_range_sub_eq`; `sum_inv_Icc_le` of
 `Support/LinProduct.lean` then supplies `1 + \log(n/k)`.
@@ -17,8 +22,6 @@ the levels `m = n_R - r` is `sum_inv_range_sub_eq`; `sum_inv_Icc_le` of
 `eq:dgt4-uniform-contact-thresholds` over the window `⌈ε n_R⌉ ≤ m ≤ n_R` is free once the
 underlying quantity tends to zero in `m`: the left end of the window tends to infinity.
 -/
-import Sandpile.Support.LinProduct
-import Sandpile.Support.LinThresholdNull
 
 open Filter Topology MeasureTheory
 
@@ -28,7 +31,8 @@ namespace Sandpile
 theorem sum_inv_range_sub_eq (n j : ℕ) (hj : j ≤ n) :
     ∑ r ∈ Finset.range (j + 1), (((n - r : ℕ) : ℝ))⁻¹
       = ∑ m ∈ Finset.Icc (n - j) n, ((m : ℝ))⁻¹ := by
-  have hIcc : Finset.Icc (n - j) n = Finset.Ico (n - j) (n + 1) := (Finset.Ico_add_one_right_eq_Icc _ _).symm
+  have hIcc : Finset.Icc (n - j) n = Finset.Ico (n - j) (n + 1) :=
+    (Finset.Ico_add_one_right_eq_Icc _ _).symm
   rw [hIcc, Finset.sum_Ico_eq_sum_range]
   have hlen : n + 1 - (n - j) = j + 1 := by omega
   rw [hlen, ← Finset.sum_range_reflect (fun i => (((n - j + i : ℕ)) : ℝ)⁻¹) (j + 1)]

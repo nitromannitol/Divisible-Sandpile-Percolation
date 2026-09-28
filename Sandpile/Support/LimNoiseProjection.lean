@@ -1,15 +1,28 @@
-/-
-Removing finitely many Hilbert coordinates from white noise leaves a field
-measurable, up to almost-everywhere equality, from the remaining coordinates.
-Linearity and reconstruction are used in L2; raw versions are compared only
-almost everywhere for each fixed spatial test function.
--/
 import Sandpile.Support.LimNoiseCoordinates
+
+/-!
+# Removing finitely many coordinates leaves white noise measurable in the rest
+
+Removing finitely many Hilbert coordinates from white noise leaves a field measurable, up to
+almost-everywhere equality, from the remaining coordinates. Linearity and reconstruction are used
+in `L²` (`whiteNoise_residual_ae_eq`, `aestronglyMeasurable_whiteNoise_of_coefficients`,
+`aestronglyMeasurable_whiteNoise_residual`, `whiteNoiseL2_integral`); raw versions are compared
+only almost everywhere for each fixed spatial test function (`whiteNoise_ae_eq_of_ae_eq`,
+`hilbertBasis_repr_toLp_eq_integral`). The explicit finite-coefficient form
+`finiteNoiseRemainder` and its measurability (`aestronglyMeasurable_finiteNoiseRemainder`)
+package the whole argument for a concrete choice of coefficients, and
+`indepFun_whiteNoise_orthogonal` records the companion independence fact for orthogonal
+coordinates, via the elementary orthogonal-projection identity `inner_sub_finite_projection`.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter InnerProductSpace
 open Sandpile.Continuum Sandpile.Support
 open scoped ENNReal NNReal RealInnerProductSpace
 
+/-- If two square-integrable test functions `f` and `g` agree almost everywhere, then `W f` and
+`W g` agree `P`-almost surely: their difference has zero variance and zero mean by
+`IsWhiteNoise.cov`/`IsWhiteNoise.mean`, so `ae_eq_integral_of_variance_eq_zero` forces it to equal
+its mean, namely `0`, almost surely. -/
 theorem Sandpile.Support.whiteNoise_ae_eq_of_ae_eq {Ω : Type*}
     [MeasurableSpace Ω] {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -41,6 +54,11 @@ theorem Sandpile.Support.whiteNoise_ae_eq_of_ae_eq {Ω : Type*}
   filter_upwards [hz] with ω hω
   exact sub_eq_zero.mp hω
 
+/-- **Orthogonal white-noise coordinates are independent.** If every `f i` is orthogonal in `L²`
+to every `g j`, then the families `(W (f i))_i` and `(W (g j))_j` are independent, since jointly
+Gaussian random variables are independent exactly when their covariance vanishes
+(`IsGaussianProcess.indepFun_of_covariance_eq_zero`), and covariance here is the `L²` inner
+product (`Sandpile.Support.covariance_whiteNoise`). -/
 theorem Sandpile.Support.indepFun_whiteNoise_orthogonal {Ω ι κ : Type*}
     [MeasurableSpace Ω] {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -65,6 +83,8 @@ theorem Sandpile.Support.indepFun_whiteNoise_orthogonal {Ω ι κ : Type*}
   rw [Sandpile.Support.covariance_whiteNoise hW _ _ (Lp.memLp _) (Lp.memLp _)]
   simpa only [L2.inner_def, RCLike.inner_apply, conj_trivial, mul_comm] using ho i j
 
+/-- The residual after subtracting the finite orthogonal projection of `x` onto `s` is orthogonal
+to each basis vector `v i` used in that projection, for `i ∈ s`. -/
 theorem Sandpile.Support.inner_sub_finite_projection {E ι : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (v : ι → E) (hv : Orthonormal ℝ v) (s : Finset ι) (x : E) {i : ι}
@@ -72,6 +92,11 @@ theorem Sandpile.Support.inner_sub_finite_projection {E ι : Type*}
     ⟪v i, x - ∑ j ∈ s, ⟪v j, x⟫_ℝ • v j⟫_ℝ = 0 := by
   rw [inner_sub_right, hv.inner_right_sum (fun j => ⟪v j, x⟫_ℝ) hi, sub_self]
 
+/-- **Strong measurability of white noise from its Hilbert-basis coefficients.** If `W (b i)` is
+`m`-measurable at every index `i` where `f`'s coefficient `b.repr f i` is nonzero, then `W f`
+itself is `m`-measurable: `W f` is (up to a.e. equality) the `L²` limit `whiteNoiseL2 hW f` of its
+partial Hilbert-basis sums (`Sandpile.Support.hasSum_whiteNoise_hilbertBasis`), and the set of
+`m`-measurable `L²` functions is closed. -/
 theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_coefficients {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] {d : ℕ} {P : Measure Ω}
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -99,6 +124,10 @@ theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_coefficients {Ω ι 
         (hW.gaussian.hasGaussianLaw_eval (fun y => b i y)).memLp_two.coeFn_toLp.symm
   exact hf'.congr (hW.gaussian.hasGaussianLaw_eval (fun y => f y)).memLp_two.coeFn_toLp
 
+/-- White noise commutes with subtracting a finite linear combination: `W` applied to `f` minus a
+finite sum `∑ c_i • v_i` agrees almost surely with `W f` minus the corresponding finite sum
+`∑ c_i · W (v_i)`, transported through the linear isometry
+`Sandpile.Support.whiteNoiseLinearIsometry`. -/
 theorem Sandpile.Support.whiteNoise_residual_ae_eq {Ω ι : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (v : ι → Lp ℝ 2 (volume : Measure (Space d)))
@@ -130,6 +159,10 @@ theorem Sandpile.Support.whiteNoise_residual_ae_eq {Ω ι : Type*} [MeasurableSp
   intro i hi
   rw [hωsmul ⟨i,hi⟩, hωV ⟨i,hi⟩]
 
+/-- The residual of `W` at `f` after subtracting its projection onto the basis vectors indexed by
+`s` is `m`-measurable, given `m`-measurability of `W (b i)` for every `i ∉ s`: this specializes
+`aestronglyMeasurable_whiteNoise_of_coefficients` to `f - ∑_{i∈s} (b.repr f i) • b i`, whose own
+`i`-th coefficient vanishes for `i ∈ s` by `inner_sub_finite_projection`. -/
 theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_residual {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] {d : ℕ} {P : Measure Ω}
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -148,6 +181,8 @@ theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_residual {Ω ι : Type*
   simp only [b.repr_apply_apply]
   exact Sandpile.Support.inner_sub_finite_projection b b.orthonormal s f his
 
+/-- The `i`-th Hilbert-basis coefficient of the `L²` class of `f` is the integral pairing
+`∫ f · b i`. -/
 theorem Sandpile.Support.hilbertBasis_repr_toLp_eq_integral {ι : Type*} {d : ℕ}
     (b : HilbertBasis ι ℝ (Lp ℝ 2 (volume : Measure (Space d))))
     (f : Space d → ℝ) (hf : MemLp f 2 volume) (i : ι) :
@@ -158,11 +193,18 @@ theorem Sandpile.Support.hilbertBasis_repr_toLp_eq_integral {ι : Type*} {d : �
   filter_upwards [hf.coeFn_toLp] with y hy
   rw [hy]
 
+/-- `W f` with the contribution of the basis vectors indexed by `s` subtracted off explicitly,
+using the integral pairings `∫ f · b i` as coefficients rather than the abstract Hilbert-basis
+representation. -/
 noncomputable def Sandpile.Support.finiteNoiseRemainder {Ω ι : Type*} {d : ℕ}
     (W : (Space d → ℝ) → Ω → ℝ) (b : ι → Lp ℝ 2 (volume : Measure (Space d)))
     (s : Finset ι) (f : Space d → ℝ) (ω : Ω) : ℝ :=
   W f ω - ∑ i ∈ s, (∫ y, f y * b i y) * W (fun y => b i y) ω
 
+/-- **The explicit finite-coefficient remainder is `m`-measurable.** Given `m`-measurability of
+`W (b i)` for `i ∉ s`, `finiteNoiseRemainder W b s f` is `m`-measurable, by identifying it almost
+surely with the abstract residual of `aestronglyMeasurable_whiteNoise_residual` via
+`hilbertBasis_repr_toLp_eq_integral` and `whiteNoise_residual_ae_eq`. -/
 theorem Sandpile.Support.aestronglyMeasurable_finiteNoiseRemainder {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -186,6 +228,8 @@ theorem Sandpile.Support.aestronglyMeasurable_finiteNoiseRemainder {Ω ι : Type
   intro i _
   rw [Sandpile.Support.hilbertBasis_repr_toLp_eq_integral b f hf i]
 
+/-- The `L²` white-noise map `Sandpile.Support.whiteNoiseL2` commutes with a Bochner integral
+over a parameter space, since it is a continuous linear map. -/
 theorem Sandpile.Support.whiteNoiseL2_integral {Ω X : Type*}
     [MeasurableSpace Ω] [MeasurableSpace X] {d : ℕ}
     {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}

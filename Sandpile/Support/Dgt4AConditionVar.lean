@@ -1,16 +1,15 @@
-/-
-The conditioned level of `Support/Dgt4ACondition.lean` in the paper's units.
-
-`sandpile.tex:4972` writes `\Sigma^2=\Var(V_\infty(0))`, which is `fieldVar d v` of
-`Support/Dgt4GaussTail.lean`, and the conditioning of
-`Support/Dgt4AConditionField.lean` produces `V_\infty(0)=\sqrt v\,s\,\|G(0,\cdot)\|` at
-the level `s`.  The two agree: `\Sigma=\sqrt v\,\|G(0,\cdot)\|`, so the level `s` is the
-value of `V_\infty(0)` measured in units of `\Sigma`, and the paper's conditioning
-`-V_\infty(0)=\E u_n(0)+\Sigma^2y/\E u_n(0)` is the level
-`s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sigma`.
--/
 import Sandpile.Support.Dgt4AConditionField
 import Sandpile.Support.Dgt4GaussTail
+
+/-!
+# The standard deviation of the limiting field, in Green-function units
+
+The variance `fieldVar d v` of the limiting field `V_∞(0)` factors as
+`v * greenSqSum d`, so its square root `Σ = √(Var(V_∞(0)))` equals `√v * ‖G(0, ·)‖`, the
+scalar `√v` times the `ℓ²` norm of the Green function's row at the origin. This identifies
+the level `s` used to condition the field in `Sandpile.Support.Dgt4AConditionField` with the
+number of standard deviations `Σ` that a given value of `V_∞(0)` represents.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

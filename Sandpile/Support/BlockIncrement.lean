@@ -1,9 +1,14 @@
-/-
-The increase in the mean over a time block. Harris's inequality couples a
-negative membrane fluctuation with a small averaged odometer, and summing the
-increments forces the mean above a prescribed level.
--/
 import Sandpile.Support.D4Reflection
+
+/-!
+# Mean growth over a time block
+
+The increase in the mean odometer over a time block.  Harris's inequality couples a
+negative membrane fluctuation with a small averaged odometer, and summing the
+increments over many blocks forces the mean odometer above a prescribed level.  This is
+the deterministic-plus-correlation-inequality core of the block-increment argument, and
+assumes only an i.i.d. scenery with an integrable identity and integrable positive part.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
@@ -12,10 +17,17 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The `m`-fold iterate of the averaging operator applied to `f` at `x` equals the finite
+sum of `f` against the `m`-step `heatKernel`, weighted values on `boxFinset x m`, proved by
+unfolding `avg_iterate` and `tsum_heatKernel_mul_eq_sum`. -/
 theorem avg_iterate_eq_finsetSum (f : Site d → ℝ) (m : ℕ) (x : Site d) :
     (avg^[m] f) x = ∑ z ∈ boxFinset x m, heatKernel d m x z * f z := by
   rw [avg_iterate, tsum_heatKernel_mul_eq_sum]
 
+/-- The `m`-fold averaged odometer `(avg^[m] (odometerOf ζ n)) x` is integrable under the
+i.i.d. scenery law `LatticeProb.iidLaw d ν`, given that the positive part of `ν` is
+integrable, proved by rewriting it as the `avg_iterate_eq_finsetSum` finite sum and summing
+the integrability of each `odometerOf` term. -/
 theorem integrable_avg_iterate_odometerOf (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z : ℝ => max z 0) ν) (m n : ℕ) (x : Site d) :
     Integrable (fun ζ : Site d → ℝ => (avg^[m] (odometerOf ζ n)) x) (LatticeProb.iidLaw d ν) := by
@@ -26,6 +38,9 @@ theorem integrable_avg_iterate_odometerOf (ν : Measure ℝ) [IsProbabilityMeasu
   rw [he]
   exact integrable_finsetSum _ fun z _ => (integrable_odometerOf d ν hpos n z).const_mul _
 
+/-- The `m`-fold averaged odometer `(avg^[m] (odometerOf ζ n)) x` is measurable in `ζ`,
+proved by the same `avg_iterate_eq_finsetSum` rewrite as `integrable_avg_iterate_odometerOf`,
+followed by `Finset.measurable_sum`. -/
 theorem measurable_avg_iterate_odometerOf (m n : ℕ) (x : Site d) :
     Measurable (fun ζ : Site d → ℝ => (avg^[m] (odometerOf ζ n)) x) := by
   have he : (fun ζ : Site d → ℝ => (avg^[m] (odometerOf ζ n)) x) =
@@ -35,16 +50,24 @@ theorem measurable_avg_iterate_odometerOf (m n : ℕ) (x : Site d) :
   rw [he]
   exact Finset.measurable_sum _ fun z _ => (measurable_odometerOf n z).const_mul _
 
+/-- The membrane field `membrane ζ m x` is integrable under `LatticeProb.iidLaw d ν` whenever
+`ν` has an integrable identity, proved by rewriting `membrane` as the finite sum
+`membrane_eq_sum_boxEnum` of `greenTime`-weighted coordinates and summing their
+integrability. -/
 theorem integrable_membrane (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (m : ℕ) (x : Site d) :
     Integrable (fun ζ : Site d → ℝ => membrane ζ m x) (LatticeProb.iidLaw d ν) := by
   have he : (fun ζ : Site d → ℝ => membrane ζ m x) =
-      fun ζ => ∑ i : Fin (boxFinset x m).card, greenTime d m x (boxEnum x m i) * ζ (boxEnum x m i) := by
+      fun ζ => ∑ i : Fin (boxFinset x m).card,
+        greenTime d m x (boxEnum x m i) * ζ (boxEnum x m i) := by
     funext ζ
     exact membrane_eq_sum_boxEnum m x ζ
   rw [he]
   exact integrable_finsetSum _ fun i _ => (integrable_coord ν hint (boxEnum x m i)).const_mul _
 
+/-- The membrane field `fun ζ => membrane ζ m x` is monotone in `ζ` (pointwise order on
+scenery configurations), proved by rewriting both sides via `membrane_eq_sum_boxEnum` and
+using that each `greenTime` weight is nonnegative. -/
 theorem monotone_membrane (m : ℕ) (x : Site d) :
     Monotone (fun ζ : Site d → ℝ => membrane ζ m x) := by
   intro ζ η h
@@ -52,6 +75,10 @@ theorem monotone_membrane (m : ℕ) (x : Site d) :
   rw [membrane_eq_sum_boxEnum m x ζ, membrane_eq_sum_boxEnum m x η]
   exact Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (h _) (greenTime_nonneg _ _ _)
 
+/-- After `n + m` steps (`m ≥ 1`), the odometer at the origin is at least the positive part
+of the membrane increment over the last `m` steps plus the `m`-fold averaged odometer at
+time `n`, proved by iterating `odometerOf_iterate_lower` `m - 1` times and identifying the
+resulting Green-time sum with `membrane` via `membrane_eq_greenTime`. -/
 theorem odometerOf_block_lower (ζ : Site d → ℝ) (n m : ℕ) (hm : 1 ≤ m) :
     max 0 (membrane ζ m 0 + (avg^[m] (odometerOf ζ n)) 0) ≤ odometerOf ζ (n + m) 0 := by
   have hi := odometerOf_iterate_lower ζ (m - 1) n
@@ -63,6 +90,12 @@ theorem odometerOf_block_lower (ζ : Site d → ℝ) (n m : ℕ) (hm : 1 ≤ m) 
   rw [htime, odometerOf]
   exact max_le_max_left 0 hi
 
+/-- If the mean odometer at time `n` is at most `h`, the mean increase in the odometer over
+the next `m` steps is at least `h/2` times the probability that the membrane drops below
+`-3h`, proved by Harris's inequality (`LatticeProb.infinitePi_harris_lower`) coupling the
+lower-set event `{3h < -membrane ζ m 0}` with the lower-set event that the `m`-fold averaged
+odometer stays below `2h`, then comparing `odometerOf_block_lower` against this coupling and
+a Markov bound `h/2 ≤ P(H ≤ 2h)`. -/
 theorem mean_block_increment_lower (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
     (hpos : Integrable (fun z : ℝ => max z 0) ν) (m n : ℕ) (hm : 1 ≤ m)
@@ -133,6 +166,11 @@ theorem mean_block_increment_lower (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabil
   have hproduct := mul_le_mul_of_nonneg_left hhalf hA0
   nlinarith
 
+/-- If `N` times the probability of a membrane drop below `-3h` is at least `2`, then the mean
+odometer at time `N * m` is at least `h`, proved by summing `mean_block_increment_lower` over
+the `N` blocks (a telescoping sum, `Finset.sum_range_sub`) and deriving a contradiction from
+the contrary assumption that the mean odometer stays below `h` throughout, using monotonicity
+of the mean odometer (`meanOdometerOf_mono`). -/
 theorem mean_ge_of_block_probability (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ z, z ∂ν = 0)
     (hpos : Integrable (fun z : ℝ => max z 0) ν) (m N : ℕ) (hm : 1 ≤ m)

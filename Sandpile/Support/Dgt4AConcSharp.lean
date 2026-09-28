@@ -1,22 +1,20 @@
-/-
-The sharp Lipschitz constant of `\Theta_n` for the `\ell^2` distance
-(`sandpile.tex:5267-5269`).
-
-"The coordinatewise Lipschitz constants of `\Theta_n` are bounded by
-`\sum_{j\geq k_n+1}p_j(0,z)`, so `eq:dgt4-tail-kernel` bounds its Gaussian concentration
-proxy by `Ck_n^{-(d-4)/2}`."  The proxy is the `\ell^2` norm of the coordinatewise
-constants, and what the concentration inequality needs is the Lipschitz constant for the
-`\ell^2` distance itself.  On an infinite product the second does not follow from the first
-by itself, since a coordinatewise Lipschitz functional of infinitely many coordinates need
-not be continuous; it follows together with the continuity supplied by the crude constant
-`\|G(0,\cdot)\|` of `Support/Dgt4AConcField.lean`.  Replacing the coordinates of a finite
-set one at a time gives the tail-kernel bound against finitely supported differences, by
-Cauchy-Schwarz with the `\ell^2` norm of the tail kernel, and the crude bound carries it to
-the limit along the boxes.
--/
 import Sandpile.Support.Dgt4AConcField
 import Sandpile.Support.Dgt4AGaussTailLp
 import Sandpile.Support.Dgt4ATailLipKernel
+
+/-!
+# The sharp `ℓ²` Lipschitz constant of the iterated deviation functional
+
+The coordinatewise Lipschitz constants of the iterated averaging deviation `Θ_n` are bounded
+by the tail kernel, giving a bound on the `ℓ²` norm of those constants, but on an infinite
+product this does not by itself bound the Lipschitz constant for the `ℓ²` distance, since a
+coordinatewise Lipschitz functional of infinitely many coordinates need not be continuous.
+The gap is closed by combining a finite-support tail-kernel bound, obtained by replacing the
+coordinates of a finite set one at a time and applying Cauchy-Schwarz, with the crude
+continuity bound `‖G(0, ·)‖` carried to the limit along an exhausting sequence of boxes. The
+outcome is that `Θ_n` is Lipschitz for the `ℓ²` distance with constant the `ℓ²` norm of the
+tail kernel.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -30,10 +28,13 @@ variable {d : ℕ}
 noncomputable def patch (S : Finset (Site d)) (ζ ζ' : Site d → ℝ) : Site d → ℝ :=
   fun z => if z ∈ S then ζ' z else ζ z
 
+/-- Patching with the empty set changes nothing: `patch ∅ ζ ζ' = ζ`. -/
 theorem patch_empty (ζ ζ' : Site d → ℝ) : patch ∅ ζ ζ' = ζ := by
   funext z
   rw [patch, if_neg (Finset.notMem_empty z)]
 
+/-- Patching a set with one more element inserted is the same as patching the smaller set
+and then updating the value at the new element to `ζ' a`. -/
 theorem patch_insert {S : Finset (Site d)} {a : Site d} (ha : a ∉ S) (ζ ζ' : Site d → ℝ) :
     patch (insert a S) ζ ζ' = Function.update (patch S ζ ζ') a (ζ' a) := by
   funext z
@@ -46,6 +47,8 @@ theorem patch_insert {S : Finset (Site d)} {a : Site d} (ha : a ∉ S) (ζ ζ' :
     · rw [if_neg (fun hmem => (Finset.mem_insert.mp hmem).elim hz (fun hh => hzS hh)),
         if_neg hzS]
 
+/-- At a site outside the patched set `S`, `patch S ζ ζ'` still takes the original value
+`ζ z`. -/
 theorem patch_apply_of_notMem {S : Finset (Site d)} {z : Site d} (hz : z ∉ S)
     (ζ ζ' : Site d → ℝ) : patch S ζ ζ' z = ζ z := by
   rw [patch, if_neg hz]

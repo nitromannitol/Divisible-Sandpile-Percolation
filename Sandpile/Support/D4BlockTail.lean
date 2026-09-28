@@ -1,11 +1,13 @@
-/-
-The uniform block tail of `sandpile.tex:2827-2881`.  The quadratic MGF lower
-bound follows from a uniform amount of mass on a negative half-line; the
-upper bound follows from the exponential moment.  The second-moment argument
-is applied to the exponential of the negative membrane value.
--/
 import Sandpile.Support.BlockMoment
 import Sandpile.Support.D4Difference
+
+/-!
+# The uniform block tail
+
+The uniform block tail of `sandpile.tex:2827-2881`. The quadratic MGF lower bound follows from a
+uniform amount of mass on a negative half-line; the upper bound follows from the exponential
+moment. The second-moment argument is applied to the exponential of the negative membrane value.
+-/
 
 open LatticeProb
 
@@ -14,6 +16,13 @@ open scoped ENNReal
 
 namespace Sandpile
 
+/-- **The uniform block tail.** For any centered law with a uniform lower tail bound and a finite
+exponential moment, and for `θ` small enough relative to the second-moment sum
+`∑ greenTime 4 m 0 z ^ 2`, the probability that the negative membrane value exceeds `a θ / 2`
+times that sum is bounded below by an exponential in `-θ²` times that sum, uniformly over the
+law and over `m`. This is proved via the exponential change of measure
+`exists_uniform_left_tail` applied coordinatewise and `measure_neg_tail_of_exp_moments` on the
+resulting weighted sum. -/
 theorem exists_membrane_negative_tail_four (hVS : Sandpile.External.VarianceScale)
     (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
     ∃ a C δ : ℝ, 0 < a ∧ 0 < C ∧ 0 < δ ∧
@@ -98,7 +107,8 @@ theorem exists_membrane_negative_tail_four (hVS : Sandpile.External.VarianceScal
     fun_prop
   have hprob' := measure_neg_tail_of_exp_moments μ (fun ξ : Fin N → ℝ => ∑ i, ℓ i * ξ i) hZ
     (show 0 ≤ α by dsimp [α]; positivity) hθ hQ hi1 hi2 hlower hupper hlarge
-  have hmp := LatticeProb.measurePreserving_pick _ ν (boxEnum (0 : Site 4) m) (boxEnum_injective 0 m)
+  have hmp := LatticeProb.measurePreserving_pick _ ν (boxEnum (0 : Site 4) m)
+    (boxEnum_injective 0 m)
   have hmeas : MeasurableSet {ξ : Fin N → ℝ | α * θ / 2 * Q < -(∑ i, ℓ i * ξ i)} :=
     measurableSet_lt measurable_const hZ.neg
   have hpre : {ζ : Site 4 → ℝ | α * θ / 2 * Q < -membrane ζ m 0} =

@@ -1,16 +1,16 @@
-/-
-The frozen statement of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the per-sample bundle of its proof.
-
-The frozen node quantifies over a field `Z` that is a modification of the Gaussian
-heat potential and is continuous on every finite time strip.  Its conclusion is an
-almost-sure inequality between two functions of the noise sample.  The bundle
-`BallLocalizationInput` collects exactly what the paper's proof supplies at one
-sample point: the boundedness of the three suprema it takes and the strong Markov
-step at the exit time of the ball.  This file is the reduction of the frozen
-statement to that bundle, with the constants of the exit-time tail.
--/
 import Sandpile.Support.ExplBallGaussian
+
+/-!
+# Reducing ball localization to the per-sample bundle
+
+This file reduces the frozen statement of `lem:brownian-ball-localization` to the per-sample
+bundle `BallLocalizationInput` of its proof. The frozen node quantifies over a field `Z` that is
+a modification of the Gaussian heat potential and is continuous on every finite time strip, and
+its conclusion is an almost-sure inequality between two functions of the noise sample. The
+bundle collects exactly what the paper's proof supplies at one sample point: the boundedness of
+the three suprema it takes and the strong Markov step at the exit time of the ball, together
+with the constants of the exit-time tail.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

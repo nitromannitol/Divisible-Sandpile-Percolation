@@ -1,18 +1,19 @@
-/-
-The `H^s` norm of a test function is finite (`sandpile.tex:3324-3327`).
-
-`sobolevNormSq d s φ` is a lower integral in `ℝ≥0∞`, so it is defined for every
-`φ` and is `⊤` exactly when the weighted Fourier integral diverges.  The
-tightness clause of `prop:d4-superdiffusive-limit` is a supremum over the
-functions with `sobolevNormSq d s φ ≤ 1`, so that clause says nothing unless
-that set is nonempty.  It is: a test function is smooth with compact support,
-hence a Schwartz function, its Fourier transform is Schwartz, and a Schwartz
-function is dominated by any inverse power of `‖ξ‖`, so the weight
-`(1+(2\pi\|\xi\|)^2)^s` is integrated against a rapidly decaying square.
-Scaling such a `φ` down then puts it on the unit ball.
--/
 import Sandpile.Support.D4SPlancherel
 import LatticeProb.Analysis.Sobolev.Scaling
+
+/-!
+# The `H^s` norm of a test function is finite
+
+This file proves that the `H^s` norm of a test function is finite (`sandpile.tex:3324-3327`).
+`sobolevNormSq d s φ` is a lower integral in `ℝ≥0∞`, so it is defined for every `φ` and is `⊤`
+exactly when the weighted Fourier integral diverges. The tightness clause of
+`prop:d4-superdiffusive-limit` is a supremum over the functions with `sobolevNormSq d s φ ≤ 1`,
+so that clause says nothing unless that set is nonempty. It is nonempty: a test function is
+smooth with compact support, hence a Schwartz function; its Fourier transform is Schwartz, and
+a Schwartz function is dominated by any inverse power of `‖ξ‖`, so the weight
+`(1+(2π‖ξ‖)^2)^s` is integrated against a rapidly decaying square. Scaling such a `φ` down
+then puts it on the unit ball.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal FourierTransform

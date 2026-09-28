@@ -1,10 +1,12 @@
-/-
-The assembly of `prop:continuum-value-selfsimilar` from its residual inputs.
--/
 import Sandpile.Support.MeanAValue
 import Sandpile.Support.ContClause1
 import Sandpile.Support.ContClause3
 import Sandpile.Support.ContValueMemLp
+
+/-! # Continuum self-similarity assembly
+
+The assembly of `prop:continuum-value-selfsimilar` from its residual inputs.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

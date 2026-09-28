@@ -1,13 +1,15 @@
-/-
-The moment bound of `Sandpile.Support.exists_isKolmogorovProcess_potStrip`, read
-back as a real-valued inequality on the potential itself (rather than the
-`IsKolmogorovProcess` package around its `ENNReal`-valued lintegral), at the
-clamped time replaced by the time itself once it is known to lie in `[0,T]`.
-This is the exact real-valued increment bound `kolmogorov_polynomial_tail`
-consumes.
--/
 import Sandpile.Support.MeanAGauss
 import Sandpile.Support.MeanAIncrement
+
+/-!
+# A real-valued increment moment bound for the Gaussian potential
+
+Restates the moment bound of `Sandpile.Support.exists_isKolmogorovProcess_potStrip` as a
+real-valued inequality on the potential itself, rather than as the `IsKolmogorovProcess`
+package built around its `ENNReal`-valued lintegral, with the clamped time replaced by the
+time itself once it is known to lie in `[0, T]`. This is the exact real-valued increment
+bound that `kolmogorov_polynomial_tail` consumes.
+-/
 
 open MeasureTheory ProbabilityTheory
 

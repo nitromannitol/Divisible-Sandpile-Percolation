@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D4SCellL2
+import Sandpile.Support.D4DefectOmega
+
+/-!
+# `L²` Modulus of Continuity of the Fixed Averaging Density
+
 The `L²` modulus of continuity of the FIXED averaging density `ω`, the second
 half of the second display of Step 2 of `prop:d4-superdiffusive-limit`
 (`sandpile.tex:3374-3382`).
@@ -6,14 +11,12 @@ half of the second display of Step 2 of `prop:d4-superdiffusive-limit`
 The `ω`-shift is `φ̃ = φ - ω∫_Dφ`, so its increment over one mesh step splits
 into the increment of `φ`, controlled on the `H^s` unit ball by
 `Sandpile.Support.integral_sq_sub_translate_le`, and the increment of `ω`,
-which is not on that ball.  For `ω` the Fourier route is unnecessary: a smooth
+which is not on that ball. For `ω` the Fourier route is unnecessary: a smooth
 compactly supported function is Lipschitz, and its increment is supported in the
 union of its support with a translate of that support, a set of measure at most
-twice the measure of the support.  That gives the `L²` modulus `C_ω‖h‖`, which
+twice the measure of the support. That gives the `L²` modulus `C_ω‖h‖`, which
 beats the `‖h‖^{\min\{s,1\}}` of the ball for `‖h‖ ≤ 1`.
 -/
-import Sandpile.Support.D4SCellL2
-import Sandpile.Support.D4DefectOmega
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

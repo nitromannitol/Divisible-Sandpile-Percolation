@@ -1,20 +1,21 @@
-/-
-The uniform second moment of the centred odometer over a bounded range of
-times, the input the tightness clause of `prop:d4-superdiffusive-limit`
-(`sandpile.tex:3324-3327`) needs at the small scales.
-
-Steps 2 and 3 send the two error terms to zero only as `R\to\infty`, while the
-tightness clause of the proposition quantifies over every `R\geq1`.  At the
-scales below any fixed `R_0` the time `t_R=\lfloor R^\alpha\rfloor` is at most
-`\lfloor R_0^\alpha\rfloor` and the mesh meets at most a fixed box, so the crude
-second moment of the centred odometer, uniform in the site and taken over the
-finitely many times below `t_0`, bounds the whole field there.  That second
-moment is clause three of `prop:finite-time-concentration-scale`, whose bound is
-the membrane variance at the same time.
--/
 import Sandpile.Support.Concentration
 import Sandpile.Support.Stationary
 import Sandpile.Support.Dgt4OriginProb
+
+/-!
+# The uniform second moment of the centred odometer at small scales
+
+The uniform second moment of the centred odometer over a bounded range of times
+(`exists_uniform_second_moment_le`), the input the tightness clause of
+`prop:d4-superdiffusive-limit` (`sandpile.tex:3324-3327`) needs at the small scales. Steps 2 and 3
+send the two error terms to zero only as `R\to\infty`, while the tightness clause of the
+proposition quantifies over every `R\geq1`. At the scales below any fixed `R_0` the time
+`t_R=\lfloor R^\alpha\rfloor` is at most `\lfloor R_0^\alpha\rfloor` and the mesh meets at most a
+fixed box, so the crude second moment of the centred odometer, uniform in the site and taken over
+the finitely many times below `t_0`, bounds the whole field there. That second moment is clause
+three of `prop:finite-time-concentration-scale`, whose bound is the membrane variance at the same
+time.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,10 +1,13 @@
-/-
-The sequence-indexed passage from the two band estimates to the contact
-thresholds in Step 3 of `thm:dgt4-many-limits` (`sandpile.tex:6305-6309`).
-The band exponents may vary with the index and converge only after extraction.
--/
 import Sandpile.Support.Dgt4ABandPointwise
 import Sandpile.Support.Dgt4ABand
+
+/-!
+# Contact thresholds along a sequence of band exponents
+
+The sequence-indexed passage from the two band estimates to the contact thresholds in Step 3 of
+`thm:dgt4-many-limits` (`sandpile.tex:6305-6309`). The band exponents may vary with the index and
+converge only after extraction.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,14 +1,21 @@
-/- Positive-arm exclusion by annular crossings and the uniform power bound. -/
 import Sandpile.Support.CrossRectangleWalk
 import Sandpile.Support.CrossAnnuli
 import Sandpile.Support.CrossPathContact
 import Mathlib.Topology.Connected.LocallyPathConnected
+
+/-! # Positive-arm annulus blocking
+
+Positive-arm exclusion by annular crossings and the uniform power bound.
+-/
 
 open Set MeasureTheory Filter
 open scoped ENNReal
 namespace Sandpile.Support
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings Sandpile.Support.CrossPathContact
 
+/-- For a continuous `f` and a connected set `Γ` inside the open positive set `{f > 0}`,
+any two points of `Γ` are joined within `{f > 0}`: the connected component of `x` in the
+open set is path-connected, and `Γ`'s connectedness puts `y` in that same component. -/
 theorem joinedIn_positive_of_connected {f : Space 2 → ℝ} (hf : Continuous f)
     {Γ : Set (Space 2)} (hc : IsConnected Γ) (hΓ : Γ ⊆ {u | 0 < f u})
     {x y : Space 2} (hx : x ∈ Γ) (hy : y ∈ Γ) : JoinedIn {u | 0 < f u} x y := by
@@ -23,6 +30,9 @@ theorem joinedIn_positive_of_connected {f : Space 2 → ℝ} (hf : Continuous f)
 def annulusCoord (j : Fin 4) (x u : Space 2) : ℝ :=
   ![u 1 - x 1, x 1 - u 1, u 0 - x 0, x 0 - u 0] j
 
+/-- Each of the four outward coordinates `annulusCoord j x u` is bounded above by
+`‖u - x‖`, since it is one of `± (u i - x i)` and `PiLp.norm_apply_le` bounds each
+coordinate difference by the norm. -/
 theorem annulusCoord_le_norm (j : Fin 4) (x u : Space 2) :
     annulusCoord j x u ≤ ‖u - x‖ := by
   have h0 := PiLp.norm_apply_le (p := 2) (u - x) 0
@@ -32,10 +42,16 @@ theorem annulusCoord_le_norm (j : Fin 4) (x u : Space 2) :
   have := abs_le.mp h1
   fin_cases j <;> simp [annulusCoord] <;> linarith
 
+/-- `annulusCoord j x` is continuous in `u`, checked in each of the four cases of `j`
+since it is one of the four affine coordinate functions `± (u i - x i)`. -/
 theorem annulusCoord_continuous (j : Fin 4) (x : Space 2) : Continuous (annulusCoord j x) := by
   change Continuous (fun u => annulusCoord j x u)
   fin_cases j <;> dsimp [annulusCoord] <;> fun_prop
 
+/-- The image `γ '' Icc a b` of a path confined to the coordinate box of half-width `2*r`
+about `x`, staying in `S` and with outward coordinate `annulusCoord j x` running from `r`
+at `a` to `2*r` at `b`, is a `Crosses` witness for the `j`-th strip of the square annulus
+in the short (`swapIdx (annulusSideDir j)`) direction. -/
 theorem annulus_strip_crossing {γ : ℝ → Space 2} (hγ : Continuous γ)
     {a b r : ℝ} (hab : a ≤ b) {x : Space 2} {j : Fin 4} {S : Set (Space 2)}
     (hS : ∀ t ∈ Icc a b, γ t ∈ S)
@@ -100,8 +116,10 @@ theorem exists_annulus_strip_of_path {γ : ℝ → Space 2} (hγ : Continuous γ
     have h1 : |γ 1 1 - x 1| < 2 * r := (le_max_right _ _).trans_lt hh
     have hs : ‖γ 1 - x‖ ^ 2 = (γ 1 0 - x 0) ^ 2 + (γ 1 1 - x 1) ^ 2 := by
       simp [PiLp.norm_sq_eq_of_L2, Fin.sum_univ_two]
-    have h0s : (γ 1 0 - x 0) ^ 2 < (2 * r) ^ 2 := by nlinarith [abs_nonneg (γ 1 0 - x 0), sq_abs (γ 1 0 - x 0)]
-    have h1s : (γ 1 1 - x 1) ^ 2 < (2 * r) ^ 2 := by nlinarith [abs_nonneg (γ 1 1 - x 1), sq_abs (γ 1 1 - x 1)]
+    have h0s : (γ 1 0 - x 0) ^ 2 < (2 * r) ^ 2 := by
+      nlinarith [abs_nonneg (γ 1 0 - x 0), sq_abs (γ 1 0 - x 0)]
+    have h1s : (γ 1 1 - x 1) ^ 2 < (2 * r) ^ 2 := by
+      nlinarith [abs_nonneg (γ 1 1 - x 1), sq_abs (γ 1 1 - x 1)]
     nlinarith [sq_nonneg r]
   obtain ⟨b, hb, hbe, hbefore⟩ := exists_first_contact hF (by norm_num) hF0 hF1
   have hbox : ∀ t ∈ Icc 0 b, ∀ i : Fin 2, |γ t i - x i| ≤ 2 * r := by
@@ -127,7 +145,8 @@ theorem exists_annulus_strip_of_path {γ : ℝ → Space 2} (hγ : Continuous γ
         dsimp [annulusCoord]; linarith
   obtain ⟨j, hj⟩ := hj
   obtain ⟨a, ha, hae, hafter⟩ := exists_last_contact ((annulusCoord_continuous j x).comp hγ)
-    hb.1 ((annulusCoord_le_norm j x (γ 0)).trans hstart) (by rw [hj]; linarith : r ≤ annulusCoord j x (γ b))
+    hb.1 ((annulusCoord_le_norm j x (γ 0)).trans hstart)
+    (by rw [hj]; linarith : r ≤ annulusCoord j x (γ b))
   exact ⟨j, annulus_strip_crossing hγ ha.2
     (fun t ht => hS t ⟨ha.1.trans ht.1, ht.2.trans hb.2⟩)
     (fun t ht => hbox t ⟨ha.1.trans ht.1, ht.2⟩) hafter hae hj⟩

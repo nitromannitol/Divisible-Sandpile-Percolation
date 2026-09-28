@@ -1,4 +1,12 @@
-/-
+import Sandpile.Walk
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.Support.CascadeRecurrence
+import Sandpile.Support.CascadeScales
+import Sandpile.Support.DoubleExponential
+
+/-!
+# Cascade lemma for the annular low-crossing probability
+
 Cascade lemma of sandpile.tex, frozen.  `sandpile.tex:6570-6579`
 (label `lem:dgt4-cascade`):
 
@@ -31,11 +39,6 @@ exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
 non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.CascadeRecurrence
-import Sandpile.Support.CascadeScales
-import Sandpile.Support.DoubleExponential
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -104,7 +107,8 @@ theorem Sandpile.Frozen.dgt4_cascade
   classical
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨c, C, hc, hC, hstep⟩ := Sandpile.exists_annular_probability_step hGreenHigh d hd θ₀ K₀ hθ₀
-  obtain ⟨c₀, C₀, hc₀, hC₀, hinit⟩ := Sandpile.exists_annular_probability_initial hGreenHigh d hd θ₀ K₀ hθ₀
+  obtain ⟨c₀, C₀, hc₀, hC₀, hinit⟩ :=
+    Sandpile.exists_annular_probability_initial hGreenHigh d hd θ₀ K₀ hθ₀
   obtain ⟨b, η, M, hb, hη, hM, hsolve⟩ := Sandpile.exists_double_exponential_bound
     c₀ C₀ (c / 256) C ((64 : ℝ) ^ d) hc₀ hC₀ (by positivity) hC
     (one_le_pow₀ (by norm_num))

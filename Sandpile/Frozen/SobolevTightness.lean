@@ -1,4 +1,10 @@
-/-
+import Sandpile.External.ContinuumBesovTightness
+import Sandpile.Support.ContCell
+import Sandpile.Support.TightFloorComparison
+
+/-!
+# Tightness in negative Sobolev norm from covariance decay
+
 Lemma of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1692-1702`
 (label `lem:sobolev-tightness`):
 
@@ -17,10 +23,10 @@ stated for real `R ≥ 1` and the conclusion is `TightInNegSobolev`, whose own
 quantifiers already restrict to `1 ≤ R`.
 
 The paper lets the field `F_R` live on an unnamed probability space, one for
-each `R`; nothing in the lemma couples different values of `R`, so a family of
-spaces and a single space give the same statement, and the paper applies the
-lemma to fields built from one scenery on one space.  Accordingly all the
-fields here are carried by a single space `Ω` with law `P`, and `F R ω x` is
+each `R`; nothing in the lemma couples different values of `R`, so a family
+of spaces and a single space give the same statement, and the paper applies
+the lemma to fields built from one scenery on one space.  Accordingly all
+the fields here are carried by a single space `Ω` with law `P`, and `F R ω x` is
 `F_R(x)` evaluated at the sample point `ω`.
 
 `|x - y|` is the Euclidean norm of the notation section (`sandpile.tex:678`),
@@ -53,9 +59,6 @@ decay because the embedding moves each coordinate by less than one, so the
 lattice distance of the embedded sites and `R|y-y'|` differ by at most `√d`
 and the two decaying powers differ by the factor `(1 + √d)^β`.
 -/
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.Support.ContCell
-import Sandpile.Support.TightFloorComparison
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,8 +1,3 @@
-/-
-Deterministic block-chaining infrastructure for the critical level-set
-percolation theorem: disjointness of far-apart coarse blocks, and
-connectivity of the level superlevel set inside one good block.
--/
 import Sandpile.Support.BlockVerticalWalk
 import Sandpile.Support.BlockGeometry
 import Sandpile.Support.BlockSubwalk
@@ -10,6 +5,16 @@ import Sandpile.Support.BlockStarIntersect
 import Sandpile.Support.PercSquareToWide
 import Sandpile.Support.PercAbsHom
 import Sandpile.Support.BlockRouteAdj
+
+/-!
+# Deterministic block-chaining infrastructure
+
+Deterministic block-chaining infrastructure for the critical level-set percolation
+theorem: disjointness of far-apart coarse blocks, connectivity of the level superlevel
+set inside one good block, one routing step between two adjacent good blocks, and the
+induction that chains a coarse walk of good blocks into a single fine walk of the
+level superlevel set (`block_chain`).
+-/
 
 set_option maxHeartbeats 1000000
 open scoped NNReal
@@ -234,12 +239,18 @@ theorem block_route_step {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : �
           (fun w : planeRectangle (2 * r) (2 * r) =>
             F (blockShift r (u + ![(0 : ℤ), (1 : ℤ)]) w)) hv'.1
       obtain ⟨pconn₁, hpconn₁⟩ := block_tb_lr_connect F ℓ u c₁ d₁ q₁ hq₁ hc₁ hd₁
-        a₁ b₁ LR₁ hLR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁) ((mem_rectangleRight_planeRectangle b₁).mp hb₁)
+        a₁ b₁ LR₁ hLR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁)
+        ((mem_rectangleRight_planeRectangle b₁).mp hb₁)
       obtain ⟨a, b, proute, ha, hb, hproute⟩ :=
-        block_route_adj_e1 hr F ℓ u hu a₁ b₁ LR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁) ((mem_rectangleRight_planeRectangle b₁).mp hb₁) hLR₁
-          a₂ b₂ LR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂) ((mem_rectangleRight_planeRectangle b₂).mp hb₂) hLR₂
+        block_route_adj_e1 hr F ℓ u hu
+          a₁ b₁ LR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁)
+          ((mem_rectangleRight_planeRectangle b₁).mp hb₁) hLR₁
+          a₂ b₂ LR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂)
+          ((mem_rectangleRight_planeRectangle b₂).mp hb₂) hLR₂
       obtain ⟨pconn₂, hpconn₂⟩ := block_tb_lr_connect F ℓ
-        (u + ![(0 : ℤ), (1 : ℤ)]) c₂ d₂ TB₂ hTB₂ hc₂ hd₂ a₂ b₂ LR₂ hLR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂) ((mem_rectangleRight_planeRectangle b₂).mp hb₂)
+        (u + ![(0 : ℤ), (1 : ℤ)]) c₂ d₂ TB₂ hTB₂ hc₂ hd₂ a₂ b₂ LR₂ hLR₂
+        ((mem_rectangleLeft_planeRectangle a₂).mp ha₂)
+        ((mem_rectangleRight_planeRectangle b₂).mp hb₂)
       refine ⟨c₂, d₂, TB₂,
         (pconn₁.append (proute.copy ha hb)).append pconn₂.reverse, ?_, hTB₂, hc₂, hd₂⟩
       intro w hw
@@ -284,12 +295,18 @@ theorem block_route_step {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : �
         exists_tb_walk_of_le_verticalCrossingValue
           (fun w : planeRectangle (2 * r) (2 * r) => F (blockShift r v w)) hv'.1
       obtain ⟨pconn₁, hpconn₁⟩ := block_tb_lr_connect F ℓ
-        (v + ![(0 : ℤ), (1 : ℤ)]) c₁ d₁ q₁ hq₁ hc₁ hd₁ a₂ b₂ LR₂ hLR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂) ((mem_rectangleRight_planeRectangle b₂).mp hb₂)
+        (v + ![(0 : ℤ), (1 : ℤ)]) c₁ d₁ q₁ hq₁ hc₁ hd₁ a₂ b₂ LR₂ hLR₂
+        ((mem_rectangleLeft_planeRectangle a₂).mp ha₂)
+        ((mem_rectangleRight_planeRectangle b₂).mp hb₂)
       obtain ⟨a, b, proute, ha, hb, hproute⟩ :=
-        block_route_adj_e1 hr F ℓ v hv a₁ b₁ LR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁) ((mem_rectangleRight_planeRectangle b₁).mp hb₁) hLR₁
-          a₂ b₂ LR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂) ((mem_rectangleRight_planeRectangle b₂).mp hb₂) hLR₂
+        block_route_adj_e1 hr F ℓ v hv
+          a₁ b₁ LR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁)
+          ((mem_rectangleRight_planeRectangle b₁).mp hb₁) hLR₁
+          a₂ b₂ LR₂ ((mem_rectangleLeft_planeRectangle a₂).mp ha₂)
+          ((mem_rectangleRight_planeRectangle b₂).mp hb₂) hLR₂
       obtain ⟨pconn₂, hpconn₂⟩ := block_tb_lr_connect F ℓ v c₂ d₂ TB₂ hTB₂ hc₂ hd₂
-        a₁ b₁ LR₁ hLR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁) ((mem_rectangleRight_planeRectangle b₁).mp hb₁)
+        a₁ b₁ LR₁ hLR₁ ((mem_rectangleLeft_planeRectangle a₁).mp ha₁)
+        ((mem_rectangleRight_planeRectangle b₁).mp hb₁)
       refine ⟨c₂, d₂, TB₂,
         pconn₁.append ((proute.copy ha hb).reverse.append pconn₂.reverse), ?_,
         hTB₂, hc₂, hd₂⟩

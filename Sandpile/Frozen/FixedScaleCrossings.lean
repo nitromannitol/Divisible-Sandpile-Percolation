@@ -1,6 +1,13 @@
-/-
-Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2157-2164`
-(label `prop:fixed-scale-crossings`):
+import Sandpile.Continuum.WhiteNoise
+import Sandpile.External.ContinuumRSW
+import Sandpile.External.PittGaussianFKG
+import Sandpile.Support.CrossExploreExists
+
+/-!
+# The frozen fixed-scale crossing proposition
+
+This module states and proves the fixed-scale crossing proposition of
+`sandpile.tex:2157-2164` (label `prop:fixed-scale-crossings`):
 
   "For every $\theta>0$ there is $p>0$ such that, for every $L\geq0$,
    \[
@@ -16,7 +23,8 @@ let
   \mathcal X_s(u)\coloneqq
   \begin{cases}
   \int_{\R^2}\frac1{2\pi}\log\frac{s}{|u-z|}\mathbf 1_{\{|u-z|<s\}}\mathcal W(dz),& d=2\, ,\\
-  \int_{\R^3}\frac1{4\pi}\left(\frac1{|(u,0)-z|}-\frac1s\right)\mathbf 1_{\{|(u,0)-z|<s\}}\mathcal W(dz),& d=3\, .
+  \int_{\R^3}\frac1{4\pi}\left(\frac1{|(u,0)-z|}-\frac1s\right)
+    \mathbf 1_{\{|(u,0)-z|<s\}}\mathcal W(dz),& d=3\, .
   \end{cases}
 \]"
 That is `ballField` below, the white noise tested against `ballKernel`.
@@ -54,10 +62,6 @@ The paper writes the rectangle as `[-θR,θR]×[0,2R]`; the corner vectors are
 `R` the rectangle can be degenerate, but only the behaviour as `R → ∞` is
 asserted.
 -/
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.External.ContinuumRSW
-import Sandpile.External.PittGaussianFKG
-import Sandpile.Support.CrossExploreExists
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

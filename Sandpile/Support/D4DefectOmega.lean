@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D4DefectPairing
+import Sandpile.Support.ContCell
+
+/-!
+# The `ω`-Shifted Test Function
+
 The `ω`-shifted test function of `eq:d4-omega-representative`, and the cell
 masses it puts on the mesh.
 
@@ -7,12 +12,10 @@ because `ω` integrates to one on `D` and both functions are supported in `D`.
 That is what kills the site-free part of the truncation defect in Step 1 of
 `prop:d4-superdiffusive-limit`: after it is removed, only the centred kernel
 `∑_{j≥t}(p_j(x,y)-p_j(0,y))` is paired, and its `ℓ²` bound is uniform over the
-cells that `φ̃` meets.  The total mass `∑_x|m_R(x)|` of those cells stays bounded
+cells that `φ̃` meets. The total mass `∑_x|m_R(x)|` of those cells stays bounded
 as `R → ∞`, since there are `O((RL)^d)` of them and each carries mass
 `O(R^{-d})`.
 -/
-import Sandpile.Support.D4DefectPairing
-import Sandpile.Support.ContCell
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

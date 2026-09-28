@@ -1,15 +1,17 @@
-/-
-The site-sum bound on the visit-weighted covariance sum.
-
-`eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): the covariance of two
-survival indicators is bounded by one, so the site sum of the norm of the visit-weighted
-covariance sum is at most the number of pairs of times.  This is the summability input
-for the interchange of the site sum with the walk-pair integral.
--/
 import Sandpile.Support.LinEarlyVarDefs
 import Sandpile.Support.LinEarlyVarSite
 import Sandpile.Support.LinEarlyVarCovBound
 import Sandpile.Support.LinEarlyVarCollapse
+
+/-!
+# A site-sum bound on the visit-weighted covariance sum
+
+Since the covariance of two survival indicators is bounded by one in absolute value, the site sum
+of the norm of the visit-weighted covariance sum `∑ i ∈ t, ∑ j ∈ t, 𝟙[X i = z] 𝟙[Y j = z]
+covSurvival μ n i j X Y` over `z` is at most `t.card ^ 2`, the number of pairs of times in `t`.
+This bound is the summability input needed to interchange the site sum with the walk-pair
+integral.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -51,7 +53,8 @@ theorem tsum_norm_covSurvival_le (μ : Measure (Site d → ℝ)) [IsProbabilityM
     refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
     rw [if_neg (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul, zero_mul]
   have hzero2 : ∀ z : Site d, z ∉ t.image X →
-      (∑ i ∈ t, ∑ j ∈ t, (if X i = z then (1 : ℝ) else 0) * (if Y j = z then (1 : ℝ) else 0)) = 0 := by
+      (∑ i ∈ t, ∑ j ∈ t,
+        (if X i = z then (1 : ℝ) else 0) * (if Y j = z then (1 : ℝ) else 0)) = 0 := by
     intro z hz
     refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
     rw [if_neg (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul]

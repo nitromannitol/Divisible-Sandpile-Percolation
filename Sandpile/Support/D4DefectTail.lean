@@ -1,25 +1,19 @@
-/-
-The `ℓ²` size of the truncation defect in dimension four.
-
-Step 1 of `prop:d4-superdiffusive-limit` needs the time truncation in `V_{t_R}`
-to wash out at superdiffusive times, and the quantity that measures it is the
-`ℓ²` norm in the second variable of the tail
-
-  `Δ_t(x,y) = ∑_{j≥t}(p_j(x,y) - p_j(w,y))`.
-
-At a single time `Sandpile.exists_heatKernel_increment_l2_four` gives
-`‖p_j(x,·) - p_j(w,·)‖₂² ≤ C|x-w| j^{-5/2}`.  Summing the tail is a weighted
-Cauchy-Schwarz at the weights `a_j = j^{-5/4}`: the weight series has tail
-`∑_{j≥t} j^{-5/4} ≤ 5 t^{-1/4}`, and dividing the single-time bound by the
-weight leaves the same series again, so
-
-  `‖Δ_t(x,·)‖₂² ≤ (∑_{j≥t}a_j)·C|x-w|·(∑_{j≥t}a_j) ≤ 25 C |x-w| t^{-1/2}`.
-
-The threshold `t ≫ R²` visible in `R^{1/2}t^{-1/4}` is exactly the paper's
-`α > 2`.  The sum over the lattice is taken in `ℝ≥0∞`, where no summability
-hypothesis is needed to exchange it with the sum over times.
--/
 import Sandpile.Support.D4TruncationDefect
+
+/-!
+# The `ℓ²` size of the truncation defect in dimension four
+
+Step 1 of `prop:d4-superdiffusive-limit` needs the time truncation in `V_{t_R}` to wash out
+at superdiffusive times, and the quantity that measures it is the `ℓ²` norm in the second
+variable of the tail `Δ_t(x,y) = ∑_{j≥t}(p_j(x,y) - p_j(w,y))`. At a single time,
+`Sandpile.exists_heatKernel_increment_l2_four` gives `‖p_j(x,·) - p_j(w,·)‖₂² ≤ C|x-w|
+j^{-5/2}`. Summing the tail is a weighted Cauchy-Schwarz at the weights `a_j = j^{-5/4}`: the
+weight series has tail `∑_{j≥t} j^{-5/4} ≤ 5 t^{-1/4}`, and dividing the single-time bound by
+the weight leaves the same series again, so `‖Δ_t(x,·)‖₂² ≤ (∑_{j≥t}a_j)·C|x-w|·(∑_{j≥t}a_j)
+≤ 25 C |x-w| t^{-1/2}`. The threshold `t ≫ R²` visible in `R^{1/2}t^{-1/4}` is exactly the
+paper's `α > 2`. The sum over the lattice is taken in `ℝ≥0∞`, where no summability hypothesis
+is needed to exchange it with the sum over times.
+-/
 
 open MeasureTheory Filter Topology
 

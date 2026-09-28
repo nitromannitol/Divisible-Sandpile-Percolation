@@ -1,97 +1,3 @@
-/-
-Proposition of Section 4 of sandpile.tex, frozen.  `sandpile.tex:1989-2008`
-(label `prop:continuum-value-selfsimilar`):
-
-  "For every $T>0$ and every $x\in\R^d$,
-   \[
-     \mathcal U(T,x)\stackrel d= T^{(4-d)/4}\mathcal U(1,0)\, .
-   \]
-   There is $\theta>0$ such that
-   \[
-     \sup_{R\geq1}\E e^{\theta\mathcal U_R(1,0)}<\infty\, ,
-     \qquad
-     \E e^{\theta\mathcal U(1,0)}<\infty \, .
-   \]
-   In particular, for every $p>0$,
-   \[
-     \E\mathcal U(T,x)^p
-     =
-     T^{p(4-d)/4}\E\mathcal U(1,0)^p\, ,
-     \qquad
-     0<\E\mathcal U(1,0)^p<\infty \, ."
-
-The two objects come from the running text of `ssec:scaling-dlt4`.
-`sandpile.tex:1817-1821`: "For $T>0,\ x\in\R^d$, define the rescaled odometer by
-$\mathcal U_R(T,x)\coloneqq R^{-(2-d/2)} u_{\lfloor R^2T\rfloor}(\lfloor Rx\rfloor)$,
-with the floor taken coordinatewise."  `sandpile.tex:1824-1825`: "In this
-subsection, write $\mathcal U$ for the value $\mathcal U_Z$ from
-\eqref{eq:continuum-membrane-stopping-value}."  They are `Sandpile.Continuum.rescaledOdometer` and
-`Sandpile.Continuum.continuumValue`.
-
-The standing hypotheses are those of `sandpile.tex:1810-1814`: `d ≤ 3`,
-`E ζ(0) = 0`, `0 < Var(ζ(0)) < ∞`, and `E e^{θ₀|ζ(0)|} < ∞` for some `θ₀ > 0`.
-
-Modelling choices.
-
-"Equal in distribution" is equality of the pushforward measures, `Measure.map`.
-That map takes the junk value zero for a non-measurable function, which would
-make the identity vacuous, so the identity is asserted for a MEASURABLE version
-of the value.
-
-The first clause carries the value as a measurable functional `U` of the
-white-noise sample, equal almost everywhere to `continuumValue`, and states the
-scaling identity for `U`.  The earlier form asserted the identity for
-`continuumValue` itself, with almost-everywhere measurability of the two sides
-adjoined.  That form cannot be proved and does not say what the paper says.
-`continuumValue` is an `sSup` over the Brownian stopping times of `B x`, a
-different family for each starting point `x`, and the paper's proof
-(`sandpile.tex:1988-1992`) rescales time by `T`, which turns the stopping times
-bounded by `T` of the motion started at `x` into the stopping times bounded by
-one of the rescaled motion `s ↦ T^{-1/2}(B_x(Ts)-x)`.  That rescaled motion is a
-Brownian motion started at the origin, but it is NOT the member `B 0` of the
-given family, and nothing in the earlier statement related the two sides'
-stopping families.  What makes the descent from the equality in law of the
-fields to the equality in law of the values legitimate is that the stopping
-value is a measurable functional of the field alone, which is what
-`prop:brownian-os` supplies on one probability space: its right-continuous
-value process is measurable and the optimal time is the first entry into the
-contact set the field determines.  The clause is therefore stated on the one
-space the theorem fixes, for that functional.  A measurable version is also
-strictly more than the earlier almost-everywhere measurability, so nothing the
-paper asserts has been weakened.
-
-Mathlib 4.32 constructs neither white noise nor a Brownian motion, so the
-statement is quantified over a space `ΩW` carrying white noise and a space `ΩB`
-carrying Brownian motion, the field being frozen at a point of `ΩW` while the
-Brownian expectation integrates over `ΩB`; this is the paper's convention that
-`B` is independent of `𝒲`.  `brownianValue` carries its starting point only
-through the Brownian motion, so a value at every starting point needs a family
-`B` indexed by the starting point.
-
-`T` and `x` are quantified inside each of the two clauses that mention them,
-and NOT as parameters of the theorem, because the middle clause is the paper's
-"There is $\theta>0$ such that", which stands outside both: `θ` is a constant of
-the scenery law alone.  Binding `T` and `x` first would let the witness `θ`
-depend on them.  "$\sup_{R\geq1}\E e^{\theta\mathcal U_R(1,0)}<\infty$" is
-a single real bound valid for every `R ≥ 1`, together with the integrability
-which makes each expectation a real number rather than the junk value zero;
-"$\E e^{\theta\mathcal U(1,0)}<\infty$" is integrability alone.
-
-`\mathcal U^p` for real `p` is `Real.rpow`.  Both values are nonnegative, as the
-paper records at `sandpile.tex:1976-1980` and `sandpile.tex:2007`, so the
-negative-base junk branch of `rpow` is never reached; integrability of the
-`p`-th power is asserted so that `0 < \E\mathcal U(1,0)^p<\infty` is the paper's
-two-sided statement and not a statement about a junk zero.
-
-The proof uses the parabolic scaling limit of Theorem 1.3(i)(b), carrying its
-cited stopping-stability input at the Brownian realization space's universe.
-The motion has continuous paths at every sample and strongly measurable
-evaluations; `Sandpile.Continuum.exists_isBrownian_cont` supplies such a motion.
-
-The scenery is carried by its one-site law `ν` and the mass field by
-`centeredMassLaw d ν`, so `u_t` is `Sandpile.odometer σ t` and `Var(ζ(0))`,
-which is the variance appearing in `Z`, is `variance id ν`.
--/
 import Sandpile.Continuum.Stopping
 import Sandpile.Law
 import Sandpile.Support.MeanAValue
@@ -99,6 +5,18 @@ import Sandpile.External.VarianceScale
 import Sandpile.External.ContinuumOptimalStopping
 import Sandpile.Frozen.BrownianScalingLimit
 import Sandpile.Support.ContSelfSimilarFromScaling
+
+/-!
+# Self-similarity of the continuum value
+
+`Sandpile.Frozen.continuum_value_self_similar` is `prop:continuum-value-selfsimilar`: the
+Brownian stopping value `𝒰(T,x)` of the Gaussian heat potential is equal in law to
+`T^{(4-d)/4}𝒰(1,0)`, has a uniform exponential moment across the discrete rescaled odometers
+`𝒰_R(1,0)` and in the continuum limit, and its `p`-th moment scales as `T^{p(4-d)/4}` and is
+finite and positive.  The proof descends the parabolic scaling limit of the discrete odometer
+through the optimal-stopping representation, which realizes the value as a measurable functional
+of the field alone and so carries equality in law of the fields to equality in law of the values.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

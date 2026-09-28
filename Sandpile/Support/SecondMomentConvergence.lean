@@ -1,15 +1,25 @@
-/-
-Convergence in measure from vanishing second moments, and preservation of second
-moment limits under an error tending to zero in the second moment.
--/
 import LatticeProb.Prob.EfronSteinCov
 import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
 import Mathlib.MeasureTheory.Function.L2Space
+
+/-!
+# Convergence in measure from vanishing second moments
+
+Convergence in measure from vanishing second moments, and preservation of second moment limits
+under an error tending to zero in the second moment. `tendstoInMeasure_zero_of_second_moment`
+shows that `∫ F n ² dμ → 0` implies `F n → 0` in measure, via Markov's inequality on `F n ²`.
+`integral_sq_add` expands `∫ (F + G)² dμ = ∫ F² dμ + 2 ∫ FG dμ + ∫ G² dμ` for `L²` functions
+`F, G`. `tendsto_second_moment_add_zero` uses both together with Cauchy-Schwarz to show that if
+`∫ F n ² dμ → A` and `∫ G n ² dμ → 0`, then the cross term `∫ F n G n dμ → 0` as well, so
+`∫ (F n + G n)² dμ → A`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- If the second moment `∫ F n ² dμ → 0` along a filter, then `F n → 0` in measure, proved by
+bounding `μ {|F n| ≥ ε}` via Markov's inequality applied to `F n ²`. -/
 theorem tendstoInMeasure_zero_of_second_moment {Ω ι : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) [IsFiniteMeasure μ] {l : Filter ι} {F : ι → Ω → ℝ}
     (hi : ∀ᶠ n in l, Integrable (fun ω => F n ω ^ 2) μ)
@@ -27,6 +37,9 @@ theorem tendstoInMeasure_zero_of_second_moment {Ω ι : Type*} [MeasurableSpace 
   rw [hset, le_div_iff₀ (sq_pos_of_pos hε), mul_comm]
   exact mul_meas_ge_le_integral_of_nonneg (Eventually.of_forall fun ω => sq_nonneg _) hn _
 
+/-- The binomial expansion of the second moment of a sum: for `L²` functions `F, G`,
+`∫ (F + G)² dμ = ∫ F² dμ + 2 ∫ FG dμ + ∫ G² dμ`, expanding pointwise and splitting the
+integral using `LatticeProb.integrable_mul_of_sq` for integrability of the cross term. -/
 theorem integral_sq_add {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} {F G : Ω → ℝ}
     (hF : AEStronglyMeasurable F μ) (hG : AEStronglyMeasurable G μ)
     (hF2 : Integrable (fun ω => F ω ^ 2) μ) (hG2 : Integrable (fun ω => G ω ^ 2) μ) :
@@ -39,6 +52,10 @@ theorem integral_sq_add {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} {F G
       (hF2.add (hFG.const_mul 2)) hG2,
     integral_add hF2 (hFG.const_mul 2), integral_const_mul]
 
+/-- **Adding a vanishing-second-moment error does not change a second-moment limit.** If
+`∫ F n ² dμ → A` and `∫ G n ² dμ → 0`, then `∫ (F n + G n)² dμ → A`. The cross term
+`∫ F n G n dμ → 0` by Cauchy-Schwarz (`LatticeProb.abs_integral_mul_le`, squeezed against
+`√A * √0`), so the expansion `integral_sq_add` converges to `A + 2 * 0 + 0 = A`. -/
 theorem tendsto_second_moment_add_zero {Ω ι : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) {l : Filter ι} {F G : ι → Ω → ℝ}
     (hF : ∀ᶠ n in l, MemLp (F n) 2 μ) (hG : ∀ᶠ n in l, MemLp (G n) 2 μ)

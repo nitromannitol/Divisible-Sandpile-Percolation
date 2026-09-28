@@ -1,22 +1,20 @@
-/-
-The Fourier multiplier of the membrane field `V_t` and its superdiffusive limit,
-Step 1 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3345-3352`).
-
-  `κ_t(λ) = ∑_{j<t} λ^j = (1-λ^t)/(1-λ)`,   `λ(θ) = d^{-1} ∑_i cos θ_i`,
-
-and, for `α > 2` and every `ξ ≠ 0`,
-
-  `R^{-2} κ_{⌊R^α⌋}(λ(ξ/R)) ⟶ 2d/|ξ|²`,
-
-because `R²(1-λ(ξ/R)) → |ξ|²/(2d)` and `λ(ξ/R)^{⌊R^α⌋} → 0`.  In dimension four
-the limit is `8/|ξ|²`, the multiplier of `𝒢_4`.  This is where `α > 2` enters
-Step 1: the truncated multiplier sees the full Green function only because
-`⌊R^α⌋/R² → ∞`.  Uniformly on the Brillouin box `[-πR, πR]^d \ {0}` the
-multiplier is bounded by `π²d/|ξ|²`, the domination the paper's dominated
-convergence needs.
--/
 import Sandpile.Continuum.Kernel
 import Mathlib
+
+/-!
+# The Fourier multiplier of the membrane field and its superdiffusive limit
+
+Step 1 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3345-3352`). The walk symbol
+`λ(θ) = d^{-1} ∑_i cos θ_i` (`walkSymbol`) and the multiplier `κ_t(λ) = ∑_{j<t} λ^j =
+(1-λ^t)/(1-λ)` of the membrane field `V_t` (`multiplierKappa`) combine, for `α > 2` and every
+`ξ ≠ 0`, into the limit `R^{-2} κ_{⌊R^α⌋}(λ(ξ/R)) → 2d/|ξ|²` (`tendsto_multiplier`), because
+`R²(1-λ(ξ/R)) → |ξ|²/(2d)` (`tendsto_R_sq_one_sub_walkSymbol`) and `λ(ξ/R)^{⌊R^α⌋} → 0`
+(`tendsto_walkSymbol_pow`). In dimension four the limit is `8/|ξ|²`, the multiplier of `𝒢_4`
+(`tendsto_multiplier_four`). This is where `α > 2` enters Step 1: the truncated multiplier sees
+the full Green function only because `⌊R^α⌋/R² → ∞`. Uniformly on the Brillouin box
+`[-πR, πR]^d \ {0}` the multiplier is bounded by `π²d/|ξ|²` (`multiplier_uniform_bound`), the
+domination the paper's dominated convergence needs.
+-/
 
 open Filter Topology
 
@@ -29,16 +27,19 @@ noncomputable def walkSymbol (d : ℕ) (θ : Continuum.Space d) : ℝ :=
 /-- The Fourier multiplier `κ_t(λ) = ∑_{j<t} λ^j` of the membrane field `V_t`. -/
 noncomputable def multiplierKappa (t : ℕ) (lam : ℝ) : ℝ := ∑ j ∈ Finset.range t, lam ^ j
 
+/-- The squared Euclidean norm on `Continuum.Space d` is the sum of squared coordinates. -/
 lemma euclid_norm_sq {d : ℕ} (θ : Continuum.Space d) : ‖θ‖ ^ 2 = ∑ i : Fin d, θ i ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]
   simp [Real.norm_eq_abs, sq_abs]
 
+/-- `1 - λ(θ)` rewritten as the average, over coordinates, of `1 - cos θ_i`. -/
 lemma one_sub_walkSymbol_eq {d : ℕ} (hd : 0 < d) (θ : Continuum.Space d) :
     1 - walkSymbol d θ = (∑ i : Fin d, (1 - Real.cos (θ i))) / d := by
   have hd' : (0 : ℝ) < d := by exact_mod_cast hd
   rw [walkSymbol, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
     nsmul_eq_mul, mul_one, sub_div, div_self (ne_of_gt hd')]
 
+/-- The walk symbol `λ(θ)` is at most `1`, since it averages cosines, each at most `1`. -/
 lemma walkSymbol_le_one {d : ℕ} (hd : 0 < d) (θ : Continuum.Space d) :
     walkSymbol d θ ≤ 1 := by
   have hd' : (0 : ℝ) < d := by exact_mod_cast hd
@@ -47,6 +48,7 @@ lemma walkSymbol_le_one {d : ℕ} (hd : 0 < d) (θ : Continuum.Space d) :
         Finset.sum_le_sum (fun i _ => Real.cos_le_one _)
     _ = d := by simp
 
+/-- The walk symbol `λ(θ)` is at least `-1`, since it averages cosines, each at least `-1`. -/
 lemma neg_one_le_walkSymbol {d : ℕ} (hd : 0 < d) (θ : Continuum.Space d) :
     -1 ≤ walkSymbol d θ := by
   have hd' : (0 : ℝ) < d := by exact_mod_cast hd
@@ -113,6 +115,7 @@ lemma abs_multiplierKappa_le (t : ℕ) (lam : ℝ) (h1 : -1 ≤ lam) (h2 : lam <
   calc |1 - lam ^ t| ≤ |(1 : ℝ)| + |lam ^ t| := abs_sub _ _
     _ ≤ 2 := by rw [abs_one]; linarith
 
+/-- Scalar multiplication on `Continuum.Space d` acts coordinatewise. -/
 lemma smul_apply_space {d : ℕ} (c : ℝ) (ξ : Continuum.Space d) (i : Fin d) :
     (c • ξ) i = c * ξ i := by simp
 
@@ -255,7 +258,8 @@ theorem multiplier_uniform_bound {d : ℕ} (hd : 0 < d) (R : ℝ) (hR : 0 < R) (
         = Real.pi ^ 2 * d * R ^ 2 * (2 / (Real.pi ^ 2 * d) * (‖ξ‖ ^ 2 / R ^ 2)) := by
           field_simp
       _ ≤ _ := h
-  have hstep : |multiplierKappa t (walkSymbol d (R⁻¹ • ξ))| ≤ Real.pi ^ 2 * d * R ^ 2 / ‖ξ‖ ^ 2 := by
+  have hstep : |multiplierKappa t (walkSymbol d (R⁻¹ • ξ))| ≤
+      Real.pi ^ 2 * d * R ^ 2 / ‖ξ‖ ^ 2 := by
     refine hkap.trans ?_
     rw [div_le_div_iff₀ (by linarith) hn]
     linarith

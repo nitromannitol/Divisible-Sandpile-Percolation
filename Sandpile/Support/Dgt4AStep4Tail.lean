@@ -1,19 +1,20 @@
-/-
+import Sandpile.Support.Dgt4AStep3Mean
+
+/-!
+# The mean excess of a concentrated quantity
+
 **The mean excess of a concentrated quantity**, the inequality behind the `y\leq-1` bound of
 Step 4 of case (a) (`eq:dgt4-gaussian-conditional-concentration`, `sandpile.tex:5267-5282`).
 
-The paper writes "On `\{u_{n+1}(0)=0\}` we have `\Theta_n\geq|y|h_n`. Integrating the
-conditional concentration tail therefore gives
-`m_n(y)\leq C\exp\{-cy^2k_n^{(d-4)/2}/(\E u_n(0))^2\}`".  What the integration needs is only
-this: a quantity whose mean is at most half a level and whose upper tail beyond its mean is
-Gaussian with proxy `\lambda` has excess mean beyond that level at most
-`4\lambda^2e^{-b/(8\lambda^2)}`.  The Gaussian tail is used through `s^2\geq s/2` for
-`s\geq1/2`, which turns it into an exponential one and makes the layer-cake integral
-elementary; the exponent obtained is linear in the level rather than quadratic, which is
-weaker than the paper's display and more than enough for the domination, since the
-coefficient `1/(8\lambda^2)` tends to infinity.
+The paper writes "On `\{u_{n+1}(0)=0\}` we have `\Theta_n\geq|y|h_n`. Integrating the conditional
+concentration tail therefore gives `m_n(y)\leq C\exp\{-cy^2k_n^{(d-4)/2}/(\E u_n(0))^2\}`". What
+the integration needs is only this: a quantity whose mean is at most half a level and whose upper
+tail beyond its mean is Gaussian with proxy `\lambda` has excess mean beyond that level at most
+`4\lambda^2e^{-b/(8\lambda^2)}`. The Gaussian tail is used through `s^2\geq s/2` for `s\geq1/2`,
+which turns it into an exponential one and makes the layer-cake integral elementary; the exponent
+obtained is linear in the level rather than quadratic, which is weaker than the paper's display
+and more than enough for the domination, since the coefficient `1/(8\lambda^2)` tends to infinity.
 -/
-import Sandpile.Support.Dgt4AStep3Mean
 
 open MeasureTheory Filter Topology Set
 open scoped ENNReal NNReal

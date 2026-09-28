@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.CrossDilate
+import Sandpile.Support.CrossUnion
+import Sandpile.Support.CrossLaw
+
+/-!
+# The chain vocabulary under a rational dilation
+
 The change of variables of `eq:rescaled-crossing-estimate`
 (`sandpile.tex:2404-2413`) carried out on the chain events.
 
@@ -18,9 +24,6 @@ and a rational dilation preserves both alternatives while an irrational one
 destroys the first.  That is the reason `lem:finite-scale-extraction` takes its
 scales rational.
 -/
-import Sandpile.Support.CrossDilate
-import Sandpile.Support.CrossUnion
-import Sandpile.Support.CrossLaw
 
 open MeasureTheory Set
 
@@ -44,7 +47,8 @@ theorem segSet_smul (c : ℝ) (v w : Sandpile.Continuum.Space 2) :
 
 /-- A chain of segments dilates to the chain through the dilated vertices. -/
 theorem pathSet_smul (c : ℝ) (n : ℕ) (v : ℕ → Sandpile.Continuum.Space 2) :
-    pathSet n (fun j => c • v j) = (fun z : Sandpile.Continuum.Space 2 => c • z) '' pathSet n v := by
+    pathSet n (fun j => c • v j) =
+      (fun z : Sandpile.Continuum.Space 2 => c • z) '' pathSet n v := by
   unfold pathSet
   rw [Set.image_iUnion₂]
   exact Set.iUnion₂_congr fun j _ => segSet_smul c (v j) (v (j + 1))
@@ -131,7 +135,8 @@ theorem goodChain_smulChain {a b : Fin 2 → ℝ} {i : Fin 2} {c : ℚ} (hc : 0 
     funext (chainFun_smulChain c ch)
   refine ⟨?_, ?_, ?_⟩
   · have hps : pathSet ((smulChain c ch).1 + 1) (chainFun (smulChain c ch))
-        = (fun z : Sandpile.Continuum.Space 2 => (c : ℝ) • z) '' pathSet (ch.1 + 1) (chainFun ch) := by
+        = (fun z : Sandpile.Continuum.Space 2 => (c : ℝ) • z) ''
+          pathSet (ch.1 + 1) (chainFun ch) := by
       rw [show (smulChain c ch).1 = ch.1 from rfl, hcf]
       exact pathSet_smul _ _ _
     rw [hps, rectSet_smul hc]

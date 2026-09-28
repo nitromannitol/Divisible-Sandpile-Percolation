@@ -1,13 +1,15 @@
-/-
-Averaging the continuous Gaussian heat potential over a finite measure.
-
-Bounded measurable time-space families have integrable Green kernels in both
-spatial L1 and L2. Their pointwise spatial integrals represent the Bochner L2
-integral, so white-noise Fubini holds for the actual continuous field. In
-particular the Brownian heat-kernel density defines a probability measure.
--/
 import Sandpile.Support.ExplGreenFubini
 import Sandpile.Support.ExplGreenSemigroup
+
+/-!
+# Averaging the continuous Gaussian heat potential over a finite measure
+
+Bounded measurable time-space families have integrable Green kernels in both spatial L1 and L2.
+Their pointwise spatial integrals represent the Bochner L2 integral, so white-noise Fubini holds
+for the actual continuous field (`gaussianPotential_family_integral_comm_pointwise`). In
+particular the Brownian heat-kernel density defines a probability measure
+(`isProbabilityMeasure_heatKernelBM`).
+-/
 
 open LatticeProb
 
@@ -18,6 +20,9 @@ namespace Sandpile.Support
 
 open Sandpile.Support Sandpile.Continuum
 
+/-- The Brownian heat-kernel density `heatKernelBM d r x` at a fixed positive time `r` and
+starting point `x` defines a probability measure: its Lebesgue integral over the whole space is
+one (`integral_heatKernelBM_eq_one`), and the density is nonnegative. -/
 theorem isProbabilityMeasure_heatKernelBM {d : ℕ} (hd : 1 ≤ d) {r : ℝ}
     (hr : 0 < r) (x : Space d) :
     IsProbabilityMeasure ((volume : Measure (Space d)).withDensity
@@ -34,6 +39,14 @@ namespace Sandpile.Continuum
 
 open Sandpile.Support Sandpile.Continuum
 
+/-- For a bounded-time family `q : U → ℝ≥0 × Space d` against a finite measure `μ`, the
+pointwise-modified continuous Gaussian heat potential `Z` is almost surely `μ`-integrable in the
+family, and the white noise `W` evaluated at the `μ`-average of the Green kernel agrees almost
+surely with the `μ`-average of `Z`. The proof represents the Green-kernel average as a Bochner
+`L2` integral `F` of `Lp` functions (`coe_integral_L2_eq_integral_of_integrable`), transports the
+noise identity from `F` to the pointwise average via the shared Gaussian law of `W` evaluated at
+each coordinate (`toLp_eq_of_covariance_of_ae_eq`), and combines this with the continuous-field
+Fubini identity `gaussian_whiteNoise_integral_comm_continuous`. -/
 theorem gaussianPotential_family_integral_comm_pointwise {ΩW U : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace U] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}

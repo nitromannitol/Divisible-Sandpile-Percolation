@@ -1,10 +1,28 @@
-/-
-Gaussian exponential concentration for smooth Lipschitz functions, proved
-by rotation interpolation, Jensen inequality and the linear Gaussian formula.
--/
 import Sandpile.Support.GaussianIntegrability
 import Sandpile.Support.RotationCalculus
 import Mathlib.Probability.Moments.SubGaussian
+
+/-!
+# Gaussian concentration for smooth Lipschitz functions via rotation interpolation
+
+Gaussian exponential concentration for smooth Lipschitz functions, proved
+by rotation interpolation, Jensen inequality and the linear Gaussian formula.
+`integral_exp_rotation_derivative_le` bounds the exponential moment of the directional
+derivative of `f` in a rotated frame by the moment of a bounded dual pairing
+(`integral_exp_bounded_dual_gaussian`), using that rotation preserves the standard Gaussian
+product law. `norm_rotation_snd_le` and `rotation_derivative_exp_le` are the elementary
+estimates the rotation-frame derivative needs: the rotated second coordinate has norm at most
+`2‖p‖`, and the derivative term is exponentially bounded by `exp(|a|π D ‖p‖)`.
+`integrable_rotation_derivative_exp` extends the bound to the joint variable `(p, t)` over
+`t ∈ [0,1]`. The key analytic step is `integral_exp_gaussian_difference_le`: it interpolates
+`f(p.2) - f(p.1)` by its rotation derivative along the arc from `p.1` to `p.2`
+(`exp_sub_le_integral_rotation` from `RotationCalculus`) and integrates the derivative bound
+over `t`, giving the two-point exponential moment bound `exp(a²π²D²/8)`.
+`integral_exp_gaussian_centered_le` converts this two-point bound into a one-point centred
+bound via Jensen's inequality (`convexOn_exp.map_integral_le`), and
+`hasSubgaussianMGF_smooth_lipschitz` packages the result as a `HasSubgaussianMGF` instance
+with variance proxy `π²D²/4`.
+-/
 
 open MeasureTheory ProbabilityTheory Set
 open scoped NNReal ENNReal
@@ -17,6 +35,11 @@ namespace Sandpile
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [FiniteDimensional ℝ H]
   [MeasurableSpace H] [BorelSpace H]
 
+/-- The exponential moment of the rotated directional derivative `π/2 · ⟨∇f(rotated p),
+rotated p⟩` is bounded by `exp(a²π²D²/8)`: rotation preserves the product Gaussian law
+(`IsGaussian.map_rotation_eq_self`), so this reduces to `integral_exp_bounded_dual_gaussian`
+applied to the (rescaled) bilinear pairing `fderiv ℝ f p.1 p.2`, using that `f`'s derivative
+is bounded in operator norm by the Lipschitz constant `D` (`norm_fderiv_le_of_lipschitz`). -/
 lemma integral_exp_rotation_derivative_le {f : H → ℝ} (hf : ContDiff ℝ 1 f)
     {D : ℝ≥0} (hD : LipschitzWith D f) (a t : ℝ) :
     (∫ p : H × H, Real.exp (a * (Real.pi / 2 *
@@ -28,9 +51,11 @@ lemma integral_exp_rotation_derivative_le {f : H → ℝ} (hf : ContDiff ℝ 1 f
   have hF : Continuous F :=
     (continuous_const.mul (hf.continuous_fderiv_apply one_ne_zero)).rexp
   have he : (∫ p, F (ContinuousLinearMap.rotation (Real.pi / 2 * t) p) ∂μ) = ∫ p, F p ∂μ := by
-    have hm := IsGaussian.map_rotation_eq_self (μ := stdGaussian H) integral_id_stdGaussian (Real.pi / 2 * t)
+    have hm := IsGaussian.map_rotation_eq_self (μ := stdGaussian H) integral_id_stdGaussian
+      (Real.pi / 2 * t)
     have hi := integral_map (μ := μ) (φ := ContinuousLinearMap.rotation (Real.pi / 2 * t))
-      (ContinuousLinearMap.rotation (Real.pi / 2 * t)).continuous.aemeasurable hF.aestronglyMeasurable
+      (ContinuousLinearMap.rotation (Real.pi / 2 * t)).continuous.aemeasurable
+      hF.aestronglyMeasurable
     rw [hm] at hi
     exact hi.symm
   have hb := integral_exp_bounded_dual_gaussian (hf.continuous_fderiv one_ne_zero)
@@ -49,6 +74,9 @@ lemma integral_exp_rotation_derivative_le {f : H → ℝ} (hf : ContDiff ℝ 1 f
   ring
 
 omit [FiniteDimensional ℝ H] [MeasurableSpace H] [BorelSpace H] in
+/-- The second coordinate of a rotated pair `(p.1, p.2)` has norm at most `2‖p‖`: it is
+`-sin(t) p.1 + cos(t) p.2`, so the triangle inequality and `|sin|, |cos| ≤ 1` give the
+bound. -/
 lemma norm_rotation_snd_le (t : ℝ) (p : H × H) :
     ‖(ContinuousLinearMap.rotation t p).2‖ ≤ 2 * ‖p‖ := by
   change ‖-Real.sin t • p.1 + Real.cos t • p.2‖ ≤ _
@@ -61,6 +89,9 @@ lemma norm_rotation_snd_le (t : ℝ) (p : H × H) :
     _ = _ := by ring
 
 omit [FiniteDimensional ℝ H] [MeasurableSpace H] [BorelSpace H] in
+/-- Pointwise, the rotated directional derivative term `exp(a π/2 · ⟨∇f(rotated p), rotated
+p⟩)` is bounded by `exp(|a| π D ‖p‖)`: the derivative pairing is bounded in absolute value by
+`D · 2‖p‖` (operator-norm bound on `∇f` times `norm_rotation_snd_le`). -/
 lemma rotation_derivative_exp_le {f : H → ℝ} {D : ℝ≥0} (hD : LipschitzWith D f)
     (a t : ℝ) (p : H × H) :
     Real.exp (a * (Real.pi / 2 *
@@ -84,13 +115,18 @@ lemma rotation_derivative_exp_le {f : H → ℝ} {D : ℝ≥0} (hD : LipschitzWi
       mul_le_mul_of_nonneg_left hb (by positivity)
     _ = _ := by ring
 
+/-- The rotated directional derivative term is jointly integrable in `(p, t)` for `t`
+ranging over any finite measure `ν`: it is continuous, hence measurable, and pointwise
+bounded by `rotation_derivative_exp_le`, whose bound `exp(|a| π D ‖p‖)` is integrable in `p`
+(`integrable_exp_norm_gaussian`) and constant in `t`. -/
 lemma integrable_rotation_derivative_exp {f : H → ℝ} (hf : ContDiff ℝ 1 f)
     {D : ℝ≥0} (hD : LipschitzWith D f) (a : ℝ) (ν : Measure ℝ) [IsFiniteMeasure ν] :
     Integrable (fun q : (H × H) × ℝ => Real.exp (a * (Real.pi / 2 *
       fderiv ℝ f ((ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1).1)
         ((ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1).2))))
       (((stdGaussian H).prod (stdGaussian H)).prod ν) := by
-  have hrot : Continuous (fun q : (H × H) × ℝ => ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1) := by
+  have hrot :
+      Continuous (fun q : (H × H) × ℝ => ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1) := by
     change Continuous (fun q : (H × H) × ℝ =>
       (Real.cos (Real.pi / 2 * q.2) • q.1.1 + Real.sin (Real.pi / 2 * q.2) • q.1.2,
         -Real.sin (Real.pi / 2 * q.2) • q.1.1 + Real.cos (Real.pi / 2 * q.2) • q.1.2))
@@ -98,7 +134,8 @@ lemma integrable_rotation_derivative_exp {f : H → ℝ} (hf : ContDiff ℝ 1 f)
   have hc : Continuous (fun q : (H × H) × ℝ => Real.pi / 2 *
       fderiv ℝ f ((ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1).1)
         ((ContinuousLinearMap.rotation (Real.pi / 2 * q.2) q.1).2)) := by
-    exact continuous_const.mul (((hf.continuous_fderiv one_ne_zero).comp hrot.fst).clm_apply hrot.snd)
+    exact continuous_const.mul
+      (((hf.continuous_fderiv one_ne_zero).comp hrot.fst).clm_apply hrot.snd)
   refine Integrable.mono' ((integrable_exp_norm_gaussian
     (μ := (stdGaussian H).prod (stdGaussian H)) (|a| * Real.pi * D)).comp_fst ν)
     (continuous_const.mul hc).rexp.aestronglyMeasurable ?_
@@ -106,6 +143,12 @@ lemma integrable_rotation_derivative_exp {f : H → ℝ} (hf : ContDiff ℝ 1 f)
   rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
   exact rotation_derivative_exp_le hD a q.2 q.1
 
+/-- **The two-point exponential moment bound.** For a `D`-Lipschitz, continuously
+differentiable `f`, `E[exp(a(f(p.2)-f(p.1)))] ≤ exp(a²π²D²/8)` over two independent standard
+Gaussians: the difference `f(p.2)-f(p.1)` is bounded, pointwise in `p`, by the integral over
+`t ∈ [0,1]` of the rotation derivative (`exp_sub_le_integral_rotation`), and swapping the
+order of integration (`integral_integral_swap`) reduces the bound to
+`integral_exp_rotation_derivative_le` at each fixed `t`. -/
 lemma integral_exp_gaussian_difference_le {f : H → ℝ} (hf : ContDiff ℝ 1 f)
     {D : ℝ≥0} (hD : LipschitzWith D f) (a : ℝ) :
     (∫ p : H × H, Real.exp (a * (f p.2 - f p.1)) ∂(stdGaussian H).prod (stdGaussian H)) ≤
@@ -116,7 +159,8 @@ lemma integral_exp_gaussian_difference_le {f : H → ℝ} (hf : ContDiff ℝ 1 f
   let g (p : H × H) (t : ℝ) := Real.exp (a * (Real.pi / 2 *
       fderiv ℝ f ((ContinuousLinearMap.rotation (Real.pi / 2 * t) p).1)
         ((ContinuousLinearMap.rotation (Real.pi / 2 * t) p).2)))
-  have hi : Integrable (Function.uncurry g) (μ.prod ν) := integrable_rotation_derivative_exp hf hD a ν
+  have hi : Integrable (Function.uncurry g) (μ.prod ν) :=
+    integrable_rotation_derivative_exp hf hD a ν
   have hiDiff : Integrable (fun p : H × H => Real.exp (a * (f p.2 - f p.1))) μ :=
     integrable_exp_lipschitz_gaussian ((hD.comp LipschitzWith.prod_snd).sub
       (hD.comp LipschitzWith.prod_fst)) a
@@ -134,6 +178,11 @@ lemma integral_exp_gaussian_difference_le {f : H → ℝ} (hf : ContDiff ℝ 1 f
       exact fun t => integral_exp_rotation_derivative_le hf hD a t
     _ = _ := by simp
 
+/-- **The one-point centred exponential moment bound**, obtained from the two-point bound by
+Jensen's inequality: `E[exp(-a f)] · E[exp(a f)] ≥ exp(-a E f) · E[exp(a f)]`
+(`convexOn_exp.map_integral_le`) rewrites `E[exp(a(f-E f))]` as at most the two-point moment
+`E[exp(a(f(p.2)-f(p.1)))]` over an independent pair, to which
+`integral_exp_gaussian_difference_le` applies. -/
 lemma integral_exp_gaussian_centered_le {f : H → ℝ} (hf : ContDiff ℝ 1 f)
     {D : ℝ≥0} (hD : LipschitzWith D f) (a : ℝ) :
     (∫ x, Real.exp (a * (f x - ∫ y, f y ∂stdGaussian H)) ∂stdGaussian H) ≤
@@ -173,6 +222,10 @@ lemma integral_exp_gaussian_centered_le {f : H → ℝ} (hf : ContDiff ℝ 1 f)
           ring
     _ ≤ _ := integral_exp_gaussian_difference_le hf hD a
 
+/-- **Every continuously differentiable, `D`-Lipschitz function on a finite-dimensional inner
+product space has a subgaussian MGF under the standard Gaussian**, with variance proxy
+`π²D²/4`: the integrability clause is `integrable_exp_lipschitz_gaussian` and the MGF bound
+is `integral_exp_gaussian_centered_le`. -/
 lemma hasSubgaussianMGF_smooth_lipschitz {f : H → ℝ} (hf : ContDiff ℝ 1 f)
     {D : ℝ≥0} (hD : LipschitzWith D f) :
     HasSubgaussianMGF (fun x => f x - ∫ y, f y ∂stdGaussian H)

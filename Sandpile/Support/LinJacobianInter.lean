@@ -1,18 +1,20 @@
-/-
-The intersection count of two paths as a real number, and the majorization of
-the time-restricted intersection sums of Step 1 of
-`lem:dgt4-linearization-from-survival` by it.
-
-`Sandpile.External.interCount` is the paper's `I(X,Y) = ∑_{i,j≥0}1_{X_i=Y_j}`,
-valued in `ℝ≥0∞` so that an infinite count is not rounded to a junk value.  Step
-1 uses a real-valued majorant of the finite double sums, and every finite double
-sum of intersection indicators is below `I(X,Y)`, so the real part of `I(X,Y)`
-serves wherever `I(X,Y)` is finite.  Under the two-walk law in `d ≥ 5` that is
-almost every pair of paths, which is the form in which
-`Support/LinJacobianEarly.lean` asks for the majorization.
--/
 import Sandpile.Support.LinJacobianCovBridge
 import Sandpile.External.IntersectionSecondMoment
+
+/-!
+# The real-valued intersection count, and its majorization of finite double sums
+
+This module defines the intersection count of two paths as a real number, and proves the
+majorization of the time-restricted intersection sums of Step 1 of
+`lem:dgt4-linearization-from-survival` by it.
+
+`Sandpile.External.interCount` is the paper's `I(X,Y) = ∑_{i,j≥0}1_{X_i=Y_j}`, valued in `ℝ≥0∞` so
+that an infinite count is not rounded to a junk value. Step 1 uses a real-valued majorant of the
+finite double sums, and `sum_indicator_le_interCountReal` shows every finite double sum of
+intersection indicators is below `interCountReal X Y`, the real part of `I(X,Y)`, so it serves
+wherever `I(X,Y)` is finite. Under the two-walk law in `d ≥ 5` that is almost every pair of paths,
+which is the form in which `Support/LinJacobianEarly.lean` asks for the majorization.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal
@@ -25,6 +27,7 @@ variable {d : ℕ}
 noncomputable def interCountReal (X Y : ℕ → Site d) : ℝ :=
   (Sandpile.External.interCount X Y).toReal
 
+/-- `interCountReal X Y` is nonnegative, being the `toReal` of an `ℝ≥0∞`-valued quantity. -/
 theorem interCountReal_nonneg (X Y : ℕ → Site d) : 0 ≤ interCountReal X Y :=
   ENNReal.toReal_nonneg
 

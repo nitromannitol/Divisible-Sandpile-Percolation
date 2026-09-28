@@ -1,16 +1,14 @@
-/-
-The `L²` assembly of `eq:dgt4-centered-value-decay` of case (a) Step 1 of
-`prop:dgt4-contact-asymptotics` (`sandpile.tex:5074-5077`): the telescoping
-`w(0)+c = P^j(w+c)(0) + \sum_{i<j}P^i(w-Pw)(0)` of `Support/Dgt4ATelescope.lean`,
-the `L²` bound on the `j`-step average and the `L²` bound on each telescoping term
-combine into
-
-  `(E[(V_\infty(0)-u_n(0)+E u_n(0))^2])^{1/2} ≤ Cj n^{-1/2}\sqrt{\log(n+2)} + Cj^{-(d-4)/4}`.
-
-The two `L²` bounds are the inputs the paper's Gaussian concentration supplies; the
-summation is `Support/Dgt4AL2Sum.lean`.
--/
 import Sandpile.Support.Dgt4AL2Sum
+
+/-!
+# Assembling an `L²` decay bound from a telescoping decomposition
+
+If a centred value `w + c` decomposes as `u + v` with `L²` norm at most `A` on `u` and at
+most `j * B` on `v`, then the `L²` norm of `w + c` itself is at most `2 * (j * B + A)`. This
+combines the triangle inequality for the `L²` norm with the summation bound of
+`Sandpile.Support.Dgt4AL2Sum`, and assembles the two `L²` inputs supplied by Gaussian
+concentration into the decay estimate used for the centred value of the limiting field.
+-/
 
 open MeasureTheory Filter Topology Set
 

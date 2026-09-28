@@ -1,10 +1,14 @@
-/-
-The neighbour average `P` preserves the expectation of a site-invariant functional: if
-`E f(y)` is the same for every site `y`, then `E P f(0)=E f(0)`.  It is the stationarity
-step of "By stationarity, `D_n` has mean zero" (`sandpile.tex:5055`): `P f(0)` is the average
-of `f` over the `2d` neighbours of the origin, each of which has the same expectation.
--/
 import Sandpile.Support.Dgt4ADeviationAbs
+
+/-!
+# The neighbour average preserves the expectation of a site-invariant functional
+
+The neighbour average `P` preserves the expectation of a site-invariant functional
+(`integral_avg_eq_of_site_invariant`): if `E f(y)` is the same for every site `y`, then
+`E P f(0) = E f(0)`. It is the stationarity step of "By stationarity, `D_n` has mean zero"
+(`sandpile.tex:5055`): `P f(0)` is the average of `f` over the `2d` neighbours of the origin, each
+of which has the same expectation.
+-/
 
 open MeasureTheory Filter Topology Set
 

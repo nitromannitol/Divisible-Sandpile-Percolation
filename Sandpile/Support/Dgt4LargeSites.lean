@@ -1,34 +1,37 @@
-/-
-Step 1 of case (b) of `prop:dgt4-contact-asymptotics` (`sandpile.tex:5349-5381`), reduced to
-its conditional deviation estimate.
+import Sandpile.Support.Dgt4CaseBStep1
+import Sandpile.Support.Dgt4LowerTailMoment
+
+/-!
+# Step 1 of case (b), reduced to its conditional deviation estimate
+
+Step 1 of case (b) of `prop:dgt4-contact-asymptotics` (`sandpile.tex:5349-5381`), reduced to its
+conditional deviation estimate.
 
 Step 1 proves `eq:dgt4-small-origin-neighbor-average`,
-`\P(Pw_n(0)\leq\E Pw_n(0)/6)/\P(-\zeta(0)>\E Pw_n(0))\to0`, by splitting according to the
-number of sites of the box that carry an unusually large contribution:
+`\P(Pw_n(0)\leq\E Pw_n(0)/6)/\P(-\zeta(0)>\E Pw_n(0))\to0`, by splitting according to the number
+of sites of the box that carry an unusually large contribution:
 `A_n=\{z\in Q(0,n+1)\setminus\{0\}:-G(0,z)\zeta(z)/G(0,0)>\eta_n\E Pw_n(0)\}` with
 `\eta_n=1/(K\log\E Pw_n(0))`.
 
-Two of the three pieces are proved here.  The first is the estimate
+Two of the three pieces are proved here. The first is the estimate
 `\P(|A_n|\geq2)\leq C(p)(\eta_n\E Pw_n(0))^{-2p}=o(\P(-\zeta(0)>\E Pw_n(0)))`
-(`sandpile.tex:5357-5359`): the events `\{z\in A_n\}` are events of distinct coordinates of
-the i.i.d. field and are therefore independent (`iidLaw_two_site`); at least two of finitely
-many pairwise independent events occur with probability at most the square of the sum of
-their probabilities (`measure_two_le_sq_of_pairwise_indep`); Markov's inequality at exponent
-`p` bounds the one-site probability by `\E|\zeta(0)|^p(c_z/t)^p`; and the sum of `c_z^p` over
-the box is bounded by the convergent series of `eq:dgt4-green-tail`.  Nothing in this chain
-needs the site weights to be strictly positive: a site of weight zero simply never belongs to
-`A_n`, and the one-site bound is then trivial.  The second piece is the splitting itself,
-`measure_inter_card_le_one_le`, together with the comparison of the conditional bound with
-the lower tail.
+(`sandpile.tex:5357-5359`): the events `\{z\in A_n\}` are events of distinct coordinates of the
+i.i.d. field and are therefore independent (`iidLaw_two_site`); at least two of finitely many
+pairwise independent events occur with probability at most the square of the sum of their
+probabilities (`measure_two_le_sq_of_pairwise_indep`); Markov's inequality at exponent `p` bounds
+the one-site probability by `\E|\zeta(0)|^p(c_z/t)^p`; and the sum of `c_z^p` over the box is
+bounded by the convergent series of `eq:dgt4-green-tail`. Nothing in this chain needs the site
+weights to be strictly positive: a site of weight zero simply never belongs to `A_n`, and the
+one-site bound is then trivial. The second piece is the splitting itself,
+`measure_inter_card_le_one_le`, together with the comparison of the conditional bound with the
+lower tail.
 
 What remains is `SmallAverageConditional`, the conditional deviation estimate of
-`sandpile.tex:5361-5381`: given that at most one site carries a large contribution, the
-neighbour average falls below a sixth of its mean with conditional probability at most
-`(\E Pw_n(0))^{-\beta}`.  That is the Freedman step of the paper, and it is the only
-remaining input of the heavy-tailed branch of `prop:dgt4-contact-asymptotics`.
+`sandpile.tex:5361-5381`: given that at most one site carries a large contribution, the neighbour
+average falls below a sixth of its mean with conditional probability at most
+`(\E Pw_n(0))^{-\beta}`. That is the Freedman step of the paper, and it is the only remaining
+input of the heavy-tailed branch of `prop:dgt4-contact-asymptotics`.
 -/
-import Sandpile.Support.Dgt4CaseBStep1
-import Sandpile.Support.Dgt4LowerTailMoment
 
 open scoped Classical ENNReal
 open MeasureTheory ProbabilityTheory Filter Topology Set
@@ -125,6 +128,10 @@ theorem measure_two_large_sites_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
   exact measure_two_le_sq_of_pairwise_indep (P := LatticeProb.iidLaw d ν) s
     (fun z => {ζ : Sandpile.Site d → ℝ | t < -(c z * ζ z)}) hindep
 
+/-- The bound of `measure_two_large_sites_le`, with the one-site probabilities each bounded
+by Markov's inequality (`measure_site_threshold_le`): the probability that at least two sites
+of `s` exceed the threshold `t`, weighted by `c`, is at most the square of
+`(∫|z|^p dν) (∑_{z ∈ s} c z^p) / t^p`. -/
 theorem measure_two_large_sites_le_moment (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (s : Finset (Sandpile.Site d)) (c : Sandpile.Site d → ℝ) (hc : ∀ z, 0 ≤ c z)
     {p t : ℝ} (hp : 0 < p) (hmom : Integrable (fun z : ℝ => |z| ^ p) ν) (ht : 0 < t) :
@@ -155,6 +162,9 @@ theorem measure_two_large_sites_le_moment (ν : Measure ℝ) [IsProbabilityMeasu
   rw [ENNReal.toReal_pow]
   exact pow_le_pow_left₀ ENNReal.toReal_nonneg hsum 2
 
+/-- `measure_two_large_sites_le_moment`, with the finite weight sum `∑_{z ∈ s} c z^p` replaced
+by the tail of a summable dominating family `b` with `c z^p ≤ b z`, so the bound holds
+uniformly over `s` with `∑' z, b z` in place of the finite sum. -/
 theorem measure_two_large_sites_le_tsum (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (s : Finset (Sandpile.Site d)) (c : Sandpile.Site d → ℝ) (hc : ∀ z, 0 ≤ c z)
     {p t : ℝ} (hp : 0 < p) (hmom : Integrable (fun z : ℝ => |z| ^ p) ν) (ht : 0 < t)
@@ -259,7 +269,8 @@ def SmallAverageConditional (d : ℕ) (ν : Measure ℝ) (K β : ℝ) : Prop :=
 
 /-- **One coordinate of the i.i.d. field is independent of every quantity that does not read
 it.**  This is the product structure behind the conditioning of `sandpile.tex:5356-5363`, in
-the only form Step 1 uses. -/theorem measure_inter_site_indep (ν : Measure ℝ) [IsProbabilityMeasure ν]
+the only form Step 1 uses. -/
+theorem measure_inter_site_indep (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (i : Sandpile.Site d) {W : (Sandpile.Site d → ℝ) → ℝ} (hW : Measurable W)
     (hWloc : ∀ (ζ : Sandpile.Site d → ℝ) (z : ℝ), W (Function.update ζ i z) = W ζ)
     {A B : Set ℝ} (hA : MeasurableSet A) (hB : MeasurableSet B) :
@@ -327,7 +338,8 @@ the only form Step 1 uses. -/theorem measure_inter_site_indep (ν : Measure ℝ)
 The event that the neighbour average falls below a sixth of its mean splits according to
 whether at least two sites carry a large contribution; the first alternative is negligible
 against the lower tail by `tendsto_measure_two_large_sites_green_div_lowerTail`, and the
-second is whatever the bound `e` gives. -/theorem smallOriginNeighborAverage_of_measure_bound
+second is whatever the bound `e` gives. -/
+theorem smallOriginNeighborAverage_of_measure_bound
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
@@ -402,7 +414,8 @@ second is whatever the bound `e` gives. -/theorem smallOriginNeighborAverage_of_
 
 /-- **Step 1 of case (b) from its conditional deviation estimate.**
 `eq:dgt4-small-origin-neighbor-average` (`sandpile.tex:5344-5346`) follows from
-`SmallAverageConditional` alone. -/theorem smallOriginNeighborAverage_of_conditional
+`SmallAverageConditional` alone. -/
+theorem smallOriginNeighborAverage_of_conditional
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)

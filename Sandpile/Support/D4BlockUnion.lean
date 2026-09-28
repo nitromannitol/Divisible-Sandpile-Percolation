@@ -1,9 +1,12 @@
-/-
-The union bound of Step 3 of the dimension-four percolation proof: the good
-block of a coarse site fails only if the low set of the field carries one of
-the four blocking `∗`-crossings of `sandpile.tex:4051-4057`.
--/
 import Sandpile.Support.D4BlockGood
+
+/-!
+# The union bound for the good-block event
+
+The union bound of Step 3 of the dimension-four percolation proof: the good block of a coarse
+site fails only if the low set of the field carries one of the four blocking `∗`-crossings of
+`sandpile.tex:4051-4057`.
+-/
 
 open MeasureTheory
 

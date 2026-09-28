@@ -1,22 +1,22 @@
-/-
-The law of the finite-scale maximum is determined by the JOINT law of the ball
-fields it is the maximum of.
-
-`Sandpile.Support.MaxBallFieldLaw` is what lets `lem:finite-scale-extraction`
-bind its level and its scales before the space carrying the white noise, as the
-paper does.  The maximum is not Gaussian, so nothing about Gaussian laws applies
-to it directly; what is Gaussian is the family `𝒳_{s_1},…,𝒳_{s_k}` read as one
-process indexed by a point of the plane and a scale index, and the maximum is a
-fixed measurable map applied to that process.  This module makes that reduction:
-the law of the maximum is the image of the joint law under the pointwise maximum,
-so two spaces giving the family the same joint law give the maximum the same law.
-
-What is left is then a statement purely about centred Gaussian processes with a
-common covariance on two different spaces, which is the form in which it has been
-requested of the shared library.
--/
 import Sandpile.Support.LimLaw
 import LatticeProb.Prob.GaussianLaw
+
+/-!
+# The joint law determines the law of the finite-scale maximum
+
+`MaxBallFieldLaw` is what lets `lem:finite-scale-extraction` bind its level and its scales before
+the space carrying the white noise, as the paper does. The maximum is not Gaussian, so nothing
+about Gaussian laws applies to it directly; what is Gaussian is the family `𝒳_{s_1},…,𝒳_{s_k}`
+read as one process indexed by a point of the plane and a scale index (`jointFieldLaw`), and the
+maximum is a fixed measurable map applied to that process. This module makes that reduction
+(`fieldLaw_maxBallField`): the law of the maximum is the image of the joint law under the
+pointwise maximum, so two spaces giving the family the same joint law (`BallFieldJointLaw`) give
+the maximum the same law (`maxBallFieldLaw_of_joint`).
+
+What is left is then a statement purely about centred Gaussian processes with a common covariance
+on two different spaces, which is the form in which it has been requested of the shared library
+(`ballFieldJointLaw`), yielding the unconditional `maxBallFieldLaw`.
+-/
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

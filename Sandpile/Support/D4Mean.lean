@@ -1,20 +1,19 @@
-/-
-The logarithmic upper bound on the mean odometer in dimension four,
-`E u_t(0) ≤ C log(t+2)`.
-
-This is Step 1 of `thm:critical-toppling-d4` (`sandpile.tex:2760-2825`).  The
-smoothed centred odometer `P(u_t - E u_t(0))(0)` is a Lipschitz function of the
-scenery with coefficients at most `g_{t+1}(0,·)`, whose square sum is at most
-`C log(t+3)` and whose supremum is at most `C`; `lem:weighted-exp-conc` gives
-its lower tail on those two scales, and the split of `sandpile.tex:2770-2776`
-carries that to the lower tail of `ζ(0) + P u_t(0)`.  Integrating the tail
-bounds the mean increment by `C ℓ exp{-c min(m_t²/ℓ, m_t)}` with
-`ℓ = log(t+3)`, and the stopping argument of `sandpile.tex:2798-2825` turns that
-into the logarithmic bound.
--/
 import Sandpile.Support.D4SmoothedTail
 import Sandpile.Support.CrudeIncrement
 import LatticeProb.Prob.Coordinate
+
+/-!
+# The logarithmic upper bound on the mean odometer in dimension four
+
+This file proves `E u_t(0) ≤ C log(t+2)`, Step 1 of `thm:critical-toppling-d4`
+(`sandpile.tex:2760-2825`). The smoothed centred odometer `P(u_t - E u_t(0))(0)` is a
+Lipschitz function of the scenery with coefficients at most `g_{t+1}(0,·)`, whose square sum
+is at most `C log(t+3)` and whose supremum is at most `C`; the weighted exponential
+concentration lemma gives its lower tail on those two scales, and the split of
+`sandpile.tex:2770-2776` carries that to the lower tail of `ζ(0) + P u_t(0)`. Integrating the
+tail bounds the mean increment by `C ℓ exp{-c min(m_t²/ℓ, m_t)}` with `ℓ = log(t+3)`, and the
+stopping argument of `sandpile.tex:2798-2825` turns that into the logarithmic bound.
+-/
 
 open LatticeProb
 
@@ -169,6 +168,9 @@ theorem exists_smoothed_odometer_tail_four_uniform (hVS : Sandpile.External.Vari
           refine mul_le_mul (le_max_left _ _) (Real.exp_le_exp.mpr (by linarith))
             (Real.exp_nonneg _) (le_trans hC₀.le (le_max_left _ _))
 
+/-- **The lower tail of the smoothed centred odometer, at a fixed `ν`.** This specializes
+`exists_smoothed_odometer_tail_four_uniform` to one probability measure `ν` already known to
+satisfy its hypotheses. -/
 theorem exists_smoothed_odometer_tail_four (hVS : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
     (hexpint : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -251,6 +253,9 @@ theorem exists_reflected_tail_four_uniform (hVS : Sandpile.External.VarianceScal
         linarith [hb₁, hb₂]
     _ = (max K₀ 1 + C₀) * Real.exp (-(min θ₀ c₀ * min (s ^ 2 / L) s)) := by ring
 
+/-- **The lower tail of `ζ(0) + P u_t(0)`, at a fixed `ν`.** This specializes
+`exists_reflected_tail_four_uniform` to one probability measure `ν` already known to satisfy
+its hypotheses. -/
 theorem exists_reflected_tail_four (hVS : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
     (hexpint : Integrable (fun z => Real.exp (θ₀ * |z|)) ν)
@@ -351,7 +356,8 @@ theorem exists_crude_increment_four_uniform (hVS : Sandpile.External.VarianceSca
         have hnn2 : (0 : ℝ) ≤ h / 2 := by linarith
         have : (0 : ℝ) ≤ min ((h / 2) ^ 2 / L) (h / 2) := le_min hnn1 hnn2
         linarith
-    have hquarter : (1 / 4 : ℝ) * min (mean ^ 2 / L) mean ≤ min ((mean / 2) ^ 2 / L) (mean / 2) := by
+    have hquarter : (1 / 4 : ℝ) * min (mean ^ 2 / L) mean
+        ≤ min ((mean / 2) ^ 2 / L) (mean / 2) := by
       refine le_min ?_ ?_
       · have h1 : (mean / 2) ^ 2 / L = (1 / 4 : ℝ) * (mean ^ 2 / L) := by ring
         rw [h1]
@@ -377,6 +383,9 @@ theorem exists_crude_increment_four_uniform (hVS : Sandpile.External.VarianceSca
   ring_nf
   exact le_rfl
 
+/-- **The crude increment bound, at a fixed `ν`.** This specializes
+`exists_crude_increment_four_uniform` to one probability measure `ν` already known to satisfy
+its hypotheses. -/
 theorem exists_crude_increment_four (hVS : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (hmean : ∫ z, z ∂ν = 0)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)
@@ -435,8 +444,8 @@ theorem exists_crude_log_upper_four_uniform (hVS : Sandpile.External.VarianceSca
   have hmmono : Monotone m := meanOdometerOf_mono (d := 4) ν hpos
   have hD : (∫ ζ : Site 4 → ℝ, max 0 (-(ζ 0)) ∂P) ≤ D := by
     change (∫ ζ : Site 4 → ℝ, max 0 (-(ζ 0)) ∂(LatticeProb.iidLaw 4 ν)) ≤ D
-    rw [LatticeProb.iidLaw, LatticeProb.integral_eval (fun _ : Site 4 => ν) 0 (fun z : ℝ => max 0 (-z))
-      (by fun_prop)]
+    rw [LatticeProb.iidLaw,
+      LatticeProb.integral_eval (fun _ : Site 4 => ν) 0 (fun z : ℝ => max 0 (-z)) (by fun_prop)]
     have hneg : Integrable (fun z : ℝ => max 0 (-z)) ν :=
       hint.abs.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => by
         rw [Real.norm_eq_abs, abs_of_nonneg (le_max_left 0 (-z))]
@@ -540,6 +549,9 @@ theorem exists_crude_log_upper_four_uniform (hVS : Sandpile.External.VarianceSca
         refine mul_le_mul_of_nonneg_left (log_add_three_le t) (by positivity)
     _ = 2 * (A + D + C₂) * Real.log ((t : ℝ) + 2) := by ring
 
+/-- **The crude logarithmic upper bound, at a fixed `ν`.** This specializes
+`exists_crude_log_upper_four_uniform` to one probability measure `ν` already known to satisfy
+its hypotheses. -/
 theorem exists_crude_log_upper_four (hVS : Sandpile.External.VarianceScale)
     (ν : Measure ℝ) (hprob : IsProbabilityMeasure ν) (hmean : ∫ z, z ∂ν = 0)
     (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀)

@@ -1,23 +1,17 @@
-/-
-The hypotheses of `lem:dgt4-linearization-from-survival` at the profile
-`q_{R,j}=(1-j/(R^2T))^\kappa`, from `eq:dgt4-uniform-contact-thresholds`
-(`sandpile.tex:5615-5635`).
-
-The sealed `lem:dgt4-path-survival` states its two conclusions in the vocabulary of
-`Sandpile/Frozen/DGT4PathSurvival.lean`, and `lem:dgt4-linearization-from-survival` asks for
-them in the vocabulary of its own file; the two `survival` declarations and the two `IsNNPath`
-declarations are the same functions (`Sandpile.survival_eq`, `Sandpile.isNNPath_eq`), so the
-three hypotheses are supplied here with no work beyond naming.  `timeWeight_hq` is the range
-condition `q_{R,j}\in[0,1]` on `0\leq j<n_R`.
-
-This is the interface `prop:dgt4-linearization` goes through: once
-`lem:dgt4-linearization-from-survival` is proved, that proposition is the conjunction of these
-three inputs with `eq:dgt4-uniform-contact-thresholds` and the threshold field of
-`sandpile.tex:5454-5455`.
--/
 import Sandpile.Support.LinStep3Core
 import Sandpile.Support.LinWeights
 import Sandpile.Frozen.DGT4LinearizationFromSurvival
+
+/-!
+# The linearization-from-survival hypotheses at the paper's time-weight profile
+
+The sealed path-survival lemma states its two conclusions in the vocabulary of
+`Sandpile.Frozen.DGT4PathSurvival`, and the linearization-from-survival lemma asks for them in
+the vocabulary of its own file; the two `survival` declarations and the two `IsNNPath`
+declarations are the same functions, so the three hypotheses of that lemma are supplied here
+with no work beyond translating names. `timeWeight_hq` is the range condition
+`q_{R,j} ∈ [0,1]` on `0 ≤ j < ⌊R²T⌋` for the profile `q_{R,j} = (1 - j/(R²T))^κ`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -26,6 +20,10 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- Under the uniform contact-threshold hypothesis, the time-average over `j < ⌊R²T⌋` of the
+`L¹` distance between the survival probability `∫ σ, survival σ ⌊R²T⌋₊ j X ∂(centeredMassLaw
+d ν)` and the paper's time weight `(1 - j/(R²T))^κ`, further averaged over the walk `X`, tends
+to `0` as `R → ∞`. -/
 theorem survival_limit_of_thresholds [NeZero d]
     (hNormal : External.NormalComparison) (hd : 5 ≤ d) (ν : Measure ℝ)
     [IsProbabilityMeasure ν] (hatom : ∀ z : ℝ, ν {z} = 0)
@@ -50,6 +48,10 @@ theorem survival_limit_of_thresholds [NeZero d]
             ∂(walkLaw d 0)) atTop (𝓝 0) :=
   tendsto_averaged_survival_of_thresholds hNormal hd ν hatom hvar' J hJ T hT κ hκ hthresholds
 
+/-- Under the uniform contact-threshold hypothesis, the covariance of the survival indicators
+along two nearest-neighbour paths `X` and `Y` that both stay within a horizon `δR²` of the
+endpoint `⌊R²T⌋` is bounded, up to a vanishing error `εfun R`, by `C / (δR²)` times the number
+of time-space coincidences of `X` and `Y` up to the two given indices. -/
 theorem survival_cov_of_thresholds [NeZero d]
     (hNormal : External.NormalComparison) (hd : 5 ≤ d) (ν : Measure ℝ)
     [IsProbabilityMeasure ν] (hatom : ∀ z : ℝ, ν {z} = 0)
@@ -133,6 +135,8 @@ theorem survival_cov_of_thresholds_all [NeZero d]
     exists_cov_bound hNormal hd ν hatom hvar' J hJ T hT κ hκ hthresholds δ hδ
   exact ⟨efun, h0, htend, fun R i j hi hj X Y => hbd R i j hi hj X Y⟩
 
+/-- The paper's time weight `(1 - j/(R²T))^κ` lies in `[0,1]` for every index `j < ⌊R²T⌋`,
+restated from `timeWeight_mem_Icc` in the vocabulary this file's hypotheses use. -/
 theorem timeWeight_hq (T κ : ℝ) (hκ : 0 < κ) :
     ∀ (R : ℝ) (j : ℕ), j < ⌊R ^ 2 * T⌋₊ →
       (1 - (j : ℝ) / (R ^ 2 * T)) ^ κ ∈ Set.Icc (0 : ℝ) 1 :=

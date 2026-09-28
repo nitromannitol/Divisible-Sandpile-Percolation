@@ -1,13 +1,16 @@
-/-
+import Sandpile.Support.LinEarlyVarDefs
+import Sandpile.Support.LinEarlyVarSite
+import Sandpile.Support.LinEarlyVarNorm
+
+/-!
+# Measurability of the per-site visit-weighted covariance sum
+
 Measurability of the per-site visit-weighted covariance sum on the walk-pair space.
 
 `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`): the per-site integrand
 of the expansion is measurable in the pair of paths, so the covariance hypothesis of
 the paper applies to it.
 -/
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarSite
-import Sandpile.Support.LinEarlyVarNorm
 
 open MeasureTheory ProbabilityTheory
 
@@ -15,6 +18,11 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The per-site visit-weighted covariance sum
+`∑_{i,j∈t} 1[p.1 i = z] · 1[p.2 j = z] · covSurvival μ n i j p.1 p.2` is measurable in the
+pair of paths `p`, by measurability of each indicator factor and, for the covariance
+factor, Fubini for the jointly measurable integrand
+(`StronglyMeasurable.integral_prod_right'`). -/
 theorem measurable_covSurvival_pair (μ : Measure (Site d → ℝ)) [IsProbabilityMeasure μ]
     (n : ℕ) (t : Finset ℕ) (z : Site d) :
     Measurable (fun p : (ℕ → Site d) × (ℕ → Site d) =>

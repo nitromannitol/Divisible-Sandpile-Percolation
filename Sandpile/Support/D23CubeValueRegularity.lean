@@ -1,21 +1,20 @@
-/-
-Regularity of the cube value in its starting point.
-
-The coupling lemma `eventually_measure_bad_d23_block_lt_of_fdd` demands two things
-of the Brownian cube value that nothing in the repository supplies: measurability
-in the sample point at each starting point, in the strong form rather than almost
-everywhere, and continuity in the starting point.  The ball value has both in
-some form; the cube value has neither.
-
-Both come from the same place.  A Brownian motion started at `y` is the motion
-started at the origin shifted by `y`, so the stopping classes at the two starting
-points correspond, and the value differs by the shift.  Continuity is then the
-Lipschitz estimate already proved for the discounted cube reward, and
-measurability follows from an everywhere-continuous, everywhere-measurable
-version of the driving field.
--/
 import Sandpile.Support.D23NormalizedTransfer
 import Sandpile.Support.LimWhiteNoiseInstance
+
+/-!
+# Regularity of the Brownian cube value in its starting point
+
+The coupling lemma `eventually_measure_bad_d23_block_lt_of_fdd` demands two things of the
+Brownian cube value `brownianValueCube` that nothing elsewhere in the repository supplies:
+strong (not merely almost-everywhere) measurability in the sample point at each starting point,
+and continuity in the starting point. Both come from the same source: a Brownian motion started
+at `y` is the motion started at the origin shifted by `y`, so the stopping classes at the two
+starting points correspond and the value differs only by the shift. Continuity is then the
+Lipschitz estimate already proved for the discounted cube reward, and measurability follows from
+an everywhere-continuous, everywhere-measurable version of the driving field. A companion
+example (`not_continuous_brownianValueCube_startingPoint`) shows that continuity genuinely fails
+when the motion is *not* shifted along with the starting point.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -86,6 +85,8 @@ theorem cubeStoppingPayoffs_add_const {ΩB : Type*} [MeasurableSpace ΩB] {d : �
   simp only [cubeStoppingPayoffs, Set.mem_setOf_eq, isBrownianStopping_add_const,
     PiLp.add_apply, add_sub_cancel_left, PiLp.zero_apply, sub_zero]
 
+/-- The cube value of the shifted motion, about the starting point `u`, equals `h T u` plus the
+cube discount of the unshifted motion, about the origin, for the reward shifted by `u`. -/
 theorem brownianValueCube_add_const {ΩB : Type*} [MeasurableSpace ΩB] {d : ℕ} (P : Measure ΩB)
     (B : ℝ≥0 → ΩB → Space d) (h : ℝ → Space d → ℝ) (T L : ℝ) (u : Space d) :
     brownianValueCube (fun t ω => u + B t ω) P h T L u =
@@ -99,7 +100,8 @@ theorem brownianValueCube_add_const {ΩB : Type*} [MeasurableSpace ΩB] {d : ℕ
 theorem isCompact_cube (d : ℕ) (c : Space d) (L : ℝ) :
     IsCompact {y : Space d | ∀ i, |y i - c i| ≤ L} := by
   have h : {y : Space d | ∀ i, |y i - c i| ≤ L} =
-      (EuclideanSpace.equiv (Fin d) ℝ) ⁻¹' Set.pi Set.univ (fun i => Set.Icc (c i - L) (c i + L)) := by
+      (EuclideanSpace.equiv (Fin d) ℝ) ⁻¹'
+        Set.pi Set.univ (fun i => Set.Icc (c i - L) (c i + L)) := by
     ext y
     simp only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies,
       Set.mem_Icc, abs_le]
@@ -405,7 +407,8 @@ motions in which the motion started at `y` is the motion started at the origin s
 Such a family is Brownian at every starting point by `isBrownian_add_const`. -/
 theorem continuous_brownianValueCube_family
     (d : ℕ) {ΩB : Type} [MeasurableSpace ΩB] (PB : Measure ΩB)
-    [IsProbabilityMeasure PB] (B : Sandpile.Continuum.Space d → ℝ≥0 → ΩB → Sandpile.Continuum.Space d)
+    [IsProbabilityMeasure PB]
+    (B : Sandpile.Continuum.Space d → ℝ≥0 → ΩB → Sandpile.Continuum.Space d)
     (hB : IsBrownian d 0 (B 0) PB) (hshift : ∀ y t ω, B y t ω = y + B 0 t ω)
     (Z : ℝ → Sandpile.Continuum.Space d → ℝ)
     (hZ : Continuous fun q : ℝ × Sandpile.Continuum.Space d => Z q.1 q.2)

@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.LimStoppedKernel
+import Sandpile.Support.LimRestart
+import Sandpile.Support.ExplBrownianDensity
+import Sandpile.Support.LimOccupationLimit
+
+/-!
+# The ball-stopped occupation identity
+
 The optional-stopping identity behind `sandpile.tex:2499-2513`: the kernel the
 ball-stopped field averages the white noise against IS the expected occupation
 density of the stopped motion.
@@ -22,12 +29,10 @@ along the motion (`brownian_transition_integral`), so the first term is
 stopped position into `E[∫_τ^T φ(B_r) dr]`, one time `r` at a time, and the two
 Fubini exchanges that assemble the times are legitimate because `φ` is bounded and
 the Green kernels have spatial mass their own time.  Subtracting leaves
-`E[∫_0^τ φ(B_r) dr]`.
+`E[∫_0^τ φ(B_r) dr]`.  The final assembly, `integral_mul_ballStoppedKernel`, specializes
+this to the exit time of a ball, and `integral_mul_stoppedOccupation` is the general
+bounded-stopping-rule version from which it is derived.
 -/
-import Sandpile.Support.LimStoppedKernel
-import Sandpile.Support.LimRestart
-import Sandpile.Support.ExplBrownianDensity
-import Sandpile.Support.LimOccupationLimit
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -41,17 +46,24 @@ variable {ΩB : Type*}
 noncomputable def transAvg (d : ℕ) (φ : Space d → ℝ) (r : ℝ) (z : Space d) : ℝ :=
   ∫ y, φ y * heatKernelBM d r z y
 
+/-- The heat kernel `heatKernelBM d r z` is measurable as a function of its target
+argument `y`. -/
 theorem measurable_heatKernelBM_right (d : ℕ) (r : ℝ) (z : Space d) :
     Measurable (fun y => heatKernelBM d r z y) := by
   unfold heatKernelBM
   fun_prop
 
+/-- A pointwise bound `M * heatKernelBM d r z y` on `φ y * heatKernelBM d r z y`, from a
+bound `|φ y| ≤ M` and the nonnegativity of the heat kernel (`heatKernelBM_nonneg`). -/
 theorem norm_mul_heatKernelBM_le {d : ℕ} {r : ℝ} (hr : 0 ≤ r) (z : Space d)
     (φ : Space d → ℝ) {M : ℝ} (hM : ∀ y, |φ y| ≤ M) (y : Space d) :
     ‖φ y * heatKernelBM d r z y‖ ≤ M * heatKernelBM d r z y := by
   rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (heatKernelBM_nonneg d hr z y)]
   exact mul_le_mul_of_nonneg_right (hM y) (heatKernelBM_nonneg d hr z y)
 
+/-- Integrability of `y ↦ φ y * heatKernelBM d r z y`, by dominating it (via
+`norm_mul_heatKernelBM_le`) with the constant multiple `M * heatKernelBM d r z y` of the
+integrable heat kernel `integrable_heatKernelBM_space`. -/
 theorem integrable_mul_heatKernelBM {d : ℕ} (hd : 1 ≤ d) {r : ℝ} (hr : 0 < r) (z : Space d)
     (φ : Space d → ℝ) (hφ : Measurable φ) {M : ℝ} (hM : ∀ y, |φ y| ≤ M) :
     Integrable (fun y => φ y * heatKernelBM d r z y) (volume : Measure (Space d)) :=
@@ -59,6 +71,8 @@ theorem integrable_mul_heatKernelBM {d : ℕ} (hd : 1 ≤ d) {r : ℝ} (hr : 0 <
     ((hφ.mul (measurable_heatKernelBM_right d r z)).aestronglyMeasurable)
     (Eventually.of_forall (norm_mul_heatKernelBM_le hr.le z φ hM))
 
+/-- The transition average `transAvg d φ r z` is bounded by `M` whenever `|φ| ≤ M`, since the
+heat kernel integrates to one (`integral_heatKernelBM_eq_one`). -/
 theorem abs_transAvg_le {d : ℕ} (hd : 1 ≤ d) {r : ℝ} (hr : 0 < r) (z : Space d)
     (φ : Space d → ℝ) (hφ : Measurable φ) {M : ℝ} (hM : ∀ y, |φ y| ≤ M) :
     |transAvg d φ r z| ≤ M := by
@@ -185,6 +199,8 @@ theorem integral_mul_greenTimeBM_motion [MeasurableSpace ΩB] {d : ℕ} (hd : 1 
         rw [intervalIntegral.integral_of_le hT, hμ, ← integral_Ioc_eq_integral_Ioo]
 
 
+/-- Joint measurability of `transAvg d φ` in the time-space pair `(r, z)`, obtained from
+`StronglyMeasurable.integral_prod_right'` applied to the jointly measurable integrand. -/
 theorem measurable_transAvg {d : ℕ} (φ : Space d → ℝ) (hφ : Measurable φ) :
     Measurable (fun p : ℝ × Space d => transAvg d φ p.1 p.2) := by
   have hmeas : Measurable (fun q : (ℝ × Space d) × Space d =>
@@ -194,6 +210,8 @@ theorem measurable_transAvg {d : ℕ} (φ : Space d → ℝ) (hφ : Measurable �
     fun_prop
   exact (hmeas.stronglyMeasurable.integral_prod_right' (ν := volume)).measurable
 
+/-- For `c : ℝ≥0` and `r ≥ 0`, taking `toNNReal` of the sum `(c : ℝ) + r` recovers
+`c + r.toNNReal`. -/
 theorem toNNReal_add_coe {c : ℝ≥0} {r : ℝ} (hr : 0 ≤ r) :
     Real.toNNReal ((c : ℝ) + r) = c + Real.toNNReal r := by
   refine NNReal.coe_injective ?_

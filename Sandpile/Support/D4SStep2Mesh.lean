@@ -1,19 +1,19 @@
-/-
-The first display of Step 2 of `prop:d4-superdiffusive-limit`
-(`sandpile.tex:3374-3380`), over the cells of the mesh.
-
-Step 2 compares the smoothed error `F_R = P^{n_R}E_{t_R-n_R}` with the constant
-`C_R` of its own parity class: `C_R` agrees with `F_R(0)` on the parity class of
-the origin and with `F_R(e_1)` on the other.  The comparison at a site is the
-smoothed increment between two sites of EQUAL parity, so the gradient bound
-`eq:rw-tv-gradient` applies and gives `C|x-b|^2V/n` with `V` the uniform second
-moment of the error field.  Summed over the `O((RL)^4)` cells that the domain
-meets, each at distance `O(R)` from its base point, the mesh sum
-`R^{-4}∑_x(F_R-C_R)(x)^2` has expectation `O(R^2V/n_R)`, which is the paper's
-`C_D(1+\log\log t_R)R^2/n_R`.
--/
 import Sandpile.Support.D4SmoothL2
 import Sandpile.Support.D4SNegSobolev
+
+/-!
+# The first display of Step 2, over the cells of the mesh
+
+This file proves the first display of Step 2 of `prop:d4-superdiffusive-limit`
+(`sandpile.tex:3374-3380`), summed over the cells of the mesh. Step 2 compares the smoothed
+error `F_R = P^{n_R}E_{t_R-n_R}` with the constant `C_R` of its own parity class: `C_R` agrees
+with `F_R(0)` on the parity class of the origin and with `F_R(e_1)` on the other. The
+comparison at a site is the smoothed increment between two sites of equal parity, so the
+gradient bound `eq:rw-tv-gradient` applies and gives `C|x-b|^2V/n` with `V` the uniform second
+moment of the error field. Summed over the `O((RL)^4)` cells that the domain meets, each at
+distance `O(R)` from its base point, the mesh sum `R^{-4}∑_x(F_R-C_R)(x)^2` has expectation
+`O(R^2V/n_R)`, which is the paper's `C_D(1+\log\log t_R)R^2/n_R`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal
@@ -29,6 +29,7 @@ the origin, `e_1` on the other.  The field `x ↦ F(parityBase x)` is the paper'
 noncomputable def parityBase (x : Site 4) : Site 4 :=
   if Sandpile.External.SameParity x 0 then (0 : Site 4) else (0 : Site 4) + unit (0 : Fin 4)
 
+/-- `parityBase x` has the same parity as `x`, by construction of `parityBase`. -/
 theorem sameParity_parityBase (x : Site 4) :
     Sandpile.External.SameParity x (parityBase x) := by
   classical
@@ -37,6 +38,7 @@ theorem sameParity_parityBase (x : Site 4) :
   · rw [if_pos h]; exact h
   · rw [if_neg h]; exact sameParity_add_unit_of_not h (0 : Fin 4)
 
+/-- Every coordinate of `parityBase x` is `0` or `1`, hence has absolute value at most `1`. -/
 theorem abs_parityBase_le (x : Site 4) (i : Fin 4) : |(parityBase x i : ℤ)| ≤ 1 := by
   classical
   unfold parityBase

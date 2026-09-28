@@ -1,18 +1,24 @@
-/-
-Step 3 of the dimension-four percolation proof read on one block
-(`sandpile.tex:4048-4065`): the implication
-`𝓑_r > -ε₀ log r ⟹ 𝓑_{r,N} + Y_r > b₀ log r / 2` only has to hold on the
-finitely many sites of the block, so the future-height and time-truncation
-events are needed only there.  The four rectangles of the block event all sit
-inside the square of side `4r` anchored at the block corner.
--/
 import Sandpile.Support.D4BlockMono
+
+/-!
+# Step 3 of the dimension-four percolation proof, read on one block
+
+This file localizes Step 3 of the dimension-four percolation proof (`sandpile.tex:4048-4065`) to
+a single block: the implication `𝓑_r > -ε₀ log r ⟹ 𝓑_{r,N} + Y_r > b₀ log r / 2` only has to
+hold at the finitely many sites of the block, so the future-height and time-truncation events
+are needed only there (`blockGood_mono_on`, specialized to the ball field in
+`blockGood_block_of_ball_on`). The four rectangles making up a block event all sit inside the
+square of side `4r` anchored at the block corner (`planeRectangle_subset`), and
+`measure_biUnion_card_le` records the union bound over a finite set of sites this localization
+feeds into.
+-/
 
 open MeasureTheory
 
 noncomputable section
 namespace Sandpile
 
+/-- Enlarging both half-widths of a plane rectangle only enlarges the rectangle. -/
 lemma planeRectangle_subset {w h w' h' : ℕ} (hw : w ≤ w') (hh : h ≤ h') :
     planeRectangle w h ⊆ planeRectangle w' h' := by
   intro z hz

@@ -1,15 +1,18 @@
-/-
+import Sandpile.Frozen.D4ExitAverageConcentration
+import Sandpile.Frozen.MeanLocalization
+import Sandpile.Frozen.D4FiniteRangeLowerBound
+import Sandpile.Support.BallCrossingDefinitions
+import Sandpile.Support.Localization
+
+/-!
+# Box identifications and exit-time translation for the dimension-four argument
+
 Identifications among the boxes of the dimension-four percolation argument and
 the translation covariance of the walk, the ingredients Step 1 of
 `thm:d4-critical-level-percolation` (`sandpile.tex:4001-4026`) needs to read the
 exit average of `lem:d4-exit-average-concentration` against the localized mean
 of `cor:mean-localization`.
 -/
-import Sandpile.Frozen.D4ExitAverageConcentration
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.Frozen.D4FiniteRangeLowerBound
-import Sandpile.Support.BallCrossingDefinitions
-import Sandpile.Support.Localization
 
 namespace Sandpile
 
@@ -29,8 +32,10 @@ theorem eaCube_eq_supBox (x : Site 4) (L : ℝ) : eaCube x L = supBox x L := by
     rw [Int.cast_abs, Int.cast_sub] at hi
     exact hi
 
+/-- `eaCube` and `ballCube` are definitionally the same box centered at `x` with radius `L`. -/
 theorem eaCube_eq_ballCube (x : Site 4) (L : ℝ) : eaCube x L = ballCube x L := rfl
 
+/-- `eaCube` and `frCube` are definitionally the same box centered at `x` with radius `L`. -/
 theorem eaCube_eq_frCube (x : Site 4) (L : ℝ) : eaCube x L = frCube x L := rfl
 
 /-- Translating the path translates the exit set. -/

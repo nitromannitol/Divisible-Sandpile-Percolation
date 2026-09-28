@@ -1,10 +1,16 @@
-/-
-Compact uniform bounds for the interpolated odometer. A finite spatial net,
-the modulus estimate, and convergence of the stopping values control large
-scales; finite lattice boxes control bounded scales.
--/
 import Sandpile.Support.MainExplInterpolationTightness
 import Mathlib.MeasureTheory.Measure.RegularityCompacts
+
+/-!
+# Uniform interpolation-norm bounds for the odometer
+
+Compact uniform bounds for the interpolated, rescaled odometer, proved in
+`exists_interpolation_norm_bound`. A finite spatial net, the modulus of continuity estimate,
+and the coupling convergence of the stopping values to the Brownian value control large
+scales `R ≥ R₀`; finite lattice boxes control the remaining bounded scales `1 ≤ R < R₀`. The
+two regimes are combined through a compactness argument that covers the given compact set `K`
+by finitely many balls on which the interpolated field cannot oscillate too much.
+-/
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal

@@ -1,18 +1,18 @@
-/-
-Measurability of the continuum value in the field's sample point.
-
-The value `𝒰_Z(T,x)` reads the field `Z` at uncountably many points, so its
-measurability in `ω` is not a pointwise statement.  It factors through the
-restriction of the field to the compact box `[0,T] × K`, and the value is
-continuous in the field in the uniform norm there, because the stopping value is
-a supremum of integrals of the field and the integrand is Lipschitz in the field
-uniformly in the stopping time.  This module carries the two steps.
--/
 import Sandpile.Support.MeanAValue
 import Sandpile.Support.StopMeasurable
 import Sandpile.Support.StopPathSpace
 import Sandpile.Support.ContValueTransfer
 import Sandpile.Support.ContValueLipschitz
+
+/-!
+# Measurability of the continuum value in the field's sample point
+
+The value `𝒰_Z(T,x)` reads the field `Z` at uncountably many points, so its measurability in
+`ω` is not a pointwise statement. It factors through the restriction of the field to the compact
+box `[0,T] × K`, and the value is continuous in the field in the uniform norm there, because the
+stopping value is a supremum of integrals of the field and the integrand is Lipschitz in the
+field uniformly in the stopping time. This module carries the two steps.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set Metric
 open scoped NNReal ENNReal
@@ -72,8 +72,8 @@ theorem aemeasurable_field_box {ΩW : Type*} [MeasurableSpace ΩW]
       AEMeasurable (fun ω => Z p.1.1 p.1.2 ω) PW)
     (hc : ∀ᵐ ω ∂PW, Continuous (fun p : Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L =>
       Z p.1.1 p.1.2 ω)) :
-    AEMeasurable (fun ω => ContinuousMap.mkD (fun p : Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L =>
-      Z p.1.1 p.1.2 ω) 0) PW := by
+    AEMeasurable (fun ω => ContinuousMap.mkD
+      (fun p : Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L => Z p.1.1 p.1.2 ω) 0) PW := by
   haveI : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
     isCompact_iff_compactSpace.mp (isCompact_Icc.prod (isCompact_closedBall 0 L))
   exact Sandpile.Continuum.aemeasurable_continuousMap_mkD

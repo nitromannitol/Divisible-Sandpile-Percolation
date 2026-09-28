@@ -1,18 +1,21 @@
-/-
-Step 2 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5845`) for
-the tested field itself.
+import Sandpile.Support.LinConvexStep2
+import Sandpile.Support.LinTestedField
+import Sandpile.Support.LinTestedJacobian
+
+/-!
+# Step 2 of `lem:dgt4-linearization-from-survival` for the tested field
+
+This is Step 2 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5845`),
+specialized to the tested field.
 
 The abstract Step 2 of `Support/LinConvexStep2.lean` asks for a coordinatewise
 convex functional reading finitely many sites, with right derivatives between
-`0` and a coefficient whose squares are uniformly summable.  The tested field of
+`0` and a coefficient whose squares are uniformly summable. The tested field of
 `Support/LinTestedField.lean` is one, with coefficient
 `b_R(z) = ∑_x a_R(x) g_{n_R}(x,z)`, so the whole of Step 2 for `F_R` reduces to
 the three estimates the paper proves in Step 1 and in
 `eq:dgt4-tested-green-bound`.
 -/
-import Sandpile.Support.LinConvexStep2
-import Sandpile.Support.LinTestedField
-import Sandpile.Support.LinTestedJacobian
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.CrossFixBlocking
+
+/-!
+# Lattice approximation at every sufficiently fine mesh
+
 The prescribed-mesh step in `sandpile.tex:2645-2660`: a compact connected
 subset of an open planar set admits lattice approximations at every
 sufficiently fine mesh, with a threshold independent of the endpoints.
 -/
-import Sandpile.Support.CrossFixBlocking
 
 open Set
 

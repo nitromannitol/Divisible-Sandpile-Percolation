@@ -1,20 +1,26 @@
-/-
-The exponentially weighted bound that carries the contact error below the bottom
-of the band, at a RANDOM level (`sandpile.tex:6171-6185`).
+import Sandpile.Support.Dgt4ABandReplacement
+
+/-!
+# The exponentially weighted bound at a random level
+
+The exponentially weighted bound that carries the contact error below the bottom of the band,
+at a RANDOM level (`sandpile.tex:6171-6185`).
 
 Below the bottom of the `k`th band the two threshold events differ only on
-`{W_n < ξ ≤ ℓ_1a_k}`, and there the elementary inequality
-`1_{w < y ≤ c} ≤ e^{λ(y-w)}1_{y ≤ c}` trades the random level `w` for the factor
-`e^{-λw}`, leaving the scenery-side integral
-`∫ e^{-λζ(0)}1_{-ζ(0)≤ℓ_1a_k}` that `eq:dgt4-band-lower-isolation` controls and
-the level-side integral `E e^{-λW_n}` that the origin-frozen exponential moment
-controls.  That is exactly how the paper's term
-`Ce^{-λ_0ℓ_1a_k}E[e^{-λ_0ζ(0)}1_{ξ≤ℓ_1a_k}]` arises.
+`{W_n < ξ ≤ ℓ_1a_k}`, and there the elementary inequality `1_{w < y ≤ c} ≤ e^{λ(y-w)}1_{y ≤ c}`
+(`measure_lt_le_expWeight`, `integral_measure_lt_le`) trades the random level `w` for the
+factor `e^{-λw}`, leaving the scenery-side integral `∫ e^{-λζ(0)}1_{-ζ(0)≤ℓ_1a_k}`
+(`expWeightBelow`) that `eq:dgt4-band-lower-isolation` controls and the level-side integral
+`E e^{-λW_n}` that the origin-frozen exponential moment controls. That is exactly how the
+paper's term `Ce^{-λ_0ℓ_1a_k}E[e^{-λ_0ζ(0)}1_{ξ≤ℓ_1a_k}]` arises, assembled into the full
+contact-error bound by `integral_measure_symmDiff_le`. The same trade is repeated for the
+mean overshoot (`posPart_le_exp`, `integral_posPart_below_le`) to prove the increment
+replacement at a random level, `abs_integral_posPart_sub_split` and
+`integral_abs_posPart_sub_le`.
 
-Nothing in this file mentions any object of this paper beyond a measure on the
-line and a real random variable, so it is movable into the shared library.
+Nothing in this file mentions any object of this paper beyond a measure on the line and a
+real random variable, so it is movable into the shared library.
 -/
-import Sandpile.Support.Dgt4ABandReplacement
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -27,20 +33,27 @@ namespace Sandpile.Support
 def expWeightBelow (lam c z : ℝ) : ℝ :=
   Real.exp (-(lam * z)) * Set.indicator {z : ℝ | -z ≤ c} (fun _ => (1 : ℝ)) z
 
+/-- `{z | -z ≤ c}` is the half-line `Ici (-c)`. -/
 theorem setOf_neg_le_eq_Ici (c : ℝ) : {z : ℝ | -z ≤ c} = Ici (-c) := by
   ext z
   simp only [mem_setOf_eq, mem_Ici]
   constructor <;> intro h <;> linarith
 
+/-- `{z | -z ≤ c}` is measurable, being the half-line `Ici (-c)` by
+`setOf_neg_le_eq_Ici`. -/
 theorem measurableSet_neg_le (c : ℝ) : MeasurableSet {z : ℝ | -z ≤ c} := by
   rw [setOf_neg_le_eq_Ici]
   exact measurableSet_Ici
 
+/-- `expWeightBelow lam c` is measurable, as the product of the measurable map
+`z ↦ exp(-λz)` and the indicator of the measurable set `{z | -z ≤ c}`. -/
 theorem measurable_expWeightBelow (lam c : ℝ) : Measurable (expWeightBelow lam c) := by
   refine Measurable.mul ?_ ?_
   · exact Real.measurable_exp.comp ((measurable_const.mul measurable_id).neg)
   · exact measurable_const.indicator (measurableSet_neg_le c)
 
+/-- `expWeightBelow` is nonnegative, being a product of an exponential and a `{0,1}`-valued
+indicator. -/
 theorem expWeightBelow_nonneg (lam c z : ℝ) : 0 ≤ expWeightBelow lam c z :=
   mul_nonneg (Real.exp_pos _).le (Set.indicator_nonneg (fun _ _ => zero_le_one) z)
 
@@ -55,6 +68,8 @@ theorem expWeightBelow_le (lam c : ℝ) (hlam : 0 < lam) (z : ℝ) :
   · rw [expWeightBelow, Set.indicator_of_notMem hz, mul_zero]
     exact (Real.exp_pos _).le
 
+/-- `expWeightBelow lam c` is integrable against any finite measure, being bounded by the
+constant `exp(λc)` (`expWeightBelow_le`). -/
 theorem integrable_expWeightBelow (ν : Measure ℝ) [IsFiniteMeasure ν] (lam c : ℝ)
     (hlam : 0 < lam) : Integrable (expWeightBelow lam c) ν := by
   refine Integrable.mono' (integrable_const (Real.exp (lam * c)))
@@ -193,12 +208,16 @@ theorem posPart_below_le (w c z : ℝ) :
   · rw [Set.indicator_of_notMem hz, mul_zero]
     exact le_max_right _ _
 
+/-- The overshoot `max (-z - w) 0` times the indicator of `{z | -z ≤ c}` is measurable, as a
+product of a measurable positive part and a measurable indicator. -/
 theorem measurable_posPart_below (w c : ℝ) :
     Measurable fun z : ℝ =>
       max (-z - w) 0 * Set.indicator {z : ℝ | -z ≤ c} (fun _ => (1 : ℝ)) z :=
   ((measurable_id.neg.sub_const w).max measurable_const).mul
     (measurable_const.indicator (measurableSet_neg_le c))
 
+/-- The overshoot `max (-z - w) 0` times the indicator of `{z | -z ≤ c}` is integrable
+against any finite measure, being bounded by the constant `max (c - w) 0` (`posPart_below_le`). -/
 theorem integrable_posPart_below (ν : Measure ℝ) [IsFiniteMeasure ν] (w c : ℝ) :
     Integrable (fun z : ℝ =>
       max (-z - w) 0 * Set.indicator {z : ℝ | -z ≤ c} (fun _ => (1 : ℝ)) z) ν := by

@@ -1,11 +1,18 @@
-/-
-The matching of third moments between an exponential law and its centred
-Gaussian counterpart, and the uniform inputs of the finite Lindeberg comparison.
-The weighted moment and small-ball bounds used here are
-`LatticeProb.Prob.ExponentialMoments`.
--/
 import Sandpile.Support.FiniteLindeberg
 import LatticeProb.Prob.ExponentialMoments
+
+/-!
+# Matching third moments between an exponential-type law and its Gaussian counterpart
+
+`matchingThirdMoments_gaussian_of_exp` matches the third absolute moments and weighted-cube
+bounds of a mean-zero law with an exponential moment bound `∫ exp (θ|x|) dμ ≤ K` to those of
+the centered Gaussian of the same variance, with an explicit `MatchingThirdMoments` constant.
+`exists_uniform_matching_gaussian_inputs` packages this uniformly in the law: for fixed `θ`
+and `K` it produces a radius and a constant, depending only on `θ` and `K`, that work for
+every such law and its matching Gaussian, together with a uniform lower bound on the mass
+each assigns to a ball. The weighted moment and small-ball estimates used here are from
+`LatticeProb.Prob.ExponentialMoments`.
+-/
 
 open LatticeProb
 
@@ -14,6 +21,10 @@ open scoped NNReal
 
 namespace Sandpile
 
+/-- For a mean-zero law `μ` with exponential moment bound `∫ exp (θ|x|) dμ ≤ K`, its third
+absolute moments and weighted-cube bounds match those of the centered Gaussian
+`gaussianReal 0 v` of the same variance `v`, with `MatchingThirdMoments` constant
+`(48 / θ ^ 3) * max K (2 * exp (2 * K))`. -/
 lemma matchingThirdMoments_gaussian_of_exp {μ : Measure ℝ} [IsProbabilityMeasure μ]
     {θ κ K : ℝ} (hθ : 0 < θ) (hκ : κ ≤ θ / 2)
     (hexp : Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ)
@@ -37,6 +48,10 @@ lemma matchingThirdMoments_gaussian_of_exp {μ : Measure ℝ} [IsProbabilityMeas
   · exact integral_weighted_cube_le_of_exp hθ hκ (integrable_exp_abs_gaussian θ v)
       (hνK.trans (le_max_right _ _))
 
+/-- A uniform version of `matchingThirdMoments_gaussian_of_exp`: for fixed `θ` and `K` there
+are a radius `R` and a bound `T`, depending only on `θ` and `K`, such that every mean-zero law
+with exponential moment `∫ exp (θ|x|) dμ ≤ K` matches its centered Gaussian counterpart with
+constant `T`, and both laws assign at least `1/2` mass to `Icc (-R) R`. -/
 lemma exists_uniform_matching_gaussian_inputs (θ K : ℝ) (hθ : 0 < θ) :
     ∃ R > 0, ∃ T > 0, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →

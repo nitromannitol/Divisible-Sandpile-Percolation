@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossField
+import Sandpile.Support.CrossTranslate
+
+/-!
+# Symmetries of a planar field for the crossing estimates
+
 The symmetries of a planar field in the form the crossing estimates use them.
 
 A crossing event of the field `X` on a translated rectangle is, as a subset of
@@ -19,8 +24,6 @@ form a group, which is the content of `PlaneSymmetry.comp`.  Association is
 stable under the spatial symmetries only; it is not preserved by the sign flip,
 and nothing here claims that it is.
 -/
-import Sandpile.Support.CrossField
-import Sandpile.Support.CrossTranslate
 
 open MeasureTheory Set
 
@@ -28,29 +31,38 @@ namespace Sandpile.Continuum
 
 namespace PlaneSymmetry
 
+/-- Composition of plane symmetries acts by composing their underlying `toFun` maps. -/
 theorem comp_toFun (T S : PlaneSymmetry) (u : Space 2) :
     (T.comp S).toFun u = T.toFun (S.toFun u) := by
   ext k
   simp only [toFun_apply, comp, Equiv.trans_apply]
   ring
 
+/-- A translation's `toFun` map adds the translation vector. -/
 theorem translation_toFun (v u : Space 2) : (translation v).toFun u = u + v := by
   ext k
   simp [toFun_apply, translation]
 
 end PlaneSymmetry
 
+/-- The field `X`, packaged as a map into the function space `Space 2 → ℝ`, is measurable
+when each coordinate `X u` is. -/
 theorem measurable_fieldMap {Ω : Type*} [MeasurableSpace Ω]
     {X : Space 2 → Ω → ℝ} (hX : ∀ u, Measurable (X u)) :
     Measurable (fun ω => (fun u => X u ω) : Ω → (Space 2 → ℝ)) :=
   measurable_pi_lambda _ hX
 
+/-- The pushforward measure `fieldLaw P X`, evaluated at a measurable set `A`, equals the
+`P`-measure of the preimage of `A` under the packaged field map. -/
 theorem measure_preimage_fieldLaw {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     (X : Space 2 → Ω → ℝ) (hX : ∀ u, Measurable (X u))
     {A : Set (Space 2 → ℝ)} (hA : MeasurableSet A) :
     P ((fun ω => (fun u => X u ω) : Ω → (Space 2 → ℝ)) ⁻¹' A) = fieldLaw P X A := by
   rw [fieldLaw, Measure.map_apply (measurable_fieldMap hX) hA]
 
+/-- Symmetry in law of `X` under sign flips is stable under precomposition by a plane
+symmetry `S` and rescaling by `δ = ±1`: the composite `S.comp T` and the product sign `ε * δ`
+recover the original hypothesis via `PlaneSymmetry.comp_toFun`. -/
 theorem isSymmetricField_comp {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
     {X : Space 2 → Ω → ℝ} (hsym : IsSymmetricField P X) (S : PlaneSymmetry) (δ : ℝ)
     (hδ : δ = 1 ∨ δ = -1) : IsSymmetricField P (fun u ω => δ * X (S.toFun u) ω) := by
@@ -65,12 +77,17 @@ theorem isSymmetricField_comp {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
   show fieldLaw P (fun u ω => ε * (δ * X (S.toFun (T.toFun u)) ω)) = _
   rw [hfun, hsym (S.comp T) (ε * δ) hsign, hsym S δ hδ]
 
+/-- Positive association of `X` is stable under precomposition by a plane symmetry `S`,
+since reindexing the finitely many points by `S.toFun` leaves the associated-field
+hypothesis unchanged. -/
 theorem isAssociatedField_comp {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
     {X : Space 2 → Ω → ℝ} (hass : IsAssociatedField P X) (S : PlaneSymmetry) :
     IsAssociatedField P (fun u ω => X (S.toFun u) ω) := by
   intro k q f g hf hg hfm hgm hfb hgb
   exact hass k (fun i => S.toFun (q i)) f g hf hg hfm hgm hfb hgb
 
+/-- Symmetry in law of `X` is stable under spatial translation, specializing
+`isSymmetricField_comp` to `PlaneSymmetry.translation v` with sign `δ = 1`. -/
 theorem isSymmetricField_translate {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
     {X : Space 2 → Ω → ℝ} (hsym : IsSymmetricField P X) (v : Space 2) :
     IsSymmetricField P (fun u ω => X (u + v) ω) := by
@@ -81,6 +98,8 @@ theorem isSymmetricField_translate {Ω : Type*} [MeasurableSpace Ω] {P : Measur
     rw [PlaneSymmetry.translation_toFun, one_mul]
   rwa [hfun] at h
 
+/-- Positive association of `X` is stable under spatial translation, specializing
+`isAssociatedField_comp` to `PlaneSymmetry.translation v`. -/
 theorem isAssociatedField_translate {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
     {X : Space 2 → Ω → ℝ} (hass : IsAssociatedField P X) (v : Space 2) :
     IsAssociatedField P (fun u ω => X (u + v) ω) := by
@@ -97,6 +116,9 @@ namespace Sandpile.Support
 
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
+/-- A crossing of the translated rectangle by `a, b` is the same event as the crossing of
+the original rectangle by the field pulled back along translation by `v`, proved via
+`crosses_translate` in both directions (forward with `v`, backward with `-v`). -/
 theorem crosses_translate_iff (v : Sandpile.Continuum.Space 2) (a b : Fin 2 → ℝ) (i : Fin 2)
     (S : Set (Sandpile.Continuum.Space 2)) :
     Crosses (fun k => a k + v k) (fun k => b k + v k) i S ↔
@@ -121,6 +143,9 @@ theorem crosses_translate_iff (v : Sandpile.Continuum.Space 2) (a b : Fin 2 → 
   · intro hX
     exact crosses_translate (v := v) hX
 
+/-- The crossing event of the field `X` on the rectangle translated by `v` equals, as a set
+of outcomes (not merely in measure), the crossing event of the translated field
+`u ↦ X (u + v)` on the original rectangle, by `crosses_translate_iff`. -/
 theorem crossingSet_translate {Ω : Type*} (X : Sandpile.Continuum.Space 2 → Ω → ℝ)
     (v : Sandpile.Continuum.Space 2) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     {ω | Crosses (fun k => a k + v k) (fun k => b k + v k) i {u | l ≤ X u ω}}

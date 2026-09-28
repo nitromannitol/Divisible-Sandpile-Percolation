@@ -1,52 +1,3 @@
-/-
-Proposition of sandpile.tex, frozen.  `sandpile.tex:4763-4774`
-(label `prop:weighted-membrane-limit`):
-
-  "Let $d\geq5$ and $T>0$, let $q:[0,T]\to\R$ be continuous, and suppose that
-   $(\zeta(x))_{x\in\Z^d}$ are i.i.d.\ with mean zero and finite positive
-   variance.  For every $s>(d-4)/2$, as $R\to\infty$,
-     $R^{(d-4)/2}\left(\sum_{j=0}^{\lfloor R^2T\rfloor-1}q(j/R^2)P^j\zeta\right)^{(R)}
-      \Longrightarrow
-      \sqrt{\Var(\zeta(0))}\int_0^Tq(r)e^{r\Delta/(2d)}\mathcal W\,dr$
-   in $H^{-s}_{\rm loc}(\R^d)$."
-
-Modelling decisions.
-
-The limit field is a general-weight version of `ℋ_{κ,T}`, so the covariance
-`Sandpile.Continuum.weightedMembraneCov`, which hard-codes the weight
-`(1-r/T)^κ`, is not general enough; `generalWeightedMembraneCov` below replaces
-the two powers by `q r * q r'` and is derived exactly as that one is.  Both
-limit fields are centred Gaussian random distributions, so their laws are
-determined by their covariances, and no space carrying white noise is quantified
-over: the white noise has been integrated out of the covariance.
-
-`P^j ζ` is `Sandpile.avg^[j] ζ`, the `j`-fold iterate of the averaging operator,
-and the sum `∑_{j=0}^{⌊R^2T⌋-1}` is `Finset.range ⌊R^2 T⌋₊`.  The rescaling
-`(·)^{(R)}` paired with a test function is
-`Sandpile.Continuum.latticePairing R`, and convergence in `H^{-s}_{loc}(ℝ^d)` is
-`Sandpile.Continuum.TendstoInNegSobolev`.
-
-The scenery is written in the mass normalization: the integration variable is
-`σ` with law `Sandpile.centeredMassLaw d ν`, so `ζ = Sandpile.scenery d σ` has
-one-site law `ν`.  This is the convention of the other frozen files, and
-`centeredMassLaw` carries the `IsProbabilityMeasure` instance that
-`TendstoInNegSobolev` needs.
-
-`q` is a function on all of `ℝ`, continuous on `[0,T]`; only its values on
-`[0,T]` are used, since `j/R^2 < T` for `j < ⌊R^2T⌋` and the time integral in
-the covariance runs over `[0,T]`.
-
-Cited inputs (standing convention R1).  The proof of the first clause is the local
-central limit theorem of `eq:lclt-parity` followed by a Riemann-sum argument
-(`sandpile.tex:4724-4729`), so `Sandpile.External.LocalCLT` enters, and the
-uniform bound that dominated convergence needs is the Gaussian upper bound
-`eq:rw-gaussian-upper`, so `Sandpile.External.HeatKernelBounds` enters.  The
-proof of the second clause is the tightness criterion of `lem:sobolev-tightness`
-applied to the covariance decay of `eq:dgt4-intersection-first-moment`, so
-`Sandpile.External.GreenBoundsHigh` and
-`Sandpile.External.ContinuumBesovTightness` enter.  The last of these is the
-hypothesis `hBesov` added at version 3.
--/
 import Sandpile.Law
 import Sandpile.Walk
 import Sandpile.Continuum.Membrane
@@ -60,6 +11,23 @@ import Sandpile.External.ContinuumBesovTightness
 import Sandpile.Support.ContVarianceLimit
 import Sandpile.Support.TightWeightedMembrane
 import Sandpile.Support.ContSeqCLT
+
+/-!
+# The weighted membrane limit, frozen
+
+Proposition of `sandpile.tex`, frozen (`sandpile.tex:4763-4774`, label
+`prop:weighted-membrane-limit`): for `d ≥ 5`, `T > 0`, a continuous weight `q : [0,T] → ℝ`, and
+mean-zero finite-positive-variance i.i.d. scenery, the rescaled weighted partial sum
+`R^{(d-4)/2} (∑_{j<⌊R²T⌋} q(j/R²) P^j ζ)^{(R)}` converges in `H^{-s}_loc(ℝ^d)`, for every
+`s > (d-4)/2`, to `√Var(ζ(0)) ∫_0^T q(r) e^{rΔ/(2d)} 𝒲 dr`. Since this limit generalizes the
+weight `(1-r/T)^κ` of `weightedMembraneCov` to an arbitrary `q`, `generalWeightedMembraneCov`
+replaces the two powers by `q r * q r'` in the same covariance construction; `P^j ζ` is
+`Sandpile.avg^[j] ζ`, the rescaling is `Sandpile.Continuum.latticePairing`, and convergence is
+`Sandpile.Continuum.TendstoInNegSobolev`. The cited inputs are the local CLT
+(`Sandpile.External.LocalCLT`) and Gaussian upper bound (`Sandpile.External.HeatKernelBounds`) for
+the first clause, and the Green-function bound (`Sandpile.External.GreenBoundsHigh`) together with
+the Besov tightness criterion (`hBesov`) for the second.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

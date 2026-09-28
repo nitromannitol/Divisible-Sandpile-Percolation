@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.MeanATrunc
+
+/-!
+# Convergence of moments and variance under a uniform exponential moment
+
 Convergence in distribution together with a uniform exponential moment gives
 convergence of the first two moments, and hence of the variance.
 
@@ -9,7 +13,6 @@ bounded continuous functions; the exponential moment supplies a modulus, uniform
 over the family, for the error made by truncating the identity and the square at
 a level, and the two are combined by the usual three-term estimate.
 -/
-import Sandpile.Support.MeanATrunc
 
 open MeasureTheory Filter Topology ProbabilityTheory
 

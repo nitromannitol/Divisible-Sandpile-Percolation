@@ -1,25 +1,26 @@
-/-
-The exact identity of `rem:dlt4-killed-scaling` (`sandpile.tex:1929-1950`): the
-cube-killed form, at the parabolic scale, of the identity the proof of Theorem
-1.3(i)(b) starts from (`sandpile.tex:1881-1890`).
-
-The remark reads: "The same proof applies, without change, to the values killed on
-exiting the lattice box `Q(⌊Ru⌋,R)`."  The first step of that proof is the exact
-identity for `u_t - V_t`.  Its killed form is proved here.
-
-The localized value `u_t^D(x) = sup_{τ≤t} E_x ∑_{k<τ∧τ_D} ζ(X_k)` of
-`eq:localized-odometer` is a supremum over all stopping times bounded by `t` of the
-scenery sum stopped at `τ ∧ τ_D`; since `τ ∧ τ_D` is itself a stopping time bounded
-by `t` which has not left `D` strictly before it stops, and since every such
-stopping time is its own `τ ∧ τ_D`, that supremum is the supremum over the KILLED
-stopping times, those bounded by `t` which have not left `D` strictly before
-stopping.  The optimal-stopping identity
-`E_x S_σ = V_t(x) - E_x V_{t-σ}(X_σ)` of `Sandpile.integral_neg_stoppedMembrane`
-then applies to each killed stopping time separately, and translating a set of reals
-translates its supremum.
--/
 import Sandpile.Support.ExplScalingId
 import Sandpile.Support.Localization
+
+/-!
+# The killed form of the exact difference representation
+
+The exact identity of `rem:dlt4-killed-scaling` (`sandpile.tex:1929-1950`): the cube-killed form,
+at the parabolic scale, of the identity the proof of Theorem 1.3(i)(b) starts from
+(`sandpile.tex:1881-1890`). The remark reads: "The same proof applies, without change, to the
+values killed on exiting the lattice box `Q(⌊Ru⌋,R)`." The first step of that proof is the exact
+identity for `u_t - V_t`; its killed form is proved here as `killed_difference_representation`
+and, at the parabolic scale, as `rescaled_killed_difference_representation`.
+
+The localized value `u_t^D(x) = sup_{τ≤t} E_x ∑_{k<τ∧τ_D} ζ(X_k)` of `eq:localized-odometer` is a
+supremum over all stopping times bounded by `t` of the scenery sum stopped at `τ ∧ τ_D`
+(`killedStoppingSup`); since `τ ∧ τ_D` is itself a stopping time bounded by `t` which has not left
+`D` strictly before it stops (`stopBeforeExit_eq_self`, `stopBeforeExit_kill`), and since every
+such stopping time is its own `τ ∧ τ_D`, that supremum is the supremum over the killed stopping
+times, those bounded by `t` which have not left `D` strictly before stopping. The optimal-stopping
+identity `E_x S_σ = V_t(x) - E_x V_{t-σ}(X_σ)` of `Sandpile.integral_neg_stoppedMembrane` then
+applies to each killed stopping time separately (`killedSet_membrane_eq_image`), and translating a
+set of reals translates its supremum.
+-/
 
 open MeasureTheory
 open scoped Pointwise
@@ -39,6 +40,7 @@ noncomputable def killedStoppingSup (D : Set (Site d)) (n : ℕ) (x : Site d)
     (F : ℕ → (ℕ → Site d) → ℝ) : ℝ :=
   sSup (killedSet D n x F)
 
+/-- `killedStoppingSup D n x F` unfolds definitionally to `sSup (killedSet D n x F)`. -/
 theorem killedStoppingSup_eq_sSup (D : Set (Site d)) (n : ℕ) (x : Site d)
     (F : ℕ → (ℕ → Site d) → ℝ) :
     killedStoppingSup D n x F = sSup (killedSet D n x F) := rfl

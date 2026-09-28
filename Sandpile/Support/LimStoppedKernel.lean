@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LimValueApproximation
+import Sandpile.Support.ExplGreenFubini
+
+/-!
+# White-noise representation of the ball-stopped field
+
 The white-noise representation of the ball-stopped field of
 `sandpile.tex:2499-2513`.
 
@@ -19,8 +24,6 @@ here is the identification of the whole increment, in the exact shape
 `ballStoppedField` is written in, together with the square integrability of the
 kernel, which every clause of `IsWhiteNoise` asks for before it says anything.
 -/
-import Sandpile.Support.LimValueApproximation
-import Sandpile.Support.ExplGreenFubini
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -36,6 +39,8 @@ noncomputable def ballStopTime (d : ℕ) (B : Space d → ℝ≥0 → ΩB → Sp
     (u : Space 2) (b : ΩB) : ℝ≥0 :=
   LatticeProb.exitTimeTrunc (B (planePoint u)) (planePoint u) s T.toNNReal b
 
+/-- The stopping rule `ballStopTime` never exceeds the truncation horizon `T.toNNReal`,
+since it is defined as an infimum with it (`LatticeProb.coe_exitTimeTrunc`). -/
 theorem ballStopTime_le {d : ℕ} (B : Space d → ℝ≥0 → ΩB → Space d) (s T : ℝ)
     (u : Space 2) (b : ΩB) : ballStopTime d B s T u b ≤ T.toNNReal := by
   have h : ((ballStopTime d B s T u b : ℝ≥0) : ℝ≥0∞) ≤ ((T.toNNReal : ℝ≥0) : ℝ≥0∞) := by
@@ -43,12 +48,16 @@ theorem ballStopTime_le {d : ℕ} (B : Space d → ℝ≥0 → ΩB → Space d) 
     exact inf_le_right
   exact_mod_cast h
 
+/-- The real-valued bound `ballStopTime d B s T u b ≤ T` for `T ≥ 0`, obtained from
+`ballStopTime_le` by casting `T.toNNReal` back to `T`. -/
 theorem ballStopTime_le_real {d : ℕ} (B : Space d → ℝ≥0 → ΩB → Space d) {s T : ℝ}
     (hT : 0 ≤ T) (u : Space 2) (b : ΩB) : (ballStopTime d B s T u b : ℝ) ≤ T := by
   have h := ballStopTime_le B s T u b
   have h' : (ballStopTime d B s T u b : ℝ) ≤ ((T.toNNReal : ℝ≥0) : ℝ) := by exact_mod_cast h
   rwa [Real.coe_toNNReal T hT] at h'
 
+/-- Measurability of `ballStopTime` in the sample point, from
+`LatticeProb.measurable_exitTimeTrunc` applied to the underlying motion `B (planePoint u)`. -/
 theorem measurable_ballStopTime [MeasurableSpace ΩB] {d : ℕ}
     {B : Space d → ℝ≥0 → ΩB → Space d} (hBc : ∀ y ω, Continuous fun t => B y t ω)
     (hBm : ∀ y t, StronglyMeasurable (B y t)) (s T : ℝ) (u : Space 2) :
@@ -113,6 +122,9 @@ theorem memLp_stoppedGreenKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) (PB : Measure Ω
   rw [hco]
   exact hmem
 
+/-- `ballStoppedKernel` is square integrable, being the difference of the square integrable
+free Green kernel (`memLp_greenTimeBM`) and the square integrable stopped kernel
+(`memLp_stoppedGreenKernel`). -/
 theorem memLp_ballStoppedKernel (hd : 1 ≤ d) (hd3 : d ≤ 3) (PB : Measure ΩB)
     [IsProbabilityMeasure PB] {B : Space d → ℝ≥0 → ΩB → Space d}
     (hBc : ∀ y ω, Continuous fun t => B y t ω) (hBm : ∀ y t, StronglyMeasurable (B y t))

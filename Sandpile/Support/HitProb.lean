@@ -1,18 +1,17 @@
-/-
-The hitting probability of the origin and the exterior Dirichlet problem, in
-the paper's vocabulary.
-
-`sandpile.tex:4924-4929` identifies the limit of `E w_n(x)/E u_n(0)` as the
-unique bounded solution of the exterior Dirichlet problem on `ℤ^d ∖ {0}`, and
-the identification of that solution with `1 - G(x,0)/G(0,0)` rests on
-`P_x(τ_0 < ∞) = G(x,0)/G(0,0)`.  Both are theorems of the shared library; this
-module only transports them across the two identifications of the walk and of
-the Green function.
--/
 import LatticeProb.Walk.ExteriorDirichlet
 import LatticeProb.Walk.Range
 import Sandpile.Walk
 import Sandpile.External.GaussianUpperProved
+
+/-!
+# The hitting probability of the origin and the exterior Dirichlet problem
+
+`sandpile.tex:4924-4929` identifies the limit of `E w_n(x)/E u_n(0)` as the unique bounded
+solution of the exterior Dirichlet problem on `ℤ^d ∖ {0}`, and identifies that solution with
+`1 - G(x,0)/G(0,0)` using the hitting probability `P_x(τ_0 < ∞) = G(x,0)/G(0,0)`. Both facts are
+already theorems of the shared library; this module only transports them across the two
+identifications of the walk and of the Green function used in the paper's vocabulary.
+-/
 
 open MeasureTheory
 open scoped ENNReal

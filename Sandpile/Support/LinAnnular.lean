@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Kernel
+import Sandpile.Support.IncrementBall
+import Sandpile.External.GreenBoundsHigh
+
+/-!
+# Annular summation of the intersection kernel
+
 Annular summation of the intersection kernel.
 
 `lem:dgt4-linearization-from-survival` uses at `sandpile.tex:5703-5709` the
@@ -15,9 +21,6 @@ the intersection kernel `(1+|u|)^{4-d}` sums to at most a constant times `K^4`,
 because the sphere of radius `k` in the supremum norm carries at most
 `2d(2k+1)^{d-1}` sites and `(1+k)^{d-1}(1+k)^{4-d} = (1+k)^3`.
 -/
-import Sandpile.Support.Kernel
-import Sandpile.Support.IncrementBall
-import Sandpile.External.GreenBoundsHigh
 
 open Finset
 

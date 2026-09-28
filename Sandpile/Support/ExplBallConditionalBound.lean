@@ -1,20 +1,23 @@
-/-
-The conditional bound at the exit event of the ball, the one estimate the strong
-Markov property at the exit time supplies for `lem:brownian-ball-localization`
-(`sandpile.tex:1647-1658`).
-
-The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) pays nothing on
-`{τ ≤ τ_D}` and on `{τ_D < τ}` pays the conditional reward after the exit.  In the
-continuum that is the set integral over `{τ_{u,A} < τ}` of the difference of the two
-payoffs, and the pointwise bound on that event integrates to the exit probability
-times the bound.
--/
 import Sandpile.Support.ExplBallFinal
 import Sandpile.Support.ExplBallStepEnvelope
 import Sandpile.Support.ExplBallGaussian
 import Sandpile.Support.ExplBrownianEnvelope
 import Sandpile.Support.ExplBallFarUniform
 import Sandpile.Support.ExplBallBound
+
+/-!
+# The conditional exit bound for the ball localization
+
+The conditional bound at the exit event of the ball, the one estimate the strong Markov
+property at the exit time supplies for `lem:brownian-ball-localization`
+(`sandpile.tex:1647-1658`).
+
+The proof of `lem:localization-killing` (`sandpile.tex:1624-1629`) pays nothing on
+`{τ ≤ τ_D}` and on `{τ_D < τ}` pays the conditional reward after the exit. In the continuum
+that is the set integral over `{τ_{u,A} < τ}` of the difference of the two payoffs, and the
+pointwise bound on that event integrates to the exit probability times the bound
+(`ballConditionalBound_of_restart`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

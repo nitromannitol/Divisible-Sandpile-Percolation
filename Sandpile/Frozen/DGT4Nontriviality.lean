@@ -1,53 +1,24 @@
-/-
-High-dimensional critical percolation theorem of sandpile.tex, frozen.
-`sandpile.tex:6699-6721` (label `thm:dgt4-nontriviality`):
-
-  "Fix $\nu_0>0$, $\theta_0>0$, and $K_0<\infty$. There are
-   $b=b(d,\theta_0,K_0)>0$, $C=C(d,\theta_0,K_0)<\infty$,
-   $c=c(d,\nu_0,\theta_0,K_0)>0$, and $t_0=t_0(d,\nu_0,\theta_0,K_0)<\infty$
-   such that, for every mean-zero i.i.d.\ field $(\zeta(x))_{x\in\Z^d}$
-   satisfying
-   \[
-     \Var(\zeta(0))\geq\nu_0^2\, ,\qquad \E e^{\theta_0|\zeta(0)|}\leq K_0\, ,
-   \]
-   and every $t\geq t_0$, the level set $\{x:u_t(x)>c(\log t)^{2/d}\}$
-   contains an infinite nearest-neighbor component almost surely.
-   Moreover, for every $t\geq t_0$,
-   \[
-     \P\left(Q(0,1)\leftrightarrow\infty
-     \textup{ in }\{x:u_t(x)>\E u_t(0)/2\}\right)\geq 1-Ce^{-b\E u_t(0)}\, ."
-
-The section fixes `d ≥ 5` (`sandpile.tex:4079`) and the standing hypotheses of
-`sandpile.tex:4096-4108`: the scenery is i.i.d. with `E ζ(0) = 0` and
-`0 < Var(ζ(0)) < ∞`.  The finiteness of the variance is implied by the
-exponential moment but is recorded, as the section records it.
-The dependence of the constants is transcribed by the quantifier order:
-`b` and `C` depend on `d, θ₀, K₀` only, so they are bound after those and
-before `ν₀`, while `c` and `t₀` also depend on `ν₀` and are bound after it; the
-law `ν` is bound last, so all four constants are uniform over the class.
-The scenery is the integration variable, with law `LatticeProb.iidLaw d ν`;
-`u_t` is `Sandpile.odometerOf ζ t` and `E u_t(0)` is `meanOdometerOf d ν t`.
-`Q(0,1)\leftrightarrow\infty` in a set `S` is read, as the proof reads it, as the
-conjunction of `Q(0,1) ⊆ S` and the statement that the nearest-neighbour cluster
-of the origin inside `S` is infinite; on the locally finite graph `ℤ^d` an
-infinite cluster is exactly one that reaches every distance.
-The first clause uses `Sandpile.HasInfiniteComponent`, which is the paper's
-"contains an infinite nearest-neighbor component".
-The probability bound is stated in `ℝ≥0∞`.  When `1 - Ce^{-b E u_t(0)}` is
-negative, `ENNReal.ofReal` truncates it to `0` and the inequality is trivially
-true, which is also the content of the paper's inequality in that regime, so
-nothing is lost or gained.
-
-The exponential-moment bound is stated together with the integrability of the
-exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
-non-integrable nonnegative function is zero, so the bound alone would hold for
-every law with no exponential moment.
--/
 import Sandpile.Walk
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.Support.AnnularPercolation
 import Sandpile.Support.UniformTail
 import Sandpile.Support.HeightLower
+
+/-!
+# High-dimensional critical percolation, frozen
+
+High-dimensional critical percolation theorem of `sandpile.tex`, frozen (`sandpile.tex:6699-6721`,
+label `thm:dgt4-nontriviality`): fixing `ν₀ > 0`, `θ₀ > 0`, `K₀ < ∞` and `d ≥ 5`, there are
+`b, C > 0` depending only on `d, θ₀, K₀`, and `c, t₀ > 0` also depending on `ν₀`, such that for
+every mean-zero i.i.d. field with variance at least `ν₀²` and exponential moment at most `K₀`, and
+every `t ≥ t₀`, the level set `{x : u_t(x) > c(log t)^{2/d}}` contains an infinite
+nearest-neighbor component almost surely, and `P(Q(0,1) ↔ ∞ in {x : u_t(x) > E u_t(0)/2}) ≥
+1 - C exp(-b E u_t(0))`. `boxDist` and `boxAt` transcribe the box metric and box of
+`sandpile.tex:680` and `6366-6368`, `meanOdometerOf` is `E u_t(0)` for the scenery law
+`LatticeProb.iidLaw d ν`, and the infinite-component clause uses `Sandpile.HasInfiniteComponent`;
+the probability bound is stated on `ℝ≥0∞`, so `ENNReal.ofReal` truncates a negative right side to
+`0` without loss.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -132,7 +103,8 @@ theorem Sandpile.Frozen.dgt4_nontriviality
     calc
       _ ≤ C * (2 * C)⁻¹ := mul_le_mul_of_nonneg_left hh hC.le
       _ = _ := by field_simp
-  have hpos : 0 < (LatticeProb.iidLaw d ν) (Sandpile.odometerOriginConnectEvent (d := d) t (m / 2)) :=
+  have hpos : 0 <
+      (LatticeProb.iidLaw d ν) (Sandpile.odometerOriginConnectEvent (d := d) t (m / 2)) :=
     (ENNReal.ofReal_pos.mpr (by linarith : 0 < 1 - C * Real.exp (-(b * m)))).trans_le hlower
   have hperpos : 0 < (LatticeProb.iidLaw d ν)
       {ω | Sandpile.HasInfiniteComponent {x | m / 2 < Sandpile.odometerOf ω t x}} := by

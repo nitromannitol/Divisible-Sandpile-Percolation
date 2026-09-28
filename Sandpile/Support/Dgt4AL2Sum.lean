@@ -1,11 +1,12 @@
-/-
-The `L²` bound for a finite sum: the `L²` norm of `∑_{i<j}f_i` is at most `j` times the
-largest `L²` norm of a term.  It is the summation step of the `L²` assembly of
-`eq:dgt4-centered-value-decay` of case (a) Step 1 of `prop:dgt4-contact-asymptotics`
-(`sandpile.tex:5074-5077`).  The proof is the pointwise Cauchy-Schwarz bound
-`(∑_{i<j}f_i)² ≤ j∑_{i<j}f_i²`.
--/
 import Sandpile.Support.Dgt4AL2Tri
+
+/-!
+# An `L²` bound for a finite sum of functions
+
+If every term `f_i` in a finite sum has `L²` norm at most `B`, then the `L²` norm of the sum
+`∑_{i < j} f_i` is at most `j * B`. The proof combines the pointwise Cauchy-Schwarz bound
+`(∑_{i < j} f_i)² ≤ j * ∑_{i < j} f_i²` with linearity of the integral.
+-/
 
 open MeasureTheory Filter Topology
 

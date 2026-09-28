@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.StoppedOdometer
+
+/-!
+# Measurability of the Killed Green Field and Exit Continuation
+
 A killed Green field and an exit continuation depend measurably on the
 scenery in their domains.  A nearest-neighbor walk exits a cube within one
 step of its boundary, so the continuation is measurable in an enlarged cube.
 -/
-import Sandpile.Support.StoppedOdometer
 
 open MeasureTheory
 
@@ -11,6 +14,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The localized odometer at time `n` depends only on the scenery restricted to `D`: proved by
+induction on `n`, matching on whether the point queried lies in `D`. -/
 theorem localizedOdometer_congr_domain (hd : 1 ≤ d) (D : Set (Site d))
     (ζ η : Site d → ℝ) (he : ∀ y ∈ D, ζ y = η y) (n : ℕ) :
     localizedOdometer D ζ n = localizedOdometer D η n := by
@@ -24,6 +29,8 @@ theorem localizedOdometer_congr_domain (hd : 1 ≤ d) (D : Set (Site d))
     · rw [localizedOdometer_of_notMem D ζ (n + 1) hx,
         localizedOdometer_of_notMem D η (n + 1) hx]
 
+/-- The killed transition kernel `killedKernel D n x y` vanishes for every `n` and `x` whenever the
+target `y` is outside `D`, by induction on `n`. -/
 theorem killedKernel_eq_zero_of_target_notMem (D : Set (Site d)) {y : Site d}
     (hy : y ∉ D) (n : ℕ) (x : Site d) : killedKernel D n x y = 0 := by
   classical
@@ -35,10 +42,16 @@ theorem killedKernel_eq_zero_of_target_notMem (D : Set (Site d)) {y : Site d}
     · simp [killedKernel, hx]
   | succ n ih => simp [killedKernel, ih]
 
+/-- The summed killed Green time `killedGreenTime D N x y` vanishes whenever the target `y` is
+outside `D`, summing the vanishing of `killedKernel_eq_zero_of_target_notMem` over the time
+horizon. -/
 theorem killedGreenTime_eq_zero_of_target_notMem (D : Set (Site d)) {y : Site d}
     (hy : y ∉ D) (N : ℕ) (x : Site d) : killedGreenTime D N x y = 0 :=
   Finset.sum_eq_zero fun k _ => killedKernel_eq_zero_of_target_notMem D hy k x
 
+/-- The killed Green pairing `killedGreenPair D N ζ x` depends only on the scenery `ζ` restricted
+to `D`, since every target outside `D` contributes zero by
+`killedGreenTime_eq_zero_of_target_notMem`. -/
 theorem killedGreenPair_congr_domain (D : Set (Site d)) (N : ℕ) (x : Site d)
     (ζ η : Site d → ℝ) (he : ∀ y ∈ D, ζ y = η y) :
     killedGreenPair D N ζ x = killedGreenPair D N η x := by
@@ -47,6 +60,8 @@ theorem killedGreenPair_congr_domain (D : Set (Site d)) (N : ℕ) (x : Site d)
   · rw [he y hy]
   · rw [killedGreenTime_eq_zero_of_target_notMem D hy, zero_mul, zero_mul]
 
+/-- `ζ ↦ killedGreenPair D N ζ x` is measurable, since the infinite sum collapses to a finite sum
+over the box `boxFinset x N` (targets outside it contribute zero by `killedGreenTime_support`). -/
 theorem measurable_killedGreenPair (D : Set (Site d)) (N : ℕ) (x : Site d) :
     Measurable (fun ζ : Site d → ℝ => killedGreenPair D N ζ x) := by
   have he : (fun ζ : Site d → ℝ => killedGreenPair D N ζ x) =
@@ -60,10 +75,14 @@ theorem measurable_killedGreenPair (D : Set (Site d)) (N : ℕ) (x : Site d) :
   rw [he]
   exact Finset.measurable_sum _ fun y _ => measurable_const.mul (measurable_pi_apply y)
 
+/-- Extends a function `η` defined on the subtype `S` to all of `Site d`, evaluating `η` at points
+of `S` and returning `0` elsewhere. -/
 noncomputable def domainExtend (S : Set (Site d)) (η : S → ℝ) (x : Site d) : ℝ := by
   classical
   exact if hx : x ∈ S then η ⟨x, hx⟩ else 0
 
+/-- `domainExtend S` is measurable: at each site it is either a coordinate projection from `S` or
+the constant `0`. -/
 theorem measurable_domainExtend (S : Set (Site d)) : Measurable (domainExtend S) := by
   classical
   refine measurable_pi_lambda _ fun x => ?_
@@ -85,6 +104,9 @@ theorem measurable_restrict_of_congr (S : Set (Site d)) (F : (Site d → ℝ) �
   rw [he]
   exact (hFm.comp (measurable_domainExtend S)).comp (comap_measurable _)
 
+/-- The walk's position at the truncated exit time `stopBeforeExit D N (fun _ => N)` is a
+measurable function of the path `X`, being the evaluation map composed with the measurable
+stopping time. -/
 theorem measurable_truncatedExit_site (D : Set (Site d)) (N : ℕ) :
     Measurable (fun X : ℕ → Site d => X (stopBeforeExit D N (fun _ => N) X)) := by
   have hτ : Measurable (stopBeforeExit D N (fun _ : ℕ → Site d => N)) :=
@@ -93,6 +115,9 @@ theorem measurable_truncatedExit_site (D : Set (Site d)) (N : ℕ) :
     measurable_from_prod_countable_left fun n => measurable_pi_apply n
   exact heval.comp (measurable_id.prodMk hτ)
 
+/-- The localized exit payoff is jointly measurable in the scenery `ζ` and the path `X`: it is
+`0` if the truncated exit site lies in `D`, and otherwise the (measurable in `ζ`) localized
+odometer at that exit site, so `measurable_from_prod_countable_left` applies. -/
 theorem measurable_uncurry_localizedExitPayoff (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) :
     Measurable (fun p : (Site d → ℝ) × (ℕ → Site d) => localizedExitPayoff D N E m p.1 p.2) := by
@@ -105,11 +130,15 @@ theorem measurable_uncurry_localizedExitPayoff (hd : 1 ≤ d) (D : Set (Site d))
     · simp only [if_neg hy]; exact measurable_localizedOdometer hd (E y) m y
   exact hF.comp (measurable_fst.prodMk ((measurable_truncatedExit_site D N).comp measurable_snd))
 
+/-- The expectation of the localized exit payoff under the walk law is measurable in the
+scenery `ζ`, an application of `Measurable.stronglyMeasurable.integral_prod_right'` to the joint
+measurability from `measurable_uncurry_localizedExitPayoff`. -/
 theorem measurable_integral_localizedExitPayoff (hd : 1 ≤ d) (x : Site d)
     (D : Set (Site d)) (N : ℕ) (E : Site d → Set (Site d)) (m : ℕ) :
     Measurable (fun ζ : Site d → ℝ => ∫ X, localizedExitPayoff D N E m ζ X ∂walkLaw d x) := by
   haveI : NeZero d := ⟨by omega⟩
-  exact ((measurable_uncurry_localizedExitPayoff hd D N E m).stronglyMeasurable.integral_prod_right').measurable
+  have hsm := (measurable_uncurry_localizedExitPayoff hd D N E m).stronglyMeasurable
+  exact hsm.integral_prod_right'.measurable
 
 /-- A killed field and its exit continuation read only `S` whenever the killed
 domain and almost every continuation domain lie in `S`. -/
@@ -160,6 +189,8 @@ theorem ae_walk_step_boxDist (hd : 1 ≤ d) (x : Site d) :
   · rw [hi]; exact boxDist_add_unit _ i
   · rw [hi, ← sub_eq_add_neg]; exact boxDist_sub_unit _ i
 
+/-- `boxDist x y ≤ r` iff every coordinatewise real difference `|y i - x i|` is at most `r`: the
+box distance is the supremum of the integer coordinate differences, cast to `ℝ`. -/
 theorem boxDist_le_iff_real_coords (x y : Site d) (r : ℕ) :
     boxDist x y ≤ r ↔ ∀ i : Fin d, |(y i : ℝ) - (x i : ℝ)| ≤ r := by
   constructor
@@ -197,6 +228,11 @@ theorem ae_truncatedExit_cube (hd : 1 ≤ d) (x : Site d) (r N : ℕ) :
       simpa [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hk)] using hstep (k - 1)
     exact (boxDist_trans x (X (k - 1)) (X k)).trans (add_le_add hb hs)
 
+/-- For a real cube of radius `r` killed at `N` steps, with exit continuation over the
+`A`-scaled cube about the exit site, the resulting field is measurable with respect to the
+scenery restricted to the enlarged cube of radius `(A + 3) r`: an instance of
+`measurable_killedGreenPair_add_localizedExit_restrict`, with `ae_truncatedExit_cube` supplying
+the one-step containment of the exit site. -/
 theorem cube_killed_continuation_measurable (hd : 1 ≤ d) (x : Site d) (N m : ℕ)
     (A : ℝ) (hA : 1 ≤ A) (r : ℕ) (hr : 1 ≤ r) :
     Measurable[MeasurableSpace.comap

@@ -1,29 +1,28 @@
-/-
-**The conditioning of Step 2 of case (a) as a deterministic shift**
-(`sandpile.tex:5105-5126`).
+import Sandpile.Support.Dgt4AGaussProcess
+import Sandpile.Support.LinGaussFactor
 
-The proof conditions the Gaussian scenery on the value of the single linear
-functional `-V_\infty(0)` and says that "raising `b` to `b+s` shifts `\zeta(z)` by
-`-s\Var(\zeta(0))G(0,z)/\Sigma^2`".  Here that is made a statement about measures and
-not about conditional expectations.
+/-!
+# The conditioning of Step 2 as a deterministic shift
 
-Write `e=G(0,\cdot)/\|G(0,\cdot)\|` for the unit vector along the Green coefficients
-at the origin, `\xi` for its isonormal image, and split each coordinate of the
-standard Gaussian product as
+The conditioning of Step 2 of case (a) as a deterministic shift (`sandpile.tex:5105-5126`). The
+proof conditions the Gaussian scenery on the value of the single linear functional `-V_\infty(0)`
+and says that "raising `b` to `b+s` shifts `\zeta(z)` by `-s\Var(\zeta(0))G(0,z)/\Sigma^2`". Here
+that is made a statement about measures and not about conditional expectations.
+
+Write `e=G(0,\cdot)/\|G(0,\cdot)\|` for the unit vector along the Green coefficients at the
+origin, `\xi` for its isonormal image, and split each coordinate of the standard Gaussian
+product as
 
   `\omega(z)=\xi(\omega)e(z)+\rho(\omega)(z)`,   `\rho(\omega)(z)=\omega(z)-\xi(\omega)e(z)`.
 
-The residual coordinate `\rho(\cdot)(z)` is the isonormal image of
-`\delta_z-e(z)e`, which is orthogonal to `e`, so `\xi` and the whole residual FIELD
-`\rho` are independent as processes (`Support/Dgt4AGaussProcess.lean`).  Since
-`\xi` is standard Gaussian, the law of the scenery is therefore the image of the
-product of a standard Gaussian and the law of the residual field under the shift
-`(s,r)\mapsto r+se`, which is `gaussLaw_eq_map_prod`.  Integrating against that
-identity is the paper's conditioning, and the shift by `s` in the second
-coordinate is the paper's shift of `\zeta(z)`.
+The residual coordinate `\rho(\cdot)(z)` is the isonormal image of `\delta_z-e(z)e`, which is
+orthogonal to `e`, so `\xi` and the whole residual FIELD `\rho` are independent as processes
+(`Support/Dgt4AGaussProcess.lean`). Since `\xi` is standard Gaussian, the law of the scenery is
+therefore the image of the product of a standard Gaussian and the law of the residual field
+under the shift `(s,r)\mapsto r+se`, which is `gaussLaw_eq_map_prod`. Integrating against that
+identity is the paper's conditioning, and the shift by `s` in the second coordinate is the
+paper's shift of `\zeta(z)`.
 -/
-import Sandpile.Support.Dgt4AGaussProcess
-import Sandpile.Support.LinGaussFactor
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -49,6 +48,7 @@ theorem norm_greenLp_pos (hd : 5 ≤ d) : 0 < ‖greenLp d hd (0 : Site d)‖ :=
 noncomputable def greenUnit (d : ℕ) (hd : 5 ≤ d) : lp (fun _ : Site d => ℝ) 2 :=
   ‖greenLp d hd (0 : Site d)‖⁻¹ • greenLp d hd (0 : Site d)
 
+/-- `greenUnit` has unit norm, being `greenLp` rescaled by the inverse of its own norm. -/
 theorem norm_greenUnit (hd : 5 ≤ d) : ‖greenUnit d hd‖ = 1 := by
   have hpos := norm_greenLp_pos hd
   rw [greenUnit, norm_smul, norm_inv, Real.norm_eq_abs, abs_of_pos hpos]
@@ -82,9 +82,13 @@ conditioned direction removed. -/
 noncomputable def residField (d : ℕ) (hd : 5 ≤ d) (ω : Site d → ℝ) : Site d → ℝ :=
   fun z => ω z - condCoord d hd ω * (greenUnit d hd : Site d → ℝ) z
 
+/-- `condCoord` is measurable, as the (a.e.-strongly-measurable, hence measurable) coercion of
+an `L^2` isonormal Gaussian variable. -/
 theorem measurable_condCoord (hd : 5 ≤ d) : Measurable (condCoord d hd) :=
   (Lp.stronglyMeasurable (LatticeProb.gaussIso (greenUnit d hd))).measurable
 
+/-- `residField` is measurable in the configuration, being built coordinatewise from the
+measurable projection and `condCoord`. -/
 theorem measurable_residField (hd : 5 ≤ d) : Measurable (residField d hd) :=
   measurable_pi_lambda _ fun z =>
     (measurable_pi_apply z).sub ((measurable_condCoord hd).mul measurable_const)
@@ -107,6 +111,9 @@ theorem ae_coeFn_gaussIso_residCoeff (hd : 5 ≤ d) (z : Site d) :
   simp only [smul_eq_mul, condCoord]
   ring
 
+/-- The whole residual field agrees almost everywhere with the process built pointwise from
+`ae_coeFn_gaussIso_residCoeff`, obtained by taking the coordinatewise identity for every `z`
+simultaneously. -/
 theorem ae_residField_eq (hd : 5 ≤ d) :
     (fun ω z => ⇑(LatticeProb.gaussIso (residCoeff d hd z)) ω)
       =ᵐ[LatticeProb.gaussLaw (Site d)] residField d hd := by

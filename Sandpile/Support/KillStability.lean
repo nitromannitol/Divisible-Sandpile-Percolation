@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.KillCutoff
+import Sandpile.External.CubeStoppingStability
+
+/-!
+# The stability gap for the killed cube problem
+
 The stability gap of `rem:dlt4-killed-scaling`, in the shape the assembly consumes.
 
 This is the killed twin of `Sandpile/Support/ExplStability.lean`, and the argument
@@ -25,8 +30,6 @@ the comparison of the two rewards is needed only on the closed cube, because a k
 motion never leaves it, and the motion's almost sure path continuity comes from
 `IsBrownian` itself.
 -/
-import Sandpile.Support.KillCutoff
-import Sandpile.External.CubeStoppingStability
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

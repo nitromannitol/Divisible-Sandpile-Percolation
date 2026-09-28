@@ -1,20 +1,22 @@
-/-
-`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) for the Gaussian
-heat potential `Z` of `eq:dlt4-linear-gaussian-potential`, in the shape of the
-frozen statement of the node.
+import Sandpile.Support.ExplBallSplit
+
+/-!
+# Ball localization for the Gaussian heat potential
+
+`lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) for the Gaussian heat potential
+`Z` of `eq:dlt4-linear-gaussian-potential`, in the shape of the frozen statement of the node
+(`brownian_ball_localization_gaussian`).
 
 The field of the lemma is `Z(t,x) = √Var(ζ(0)) 𝒲(g_t^{BM}(x,·))`, which is
-`gaussianPotential d ν2 W` at a frozen sample point of the white noise; the value
-`𝒰_Z` averages over the Brownian motion only (`sandpile.tex:970-974`), so the
-inequality is an inequality between two functions of that sample point and is
-stated almost surely in it.
+`gaussianPotential d ν2 W` at a frozen sample point of the white noise; the value `𝒰_Z`
+averages over the Brownian motion only (`sandpile.tex:970-974`), so the inequality is an
+inequality between two functions of that sample point and is stated almost surely in it.
 
-Two hypotheses are carried here that the frozen statement does not carry, and
-that the paper's proof of the lattice analogue needs: the motion has continuous
-paths for every sample point, and the per-point bundle
-`BallLocalizationInput`, whose only substantive field is the strong Markov step.
+Two hypotheses are carried here that the frozen statement does not carry, and that the
+paper's proof of the lattice analogue needs: the motion has continuous paths for every
+sample point, and the per-point bundle `BallLocalizationInput`, whose only substantive
+field is the strong Markov step.
 -/
-import Sandpile.Support.ExplBallSplit
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

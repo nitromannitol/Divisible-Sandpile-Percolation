@@ -1,5 +1,7 @@
-/-
-A measurable version of an almost surely continuous field.
+import Mathlib
+
+/-!
+# A measurable version of an almost surely continuous field
 
 The chaining bound on a box asks for a field that is measurable in the sample point at
 every parameter and continuous in the parameter at *every* sample point.  The fields of
@@ -13,7 +15,6 @@ arbitrary parameter is the limit along that dense set, hence a countable `limsup
 measurable functions; off that event the modification is set to zero, which is continuous
 too.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 

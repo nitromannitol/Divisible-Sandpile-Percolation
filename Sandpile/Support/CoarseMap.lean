@@ -1,24 +1,44 @@
-/-
-Coarse indexing of a coordinate plane, preservation of reachability
-and comparison of fine and coarse distances.
--/
 import Sandpile.Support.CoarseBox
 import Sandpile.Support.ClusterPath
 import Sandpile.Support.StarCrossings
+
+/-!
+# Coarse indexing of a planar slice, and fine/coarse distance comparison
+
+Coarse indexing of a coordinate plane, preservation of reachability, and comparison of fine
+and coarse distances. `coarsePlaneIndex` sends a point back to the `Site 2` index of the coarse
+block (of side `L`, anchored at `x`) that contains it; `mem_planeBox_coarsePlaneIndex` confirms
+every planar point lies in the box of its own index, via the division/remainder decomposition
+underlying `int_ediv_step`. `coarsePlaneIndex_adj_or_eq` shows the index map is graph-Lipschitz:
+adjacent fine points have equal or adjacent coarse indices, so `reachable_image_of_adj_or_eq`
+transports this along walks to show coarse reachability follows from fine reachability, and
+`boxDist_le_walk_length` bounds `boxDist` by walk length whenever adjacency implies unit
+`boxDist`. The remaining lemmas convert between `boxDist` and the ambient sup-metric `dist`
+(`dist_le_of_boxDist_le`, `boxDist_coarsePlaneCenter_le`) and assemble them into the file's main
+estimate, `dist_le_coarsePlaneIndex_distance`, bounding the fine distance between two planar
+points by an affine function of the `boxDist` between their coarse indices.
+-/
 
 open Set
 
 noncomputable section
 namespace Sandpile
 
+/-- The coarse `Site 2` index of a point `z`, at scale `L` anchored at `x`: the pair of
+integer-divided planar offsets `(z 0 - x 0) / L` and `(z 1 - x 1) / L`. -/
 def coarsePlaneIndex (x : Site 4) (L : ℕ) (z : Site 4) : Site 2 :=
   ![(z 0 - x 0) / (L : ℤ), (z 1 - x 1) / (L : ℤ)]
 
+/-- On each of the two planar coordinates, `coarsePlaneIndex x L z i` equals the offset
+`z i - x i` (at the corresponding lifted coordinate) integer-divided by `L`. -/
 lemma coarsePlaneIndex_coord (x : Site 4) (L : ℕ) (z : Site 4) (i : Fin 2) :
     coarsePlaneIndex x L z i =
       (z (Fin.castLE (by decide : 2 ≤ 4) i) - x (Fin.castLE (by decide : 2 ≤ 4) i)) / (L : ℤ) := by
   fin_cases i <;> simp [coarsePlaneIndex]
 
+/-- A point `z` that agrees with `x` off the planar slice (coordinates `≥ 2`) lies in the
+planar box centered at the coarse center of its own coarse index, via the Euclidean
+remainder decomposition `z = x + L * (z/L) + (z mod L)` applied on each planar coordinate. -/
 lemma mem_planeBox_coarsePlaneIndex (x : Site 4) (L : ℕ) (hL : 0 < L) (z : Site 4)
     (hplane : ∀ i : Fin 4, 2 ≤ (i : ℕ) → z i = x i) :
     z ∈ planeBox (coarsePlaneCenter x L (coarsePlaneIndex x L z)) L := by
@@ -39,6 +59,8 @@ lemma mem_planeBox_coarsePlaneIndex (x : Site 4) (L : ℕ) (hL : 0 < L) (z : Sit
     · exact (hplane 2 (by decide)).symm
     · exact (hplane 3 (by decide)).symm
 
+/-- Integer division by a positive `L` is `1`-Lipschitz on inputs within `1` of each other:
+if `|a - b| ≤ 1` then `|a / L - b / L| ≤ 1`. -/
 lemma int_ediv_step {a b L : ℤ} (hL : 0 < L) (hab : |a - b| ≤ 1) :
     |a / L - b / L| ≤ 1 := by
   have hle (a b : ℤ) (hab : a ≤ b + 1) : a / L ≤ b / L + 1 := by
@@ -53,6 +75,10 @@ lemma int_ediv_step {a b L : ℤ} (hL : 0 < L) (hab : |a - b| ≤ 1) :
   have hh := abs_le.mp hab
   exact abs_le.mpr ⟨by linarith [hle b a (by linarith)], by linarith [hle a b (by linarith)]⟩
 
+/-- The coarse index map is graph-Lipschitz: if `z` and `w` are adjacent in `starGraph`, their
+coarse indices are either equal or adjacent in `starLatticeGraph 2`, since `int_ediv_step`
+applied per coordinate turns the unit step bound `hzw.2.1` into a unit bound on the coarse
+indices. -/
 lemma coarsePlaneIndex_adj_or_eq (x : Site 4) (L : ℕ) (hL : 0 < L) {z w : Site 4}
     (hzw : starGraph.Adj z w) : coarsePlaneIndex x L z = coarsePlaneIndex x L w ∨
       (starLatticeGraph 2).Adj (coarsePlaneIndex x L z) (coarsePlaneIndex x L w) := by
@@ -65,11 +91,17 @@ lemma coarsePlaneIndex_adj_or_eq (x : Site 4) (L : ℕ) (hL : 0 < L) {z w : Site
       (show |(z (Fin.castLE (by decide : 2 ≤ 4) i) - x (Fin.castLE (by decide : 2 ≤ 4) i)) -
         (w (Fin.castLE (by decide : 2 ≤ 4) i) - x (Fin.castLE (by decide : 2 ≤ 4) i))| ≤ 1 by
         simpa only [sub_sub_sub_cancel_right] using hzw.2.1 (Fin.castLE (by decide : 2 ≤ 4) i))
-    have hh' : ((((z (Fin.castLE (by decide : 2 ≤ 4) i) - x (Fin.castLE (by decide : 2 ≤ 4) i)) / (L : ℤ) -
-        (w (Fin.castLE (by decide : 2 ≤ 4) i) - x (Fin.castLE (by decide : 2 ≤ 4) i)) / (L : ℤ)).natAbs : ℕ) : ℤ) ≤ 1 := by
+    have hh' :
+        ((((z (Fin.castLE (by decide : 2 ≤ 4) i) -
+                x (Fin.castLE (by decide : 2 ≤ 4) i)) / (L : ℤ) -
+            (w (Fin.castLE (by decide : 2 ≤ 4) i) -
+                x (Fin.castLE (by decide : 2 ≤ 4) i)) / (L : ℤ)).natAbs : ℕ) : ℤ) ≤ 1 := by
       simpa only [Int.natCast_natAbs] using hh
     exact_mod_cast hh'
 
+/-- If `z` lies in the ball `ballRect ϑ r x`, its coarse index lies in the planar rectangle
+`planeRectangle ⌊ϑ * r⌋₊ r`, since integer division is monotone and bounded on each coordinate
+by the ball's own defining bounds. -/
 lemma coarsePlaneIndex_mem_rectangle {ϑ : ℝ} (hϑ : 0 ≤ ϑ) (x : Site 4) (r L : ℕ)
     (hL : 0 < L) {z : Site 4} (hz : z ∈ ballRect ϑ r x) :
     coarsePlaneIndex x L z ∈ planeRectangle ⌊ϑ * r⌋₊ r := by
@@ -82,6 +114,9 @@ lemma coarsePlaneIndex_mem_rectangle {ϑ : ℝ} (hϑ : 0 ≤ ϑ) (x : Site 4) (r
     exact (Int.ediv_le_self (L : ℤ) hz0).trans hw0
   · exact (Int.ediv_le_self (L : ℤ) hz1).trans hw1
 
+/-- If a map `f` sends every `G`-edge to either an equal pair or an `H`-edge, then `f` pushes
+`G`-reachability forward to `H`-reachability: induct along a `G`-walk, collapsing each edge
+mapped to an equality and reusing `H.Adj.reachable` on each edge mapped to an `H`-edge. -/
 lemma reachable_image_of_adj_or_eq {V W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     (f : V → W) (hf : ∀ a b, G.Adj a b → f a = f b ∨ H.Adj (f a) (f b))
     {a b : V} (hab : G.Reachable a b) : H.Reachable (f a) (f b) := by
@@ -94,18 +129,28 @@ lemma reachable_image_of_adj_or_eq {V W : Type*} {G : SimpleGraph V} {H : Simple
       exact ih
     · exact he.reachable.trans ih
 
+/-- If every `G`-adjacent pair has `boxDist ≤ 1`, then `boxDist` between the endpoints of any
+`G`-walk is at most the walk's length, by induction on the walk and the triangle inequality
+`boxDist_trans`. -/
 lemma boxDist_le_walk_length {d : ℕ} {G : SimpleGraph (Site d)}
     (hstep : ∀ a b, G.Adj a b → boxDist a b ≤ 1) {a b : Site d} (p : G.Walk a b) :
     boxDist a b ≤ p.length := by
   induction p with
   | nil => simp [boxDist_self]
   | @cons a b c hab p ih =>
-    exact (boxDist_trans a b c).trans (by have := hstep a b hab; simpa only [SimpleGraph.Walk.length_cons] using (show boxDist a b + boxDist b c ≤ p.length + 1 by omega))
+    exact (boxDist_trans a b c).trans (by
+      have := hstep a b hab
+      simpa only [SimpleGraph.Walk.length_cons] using
+        (show boxDist a b + boxDist b c ≤ p.length + 1 by omega))
 
+/-- Adjacent vertices in `starLatticeGraph d` have `boxDist ≤ 1`, directly from the componentwise
+adjacency condition `hab.2`. -/
 lemma boxDist_le_of_starLatticeGraph_adj {d : ℕ} {a b : Site d}
     (hab : (starLatticeGraph d).Adj a b) : boxDist a b ≤ 1 :=
   Finset.sup_le (fun i _ => hab.2 i)
 
+/-- A `boxDist` bound of `R` between `z` and `w` implies a sup-metric `dist` bound of `R`,
+by checking the bound coordinatewise via `boxDist_le_iff_real_coords`. -/
 lemma dist_le_of_boxDist_le {d : ℕ} {z w : Site d} {R : ℕ} (h : boxDist z w ≤ R) :
     dist z w ≤ (R : ℝ) := by
   apply (dist_pi_le_iff (Nat.cast_nonneg R)).mpr
@@ -113,6 +158,10 @@ lemma dist_le_of_boxDist_le {d : ℕ} {z w : Site d} {R : ℕ} (h : boxDist z w 
   rw [Int.dist_eq, abs_sub_comm]
   exact (boxDist_le_iff_real_coords z w R).mp h i
 
+/-- The coarse centers scale `boxDist` linearly: `boxDist` between `coarsePlaneCenter x L a` and
+`coarsePlaneCenter x L b` is at most `L * boxDist a b`, checked coordinatewise since each planar
+coordinate of the center differs from the other by exactly `L` times the corresponding
+coordinate difference of `a` and `b`. -/
 lemma boxDist_coarsePlaneCenter_le (x : Site 4) (L : ℕ) (a b : Site 2) :
     boxDist (coarsePlaneCenter x L a) (coarsePlaneCenter x L b) ≤ L * boxDist a b := by
   have hc (i : Fin 2) : |(b i : ℝ) - (a i : ℝ)| ≤ boxDist a b :=
@@ -120,12 +169,14 @@ lemma boxDist_coarsePlaneCenter_le (x : Site 4) (L : ℕ) (a b : Site 2) :
   apply (boxDist_le_iff_real_coords _ _ _).mpr
   intro i
   fin_cases i
-  · change |((x 0 + (L : ℤ) * b 0 : ℤ) : ℝ) - ((x 0 + (L : ℤ) * a 0 : ℤ) : ℝ)| ≤ (L * boxDist a b : ℕ)
+  · change |((x 0 + (L : ℤ) * b 0 : ℤ) : ℝ) - ((x 0 + (L : ℤ) * a 0 : ℤ) : ℝ)| ≤
+      (L * boxDist a b : ℕ)
     push_cast
     rw [show (x 0 : ℝ) + (L : ℝ) * (b 0 : ℝ) - ((x 0 : ℝ) + (L : ℝ) * (a 0 : ℝ)) =
       (L : ℝ) * ((b 0 : ℝ) - (a 0 : ℝ)) by ring, abs_mul, abs_of_nonneg (Nat.cast_nonneg L)]
     exact mul_le_mul_of_nonneg_left (hc 0) (Nat.cast_nonneg L)
-  · change |((x 1 + (L : ℤ) * b 1 : ℤ) : ℝ) - ((x 1 + (L : ℤ) * a 1 : ℤ) : ℝ)| ≤ (L * boxDist a b : ℕ)
+  · change |((x 1 + (L : ℤ) * b 1 : ℤ) : ℝ) - ((x 1 + (L : ℤ) * a 1 : ℤ) : ℝ)| ≤
+      (L * boxDist a b : ℕ)
     push_cast
     rw [show (x 1 : ℝ) + (L : ℝ) * (b 1 : ℝ) - ((x 1 : ℝ) + (L : ℝ) * (a 1 : ℝ)) =
       (L : ℝ) * ((b 1 : ℝ) - (a 1 : ℝ)) by ring, abs_mul, abs_of_nonneg (Nat.cast_nonneg L)]
@@ -135,6 +186,11 @@ lemma boxDist_coarsePlaneCenter_le (x : Site 4) (L : ℕ) (a b : Site 2) :
   · simp [coarsePlaneCenter, planeTranslate]
     positivity
 
+/-- The main comparison estimate: for two points `z, w` agreeing with `x` off the planar slice,
+the sup-metric distance `dist z w` is at most `(boxDist (coarsePlaneIndex x L z)
+(coarsePlaneIndex x L w) + 2) * L`. This assembles `mem_planeBox_coarsePlaneIndex`,
+`dist_le_of_boxDist_le` and `boxDist_coarsePlaneCenter_le` through two applications of the
+triangle inequality, via the coarse centers of `z` and `w`. -/
 lemma dist_le_coarsePlaneIndex_distance (x : Site 4) (L : ℕ) (hL : 0 < L) (z w : Site 4)
     (hzplane : ∀ i : Fin 4, 2 ≤ (i : ℕ) → z i = x i)
     (hwplane : ∀ i : Fin 4, 2 ≤ (i : ℕ) → w i = x i) :

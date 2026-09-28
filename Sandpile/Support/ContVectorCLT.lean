@@ -1,25 +1,27 @@
-/-
-The finite-dimensional convergence that `prop:dlt4-heat-potential-invariance`
-(`sandpile.tex:1841-1848`) asks for: a VECTOR of finite linear functionals of the
-scenery converges in distribution to the vector of the values of the white noise
-at the limiting indices.
-
-The scalar Lindeberg-Feller step is already in the repository
-(`tendstoInDistribution_linear_pick_mass`), and it produces a `gaussianReal`.
-Three things turn it into the vector statement.  The Cramér-Wold device reduces
-the vector convergence to the convergence of every dot product, and a dot product
-of finite linear functionals of the scenery is again one, with the coefficients
-combined.  The law of the limiting dot product is identified by
-`map_whiteNoise_combination`: a finite linear combination of the values of the
-white noise is a centred Gaussian whose variance is the square of the `L²` norm
-of the combination of the indices.  What remains, and is the hypothesis `hQvar`
-here, is the only analytic input: the limit of the sums of the squares of the
-lattice coefficients is that `L²` norm divided by the variance of the one-site
-law.
--/
 import Sandpile.Support.ContSeqCLT
 import LatticeProb.Prob.CramerWold
 import Sandpile.Support.ContWhiteNoise
+
+/-!
+# The vector Lindeberg-Feller step
+
+The finite-dimensional convergence that `prop:dlt4-heat-potential-invariance`
+(`sandpile.tex:1841-1848`) asks for: a VECTOR of finite linear functionals of the scenery
+converges in distribution to the vector of the values of the white noise at the limiting
+indices.
+
+The scalar Lindeberg-Feller step is already in the repository
+(`tendstoInDistribution_linear_pick_mass`), and it produces a `gaussianReal`. Three things
+turn it into the vector statement (`tendstoInDistribution_vector_pick_mass`). The
+Cramér-Wold device reduces the vector convergence to the convergence of every dot product,
+and a dot product of finite linear functionals of the scenery is again one, with the
+coefficients combined (`sum_dot_eq_sum_pick`). The law of the limiting dot product is
+identified by `map_whiteNoise_combination`: a finite linear combination of the values of
+the white noise is a centred Gaussian whose variance is the square of the `L²` norm of the
+combination of the indices. What remains, and is the hypothesis `hQvar` here, is the only
+analytic input: the limit of the sums of the squares of the lattice coefficients is that
+`L²` norm divided by the variance of the one-site law.
+-/
 
 open LatticeProb.CramerWold
 

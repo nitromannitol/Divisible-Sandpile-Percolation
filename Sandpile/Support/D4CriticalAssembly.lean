@@ -1,10 +1,3 @@
-/-
-Assembly lemmas for the d4 critical-level percolation theorem
-(sandpile.tex:3952-3968). Deterministic arithmetic steps of the block
-argument: the step-3 implication, the final scale conversion, the union
-bound over the block set, and the LSS deficit arithmetic.
-All results in this file are local support lemmas.
--/
 import Mathlib
 import Sandpile.Law
 import Sandpile.External.VarianceScale
@@ -12,6 +5,19 @@ import Sandpile.External.HeatKernelBounds
 import Sandpile.Support.SceneryBridge
 import Sandpile.Support.MeanLocalization
 import Sandpile.Frozen.MeanLocalization
+
+/-!
+# Critical-Level Block Assembly
+
+Assembly lemmas for the `d = 4` critical-level percolation theorem
+(`sandpile.tex:3952-3968`). These are the deterministic arithmetic steps of the
+block argument: the step-3 implication, the final scale conversion, the union
+bound over the block set, and the LSS deficit arithmetic. The file culminates in
+`uniform_localized_mean_lower`, which chains the mean, localization, and
+exit-tail bounds into a uniform localized mean lower bound. All results here are
+local support lemmas; none of the underlying probabilistic estimates are proved
+from scratch.
+-/
 
 open MeasureTheory
 
@@ -193,6 +199,11 @@ theorem exit_deficit_arith
   have h1 : (C / Aex ^ 2) * M = C * M / Aex ^ 2 := by ring
   linarith
 
+/-- Full Step-1a assembly: given matching log-scale bounds on the mean odometer and a
+uniform localization estimate with sufficiently large exponent `Aloc`, the localized
+mean odometer over the box `supBox w (Aloc * r)` at time `r²` is at least
+`c₀ log(r²) / 2`. This chains `meanOdometer_centeredMassLaw_eq`,
+`localization_deficit_arith`, and `localized_mean_lower_arith`. -/
 theorem uniform_localized_mean_lower
     (_hVS : Sandpile.External.VarianceScale)
     (_hHK : Sandpile.External.HeatKernelBounds)
@@ -202,7 +213,8 @@ theorem uniform_localized_mean_lower
     (hAloc : 1 ≤ Aloc) (hr : 2 ≤ r)
     (hlow : ∀ t : ℕ, 2 ≤ t → c₀ * Real.log t ≤
         Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t)
-    (hup : ∀ t : ℕ, 2 ≤ t → Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t ≤ C₀ * Real.log t)
+    (hup : ∀ t : ℕ, 2 ≤ t →
+        Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t ≤ C₀ * Real.log t)
     (hloc : ∀ A : ℝ, 1 ≤ A → ∀ R : ℝ, 1 ≤ R → ∀ t : ℕ, (t : ℝ) ≤ 1 * R ^ 2 →
         ∀ x : Sandpile.Site 4,
           0 ≤ (∫ ζ, Sandpile.odometerOf ζ t 0 ∂(LatticeProb.iidLaw 4 ν)) -

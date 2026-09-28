@@ -1,10 +1,13 @@
-/-
-The summation of the one-step increment bound in Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6223-6235`): the increments `|y(n+1)-y n - ω/(G(0,0)κ)| ≤ ηω`
-over the band sum to `|y n - y 0 - n·ω/(G(0,0)κ)| ≤ ηωn`.
--/
 import Mathlib
 import Sandpile.Support.Dgt4ABandSum
+
+/-!
+# Summing the one-step increment bound
+
+If the increments `|y(n+1) - y n - ω/(G(0,0)κ)| ≤ ηω` hold over a range, they sum to a bound on
+`|y n - y 0 - n·ω/(G(0,0)κ)|`. This file records that summation, both starting from index `0`
+and starting from an arbitrary offset `s`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

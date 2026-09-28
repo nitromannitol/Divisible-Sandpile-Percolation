@@ -1,25 +1,22 @@
-/-
-Step 2 of `lem:finite-scale-extraction` (`sandpile.tex:2470-2490`): from the
-almost-sure crossings at random rational scales to finitely many deterministic
-scales and a deterministic level.
-
-  "Applying Step 1 to `𝓡_1,…,𝓡_N`, we see that, almost surely, there are
-   (random) rational scales `s_1,…,s_N ∈ (0,1)` such that
-   `H_{𝓡_j}(b(s_j); 𝒳_{s_j})` occurs for every `j`.  If `S = {s_1,…,s_N}`, then
-   `max_{s ∈ S} 𝒳_s ≥ 𝒳_{s_j}` on `𝓡_j`.  Choosing `n` so large that
-   `4/n ≤ min_j b(s_j)`, we get [the union over `n` and finite `S` has
-   probability one].  By continuity from below, there are finitely many pairs
-   … such that [the union of `m` of them has probability at least `1 - ε`].
-   Taking `n = max_i n_i`, `S = ⋃_i S_i`, and `c = 1/n` gives the claim."
-
-Here the finite sets `S` are replaced by the prefixes of one enumeration of the
-rationals in `(0,1)`, which is legitimate because any finite set of such
-rationals sits in a prefix and the level only has to be lowered.  The family of
-events is then a single increasing sequence, and continuity from below is
-`Monotone.measure_iUnion`, which needs no measurability: the crossing events are
-compared as outer measures throughout, as the frozen statement does.
--/
 import Sandpile.Support.CrossBasic
+
+/-!
+# Extracting finitely many deterministic scales
+
+Step 2 of `lem:finite-scale-extraction` (`sandpile.tex:2470-2490`): from the almost-sure
+crossings at random rational scales to finitely many deterministic scales and a deterministic
+level. Applying Step 1 to `𝓡_1,…,𝓡_N` gives, almost surely, random rational scales
+`s_1,…,s_N ∈ (0,1)` for which `H_{𝓡_j}(b(s_j); 𝒳_{s_j})` occurs for every `j`; if
+`S = {s_1,…,s_N}` then `max_{s ∈ S} 𝒳_s ≥ 𝒳_{s_j}` on `𝓡_j`, and choosing `n` so large that
+`4/n ≤ min_j b(s_j)` makes the union over `n` and finite `S` almost sure. Continuity from below
+then produces finitely many pairs whose union has probability at least `1 - ε`, and taking
+`n = max_i n_i`, `S = ⋃_i S_i`, and `c = 1/n` gives the claim. Here the finite sets `S` are
+replaced by the prefixes of one enumeration of the rationals in `(0,1)`, which is legitimate
+because any finite set of such rationals sits in a prefix and the level only has to be
+lowered. The family of events is then a single increasing sequence, and continuity from below
+is `Monotone.measure_iUnion`, which needs no measurability: the crossing events are compared
+as outer measures throughout, as the frozen statement does.
+-/
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

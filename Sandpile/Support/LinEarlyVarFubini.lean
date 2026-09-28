@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinSurvivalMeas
+
+/-! # Early Variance Fubini
+
 The Fubini and boundedness lemmas behind the expansion identity of
 `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`), the first open
 piece of `eq:dgt4-derivative-variance-limit`.
@@ -13,12 +16,14 @@ survival indicators:
 
 The covariance is signed, so these are recorded in the Bochner form.
 -/
-import Sandpile.Support.LinSurvivalMeas
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- If `|H| ≤ C` everywhere and `H` is a.e. strongly measurable under a probability
+measure `μ`, then `|∫ H dμ| ≤ C`: the integral of a bounded function against a
+probability measure is bounded by the same constant. -/
 theorem abs_integral_le_of_bound_simple {α : Type*} [MeasurableSpace α]
     (μ : Measure α) [IsProbabilityMeasure μ] (H : α → ℝ)
     (hHm : AEStronglyMeasurable H μ) (C : ℝ) (hH : ∀ a, |H a| ≤ C) :
@@ -31,6 +36,8 @@ theorem abs_integral_le_of_bound_simple {α : Type*} [MeasurableSpace α]
   calc ∫ a, |H a| ∂μ ≤ ∫ _ : α, C ∂μ := integral_mono h1 h2 (fun a => hH a)
     _ = C := by rw [integral_const, probReal_univ, one_smul]
 
+/-- If `H : β → α → ℝ` is jointly measurable and uniformly bounded by `C`, then the
+`μ`-mean of the `ν`-integral `b ↦ ∫ H b · dν` is bounded by `C` in absolute value. -/
 theorem abs_integral_le_of_bound {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     (μ : Measure α) [IsProbabilityMeasure μ] (ν : Measure β) [IsProbabilityMeasure ν]
     (H : β → α → ℝ)
@@ -40,7 +47,8 @@ theorem abs_integral_le_of_bound {α β : Type*} [MeasurableSpace α] [Measurabl
     intro a
     refine le_trans (abs_integral_le_integral_abs (μ := ν)) ?_
     have h1 : Integrable (fun b => |H b a|) ν :=
-      Integrable.of_bound ((hHm.comp (by fun_prop : Measurable fun b : β => (b, a))).norm).aestronglyMeasurable
+      Integrable.of_bound
+        ((hHm.comp (by fun_prop : Measurable fun b : β => (b, a))).norm).aestronglyMeasurable
         C (Eventually.of_forall fun b => by
           rw [Real.norm_eq_abs, abs_abs]; exact hH b a)
     have h2 : Integrable (fun _ : β => C) ν := integrable_const C
@@ -52,16 +60,20 @@ theorem abs_integral_le_of_bound {α β : Type*} [MeasurableSpace α] [Measurabl
         (Eventually.of_forall fun a => by rw [Real.norm_eq_abs]; exact hb a)
     _ = C := by rw [probReal_univ, mul_one]
 
+/-- Fubini for the mean of a `ν`-family of `μ`-integrals: with `F` jointly measurable
+and uniformly bounded, `∫_b μ[F b ·] dν = μ[a ↦ ∫_b F b a dν]`. -/
 theorem integral_mean_eq_mean_integral {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     (μ : Measure α) [IsProbabilityMeasure μ] (ν : Measure β) [IsProbabilityMeasure ν]
     (F : β → α → ℝ) (hF : Measurable (Function.uncurry F)) (C : ℝ)
     (hFb : ∀ b a, |F b a| ≤ C) :
     (∫ b, μ[fun a => F b a] ∂ν) = μ[fun a => ∫ b, F b a ∂ν] := by
   have hFi : ∀ a, Integrable (fun b => F b a) ν := fun a =>
-    Integrable.of_bound ((hF.comp (by fun_prop : Measurable fun b : β => (b, a))).aestronglyMeasurable)
+    Integrable.of_bound
+      ((hF.comp (by fun_prop : Measurable fun b : β => (b, a))).aestronglyMeasurable)
       C (Eventually.of_forall fun b => by rw [Real.norm_eq_abs]; exact hFb b a)
   have hFb' : ∀ b, Integrable (fun a => F b a) μ := fun b =>
-    Integrable.of_bound ((hF.comp (by fun_prop : Measurable fun a : α => (b, a))).aestronglyMeasurable)
+    Integrable.of_bound
+      ((hF.comp (by fun_prop : Measurable fun a : α => (b, a))).aestronglyMeasurable)
       C (Eventually.of_forall fun a => by rw [Real.norm_eq_abs]; exact hFb b a)
   have hswap := integral_integral_swap (μ := ν) (ν := μ)
     (f := fun b a => F b a) ?_
@@ -72,6 +84,10 @@ theorem integral_mean_eq_mean_integral {α β : Type*} [MeasurableSpace α] [Mea
       rw [Real.norm_eq_abs]; exact hFb p.1 p.2
 
 
+/-- **The Fubini step of the early variance expansion.**  For jointly measurable,
+uniformly bounded `F, G`, the covariance of the `ν`- and `ν₂`-integrals of `F` and
+`G` equals the `ν.prod ν₂`-integral of the pointwise covariance, i.e.
+`Cov(∫_b F b ·, ∫_b G b ·) = ∫_{b,b'} Cov(F b ·, G b' ·)`. -/
 theorem covariance_integral_integral {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     (μ : Measure α) [IsProbabilityMeasure μ] (ν ν₂ : Measure β)
     [IsProbabilityMeasure ν] [IsProbabilityMeasure ν₂]

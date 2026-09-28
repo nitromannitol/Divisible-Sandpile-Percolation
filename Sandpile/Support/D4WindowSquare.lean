@@ -1,9 +1,13 @@
-/-
+import Mathlib
+
+/-!
+# Second Moment of the Reflection Window
+
 The second moment of the reflection window in dimension four, the second half of
 Step 3 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3395-3404`).
 
 The paper splits `E S_R(0)²` at the level `A₀ log(t+2)`, bounding the part below
-the level by the mean and the part above it by `lem:d4-difference-tail`.  Because
+the level by the mean and the part above it by `lem:d4-difference-tail`. Because
 that lemma is available here in exponential-moment form, the whole split is a
 POINTWISE inequality and needs no layer cake: with `0 ≤ S ≤ X`, `L ≥ 0`, `c > 0`
 and `Y := (X − L)_+`,
@@ -11,11 +15,10 @@ and `Y := (X − L)_+`,
   `S² ≤ L S + (8/c² + 2L²) 1_{L < X} + (8/c²)(e^{cY} − 1)` .
 
 Below the level `S² ≤ L S`; above it `S² ≤ X² = (Y+L)² ≤ 2Y² + 2L²`, and
-`Y² ≤ (4/c²) e^{cY}` because `(cY/2 + 1)² ≤ e^{cY/2·2}`.  Integrating turns the
+`Y² ≤ (4/c²) e^{cY}` because `(cY/2 + 1)² ≤ e^{cY/2·2}`. Integrating turns the
 three terms into the window mean, the probability of exceeding the level, and
 the exponential moment of `lem:d4-difference-tail`.
 -/
-import Mathlib
 
 open MeasureTheory Real
 

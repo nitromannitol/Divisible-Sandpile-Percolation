@@ -1,12 +1,17 @@
-/-
-The i.i.d. mass field is translation invariant, and the odometer commutes with
-translation.  Together these give the stationarity the paper uses without
-comment when it writes `E(ζ(0) + Pu_t(0)) = E u_t(0)` in the proof of
-`lem:reflection-increment`: the mean odometer does not depend on the site.
--/
 import Sandpile.Law
 import Sandpile.Support.Odometer
 import LatticeProb.Walk.Markov
+
+/-!
+# Translation invariance of the i.i.d. mass law
+
+The i.i.d. mass field `massLaw d μ` is invariant under translation (`massLaw_map_shiftField`),
+and the odometer commutes with translation (`odometer_shiftField`). Together these give the mean
+odometer `∫ odometer σ t y ∂(massLaw d μ)` no dependence on the site `y` (`integral_odometer_eq`),
+and hence identify the mean of its neighbour average with the mean odometer itself
+(`integral_avg_odometer`), which is the stationarity identity `E(ζ(0) + Pu_t(0)) = E u_t(0)`
+written termwise.
+-/
 
 open MeasureTheory
 
@@ -17,6 +22,7 @@ variable {d : ℕ}
 /-- The mass field seen from `y`. -/
 def shiftField (y : Site d) (σ : Site d → ℝ) : Site d → ℝ := fun z => σ (z + y)
 
+/-- `shiftField y` is measurable, as a coordinate relabelling of `Site d → ℝ`. -/
 theorem measurable_shiftField (y : Site d) : Measurable (shiftField (d := d) y) :=
   measurable_pi_lambda _ fun _ => measurable_pi_apply _
 
@@ -65,6 +71,8 @@ theorem integral_odometer_eq (d : ℕ) (μ : Measure ℝ) [IsProbabilityMeasure 
   simp only []
   rw [odometer_shiftField σ y t 0, zero_add]
 
+/-- Under the i.i.d. mass law, `σ ↦ odometer σ t y` is integrable at every site `y`, given that
+it is integrable at the origin, by the translation invariance of `massLaw d μ`. -/
 theorem integrable_odometer_shift (d : ℕ) (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (t : ℕ) (y : Site d)
     (hint : Integrable (fun σ => odometer σ t 0) (massLaw d μ)) :
@@ -114,6 +122,9 @@ theorem integral_avg_odometer (d : ℕ) (hd : 1 ≤ d) (μ : Measure ℝ)
     Fintype.card_fin, nsmul_eq_mul, div_eq_iff hd0]
   ring
 
+/-- Under the i.i.d. mass law, the neighbour average `σ ↦ avg (odometer σ t) 0` is integrable,
+given that `σ ↦ odometer σ t 0` is, as a finite average of the integrable translates furnished
+by `integrable_odometer_shift`. -/
 theorem integrable_avg_odometer (d : ℕ) (μ : Measure ℝ) [IsProbabilityMeasure μ] (t : ℕ)
     (hint : Integrable (fun σ => odometer σ t 0) (massLaw d μ)) :
     Integrable (fun σ => avg (odometer σ t) 0) (massLaw d μ) := by
@@ -170,6 +181,7 @@ theorem scenery_integrable_and_mean (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ)
     rw [← hmap]
     exact hkey.2
 
+/-- `max 0 a = a + max 0 (-a)`, splitting off the negative part of `a`. -/
 theorem max_zero_eq (a : ℝ) : max 0 a = a + max 0 (-a) := by
   rcases le_or_gt 0 a with h | h
   · rw [max_eq_right h, max_eq_left (by linarith : -a ≤ (0 : ℝ))]
@@ -177,6 +189,8 @@ theorem max_zero_eq (a : ℝ) : max 0 a = a + max 0 (-a) := by
   · rw [max_eq_left (le_of_lt h), max_eq_right (by linarith : (0 : ℝ) ≤ -a)]
     ring
 
+/-- The neighbour average of the odometer is monotone in time: `avg (odometer σ t) z ≤
+avg (odometer σ (t + 1)) z`, since the odometer itself increases termwise with `t`. -/
 theorem avg_odometer_mono (σ : Site d → ℝ) (t : ℕ) (z : Site d) :
     avg (odometer σ t) z ≤ avg (odometer σ (t + 1)) z := by
   unfold avg LatticeProb.walkOp

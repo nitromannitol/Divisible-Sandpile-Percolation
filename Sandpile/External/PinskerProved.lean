@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.Pinsker
+import LatticeProb.Prob.Pinsker
+
+/-!
+# Pinsker's inequality is proved
+
 Pinsker's inequality is no longer assumed.
 
 `Sandpile/External/Pinsker.lean` states the form the level loss of
@@ -9,8 +14,6 @@ for the centred indicator of the event, with the same constant.  The `Prop` and
 its name are left untouched, so no frozen statement changes, and every node
 carrying `Sandpile.External.Pinsker` as a hypothesis becomes unconditional.
 -/
-import Sandpile.External.Pinsker
-import LatticeProb.Prob.Pinsker
 
 open MeasureTheory
 

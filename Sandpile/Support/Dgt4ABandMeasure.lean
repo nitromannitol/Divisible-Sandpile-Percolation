@@ -1,11 +1,17 @@
-/-
-The one-site law of Step 1 of `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`)
-as a measure, and the decomposition of its mass into the positive summand and
-the band components.  The decomposition is what the four Step-1 estimates
-(`eq:dgt4-band-profile`, `eq:dgt4-band-density`, `eq:dgt4-band-upper-isolation`,
-`eq:dgt4-band-lower-isolation`) are read off from.
--/
 import Sandpile.Support.Dgt4ABandDensity
+
+/-!
+# The one-site law as a measure
+
+The one-site law of Step 1 of `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`) as a measure
+(`bandLaw`), and the decomposition of its mass into the positive summand and the band
+components (`bandLaw_apply`, `bandLaw_Iic`). The decomposition is what the four Step-1
+estimates (`eq:dgt4-band-profile`, `eq:dgt4-band-density`, `eq:dgt4-band-upper-isolation`,
+`eq:dgt4-band-lower-isolation`) are read off from. Also proved here: `bandLaw` is a
+probability measure when the weights sum to one (`isProbabilityMeasure_bandLaw`), it has a
+strictly positive `C^∞` density (`exists_density_bandLaw`), and integration against it splits
+termwise over the summands (`bandSummand`, `integral_bandLaw`).
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -38,6 +44,8 @@ lemma bandComponent_finite_support (hl0 : 0 < l1) (hl1 : l1 < 1) (ha : ∀ k, 0 
     nlinarith [hl0]
   rw [bandComponent_eq_zero_of_ge (hm k) hl1 (ha k) hle, mul_zero]
 
+/-- The weighted band components are summable at every point, since
+`bandComponent_finite_support` gives all but finitely many of them value zero. -/
 lemma summable_bandComponent (hl0 : 0 < l1) (hl1 : l1 < 1) (ha : ∀ k, 0 < a k)
     (hm : ∀ k, 0 < m k) (hatop : Tendsto a atTop atTop) (x : ℝ) :
     Summable fun k => w k * bandComponent l1 (a k) (θ k) (m k) x := by

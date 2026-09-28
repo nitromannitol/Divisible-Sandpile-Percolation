@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.BlockGeometry
+import Mathlib.Combinatorics.SimpleGraph.Walk.Decomp
+
+/-!
+# Subwalk extraction
+
 Subwalk extraction: between any two sites on the support of a walk there is
 a walk whose support is contained in the original one's.
 -/
-import Sandpile.Support.BlockGeometry
-import Mathlib.Combinatorics.SimpleGraph.Walk.Decomp
 
 open scoped NNReal
 noncomputable section

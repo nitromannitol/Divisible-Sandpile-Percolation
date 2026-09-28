@@ -1,8 +1,18 @@
-/-
+import Sandpile.Support.FiniteKernelTail
+
+/-!
+# Two-Scale Bernstein Concentration
+
 Bernstein concentration with separate square-sum and maximum coefficient
 scales, uniform in both scales and in the number of coordinates.
+`weighted_tail_of_two_norm_bounds` derives the two-scale tail
+`exp(-c min(s²/V, s/A))` for a Lipschitz functional of independent,
+exponentially-integrable coordinates from the single-scale bound of
+`Sandpile.Support.FiniteKernelTail`.  `exists_finite_kernel_two_scale_tail`
+and `exists_finite_kernel_field_two_scale_tail` transport the same tail to a
+finitely supported linear functional of the site field and to its
+translate-indexed family, using the site enumeration of a finite support set.
 -/
-import Sandpile.Support.FiniteKernelTail
 
 open LatticeProb
 
@@ -12,6 +22,12 @@ open scoped BigOperators
 noncomputable section
 namespace Sandpile
 
+/-- The two-scale Bernstein tail: for a Lipschitz `F` of `N` independent coordinates with
+per-coordinate Lipschitz constants `ℓ` of square-sum at most `V` and maximum at most `A`,
+`P(|F - E F| > s) ≤ C exp(-c min(s²/V, s/A))` with `c, C` depending only on the exponential
+moment bound `θ, K` of the common law, not on `N`, `V`, or `A`. Proved by comparing the
+single-scale tail of `Sandpile.Support.FiniteKernelTail` at the actual norms of `ℓ` to the
+one at the hypothesised bounds `V, A`, handling `ℓ = 0` separately. -/
 theorem weighted_tail_of_two_norm_bounds (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
       ∀ (N : ℕ) (ν : Measure ℝ), IsProbabilityMeasure ν →
@@ -21,7 +37,8 @@ theorem weighted_tail_of_two_norm_bounds (θ K : ℝ) (hθ : 0 < θ) :
         (∀ ξ i v, |F ξ - F (Function.update ξ i v)| ≤ ℓ i * |ξ i - v|) →
         ∀ V A : ℝ, 0 < V → 0 < A → (∑ i, ℓ i ^ 2) ≤ V → (∀ i, ℓ i ≤ A) →
         ∀ s : ℝ, 0 ≤ s →
-          (Measure.pi fun _ : Fin N => ν) {ξ | s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|} ≤
+          (Measure.pi fun _ : Fin N => ν)
+              {ξ | s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|} ≤
             ENNReal.ofReal (C * Real.exp (-(c * min (s ^ 2 / V) (s / A)))) := by
   obtain ⟨c₀, C, hc₀, hC, htail⟩ := weighted_exp_conc_tail θ K hθ
   refine ⟨c₀, C, hc₀, hC, ?_⟩
@@ -40,7 +57,8 @@ theorem weighted_tail_of_two_norm_bounds (θ K : ℝ) (hθ : 0 < θ) :
         (div_le_div_of_nonneg_left (sq_nonneg s) hTwo0 hTwo)
         (div_le_div_of_nonneg_left hs hInf0 hInf)) hc₀.le
     have ht := htail N ν hν hexp hK F hFm ℓ hℓ hne hLip s hs
-    refine (measure_mono (fun ξ (hξ : s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|) => hξ.le)).trans
+    refine (measure_mono
+      (fun ξ (hξ : s < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin N => ν)|) => hξ.le)).trans
       (ht.trans ?_)
     apply ENNReal.ofReal_le_ofReal
     exact mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by linarith)) hC.le
@@ -62,6 +80,10 @@ theorem weighted_tail_of_two_norm_bounds (θ K : ℝ) (hθ : 0 < θ) :
     rw [he, measure_empty]
     exact bot_le
 
+/-- The two-scale tail transported to a finitely supported linear functional of the site
+field: for `a` supported on `s` with `∑_{u∈s} a u ^ 2 ≤ V` and `|a u| ≤ A`,
+`P(|∑' u, a u ζ u| > t) ≤ C exp(-c min(t²/V, t/A))` under the i.i.d. law `iidLaw d μ`, by
+enumerating `s` with `siteEnum` to reduce to `weighted_tail_of_two_norm_bounds`. -/
 lemma exists_finite_kernel_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (d : ℕ) (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →
@@ -81,13 +103,16 @@ lemma exists_finite_kernel_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
     rw [sum_siteEnum s (fun u => a u ^ 2)]
     exact hsum
   have he (ζ : Site d → ℝ) : (∑' u, a u * ζ u) = ∑ i, coeff i * ζ (siteEnum s i) := by
-    rw [show (∑ i, coeff i * ζ (siteEnum s i)) = ∑ u ∈ s, a u * ζ u from sum_siteEnum s (fun u => a u * ζ u)]
+    rw [show (∑ i, coeff i * ζ (siteEnum s i)) = ∑ u ∈ s, a u * ζ u from
+      sum_siteEnum s (fun u => a u * ζ u)]
     exact tsum_eq_sum (fun u hu => by rw [hs u hu, zero_mul])
   have hm : MeasurableSet {x : Fin s.card → ℝ | t < |∑ i, coeff i * x i|} :=
     measurableSet_lt measurable_const (by fun_prop)
-  have hp := (LatticeProb.measurePreserving_pick _ μ (siteEnum s) (siteEnum_injective s)).measure_preimage hm.nullMeasurableSet
+  have hp := (LatticeProb.measurePreserving_pick _ μ (siteEnum s)
+      (siteEnum_injective s)).measure_preimage hm.nullMeasurableSet
   have hevent : {ζ : Site d → ℝ | t < |∑' u, a u * ζ u|} =
-      (fun ζ : Site d → ℝ => fun i => ζ (siteEnum s i)) ⁻¹' {x : Fin s.card → ℝ | t < |∑ i, coeff i * x i|} := by
+      (fun ζ : Site d → ℝ => fun i => ζ (siteEnum s i)) ⁻¹'
+        {x : Fin s.card → ℝ | t < |∑ i, coeff i * x i|} := by
     ext ζ
     simp only [mem_preimage, mem_setOf_eq, he]
   rw [hevent, hp]
@@ -99,6 +124,11 @@ lemma exists_finite_kernel_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
   simpa only [sub_zero] using hh
 
 
+/-- The two-scale tail transported to the finite kernel field `finiteKernelField a ζ z`
+at an arbitrary base point `z`: the same conclusion as
+`exists_finite_kernel_two_scale_tail` holds for `a` compactly supported and summably
+square-bounded (`∑' u, a u ^ 2 ≤ V`), by translating the support to `s.image (· + z)` and
+reducing to that lemma via `finiteKernelField_eq_tsum_translated`. -/
 lemma exists_finite_kernel_field_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (d : ℕ) (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →

@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.ExplBallLocal
+
+/-! # Ball Localization: Elementary Facts
+
 The elementary facts about the two Brownian values and the exit event that
 `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) and its surrounding
 text use, proved for a motion that starts at its point only almost surely.
@@ -9,7 +12,6 @@ families and never leaves the ball, and the localized family is a subset of the
 full one.  The exit event of the tail estimate is the paper's `{τ_{u,A} < T}`,
 which is `ballExitEvent_eq`.
 -/
-import Sandpile.Support.ExplBallLocal
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

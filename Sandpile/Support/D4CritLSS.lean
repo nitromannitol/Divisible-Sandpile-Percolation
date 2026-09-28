@@ -1,17 +1,28 @@
-/-
-The three hypotheses of \citet[Corollary~1.4]{LSS} for the good-block process of
-the dimension-four percolation argument (`sandpile.tex:3991-3995`):
-measurability, stationarity and finite-range dependence.  Stationarity is the
-translation covariance of the finite-range field of
-`lem:d4-finite-range-lower-bound` together with the shift invariance of the
-i.i.d. scenery law.
--/
 import Sandpile.Support.D4CritStationary
 import Sandpile.Support.D4CritBlock
 import Sandpile.Support.D4PlaneEmbed
 import Sandpile.Support.CrossingContinuity
 import Sandpile.Support.ExitAverage
 import Sandpile.Support.Killed
+
+/-!
+# Measurability and stationarity of the dimension-four good-block process
+
+The three hypotheses of \citet[Corollary~1.4]{LSS} for the good-block process of
+the dimension-four percolation argument (`sandpile.tex:3991-3995`):
+measurability, stationarity and finite-range dependence.  Stationarity is the
+translation covariance of the finite-range field of
+`lem:d4-finite-range-lower-bound` together with the shift invariance of the
+i.i.d. scenery law. The field `frBlockField` combines the finite-time killed Green field with the
+localized exit term, and is shown shift-covariant by `frBlockField_shift`, which upgrades to
+the good-block covariance `blockGood_frBlockField_shift` via the coordinate-plane translation
+identities `planeEmbed_add`/`blockShift_add`/`blockGood_congr`. Measurability of the good-block
+event is built up through `measurable_frGreenFieldTime`, `measurable_frExitValue`,
+`measurable_frBlockField`, `measurableSet_blockGood_frBlockField` and
+`measurable_decide_blockGood`, and combined with the shift invariance of the i.i.d. scenery law
+(`massLaw_map_shiftField`) to give the stationarity of the good-block process under that law,
+`blockGood_law_stationary`.
+-/
 
 open MeasureTheory
 
@@ -70,6 +81,9 @@ def frBlockField (Aex : ℕ) (Aloc : ℝ) (R : ℕ) (ζ : Site 4 → ℝ) (u : S
   frGreenFieldTime R (Aex * R ^ 2) ζ (planeEmbed u)
     + frExitValue Aex Aloc R ζ (planeEmbed u)
 
+/-- `frBlockField` is shift-covariant: shifting the scenery `ζ` by `planeEmbed c` and reading
+the field at `u` agrees with reading the unshifted field at `u + c`, from the shift covariance
+of `frGreenFieldTime` and `frExitValue` together with the additivity `planeEmbed_add`. -/
 theorem frBlockField_shift (Aex : ℕ) (Aloc : ℝ) (R : ℕ) (ζ : Site 4 → ℝ)
     (u c : Site 2) :
     frBlockField Aex Aloc R (shiftField (planeEmbed c) ζ) u
@@ -88,11 +102,18 @@ theorem blockGood_frBlockField_shift (Aex : ℕ) (Aloc : ℝ) (R r : ℕ) (ℓ :
   refine blockGood_congr r _ _ ℓ (z + w) z fun v => ?_
   rw [frBlockField_shift, blockShift_add]
 
+/-- The finite-time killed Green field `frGreenFieldTime r N ζ z` is measurable in the scenery
+`ζ`, since it is a countable sum of the coordinate projections `ζ (z + u)` each scaled by a
+constant kernel weight. -/
 theorem measurable_frGreenFieldTime (r N : ℕ) (z : Site 4) :
     Measurable (fun ζ : Site 4 → ℝ => frGreenFieldTime r N ζ z) := by
   unfold frGreenFieldTime
   exact Measurable.tsum fun u => (measurable_pi_apply (z + u)).const_mul _
 
+/-- The localized exit value `frExitValue Aex Aloc r ζ z` is measurable in the scenery `ζ`,
+proved by rewriting it as `localizedExitAverage` at the explicit cubes `frCube z r` and
+`frCube w (Aloc * r)`, using the indicator form `localizedExitPayoff_eq_indicator` and
+`measurable_localizedExitAverage`. -/
 theorem measurable_frExitValue (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (z : Site 4) :
     Measurable (fun ζ : Site 4 → ℝ => frExitValue Aex Aloc r ζ z) := by
   have he : (fun ζ : Site 4 → ℝ => frExitValue Aex Aloc r ζ z)
@@ -106,11 +127,17 @@ theorem measurable_frExitValue (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (z : Site 4) :
   rw [he]
   exact measurable_localizedExitAverage (by norm_num) _ _ _ _ _
 
+/-- `frBlockField` is measurable in the scenery `ζ`, as the sum of the measurable Green field
+`measurable_frGreenFieldTime` and exit value `measurable_frExitValue`. -/
 theorem measurable_frBlockField (Aex : ℕ) (Aloc : ℝ) (R : ℕ) (u : Site 2) :
     Measurable (fun ζ : Site 4 → ℝ => frBlockField Aex Aloc R ζ u) :=
   (measurable_frGreenFieldTime R (Aex * R ^ 2) (planeEmbed u)).add
     (measurable_frExitValue Aex Aloc R (planeEmbed u))
 
+/-- The good-block event `{ζ | BlockGood r (frBlockField Aex Aloc R ζ) ℓ z}` is measurable in
+the scenery `ζ`, since `BlockGood` unfolds to a finite intersection of four crossing-threshold
+conditions on `crossingValue`, each measurable because `crossingValue` is measurable in the
+field and `frBlockField` is measurable in `ζ` by `measurable_frBlockField`. -/
 theorem measurableSet_blockGood_frBlockField (Aex : ℕ) (Aloc : ℝ) (R r : ℕ) (ℓ : ℝ)
     (z : Site 2) :
     MeasurableSet {ζ : Site 4 → ℝ | BlockGood r (frBlockField Aex Aloc R ζ) ℓ z} := by
@@ -147,6 +174,9 @@ theorem measurableSet_blockGood_frBlockField (Aex : ℕ) (Aloc : ℝ) (R r : ℕ
         (measurable_pi_lambda _ fun v => measurable_frBlockField Aex Aloc R _))
   exact h1.inter (h2.inter (h3.inter h4))
 
+/-- The Boolean indicator `ζ ↦ decide (BlockGood r (frBlockField Aex Aloc R ζ) ℓ z)` is
+measurable, since its preimage of `{true}` is exactly the measurable set of
+`measurableSet_blockGood_frBlockField`. -/
 theorem measurable_decide_blockGood (Aex : ℕ) (Aloc : ℝ) (R r : ℕ) (ℓ : ℝ) (z : Site 2) :
     Measurable (fun ζ : Site 4 → ℝ => decide (BlockGood r (frBlockField Aex Aloc R ζ) ℓ z)) := by
   refine measurable_to_bool ?_

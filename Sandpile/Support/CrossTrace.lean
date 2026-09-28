@@ -1,19 +1,19 @@
-/-
-The exploration trace of Step 3 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2350-2382`), as a measurable map on the finitely many coordinates
-the exploration reads.
-
-  "Let `z_1,\ldots,z_M` be the processed square centers ... and let `\P_\ell^{\rm tr}`
-   be the law of `\mathfrak T_M` under `\P_\ell`."
-
-The trace `\mathfrak T_M` is a function of the white noise evaluated at the
-finitely many test functions the exploration uses, so it is a map into a finite
-product of copies of `ℝ`, and it is measurable as soon as each of those
-coordinates is.  The two crossing events of the level loss are read off the same
-trace, so their probabilities are the probabilities of one measurable event
-under the two trace laws; `measure_preimage_trace` is that identification.
--/
 import Sandpile.Support.CrossFixArm
+
+/-!
+# The exploration trace as a finite-dimensional measurable map
+
+This file treats the exploration trace `𝔗_M` of Step 3 of `prop:fixed-scale-crossings`
+(`sandpile.tex:2350-2382`) as a measurable map into a finite product of copies of `ℝ`: since
+`𝔗_M` is built from the white noise evaluated at the finitely many test functions the
+exploration reads, it is measurable as soon as each coordinate is (`measurable_trace_fin`). An
+event determined by the trace is exactly a preimage of a measurable set of trace values
+(`exists_preimage_of_determined`), and this is applied to show that both a crossing event of a
+rectangle (`crossing_determined_by_grid`) and the crossing event of the exploration
+(`crossing_preimage_cube_trace`) are such preimages, so that their probabilities under two
+different noise laws become probabilities of one fixed event under the corresponding two trace
+laws (`measure_preimage_trace`).
+-/
 
 open MeasureTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings

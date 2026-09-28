@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Dgt4AGaussTailLp
+import Sandpile.Support.LinGaussBridge
+
+/-!
 The Gaussian half of the `P^j` term of Step 1 of case (a) (`sandpile.tex:5060-5071`).
 
 `P^jV_\infty(0)` is the linear functional of the scenery with coefficient
@@ -7,8 +10,6 @@ variance `v` it is the centred Gaussian of variance `v\sum_z(\sum_{r\geq j}p_r(0
 `eq:dgt4-tail-kernel` bounds that by `Cj^{(4-d)/2}`.  This replaces the paper's appeal to
 Gaussian concentration for the `P^j` term by the exact variance.
 -/
-import Sandpile.Support.Dgt4AGaussTailLp
-import Sandpile.Support.LinGaussBridge
 
 open LatticeProb.Isonormal
 

@@ -1,15 +1,23 @@
-/-
-The smoothing scale in Step 4 of `prop:d4-pointwise-linearization`.
-Taking one plus a natural floor keeps the smoothing time positive.  Its
-rounding error contributes `log(t+2)/t`, which has an exponential bound
-throughout the intermediate range of deviation levels.
--/
 import Sandpile.Support.D4Difference
+
+/-!
+# The smoothing scale in Step 4 of the pointwise linearization
+
+The smoothing scale of Step 4 of `prop:d4-pointwise-linearization`. Elementary bounds on `log t`,
+`log log t`, and `log(t+2)` (`log_time_bounds_four`, `log_time_mul_exp_neg_four`,
+`log_time_div_time_four`) feed `exists_linearization_scale_four`, which produces a positive
+integer smoothing scale `n < t`: taking one plus a natural floor keeps the smoothing time
+positive, and the scale has a short logarithmic window. Its rounding error contributes
+`log(t+2)/t`, which has an exponential bound throughout the intermediate range of deviation
+levels (`linearization_exponent_four`, `linearization_scale_markov_four`).
+-/
 
 open LatticeProb
 
 namespace Sandpile
 
+/-- Elementary bounds on `log t`, `1 + log log t`, and `log (t+2)` for `t ≥ 3`: each is at least
+`1`, and `log (t+2) ≤ log t + 1`. -/
 theorem log_time_bounds_four {t : ℝ} (ht : 3 ≤ t) :
     1 ≤ Real.log t ∧ 1 ≤ 1 + Real.log (Real.log t) ∧
       1 ≤ Real.log (t + 2) ∧ Real.log (t + 2) ≤ Real.log t + 1 := by
@@ -23,6 +31,7 @@ theorem log_time_bounds_four {t : ℝ} (ht : 3 ≤ t) :
   rw [Real.log_mul (by norm_num) ht0.ne'] at h2
   linarith [Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)]
 
+/-- `log(t+2)` is dominated, up to a factor of `2`, by `exp(2(1+log log t))`, for `t ≥ 3`. -/
 theorem log_time_mul_exp_neg_four {t : ℝ} (ht : 3 ≤ t) :
     Real.log (t + 2) * Real.exp (-(2 * (1 + Real.log (Real.log t)))) ≤ 2 := by
   obtain ⟨hlog, hell, -, hL⟩ := log_time_bounds_four ht
@@ -36,6 +45,8 @@ theorem log_time_mul_exp_neg_four {t : ℝ} (ht : 3 ≤ t) :
     (Real.exp_pos (-(2 * (1 + Real.log (Real.log t))))).le
   simpa [mul_assoc, ← Real.exp_add] using h2
 
+/-- The rounding-error ratio `log(t+2)/t` is bounded by an exponential in `-log(t+2)/2`, for
+`t ≥ 3`. -/
 theorem log_time_div_time_four {t : ℝ} (ht : 3 ≤ t) :
     Real.log (t + 2) / t ≤ 4 * Real.exp (-(Real.log (t + 2) / 2)) := by
   have ht0 : 0 < t := by linarith

@@ -1,17 +1,30 @@
-/-
-Square-integrability from an exponential upper tail beyond a threshold.
-The bound follows by the layer-cake identity and an integrable exponential tail.
--/
 import Mathlib.MeasureTheory.Integral.Layercake
 import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+
+/-!
+# Square-integrability from an exponential tail
+
+Square-integrability from an exponential upper tail beyond a threshold. The bound follows by
+the layer-cake identity and an integrable exponential tail. `lintegral_sq_eq_lintegral_abs_tail`
+rewrites `∫⁻ F²` as the layer-cake integral of `r ↦ μ{|F| > r} · 2r`; `lintegral_initial_linear`
+evaluates the contribution of that layer-cake integral up to a threshold `L` in closed form as
+`L²`; and `exists_square_bound_of_exponential_tail` combines the two with an exponential tail
+bound `μ{|F| > r} ≤ C·exp(-c r)` for `r ≥ L` to produce a uniform bound `L² + M`, with `M` an
+`F`-independent constant coming from the tail integral of `2C·r·exp(-c r)`, on the second moment
+of any measurable `F` satisfying that tail bound.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- The layer-cake identity for the square: `∫⁻ F²` equals the tail integral of
+`r ↦ μ{|F| > r} · 2r` over `r ∈ (0, ∞)`, obtained from
+`lintegral_comp_eq_lintegral_meas_lt_mul` applied to `|F|` with weight `g r = 2r`, whose
+antiderivative `∫₀ˣ 2r dr = x²` matches `x ↦ x²` composed with `abs`. -/
 theorem lintegral_sq_eq_lintegral_abs_tail {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) (F : Ω → ℝ) (hF : Measurable F) :
     ∫⁻ ω, ENNReal.ofReal (F ω ^ 2) ∂μ =
@@ -27,6 +40,9 @@ theorem lintegral_sq_eq_lintegral_abs_tail {Ω : Type*} [MeasurableSpace Ω]
       exact mul_nonneg (by norm_num) hr.le))
   simpa only [he, sq_abs] using h
 
+/-- The integral of the indicator of `2r` on `(0, L]` against the layer-cake measure equals
+`L²`, computed directly via `∫₀ᴸ 2r dr = L²`; this is the "up to the threshold" piece of the
+layer-cake decomposition used in `exists_square_bound_of_exponential_tail`. -/
 theorem lintegral_initial_linear (L : ℝ) (hL : 0 ≤ L) :
     ∫⁻ r in Set.Ioi (0 : ℝ),
       (Set.Ioc (0 : ℝ) L).indicator (fun r => ENNReal.ofReal (2 * r)) r =
@@ -48,6 +64,11 @@ theorem lintegral_initial_linear (L : ℝ) (hL : 0 ≤ L) :
   ring
 
 
+/-- Given an exponential tail bound `μ{|F| > r} ≤ C·exp(-c r)` valid for all `r ≥ L`, `F` is
+square-integrable and `∫ F² ≤ L² + M` for a single constant `M` (built from the tail integral of
+`(2C)·r·exp(-c r)` via `integrableOn_rpow_mul_exp_neg_mul_rpow`) that works uniformly over every
+such `F`, `L` and threshold. Combines `lintegral_sq_eq_lintegral_abs_tail`,
+`lintegral_initial_linear`, and a pointwise bound on the tail integrand splitting at `L`. -/
 theorem exists_square_bound_of_exponential_tail {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) [IsProbabilityMeasure μ] (c C : ℝ) (hc : 0 < c) (hC : 0 ≤ C) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ F : Ω → ℝ, Measurable F → ∀ L : ℝ, 0 ≤ L →
@@ -90,13 +111,15 @@ theorem exists_square_bound_of_exponential_tail {Ω : Type*} [MeasurableSpace Ω
     refine (lintegral_mono_ae hpoint).trans_eq ?_
     have hAm : Measurable ((Set.Ioc (0 : ℝ) L).indicator
         (fun r : ℝ => ENNReal.ofReal (2 * r))) :=
-      (ENNReal.measurable_ofReal.comp (measurable_const.mul measurable_id)).indicator measurableSet_Ioc
+      (ENNReal.measurable_ofReal.comp (measurable_const.mul measurable_id)).indicator
+        measurableSet_Ioc
     rw [lintegral_add_left hAm, lintegral_initial_linear L hL,
       ← ofReal_integral_eq_lintegral_ofReal hBi hB0]
   have hFi : Integrable (fun ω => F ω ^ 2) μ := by
     refine ⟨(hF.pow_const 2).aestronglyMeasurable, ?_⟩
     rw [hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun ω => sq_nonneg (F ω))]
-    exact lt_of_le_of_lt hlin (ENNReal.add_lt_top.mpr ⟨ENNReal.ofReal_lt_top, ENNReal.ofReal_lt_top⟩)
+    exact lt_of_le_of_lt hlin
+      (ENNReal.add_lt_top.mpr ⟨ENNReal.ofReal_lt_top, ENNReal.ofReal_lt_top⟩)
   refine ⟨hFi, ?_⟩
   rw [← ofReal_integral_eq_lintegral_ofReal hFi (Eventually.of_forall fun ω => sq_nonneg (F ω)),
     ← ENNReal.ofReal_add (sq_nonneg L) (integral_nonneg_of_ae hB0)] at hlin

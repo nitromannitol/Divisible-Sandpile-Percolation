@@ -1,12 +1,17 @@
-/-
-The first-moment bound for the centred deviation `D_n` of `sandpile.tex:5050-5055`:
-`E|D_n| ≤ 2E(u_{n+1}(0)-u_n(0))`.  The pointwise bound `|D_n| ≤ I+E`, the identity
-`E E = E I - E D_n` and the mean-zero property `E D_n = 0` give `E|D_n| ≤ E I + E I`.
--/
 import Sandpile.Support.Dgt4ADeviationAbs
 import Sandpile.Support.Dgt4AFirstMomentAdd
 import Sandpile.Support.Dgt4AFirstMomentExcess
 import Sandpile.Support.Dgt4AMeanZero
+
+/-!
+# A first-moment bound for the centred deviation by twice the odometer increment
+
+The centred deviation `centeredDeviation d ζ n` at the origin, written `D_n`, satisfies
+`E|D_n| ≤ 2 * E(u_{n+1}(0) - u_n(0))`, where `u_n` is the odometer. The proof combines the
+pointwise bound `|D_n| ≤ I + E`, where `I` is the odometer increment and `E` is an excess
+term, with the identity `E E = E I - E D_n` and the mean-zero property `E D_n = 0`, so that
+`E|D_n| ≤ E I + E I`.
+-/
 
 open MeasureTheory Filter Topology Set
 
@@ -14,6 +19,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The centred deviation `D_n` at the origin has `E|D_n| ≤ 2 * E(u_{n+1}(0) - u_n(0))`, twice
+the mean increment of the odometer `u`. -/
 theorem integral_abs_centeredDeviation_le_two_increment {μ : Measure (Site d → ℝ)} (hd : 1 ≤ d)
     (n : ℕ)
     (hpt : ∀ ζ : Site d → ℝ,

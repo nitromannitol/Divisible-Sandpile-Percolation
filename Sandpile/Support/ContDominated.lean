@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.ContLcltPoint
+import Sandpile.Support.ContRiemann
+import Sandpile.External.HeatKernelBounds
+
+/-!
+# Dominated Convergence for the Scaled Double Time Sum
+
 Dominated convergence in the two space variables of `prop:weighted-membrane-limit`
 (`sandpile.tex:4692-4703`).
 
@@ -14,9 +20,6 @@ in the two sites.  With that, the inner integral converges at every point of the
 support of the test function and is bounded by `‖φ‖_1` times the same constant,
 so the outer integral converges too.
 -/
-import Sandpile.Support.ContLcltPoint
-import Sandpile.Support.ContRiemann
-import Sandpile.External.HeatKernelBounds
 
 open MeasureTheory Filter Topology
 
@@ -118,6 +121,10 @@ theorem abs_scaled_time_block_le' (hd : 1 ≤ d) {R : ℝ} (hR : 0 < R) (L : ℝ
 
 /-! ### The scaled double time sum and its double space integral -/
 
+/-- `Sandpile.Continuum.embed R f` multiplied by an integrable test function `φ`
+supported (away from its vanishing set) in the box `s` is integrable, by
+rewriting the product as the finite sum of indicator terms via
+`embed_mul_eq_sum`. -/
 theorem integrable_embed_mul (R : ℝ) (f : Sandpile.Site d → ℝ) (φ : Space d → ℝ)
     (hφ : Integrable φ) (s : Finset (Sandpile.Site d))
     (hs : ∀ z : Space d, φ z ≠ 0 → (fun i => ⌊R * z i⌋) ∈ s) :
@@ -132,6 +139,9 @@ noncomputable def timeKernel (d : ℕ) (T R : ℝ) (g : ℝ → ℝ) (x y : Sand
     ∑ a ∈ Finset.range ⌊R ^ 2 * T⌋₊, ∑ b ∈ Finset.range ⌊R ^ 2 * T⌋₊,
       g ((a : ℝ) * (R ^ 2)⁻¹) * g ((b : ℝ) * (R ^ 2)⁻¹) * Sandpile.heatKernel d (a + b) x y
 
+/-- For `φ` supported in the ball of radius `L`, `v ↦ timeKernel d T R g x (⌊Rv⌋) * φ v`
+is integrable, a special case of `integrable_embed_mul` with `f = timeKernel d T R g x`
+and box `supportBox d R L`. -/
 theorem integrable_timeKernel_mul {R : ℝ} (T : ℝ) (g : ℝ → ℝ) (x : Sandpile.Site d)
     (φ : Space d → ℝ) (hφ : Integrable φ) {L : ℝ}
     (hsupp : ∀ z : Space d, φ z ≠ 0 → ‖z‖ ≤ L) :
@@ -139,6 +149,9 @@ theorem integrable_timeKernel_mul {R : ℝ} (T : ℝ) (g : ℝ → ℝ) (x : San
   integrable_embed_mul R (fun y => timeKernel d T R g x y) φ hφ (supportBox d R L)
     (fun z hz => floor_mem_boxFinset R z (hsupp z hz))
 
+/-- If `timeKernel d T R g x y` is bounded by `B` for every lattice point `y`,
+then `∫ v, timeKernel d T R g x (⌊Rv⌋) * φ v` is bounded by `B` times the `L¹`
+norm of `φ`. -/
 theorem abs_integral_timeKernel_mul_le {R : ℝ} (T : ℝ) (g : ℝ → ℝ) (x : Sandpile.Site d)
     (φ : Space d → ℝ) (hφ : Integrable φ) (B : ℝ)
     (hB : ∀ y : Sandpile.Site d, |timeKernel d T R g x y| ≤ B) :
@@ -229,6 +242,11 @@ theorem tendsto_integral2_timeKernel
 
 /-! ### The uniform bound on the scaled double time sum -/
 
+/-- **The uniform bound on a single term of the scaled double time sum.** If the
+transition kernel obeys the Gaussian upper bound `hker` and `g` vanishes below
+`δ`, each term `g(a/R²) * g(b/R²) * heatKernel d (a+b) x y` is at most
+`Q² * (Cbd * (2δR²)^{-d/2})`, since a nonvanishing term forces both `a` and `b`
+to be at least `δR²`, hence `a + b ≥ 2δR²`. -/
 theorem abs_time_term_le (hd : 1 ≤ d) {R δ Q Cbd : ℝ} (hR : 0 < R)
     (hδ : 0 < δ) (hRδ : (1:ℝ) ≤ 2 * δ * R ^ 2) (hCbd : 0 ≤ Cbd) (hQ0 : 0 ≤ Q)
     (hker : ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site d,
@@ -281,6 +299,10 @@ theorem abs_time_term_le (hd : 1 ≤ d) {R δ Q Cbd : ℝ} (hR : 0 < R)
 
 
 
+/-- The algebraic identity that collapses the scale factor `R^(d-4)` against the
+two occurrences of `R` produced by the number of terms `(R²T)²` and the kernel
+bound `(2δR²)^{-d/2}`, leaving `T² * (Cbd * (2δ)^{-d/2})` with no dependence
+on `R`. -/
 theorem rpow_scale_identity (d : ℕ) {R δ : ℝ} (hR : 0 < R) (hδ : 0 < δ) (T Cbd : ℝ) :
     R ^ ((d : ℝ) - 4) * ((R ^ 2 * T) ^ 2 * (Cbd * (2 * δ * R ^ 2) ^ (-(d : ℝ) / 2)))
       = T ^ 2 * (Cbd * (2 * δ) ^ (-(d : ℝ) / 2)) := by
@@ -313,6 +335,9 @@ theorem rpow_scale_identity (d : ℕ) {R δ : ℝ} (hR : 0 < R) (hδ : 0 < δ) (
 
 
 
+/-- A double finite sum over `range N × range N` of terms bounded by `M` in
+absolute value is at most `N * N * M`, by two applications of the triangle
+inequality for finite sums. -/
 theorem abs_double_sum_le (N : ℕ) (M : ℝ) (F : ℕ → ℕ → ℝ) (hF : ∀ a b, |F a b| ≤ M) :
     |∑ a ∈ Finset.range N, ∑ b ∈ Finset.range N, F a b| ≤ (N : ℝ) * (N : ℝ) * M := by
   calc |∑ a ∈ Finset.range N, ∑ b ∈ Finset.range N, F a b|
@@ -328,6 +353,11 @@ theorem abs_double_sum_le (N : ℕ) (M : ℝ) (F : ℕ → ℕ → ℝ) (hF : �
     _ = (N : ℝ) * (N : ℝ) * M := by
         rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_assoc]
 
+/-- **The uniform bound on the scaled double time sum.** Combining the uniform
+term bound `abs_time_term_le`, the double-sum bound `abs_double_sum_le`, and the
+scale identity `rpow_scale_identity`, `timeKernel d T R g x y` is bounded by
+`T² * (Q² * Cbd * (2δ)^{-d/2})`, uniformly in `R` (subject to `2δR² ≥ 1`) and in
+the two lattice points `x, y`. -/
 theorem abs_timeKernel_le (hd : 1 ≤ d) {T R δ Q Cbd : ℝ} (hR : 0 < R) (hT : 0 ≤ T)
     (hδ : 0 < δ) (hRδ : (1:ℝ) ≤ 2 * δ * R ^ 2) (hCbd : 0 ≤ Cbd) (hQ0 : 0 ≤ Q)
     (hker : ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site d,

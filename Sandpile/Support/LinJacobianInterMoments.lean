@@ -1,20 +1,23 @@
-/-
-The four inputs of Step 1 of `lem:dgt4-linearization-from-survival` that speak
-about the intersection count, in the Bochner vocabulary that
-`Support/LinJacobianEarlyDisplay.lean` asks for.
-
-`eq:dgt4-tested-intersection-moments` (`sandpile.tex:5703-5709`) is proved in
-`Support/LinTested.lean` with the intersection count in `ℝ≥0∞` and the two
-expectations as iterated lower integrals, which is where it has no junk value.
-Step 1 works with a real majorant `I(X,Y)` integrated against the law of the two
-walks.  The passage between the two is Tonelli for the product of the two walk
-laws, together with the finiteness of the first moment in `d ≥ 5`: where the
-count is finite its real part is a genuine majorant of every finite double sum
-of intersection indicators, and under the pair law that is almost everywhere.
--/
 import Sandpile.Support.LinJacobianInter
 import Sandpile.Support.LinEarlyVarMeasCov
 import Sandpile.Support.LinEarlyVarCovBound
+
+/-!
+# Step 1's four intersection-count inputs, in Bochner form
+
+The four inputs of Step 1 of `lem:dgt4-linearization-from-survival` that speak about the
+intersection count, in the Bochner vocabulary that `Support/LinJacobianEarlyDisplay.lean`
+asks for.
+
+`eq:dgt4-tested-intersection-moments` (`sandpile.tex:5703-5709`) is proved in
+`Support/LinTested.lean` with the intersection count in `ℝ≥0∞` and the two expectations as
+iterated lower integrals, which is where it has no junk value. Step 1 works with a real
+majorant `I(X,Y)` integrated against the law of the two walks. The passage between the two
+is Tonelli for the product of the two walk laws, together with the finiteness of the first
+moment in `d ≥ 5`: where the count is finite its real part is a genuine majorant of every
+finite double sum of intersection indicators, and under the pair law that is almost
+everywhere.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

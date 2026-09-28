@@ -1,15 +1,18 @@
-/-
-Brownian scaling of the motion of `ssec:brownian-stopping`.
-
-The proof of `prop:continuum-value-selfsimilar` at `sandpile.tex:1991-1993` reads
-"Rescaling time by $T$ identifies Brownian stopping times bounded by $T$ with
-Brownian stopping times bounded by $1$".  The map it uses is
-`s ↦ T^{-1/2}(B_{Ts}-x)`, and this file proves that it carries a Brownian motion
-on `ℝ^d` with generator `Δ/(2d)` started at `x` to one started at the origin.
-Each coordinate is Mathlib's `IsBrownianReal.smul`; the independence of the
-coordinates is carried along the coordinatewise map.
--/
 import Sandpile.Continuum.Stopping
+
+/-!
+# Brownian scaling of the motion and its stopping times
+
+Brownian scaling of the motion of `ssec:brownian-stopping`. The proof of
+`prop:continuum-value-selfsimilar` at `sandpile.tex:1991-1993` reads "Rescaling time by $T$
+identifies Brownian stopping times bounded by $T$ with Brownian stopping times bounded by $1$".
+The map it uses is `s ↦ T^{-1/2}(B_{Ts}-x)`, and `isBrownian_scaled` proves that it carries a
+Brownian motion on `ℝ^d` with generator `Δ/(2d)` started at `x` to one started at the origin.
+Each coordinate is Mathlib's `IsBrownianReal.smul` (`isBrownian_scaled_coord`); the independence
+of the coordinates is carried along the coordinatewise map (`isBrownian_scaled_indep`).
+`isBrownianStopping_scaled` and `isBrownianStopping_unscaled` then identify stopping times of
+the original motion, bounded by `T`, with stopping times of the rescaled motion, bounded by `1`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -65,7 +68,8 @@ theorem isBrownian_scaled_indep {ΩB : Type*} [MeasurableSpace ΩB] (d : ℕ)
   have heq : (fun (i : Fin d) (ω : ΩB) =>
       fun s : ℝ≥0 => ((Real.sqrt (T : ℝ))⁻¹ • (B (T * s) ω - x)) i)
       = fun (i : Fin d) => (fun p : ℝ≥0 → ℝ => fun s : ℝ≥0 =>
-          (Real.sqrt (T : ℝ))⁻¹ * (p (T * s) - x i)) ∘ (fun (ω : ΩB) => fun t : ℝ≥0 => B t ω i) := by
+          (Real.sqrt (T : ℝ))⁻¹ * (p (T * s) - x i)) ∘
+        (fun (ω : ΩB) => fun t : ℝ≥0 => B t ω i) := by
     funext i ω
     funext s
     simp [PiLp.smul_apply, PiLp.sub_apply, smul_eq_mul]
@@ -106,7 +110,9 @@ theorem isBrownianStopping_scaled {ΩB : Type*} (d : ℕ) {T : ℝ≥0} (hT : T 
     refine Sandpile.Continuum.brownianFiltration_le B (T * t) _ fun s hs => ?_
     have hs' : s / T ≤ t := (div_le_iff₀ (pos_iff_ne_zero.mpr hT)).2
       (by simpa only [mul_comm] using hs)
-    have hm := ((Sandpile.Continuum.measurable_brownianFiltration B' (s / T) t hs').const_smul c⁻¹).add_const x
+    have hm :=
+      ((Sandpile.Continuum.measurable_brownianFiltration B' (s / T) t hs').const_smul
+        c⁻¹).add_const x
     convert! hm using 1
     funext ω
     dsimp [B']
@@ -140,7 +146,8 @@ theorem isBrownianStopping_unscaled {ΩB : Type*} (d : ℕ) {T : ℝ≥0}
     have hTs : T * s ≤ t := by
       have h := (le_div_iff₀ (pos_iff_ne_zero.mpr hT)).1 hs
       simpa only [mul_comm] using h
-    exact ((Sandpile.Continuum.measurable_brownianFiltration B (T * s) t hTs).sub_const x).const_smul c
+    exact ((Sandpile.Continuum.measurable_brownianFiltration B (T * s) t hTs).sub_const
+      x).const_smul c
   have hm := hle _ (hσ (t / T))
   convert! hm using 1
   ext ω

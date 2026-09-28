@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4ABandMeasure
+
+/-!
+# Step-1 tail profile of the band law
+
 The Step-1 tail profile of `thm:dgt4-many-limits` (`sandpile.tex:5930-6055`,
 `eq:dgt4-band-profile`) for the constructed one-site law.
 
@@ -9,7 +13,6 @@ up to `2/m_k`; the second is `o(ω_k)` by the weight estimates; the third is
 `o(ω_k)` because the positive summand has exponential moments and the band
 levels grow.
 -/
-import Sandpile.Support.Dgt4ABandMeasure
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -70,6 +73,8 @@ theorem bandLaw_toReal_Iic (hw0 : 0 ≤ w0) (hw : ∀ k, 0 ≤ w k) (hθ : ∀ k
     ENNReal.toReal_ofReal (add_nonneg (mul_nonneg hw0 hgnn) (tsum_nonneg hcdf0))]
 
 
+/-- Each term `w k * bandComponentCDF l1 (a k) (θ k) (m k) s` lies between `0` and `w k`, so
+the series over `k` is summable by comparison whenever `w` is. -/
 lemma summable_weight_mul_bandComponentCDF (hw : ∀ k, 0 ≤ w k) (hθ : ∀ k, 0 < θ k)
     (hm : ∀ k, 0 < m k) (hsum : Summable w) (s : ℝ) :
     Summable fun k => w k * bandComponentCDF l1 (a k) (θ k) (m k) s := by

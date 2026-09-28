@@ -1,13 +1,14 @@
-/-
-The bilinearity of the variance over a finite sum of random variables.
-
-`eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`), the first open
-piece of `eq:dgt4-derivative-variance-limit`: the paper expands
-`∑_z Var(D^{≤}_{R,z})` over the sites `x, y` of the test box, using
-`Var(∑_x f_x) = ∑_{x,y} Cov(f_x, f_y)`.
--/
 import Sandpile.Support.LinEarlyVarDefs
 import Sandpile.Support.LinEarlyVarFubini
+
+/-!
+# Variance of a finite sum as a double sum of covariances
+
+This file proves the bilinearity identity `Var (∑ x ∈ s, f x) = ∑ x ∈ s, ∑ y ∈ s, Cov (f x) (f y)`
+for a finite family `f x`, `x ∈ s`, of square-integrable random variables. It is the algebraic
+step that expands a sum such as `∑_z Var (D^{≤}_{R,z})` over the sites of a test box into a
+double sum of pairwise covariances.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -15,6 +16,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The variance of a finite sum `∑ x ∈ s, f x σ` of square-integrable random variables `f x`
+equals the double sum `∑ x ∈ s, ∑ y ∈ s, covariance (f x) (f y) μ` of pairwise covariances. -/
 theorem variance_finset_sum_eq (μ : Measure (Site d → ℝ)) [IsProbabilityMeasure μ]
     (s : Finset (Site d)) (f : Site d → (Site d → ℝ) → ℝ)
     (hf : ∀ x ∈ s, MemLp (f x) 2 μ) :

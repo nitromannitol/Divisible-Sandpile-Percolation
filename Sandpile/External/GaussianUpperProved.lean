@@ -1,23 +1,18 @@
-/-
-The Gaussian upper bound on the heat kernel is no longer assumed.
-
-`Sandpile/External/HeatKernelBounds.lean` states three displays of
-`ssec:green-estimates` as a single `Prop`.  The first, `eq:rw-gaussian-upper`,
-is now a theorem of the shared library, so the clause of the `Prop` that
-transcribes it is discharged here.  The `Prop` and its name are left untouched.
-
-Two steps.  The library's kernel is started at the origin and depends on the
-displacement alone, so an induction identifies `p_k(x, y)` with the library's
-kernel at `x - y`; the recursion is the same recursion written twice.  Then the
-library's bound carries the `ℓ¹` norm in the exponent and the denominator
-`8(n + 2d)`, whereas the paper writes the Euclidean norm and the denominator
-`n`.  The Euclidean norm is at most the `ℓ¹` norm, and for `n ≥ 1` one has
-`n + 2d ≤ (1 + 2d) n`, so the exponent of the library is at most the paper's
-with `c = 1 / (8(1 + 2d))`.
--/
 import Sandpile.External.HeatKernelBounds
 import Sandpile.External.MaxDisplacementProved
 import LatticeProb.Walk.SRWGaussBound
+
+/-!
+# The Gaussian upper bound on the random-walk heat kernel, proved
+
+`heatKernel_eq_srwHeat` identifies the sandpile heat kernel with the shared library's
+translation-invariant kernel at the site difference, by an induction matching the recursion that
+defines each; `greenConst_pos` records positivity of the library's Green constant.  Combining
+the two with the library's Gaussian upper bound, and comparing its `ℓ¹`-norm,
+`8(n+2d)`-denominator form with the paper's Euclidean-norm, `n`-denominator form, proves
+`Sandpile.External.gaussianUpper`, the first display of `ssec:green-estimates`, unconditionally
+rather than as an assumption.
+-/
 
 open MeasureTheory
 

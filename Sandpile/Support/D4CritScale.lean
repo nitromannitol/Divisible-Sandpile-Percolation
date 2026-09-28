@@ -1,10 +1,13 @@
-/-
-The final scale conversion of the dimension-four percolation proof
-(`sandpile.tex:4079-4083`): with `r = ⌊√(t/(A_ex+1))⌋` the block horizon
-`(A_ex+1) r²` is at most `t`, the radius grows with `t`, and
-`log t ≤ 4 log r` for all large `t`.
--/
 import Mathlib
+
+/-!
+# Converting the time scale to the block radius scale
+
+The final scale conversion of the dimension-four percolation proof (`sandpile.tex:4079-4083`)
+sets the block radius `r = ⌊√(t/(A_ex+1))⌋`. This file collects the three elementary facts it
+needs: the block horizon `(A_ex+1) r²` is at most `t`, any `n` with `n²(A_ex+1) ≤ t` is at
+most `r`, and `t` is at most `r⁴` once `t` is large enough relative to `A_ex`.
+-/
 
 namespace Sandpile
 

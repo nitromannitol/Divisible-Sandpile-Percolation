@@ -1,16 +1,18 @@
-/-
-The scaled lattice pairing of the odometer as the finite sum `F_R` of
-`sandpile.tex:5665-5668`: with `a_R(x) = R^{(d-4)/2} φ_R(x)` and
-`φ_R(x) = cellMass R φ x`, the pairing `R^{(d-4)/2} (u_{n_R})^{(R)}(φ)` is
-`∑_x a_R(x) u_{n_R}(x)`.
-
-This is the first step of the assembly of `lem:dgt4-linearization-from-survival`:
-the tested field `F_R` of `sandpile.tex:5665-5668` is a finite linear combination
-of the odometer values at the sites of the mesh, with coefficients `a_R(x)`, so
-the convex-linear bound of `lem:convex-linear-bound` applies to it coordinatewise.
--/
 import Sandpile.Support.ContCell
 import Sandpile.Support.LinSurvivalGradient
+
+/-!
+# The scaled lattice pairing of the odometer as a finite mesh sum
+
+This module writes the scaled lattice pairing of the odometer as the finite sum `F_R` of
+`sandpile.tex:5665-5668`: with `a_R(x) = R^{(d-4)/2} φ_R(x)` and `φ_R(x) = cellMass R φ x`, the
+pairing `R^{(d-4)/2} (u_{n_R})^{(R)}(φ)` is `∑_x a_R(x) u_{n_R}(x)`.
+
+This is the first step of the assembly of `lem:dgt4-linearization-from-survival`: the tested
+field `F_R` of `sandpile.tex:5665-5668` is a finite linear combination of the odometer values at
+the sites of the mesh, with coefficients `a_R(x)`, so the convex-linear bound of
+`lem:convex-linear-bound` applies to it coordinatewise.
+-/
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum

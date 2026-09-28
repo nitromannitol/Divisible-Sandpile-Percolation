@@ -1,56 +1,19 @@
-/-
-Lemma of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3974-3985`
-(label `lem:d4-exit-average-concentration`):
-
-  "Fix $\theta_{0}>0$ and $K_{0}<\infty$.  There are $c>0$ and $C<\infty$,
-   depending only on $\theta_{0}$ and $K_{0}$, such that, for every mean-zero
-   i.i.d.\ field $(\zeta(x))_{x\in\Z^4}$ with
-   $\E e^{\theta_{0}|\zeta(0)|}\leq K_{0}$, every integer $r\geq2$, and every
-   $s\geq0$,
-   \[
-     \sup_{z\in\Z^4}\P\bigl(|Y_r(z)-\E Y_r(z)|>s\bigr)
-     \leq C\exp\{-c\min(s^2,sr^2)\}\, .
-   \]"
-
-Modelling.  The statement is about the scenery alone, so the field is
-`LatticeProb.iidLaw 4 ν` with one-site law `ν`, and `E Y_r(z)` is the integral
-of `Y_r(·)(z)` against that law.  The exponential moment is an integral bound.
-
-`Y_r` is the exit-averaged localized value of `sandpile.tex:3869-3877`,
-repeated here as `eaExitValue`, together with the box `Q(x,L)` it uses:
-
-  `Y_r(z) = E_z[1_{{τ_{Q(z,r)} ≤ A_ex r²}} u_{r²}^{Q(X_τ,A_loc r)}(X_τ) | ζ]`,
-
-an integral against `Sandpile.walkLaw 4 z`, the law of simple random walk
-started at `z`, with `u^D_t` the localized value `Sandpile.localizedOdometer`
-of `eq:localized-odometer`.  Conditioning on the scenery is exactly this: the
-scenery is a parameter and the integral is over the walk only.  As in
-`lem:localization-killing`, `exitTime` has type `ℕ∞`, the event
-`{τ ≤ A_ex r²}` is written in `ℕ∞`, and the walk is evaluated at
-`(exitTime …).toNat`; the integrand is a `Set.indicator` of that event, so on
-its complement, where `toNat` may take the junk value `0`, the value is
-multiplied by zero and never read.
-
-Quantifier order.  `c` and `C` are bound after `θ₀` and `K₀` and before the
-law, since the paper says they depend only on `θ₀` and `K₀`.  The parameters
-`A_loc ≥ 1` and the integer `A_ex ≥ 1` are fixed in the running text before the
-lemma, but the lemma asserts that `c` and `C` depend on `θ₀` and `K₀` alone, so
-they are bound after `c` and `C`: the constants are uniform over the choice of
-`A_loc` and `A_ex`, which is what the proof gives, the two norm bounds on the
-influence weights being uniform in them.  The supremum over `z` is written as a
-universally quantified `z` inside the bound, the same statement without an
-`sSup` junk value, and the bound is on the measure of the deviation event in
-`ℝ≥0∞` against `ENNReal.ofReal` of the paper's right-hand side, so no `toReal`
-junk value can weaken it.  The threshold `r ≥ 2` is the paper's.
-
-The exponential-moment bound is stated together with the integrability of the
-exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
-non-integrable nonnegative function is zero, so the bound alone would hold for
-every law with no exponential moment.
--/
 import Sandpile.Support.ExitConcentration
 import Sandpile.External.BallGreenBounds
 import Sandpile.External.BallGreenBoundsProved
+
+/-!
+# Concentration of the exit-averaged localized value in dimension four
+
+`eaCube` is the cube `Q(x,L) = {y ∈ ℤ⁴ : max_i |y_i - x_i| ≤ L}`, and `eaExitValue` is the
+exit-averaged localized value `Y_r(z)` of `sandpile.tex:3864-3872`, the expectation over the
+random walk from `z` of the localized odometer evaluated where the walk exits `Q(z,r)`,
+conditioned on the scenery.  `Sandpile.Frozen.d4_exit_average_concentration` is
+`lem:d4-exit-average-concentration`: for a mean-zero i.i.d. scenery with a controlled exponential
+moment, the deviation of `Y_r(z)` from its mean has a two-regime sub-Gaussian and
+sub-exponential tail `C\exp(-c\min(s^2, sr^2))`, uniformly over `z`, `r ≥ 2`, and the
+localization parameters, with `c` and `C` depending only on `θ₀` and `K₀`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

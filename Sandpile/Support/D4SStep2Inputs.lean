@@ -1,19 +1,21 @@
-/-
-The inputs of Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3382`)
-at the field the proposition actually smooths: the centred linearization error
-`E_m = u_m - \E u_m(0) - V_m` of `prop:d4-pointwise-linearization`.
-
-Two things are recorded here.  The first is the crude total variation bound
-`∑_y|p_n(x,y)-p_n(b,y)| ≤ 2`, valid for ANY two sites, which is what the second
-display of Step 2 needs: its two base points `0` and `e_1` lie in different
-parity classes, so the gradient bound of `eq:rw-tv-gradient` does not apply to
-them and only the trivial bound is available.  The second is the identification
-of the smoothed centred error with the paper's `F_R`, together with its uniform
-second moment.
--/
 import Sandpile.Support.D4SmoothL2
 import Sandpile.Support.D4L2Error
 import Sandpile.Support.Smoothed
+
+/-!
+# The inputs of Step 2: the centred linearization error and its crude total-variation bound
+
+Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3368-3382`) smooths the centred
+linearization error `E_m = u_m - \E u_m(0) - V_m` of `prop:d4-pointwise-linearization`
+(`linError`). Two things are recorded here. The first is the crude total variation bound
+`∑_y|p_n(x,y)-p_n(b,y)| ≤ 2`, valid for ANY two sites (`tsum_abs_heatKernel_sub_le_two`), and its
+consequence for second moments (`integral_sq_smoothing_increment_le_four`): this is what the
+second display of Step 2 needs, since its two base points `0` and `e_1` lie in different parity
+classes, so the gradient bound of `eq:rw-tv-gradient` does not apply and only the trivial bound is
+available. The second is the identification of the smoothed centred error with the paper's `F_R`
+(`avg_iterate_linError`), together with its uniform second moment
+(`exists_linError_second_moment`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -91,6 +93,7 @@ Step 2 smooths (`sandpile.tex:3368-3372`). -/
 noncomputable def linError (ν : Measure ℝ) (m : ℕ) (ζ : Site 4 → ℝ) (z : Site 4) : ℝ :=
   diffField ζ m z - ∫ η, odometerOf η m 0 ∂(LatticeProb.iidLaw 4 ν)
 
+/-- Unfolds `linError` via `diffField = odometerOf - membrane`. -/
 theorem linError_eq (ν : Measure ℝ) (m : ℕ) (ζ : Site 4 → ℝ) (z : Site 4) :
     linError ν m ζ z =
       odometerOf ζ m z - (∫ η, odometerOf η m 0 ∂(LatticeProb.iidLaw 4 ν)) -
@@ -98,6 +101,8 @@ theorem linError_eq (ν : Measure ℝ) (m : ℕ) (ζ : Site 4 → ℝ) (z : Site
   show odometerOf ζ m z - membrane ζ m z - _ = _
   ring
 
+/-- `linError ν m · z` is measurable, as a difference of the measurable odometer and membrane
+fields and a constant. -/
 theorem measurable_linError (ν : Measure ℝ) (m : ℕ) (z : Site 4) :
     Measurable (fun ζ : Site 4 → ℝ => linError ν m ζ z) := by
   have h : (fun ζ : Site 4 → ℝ => linError ν m ζ z) =

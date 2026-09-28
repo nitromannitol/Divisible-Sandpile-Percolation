@@ -1,41 +1,18 @@
-/-
-The parallel toppling dynamics of `sandpile.tex`, Section 2 (`sandpile.tex:802-816`).
-
-The paper fixes an initial configuration `σ`, lets `σ_n` be the mass field after `n`
-rounds in which every site topples in parallel, and lets `u_n(x)` be the mass sent
-from `x` to each neighbour up to that time:
-
-  `σ_0 = σ`,   `u_0 = 0`,
-  `u_{n+1}(x) = u_n(x) + (σ_n(x) - 1)₊ / (2d)`                   (`eq:u-update`),
-  `σ_{n+1}   = σ_n + Δ[(σ_n - 1)₊ / (2d)]`                       (`eq:sigma-update`),
-
-with `a₊ = max(a, 0)` and `Δ` the graph Laplacian.  This file defines that pair of
-sequences and proves the facts `lem:recursion` uses.
-
-How the paper's objects are modelled here:
-
-- `laplacian f x = ∑_{y ∼ x} (f(y) - f(x))` is `nbrSum f x - 2d f(x)`: the `2d`
-  neighbours of `x` are counted with multiplicity by direction, as in `nbrSum`.
-- `topplingStep d` is one round `(σ_n, u_n) ↦ (σ_{n+1}, u_{n+1})` on pairs of fields,
-  the first component `eq:sigma-update` and the second `eq:u-update`.  A single
-  recursion returns the pair because the two equations feed each other.
-  `topplingPair d σ` iterates it from `(σ, 0)`, and `topplingMass d σ n = σ_n`,
-  `topplingOdometer d σ n = u_n` are its two projections.  The four defining
-  equations are stated as `@[simp]` lemmas, in the paper's form.
-- The dynamics is defined for every `d`.  At `d = 0` the divisions by `2d` take the
-  junk value `0`, no site ever topples and both sequences are constant; the bridge
-  to `Sandpile.odometer` holds there for that reason.  The recursion of
-  `lem:recursion` itself carries `1 ≤ d`.
-- `topplingMass_eq` is the telescoping `σ_n = σ + Δu_n` of the paper's proof, and
-  `min_le_topplingMass_succ`, `one_le_topplingMass_of_pos` are its remark that a site
-  keeps mass at least one from its first toppling on.
-- `topplingOdometer_recursion` is `lem:recursion` for the toppling odometer, proved as
-  the paper proves it, and `topplingOdometer_eq_odometer` identifies the toppling
-  odometer with the `Sandpile.odometer` of `Sandpile/Basic.lean`, so that the rest of
-  the development, which is written for `Sandpile.odometer`, applies to the dynamics
-  the paper starts from.
--/
 import Sandpile.Walk
+
+/-!
+# Parallel toppling dynamics
+
+Defines the pair of sequences of the divisible sandpile's parallel toppling dynamics on `ℤ^d`:
+starting from a mass field `σ`, the mass field `topplingMass d σ n` and the odometer
+`topplingOdometer d σ n` recording the mass each site has sent to each neighbour evolve by
+`σ_0 = σ`, `u_0 = 0`, `u_{n+1} = u_n + (σ_n - 1)⁺ / (2d)`, `σ_{n+1} = σ_n + Δ[(σ_n - 1)⁺ / (2d)]`,
+with `Δ` the graph Laplacian `laplacian`. Telescoping the recursion gives `σ_n = σ + Δu_n`
+(`topplingMass_eq`), from which a site is shown to keep mass at least one from its first
+toppling on and to satisfy the averaging recursion `u_{n+1}(x) = (ζ(x) + Pu_n(x))⁺` obeyed by
+`Sandpile.odometer` (`topplingOdometer_recursion`), identifying `topplingOdometer` with
+`Sandpile.odometer` (`topplingOdometer_eq_odometer`).
+-/
 
 namespace Sandpile
 

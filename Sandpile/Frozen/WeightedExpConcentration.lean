@@ -1,72 +1,25 @@
-/-
-Weighted exponential concentration lemma of sandpile.tex, frozen.
-`sandpile.tex:1345-1405` (label `lem:weighted-exp-conc`), all four parts:
-
-  "Let $\xi_1,\ldots,\xi_N$ be independent real-valued random variables, and let
-   $F=F(\xi_1,\ldots,\xi_N)$ be real-valued and measurable.  Let $\xi_i'$ be an
-   independent copy of $\xi_i$, independent of all coordinates, and let
-   $\xi^{(i)}$ be obtained from $\xi=(\xi_1,\ldots,\xi_N)$ by replacing only
-   $\xi_i$ with $\xi_i'$.  Assume that, for deterministic numbers
-   $\ell_i\geq0$, not all zero, for every $1\leq i\leq N$,
-   $|F(\xi)-F(\xi^{(i)})|\leq \ell_i|\xi_i-\xi_i'|$.  Write
-   $\|\ell\|_{\ell^2}:=(\sum_{i=1}^N\ell_i^2)^{1/2}$ and
-   $\|\ell\|_{\ell^\infty}:=\max_{1\leq i\leq N}\ell_i$.
-   (a) If $p\geq2$ and $\E|\xi_i|^p<\infty$ for every $i$, then there is
-   $C=C(p)$ such that
-   $(\E|F-\E F|^p)^{1/p}\leq C[(\sum_i\ell_i^2(\E|\xi_i-\xi_i'|^p)^{2/p})^{1/2}
-   +(\sum_i\ell_i^p\E|\xi_i-\xi_i'|^p)^{1/p}]$.
-   (b) If the $\xi_i$ are i.i.d. and $\E e^{\theta_0|\xi_1|}\leq K_0$, then there
-   are $c>0$ and $C<\infty$, depending only on $\theta_0$ and $K_0$, such that,
-   for all $r\geq0$,
-   $\P(|F-\E F|\geq r)\leq C\exp\{-c\min(r^2/\|\ell\|_{\ell^2}^2,
-   r/\|\ell\|_{\ell^\infty})\}$.
-   (c) If the $\xi_i$ are i.i.d. with $\E\xi_1=0$ and
-   $\E e^{\theta_0|\xi_1|}\leq K_0$, then there are $c>0$ and $C<\infty$,
-   depending only on $\theta_0$ and $K_0$, such that, for every
-   $\lambda\in\R$ with $|\lambda|\,\|\ell\|_{\ell^\infty}\leq c$,
-   $\log\E\exp\{\lambda\sum_i\ell_i\xi_i\}\leq C\lambda^2\|\ell\|_{\ell^2}^2$.
-   (d) Under the assumptions of part (b), if
-   $|\lambda|\|\ell\|_{\ell^\infty}<\theta_0$, then
-   $\E e^{\lambda(F-\E F)}\leq\exp\{C\lambda^2\|\ell\|_{\ell^2}^2\}$, where $C$
-   depends only on $\theta_0$, $K_0$, and
-   $\theta_0-|\lambda|\|\ell\|_{\ell^\infty}$."
-
-Modelling.  The `N` independent coordinates are the product space
-`Fin N → ℝ` under `Measure.pi μ` for a family of one-site laws
-`μ : Fin N → Measure ℝ`; in parts (b), (c), (d) the coordinates are i.i.d., so
-the family is the constant family `fun _ => ν`.  The resampled configuration
-`ξ^{(i)}` is `Function.update ξ i y`, and the coordinate Lipschitz hypothesis is
-imposed for every `ξ` and every replacement value `y`, which is the everywhere
-form of the paper's almost sure statement.  The resampling moment
-`\E|\xi_i-\xi_i'|^p` is the iterated integral `resampleMoment (μ i) p`, and
-`\|\ell\|_{\ell^2}`, `\|\ell\|_{\ell^\infty}` are `lTwoNorm`, `lInfNorm` below.
-`lInfNorm` is an `iSup` over `Fin N`, whose junk value at `N = 0` is never
-reached because the hypothesis `∃ i, ℓ i ≠ 0` forces `N ≥ 1`; the same
-hypothesis makes `lTwoNorm ℓ` and `lInfNorm ℓ` strictly positive, so the two
-quotients in part (b) are not divisions by zero.
-
-Quantifier order.  The four parts are four conjuncts of one statement, and the
-theorem itself has no parameters, so that each part binds its own constants
-exactly where the paper does.  In (a), `C = C(p)` is bound after `p` and before
-`N`, `μ`, `F` and `ℓ`.  In (b) and (c), `c` and `C` are bound after `θ₀` and
-`K₀` and before `N`, `ν`, `F` and `ℓ`.  In (d) the paper lets `C` depend on
-`θ₀`, `K₀` and the gap `θ₀ - |λ| \|ℓ\|_{ℓ^∞}` as well, so `C` is a function of
-that gap, bound after `θ₀` and `K₀` and before everything else.
-
-Parts (b), (c) and (d) take the integrability of the exponential as a hypothesis
-alongside the bound `E e^{θ₀|ξ₁|} ≤ K₀`, as the paper's finiteness requires: the
-Bochner integral of a non-integrable nonnegative function is zero, so the bound
-alone is satisfied by every law with no exponential moment at all, and for such a
-law the conclusions are false rather than merely weak.  Parts (c) and (d) also
-assert the integrability of the exponential alongside the bound
-on its integral.  Without that conjunct a Bochner integral of a non-integrable
-function takes the junk value zero, `Real.log 0 = 0`, and both bounds would hold
-for a divergent exponential moment, which is the opposite of what the paper
-asserts.
--/
 import LatticeProb.Prob.LpSmooth
 import LatticeProb.Prob.WeightedConc
 import Sandpile.Support.Norms
+
+/-!
+# The weighted exponential concentration lemma, frozen
+
+Weighted exponential concentration lemma of `sandpile.tex`, frozen (`sandpile.tex:1345-1405`,
+label `lem:weighted-exp-conc`), all four parts, for a Lipschitz-in-resampling functional `F` of
+independent coordinates `ξ_1, …, ξ_N` with Lipschitz weights `ℓ_i ≥ 0`, not all zero: (a) an
+`Lᵖ` bound on `F - E F` for `p ≥ 2` in terms of the resampling moments and the `ℓ²`/`ℓᵖ` norms of
+`ℓ`; (b) a sub-Gaussian/sub-exponential tail bound for i.i.d. coordinates with a common
+exponential moment; (c) a matching bound on the log-moment generating function of `∑ ℓ_i ξ_i`; and
+(d) an exponential-moment bound on `F - E F` itself. The `N` coordinates are the product space
+`Fin N → ℝ` under `Measure.pi μ`, the resampled configuration `ξ^{(i)}` is `Function.update ξ i y`,
+the resampling moment `E|ξ_i - ξ_i'|^p` is `Sandpile.resampleMoment (μ i) p`, and
+`‖ℓ‖_{ℓ²}, ‖ℓ‖_{ℓ^∞}` are `Sandpile.lTwoNorm`, `Sandpile.lInfNorm`; the hypothesis `∃ i, ℓ i ≠ 0`
+keeps both norms strictly positive, avoiding division by zero and the junk value of `iSup` at
+`N = 0`. Parts (b)-(d) pair the exponential-moment bound `E e^{θ₀|ξ₁|} ≤ K₀` with the
+integrability of the exponential, since the Bochner integral of a non-integrable function is the
+junk value zero.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

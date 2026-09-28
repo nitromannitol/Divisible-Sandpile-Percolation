@@ -1,24 +1,26 @@
-/-
-**The `y\leq-1` bound of Step 4 of case (a)**
-(`eq:dgt4-gaussian-conditional-concentration`, `sandpile.tex:5267-5282`).
-
-The paper bounds the conditional mean increment at a level far below the threshold by
-concentration: "By `eq:dgt4-gaussian-terminal-domination`,
-`-\zeta(0)-Pu_n(0)\leq yh_n+\Theta_n`. [...] The comparison in Step 2, now retaining the
-dependence on `y`, gives, uniformly for `y\leq-1`,
-`\E[|\Theta_n|\mid\cdot]\leq o(h_n)+Ck_n^{-(d-4)/2}(\E u_n(0)+|y|h_n)\leq|y|h_n/2`. [...]
-Integrating the conditional concentration tail therefore gives
-`m_n(y)\leq C\exp\{-cy^2k_n^{(d-4)/2}/(\E u_n(0))^2\}`."
-
-Both halves are here.  The conditional mean of the terminal quantity at the level `y` is
-bounded with the `y` dependence retained, which is the comparison of Step 2 read at an
-unbounded level; and the mean excess inequality of `Support/Dgt4AStep4Tail.lean` turns the
-conditional concentration tail into the bound on `m_n(y)`.  The exponent obtained is linear
-in `|y|` rather than quadratic, which is all the domination of Step 4 needs, since the
-coefficient tends to infinity.
--/
 import Sandpile.Support.Dgt4AStep4Tail
 import Sandpile.Support.Dgt4AStep4Rep
+
+/-!
+# The `y ≤ -1` bound of Step 4, case (a)
+
+**The `y\leq-1` bound of Step 4 of case (a)** (`eq:dgt4-gaussian-conditional-concentration`,
+`sandpile.tex:5267-5282`).
+
+The paper bounds the conditional mean increment at a level far below the threshold by
+concentration: "By `eq:dgt4-gaussian-terminal-domination`, `-\zeta(0)-Pu_n(0)\leq yh_n+\Theta_n`.
+[...] The comparison in Step 2, now retaining the dependence on `y`, gives, uniformly for
+`y\leq-1`, `\E[|\Theta_n|\mid\cdot]\leq o(h_n)+Ck_n^{-(d-4)/2}(\E u_n(0)+|y|h_n)\leq|y|h_n/2`.
+[...] Integrating the conditional concentration tail therefore gives
+`m_n(y)\leq C\exp\{-cy^2k_n^{(d-4)/2}/(\E u_n(0))^2\}`."
+
+Both halves are here. The conditional mean of the terminal quantity at the level `y` is bounded
+with the `y` dependence retained, which is the comparison of Step 2 read at an unbounded level;
+and the mean excess inequality of `Support/Dgt4AStep4Tail.lean` turns the conditional
+concentration tail into the bound on `m_n(y)`. The exponent obtained is linear in `|y|` rather
+than quadratic, which is all the domination of Step 4 needs, since the coefficient tends to
+infinity.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal

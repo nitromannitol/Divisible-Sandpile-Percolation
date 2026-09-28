@@ -1,19 +1,17 @@
-/-
-Theorem 1.3(ii)(b) of sandpile.tex, frozen.  `sandpile.tex:247-253`
-(label `thm:main-explosion`, part (ii)(b)):
-
-  "[$d=4$] The centered odometer $u_t(0)-\E u_t(0)$ has Gaussian fluctuations:
-   $(u_t(0)-\E u_t(0))/\sqrt{\log t}\Rightarrow N(0, 4\Var(\zeta(0))/\pi^2)$,
-   and $\Var(u_t(0))/\log t\to4\Var(\zeta(0))/\pi^2$."
-
-Convergence in distribution is Mathlib's `TendstoInDistribution`, with the
-limit the identity variable under the Gaussian law of the stated variance.
-The paired local central limit theorem is the explicit cited input used by
-Proposition `prop:d4-one-point-gaussian` at `sandpile.tex:3250-3256`.
--/
 import Sandpile.Law
 import Sandpile.Frozen.D4OnePointGaussian
 import Sandpile.External.VarianceScaleProved
+
+/-!
+# Theorem 1.3(ii)(b): Gaussian fluctuations in dimension four
+
+This file proves the frozen statement of Theorem 1.3(ii)(b) (`sandpile.tex:247-253`,
+`thm:main-explosion`): in dimension `d = 4`, the centered odometer
+`(u_t(0) - E u_t(0)) / √(log t)` converges in distribution, `TendstoInDistribution`, to the
+Gaussian law `N(0, 4 Var(ζ(0)) / π²)`, and `Var(u_t(0)) / log t` converges to the same constant.
+The statement is the theorem-level instance of `prop:d4-one-point-gaussian`, and inherits its
+explicit cited input, the paired local central limit theorem of `sandpile.tex:3250-3256`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

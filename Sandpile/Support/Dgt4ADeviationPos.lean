@@ -1,10 +1,13 @@
-/-
-The first-moment bound for the centred deviation `D_n` of `sandpile.tex:5050-5055`:
-the positive part of `D_n` is at most the odometer increment at the origin.  The recursion
+import Sandpile.Support.Dgt4ADeviationSplit
+
+/-!
+# Positive-part bound for the centred deviation `D_n`
+
+The first-moment bound for the centred deviation `D_n` of `sandpile.tex:5050-5055`: the positive
+part of `D_n` is at most the odometer increment at the origin. The recursion
 `V_∞-u_{n+1}=\min\{V_∞,P(V_∞-u_n)\}` gives `D_n\leq u_{n+1}(0)-u_n(0)`, and the odometer is
 nondecreasing in time.
 -/
-import Sandpile.Support.Dgt4ADeviationSplit
 
 open MeasureTheory Filter Topology Set
 
@@ -25,14 +28,17 @@ theorem centeredDeviation_posPart_le_increment (hd : 3 ≤ d) (ζ : Site d → �
     linarith
   rw [hsplit]
   have h2 : max 0 ((Sandpile.odometerOf ζ (n + 1) 0 - Sandpile.odometerOf ζ n 0)
-      - max 0 (Sandpile.avg (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
+      - max 0 (Sandpile.avg
+          (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
           - Sandpile.infiniteGreenField ζ 0))
       ≤ Sandpile.odometerOf ζ (n + 1) 0 - Sandpile.odometerOf ζ n 0 := by
     rcases le_total 0 ((Sandpile.odometerOf ζ (n + 1) 0 - Sandpile.odometerOf ζ n 0)
-        - max 0 (Sandpile.avg (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
+        - max 0 (Sandpile.avg
+            (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
             - Sandpile.infiniteGreenField ζ 0)) with h | h
     · rw [max_eq_right h]
-      have h3 : 0 ≤ max 0 (Sandpile.avg (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
+      have h3 : 0 ≤ max 0 (Sandpile.avg
+          (fun y => Sandpile.infiniteGreenField ζ y - Sandpile.odometerOf ζ n y) 0
           - Sandpile.infiniteGreenField ζ 0) := le_max_left _ _
       linarith
     · rw [max_eq_left h]; exact hnn

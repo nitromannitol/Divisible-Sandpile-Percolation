@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Membrane
+
+/-!
+# The Furlan-Mourrat Besov tightness criterion
+
 External input: the tightness criterion cited at `sandpile.tex:1661-1662` and
 `sandpile.tex:1676-1680`.  The paper introduces its tightness lemma with
 
@@ -43,7 +47,6 @@ The mean-zero hypothesis is stated separately, as the paper does.  The base
 a junk value.  Tightness is `TightInNegSobolev`, the paper's own formulation:
 tightness of the `H^{-s}(D)` norms on every bounded domain `D`.
 -/
-import Sandpile.Continuum.Membrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,4 +1,11 @@
-/-
+import Sandpile.Walk
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.GreenBoundsHighProved
+import Sandpile.Support.OdometerLocalization
+
+/-!
+# Localization of the odometer by conditional expectation
+
 Localization lemma of sandpile.tex, frozen.  `sandpile.tex:6451-6462`
 (label `lem:dgt4-localization`):
 
@@ -37,10 +44,6 @@ exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
 non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.OdometerLocalization
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

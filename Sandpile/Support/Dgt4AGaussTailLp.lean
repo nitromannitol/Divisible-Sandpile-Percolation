@@ -1,13 +1,14 @@
-/-
+import Sandpile.Support.Dgt4ATailKernelEq
+import Sandpile.Support.Dgt4ATailKernelSq
+import Sandpile.Support.LinGaussField
+import Sandpile.Support.BlockIncrement
+
+/-!
 The heat-kernel tail `\sum_{r\geq j}p_r(0,z)` of `eq:dgt4-tail-kernel` as a square-summable
 family of coefficients, and the identity that identifies it with the `j`-step average of the
 Green coefficient families: `P^jG(\cdot,z)(0)=\sum_{r\geq j}p_r(0,z)`
 (`sandpile.tex:5063-5065`).
 -/
-import Sandpile.Support.Dgt4ATailKernelEq
-import Sandpile.Support.Dgt4ATailKernelSq
-import Sandpile.Support.LinGaussField
-import Sandpile.Support.BlockIncrement
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal
@@ -25,6 +26,8 @@ noncomputable def tailKernelLp (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
     rw [show ((2 : ℝ≥0∞)).toReal = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast,
       Real.norm_eq_abs, sq_abs]⟩
 
+/-- The coercion of `tailKernelLp` to a function on `Site d` is `Sandpile.External.tailKernel`
+itself; unfolds the `lp`-subtype coercion. -/
 theorem coeFn_tailKernelLp (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     {j : ℕ} (hj : 1 ≤ j) :
     ((tailKernelLp hGH hd hj : lp (fun _ : Site d => ℝ) 2) : Site d → ℝ)

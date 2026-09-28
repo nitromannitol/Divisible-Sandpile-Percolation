@@ -1,10 +1,13 @@
-/-
+import Sandpile.Support.Dgt4ATailPointwise
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+
+/-!
+# Integrability of the layer-cake integrand
+
 The integrability of the layer-cake integrand `t\mapsto\P(t<X^2)` on `(0,\infty)`, which
 lets the second-moment bound of `sandpile.tex:5059-5061` be read off from the pointwise
 tail bound `Support/Dgt4ATailPointwise.lean`.
 -/
-import Sandpile.Support.Dgt4ATailPointwise
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

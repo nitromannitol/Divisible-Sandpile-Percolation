@@ -1,31 +1,19 @@
-/-
-The two symmetries of `sandpile.tex:2103-2104` used in Step 1 of
-`prop:fixed-scale-crossings`:
-
-  "The unit-scale field `𝒳_1` is stationary, sign-symmetric, invariant under
-   rotations by `π/2` and coordinate reflections",
-
-in the form the crossing events need: the sign flip turns a superlevel crossing
-into a sublevel crossing at the opposite level, and the coordinate interchange
-turns a left-right crossing of a rectangle into a bottom-top crossing of the
-transposed rectangle.  Together with the planar duality these are what give the
-square estimate `P(H_{[-R,R]^2}(0)) ≥ 1/2` of `sandpile.tex:2235-2236`.
-
-As everywhere in this chain the crossing events are compared as outer measures;
-that is legitimate because both maps are involutions of the space of planar
-fields, so each is a measurable equivalence and carries every set, measurable or
-not, to a set of the same measure.
-
-WARNING.  The statements below about `μ` of a crossing event on the space of ALL
-planar functions are correct but empty: every such outer measure is one
-(`Sandpile/Support/CrossVacuity.lean`).  Only the geometry of this module,
-`crosses_swap` and the interchange of the two coordinates, is used.  The
-symmetry of a field in the form the crossing estimates use it is
-`crossingSet_swap` of `Sandpile/Support/CrossDuality.lean`, an equality of
-subsets of the probability space carrying the field, and the invariance in law
-is `Sandpile.Continuum.IsSymmetricField` of `Sandpile/Support/CrossField.lean`.
--/
 import Sandpile.Support.CrossTranslate
+
+/-!
+# Coordinate-interchange and sign-flip symmetries of crossing events
+
+This file records, in the form the crossing events need, the two symmetries of the unit-scale
+field used in Step 1 of `prop:fixed-scale-crossings` (`sandpile.tex:2103-2104`): the coordinate
+interchange `swapPoint`/`swapIdx` turns a left-right crossing into a bottom-top crossing of the
+transposed rectangle (`crosses_swap`, `crossingEvent_transpose`), and the sign flip turns a
+superlevel crossing into a sublevel crossing at the opposite level (`crossingEvent_negate`).
+`measure_crossingEventVert_transpose` and `measure_crossing_sublevel` transport these to
+equalities of probabilities for a symmetric law. Crossing events are compared here as outer
+measures on the space of all planar functions, which is legitimate because both maps are
+measurable involutions and so carry every set, measurable or not, to a set of the same outer
+measure.
+-/
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -41,23 +29,30 @@ def swapPoint (u : Sandpile.Continuum.Space 2) : Sandpile.Continuum.Space 2 :=
 /-- Interchange of the two indices. -/
 def swapIdx (i : Fin 2) : Fin 2 := ⟨1 - (i : ℕ), by omega⟩
 
+/-- Evaluating `swapPoint u` at index `k` gives `u` evaluated at the interchanged index
+`swapIdx k`. -/
 theorem swapPoint_apply (u : Sandpile.Continuum.Space 2) (k : Fin 2) :
     (swapPoint u) k = u (swapIdx k) := rfl
 
+/-- `swapIdx` is an involution on `Fin 2`. -/
 theorem swapIdx_swapIdx (i : Fin 2) : swapIdx (swapIdx i) = i := by
   ext
   simp only [swapIdx]
   omega
 
+/-- `swapIdx` sends the first coordinate index `0` to the second, `1`. -/
 theorem swapIdx_zero : swapIdx 0 = 1 := rfl
 
+/-- `swapIdx` sends the second coordinate index `1` to the first, `0`. -/
 theorem swapIdx_one : swapIdx 1 = 0 := rfl
 
+/-- `swapPoint` is an involution on `Sandpile.Continuum.Space 2`. -/
 theorem swapPoint_swapPoint (u : Sandpile.Continuum.Space 2) :
     swapPoint (swapPoint u) = u := by
   ext k
   rw [swapPoint_apply, swapPoint_apply, swapIdx_swapIdx]
 
+/-- `swapPoint` is continuous. -/
 theorem continuous_swapPoint : Continuous swapPoint := by
   unfold swapPoint
   fun_prop

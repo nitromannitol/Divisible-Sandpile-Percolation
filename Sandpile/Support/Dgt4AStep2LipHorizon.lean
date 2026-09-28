@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4AStep2Lip
+import Sandpile.Support.Dgt4AStep2Horizon
+
+/-!
+# Step 2 of case (a): the closing Lipschitz-horizon bound
+
 The clause that closes Step 2 of case (a) (`sandpile.tex:5124-5126`):
 
   "because `\E|b+V_\infty(0)|=O(\E u_n(0))` and `(\E u_n(0))^2k_n^{-(d-4)/2}\to0`."
@@ -10,8 +15,6 @@ Lipschitz constant is at most `CK^2\log n\,k_n^{-(d-4)/4}`, which vanishes at th
 `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil` of `Support/Dgt4AStep2Horizon.lean`: there
 `k_n^{(d-4)/4}\geq(\log(n+2))^{3/2}`.
 -/
-import Sandpile.Support.Dgt4AStep2Lip
-import Sandpile.Support.Dgt4AStep2Horizon
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -33,6 +36,10 @@ theorem one_le_dgt4Horizon (hd : 5 ≤ d) (n : ℕ) : 1 ≤ dgt4Horizon d n := b
   have h2 := Nat.ceil_eq_zero.1 hzero
   linarith
 
+/-- **The clause that closes Step 2 of case (a)** (`sandpile.tex:5124-5126`): the mean odometer
+squared times the normalized `(dgt4Horizon d n + 1)`-step average of the Green covariance
+kernel tends to `0`, combining the growth bound `exists_meanOdometer_le_sqrt_log` with the
+Lipschitz decay `exists_avgIterate_greenCovariance_le` of `Support/Dgt4AStep2Lip.lean`. -/
 theorem tendsto_meanOdometer_sq_mul_horizon_lip
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) :
     Tendsto (fun n : ℕ =>

@@ -1,12 +1,13 @@
-/-
+import Sandpile.Support.Dgt4ABoxDeviation
+import Sandpile.Support.Concentration
+import Sandpile.Support.LinGreenTail
+
+/-!
 Uniform moments for `D_n`.  Its coordinate Lipschitz coefficients `2G(0,z)` are square
 summable in `d\geq5` (`eq:dgt4-green-l2`, `sandpile.tex:1299-1300`) and do not depend on
 `n`, so the product moment bound of `Support/Concentration.lean` gives a bound on the
 `p`-th moment of `D_n` about its mean that is uniform in `n`.
 -/
-import Sandpile.Support.Dgt4ABoxDeviation
-import Sandpile.Support.Concentration
-import Sandpile.Support.LinGreenTail
 
 open MeasureTheory Filter Topology Set
 

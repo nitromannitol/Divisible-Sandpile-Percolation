@@ -20,6 +20,10 @@ open scoped NNReal ENNReal
 
 namespace Sandpile.Continuum
 
+/-- At any fixed time `t`, the Gaussian heat potential `Z t x` agrees `PW`-a.e. with the affine
+function `ω ↦ t · (√ν2 · 𝒲(1) ω)`: since `greenTimeBM_zero_dim` makes the dimension-zero Green
+kernel the constant function `t`, linearity of the white-noise integral (`hW.smul`) turns
+`gaussianPotential` into exactly this product. -/
 theorem gaussianPotential_eq_affine_of_rat {ΩW : Type*} [MeasurableSpace ΩW]
     {PW : Measure ΩW} {W : (Space 0 → ℝ) → ΩW → ℝ}
     (hW : IsWhiteNoise 0 W PW) (ν2 : ℝ) (Z : ℝ → Space 0 → ΩW → ℝ)

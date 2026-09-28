@@ -1,22 +1,23 @@
-/-
-Theorem 1.3(ii)(c) of `sandpile.tex` (`sandpile.tex:255-260`) assembled from the
-two propositions its proof names.  At `sandpile.tex:302-304` the proof of
-`thm:main-explosion` reads "part (ii)(c) combines
-Propositions~\ref{prop:d4-diffusive-tightness} and~\ref{prop:d4-superdiffusive-limit}",
-and that is the whole content of the part: the first conjunct is the tightness
-of `prop:d4-diffusive-tightness` at the diffusive times `⌊TR²⌋`, and the second
-is the superdiffusive limit of `prop:d4-superdiffusive-limit`, one domain and
-one averaging density at a time.
-
-`prop:d4-diffusive-tightness` is sealed, so it is applied here.
-`prop:d4-superdiffusive-limit` is not, so its conclusion is the hypothesis
-`hSuper`, quantified over the domain, the density and the exponent exactly as
-the frozen theorem quantifies them.  The two covariances agree by definition:
-`Sandpile.omegaMembraneCov4 D w ν2 φ ψ` is
-`omegaRep D w (fun χ => omegaRep D w (membraneCov4 ν2 χ) ψ) φ`.
--/
 import Sandpile.Frozen.D4DiffusiveTightness
 import Sandpile.Frozen.D4SuperdiffusiveLimit
+
+/-!
+# Theorem 1.3(ii)(c): diffusive tightness plus the superdiffusive limit
+
+Theorem 1.3(ii)(c) of `sandpile.tex` (`sandpile.tex:255-260`) assembled from the two
+propositions its proof names. At `sandpile.tex:302-304` the proof of `thm:main-explosion`
+reads "part (ii)(c) combines Propositions~\ref{prop:d4-diffusive-tightness}
+and~\ref{prop:d4-superdiffusive-limit}", and that is the whole content of the part: the
+first conjunct is the tightness of `prop:d4-diffusive-tightness` at the diffusive times
+`⌊TR²⌋`, and the second is the superdiffusive limit of `prop:d4-superdiffusive-limit`, one
+domain and one averaging density at a time (`four_sobolev_of_superdiffusive`).
+
+`prop:d4-diffusive-tightness` is sealed, so it is applied here. `prop:d4-superdiffusive-limit`
+is not, so its conclusion is the hypothesis `hSuper`, quantified over the domain, the density
+and the exponent exactly as the frozen theorem quantifies them. The two covariances agree by
+definition: `Sandpile.omegaMembraneCov4 D w ν2 φ ψ` is
+`omegaRep D w (fun χ => omegaRep D w (membraneCov4 ν2 χ) ψ) φ`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

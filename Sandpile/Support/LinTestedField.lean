@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinConvexSite
+import Sandpile.Support.FiniteCoord
+import Sandpile.Support.Concentration
+
+/-! # Tested field measurability and convexity
+
 The tested field `F_R` of `lem:dgt4-linearization-from-survival`
 (`sandpile.tex:5665-5668`):
 
@@ -12,9 +17,6 @@ is the display of `sandpile.tex:5791-5795`, with the time-`n_R` Green kernel in
 place of the full Green function, which is the sharper of the two and is what
 the convex-linear bound consumes.
 -/
-import Sandpile.Support.LinConvexSite
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Concentration
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -31,10 +33,15 @@ noncomputable def testedField (s : Finset (Site d)) (a : Site d → ℝ) (n : �
 noncomputable def testedSites (s : Finset (Site d)) (n : ℕ) : Finset (Site d) :=
   s.biUnion fun x => boxFinset x n
 
+/-- `testedField s a n` is measurable in the scenery `ζ`, as a finite sum of the
+measurable maps `ζ ↦ a x * odometerOf ζ n x`. -/
 theorem measurable_testedField (s : Finset (Site d)) (a : Site d → ℝ) (n : ℕ) :
     Measurable (testedField s a n) :=
   Finset.measurable_sum _ fun x _ => (measurable_odometerOf n x).const_mul (a x)
 
+/-- `testedField s a n` depends on `ζ` only through its restriction to `testedSites s n`:
+two sceneries agreeing there give the same value, by `odometerOf_congr_box` applied to
+each summand. -/
 theorem testedField_congr (s : Finset (Site d)) (a : Site d → ℝ) (n : ℕ)
     (ζ η : Site d → ℝ) (h : ∀ z ∈ testedSites s n, ζ z = η z) :
     testedField s a n ζ = testedField s a n η := by
@@ -43,6 +50,10 @@ theorem testedField_congr (s : Finset (Site d)) (a : Site d → ℝ) (n : ℕ)
   refine odometerOf_congr_box n x ζ η fun z hz => h z ?_
   exact Finset.mem_biUnion.2 ⟨x, hx, mem_boxFinset hz⟩
 
+/-- For fixed `v` and background `ζ`, the tested field is convex in the single updated
+coordinate `y = ζ(v)`: each summand `a x * odometerOf (Function.update ζ v ·) n x` is convex
+by `convexOn_section` applied to `odometerOf_convexOn` and scaled by the nonnegative weight
+`a x`, and the finite sum over `s` of convex functions is convex. -/
 theorem convexOn_testedField_update (s : Finset (Site d)) (a : Site d → ℝ) (n : ℕ)
     (ha : ∀ x ∈ s, 0 ≤ a x) (v : Site d) (ζ : Site d → ℝ) :
     ConvexOn ℝ (Set.univ : Set ℝ) fun y => testedField s a n (Function.update ζ v y) := by

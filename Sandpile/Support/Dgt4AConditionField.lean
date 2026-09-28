@@ -1,19 +1,21 @@
-/-
-What the conditioning of `Support/Dgt4ACondition.lean` does to the Green field
-itself: at the conditioned level `s` the value `V_\infty(0)` is DETERMINISTIC and
-equal to `\sqrt v\,\|G(0,\cdot)\|\,s`, which is the paper's `-V_\infty(0)=b` at
-`sandpile.tex:5109`.
+import Sandpile.Support.Dgt4ACondition
+
+/-!
+# The Green field is deterministic at the conditioned level
+
+What the conditioning of `Support/Dgt4ACondition.lean` does to the Green field itself: at the
+conditioned level `s` the value `V_\infty(0)` is DETERMINISTIC and equal to
+`\sqrt v\,\|G(0,\cdot)\|\,s`, which is the paper's `-V_\infty(0)=b` at `sandpile.tex:5109`.
 
 The residual field carries no Green mass at the origin: the box sums
-`\sum_{|z|\leq n}G(0,z)\rho(\omega)(z)` tend to `0` almost surely, because they are
-the Green partial sums of `\omega` minus `\xi(\omega)` times the deterministic
-partial sums of `e`, and both tend to `\|G(0,\cdot)\|\xi(\omega)`.  Adding `se`
-back therefore produces exactly `\sqrt v\,s\,\|G(0,\cdot)\|`.
+`\sum_{|z|\leq n}G(0,z)\rho(\omega)(z)` tend to `0` almost surely, because they are the Green
+partial sums of `\omega` minus `\xi(\omega)` times the deterministic partial sums of `e`, and
+both tend to `\|G(0,\cdot)\|\xi(\omega)`. Adding `se` back therefore produces exactly
+`\sqrt v\,s\,\|G(0,\cdot)\|`.
 
-The deterministic limit `\sum_{|z|\leq n}G(0,z)e(z)\to\|G(0,\cdot)\|` is the box
-exhaustion of the summable family `G(0,\cdot)^2` divided by the norm.
+The deterministic limit `\sum_{|z|\leq n}G(0,z)e(z)\to\|G(0,\cdot)\|` is the box exhaustion of
+the summable family `G(0,\cdot)^2` divided by the norm.
 -/
-import Sandpile.Support.Dgt4ACondition
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -22,11 +24,15 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The unit direction `greenUnit` evaluated at a site `z` is the Green coefficient `G(0,z)`
+rescaled by the inverse of `‖G(0,·)‖`. -/
 theorem coeFn_greenUnit (hd : 5 ≤ d) (z : Site d) :
     (greenUnit d hd : Site d → ℝ) z = ‖greenLp d hd (0 : Site d)‖⁻¹ * green d 0 z := by
   rw [greenUnit]
   simp [coeFn_greenLp]
 
+/-- The boxes centered at `x` exhaust the lattice as `n → ∞`, in the sense of the finset
+convergence filter: they are monotone and every site eventually lies in one. -/
 theorem tendsto_boxFinset_atTop (x : Site d) :
     Tendsto (fun n : ℕ => boxFinset x n) atTop atTop := by
   refine tendsto_atTop_finset_of_monotone (fun m n hmn => ?_) (fun z => ⟨boxDist x z, ?_⟩)
@@ -35,6 +41,8 @@ theorem tendsto_boxFinset_atTop (x : Site d) :
     omega
   · rw [mem_boxFinset_iff]
 
+/-- For a summable family, its box partial sums converge to its total sum, by composing
+summability with the box exhaustion `tendsto_boxFinset_atTop`. -/
 theorem tendsto_sum_boxFinset {f : Site d → ℝ} (hf : Summable f) :
     Tendsto (fun n : ℕ => ∑ z ∈ boxFinset (0 : Site d) n, f z) atTop (𝓝 (∑' z, f z)) :=
   hf.hasSum.comp (tendsto_boxFinset_atTop 0)
@@ -56,6 +64,8 @@ theorem tendsto_greenPartialSum_greenUnit (hd : 5 ≤ d) :
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun z _ => by rw [coeFn_greenUnit hd z]; ring
 
+/-- The isonormal image of `greenLp` at the origin agrees a.e. with `‖G(0,·)‖` times
+`condCoord`, since `greenLp` is `‖G(0,·)‖` times the unit vector `greenUnit`. -/
 theorem ae_coeFn_gaussIso_greenLp (hd : 5 ≤ d) :
     ⇑(LatticeProb.gaussIso (greenLp d hd (0 : Site d))) =ᵐ[LatticeProb.gaussLaw (Site d)]
       fun ω => ‖greenLp d hd (0 : Site d)‖ * condCoord d hd ω := by
@@ -70,6 +80,9 @@ theorem ae_coeFn_gaussIso_greenLp (hd : 5 ≤ d) :
   rw [hω]
   simp [condCoord]
 
+/-- The Green box partial sums of the residual field tend to `0` almost surely: they equal the
+Green partial sums of the full field minus `condCoord ω` times the box sums of `greenUnit`, and
+both terms tend to the same limit `‖G(0,·)‖ · condCoord ω`. -/
 theorem ae_tendsto_greenPartialSum_residField (hd : 5 ≤ d) :
     ∀ᵐ ω ∂(LatticeProb.gaussLaw (Site d)),
       Tendsto (fun n : ℕ => ∑ z ∈ boxFinset (0 : Site d) n, green d 0 z * residField d hd ω z)
@@ -97,6 +110,9 @@ theorem ae_tendsto_greenPartialSum_resid (hd : 5 ≤ d) :
   rw [ae_map_iff (measurable_residField hd).aemeasurable hm]
   exact ae_tendsto_greenPartialSum_residField hd
 
+/-- The `n`-th partial sum of the Green field at the origin equals the sum of `G(0,z)ζ(z)` over
+the box `boxFinset 0 n`, unfolding the definition of `infiniteGreenFieldPartial` through the
+identification of `greenFieldBox` with that box. -/
 theorem infiniteGreenFieldPartial_boxFinset (n : ℕ) (ζ : Site d → ℝ) :
     infiniteGreenFieldPartial n ζ (0 : Site d)
       = ∑ z ∈ boxFinset (0 : Site d) n, green d 0 z * ζ z := by

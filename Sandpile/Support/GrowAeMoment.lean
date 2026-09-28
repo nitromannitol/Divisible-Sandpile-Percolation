@@ -1,5 +1,16 @@
 import Sandpile.Support.MeanAKolmogorov
 
+/-!
+# Moments are invariant under almost-sure modification
+
+If `F =ᵐ[P] G` and `H =ᵐ[P] K`, the increments `F - H` and `G - K` agree almost surely, so
+they share every `p`-th absolute moment: integrability of `|G - K| ^ p` transfers to
+`|F - H| ^ p`, with equal integrals (`integral_abs_sub_rpow_eq_of_ae`). The proof is a direct
+almost-everywhere rewrite followed by `Integrable.congr` and `integral_congr_ae`, and is used
+elsewhere in the development to replace a process by a modification without recomputing
+moment bounds.
+-/
+
 open MeasureTheory
 
 namespace Sandpile.Support

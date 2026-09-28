@@ -1,4 +1,9 @@
-/-
+import Sandpile.Continuum.Stopping
+import Sandpile.Law
+
+/-!
+# The rescaled odometer and the continuum stopping value
+
 The two objects of `ssec:scaling-dlt4` that the statements of that subsection
 read: the rescaled odometer of `sandpile.tex:1817-1821` and the continuum value
 `𝒰 = 𝒰_Z` of `eq:continuum-membrane-stopping-value`, quoted at
@@ -8,8 +13,6 @@ They are named here, and not in the file of a statement that uses them, so that
 the modules proving those statements can name them without importing the
 statement's own file.
 -/
-import Sandpile.Continuum.Stopping
-import Sandpile.Law
 
 open MeasureTheory
 open scoped NNReal

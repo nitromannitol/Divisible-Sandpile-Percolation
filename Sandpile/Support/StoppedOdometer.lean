@@ -1,10 +1,19 @@
-/-
-The odometer dominates a stopped scenery sum and a localized continuation
-at the exit.  The remaining-time odometer is a supermartingale after adding
-the accumulated scenery, which gives the finite-range lower bound.
--/
 import Sandpile.Support.OriginKilled
 import Sandpile.Support.KilledWalk
+
+/-!
+# Stopped scenery sums and the odometer
+
+For a stopping time `τ` bounded by `t`, the stopped scenery sum `sceneryPartialSum ζ (τ X) X`
+plus the remaining-time odometer `odometerOf ζ (t - τ X) (X (τ X))` at the stopped position
+integrates, under the walk law, to at most the odometer `odometerOf ζ t x` at the start
+(`integral_stopped_odometer_le`): the sequence `n ↦ sceneryPartialSum ζ n X + odometerOf ζ (t-n)
+(X n)` is a supermartingale, by the telescoping bound `odometer_stopped_telescope_le` and the
+one-step martingale identity `integral_stopped_field_increment`. Specialized to the exit time
+from a set `D`, this gives a finite-range lower bound (`killedGreenPair_add_localizedExit_le`):
+the killed Green pairing plus a localized continuation `localizedExitPayoff` at the exit is at
+most the odometer after `N + m` updates.
+-/
 
 open MeasureTheory
 
@@ -28,6 +37,10 @@ theorem integral_stopped_field_increment (hd : 1 ≤ d) (x : Site d) (f : Site d
   rw [he] at h
   exact h
 
+/-- For any index `N ≤ t`, the stopped scenery sum plus the remaining-time odometer at `X N` is
+at most the odometer at the start `X 0` plus the sum of the one-step odometer increments taken
+before `N`, by telescoping the sequence `n ↦ sceneryPartialSum ζ n X + odometerOf ζ (t - n) (X n)`
+and bounding each pre-`N` increment via the odometer recursion. -/
 theorem odometer_stopped_telescope_le (ζ : Site d → ℝ) (t : ℕ) (X : ℕ → Site d)
     (N : ℕ) (hN : N ≤ t) :
     sceneryPartialSum ζ N X + odometerOf ζ (t - N) (X N) ≤
@@ -55,6 +68,8 @@ theorem odometer_stopped_telescope_le (ζ : Site d → ℝ) (t : ℕ) (X : ℕ �
     linarith [le_max_right 0 (ζ (X n) + avg (odometerOf ζ (t - n - 1)) (X n))]
   · rw [if_neg hnN, if_neg hnN, zero_mul]
 
+/-- The stopped value `X ↦ F (τ X) (X (τ X))` is measurable, for a stopping time `τ` bounded by
+`t`, since such a functional of the path depends only on its first `t + 1` positions. -/
 theorem measurable_stopped_value (t : ℕ) (F : ℕ → Site d → ℝ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Measurable (fun X : ℕ → Site d => F (τ X) (X (τ X))) := by
@@ -62,6 +77,10 @@ theorem measurable_stopped_value (t : ℕ) (F : ℕ → Site d → ℝ)
   have ht := isWalkStopping_dependsOn hτ hτt X Y hXY
   rw [← ht, hXY _ (hτt X)]
 
+/-- The stopped value `X ↦ F (τ X) (X (τ X))` is integrable under the walk law started at `x`,
+for any stopping time `τ` bounded by `t`, since it is bounded by the finite constant
+`∑_{j ≤ t} ∑_{z ∈ boxFinset x t} |F j z|`, using that the walk stays inside `boxFinset x t` up
+to time `t`. -/
 theorem integrable_stopped_value (hd : 1 ≤ d) (x : Site d) (t : ℕ) (F : ℕ → Site d → ℝ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun X : ℕ → Site d => F (τ X) (X (τ X))) (walkLaw d x) := by
@@ -124,12 +143,18 @@ theorem integral_stopped_odometer_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d �
   rw [integral_walkLaw x hpay.aestronglyMeasurable]
   exact h
 
+/-- The payoff `0` if the walk stopped at `τ = stopBeforeExit D N (fun _ => N)` has already left
+`D`, and otherwise the localized odometer `localizedOdometer (E (X (τ X))) ζ m` evaluated at the
+stopped position `X (τ X)`. -/
 noncomputable def localizedExitPayoff (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (ζ : Site d → ℝ) (X : ℕ → Site d) : ℝ := by
   classical
   let τ := stopBeforeExit D N (fun _ => N)
   exact if X (τ X) ∈ D then 0 else localizedOdometer (E (X (τ X))) ζ m (X (τ X))
 
+/-- `localizedExitPayoff` agrees with the indicator, over the event `exitTime D X ≤ N` that the
+walk has left `D` by time `N`, of the localized odometer evaluated at the position `X` occupies
+when it exits `D`. -/
 theorem localizedExitPayoff_eq_indicator (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (ζ : Site d → ℝ) (X : ℕ → Site d) :
     localizedExitPayoff D N E m ζ X = Set.indicator
@@ -139,13 +164,16 @@ theorem localizedExitPayoff_eq_indicator (D : Set (Site d)) (N : ℕ)
   by_cases hx : exitNat D N X ≤ N
   · have ht : stopBeforeExit D N (fun _ => N) X = exitNat D N X := min_eq_right hx
     have he : exitTime D X ≤ (N : ℕ∞) := exitTime_le_iff.mpr hx
-    rw [localizedExitPayoff, ht, if_neg (notMem_exitNat hx), Set.indicator_of_mem (show X ∈ {X : ℕ → Site d | exitTime D X ≤ (N : ℕ∞)} from he),
+    rw [localizedExitPayoff, ht, if_neg (notMem_exitNat hx),
+      Set.indicator_of_mem (show X ∈ {X : ℕ → Site d | exitTime D X ≤ (N : ℕ∞)} from he),
       exitTime_eq_exitNat hx, ENat.toNat_coe]
   · have ht : stopBeforeExit D N (fun _ => N) X = N := min_eq_left (le_of_not_ge hx)
     have he : ¬exitTime D X ≤ (N : ℕ∞) := fun h => hx (exitTime_le_iff.mp h)
     rw [localizedExitPayoff, ht, if_pos (mem_of_lt_exitNat (lt_of_not_ge hx) (le_refl N)),
       Set.indicator_of_notMem (show X ∉ {X : ℕ → Site d | exitTime D X ≤ (N : ℕ∞)} from he)]
 
+/-- `localizedExitPayoff D N E m ζ` is integrable under the walk law started at `x`, being the
+stopped value of the bounded stopping time `stopBeforeExit D N (fun _ => N)`. -/
 theorem integrable_localizedExitPayoff (hd : 1 ≤ d) (x : Site d) (D : Set (Site d)) (N : ℕ)
     (E : Site d → Set (Site d)) (m : ℕ) (ζ : Site d → ℝ) :
     Integrable (localizedExitPayoff D N E m ζ) (walkLaw d x) := by

@@ -1,25 +1,28 @@
-/-
-The uniform lower-tail bound of `sandpile.tex:4180-4186`: a mean-zero law whose
-variance is bounded below and whose exponential moment is bounded above falls
-below a fixed negative level with a fixed probability, with both depending only
-on those two bounds.
-
-Everything is elementary.  The exponential moment bounds the second and fourth
-moments, since `x^k` is at most a constant times `e^x` on the nonnegative reals.
-The pointwise inequality `z^2 <= T|z| + z^4/T^2`, at the scale where the
-fourth-moment term is half the variance, turns the variance lower bound into a
-lower bound on the first absolute moment, and mean zero halves that into a lower
-bound on the mean of the negative part.  The pointwise inequality
-`Y <= m/2 + S 1_A + Y^2/S`, with `A` the event that `Y` exceeds `m/2`, converts
-that mean into a probability.
--/
 import Sandpile.Support.IncrementBall
+
+/-
+# A uniform lower-tail bound from variance and exponential-moment bounds
+
+The uniform lower-tail bound of `sandpile.tex:4180-4186`: a mean-zero law whose variance is
+bounded below and whose exponential moment is bounded above falls below a fixed negative level
+with a fixed probability, with both depending only on those two bounds.
+
+Everything is elementary. The exponential moment bounds the second and fourth moments
+(`sq_le_four_exp`, `pow_four_le_exp`), since `x^k` is at most a constant times `e^x` on the
+nonnegative reals. The pointwise inequality `z^2 <= T|z| + z^4/T^2`, at the scale where the
+fourth-moment term is half the variance, turns the variance lower bound into a lower bound on the
+first absolute moment, and mean zero halves that into a lower bound on the mean of the negative
+part. The pointwise inequality `Y <= m/2 + S 1_A + Y^2/S`, with `A` the event that `Y` exceeds
+`m/2`, converts that mean into a probability. The main result is `exists_uniform_left_tail`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
 
 namespace Sandpile
 
+/-- For `x ≥ 0`, `x² ≤ 4·exp x`, from squaring the linear bound `1 + x/2 ≤ exp(x/2)`
+(`Real.add_one_le_exp`) and `exp(x/2)² = exp x`. -/
 theorem sq_le_four_exp (x : ℝ) (hx : 0 ≤ x) : x ^ 2 ≤ 4 * Real.exp x := by
   have h1 : 1 + x / 2 ≤ Real.exp (x / 2) := Real.add_one_le_exp (x / 2) |>.trans_eq' (by ring)
   have h2 : Real.exp (x / 2) ^ 2 = Real.exp x := by
@@ -31,6 +34,8 @@ theorem sq_le_four_exp (x : ℝ) (hx : 0 ≤ x) : x ^ 2 ≤ 4 * Real.exp x := by
   rw [h2] at h3
   nlinarith
 
+/-- For `x ≥ 0`, `x⁴ ≤ 256·exp x`, from raising the linear bound `1 + x/4 ≤ exp(x/4)`
+(`Real.add_one_le_exp`) to the fourth power and `exp(x/4)⁴ = exp x`. -/
 theorem pow_four_le_exp (x : ℝ) (hx : 0 ≤ x) : x ^ 4 ≤ 256 * Real.exp x := by
   have h1 : 1 + x / 4 ≤ Real.exp (x / 4) := Real.add_one_le_exp (x / 4) |>.trans_eq' (by ring)
   have h2 : Real.exp (x / 4) ^ 4 = Real.exp x := by

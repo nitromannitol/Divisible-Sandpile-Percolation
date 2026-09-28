@@ -1,23 +1,24 @@
-/-
-The cells of the mesh `R^{-1}ℤ^d` and the lattice pairing
-`f^{(R)}(φ) = ∫ f(⌊Rz⌋)φ(z)dz` written over them.
-
-The piecewise-constant embedding `f^{(R)}(z) = f(⌊Rz⌋)` of `ssec:notation` is
-constant on each cell `{z : ⌊Rz⌋ = x}`, so pairing it with a test function is a
-sum over the sites of `f(x)` against the mass the test function puts on the cell
-above `x`.  That mass is `cellMass R φ x`; each cell has volume `R^{-d}`, so the
-mass is at most `R^{-d}` times the supremum of `|φ|`, and the masses of finitely
-many distinct sites sum in absolute value to at most `∫|φ|`.
-
-This is the representation
-`\mathcal F_R(\varphi)=\sum_{z\in\Z^d}a_R(z)\zeta(z)` of the proof of
-`prop:weighted-membrane-limit` (`sandpile.tex:4717-4723`): applied to a field of
-the form `f(x) = ∑_z w(x,z)ζ(z)` it turns the pairing into a finite linear
-functional of the scenery with coefficients `a_R(z) = ∑_x w(x,z) cellMass R φ x`,
-which is the form the Lindeberg-Feller theorem needs.
--/
 import Sandpile.Continuum.Sobolev
 import Sandpile.Support.Kernel
+
+/-!
+# Mesh cells and the lattice pairing as a sum over them
+
+The cells of the mesh `R^{-1}ℤ^d` and the lattice pairing `f^{(R)}(φ) = ∫ f(⌊Rz⌋)φ(z)dz` written
+over them. The piecewise-constant embedding `f^{(R)}(z) = f(⌊Rz⌋)` of `ssec:notation` is constant
+on each `cell d R x = {z : ⌊Rz⌋ = x}`, so pairing it with a test function is a sum over the sites
+of `f(x)` against the mass the test function puts on the cell above `x`. That mass is
+`cellMass R φ x`; each cell has volume `R^{-d}` (`volume_cell`), so the mass is at most `R^{-d}`
+times the supremum of `|φ|` (`abs_cellMass_le`), and the masses of finitely many distinct sites
+sum in absolute value to at most `∫|φ|`.
+
+This is the representation `\mathcal F_R(\varphi)=\sum_{z\in\Z^d}a_R(z)\zeta(z)` of the proof of
+`prop:weighted-membrane-limit` (`sandpile.tex:4717-4723`): `latticePairing_eq_sum` rewrites the
+pairing as a finite sum over the cells, and applied to a field of the form
+`f(x) = ∑_z w(x,z)ζ(z)` it turns the pairing into a finite linear functional of the scenery with
+coefficients `a_R(z) = ∑_x w(x,z) cellMass R φ x`, which is the form the Lindeberg-Feller theorem
+needs.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -32,6 +33,7 @@ whose piecewise-constant embedding is `x`. -/
 def cell (d : ℕ) (R : ℝ) (x : Sandpile.Site d) : Set (Space d) :=
   {z : Space d | ∀ i, ⌊R * z i⌋ = x i}
 
+/-- Membership in `cell d R x` unfolds to the defining condition `∀ i, ⌊R * z i⌋ = x i`. -/
 theorem mem_cell_iff {R : ℝ} {x : Sandpile.Site d} {z : Space d} :
     z ∈ cell d R x ↔ ∀ i, ⌊R * z i⌋ = x i := Iff.rfl
 
@@ -45,11 +47,15 @@ theorem cell_disjoint {R : ℝ} {x y : Sandpile.Site d} (hxy : x ≠ y) :
   refine Set.disjoint_left.mpr fun z hzx hzy => hxy (funext fun i => ?_)
   rw [← hzx i, hzy i]
 
+/-- The `i`-th embedded coordinate map `z ↦ ⌊R * z i⌋` is measurable, as a composition of the
+floor function with the `i`-th coordinate projection scaled by `R`. -/
 theorem measurable_coord (R : ℝ) (i : Fin d) :
     Measurable (fun z : Space d => ⌊R * z i⌋) :=
   Int.measurable_floor.comp
     (((measurable_pi_apply i).comp (PiLp.volume_preserving_ofLp (Fin d)).measurable).const_mul R)
 
+/-- `cell d R x` is measurable, as a finite intersection over coordinates of preimages of the
+singleton `{x i}` under the measurable maps `measurable_coord`. -/
 theorem measurableSet_cell (d : ℕ) (R : ℝ) (x : Sandpile.Site d) :
     MeasurableSet (cell d R x) := by
   have : cell d R x = ⋂ i : Fin d, {z : Space d | ⌊R * z i⌋ = x i} := by

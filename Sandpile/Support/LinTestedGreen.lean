@@ -1,15 +1,16 @@
-/-
-`eq:dgt4-tested-green-bound` (`sandpile.tex:5798-5803`) in the form the
-convex-linear bound consumes.
-
-The bound the paper proves is on the Green weights `∑_x a_R(x)G(x,z)`; the
-coefficient of the convex-linear bound is the time-`n_R` weight
-`∑_x a_R(x)g_{n_R}(x,z)`, which is below it site by site because `g_t \le G`
-and the tested weights are nonnegative.
--/
 import Sandpile.Support.LinTestedStep2
 import Sandpile.Support.GreenHigh
 import Sandpile.Support.LinGreenTail
+
+/-!
+# The tested Green weight is bounded by the tested Green function
+
+The bound proved here is on the Green weights `∑_x a_R(x)G(x,z)`; the coefficient of the
+convex-linear bound is the time-`n_R` weight `∑_x a_R(x)g_{n_R}(x,z)`, which is below it site
+by site because `g_t ≤ G` and the tested weights are nonnegative. Summing the squared pointwise
+bound over a finite set and comparing to the full tail sum then transfers the uniform `ℓ²`
+bound on the Green weights to the time-`n_R` weights.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

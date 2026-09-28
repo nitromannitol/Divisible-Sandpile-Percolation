@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.D23Sequential
+
+/-!
+# Bolzano-Weierstrass step for the variance subsequence
+
 The Bolzano-Weierstrass step of the dimension-two and dimension-three percolation
 proof (`sandpile.tex:2616-2620`):
 
@@ -11,7 +15,6 @@ proof (`sandpile.tex:2616-2620`):
 subsequence and the lower bound on the limit, which is what the crossing theorem
 is then applied at.
 -/
-import Sandpile.Support.D23Sequential
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

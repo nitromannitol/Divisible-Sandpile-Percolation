@@ -1,27 +1,27 @@
-/-
-The diffusive odometer limit of `thm:dgt4-diffusive-membrane`
-(`sandpile.tex:4616-4639`), assembled from the linearization.
-
-The paper's proof (`sandpile.tex:4639-4691`) is in two steps.
-`prop:dgt4-linearization` says that the rescaled centred odometer and the
-time-weighted field with the weight `(1-j/n)^κ` differ by a term whose second
-moment tends to zero; `prop:weighted-membrane-limit`, applied with
-`q(r) = (1-r/T)^κ`, identifies the limit of the second as `ℋ_{κ,T}`.  The
-theorem below is that assembly, with the first step taken as a hypothesis: once
-`prop:dgt4-linearization` is proved the frozen node follows by applying it.
-
-The bridge between the two steps is that convergence in `L²` is convergence in
-measure, so a family within `L²`-distance `o(1)` of a family converging in
-distribution converges to the same law.  The pairing with a test function is a
-FINITE linear combination of the values of the field, over the cells of the mesh
-above the support of the test function, so it is square integrable as soon as
-the values are, which for the odometer is `memLp_two_odometer` and for the
-weighted field is `memLp_two_weightedField_mass`.  Tightness is the odometer's
-own, `dgt4_odometer_tight`.
--/
 import Sandpile.Support.TightWeightedMembrane
 import Sandpile.Support.ContVarianceLimit
 import Sandpile.Frozen.WeightedMembraneLimit
+
+/-!
+# Diffusive odometer limit from the linearization
+
+The diffusive odometer limit of `thm:dgt4-diffusive-membrane` (`sandpile.tex:4616-4639`),
+assembled from the linearization.
+
+The paper's proof (`sandpile.tex:4639-4691`) is in two steps. `prop:dgt4-linearization` says that
+the rescaled centred odometer and the time-weighted field with the weight `(1-j/n)^κ` differ by
+a term whose second moment tends to zero; `prop:weighted-membrane-limit`, applied with
+`q(r) = (1-r/T)^κ`, identifies the limit of the second as `ℋ_{κ,T}`. The theorem below is that
+assembly, with the first step taken as a hypothesis: once `prop:dgt4-linearization` is proved the
+frozen node follows by applying it.
+
+The bridge between the two steps is that convergence in `L²` is convergence in measure, so a
+family within `L²`-distance `o(1)` of a family converging in distribution converges to the same
+law. The pairing with a test function is a FINITE linear combination of the values of the field,
+over the cells of the mesh above the support of the test function, so it is square integrable as
+soon as the values are, which for the odometer is `memLp_two_odometer` and for the weighted field
+is `memLp_two_weightedField_mass`. Tightness is the odometer's own, `dgt4_odometer_tight`.
+-/
 
 open MeasureTheory Filter Topology ProbabilityTheory
 open scoped ENNReal NNReal
@@ -82,6 +82,9 @@ theorem memLp_two_latticePairing {Ω : Type*} [MeasurableSpace Ω] (P : Measure 
   exact (MeasureTheory.memLp_congr_ae
     (Filter.Eventually.of_forall fun ω => (hrep ω))).mpr hsum
 
+/-- `Sandpile.Continuum.latticePairing` is additive in the field argument: pairing `f - g`
+against `φ` equals the difference of the two pairings, since both `embed R f * φ` and
+`embed R g * φ` are integrable (`integrable_embed_mul`) and integration is linear. -/
 theorem latticePairing_sub (R : ℝ) (f g : Sandpile.Site d → ℝ) (φ : Space d → ℝ)
     (hφ : Integrable φ) {L : ℝ} (hsupp : ∀ z : Space d, φ z ≠ 0 → ‖z‖ ≤ L) :
     Sandpile.Continuum.latticePairing R (fun x => f x - g x) φ

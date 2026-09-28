@@ -1,16 +1,18 @@
-/-
-The logarithmic factors of the remainder.
-
-The Berry-Esseen remainder carries `m^{3/4}`, and `m ≤ 1 + log t/log q`, so what
-is left is `(log t)^{3/4}` in dimensions one and three and, in dimension two,
-`(log t)^{3/4}` times the extra `1 + log t` of the Green supremum, which is
-`(log t)^{7/4}`.  The threshold `t ≥ 3` is what makes `log t ≥ 1`, since
-`e < 3`.
--/
 import Sandpile.Support.RemainderRate
+
+/-!
+# Logarithmic factors of the Berry-Esseen remainder
+
+The logarithmic factors of the remainder. The Berry-Esseen remainder carries `m^{3/4}`, and
+`m ≤ 1 + log t/log q`, so what is left is `(log t)^{3/4}` in dimensions one and three and, in
+dimension two, `(log t)^{3/4}` times the extra `1 + log t` of the Green supremum, which is
+`(log t)^{7/4}`. The threshold `t ≥ 3` is what makes `log t ≥ 1`, since `e < 3`.
+-/
 
 namespace Sandpile
 
+/-- `x ^ (3/4) * x = x ^ (7/4)` for `x ≥ 0`, by combining the exponents (handling `x = 0`
+separately since `Real.rpow` needs the base positive for the additive law). -/
 theorem rpow_three_quarter_mul {x : ℝ} (hx : 0 ≤ x) :
     x ^ ((3 : ℝ) / 4) * x = x ^ ((7 : ℝ) / 4) := by
   rcases eq_or_lt_of_le hx with h | h
@@ -28,6 +30,7 @@ theorem one_le_log_of_three_le {t : ℕ} (ht : 3 ≤ t) : (1 : ℝ) ≤ Real.log
     Real.log_le_log (Real.exp_pos 1) (by linarith)
   rwa [Real.log_exp] at h1
 
+/-- `1 + log t ≤ 2 log t` for `t ≥ 3`, immediate from `one_le_log_of_three_le`. -/
 theorem one_add_log_le_two_log {t : ℕ} (ht : 3 ≤ t) :
     1 + Real.log (t : ℝ) ≤ 2 * Real.log (t : ℝ) := by
   have := one_le_log_of_three_le ht

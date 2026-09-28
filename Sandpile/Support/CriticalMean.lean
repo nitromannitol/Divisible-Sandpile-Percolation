@@ -1,15 +1,17 @@
-/-
-The elementary rates behind `cor:critical-mean-one`.
-
-The corollary applies `thm:critical-toppling` at `L = t^{β-γ}`, so its remainder
-carries a power of `log t` against a negative power of `t`.  A power of a
-logarithm is below a power of `t` up to a constant, which is the first lemma
-here, read off `log x \leq (4/\beta)x^{\beta/4}`; then come the monotonicity of
-`t^{-x}` in the exponent, the threshold past which `t^\delta` exceeds two, and
-the three-factor bound that the corollary applies in each dimension.
--/
 import Sandpile.Support.CriticalAssembly
 import Sandpile.Support.Increment
+
+/-!
+# Elementary rates behind the critical mean corollary
+
+The elementary rates behind `cor:critical-mean-one`. The corollary applies
+`thm:critical-toppling` at `L = t^{β-γ}`, so its remainder carries a power of `log t`
+against a negative power of `t`. A power of a logarithm is below a power of `t` up to a
+constant, which is `log_rpow_le`, read off `log x ≤ (4/ε)x^{ε/4}`; then come the
+monotonicity of `t^{-x}` in the exponent (`rpow_neg_mono`), the threshold past which
+`t^δ` exceeds two (`two_le_rpow_of_ceil_le`), and the three-factor bound
+(`log_power_rate_le`) that the corollary applies in each dimension.
+-/
 
 namespace Sandpile
 

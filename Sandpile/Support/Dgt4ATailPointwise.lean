@@ -1,9 +1,10 @@
-/-
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+
+/-!
 The pointwise tail bound of the layer-cake reading of the Gaussian concentration of
 `sandpile.tex:5059-5061`: `\P(t<X^2)\leq2e^{-ct}` for every `t\geq0`, from the two-sided
 tail `\P(t\leq|X|)\leq2e^{-ct^2}` at `\sqrt t`.
 -/
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

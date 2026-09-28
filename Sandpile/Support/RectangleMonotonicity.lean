@@ -1,13 +1,19 @@
-/-
+import Sandpile.Support.PlanarLaw
+import Sandpile.Support.RectangleIncrement
+
+/-!
+# Rectangle crossing-value monotonicity
+
 Rectangle monotonicity: wider and taller rectangles have larger crossing events,
 and the measurability of planar crossing events.
 -/
-import Sandpile.Support.PlanarLaw
-import Sandpile.Support.RectangleIncrement
 
 noncomputable section
 namespace Sandpile
 
+/-- Along a walk `p` from `a` to `b` where each step changes an integer function `f` by at
+most `1`, if `f a ≤ k ≤ f b` then some prefix of `p` reaches a vertex `c` with `f c = k`
+exactly, using only vertices of `p` and keeping `f ≤ k` throughout the prefix. -/
 lemma walk_prefix_hit_integer {V : Type*} {G : SimpleGraph V} (f : V → ℤ)
     (hstep : ∀ x y, G.Adj x y → |f y - f x| ≤ 1) {a b : V} (p : G.Walk a b) (k : ℤ) :
     f a ≤ k → k ≤ f b → ∃ (c : V) (q : G.Walk a c), f c = k ∧ q.support ⊆ p.support ∧
@@ -44,6 +50,9 @@ lemma walk_prefix_hit_integer {V : Type*} {G : SimpleGraph V} (f : V → ℤ)
         · exact ha
         · exact hbound t ht
 
+/-- A vertex `z` of the induced walk `p.induce S hp` corresponds to a vertex of the original
+walk `p`: `(z : V) ∈ p.support`, obtained by mapping the induced walk back through
+`SimpleGraph.Embedding.induce S` and using `SimpleGraph.Walk.map_induce`. -/
 lemma walk_mem_support_of_induce {V : Type*} {G : SimpleGraph V} {a b : V}
     (p : G.Walk a b) (S : Set V) (hp : ∀ z ∈ p.support, z ∈ S) {z : S}
     (hz : z ∈ (p.induce S hp).support) : (z : V) ∈ p.support := by
@@ -53,6 +62,11 @@ lemma walk_mem_support_of_induce {V : Type*} {G : SimpleGraph V} {a b : V}
   rw [SimpleGraph.Walk.map_induce] at hm
   exact hm
 
+/-- The horizontal `crossingValue` combines monotonicity in width with antitonicity in height:
+for `w ≤ W` and `h ≤ H`, `crossingValue (planeRectangle W h) F ≤
+crossingValue (planeRectangle w H) F`, since a bottleneck-optimal crossing of the `W × h`
+rectangle restricts, after being cut off at column `w` via `walk_prefix_hit_integer`, to an
+admissible crossing of the taller `w × H` rectangle. -/
 lemma crossingValue_width_height_mono {w W h H : ℕ} (hw : w ≤ W) (hh : h ≤ H)
     (F : Site 2 → ℝ) :
     crossingValue (planeRectangle W h) (fun z => F z) ≤
@@ -94,6 +108,8 @@ lemma crossingValue_width_height_mono {w W h H : ℕ} (hw : w ≤ W) (hh : h ≤
     change (t : Site 2) = (z : Site 2) at htz
     simpa only [htz] using hlow
 
+/-- `planarCrossingEvent w h level` is measurable, since it is the preimage of `[level, ∞)`
+under the measurable map `F ↦ crossingValue (planeRectangle w h) F`. -/
 lemma measurableSet_planarCrossingEvent (w h : ℕ) (level : ℝ) :
     MeasurableSet (planarCrossingEvent w h level) := by
   apply measurableSet_le measurable_const
@@ -101,6 +117,9 @@ lemma measurableSet_planarCrossingEvent (w h : ℕ) (level : ℝ) :
     (planeRectangle_nonempty w h)).comp
     (measurable_pi_lambda _ (fun z : planeRectangle w h => measurable_pi_apply (z : Site 2)))
 
+/-- `planarCrossingEvent W h level ⊆ planarCrossingEvent w H level` for `w ≤ W`, `h ≤ H`: a
+field crossing the wide short rectangle at `level` also crosses the narrow tall one, by
+`crossingValue_width_height_mono`. -/
 lemma planarCrossingEvent_width_height_mono {w W h H : ℕ} (hw : w ≤ W) (hh : h ≤ H) (level : ℝ) :
     planarCrossingEvent W h level ⊆ planarCrossingEvent w H level := by
   intro F hF

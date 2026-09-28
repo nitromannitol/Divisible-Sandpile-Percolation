@@ -1,14 +1,15 @@
-/-
-The strong Markov step of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the conditional bound at the exit event, with the integrability of the two
-stopping payoffs supplied by the envelope of the field.
-
-The conditional bound is what the strong Markov property at the exit time of the
-ball supplies; the integrability is what the polynomial growth of the field
-supplies.  Together they give `BallExcessStep`, the one estimate the reduction of
-the lemma leaves open.
--/
 import Sandpile.Support.ExplBallReward
+
+/-!
+# The strong Markov step of the ball-localization lemma
+
+This file derives the strong Markov step of `lem:brownian-ball-localization` from the
+conditional bound at the exit event, with the integrability of the two stopping payoffs supplied
+by the envelope of the field. The conditional bound is what the strong Markov property at the
+exit time of the ball supplies, and the integrability is what the polynomial growth of the field
+supplies; together they give `BallExcessStep`, the one estimate the reduction of the lemma
+leaves open.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

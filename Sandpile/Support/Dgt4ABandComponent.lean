@@ -1,17 +1,20 @@
-/-
+import Sandpile.Support.Dgt4ABandShape
+
+/-!
+# The `k`th Band Component
+
 The `k`th band component of the one-site law of Step 1 of `thm:dgt4-many-limits`
 (`sandpile.tex:5930-6055`).
 
 The paper's `k`th component is the law of `-a_k B_k` with
 `P(B_k > y) = ((1-y)/(1-ℓ₁))^{ϑ_k}` on `[ℓ₁,1]` (`eq:dgt4-band-tail`), so that
 it is carried by `[-a_k, -ℓ₁ a_k]` and its distribution function, read in the
-variable `r = (a_k + x)/((1-ℓ₁)a_k)`, is `r^{ϑ_k}`.  Here the exact power is
+variable `r = (a_k + x)/((1-ℓ₁)a_k)`, is `r^{ϑ_k}`. Here the exact power is
 replaced by the smooth profile of `Dgt4ABandShape`, which changes the
-distribution function by at most `2/m` and leaves the carrier unchanged.  The
+distribution function by at most `2/m` and leaves the carrier unchanged. The
 density bound `eq:dgt4-band-density` is `C/((1-ℓ₁)a_k)` with `C` independent of
 `k`.
 -/
-import Sandpile.Support.Dgt4ABandShape
 
 open Set Filter MeasureTheory
 open scoped Topology
@@ -23,6 +26,7 @@ namespace Sandpile.Support
 /-- The width of the `k`th band. -/
 def bandWidth (l1 a : ℝ) : ℝ := (1 - l1) * a
 
+/-- `bandWidth l1 a = (1 - l1) * a` is positive when `l1 < 1` and `a > 0`. -/
 lemma bandWidth_pos {l1 a : ℝ} (hl1 : l1 < 1) (ha : 0 < a) : 0 < bandWidth l1 a :=
   mul_pos (by linarith) ha
 
@@ -36,25 +40,33 @@ def bandComponentCDF (l1 a θ : ℝ) (m : ℕ) (s : ℝ) : ℝ :=
 
 variable {l1 a θ : ℝ} {m : ℕ}
 
+/-- `bandComponent l1 a θ m` is smooth, as the composition of the smooth
+`bandShapeDensity θ m` with an affine rescaling. -/
 lemma contDiff_bandComponent (l1 a θ : ℝ) (m : ℕ) :
     ContDiff ℝ (⊤ : ℕ∞) (bandComponent l1 a θ m) :=
   ((contDiff_bandShapeDensity θ m).comp
     ((contDiff_const.add contDiff_id).div_const _)).div_const _
 
+/-- `bandComponentCDF l1 a θ m` is smooth, as the composition of the smooth
+`bandShape θ m` with an affine rescaling. -/
 lemma contDiff_bandComponentCDF (l1 a θ : ℝ) (m : ℕ) :
     ContDiff ℝ (⊤ : ℕ∞) (bandComponentCDF l1 a θ m) :=
   (contDiff_bandShape θ m).comp ((contDiff_const.add contDiff_id).div_const _)
 
+/-- The band component density is nonnegative, from `bandShapeDensity_nonneg` and
+`bandWidth_pos`. -/
 lemma bandComponent_nonneg (hθ : 0 ≤ θ) (hl1 : l1 < 1) (ha : 0 < a) (x : ℝ) :
     0 ≤ bandComponent l1 a θ m x :=
   div_nonneg (bandShapeDensity_nonneg hθ m _) (bandWidth_pos hl1 ha).le
 
+/-- The band component density vanishes below the left edge `-a` of its carrier. -/
 lemma bandComponent_eq_zero_of_le (hl1 : l1 < 1) (ha : 0 < a) {x : ℝ} (hx : x ≤ -a) :
     bandComponent l1 a θ m x = 0 := by
   have hw : 0 < bandWidth l1 a := bandWidth_pos hl1 ha
   have : (a + x) / bandWidth l1 a ≤ 0 := div_nonpos_of_nonpos_of_nonneg (by linarith) hw.le
   rw [bandComponent, bandShapeDensity_eq_zero_of_nonpos this, zero_div]
 
+/-- The band component density vanishes above the right edge `-l1 * a` of its carrier. -/
 lemma bandComponent_eq_zero_of_ge (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) {x : ℝ}
     (hx : -(l1 * a) ≤ x) : bandComponent l1 a θ m x = 0 := by
   have hw : 0 < bandWidth l1 a := bandWidth_pos hl1 ha
@@ -63,12 +75,14 @@ lemma bandComponent_eq_zero_of_ge (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a) {x : 
     nlinarith
   rw [bandComponent, bandShapeDensity_eq_zero_of_one_le hm this, zero_div]
 
+/-- The band CDF vanishes below the left edge `-a` of its carrier. -/
 lemma bandComponentCDF_eq_zero_of_le (hl1 : l1 < 1) (ha : 0 < a) {s : ℝ} (hs : s ≤ -a) :
     bandComponentCDF l1 a θ m s = 0 := by
   have hw : 0 < bandWidth l1 a := bandWidth_pos hl1 ha
   have : (a + s) / bandWidth l1 a ≤ 0 := div_nonpos_of_nonpos_of_nonneg (by linarith) hw.le
   rw [bandComponentCDF, bandShape_eq_zero_of_nonpos this]
 
+/-- The band CDF equals `1` above the right edge `-l1 * a` of its carrier. -/
 lemma bandComponentCDF_eq_one_of_ge (hθ : 0 < θ) (hm : 0 < m) (hl1 : l1 < 1) (ha : 0 < a)
     {s : ℝ} (hs : -(l1 * a) ≤ s) : bandComponentCDF l1 a θ m s = 1 := by
   have hw : 0 < bandWidth l1 a := bandWidth_pos hl1 ha
@@ -78,13 +92,17 @@ lemma bandComponentCDF_eq_one_of_ge (hθ : 0 < θ) (hm : 0 < m) (hl1 : l1 < 1) (
   rw [bandComponentCDF, bandShape_eq_one_of_one_le hθ hm this]
 
 
+/-- The band CDF is nonnegative, inherited from `bandShape_nonneg`. -/
 lemma bandComponentCDF_nonneg (hθ : 0 ≤ θ) (s : ℝ) : 0 ≤ bandComponentCDF l1 a θ m s :=
   bandShape_nonneg hθ m _
 
+/-- The band CDF is at most `1`, inherited from `bandShape_le_one`. -/
 lemma bandComponentCDF_le_one (hθ : 0 < θ) (hm : 0 < m) (s : ℝ) :
     bandComponentCDF l1 a θ m s ≤ 1 :=
   bandShape_le_one hθ hm _
 
+/-- The band CDF `bandComponentCDF l1 a θ m` has derivative `bandComponent l1 a θ m s`
+at every `s`, by the chain rule through the affine rescaling and `hasDerivAt_bandShape`. -/
 lemma hasDerivAt_bandComponentCDF (hl1 : l1 < 1) (ha : 0 < a) (s : ℝ) :
     HasDerivAt (bandComponentCDF l1 a θ m) (bandComponent l1 a θ m s) s := by
   have hw : 0 < bandWidth l1 a := bandWidth_pos hl1 ha
@@ -99,6 +117,8 @@ lemma hasDerivAt_bandComponentCDF (hl1 : l1 < 1) (ha : 0 < a) (s : ℝ) :
   rw [heq] at h0
   exact h0
 
+/-- The band CDF is monotone, inherited from `bandShape_monotone` through the
+(increasing) affine rescaling. -/
 lemma bandComponentCDF_monotone (hθ : 0 ≤ θ) (hl1 : l1 < 1) (ha : 0 < a) :
     Monotone (bandComponentCDF l1 a θ m) := by
   intro x y hxy

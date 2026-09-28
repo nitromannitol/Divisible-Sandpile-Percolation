@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CriticalScaleBound
+
+/-!
+# Geometric scale counting
+
 Counting the geometric scales, and the passage from the persistence ratio to a
 power of the threshold.
 
@@ -7,7 +11,6 @@ power of the threshold.
 inequality `κ^m ≤ L^{-a|log κ|/log q}` are the only analytic content, and
 neither uses anything about the sandpile.
 -/
-import Sandpile.Support.CriticalScaleBound
 
 namespace Sandpile
 
@@ -37,6 +40,9 @@ theorem exists_scaleCount {N q t : ℕ} (hq : 2 ≤ q) (hNt : 1 ≤ N) (hNle : N
     omega
 
 
+/-- If `N ≤ t * L ^ (-a)` and `t < N * q ^ m`, then `a * log L / log q ≤ m`: substituting the
+bound on `N` forces `L ^ a < q ^ m`, and taking logarithms gives the stated lower bound on
+`m`. -/
 theorem scaleCount_log_lower {N q t m : ℕ} (hq : 2 ≤ q) (_hN : 1 ≤ N) (ht : 1 ≤ t)
     (hgt : t < N * q ^ m) {a L : ℝ} (_ha : 0 < a) (hL : 2 ≤ L)
     (hNbound : (N : ℝ) ≤ (t : ℝ) * L ^ (-a)) :
@@ -66,6 +72,8 @@ theorem scaleCount_log_lower {N q t m : ℕ} (hq : 2 ≤ q) (_hN : 1 ≤ N) (ht 
   rw [div_le_iff₀ hlq]
   linarith
 
+/-- If `N * q ^ (m - 1) ≤ t` (with `N ≥ 1`, `m ≥ 1`), then `m ≤ 1 + log t / log q`, obtained
+by dropping the factor `N` and taking logarithms of `q ^ (m - 1) ≤ t`. -/
 theorem scaleCount_log_upper {N q t m : ℕ} (hq : 2 ≤ q) (hN : 1 ≤ N) (hm : 1 ≤ m)
     (_ht : 1 ≤ t) (hle : N * q ^ (m - 1) ≤ t) :
     (m : ℝ) ≤ 1 + Real.log (t : ℝ) / Real.log (q : ℝ) := by
@@ -87,6 +95,9 @@ theorem scaleCount_log_upper {N q t m : ℕ} (hq : 2 ≤ q) (hN : 1 ≤ N) (hm :
   linarith
 
 
+/-- Converts the logarithmic lower bound `A * log L / log q ≤ m` on `m` into a power-law decay
+bound on `κ ^ m` for `κ ∈ (0, 1)`: `κ ^ m ≤ L ^ (-(A * (-log κ) / log q))`, by writing both
+sides as exponentials and comparing exponents. -/
 theorem pow_le_rpow_of_scales {κ : ℝ} (hκ0 : 0 < κ) (hκ1 : κ < 1) {q : ℕ} (hq : 2 ≤ q)
     {A L : ℝ} (hA : 0 < A) (hL : 1 ≤ L) {m : ℕ}
     (hm : A * Real.log L / Real.log (q : ℝ) ≤ (m : ℝ)) :

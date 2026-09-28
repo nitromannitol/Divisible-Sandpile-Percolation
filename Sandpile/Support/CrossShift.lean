@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossRescale
+
+/-!
+# The chain vocabulary under a rational translation
+
 The chain vocabulary of `Sandpile/Support/CrossUnion.lean` under a translation
 of the plane by a vector with rational coordinates.
 
@@ -16,7 +20,6 @@ origin, and the uniform crossing estimate of
 `Sandpile.Support.uniform_crossing_constant` is stated only for the anchored
 ones.
 -/
-import Sandpile.Support.CrossRescale
 
 open MeasureTheory Set
 
@@ -28,6 +31,7 @@ open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 noncomputable def ratPoint (r : Fin 2 → ℚ) : Sandpile.Continuum.Space 2 :=
   WithLp.toLp 2 (fun k : Fin 2 => (r k : ℝ))
 
+/-- The `k`-th coordinate of `ratPoint r` is `r k` cast to `ℝ`. -/
 theorem ratPoint_apply (r : Fin 2 → ℚ) (k : Fin 2) : ratPoint r k = (r k : ℝ) := rfl
 
 /-- A point of a segment translates with the segment. -/

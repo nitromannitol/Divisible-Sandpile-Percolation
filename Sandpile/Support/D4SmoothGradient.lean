@@ -1,14 +1,19 @@
-/-
+import Sandpile.Support.ContPairedGradient
+
+/-!
+# The total-variation gradient bound in `R²/n` form
+
 The total-variation gradient bound in the `R²/n` form Step 2 of
 `prop:d4-superdiffusive-limit` uses (`sandpile.tex:3374-3380`).
 
-Step 2 smooths the linearization error flat: `F_R = P^{n_R}E_{t_R-n_R}` is
-compared with the constant `C_R` of its own parity class, and the comparison
-costs the `ℓ¹` gradient of the smoothing kernel.  Squared, the gradient bound
-`eq:rw-tv-gradient` reads `(∑_y|p_n(x,y)-p_n(b,y)|)² ≤ C|x-b|²/n`, and on the
-box of radius `CR` that the rescaled domain meets this is the paper's `R²/n_R`.
+Step 2 smooths the linearization error flat: `F_R = P^{n_R}E_{t_R-n_R}` is compared with the
+constant `C_R` of its own parity class, and the comparison costs the `ℓ¹` gradient of the
+smoothing kernel. Squared, the gradient bound `eq:rw-tv-gradient` reads
+`(∑_y|p_n(x,y)-p_n(b,y)|)² ≤ C|x-b|²/n` (`exists_heatKernel_gradient_sq_four`), and on the
+box of radius `CR` that the rescaled domain meets this is the paper's `R²/n_R`. Feeding this
+gradient bound into a finite linear combination against random variables of bounded second
+moment uses the weighted Cauchy-Schwarz inequality `sq_finset_sum_mul_le`.
 -/
-import Sandpile.Support.ContPairedGradient
 
 open MeasureTheory Filter Topology
 

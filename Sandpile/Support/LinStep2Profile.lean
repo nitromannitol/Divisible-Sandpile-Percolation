@@ -1,15 +1,15 @@
-/-
-The replacement of `n_R` by `R^2T` in the profile (`sandpile.tex:5571-5574`).
-
-The paper's Step 2 produces the profile `(1-j/n_R)^\kappa`, while the lemma's conclusion is
-stated with `(1-j/(R^2T))^\kappa`; the paper says "Since `n_R/(R^2T)\to1`, replacing `n_R`
-by `R^2T` changes the weight by `o(1)` uniformly for `j\leq(1-\varepsilon)n_R`."  The two
-arguments differ by at most `1/n_R` (`abs_profile_arg_sub_le`), because
-`0\leq R^2T-n_R<1` and `j\leq n_R`, and the profile is uniformly continuous on `[0,1]`
-(`Sandpile.exists_delta_rpow`), so the difference of the two powers is eventually below any
-target, uniformly in `j` (`eventually_abs_profile_sub_lt`).
--/
 import Sandpile.Support.LinStep2Connect
+
+/-!
+# Replacing `n_R` by `R²T` in the time-weight profile
+
+Step 2 of the linearization produces the profile `(1 - j/n_R)^κ`, while the target conclusion
+is stated with `(1 - j/(R²T))^κ` for `n_R = ⌊R²T⌋₊`. Since `0 ≤ R²T - n_R < 1` and `j ≤ n_R`,
+the two arguments differ by at most `1/n_R`, and since the profile is uniformly continuous on
+`[0,1]`, the difference of the two powers is eventually below any target, uniformly in `j`.
+This replacement is then carried through the integral defining the mean deviation of the
+survival probability from the profile.
+-/
 
 open MeasureTheory Filter Topology
 

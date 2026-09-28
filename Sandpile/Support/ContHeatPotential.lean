@@ -1,17 +1,17 @@
-/-
-The rescaled linear field `Z_R` of `ssec:scaling-dlt4` (`sandpile.tex:1833-1839`)
-as a finite linear functional of the scenery.
-
-`Z_R(r,w) = R^{d/2-2}\sum_{z}g_{\lfloor R^2r\rfloor}(\lfloor Rw\rfloor,z)\zeta(z)`
-is a sum over the whole lattice, but the finite-time Green kernel vanishes
-outside the box of radius the time index, so the sum is finite and the field is a
-linear functional of finitely many scenery values.  This is the form the
-finite-dimensional convergence of `prop:dlt4-heat-potential-invariance` needs,
-since the Lindeberg-Feller theorem is applied to it.
--/
 import Sandpile.Support.HeatPotentialDefs
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.ContCell
+
+/-!
+# The rescaled linear field as a finite functional of the scenery
+
+The rescaled linear field `Z_R(r, w) = R^{d/2-2} \sum_z g_{\lfloor R^2 r \rfloor}(\lfloor R w
+\rfloor, z) \zeta(z)` is formally a sum over the whole lattice, but the finite-time Green
+kernel `Sandpile.greenTime` vanishes outside the box of radius the time index, so both the
+mesh value `meshValue` and its multilinear interpolation `linInterp` are finite linear
+functionals of the scenery `ζ`, with explicit coefficients given here by `interpCoeff`. This
+finite-dimensional form is what the Lindeberg-Feller theorem needs to apply.
+-/
 
 namespace Sandpile.Support
 

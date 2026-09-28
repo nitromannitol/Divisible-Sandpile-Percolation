@@ -1,25 +1,26 @@
-/-
-Step 2 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5845`),
-abstracted from the tested field.
-
-The paper's Step 2 has three moves.  The convex-linear bound of
-`lem:convex-linear-bound` applied to the tested field gives
-`eq:dgt4-convex-linear-remainder`, the vanishing in `L²` of
-`F_R - E F_R - ∑_z E[∂_{ζ(z)}F_R] ζ(z)`, from the vanishing variance sum
-`eq:dgt4-derivative-variance-limit` and the uniform Green bound
-`eq:dgt4-tested-green-bound`.  Replacing the mean-gradient coefficients by the
-profile coefficients costs `eq:dgt4-linear-coefficient-replacement`, which is
-the second moment of a linear functional of the scenery and is controlled by the
-`ℓ¹` distance of the two coefficient arrays.  Adding the two gives
-`eq:dgt4-linearization-from-paths`.
-
-Everything here is stated for an arbitrary family of coordinatewise convex
-functionals of the field that read finitely many sites, so that the tested field
-enters only through the four estimates the paper proves about it.
--/
 import Sandpile.Support.LinConvexSite
 import Sandpile.Support.LinChooseL
 import Sandpile.Support.LinL2Two
+
+/-!
+# Step 2 of the linearization, abstracted from the tested field
+
+Step 2 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5803-5845`), abstracted
+from the tested field.
+
+The paper's Step 2 has three moves. The convex-linear bound of `lem:convex-linear-bound`
+applied to the tested field gives `eq:dgt4-convex-linear-remainder`, the vanishing in
+`L²` of `F_R - E F_R - ∑_z E[∂_{ζ(z)}F_R] ζ(z)`, from the vanishing variance sum
+`eq:dgt4-derivative-variance-limit` and the uniform Green bound
+`eq:dgt4-tested-green-bound`. Replacing the mean-gradient coefficients by the profile
+coefficients costs `eq:dgt4-linear-coefficient-replacement`, which is the second moment
+of a linear functional of the scenery and is controlled by the `ℓ¹` distance of the two
+coefficient arrays. Adding the two gives `eq:dgt4-linearization-from-paths`.
+
+Everything here is stated for an arbitrary family of coordinatewise convex functionals of
+the field that read finitely many sites, so that the tested field enters only through the
+four estimates the paper proves about it.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,28 +1,29 @@
-/-
-The integration over the walk of Step 2 of `lem:dgt4-path-survival`
-(`sandpile.tex:5529-5583`).
-
-`Support/LinStep2Chain.lean` bounds, for a FIXED path `X`, the deviation of the
-survival probability from the profile `x^κ` by four errors, the last of which is
-controlled by a bound `η'` on the last-visit defect `|G(0,0)S(X)+\log x|`.  What
-`lem:dgt4-weighted-last-visits` supplies is not a pointwise bound on that defect but an
-INTEGRAL one, so the chain is applied along each path with its own pointwise defect in
-place of `η'` and the resulting bound is integrated.  Since the pointwise chain is affine
-in the defect, the integration is `integral_mono` against
-`c + (κ + εκ)|G(0,0)S(X)+\log x|`.
-
-Three bridges are needed first.  The frozen statement writes the survival probability as
-`∫_σ S_{n,j}(X)`, an integral of the path-space indicator with `σ` held fixed, while the
-chain of `Support/LinStep2Chain.lean` writes it as the measure of the scenery event; they
-agree because the indicator, read as a function of `σ`, is the indicator of that event
-(`integral_survival_eq_measureReal`), whose measurability is
-`measurableSet_survivalSet`.  The integration over path space also needs the survival
-probability to be measurable in `X`, which is the joint measurability of
-`Support/LinSurvivalMeas.lean` followed by `StronglyMeasurable.integral_prod_left'`.
--/
 import Sandpile.Support.LinStep2Chain
 import Sandpile.Support.LinSurvivalMeas
 import Sandpile.Support.LinStep2
+
+/-!
+# Integrating Step 2 of the path-survival lemma over the walk
+
+The integration over the walk of Step 2 of `lem:dgt4-path-survival` (`sandpile.tex:5529-5583`).
+
+`Support/LinStep2Chain.lean` bounds, for a FIXED path `X`, the deviation of the survival
+probability from the profile `x^κ` by four errors, the last of which is controlled by a bound
+`η'` on the last-visit defect `|G(0,0)S(X)+\log x|`. What `lem:dgt4-weighted-last-visits`
+supplies is not a pointwise bound on that defect but an INTEGRAL one, so the chain is applied
+along each path with its own pointwise defect in place of `η'` and the resulting bound is
+integrated. Since the pointwise chain is affine in the defect, the integration is
+`integral_mono` against `c + (κ + εκ)|G(0,0)S(X)+\log x|`.
+
+Three bridges are needed first. The frozen statement writes the survival probability as
+`∫_σ S_{n,j}(X)`, an integral of the path-space indicator with `σ` held fixed, while the chain
+of `Support/LinStep2Chain.lean` writes it as the measure of the scenery event; they agree
+because the indicator, read as a function of `σ`, is the indicator of that event
+(`integral_survival_eq_measureReal`), whose measurability is `measurableSet_survivalSet`. The
+integration over path space also needs the survival probability to be measurable in `X`, which
+is the joint measurability of `Support/LinSurvivalMeas.lean` followed by
+`StronglyMeasurable.integral_prod_left'`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

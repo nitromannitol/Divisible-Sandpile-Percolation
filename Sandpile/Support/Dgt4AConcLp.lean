@@ -1,16 +1,17 @@
-/-
-The rank-one reduction is a contraction for the `\ell^2` distance.
+import Sandpile.Support.Dgt4ACondTail
+
+/-!
+# The rank-one reduction is a contraction for the `\ell^2` distance
 
 `sandpile.tex:5270-5271` says that conditioning the Gaussian scenery on `-V_\infty(0)`
-"replaces its covariance by a rank-one reduction, so the same bound holds
-conditionally".  The reduction is `\delta\mapsto\delta-\langle e,\delta\rangle e` for the
-unit vector `e=G(0,\cdot)/\|G(0,\cdot)\|`, and what makes the concentration bound survive
-it is Pythagoras: the reduction decreases the squared `\ell^2` norm by exactly
-`\langle e,\delta\rangle^2`.  The three lemmas here are that identity in the form the
-conditioning uses it, where a square-summable family is given by a `HasSum` and not by a
-membership in `lp`.
+"replaces its covariance by a rank-one reduction, so the same bound holds conditionally". The
+reduction is `\delta\mapsto\delta-\langle e,\delta\rangle e` for the unit vector
+`e=G(0,\cdot)/\|G(0,\cdot)\|`, and what makes the concentration bound survive it is Pythagoras:
+the reduction decreases the squared `\ell^2` norm by exactly `\langle e,\delta\rangle^2`
+(`hasSum_sq_sub_smul`). `memLp_two_of_hasSum_sq` and `hasSum_sq_coeFn_lp` are the two
+conversions between a square-summable family given by a `HasSum` and its membership in `lp 2`,
+which is the form the conditioning argument needs.
 -/
-import Sandpile.Support.Dgt4ACondTail
 
 open MeasureTheory Filter Topology
 

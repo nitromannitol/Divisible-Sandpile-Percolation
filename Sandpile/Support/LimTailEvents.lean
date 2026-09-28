@@ -1,20 +1,34 @@
-/-
-A countable measurable approximation to the infinite-scale crossing event
-of `sandpile.tex:2431-2482`. Integer levels and rational scales give a
-decreasing sequence of chain events. The crossing bracket gives its positive
-probability, and continuity identifies its intersection with `ScaleCrossings`.
-The final implication requires tail measurability explicitly.
--/
 import Sandpile.Support.LimStepOne
+
+/-!
+# A countable measurable approximation to the infinite-scale crossing event
+
+The event `ScaleCrossings` quantifies over every real level `L` and is not, as it stands,
+measurable or an event of any tail sigma-algebra. `scaleChainEvent` replaces the level by
+integer multiples of the crossing scale and the scale parameter by rationals converging
+to `0`, giving a decreasing (`Antitone`) sequence of measurable events whose intersection
+agrees, on the continuity set of the fields, with `ScaleCrossings`. Its positive
+probability comes from the crossing bracket `ScaleCrossingLowerAt`, and the final upgrade
+to full probability uses that the intersection is measurable in a tail sigma-algebra of an
+independent family, via Kolmogorov's zero-one law.
+-/
+
 open MeasureTheory ProbabilityTheory Set Filter
 open Sandpile.Continuum Sandpile.Support Sandpile.Frozen.FixedScaleCrossings
 open scoped ENNReal NNReal
+
+/-- The countable, measurable approximation to `ScaleCrossings` at integer level `n + 1`:
+the union over rationals `s` below `((n : ℝ) + 1)⁻¹` of the event that the ball field at
+scale `s` crosses the rectangle `crossApprox` at level `((n : ℝ) + 1) * crossScale d s`. -/
 noncomputable def Sandpile.Support.scaleChainEvent {Ω : Type*} [MeasurableSpace Ω]
     (d : ℕ) (W : (Space d → ℝ) → Ω → ℝ) (a b : Fin 2 → ℝ) (i : Fin 2)
     (n : ℕ) : Set Ω :=
   ⋃ s : ℚ, ⋃ _ : 0 < s ∧ (s : ℝ) < ((n : ℝ) + 1)⁻¹,
     crossApprox (ballField d W (s : ℝ)) a b i (((n : ℝ) + 1) * crossScale d (s : ℝ))
 
+/-- If two ball fields `W` and `W'` differ, on the rectangle, by at most `C` times the
+crossing scale, then `ScaleCrossings` transfers from `W` to `W'` with the level raised
+by `C`. -/
 theorem Sandpile.Support.scaleCrossings_of_bounded_perturbation {Ω : Type*} {d : ℕ}
     {W W' : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {ω : Ω}
     {C : ℝ} (hC : 0 ≤ C)
@@ -23,13 +37,18 @@ theorem Sandpile.Support.scaleCrossings_of_bounded_perturbation {Ω : Type*} {d 
     (h : ScaleCrossings d W a b i ω) : ScaleCrossings d W' a b i ω := by
   intro L hL m
   obtain ⟨s, hs, hsm, hcr⟩ := h (L + C) (by linarith) m
-  have hcut : ((m : ℝ) + 1)⁻¹ ≤ 1 := (inv_le_one₀ (by positivity)).2 (by linarith [Nat.cast_nonneg (α := ℝ) m])
+  have hcut : ((m : ℝ) + 1)⁻¹ ≤ 1 :=
+    (inv_le_one₀ (by positivity)).2 (by linarith [Nat.cast_nonneg (α := ℝ) m])
   refine ⟨s, hs, hsm, crosses_of_mem_on (fun u hu hmem => ?_) hcr⟩
   have he := (abs_le.mp (hshift s hs (hsm.trans_le hcut) u hu)).2
   change (L + C) * crossScale d (s : ℝ) ≤ ballField d W (s : ℝ) u ω at hmem
   change L * crossScale d (s : ℝ) ≤ ballField d W' (s : ℝ) u ω
   nlinarith
 
+/-- `ScaleCrossings` is equivalent to its restriction to natural-number levels and
+denominators: the real level `L` in the definition can be replaced by `(n : ℝ) + 1` for
+`n : ℕ` and the real bound `q` on the scale by `((m : ℝ) + 1)⁻¹` for `m : ℕ`, without
+changing the event. -/
 theorem Sandpile.Support.scaleCrossings_iff_nat {Ω : Type*} {d : ℕ}
     {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {ω : Ω} :
     ScaleCrossings d W a b i ω ↔
@@ -44,6 +63,8 @@ theorem Sandpile.Support.scaleCrossings_iff_nat {Ω : Type*} {d : ℕ}
     refine ⟨s, hs, hsm, crosses_level_mono ?_ hcr⟩
     exact mul_le_mul_of_nonneg_right (by linarith) (crossScale_pos (by exact_mod_cast hs)).le
 
+/-- `scaleChainEvent d W a b i n` is measurable whenever every ball field
+`ballField d W (s : ℝ) u` is. -/
 theorem Sandpile.Support.measurableSet_scaleChainEvent {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     {W : (Space d → ℝ) → Ω → ℝ}
     (hm : ∀ s : ℚ, 0 < s → ∀ u, Measurable (ballField d W (s : ℝ) u))
@@ -52,6 +73,9 @@ theorem Sandpile.Support.measurableSet_scaleChainEvent {Ω : Type*} [MeasurableS
   exact MeasurableSet.iUnion fun s => MeasurableSet.iUnion fun hs =>
     measurableSet_crossApprox (hm s hs.1) a b i _
 
+/-- `scaleChainEvent d W a b i` is an antitone (decreasing) sequence of events in `n`,
+since raising `n` both raises the level `(n : ℝ) + 1` and shrinks the scale bound
+`((n : ℝ) + 1)⁻¹`. -/
 theorem Sandpile.Support.scaleChainEvent_antitone {Ω : Type*} [MeasurableSpace Ω] (d : ℕ)
     (W : (Space d → ℝ) → Ω → ℝ) (a b : Fin 2 → ℝ) (i : Fin 2) :
     Antitone (scaleChainEvent d W a b i) := by
@@ -65,6 +89,10 @@ theorem Sandpile.Support.scaleChainEvent_antitone {Ω : Type*} [MeasurableSpace 
   exact crossApprox_mono_level _ a b i
     (mul_le_mul_of_nonneg_right hnm' (crossScale_pos (by exact_mod_cast hs.1)).le) hcr
 
+/-- If a bracket of unit probability mass `p` on the crossing event holds at every
+sufficiently large level `L` and sufficiently small rational scale, then `p` also
+lower-bounds the probability of the chain event `scaleChainEvent d W a b i n` at every
+integer index `n`. -/
 theorem Sandpile.Support.scaleChainEvent_lower {Ω : Type} [MeasurableSpace Ω] {P : Measure Ω}
     {d : ℕ} {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2}
     (hab : ∀ j, a j < b j)
@@ -72,7 +100,8 @@ theorem Sandpile.Support.scaleChainEvent_lower {Ω : Type} [MeasurableSpace Ω] 
       ∀ᵐ ω ∂P, Continuous fun u => ballField d W (s : ℝ) u ω)
     {p : ℝ} (hlow : ∀ L : ℝ, 1 ≤ L → ∃ s₀ : ℝ, 0 < s₀ ∧
       ∀ s : ℚ, 0 < (s : ℝ) → (s : ℝ) < s₀ →
-        ENNReal.ofReal p ≤ P {ω | Crosses a b i {u | L * crossScale d (s : ℝ) ≤ ballField d W (s : ℝ) u ω}})
+        ENNReal.ofReal p ≤
+          P {ω | Crosses a b i {u | L * crossScale d (s : ℝ) ≤ ballField d W (s : ℝ) u ω}})
     (n : ℕ) : ENNReal.ofReal p ≤ P (scaleChainEvent d W a b i n) := by
   obtain ⟨s₀, hs₀, hb⟩ := hlow ((n : ℝ) + 2) (by linarith [Nat.cast_nonneg (α := ℝ) n])
   obtain ⟨s, hs0, hslt⟩ := exists_rat_btwn (show (0 : ℝ) < min s₀ ((n : ℝ) + 1)⁻¹ by positivity)
@@ -91,13 +120,21 @@ theorem Sandpile.Support.scaleChainEvent_lower {Ω : Type} [MeasurableSpace Ω] 
   intro ω hω
   exact Set.mem_iUnion.mpr ⟨s, Set.mem_iUnion.mpr ⟨⟨hs, hsn⟩, hω⟩⟩
 
-theorem Sandpile.Support.le_measure_iInter_of_antitone {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsFiniteMeasure P]
+/-- A common lower bound `p` on the measures of a decreasing sequence of measurable sets,
+under a finite ambient measure, lower-bounds the measure of their intersection. -/
+theorem Sandpile.Support.le_measure_iInter_of_antitone {Ω : Type*} [MeasurableSpace Ω]
+    (P : Measure Ω) [IsFiniteMeasure P]
     (A : ℕ → Set Ω) (hm : ∀ n, MeasurableSet (A n)) (ha : Antitone A)
     {p : ℝ≥0∞} (hp : ∀ n, p ≤ P (A n)) : p ≤ P (⋂ n, A n) := by
   rw [ha.measure_iInter (fun n => (hm n).nullMeasurableSet) ⟨0, measure_ne_top P _⟩]
   exact le_iInf hp
 
-theorem Sandpile.Support.scaleCrossings_of_mem_scaleChainIntersection {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+/-- Membership of `ω` in every event of the chain `scaleChainEvent d W a b i` implies
+`ScaleCrossings d W a b i ω`, on the continuity set of the fields: for a target level `L`
+and denominator `m`, taking `n` past both `L` and `m` supplies a scale witnessing the
+crossing at level `L` and denominator `m`. -/
+theorem Sandpile.Support.scaleCrossings_of_mem_scaleChainIntersection {Ω : Type*}
+    [MeasurableSpace Ω] {d : ℕ}
     {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {ω : Ω}
     (hc : ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
       Continuous fun u => ballField d W (s : ℝ) u ω)
@@ -107,7 +144,8 @@ theorem Sandpile.Support.scaleCrossings_of_mem_scaleChainIntersection {Ω : Type
   let n := max n₀ m
   obtain ⟨s, hω⟩ := Set.mem_iUnion.mp (Set.mem_iInter.mp h n)
   obtain ⟨hs, hcr⟩ := Set.mem_iUnion.mp hω
-  have hmn : (m : ℝ) + 1 ≤ (n : ℝ) + 1 := by exact_mod_cast Nat.add_le_add_right (le_max_right n₀ m) 1
+  have hmn : (m : ℝ) + 1 ≤ (n : ℝ) + 1 := by
+    exact_mod_cast Nat.add_le_add_right (le_max_right n₀ m) 1
   have hnL : L ≤ (n : ℝ) + 1 := by
     have : (n₀ : ℝ) ≤ (n : ℝ) := by exact_mod_cast le_max_left n₀ m
     linarith
@@ -118,7 +156,12 @@ theorem Sandpile.Support.scaleCrossings_of_mem_scaleChainIntersection {Ω : Type
     (crossScale_pos (by exact_mod_cast hs.1)).le)
     (crossApprox_inter_subset_crossing ⟨hcr, hc s hs.1 (hs.2.trans_le hcut).le⟩)
 
-theorem Sandpile.Support.mem_scaleChainIntersection_of_scaleCrossings {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+/-- The converse of `scaleCrossings_of_mem_scaleChainIntersection`: `ScaleCrossings`
+implies membership in every event of the chain, on the continuity set of the fields, by
+instantiating the level at `(n : ℝ) + 2` and using that this exceeds `(n : ℝ) + 1` by
+exactly `crossScale d s`. -/
+theorem Sandpile.Support.mem_scaleChainIntersection_of_scaleCrossings {Ω : Type*}
+    [MeasurableSpace Ω] {d : ℕ}
     {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {ω : Ω}
     (hab : ∀ j, a j < b j)
     (hc : ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
@@ -136,7 +179,12 @@ theorem Sandpile.Support.mem_scaleChainIntersection_of_scaleCrossings {Ω : Type
   rw [heq] at hc'
   exact Set.mem_iUnion.mpr ⟨s, Set.mem_iUnion.mpr ⟨⟨hs, hsn⟩, hc'⟩⟩
 
-theorem Sandpile.Support.scaleChainIntersection_ae_eq {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
+/-- On the continuity set of the ball fields, the intersection of the chain events
+`scaleChainEvent d W a b i n` agrees almost everywhere with `ScaleCrossings d W a b i`, by
+combining the two implications `scaleCrossings_of_mem_scaleChainIntersection` and
+`mem_scaleChainIntersection_of_scaleCrossings`. -/
+theorem Sandpile.Support.scaleChainIntersection_ae_eq {Ω : Type*} [MeasurableSpace Ω]
+    {P : Measure Ω}
     {d : ℕ} {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2}
     (hab : ∀ j, a j < b j)
     (hc : ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
@@ -152,7 +200,11 @@ theorem Sandpile.Support.scaleChainIntersection_ae_eq {Ω : Type*} [MeasurableSp
       mem_scaleChainIntersection_of_scaleCrossings hab
         (fun s hs hs1 => hω ⟨s, hs, hs1⟩)⟩
 
-theorem Sandpile.Support.scaleChainIntersection_positive {Ω : Type} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+/-- The intersection of the chain events `scaleChainEvent d W a b i n` has positive
+probability, obtained from a crossing bracket `ScaleCrossingLowerAt` together with
+`le_measure_iInter_of_antitone`. -/
+theorem Sandpile.Support.scaleChainIntersection_positive {Ω : Type} [MeasurableSpace Ω]
+    {P : Measure Ω} [IsProbabilityMeasure P]
     {d : ℕ} {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2}
     (hab : ∀ j, a j < b j)
     (hm : ∀ s : ℚ, 0 < s → ∀ u, Measurable (ballField d W (s : ℝ) u))
@@ -165,7 +217,12 @@ theorem Sandpile.Support.scaleChainIntersection_positive {Ω : Type} [Measurable
     (le_measure_iInter_of_antitone P _ (measurableSet_scaleChainEvent hm a b i)
       (scaleChainEvent_antitone d W a b i) (scaleChainEvent_lower hab hc hlow))
 
-theorem Sandpile.Support.ae_scaleCrossings_of_tail {Ω : Type} [mΩ : MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
+/-- If the intersection of the chain events is measurable in the tail sigma-algebra of an
+independent family and has positive probability, Kolmogorov's zero-one law raises that
+probability to `1`, and `ScaleCrossings` holds almost surely on the continuity set of the
+fields. -/
+theorem Sandpile.Support.ae_scaleCrossings_of_tail {Ω : Type} [mΩ : MeasurableSpace Ω]
+    {P : Measure Ω} [IsProbabilityMeasure P]
     {d : ℕ} {W : (Space d → ℝ) → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2}
     (hc : ∀ s : ℚ, 0 < s → (s : ℝ) ≤ 1 →
       ∀ᵐ ω ∂P, Continuous fun u => ballField d W (s : ℝ) u ω)

@@ -1,13 +1,16 @@
-/-
+import Sandpile.Support.Dgt4AFirstMomentTwo
+import Sandpile.Support.Dgt4AMeanIncrementInt
+import Sandpile.Support.Dgt4AMeanIncrement
+
+/-!
+# First-moment bound for the centred deviation
+
 The first-moment bound of case (a) Step 1 of `prop:dgt4-contact-asymptotics`
-(`sandpile.tex:5053-5055`): `E|D_n| ≤ 2 E u_n(0)/n`.  It combines the pointwise
+(`sandpile.tex:5053-5055`): `E|D_n| ≤ 2 E u_n(0)/n`. It combines the pointwise
 bound `E|D_n| ≤ 2E(u_{n+1}(0)-u_n(0))` with the identification of that increment
 with the increment of the mean odometer and the concavity bound
 `eq:dgt4-mean-increment-bound`.
 -/
-import Sandpile.Support.Dgt4AFirstMomentTwo
-import Sandpile.Support.Dgt4AMeanIncrementInt
-import Sandpile.Support.Dgt4AMeanIncrement
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

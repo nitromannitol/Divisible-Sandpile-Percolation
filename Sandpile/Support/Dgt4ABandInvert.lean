@@ -1,15 +1,20 @@
-/-
-The inversion step of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6233-6241`):
-the summed profile `eq:dgt4-band-summed-profile` gives
-`y_{k,⌊tR_k²⌋}/L_k → t/κ_k`, and `eq:dgt4-band-scaled-profile` is its reciprocal,
-`L_kz_{k,⌊tR_k²⌋}^{ϑ_k} → κ_k/t`.
-
-Inverting a uniform approximation is legitimate only away from zero, and here the
-limit `t/κ_k` is at least `δ/κ_1` on the band, because `t ≥ δ` and the exponents
-are bounded above.  That is the whole content of the passage, and it is stated
-for arbitrary families of functions on an arbitrary set.
--/
 import Mathlib
+
+/-!
+# The inversion step of the summed-profile passage
+
+The inversion step of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6233-6241`): the summed
+profile `eq:dgt4-band-summed-profile` gives `y_{k,⌊tR_k²⌋}/L_k → t/κ_k`, and
+`eq:dgt4-band-scaled-profile` is its reciprocal, `L_kz_{k,⌊tR_k²⌋}^{ϑ_k} → κ_k/t`.
+
+Inverting a uniform approximation is legitimate only away from zero, and here the limit
+`t/κ_k` is at least `δ/κ_1` on the band, because `t ≥ δ` and the exponents are bounded above.
+That is the whole content of the passage, and it is stated for arbitrary families of
+functions on an arbitrary set: `eventually_abs_inv_sub_le` inverts a uniform approximation
+bounded away from zero, and `eventually_abs_ratio_sub_one_le` applies it to the index shift
+`eq:dgt4-band-index-shift`, where a step bound small compared with `L_k` against a lower
+bound of order `L_k` forces consecutive values of the profile to have ratio tending to one.
+-/
 
 open Filter Topology
 

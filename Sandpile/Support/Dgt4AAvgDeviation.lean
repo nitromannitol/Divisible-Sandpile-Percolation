@@ -1,10 +1,16 @@
-/-
-The averaged-coordinate Lipschitz bound for the centred deviation `D_n` of
-`sandpile.tex:5050-5058`: the neighbour average of the field minus the odometer changes by at
-most `PG(·,z)(0)` times the change of the scenery at `z`.
--/
 import Sandpile.Support.Dgt4FieldRecursion
 import Sandpile.Support.OriginKernel
+
+/-!
+# The averaged-coordinate Lipschitz bound for the centred deviation
+
+The averaged-coordinate Lipschitz bound for the centred deviation `D_n` of
+`sandpile.tex:5050-5058`: the neighbour average of the field minus the odometer changes by at
+most `PG(·,z)(0)` times the change of the scenery at `z`. The single result
+`abs_avgDeviation_update_le` gets this by averaging the pointwise Lipschitz bound
+`abs_infiniteGreenField_sub_odometer_update_le` against the walk operator via
+`avg_mono_le` and `LatticeProb.walkOp_mul_const`.
+-/
 
 open MeasureTheory Filter Topology Set
 

@@ -1,17 +1,21 @@
-/-
-The exploration of Step 2 of `prop:fixed-scale-crossings` exists (`sandpile.tex:2255-2296`),
-and with it the proposition itself.
-
-The rule of `CrossExploreRule`, run at the level `L/(2R)`, reveals the cells of the squares it
-discovers; `CrossExploreRec` makes its revealed set a stopping set, `CrossExploreDecide` makes
-it decide the crossing at the level `L/R` of the field it computes, and `CrossExploreCount`
-bounds the expected number of cells it reveals by the layer sum of the arm estimate.  That is
-the hypothesis `hexp` of `fixed_scale_crossings_of_cell_exploration`, so the proposition
-follows.
--/
 import Sandpile.Support.CrossExploreCount
 import Sandpile.Support.CrossExploreReduction
 import Sandpile.External.PinskerProved
+
+/-!
+# Existence of the Step 2 exploration, and `prop:fixed-scale-crossings`
+
+The exploration of Step 2 of `prop:fixed-scale-crossings` exists (`sandpile.tex:2255-2296`), and
+with it the proposition itself.
+
+The rule of `CrossExploreRule`, run at the level `L/(2R)`, reveals the cells of the squares it
+discovers; `CrossExploreRec` makes its revealed set a stopping set, `CrossExploreDecide` makes it
+decide the crossing at the level `L/R` of the field it computes, and `CrossExploreCount` bounds
+the expected number of cells it reveals by the layer sum of the arm estimate
+(`exists_cell_exploration`). That is the hypothesis `hexp` of
+`fixed_scale_crossings_of_cell_exploration`, so the proposition follows
+(`fixed_scale_crossings_proved`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -19,6 +23,8 @@ open scoped NNReal ENNReal
 
 namespace Sandpile.Support
 
+/-- If `(m : ℝ) ≤ X` for a nonnegative real `X`, then `m.toNat` also satisfies
+`(m.toNat : ℝ) ≤ X`: when `m ≥ 0` the cast is unchanged, and when `m < 0` then `m.toNat = 0`. -/
 theorem toNat_cast_le {m : ℤ} {X : ℝ} (hX : 0 ≤ X) (h : (m : ℝ) ≤ X) :
     ((m.toNat : ℕ) : ℝ) ≤ X := by
   rcases le_or_gt 0 m with hm | hm

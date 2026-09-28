@@ -1,27 +1,18 @@
-/-
-The objects of the expansion identity of `eq:dgt4-early-derivative-variance`
-(`sandpile.tex:5731-5753`), the first open piece of `eq:dgt4-derivative-variance-limit`.
-
-The paper splits the coordinate derivative of the tested odometer at the time
-`n_R - \delta R^2`,
-
-  `D^{≤}_{R,z} := ∑_{x∈\Z^d} a_R(x) E_x ∑_{0≤i<n_R, i≤n_R-\delta R^2} 1_{X_i=z} S_{n_R,i}(X)`,
-
-and expands `∑_z Var(D^{≤}_{R,z})` over two independent walks:
-
-  `∑_z Var(D^{≤}_{R,z})
-     = ∑_{x,y} a_R(x)a_R(y) E_x E_y ∑_{i,j≤n_R-\delta R^2} 1_{X_i=Y_j}
-        Cov(S_{n_R,i}(X), S_{n_R,j}(Y) | X,Y)`.
-
-The two ingredients of that display are the centered survival indicator
-`S_{n,i}(X) - E S_{n,i}(X)` and the conditional covariance
-`Cov(S_{n,i}(X),S_{n,j}(Y) | X,Y) = E[S_{n,i}(X)S_{n,j}(Y)] - E S_{n,i}(X) E S_{n,j}(Y)`,
-both taken over the scenery law `μ`.  They are defined here, together with the
-early part `D^{≤}_{R,z}` itself, so that the expansion can be stated and proved
-in the walk-pair vocabulary of `Sandpile.walkPairLaw`.
--/
 import Sandpile.Support.LinEarlyVar
 import Sandpile.Support.LinSurvivalGradient
+
+/-!
+# Definitions for the expansion of the early derivative variance
+
+This file defines the objects used to expand `∑_z Var(D^{≤}_{R,z})`, where `D^{≤}_{R,z}`
+is the early part of the coordinate derivative of the tested odometer, over two
+independent walks `X` and `Y`: the centered survival indicator `centeredSurvival`, the
+conditional covariance `covSurvival` of two survival indicators with the paths held
+fixed, the visit indicator `visitWeight`, and the early part `earlyDeriv` itself together
+with its centered version `earlyDerivCentered`. The covariance of two visit-weighted
+survival time sums is shown to equal the corresponding double time sum of conditional
+covariances, `covariance_timesum_eq`, which is the key identity for the expansion.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -124,10 +115,12 @@ theorem covariance_timesum_eq (μ : Measure (Site d → ℝ)) [IsProbabilityMeas
           (if X i = z then (1 : ℝ) else 0) * (if Y j = z then (1 : ℝ) else 0)
             * covSurvival μ n i j X Y := by
   classical
-  have hf : ∀ i ∈ t, MemLp (fun σ => (if X i = z then (1 : ℝ) else 0) * survivalInd σ n i X) 2 μ := by
+  have hf : ∀ i ∈ t,
+      MemLp (fun σ => (if X i = z then (1 : ℝ) else 0) * survivalInd σ n i X) 2 μ := by
     intro i hi
     exact (memLp_survivalInd μ n i X).const_mul _
-  have hg : ∀ j ∈ t, MemLp (fun σ => (if Y j = z then (1 : ℝ) else 0) * survivalInd σ n j Y) 2 μ := by
+  have hg : ∀ j ∈ t,
+      MemLp (fun σ => (if Y j = z then (1 : ℝ) else 0) * survivalInd σ n j Y) 2 μ := by
     intro j hj
     exact (memLp_survivalInd μ n j Y).const_mul _
   rw [covariance_fun_sum_left' hf (memLp_finsetSum t hg)]

@@ -1,17 +1,18 @@
-/-
-Steps 2 and 3 of `prop:d4-superdiffusive-limit` in the pairing form the first
-clause of the statement needs (`sandpile.tex:3368-3404`).
-
-The convergence in distribution of the proposition is tested against one test
-function at a time, with no normalisation of its `H^s` norm, so the two steps
-are repeated here with the `H^{-s}(D)` norm replaced by the absolute value of
-the pairing with a single test function.  The proofs are the ones of the norm
-form with `Sandpile.Support.exists_abs_pairing_omegaRep_le` and
-`Sandpile.Support.exists_abs_pairing_parityConst_le` in place of their
-unit-ball counterparts; the rate of the second display improves to `R^{-1}`.
--/
 import Sandpile.Support.D4SPairing
 import Sandpile.Support.D4SStep3
+
+/-!
+# Steps 2 and 3 of the superdiffusive limit, in pairing form
+
+Steps 2 and 3 of `prop:d4-superdiffusive-limit` in the pairing form the first clause of the
+statement needs (`sandpile.tex:3368-3404`). The convergence in distribution of the proposition is
+tested against one test function at a time, with no normalisation of its `H^s` norm, so the two
+steps are repeated here with the `H^{-s}(D)` norm replaced by the absolute value of the pairing
+with a single test function: `tendsto_step2_pairing_four` and `tendsto_step3_pairing_four`. The
+proofs are the ones of the norm form with `Sandpile.Support.exists_abs_pairing_omegaRep_le` and
+`Sandpile.Support.exists_abs_pairing_parityConst_le` in place of their unit-ball counterparts; the
+rate of the second display improves to `R^{-1}`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -209,7 +210,8 @@ theorem tendsto_step3_pairing_four (hVS : Sandpile.External.VarianceScale)
     R⁻¹ ^ 4 * ∑ x ∈ Sandpile.boxFinset (0 : Site 4) (⌈|R| * L⌉₊ + 1),
       (windowField ν α R ζ x) ^ 2 with hY
   set V : ℝ → ℝ := fun R =>
-    2 * ((A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) * mm R + (A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) ^ 2 * (Cx / ((⌊R ^ α⌋₊ : ℝ) + 2) ^ 2))
+    2 * ((A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) * mm R +
+      (A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) ^ 2 * (Cx / ((⌊R ^ α⌋₊ : ℝ) + 2) ^ 2))
       + 2 * (mm R) ^ 2 with hV
   set B : ℝ → ℝ := fun R => K ^ 2 * ((2 * L + 5) ^ 4 * V R) with hB
   -- the scales

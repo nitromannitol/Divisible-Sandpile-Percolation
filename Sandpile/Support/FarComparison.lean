@@ -1,14 +1,28 @@
-/-
-Logarithmic-scale Gaussian comparison for cut-off ball Green fields on
-rectangles with polynomially bounded cardinality.
--/
 import Sandpile.Support.RectangleComparison
+
+/-!
+# Logarithmic-scale Gaussian comparison for large ball radii
+
+Logarithmic-scale Gaussian comparison for cut-off ball Green fields on
+rectangles with polynomially bounded cardinality. `eventually_far_comparison_conditions`
+packages the growth conditions of `RectangleComparison` (a large enough separation, the
+window `η log r`, and the error term) into a single eventual statement in `r`, valid for
+every rectangle cardinality `N` between `r` and `r^m`, by using that `4Dm³/η · (log r)²/r^{2α}`
+tends to `0`. `exists_gaussian_far_comparison` then converts that Bernoulli-to-Gaussian
+comparison, in which the window and the error term were stated in terms of the rectangle
+cardinality `N = Q.card`, into one stated purely in terms of the cutoff radius `r`, by
+bounding both quantities uniformly over the admissible range `r ≤ N ≤ r^m`: this is what
+`far_comparison_exponent_le` and `far_comparison_error_le` do for the window and the error
+term respectively, and `inv_floor_sq_le`, `log_card_bounds` supply the elementary estimates
+these two bounds are built from.
+-/
 
 open Filter MeasureTheory ProbabilityTheory Set
 open scoped Topology NNReal
 
 namespace Sandpile
 
+/-- `1/⌊x⌋² ≤ 4/x²` for `x ≥ 2`, since `⌊x⌋ ≥ x/2`. -/
 lemma inv_floor_sq_le {x : ℝ} (hx : 2 ≤ x) :
     1 / (⌊x⌋₊ : ℝ) ^ 2 ≤ 4 / x ^ 2 := by
   have hxpos : 0 < x := by linarith
@@ -20,6 +34,7 @@ lemma inv_floor_sq_le {x : ℝ} (hx : 2 ≤ x) :
   have hs := (sq_le_sq₀ (by positivity : 0 ≤ x / 2) hfloorpos.le).mpr hfloor
   nlinarith
 
+/-- If `r ≤ N ≤ r^m` with `r ≥ 2` then `log r ≤ log N ≤ m · log r`. -/
 lemma log_card_bounds {r N m : ℕ} (hr : 2 ≤ r) (hlo : r ≤ N) (hhi : N ≤ r ^ m) :
     Real.log r ≤ Real.log N ∧ Real.log N ≤ (m : ℝ) * Real.log r := by
   have hrpos : (0 : ℝ) < r := by exact_mod_cast (by omega : 0 < r)
@@ -28,6 +43,9 @@ lemma log_card_bounds {r N m : ℕ} (hr : 2 ≤ r) (hlo : r ≤ N) (hhi : N ≤ 
   have h := Real.log_le_log hNpos (by exact_mod_cast hhi : (N : ℝ) ≤ (r : ℝ) ^ m)
   simpa only [Real.log_pow] using h
 
+/-- The window term `D l³/(η log x · ⌊x^α⌋²)` of the Bernoulli-Gaussian comparison, with
+`l ≤ m log x`, is bounded by `(4Dm³/η) · (log x)²/x^{2α}`: substitute the bound on `l` and
+apply `inv_floor_sq_le` to replace `1/⌊x^α⌋²` by `4/x^{2α}`. -/
 lemma far_comparison_exponent_le {D η x l m α : ℝ}
     (hD : 0 ≤ D) (hη : 0 < η) (hx : 1 < x) (hl : 0 ≤ l)
     (hm : 0 ≤ m) (hbound : l ≤ m * Real.log x) (hpow : 2 ≤ x ^ α) :
@@ -52,6 +70,9 @@ lemma far_comparison_exponent_le {D η x l m α : ℝ}
       · positivity
     _ = _ := by rw [hid]; field_simp
 
+/-- The error term `C l⁶/((η log x)³ · ⌊x^α⌋²)` of the Bernoulli-Gaussian comparison, with
+`l ≤ m log x`, is bounded by `(4Cm⁶/η³) · (log x)³ · x^{-2α}`, by the same substitution and
+`inv_floor_sq_le` argument as `far_comparison_exponent_le`. -/
 lemma far_comparison_error_le {C η x l m α : ℝ}
     (hC : 0 ≤ C) (hη : 0 < η) (hx : 1 < x) (hl : 0 ≤ l)
     (_hm : 0 ≤ m) (hbound : l ≤ m * Real.log x) (hpow : 2 ≤ x ^ α) :
@@ -78,6 +99,12 @@ lemma far_comparison_error_le {C η x l m α : ℝ}
       · positivity
     _ = _ := by rw [hid, hneg]; field_simp
 
+/-- For `r` large enough, `r` and `⌊r^α⌋` are both at least `2`, and for every rectangle
+cardinality `N` in the admissible range `r ≤ N ≤ r^m`, the window `η log r` is positive and
+large enough (`1 ≤ B (log N)²/(η log r)`) and the error term is below `θ/2`; the threshold
+`r₀` comes from `4Dm³/η · (log r)²/r^{2α} → 0`, using `isLittleO_log_rpow_rpow_atTop`, and
+the two conditions on `N` are `far_comparison_exponent_le`/`log_card_bounds` applied at the
+eventual bound. -/
 lemma eventually_far_comparison_conditions {B D θ η α : ℝ} (hB : 1 ≤ B)
     (hD : 0 ≤ D) (hθ : 0 < θ) (hη : 0 < η) (hα : 0 < α) (m : ℕ) :
     ∃ r₀ : ℕ, ∀ r : ℕ, r₀ ≤ r →
@@ -91,14 +118,17 @@ lemma eventually_far_comparison_conditions {B D θ η α : ℝ} (hB : 1 ≤ B)
     (tendsto_rpow_atTop hα).comp tendsto_natCast_atTop_atTop
   have hsmall : Tendsto (fun r : ℕ => (4 * D * (m : ℝ) ^ 3 / η) *
       ((Real.log (r : ℝ)) ^ 2 / (r : ℝ) ^ (2 * α))) atTop (𝓝 0) := by
-    have hh := ((isLittleO_log_rpow_rpow_atTop (2 : ℝ) (by positivity : 0 < 2 * α)).tendsto_div_nhds_zero).comp
+    have hh := ((isLittleO_log_rpow_rpow_atTop (2 : ℝ)
+      (by positivity : 0 < 2 * α)).tendsto_div_nhds_zero).comp
       tendsto_natCast_atTop_atTop
-    simpa only [Real.rpow_two, mul_zero, Function.comp_apply] using hh.const_mul (4 * D * (m : ℝ) ^ 3 / η)
+    simpa only [Real.rpow_two, mul_zero, Function.comp_apply]
+      using hh.const_mul (4 * D * (m : ℝ) ^ 3 / η)
   have hev : ∀ᶠ r : ℕ in atTop, 2 ≤ r ∧ η ≤ Real.log (r : ℝ) ∧
       2 ≤ (r : ℝ) ^ α ∧
       (4 * D * (m : ℝ) ^ 3 / η) * ((Real.log (r : ℝ)) ^ 2 / (r : ℝ) ^ (2 * α)) < θ / 2 := by
     filter_upwards [eventually_ge_atTop 2, hloglim.eventually (eventually_ge_atTop η),
-      hpowlim.eventually (eventually_ge_atTop 2), (tendsto_order.mp hsmall).2 (θ / 2) (by positivity)]
+      hpowlim.eventually (eventually_ge_atTop 2),
+      (tendsto_order.mp hsmall).2 (θ / 2) (by positivity)]
       with r hr hl hp hs
     exact ⟨hr, hl, hp, hs⟩
   obtain ⟨r₀, hr₀⟩ := hev.exists_forall_of_atTop
@@ -107,7 +137,8 @@ lemma eventually_far_comparison_conditions {B D θ η α : ℝ} (hB : 1 ≤ B)
   obtain ⟨hr2, hlog, hpow, hsmallr⟩ := hr₀ r hr
   have hrR : (1 : ℝ) < r := by exact_mod_cast (by omega : 1 < r)
   have hlogpos : 0 < Real.log (r : ℝ) := Real.log_pos hrR
-  refine ⟨hr2, (Nat.le_floor_iff (by positivity)).mpr (by simpa only [Nat.cast_ofNat] using hpow), ?_⟩
+  refine ⟨hr2,
+    (Nat.le_floor_iff (by positivity)).mpr (by simpa only [Nat.cast_ofNat] using hpow), ?_⟩
   intro N hlo hhi
   obtain ⟨hlo', hhi'⟩ := log_card_bounds hr2 hlo hhi
   have hlN : 0 ≤ Real.log (N : ℝ) := hlogpos.le.trans hlo'
@@ -118,6 +149,13 @@ lemma eventually_far_comparison_conditions {B D θ η α : ℝ} (hB : 1 ≤ B)
     nlinarith [mul_nonneg (sub_nonneg.mpr hlog) hlogpos.le]
   · exact (far_comparison_exponent_le hD hη hrR hlN (Nat.cast_nonneg m) hhi' hpow).trans hsmallr.le
 
+/-- **The Bernoulli law of the cut-off ball Green field crossing value is dominated by a
+Gaussian law shifted by `3η log r` plus an error `C (log r)³ r^{-2α}`.** This is
+`exists_gaussian_far_rectangle_comparison_constants` (which fixes the window and error
+constants `B,C,D`) combined with `eventually_far_comparison_conditions` (which supplies a
+threshold `r₀` past which the window and error hold for every admissible rectangle
+cardinality) and `far_comparison_error_le`/`log_card_bounds` (which convert the final error
+term to the stated form in `r` alone). -/
 lemma exists_gaussian_far_comparison (hBall : External.BallGreenBounds)
     (θ K α η : ℝ) (hθ : 0 < θ) (hα : 0 < α) (hη : 0 < η) (m : ℕ) (hm : 1 ≤ m) :
     ∃ C > 0, ∃ r₀ : ℕ, ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
@@ -131,9 +169,11 @@ lemma exists_gaussian_far_comparison (hBall : External.BallGreenBounds)
             (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ (z w)) ≤ level} ≤
         (LatticeProb.iidLaw 4 (gaussianReal 0 v)).real
           {ζ | crossingValue Q (fun w => finiteKernelField
-            (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ (z w)) ≤ level + 3 * η * Real.log r} +
+            (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ φ) ζ (z w)) ≤
+              level + 3 * η * Real.log r} +
           C * (Real.log r) ^ 3 * (r : ℝ) ^ (-2 * α) := by
-  obtain ⟨B, hB, C, hC, D, hD, hcompare⟩ := exists_gaussian_far_rectangle_comparison_constants hBall θ K hθ
+  obtain ⟨B, hB, C, hC, D, hD, hcompare⟩ :=
+    exists_gaussian_far_rectangle_comparison_constants hBall θ K hθ
   obtain ⟨r₀, hr₀⟩ := eventually_far_comparison_conditions hB hD.le hθ hη hα m
   have hmpos : (0 : ℝ) < m := by exact_mod_cast (by omega : 0 < m)
   refine ⟨4 * C * (m : ℝ) ^ 6 / η ^ 3, by positivity, r₀, ?_⟩

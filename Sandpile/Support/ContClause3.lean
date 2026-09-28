@@ -1,9 +1,12 @@
-/-
-Clause 3 of `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`) from the
-law identity of clause 1: the power moments of the value scale by `T^{p(4-d)/4}`.
--/
 import Sandpile.Support.ContLawTransfer
 import Sandpile.Support.ContRpowConst
+
+/-!
+# Power-moment scaling from the law identity
+
+Clause 3 of `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`) from the law identity of
+clause 1: the power moments of the value scale by `T^{p(4-d)/4}`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinJacobianTestedStep1
+import Sandpile.Support.LinTestedGreen
+import Sandpile.Support.LinTestedStep2
+
+/-! # Jacobian Tested Green Input
+
 `eq:dgt4-tested-green-bound` (`sandpile.tex:5791-5795`) at the tested weight: the
 uniform `ℓ²` bound on the coefficients `b_R(z)=∑_x a_R(x)g_{n_R}(x,z)` that Step
 2 of `lem:dgt4-linearization-from-survival` consumes as `hB₀`.
@@ -10,9 +15,6 @@ summability the passage to the full site sum needs, which the Green bound of
 `ssec:green-estimates` supplies pair by pair, and the scale cut-off of
 `Support/LinJacobianTestedStep1.lean`.
 -/
-import Sandpile.Support.LinJacobianTestedStep1
-import Sandpile.Support.LinTestedGreen
-import Sandpile.Support.LinTestedStep2
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum

@@ -1,34 +1,21 @@
-/-
-Step 2 of `lem:dgt4-path-survival` (`sandpile.tex:5529-5583`), up to the product over the
-last visits.
-
-The paper's Step 2 runs
-`\P(S_{n_R,j}(X)=1\mid X)=\prod_{r=0}^j(1-\pi_{R,r})^{I_{r,j}(X)}+o_R(1)`
-(`eq:dgt4-path-product-limit`) through two estimates: the threshold replacement
-`eq:dgt4-path-contact-replacement`, which exchanges each contact event
-`\{u_{n_R-r}(X_r)=0\}` for its threshold event `\{J(X_r)>\E u_{n_R-r-1}(0)\}`, and the
-factorization `eq:dgt4-path-threshold-factorization` of Step 1.  What is proved here is that
-chain, with the factorization left as an explicit hypothesis, since it is proved separately in
-each branch (`Support/LinStep1Factor.lean` in the Gaussian branch,
-`Sandpile.centeredMassLaw_threshold_factorization` in the independent one).
-
-* `abs_survival_sub_threshold_le` is `eq:dgt4-path-contact-replacement` with the paper's data:
-  the abstract inequality `abs_measureReal_iInter_sub_le_harmonic` of
-  `Support/LinHarmonicWindow.lean` fed the survival events, the threshold events, the identity
-  of symmetric differences `symmDiff_survival_threshold`, and the translation invariance of the
-  pair `(J,(u_m))` at `sandpile.tex:5453-5454`, which enters as the hypothesis `hshift` and is
-  a theorem in both branches (`measure_threshold_symmDiff_shift`,
-  `measure_threshold_symmDiff_shift_gauss`).
-* `exists_lastVisit_enum` enumerates the last-visit times by an injective family of SITES,
-  which is the shape Step 1 consumes, and `prod_rpow_lastVisitIndicator` identifies the
-  paper's `\prod_{r=0}^j(1-\pi_{R,r})^{I_{r,j}(X)}` with the product over those times.
-* `abs_survival_sub_prod_le` is the chain itself.
-
-The error is the sum of the two: the harmonic error `\eta\sum_{r\leq j}1/(n-r)` of the
-replacement and the factorization error `\theta`.
--/
 import Sandpile.Support.LinHarmonicWindow
 import Sandpile.Support.LinNested
+
+/-!
+# Step 2 of the path-survival lemma, up to the product over the last visits
+
+Step 2 of the path-survival lemma passes from the survival probability along a path `X` to the
+product `∏_{r=0}^j (1-π_{R,r})^{I_{r,j}(X)}` up to an `o_R(1)` error, through two estimates:
+the threshold replacement, which exchanges each contact event `{u_{n_R-r}(X_r) = 0}` for its
+threshold event `{J(X_r) > E u_{n_R-r-1}(0)}`, and the factorization of the threshold
+probabilities across the sites visited by `X`, taken here as an explicit hypothesis since it is
+proved separately in each branch of the underlying dichotomy. The last-visit times of `X` are
+enumerated by an injective family of sites, which is the shape the factorization hypothesis
+consumes, and this identifies the product over `r ≤ j` weighted by the last-visit indicator
+with the product over the last-visit times themselves. Combining the two estimates bounds the
+distance between the survival probability and this product by the sum of the two errors: the
+harmonic error `η ∑_{r≤j} 1/(n-r)` of the replacement and the factorization error `θ`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -74,6 +61,8 @@ theorem abs_survival_sub_threshold_le
 
 /-! ### The last visits -/
 
+/-- `Frozen.DGT4LastVisits.lastVisitIndicator` is `1` at every last-visit time in
+`lastVisitTimes j X`. -/
 theorem lastVisitIndicator_eq_one_of_mem {j r : ℕ} (X : ℕ → Site d)
     (h : r ∈ lastVisitTimes j X) :
     Frozen.DGT4LastVisits.lastVisitIndicator r j X = 1 := by
@@ -83,6 +72,8 @@ theorem lastVisitIndicator_eq_one_of_mem {j r : ℕ} (X : ℕ → Site d)
   intro s hs1 hs2
   exact (h.2 s (Finset.mem_Ioc.mpr ⟨hs1, hs2⟩)).symm
 
+/-- `Frozen.DGT4LastVisits.lastVisitIndicator` is `0` at any time in `Finset.range (j + 1)`
+that is not a last-visit time. -/
 theorem lastVisitIndicator_eq_zero_of_notMem {j r : ℕ} (X : ℕ → Site d)
     (hr : r ∈ Finset.range (j + 1)) (h : r ∉ lastVisitTimes j X) :
     Frozen.DGT4LastVisits.lastVisitIndicator r j X = 0 := by

@@ -1,19 +1,22 @@
-/-
+import Sandpile.Support.MainExplKolmogorovTail
+
+/-!
+# A polynomial tail for the box supremum, uniform in scale and centre
+
 A polynomial tail for the supremum of the interpolated rescaled field on a
 space-time box of fixed size, uniform in the scale AND in the centre of the box.
 
 The union bound of the cutoff error of `sandpile.tex:1908-1921` runs over
-infinitely many boxes, so its tail must have a rate.  `kolmogorov_polynomial_tail`
+infinitely many boxes, so its tail must have a rate. `kolmogorov_polynomial_tail`
 supplies one from the two moment bounds of `ssec:scaling-dlt4`, whose constants
 do not depend on the scale or on the centre: the increment bound is
 `exists_moment_modulus_linInterp`, which sees only the displacement of its two
 arguments, and the anchor bound is `exists_one_point_moment_linInterp`, which
-sees only the time.  Since the constant produced by the criterion depends on the
+sees only the time. Since the constant produced by the criterion depends on the
 BOX, the centre is carried by translating the field rather than the box: the
 process is `piFieldAt`, the field read at the translate of the origin-centred box
 by `v`, and one constant then serves every centre.
 -/
-import Sandpile.Support.MainExplKolmogorovTail
 
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal
@@ -29,8 +32,10 @@ time coordinate. -/
 noncomputable def piShift (v : Sandpile.Continuum.Space d) : Fin (d + 1) → ℝ :=
   Fin.cons 0 (fun j => v j)
 
+/-- `piShift v` leaves the time coordinate, index `0`, untouched. -/
 @[simp] theorem piShift_zero (v : Sandpile.Continuum.Space d) : piShift v 0 = 0 := rfl
 
+/-- `piShift v` reads back the space coordinate `j` of `v` at index `j.succ`. -/
 @[simp] theorem piShift_succ (v : Sandpile.Continuum.Space d) (j : Fin d) :
     piShift v j.succ = v j := rfl
 
@@ -39,14 +44,20 @@ noncomputable def piFieldAt (d : ℕ) (R : ℝ) (v : Sandpile.Continuum.Space d)
     (u : Fin (d + 1) → ℝ) (σ : Site d → ℝ) : ℝ :=
   piField d R (u + piShift v) σ
 
+/-- Translating the space-time argument by `piShift v` leaves the time coordinate of `ofPi`
+unchanged. -/
 theorem ofPi_shift_fst (v : Sandpile.Continuum.Space d) (u : Fin (d + 1) → ℝ) :
     (ofPi (u + piShift v)).1 = u 0 := by
   show u 0 + piShift v 0 = u 0
   rw [piShift_zero, add_zero]
 
+/-- Translating the space-time argument by `piShift v` shifts the `j`-th space coordinate of
+`ofPi` by `v j`. -/
 theorem ofPi_shift_snd (v : Sandpile.Continuum.Space d) (u : Fin (d + 1) → ℝ) (j : Fin d) :
     (ofPi (u + piShift v)).2 j = u j.succ + v j := rfl
 
+/-- The translation by `piShift v` cancels in the difference of the `j`-th space coordinates of
+two points, leaving the difference of the untranslated arguments. -/
 theorem abs_ofPi_shift_sub (v : Sandpile.Continuum.Space d) (u u' : Fin (d + 1) → ℝ)
     (j : Fin d) :
     |(ofPi (u + piShift v)).2 j - (ofPi (u' + piShift v)).2 j| = |u j.succ - u' j.succ| := by

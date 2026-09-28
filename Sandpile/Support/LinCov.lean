@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LinReturn
+import LatticeProb.Prob.EfronSteinInequality
+
+/-!
+# Covariance of the survival indicators at two times
+
 The covariance of the survival indicators of the walk at two times, in the form
 the last-visit estimate `sandpile.tex:4760-4776`
 (label `lem:dgt4-weighted-last-visits`) needs.
@@ -12,14 +17,15 @@ avoids the origin during its first `k` steps, `B_k` is a function of the first
 `B_k` and `I_k^∞` are independent, and the two indicators differ in mean by
 `ρ_k - ρ_∞`, the chance that the first return is finite but later than `k`.
 -/
-import Sandpile.Support.LinReturn
-import LatticeProb.Prob.EfronSteinInequality
 
 open MeasureTheory Filter Topology
 
 namespace Sandpile
 variable {d : ℕ}
 
+/-- At `i = 0`, `visitInd 0 m X` reduces to the indicator of `noRet d m` evaluated
+directly at `X`, since `relPath 0 X ∈ noRet d m` iff `X ∈ noRet d m`
+(`preimage_relPath_zero_noRet`). -/
 theorem visitInd_zero (m : ℕ) (X : ℕ → Site d) :
     visitInd 0 m X = Set.indicator (noRet d m) (fun _ => (1:ℝ)) X := by
   have hiff : relPath (d := d) 0 X ∈ noRet d m ↔ X ∈ noRet d m := by
@@ -28,6 +34,8 @@ theorem visitInd_zero (m : ℕ) (X : ℕ → Site d) :
   · rw [visitInd, Set.indicator_of_mem (hiff.mpr h), Set.indicator_of_mem h]
   · rw [visitInd, Set.indicator_of_notMem (fun hc => h (hiff.mp hc)), Set.indicator_of_notMem h]
 
+/-- Likewise, `survInd 0 X` reduces to the indicator of `noRetEver d` evaluated
+directly at `X`, via `preimage_relPath_zero_noRetEver`. -/
 theorem survInd_zero (X : ℕ → Site d) :
     survInd 0 X = Set.indicator (noRetEver d) (fun _ => (1:ℝ)) X := by
   have hiff : relPath (d := d) 0 X ∈ noRetEver d ↔ X ∈ noRetEver d := by
@@ -36,11 +44,18 @@ theorem survInd_zero (X : ℕ → Site d) :
   · rw [survInd, Set.indicator_of_mem (hiff.mpr h), Set.indicator_of_mem h]
   · rw [survInd, Set.indicator_of_notMem (fun hc => h (hiff.mp hc)), Set.indicator_of_notMem h]
 
+/-- The change-of-variables formula for integrating over `walkLaw d 0`: since it is
+definitionally the pushforward of `LatticeProb.incPathLaw d` under `walkPath 0`
+(`integral_map`), integrating `F` over the walk law equals integrating `F ∘ walkPath 0`
+over the increment path law. -/
 theorem integral_walkLaw_zero [NeZero d] {F : (ℕ → Site d) → ℝ} (hF : Measurable F) :
     ∫ X, F X ∂(walkLaw d 0) = ∫ ξ, F (walkPath (0 : Site d) ξ) ∂(LatticeProb.incPathLaw d) := by
   have hbase : walkLaw d 0 = (LatticeProb.incPathLaw d).map (walkPath (0 : Site d)) := rfl
   rw [hbase, integral_map (measurable_walkPath 0).aemeasurable hF.aestronglyMeasurable]
 
+/-- Pulling `integral_visitInd` back through `integral_walkLaw_zero` and `visitInd_zero`
+identifies the increment-path integral of the raw `noRet d m` indicator with
+`retProb d m`. -/
 theorem integral_indNoRet [NeZero d] (m : ℕ) :
     ∫ ξ, Set.indicator (noRet d m) (fun _ => (1:ℝ)) (walkPath (0 : Site d) ξ)
       ∂(LatticeProb.incPathLaw d) = retProb d m := by
@@ -50,6 +65,9 @@ theorem integral_indNoRet [NeZero d] (m : ℕ) :
   rw [← h, ← integral_visitInd (d := d) 0 m]
   exact integral_congr_ae (Filter.Eventually.of_forall fun X => (visitInd_zero m X).symm)
 
+/-- The analogous identity for `noRetEver d`, pulling `integral_survInd` back through
+`integral_walkLaw_zero` and `survInd_zero` to identify the increment-path integral of
+the indicator with `escProb d`. -/
 theorem integral_indNoRetEver [NeZero d] :
     ∫ ξ, Set.indicator (noRetEver d) (fun _ => (1:ℝ)) (walkPath (0 : Site d) ξ)
       ∂(LatticeProb.incPathLaw d) = escProb d := by
@@ -84,6 +102,10 @@ theorem indNoRet_truncInc (k : ℕ) (ξ : ℕ → Site d) :
   · rw [Set.indicator_of_mem (hiff.mpr h), Set.indicator_of_mem h]
   · rw [Set.indicator_of_notMem (fun hc => h (hiff.mp hc)), Set.indicator_of_notMem h]
 
+/-- **Independence of the visit and survival indicators across the split at time
+`k`.**  Since `visitInd 0 k` depends only on the first `k` increments
+(`indNoRet_truncInc`) and `survInd k` only on the increments from `k` on, the product
+integral factors via `LatticeProb.integral_truncInc_shiftInc` into `retProb d k * escProb d`. -/
 theorem integral_visitInd_mul_survInd [NeZero d] (k : ℕ) :
     ∫ X, visitInd 0 k X * survInd k X ∂(walkLaw d 0) = retProb d k * escProb d := by
   classical
@@ -144,25 +166,35 @@ end Indep
 
 variable {d : ℕ}
 
+/-- A measurable function bounded in absolute value by a constant `C` is integrable
+against the (finite) measure `walkLaw d 0`. -/
 theorem integrable_of_bdd [NeZero d] {F : (ℕ → Site d) → ℝ} (hF : Measurable F) {C : ℝ}
     (hC : ∀ X, |F X| ≤ C) : Integrable F (walkLaw d 0) :=
   Integrable.of_bound hF.aestronglyMeasurable C
     (Filter.Eventually.of_forall fun X => by simpa [Real.norm_eq_abs] using hC X)
 
+/-- `survInd i` is integrable against `walkLaw d 0`, being bounded between `0` and `1`
+(`survInd_nonneg`, `survInd_le_one`). -/
 theorem integrable_survInd [NeZero d] (i : ℕ) : Integrable (survInd (d := d) i) (walkLaw d 0) :=
   integrable_of_bdd (measurable_survInd i) (C := 1) fun X => by
     rw [abs_of_nonneg (survInd_nonneg i X)]; exact survInd_le_one i X
 
+/-- `visitInd i m` is integrable against `walkLaw d 0`, being bounded between `0` and `1`
+(`visitInd_nonneg`, `visitInd_le_one`). -/
 theorem integrable_visitInd [NeZero d] (i m : ℕ) :
     Integrable (visitInd (d := d) i m) (walkLaw d 0) :=
   integrable_of_bdd (measurable_visitInd i m) (C := 1) fun X => by
     rw [abs_of_nonneg (visitInd_nonneg i m X)]; exact visitInd_le_one i m X
 
+/-- `relPath i` preserves the law of the walk (`measurePreserving_relPath`), so
+integrating a function of the shifted path equals integrating the function itself. -/
 theorem integral_comp_relPath [NeZero d] (i : ℕ) {F : (ℕ → Site d) → ℝ} (hF : Measurable F) :
     ∫ X, F (relPath i X) ∂(walkLaw d 0) = ∫ X, F X ∂(walkLaw d 0) := by
   conv_rhs => rw [← (measurePreserving_relPath (d := d) i).map_eq]
   rw [integral_map (measurable_relPath i).aemeasurable hF.aestronglyMeasurable]
 
+/-- Shifting the survival indicator's base time by `relPath i` amounts to adding `i`
+to its own time index, via `relPath_relPath`. -/
 theorem survInd_relPath (i k : ℕ) (X : ℕ → Site d) :
     survInd k (relPath i X) = survInd (i + k) X := by
   rw [survInd, survInd, relPath_relPath]

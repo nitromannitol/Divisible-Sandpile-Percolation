@@ -1,23 +1,17 @@
-/-
-The threshold replacement of Step 2 of `lem:dgt4-path-survival`
-(`eq:dgt4-path-contact-replacement`, `sandpile.tex:5533-5548`) and the reindexing of a
-product over visited sites as a product over last-visit times.
-
-The paper bounds the probability that at least one of the contact events
-`{u_{n_R-r}(X_r)=0}` differs from its threshold event by the union bound over the
-symmetric differences, and then replaces the intersection over times `0 ≤ r ≤ j` by the
-intersection over the sites `x` the path visits, each with the threshold belonging to its
-LAST visit, since `E u_m(0)` increases in `m`.  Two ingredients are separated here:
-
-* `measure_symmDiff_iInter_le`, the union bound for the symmetric difference of two finite
-  intersections, which is what turns the per-time bound of
-  `eq:dgt4-uniform-contact-thresholds` into a bound for the whole path;
-* `lastVisit_injOn`, `lastVisit_image_eq` and `prod_lastVisit_eq`, which say that
-  `r ↦ X_r` is a bijection from the last-visit times up to `j` onto the visited sites, so
-  that `∏_{x∈Λ} g(x) = ∏_{r ∈ L} g(X_r)`, the identification behind
-  `eq:dgt4-path-product-limit`.
--/
 import Sandpile.Support.LinProduct
+
+/-!
+# Threshold replacement and reindexing by last-visit times
+
+The probability that at least one contact event `{u_{n-r}(X_r) = 0}` differs from its
+threshold event `{J(X_r) ≤ b_r}` is bounded by the union bound over the symmetric differences,
+via `measure_symmDiff_iInter_le`, which turns a per-time bound into a bound for the whole path.
+The intersection over times `0 ≤ r ≤ j` is then rewritten as the intersection over the sites a
+path visits, each constrained by the threshold at its *last* visit, since the thresholds are
+antitone in time; `lastVisit_injOn`, `lastVisit_image_eq` and `prod_lastVisit_eq` record that
+`r ↦ X_r` is a bijection from the last-visit times up to `j` onto the visited sites, so that
+`∏_{x ∈ Λ} g(x) = ∏_{r ∈ L} g(X_r)`.
+-/
 
 open MeasureTheory
 

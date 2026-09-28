@@ -1,19 +1,17 @@
-/-
-The field `Z` of `sandpile.tex:1019-1021`, with the three properties the
-statements of `ssec:scaling-dlt4` ask of it.
-
-`MeanAKolmogorov` constructs a modification of the Gaussian heat potential whose
-paths are almost surely continuous on every strip `[0,T] × ℝ^d`; the growth of
-that version on each strip is `Sandpile.Support.continuousVersionGrowth`
-(`GrowExternalDischarge.lean`), the polynomial-growth bound of every such
-modification, proved rather than assumed.  Putting the two together gives the
-field the frozen statements quantify over, so that those statements can be
-applied to the white noise the repository builds rather than only assumed about
-some field.
--/
 import Sandpile.Support.MeanAKolmogorov
 import Sandpile.Support.GrowExternalDischarge
 import Sandpile.Continuum.WhiteNoiseExists
+
+/-!
+# A continuous, polynomially growing version of the heat potential
+
+The field `Z` of `sandpile.tex:1019-1021`, with the three properties the statements of
+`ssec:scaling-dlt4` ask of it. `MeanAKolmogorov` constructs a modification of the Gaussian heat
+potential whose paths are almost surely continuous on every strip `[0,T] × ℝ^d`, and
+`continuousVersionGrowth` gives the polynomial-growth bound of every such modification, proved
+rather than assumed. Putting the two together gives a field with all three properties, applied
+here to the white noise the repository builds rather than only assumed about some field.
+-/
 
 open MeasureTheory
 

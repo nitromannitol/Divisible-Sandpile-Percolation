@@ -1,22 +1,27 @@
-/-
-**The conditional concentration bound for `\Theta_n`** (`sandpile.tex:5267-5271`).
-
-This is the assembly of the four ingredients: the Gaussian concentration inequality for a
-functional Lipschitz for the `\ell^2` distance, cited at `sandpile.tex:5267` and frozen as
-`External.GaussianLipschitzConcentration`; the rank-one reduction as a contraction, which is
-what makes the bound survive the conditioning; the Lipschitz constant
-`|c|\,\|\sum_{j\geq k_n+1}p_j(0,\cdot)\|` of `\Theta_n`, which is the square root of the
-paper's "Gaussian concentration proxy"; and the measurability of `\Theta_n` in the residual.
-
-One guard is needed.  `\Theta_n` is built from the box limit of
-`eq:dgt4-infinite-green-field`, which takes its junk value where the limit does not exist,
-and the Lipschitz hypothesis of the inequality is a statement at every configuration.  The
-residuals at which the limit exists are a measurable set invariant under moves of finite
-`\ell^2` length, so cutting `\Theta_n` off outside it changes nothing almost everywhere and
-makes the Lipschitz bound hold everywhere.
--/
 import Sandpile.Support.Dgt4AConcMeas
 import Sandpile.Support.Dgt4AConcResid
+
+/-!
+# The conditional concentration bound for `\Theta_n`
+
+This is the assembly, for **`sandpile.tex:5267-5271`**, of the four ingredients: the Gaussian
+concentration inequality for a functional Lipschitz for the `\ell^2` distance, cited at
+`sandpile.tex:5267` and frozen as `External.GaussianLipschitzConcentration`; the rank-one
+reduction as a contraction, which is what makes the bound survive the conditioning; the
+Lipschitz constant `|c|\,\|\sum_{j\geq k_n+1}p_j(0,\cdot)\|` of `\Theta_n`, which is the square
+root of the paper's "Gaussian concentration proxy"; and the measurability of `\Theta_n` in the
+residual.
+
+One guard is needed. `\Theta_n` is built from the box limit of `eq:dgt4-infinite-green-field`,
+which takes its junk value where the limit does not exist, and the Lipschitz hypothesis of the
+inequality is a statement at every configuration. The residuals at which the limit exists form
+the measurable set `condConv`, invariant under moves of finite `\ell^2` length
+(`mem_condConv_of_hasSum`), so cutting `\Theta_n` off outside it to `condThetaG` changes
+nothing almost everywhere (`ae_condThetaG_eq`, from `ae_mem_condConv`) and makes the Lipschitz
+bound `abs_condThetaG_sub_le` hold everywhere, yielding the conditional concentration tail
+`measure_resid_condTheta_ge_le` and its Gaussian specialization
+`measure_resid_condTheta_ge_le_gauss`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -30,6 +35,8 @@ variable {d : ℕ}
 def condConv (d : ℕ) (hd : 5 ≤ d) (c s : ℝ) : Set (Site d → ℝ) :=
   {r | ∀ y : Site d, condScenery d hd c r s ∈ greenConvAt d y}
 
+/-- `condConv` is measurable, as a countable intersection over sites `y` of the preimages of
+the measurable sets `greenConvAt d y` under `condScenery`. -/
 theorem measurableSet_condConv (hd : 5 ≤ d) (c s : ℝ) :
     MeasurableSet (condConv d hd c s) := by
   have hrw : condConv d hd c s
@@ -52,6 +59,8 @@ noncomputable def condThetaG (d : ℕ) (hd : 5 ≤ d) (c s a : ℝ) (t j : ℕ) 
     (Site d → ℝ) → ℝ :=
   (condConv d hd c s).indicator (condTheta d hd c s a t j)
 
+/-- `condThetaG` is measurable, as the indicator of the measurable set `condConv` applied to
+the measurable function `condTheta`. -/
 theorem measurable_condThetaG (hd : 5 ≤ d) (c s a : ℝ) (t j : ℕ) :
     Measurable (condThetaG d hd c s a t j) :=
   (measurable_condTheta hd c s a t j).indicator (measurableSet_condConv hd c s)
@@ -67,6 +76,8 @@ theorem ae_mem_condConv (hd : 5 ≤ d) (c s : ℝ) :
   filter_upwards [hres] with r hr
   exact fun y => exists_tendsto_infiniteGreenFieldPartial_shift hd c hr s y
 
+/-- `condThetaG` agrees with `condTheta` almost everywhere under the pushed-forward residual
+law, since almost every residual lies in the guard `condConv` (`ae_mem_condConv`). -/
 theorem ae_condThetaG_eq (hd : 5 ≤ d) (c s a : ℝ) (t j : ℕ) :
     condThetaG d hd c s a t j
       =ᵐ[(LatticeProb.gaussLaw (Site d)).map (residField d hd)] condTheta d hd c s a t j := by

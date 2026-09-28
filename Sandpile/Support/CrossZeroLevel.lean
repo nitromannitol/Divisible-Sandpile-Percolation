@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossFieldSym
+import Sandpile.External.ContinuumRSW
+
+/-!
+# Step 1: the uniform aspect-`θ` crossing constant
+
 Step 1 of `prop:fixed-scale-crossings` (`sandpile.tex:2230-2240`):
 
   "By sign symmetry and rotation invariance, `P(H_{[-R,R]²}(0)) ≥ 1/2`
@@ -30,8 +35,6 @@ for an event that is not known to be measurable.  The translated field inherits
 the symmetry and association hypotheses of `External.ContinuumRSW`
 (`isSymmetricField_translate`, `isAssociatedField_translate`).
 -/
-import Sandpile.Support.CrossFieldSym
-import Sandpile.External.ContinuumRSW
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -56,8 +59,10 @@ the centred rectangle `[-θR,θR]×[0,2R]`. -/
 noncomputable def centreShift (w : ℝ) : Sandpile.Continuum.Space 2 :=
   WithLp.toLp 2 ![-w, 0]
 
+/-- The first coordinate of `centreShift w` is `-w`. -/
 theorem centreShift_apply_zero (w : ℝ) : (centreShift w) 0 = -w := rfl
 
+/-- The second coordinate of `centreShift w` is `0`. -/
 theorem centreShift_apply_one (w : ℝ) : (centreShift w) 1 = 0 := rfl
 
 /-- A real lower bound for `P.real` is a lower bound for the measure itself. -/

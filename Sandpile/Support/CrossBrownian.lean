@@ -1,22 +1,27 @@
-/-
-The proof of `thm:limiting-odometer-crossing` (`sandpile.tex:2531-2557`), in the
-form it takes once the two events it intersects are named.
-
-  "Apply Lemma [finite-scale extraction] with error `ε/2`.  This gives `c > 0`
-   and rational scales `s_1,…,s_k ∈ (0,1)` such that
-   `P(⋂_j H_{𝓡_j}(4c; max_i 𝒳_{s_i})) ≥ 1 - ε/2`.  Choose `T` so large that
-   `P(max_i sup_{u ∈ ⋃_j 𝓡_j} |𝒳_{s_i,T}(u) - 𝒳_{s_i}(u)| > c) ≤ ε/2`.  On the
-   intersection of these two events, [the admissibility bound] implies that
-   `{u : 𝒰_{Z,1}(T,u) > 5dc}` crosses every prescribed rectangle in its
-   prescribed direction."
-
-`F i` is `𝒳_{s_i}`, `G i` is `𝒳_{s_i,T}`, `U` is `𝒰_{Z,1}(T,·)`, `D` is the
-factor `2d` of `eq:ball-green-lower-brownian-value` and `H` is the paper's
-`5dc`, which is below `3Dc = 6dc`.  Nothing here is specific to the ball fields:
-the statement is the paper's two-event argument, and the two events are supplied
-by the finite-scale extraction and by the choice of `T`.
--/
 import Sandpile.Support.CrossBasic
+
+/-!
+# The two-event crossing argument
+
+The proof of `thm:limiting-odometer-crossing` (`sandpile.tex:2531-2557`), in the form it
+takes once the two events it intersects are named.
+
+  "Apply Lemma [finite-scale extraction] with error `ε/2`. This gives `c > 0` and rational
+   scales `s_1,…,s_k ∈ (0,1)` such that `P(⋂_j H_{𝓡_j}(4c; max_i 𝒳_{s_i})) ≥ 1 - ε/2`.
+   Choose `T` so large that `P(max_i sup_{u ∈ ⋃_j 𝓡_j} |𝒳_{s_i,T}(u) - 𝒳_{s_i}(u)| > c) ≤
+   ε/2`. On the intersection of these two events, [the admissibility bound] implies that
+   `{u : 𝒰_{Z,1}(T,u) > 5dc}` crosses every prescribed rectangle in its prescribed
+   direction."
+
+`F i` is `𝒳_{s_i}`, `G i` is `𝒳_{s_i,T}`, `U` is `𝒰_{Z,1}(T,·)`, `D` is the factor `2d` of
+`eq:ball-green-lower-brownian-value` and `H` is the paper's `5dc`, which is below
+`3Dc = 6dc`. `ofReal_one_sub_le_inter` is the abstract two-event probability bound,
+`crosses_all_of_max_and_approx` is the deterministic core (`sandpile.tex:2549-2556`), and
+`crossing_of_extraction_and_approx` assembles the two into the probabilistic statement.
+Nothing here is specific to the ball fields: the statement is the paper's two-event
+argument, and the two events are supplied by the finite-scale extraction and by the choice
+of `T`.
+-/
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

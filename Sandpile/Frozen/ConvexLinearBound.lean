@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.ConvexLinear
+
+/-! # Convex Linearization Bound
+
 Lemma bounding a coordinatewise convex function by its linearization, of
 sandpile.tex, frozen.  `sandpile.tex:1548-1570` (label `lem:convex-linear-bound`):
 
@@ -34,7 +37,6 @@ Quantifier order.  `C` is universal, so it is bound before `N`, the law, `F`,
 the paper, and the `b_i` are deterministic, so `b` is a function of the index
 alone.
 -/
-import Sandpile.Support.ConvexLinear
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

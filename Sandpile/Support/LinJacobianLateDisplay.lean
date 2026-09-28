@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.LinJacobianStep1Limit
+
+/-! # Jacobian Late Display
+
 The late display of Step 1 of `lem:dgt4-linearization-from-survival`
 (`eq:dgt4-late-derivative-variance`, `sandpile.tex:5755-5767`) in the form the
 assembly of `Support/LinJacobianStep1Limit.lean` asks for.
@@ -8,7 +11,6 @@ The paper writes the late bound as `(δR²+2)² ∑_z a_R(z)²` and then reads i
 expansion `(δR²+1)²C(φ)R^{-4} = C(φ)δ² + 2C(φ)δR^{-2} + C(φ)R^{-4}` makes the
 `o(1)` explicit.
 -/
-import Sandpile.Support.LinJacobianStep1Limit
 
 open MeasureTheory Filter Topology
 
@@ -16,6 +18,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The explicit error term `2Cδ/R² + C/R⁴` of the late-display expansion tends to
+zero as `R → ∞`, for any constants `b, c`. -/
 theorem tendsto_late_error (b c : ℝ) :
     Tendsto (fun R : ℝ => b * (R ^ 2)⁻¹ + c * (R ^ 4)⁻¹) atTop (𝓝 0) := by
   have h2 : Tendsto (fun R : ℝ => (R ^ 2)⁻¹) atTop (𝓝 0) :=

@@ -1,24 +1,30 @@
-/-
+import Sandpile.Support.CrossFiniteScale
+import Sandpile.Support.CrossScale
+import Sandpile.Support.CrossExtract
+
+/-!
+# Step 1 of finite-scale extraction: the zero-one upgrade
+
 Step 1 of the proof of `lem:finite-scale-extraction` (`sandpile.tex:2431-2484`).
 
   "We prove that for one rectangle `𝓡` and one crossing direction,
    `P(⋂_{L≥1} ⋂_{j≥1} ⋃_{s∈(0,1/j)∩ℚ} H_𝓡(L b(s); 𝒳_s)) = 1`.
    For every `j,L≥1`, `eq:rescaled-crossing-estimate` gives
    `P(⋃_{s∈(0,1/j)∩ℚ} H_𝓡(L b(s); 𝒳_s)) ≥ p`, with `p>0` independent of `j` and
-   `L`. […]  We now show that `P(𝓔)=1`.  Let `U` be a finite union of unit cubes
-   […].  Choose a bounded orthonormal basis `(e_i)` of `L²(U)`.  The coordinates
-   `𝒲(e_i)` are independent standard Gaussians and determine `𝒲|_U`.  We claim
-   that `𝓔` belongs to their tail sigma-field […].  Kolmogorov's zero-one law,
+   `L`. […] We now show that `P(𝓔)=1`. Let `U` be a finite union of unit cubes
+   […]. Choose a bounded orthonormal basis `(e_i)` of `L²(U)`. The coordinates
+   `𝒲(e_i)` are independent standard Gaussians and determine `𝒲|_U`. We claim
+   that `𝓔` belongs to their tail sigma-field […]. Kolmogorov's zero-one law,
    together with `P(𝓔)≥p`, gives `P(𝓔)=1`."
 
 The first half of the display, `P(𝓔) ≥ p`, is proved in this repository:
 `Sandpile.Support.union_rational_scales_ge` derives it from
-`prop:fixed-scale-crossings` through the rescaled crossing estimate.  The second
+`prop:fixed-scale-crossings` through the rescaled crossing estimate. The second
 half, the passage from `P(𝓔) ≥ p` to `P(𝓔) = 1`, is the tail argument quoted
-above.  It is not the crossing geometry; it is a statement about the white noise
+above. It is not the crossing geometry; it is a statement about the white noise
 itself, namely that the field on a bounded set is read off countably many
 independent Gaussian coordinates and that the event is insensitive to any finite
-number of them.  `IsWhiteNoise` records the Gaussian character, the mean and the
+number of them. `IsWhiteNoise` records the Gaussian character, the mean and the
 covariance of the family, and nothing about a basis of `L²(U)`; the argument
 needs the basis, the independence of the coordinates, and the realization of the
 event on the coordinate space, where Mathlib's Kolmogorov zero-one law
@@ -28,12 +34,9 @@ That step is isolated here as `ScaleCrossingAS`, in its almost-sure form: the
 paper's `P(𝓔)=1` is an equality of the probability of an event which is
 measurable on the coordinate space but is not known to be measurable on an
 abstract space carrying the white noise, and for a set that is not measurable
-`P(𝓔)=1` does not force the complement to be null.  The almost-sure form is what
+`P(𝓔)=1` does not force the complement to be null. The almost-sure form is what
 the rest of the proof uses and is what the paper's argument produces.
 -/
-import Sandpile.Support.CrossFiniteScale
-import Sandpile.Support.CrossScale
-import Sandpile.Support.CrossExtract
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

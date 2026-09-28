@@ -1,24 +1,3 @@
-/-
-The parabolic scaling limit of `thm:main-explosion`(i)(b) at a CONTINUOUS
-VERSION of the Gaussian heat potential, assembled from its inputs: the
-version-bearing analogue of `Sandpile.dlt4_scaling_of_inputs`.
-
-The four errors of `Sandpile.abs_rescaled_odometer_sub_brownianValue_le` are
-supplied by the field coupling and the mesh approximation, by the walk half of
-the cutoff error at the dyadic-annulus bound of the interpolated field, by the
-stability gap at the two cut-off rewards, and by the Brownian half of the cutoff
-error at the polynomial envelope of the limit field.  What the cube-killed route
-got for free from the confinement of the walk in the cube, the unkilled route
-gets from those two annulus estimates.
-
-The field `Z` is only almost surely equal to the Gaussian potential at each
-point (`hZmod`), continuous on each time strip almost surely (`hZcont`) and of
-polynomial growth there (`hZgrow`); the coupling and the deterministic growth
-bound are taken at `Z` itself through
-`Sandpile.Continuum.heat_field_coupling_of_version` and
-`Sandpile.Support.exists_deterministic_growth_of_version`, and the value on the
-Brownian side is evaluated at `Z`, never at the Gaussian potential.
--/
 import Sandpile.Support.MainExplStability
 import Sandpile.Support.MainExplBrownCutoff
 import Sandpile.Support.MainExplAnnulus
@@ -30,6 +9,20 @@ import Sandpile.Support.ExplBallReward
 import Sandpile.External.HeatKernelBoundsProved
 import Sandpile.Frozen.HeatPotentialInvariance
 
+/-!
+# The parabolic scaling limit at a continuous version of the Gaussian heat potential
+
+This assembles the parabolic scaling limit from its inputs at a continuous version `Z` of the
+Gaussian heat potential, rather than at the potential itself: `Z` need only agree with it
+almost everywhere, be continuous on each time strip almost surely, and have polynomial growth
+there. The four errors of the master comparison between the rescaled odometer and the
+Brownian value are supplied by the field coupling and the mesh approximation, by the walk half
+of the cutoff error at a dyadic-annulus bound of the interpolated field, by the stability gap
+between two cutoff rewards, and by the Brownian half of the cutoff error at a polynomial
+envelope of `Z`; the field coupling and the deterministic growth bound are both taken at `Z`
+itself.
+-/
+
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
@@ -37,6 +30,12 @@ universe u v
 open Sandpile Sandpile.Continuum
 
 set_option maxHeartbeats 3200000 in
+/-- The parabolic scaling limit of the divisible-sandpile odometer holds at a continuous
+version `Z` of the Gaussian heat potential: for every accuracy `ε` and confidence `δ` there is
+a scale `R₀` such that for every `R ≥ R₀` there is a coupling `P` of the sandpile mass law and
+the white-noise law under which, with probability at least `1 - δ`, the rescaled odometer
+`R^(d/2-2) · u_{⌊TR²⌋}(⌊Ru⌋)` stays within `ε` of the Brownian value of `Z`, uniformly over `u`
+in the given compact set. -/
 theorem Sandpile.dlt4_scaling_of_version
     (_hLocalCLT : Sandpile.External.LocalCLT)
     (hStab : Sandpile.External.ContinuumStoppingStability.{u})

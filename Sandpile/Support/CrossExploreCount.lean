@@ -1,18 +1,19 @@
-/-
-The count of Step 2 (`sandpile.tex:2288-2296`): the exploration reveals `C R^{2-α₁}` cells in
-expectation.
-
-Every cell the rule reveals belongs to a square it has discovered, and each square carries a
-bounded number of cells, so the number of revealed cells is at most a constant times the number
-of discovered squares.  A square discovered at distance more than three from the starting side
-of the rectangle carries a positive arm to that side, so the arm estimate bounds the
-probability that it is discovered by `C (1+k)^{-α}`, where `k` is its distance from that side;
-summing this over the squares of the rectangle is the layer sum already proved in
-`CrossExplore`.
--/
 import Sandpile.Support.CrossExploreArm
 import Sandpile.Support.CrossExplore
 import Mathlib.Data.Pi.Interval
+
+/-!
+# The subquadratic count of the exploration
+
+The count of Step 2 (`sandpile.tex:2288-2296`): the exploration reveals `C R^{2-α₁}` cells in
+expectation. Every cell the rule reveals belongs to a square it has discovered, and each
+square carries a bounded number of cells, so the number of revealed cells is at most a
+constant times the number of discovered squares. A square discovered at distance more than
+three from the starting side of the rectangle carries a positive arm to that side, so the arm
+estimate bounds the probability that it is discovered by `C (1+k)^{-α}`, where `k` is its
+distance from that side; summing this over the squares of the rectangle is the layer sum
+already proved in `CrossExplore`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -25,6 +26,8 @@ attribute [local instance 0] Classical.propDecidable
 
 variable {Ω ι : Type*}
 
+/-- The revealed set at step `n` is contained in the revealed set at step `n + 1`: the
+exploration only ever adds one further index, when there is one to add. -/
 theorem exploreStep_subset_succ [DecidableEq ι] (next : Finset ι → Ω → Option ι) (n : ℕ)
     (ω : Ω) : exploreStep next n ω ⊆ exploreStep next (n + 1) ω := by
   cases hv : next (exploreStep next n ω) ω with
@@ -33,6 +36,7 @@ theorem exploreStep_subset_succ [DecidableEq ι] (next : Finset ι → Ω → Op
       rw [exploreStep_succ_of_some next n ω hv]
       exact Finset.subset_insert _ _
 
+/-- The revealed set `exploreStep next n` is monotone in the step count `n`. -/
 theorem exploreStep_mono [DecidableEq ι] (next : Finset ι → Ω → Option ι) {m n : ℕ}
     (h : m ≤ n) (ω : Ω) : exploreStep next m ω ⊆ exploreStep next n ω := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -45,6 +49,8 @@ theorem exploreStep_mono [DecidableEq ι] (next : Finset ι → Ω → Option ι
       rw [this]
       exact exploreStep_subset_succ next (m + k) ω
 
+/-- Once the exploration has taken as many steps as there are indices, it has stabilised: any
+further steps leave the revealed set unchanged. -/
 theorem exploreStep_eq_of_card_le [Fintype ι] [DecidableEq ι] {G : ι → MeasurableSpace Ω}
     {next : Finset ι → Ω → Option ι} (h : IsExplorationRule G next) (ω : Ω) (m : ℕ) :
     exploreStep next (Fintype.card ι + m) ω = exploreStep next (Fintype.card ι) ω := by
@@ -57,6 +63,8 @@ theorem exploreStep_eq_of_card_le [Fintype ι] [DecidableEq ι] {G : ι → Meas
       have : Fintype.card ι + (m + 1) = (Fintype.card ι + m) + 1 := by omega
       rw [this, exploreStep_succ_of_none next _ ω hnone, ih]
 
+/-- Every step's revealed set is contained in the final revealed set `exploreSet next`, which
+is `exploreStep next` at any step past `Fintype.card ι`. -/
 theorem exploreStep_subset_exploreSet [Fintype ι] [DecidableEq ι] {G : ι → MeasurableSpace Ω}
     {next : Finset ι → Ω → Option ι} (h : IsExplorationRule G next) (n : ℕ) (ω : Ω) :
     exploreStep next n ω ⊆ exploreSet next ω := by
@@ -69,6 +77,8 @@ variable {Ω : Type} [MeasurableSpace Ω] {d : ℕ} {a b : Fin 2 → ℝ} {lev :
   {bf : Space 2 → Ω → ℝ} {G : cellIdx d a b → MeasurableSpace Ω}
 
 omit [MeasurableSpace Ω] in
+/-- Whenever `pickIdx` selects an index `i` from `A` restricted to a set `T` of sites, that
+index lies in the block `blockIdx d a b z` of some site `z ∈ T`. -/
 theorem pickIdx_mem_blockIdx {A : Finset (cellIdx d a b)} {T : Finset (Sandpile.Site 2)}
     {i : cellIdx d a b} (h : pickIdx d a b A T = some i) :
     ∃ z ∈ T, i ∈ blockIdx d a b z := by
@@ -108,6 +118,8 @@ theorem exploreStep_subset_reach (hrule : IsExplorationRule G (exploreNext d a b
             (doneSq_mono (exploreStep_subset_exploreSet hrule n ω)) hz
 
 omit [MeasurableSpace Ω] in
+/-- The final revealed set of the exploration is contained in the union of the blocks of the
+squares it has discovered: `exploreStep_subset_reach` at the stabilised step. -/
 theorem exploreSet_subset_reach (hrule : IsExplorationRule G (exploreNext d a b lev bf))
     (ω : Ω) :
     exploreSet (exploreNext d a b lev bf) ω ⊆
@@ -118,6 +130,8 @@ theorem exploreSet_subset_reach (hrule : IsExplorationRule G (exploreNext d a b 
 
 /-! ### A square carries a bounded number of cells -/
 
+/-- The block of lattice sites `blockSites d z` has at most `5 ^ d` elements, since each of
+its `d` coordinate ranges has length at most `5`. -/
 theorem card_blockSites_le (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).card ≤ 5 ^ d := by
   rw [blockSites, Pi.card_Icc]
   calc ∏ i : Fin d, (Finset.Icc (blockLo d z i) (blockHi d z i)).card
@@ -133,6 +147,8 @@ theorem card_blockSites_le (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).ca
     _ = 5 ^ d := by simp
 
 omit [MeasurableSpace Ω] in
+/-- The block of cell indices `blockIdx d a b z` has at most `5 ^ d` elements, by an
+injection into the site block `blockSites d z`. -/
 theorem card_blockIdx_le (d : ℕ) (a b : Fin 2 → ℝ) (z : Sandpile.Site 2) :
     (blockIdx d a b z).card ≤ 5 ^ d := by
   refine le_trans ?_ (card_blockSites_le d z)
@@ -149,6 +165,9 @@ noncomputable def finalReach (d : ℕ) (a b : Fin 2 → ℝ) (lev : ℝ) (bf : S
     (ω : Ω) : Finset (Sandpile.Site 2) :=
   reachSq a b lev bf (doneSq d a b (exploreSet (exploreNext d a b lev bf) ω)) ω
 
+/-- Membership of a site `z` in `finalReach` is measurable: it is the countable union, over
+the possible values `A` of the exploration's final revealed set, of the intersection of the
+event `exploreSet = A` with the (independent) event that `z` lies in the squares `A` reaches. -/
 theorem measurableSet_mem_finalReach (hGle : ∀ i, G i ≤ (inferInstance : MeasurableSpace Ω))
     (hm : BlockMeasurable d a b G bf) (hrule : IsExplorationRule G (exploreNext d a b lev bf))
     (z : Sandpile.Site 2) : MeasurableSet {ω | z ∈ finalReach d a b lev bf ω} := by
@@ -192,6 +211,9 @@ theorem measure_mem_finalReach_le [IsProbabilityMeasure P] (hd : d = 2 ∨ d = 3
 /-! ### The expected number of revealed cells -/
 
 omit [MeasurableSpace Ω] in
+/-- The number of cells the exploration reveals is at most `5 ^ d` times the sum, over the
+squares of the rectangle, of the indicator that each is discovered: each discovered square
+carries at most `5 ^ d` cells. -/
 theorem card_exploreSet_le (hrule : IsExplorationRule G (exploreNext d a b lev bf)) (ω : Ω) :
     ((exploreSet (exploreNext d a b lev bf) ω).card : ℝ)
       ≤ (5 : ℝ) ^ d * ∑ z ∈ rectSq a b,
@@ -228,6 +250,9 @@ theorem card_exploreSet_le (hrule : IsExplorationRule G (exploreNext d a b lev b
     linarith
   linarith [hcast]
 
+/-- Taking expectations in `card_exploreSet_le`: the expected number of revealed cells is at
+most `5 ^ d` times the sum, over the squares of the rectangle, of the probability that each is
+discovered. -/
 theorem integral_card_exploreSet_le [IsProbabilityMeasure P]
     (hGle : ∀ i, G i ≤ (inferInstance : MeasurableSpace Ω))
     (hm : BlockMeasurable d a b G bf) (hrule : IsExplorationRule G (exploreNext d a b lev bf)) :
@@ -253,12 +278,15 @@ theorem integral_card_exploreSet_le [IsProbabilityMeasure P]
 noncomputable def gridSite (a : Fin 2 → ℝ) (j k : ℕ) : Sandpile.Site 2 :=
   fun i => if i = 0 then ⌊a 0⌋ + (k : ℤ) else ⌊a 1⌋ + (j : ℤ)
 
+/-- The first coordinate of `gridSite a j k` is `⌊a 0⌋ + k`. -/
 theorem gridSite_zero (a : Fin 2 → ℝ) (j k : ℕ) : gridSite a j k 0 = ⌊a 0⌋ + (k : ℤ) := by
   simp [gridSite]
 
+/-- The second coordinate of `gridSite a j k` is `⌊a 1⌋ + j`. -/
 theorem gridSite_one (a : Fin 2 → ℝ) (j k : ℕ) : gridSite a j k 1 = ⌊a 1⌋ + (j : ℤ) := by
   simp [gridSite]
 
+/-- `gridSite a` is injective in its column and row arguments `(j, k)`. -/
 theorem gridSite_injOn (a : Fin 2 → ℝ) {p q : ℕ × ℕ}
     (h : gridSite a p.1 p.2 = gridSite a q.1 q.2) : p = q := by
   have h0 : gridSite a p.1 p.2 0 = gridSite a q.1 q.2 0 := by rw [h]
@@ -269,6 +297,8 @@ theorem gridSite_injOn (a : Fin 2 → ℝ) {p q : ℕ × ℕ}
   have e1 : p.1 = q.1 := by omega
   exact Prod.ext e1 e2
 
+/-- Every site of the rectangle `rectSq a b` is `gridSite a j k` for some column `j` and row
+`k` within the rectangle's ranges. -/
 theorem rectSq_subset_grid (a b : Fin 2 → ℝ) :
     rectSq a b ⊆ ((Finset.range ((⌊b 1⌋ - ⌊a 1⌋).toNat + 1) ×ˢ
       Finset.range ((⌊b 0⌋ - ⌊a 0⌋).toNat + 1)).image (fun p : ℕ × ℕ => gridSite a p.1 p.2)) := by
@@ -288,6 +318,9 @@ theorem rectSq_subset_grid (a b : Fin 2 → ℝ) :
     · rw [gridSite_zero]; omega
     · rw [gridSite_one]; omega
 
+/-- A sum of nonnegative values over the rectangle's sites is bounded by the corresponding
+double sum indexed by `gridSite`'s row and column, since `rectSq_subset_grid` embeds the
+rectangle in the grid. -/
 theorem sum_rectSq_le (a b : Fin 2 → ℝ) (f : Sandpile.Site 2 → ℝ) (hf : ∀ z, 0 ≤ f z) :
     ∑ z ∈ rectSq a b, f z
       ≤ ∑ j ∈ Finset.range ((⌊b 1⌋ - ⌊a 1⌋).toNat + 1),
@@ -301,6 +334,7 @@ theorem sum_rectSq_le (a b : Fin 2 → ℝ) (f : Sandpile.Site 2 → ℝ) (hf : 
   refine le_trans h1 (le_of_eq ?_)
   rw [Finset.sum_image (fun p _ q _ h => gridSite_injOn a h), Finset.sum_product]
 
+/-- `(x / y) ^ α = x ^ α * y ^ (-α)`, for `x ≥ 0` and `y > 0`. -/
 theorem rpow_div_eq {x y α : ℝ} (hx : 0 ≤ x) (hy : 0 < y) :
     (x / y) ^ α = x ^ α * y ^ (-α) := by
   rw [Real.div_rpow hx hy.le, Real.rpow_neg hy.le, div_eq_mul_inv]

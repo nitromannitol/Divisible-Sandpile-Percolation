@@ -1,31 +1,28 @@
-/-
-The pointwise gradient bound for the lattice heat kernel, from the two bounds of
-`ssec:green-estimates` that `External.HeatKernelBounds` carries.
-
-The paper's estimates are the Gaussian upper bound `eq:rw-gaussian-upper`,
-`p_n(x,y) ≤ C n^{-d/2} e^{-c|x-y|²/n}`, and the total variation gradient bound
-`eq:rw-tv-gradient`, `∑_y |p_n(x,y) - p_n(w,y)| ≤ C|x-w| n^{-1/2}` for `x` and
-`w` of the same parity.  The `L²` increment of the Green coefficients, which is
-what the tightness of the rescaled linear field rests on, needs neither of these
-but the POINTWISE difference at a single pair of sites,
-
-  `|p_n(x,y) - p_n(x',y)| ≤ C |x - x'| n^{-(d+1)/2}` .
-
-It follows from the two by Chapman-Kolmogorov: splitting the time into two halves
-and moving the difference onto the first factor,
-
-  `p_n(x,y) - p_n(x',y) = ∑_z (p_m(x,z) - p_m(x',z)) p_{m'}(z,y)` ,
-
-the second factor is bounded by `C (m')^{-d/2}` uniformly in `z`, since the
-exponential is at most one, and the first sums to at most `C|x-x'| m^{-1/2}`.
-With `m = ⌊n/2⌋` and `m' = n - m`, both halves are at least `n/3`, so the two
-powers combine to `n^{-(d+1)/2}` with a constant depending only on the dimension.
--/
 import Sandpile.Support.Iterate
 import Sandpile.Support.Kernel
 import Sandpile.Support.ContGreenFubini
 import Sandpile.Support.CorrelationRow
 import Sandpile.External.HeatKernelBounds
+
+/-!
+# The pointwise gradient bound for the lattice heat kernel
+
+The paper's two estimates from `ssec:green-estimates`, the Gaussian upper bound
+(`eq:rw-gaussian-upper`) `p_n(x,y) ≤ C n^{-d/2} e^{-c|x-y|²/n}` and the total-variation gradient
+bound (`eq:rw-tv-gradient`) `∑_y |p_n(x,y) - p_n(w,y)| ≤ C|x-w|n^{-1/2}` for `x` and `w` of the
+same parity, are packaged into `External.HeatKernelBounds`. `exists_pointwise_gradient` derives
+from them the POINTWISE difference bound `|p_n(x,y) - p_n(x',y)| ≤ C|x-x'|n^{-(d+1)/2}` that the
+`L²` increment of the Green coefficients, and so the tightness of the rescaled linear field,
+actually needs. The proof splits the time `n` into two halves via `tsum_heatKernel_sub`
+(Chapman-Kolmogorov with the difference on the first factor,
+`p_n(x,y) - p_n(x',y) = ∑_z (p_m(x,z) - p_m(x',z)) p_{m'}(z,y)`), bounds the second half
+uniformly in `z` by the Gaussian bound and the first half's contribution by the total-variation
+gradient bound (`abs_tsum_mul_le`), and combines the two half-time powers `m^{-1/2}` and
+`(m')^{-d/2}`, each at least a third of `n`, into `n^{-(d+1)/2}` via `rpow_neg_third_le`.
+`tsum_greenTime_sub_sq` then expands the `L²` increment of the truncated Green kernel
+`∑_z (G_k(x,z) - G_k(x',z))^2` at two sites into the double time sum of pointwise kernel
+differences that this bound controls.
+-/
 
 open MeasureTheory Filter Topology
 

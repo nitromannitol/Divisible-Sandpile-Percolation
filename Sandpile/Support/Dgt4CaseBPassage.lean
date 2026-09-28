@@ -1,19 +1,17 @@
-/-
-Case (b) of `prop:dgt4-contact-asymptotics` above its two steps: the two estimates
-`eq:dgt4-b-relative-error` and `eq:dgt4-b-mean-increment` (`sandpile.tex:5318-5326`)
-give the contact-threshold field of the heavy-tailed branch, with
-`\kappa=1-1/\alpha`.
-
-The paper's sentence at `sandpile.tex:5327` is "As in case~(a), these two estimates
-imply the proposition", and the passage that follows it is what this module proves.
-Its two analytic inputs are Karamata's theorem at the origin and Potter's bounds, both
-of which the shared probability library supplies; the Stolz-Cesaro step is
-`Support/Dgt4ThresholdChain.lean` and the squeeze between the two endpoint values of
-the integrand is `Support/Dgt4CaseBIncrement.lean`.
--/
 import Sandpile.Support.Dgt4CaseBIncrement
 import Sandpile.Support.Dgt4CaseSelect
 import Sandpile.Support.Dgt4MeanDiv
+
+/-!
+# Case (b) of the contact-threshold asymptotics: the heavy-tailed branch
+
+This file proves case (b) of `prop:dgt4-contact-asymptotics` above its two steps: the two
+estimates `eq:dgt4-b-relative-error` and `eq:dgt4-b-mean-increment` give the contact-threshold
+field of the heavy-tailed branch, with `κ = 1 - 1/α`. The shared probability library supplies
+its two analytic inputs, Karamata's theorem at the origin and Potter's bounds; the Stolz-Cesàro
+step is `Support/Dgt4ThresholdChain.lean`, and the squeeze between the two endpoint values of the
+integrand is `Support/Dgt4CaseBIncrement.lean`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

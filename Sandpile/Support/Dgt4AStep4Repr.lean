@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.Dgt4AStep4Neg
+import Sandpile.Support.Dgt4ASceneryFirstMoment
+
+/-!
 **The integral representation of Step 4 of case (a)**
 (`eq:dgt4-gaussian-integral-representation`, `sandpile.tex:5258-5266`):
 
@@ -13,8 +16,6 @@ variable `y` by the affine substitution `s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sig
 `\Sigma\varphi_{0,\Sigma^2}(\E u_n(0)+\Sigma^2y/\E u_n(0))` and the Jacobian is
 `\Sigma/\E u_n(0)`.
 -/
-import Sandpile.Support.Dgt4AStep4Neg
-import Sandpile.Support.Dgt4ASceneryFirstMoment
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal

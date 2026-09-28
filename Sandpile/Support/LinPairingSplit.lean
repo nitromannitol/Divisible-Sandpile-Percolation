@@ -1,10 +1,13 @@
-/-
-The frozen integrand of the first conjunct of `lem:dgt4-linearization-from-survival`
-is the square of the difference of the three pairings: the pairing of the odometer,
-of the mean odometer and of the weighted scenery field.  This is
-`latticePairing_sub` applied twice, with the scalar `R^{(d-4)/2}` factored out.
--/
 import Sandpile.Support.ContDGT4Membrane
+
+/-!
+# The frozen integrand as a difference of three pairings
+
+The frozen integrand of the first conjunct of `lem:dgt4-linearization-from-survival` is the
+square of the difference of the three pairings: the pairing of the odometer, of the mean
+odometer and of the weighted scenery field. `frozen_integrand_eq_sub_pairings` gets this by
+applying `latticePairing_sub` twice, with the scalar `R^{(d-4)/2}` factored out.
+-/
 
 open MeasureTheory Filter Topology
 open Sandpile.Continuum
@@ -13,6 +16,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The frozen integrand `(R^{(d-4)/2} ⟨odometer - m - w, φ⟩)²` splits, via
+`Sandpile.Support.latticePairing_sub` applied twice, into the square of the difference of the
+three separately paired terms: the odometer's, the mean's and the scenery field's. -/
 theorem frozen_integrand_eq_sub_pairings (R : ℝ) (σ : Site d → ℝ) (φ : Space d → ℝ)
     (hφ : Integrable φ) {L : ℝ} (hsupp : ∀ z : Space d, φ z ≠ 0 → ‖z‖ ≤ L)
     (n : ℕ) (m : ℝ) (w : Site d → ℝ) :

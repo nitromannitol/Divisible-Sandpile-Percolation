@@ -1,15 +1,21 @@
-/-
+import Sandpile.Continuum.WhiteNoise
+
+/-!
+# White noise as a linear isometry on `L²`
+
 White-noise evaluation as a linear isometry from spatial L2 to random-variable L2.
 Orthonormal test functions give independent Gaussian coordinates. A Hilbert basis
 reconstructs every L2 evaluation, and basis measurability extends to all indices
 through the closed subspace of almost-everywhere measurable L2 functions.
 -/
 
-import Sandpile.Continuum.WhiteNoise
 open MeasureTheory ProbabilityTheory Filter InnerProductSpace
 open Sandpile.Continuum
 open scoped RealInnerProductSpace
 
+/-- The covariance of two white-noise evaluations is the `L²` inner product of the test
+functions: this follows from `IsWhiteNoise.cov` (the raw second moment) together with
+`IsWhiteNoise.mean` (each evaluation is centred), via the covariance-mean identity. -/
 theorem Sandpile.Support.covariance_whiteNoise {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -21,6 +27,11 @@ theorem Sandpile.Support.covariance_whiteNoise {Ω : Type*} [MeasurableSpace Ω]
   simpa only [Pi.mul_apply, zero_mul, sub_zero] using hW.cov f g hf hg
 
 
+/-- **White noise evaluated on an orthonormal family is an independent family of random
+variables.** The evaluations form a Gaussian process (`IsGaussianProcess.comp_right`), so
+by `IsGaussianProcess.iIndepFun_of_covariance_eq_zero` it suffices that distinct indices
+have zero covariance, which is `covariance_whiteNoise` together with orthonormality of
+`f`. -/
 theorem Sandpile.Support.iIndepFun_whiteNoise_orthonormal {Ω ι : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -39,11 +50,16 @@ theorem Sandpile.Support.iIndepFun_whiteNoise_orthonormal {Ω ι : Type*} [Measu
   exact hi.comp (fun _ x => x ()) (fun _ => measurable_pi_apply ())
 
 
+/-- The white-noise evaluation `W f` of an `L²` test function `f`, viewed as an element of
+`L²(P)` (using that a Gaussian evaluation has finite second moment, `memLp_two`). -/
 noncomputable def Sandpile.Support.whiteNoiseL2 {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (f : Lp ℝ 2 (volume : Measure (Space d))) : Lp ℝ 2 P :=
   (hW.gaussian.hasGaussianLaw_eval (fun y => f y)).memLp_two.toLp (W (fun y => f y))
 
+/-- **`whiteNoiseL2` preserves inner products**: the `L²(P)` inner product of two white-noise
+evaluations equals the spatial `L²` inner product of the test functions, by unfolding both
+sides as integrals and applying `IsWhiteNoise.cov`. -/
 theorem Sandpile.Support.inner_whiteNoiseL2 {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (f g : Lp ℝ 2 (volume : Measure (Space d))) :
@@ -59,10 +75,14 @@ theorem Sandpile.Support.inner_whiteNoiseL2 {Ω : Type*} [MeasurableSpace Ω]
     _ = ∫ y, g y * f y := hW.cov _ _ (Lp.memLp g) (Lp.memLp f)
 
 
+/-- `whiteNoiseL2` is additive: both sides have the same inner product with every
+element of `L²(P)` (by `inner_whiteNoiseL2` and linearity of the spatial inner product),
+so their difference has zero norm. -/
 theorem Sandpile.Support.whiteNoiseL2_add {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (f g : Lp ℝ 2 (volume : Measure (Space d))) :
-    Sandpile.Support.whiteNoiseL2 hW (f + g) = Sandpile.Support.whiteNoiseL2 hW f + Sandpile.Support.whiteNoiseL2 hW g := by
+    Sandpile.Support.whiteNoiseL2 hW (f + g)
+      = Sandpile.Support.whiteNoiseL2 hW f + Sandpile.Support.whiteNoiseL2 hW g := by
   apply sub_eq_zero.mp
   apply (inner_self_eq_zero (𝕜 := ℝ)).mp
   simp only [inner_sub_left, inner_sub_right, inner_add_left, inner_add_right,
@@ -70,6 +90,8 @@ theorem Sandpile.Support.whiteNoiseL2_add {Ω : Type*} [MeasurableSpace Ω]
   ring
 
 
+/-- `whiteNoiseL2` is homogeneous of degree one, by the same inner-product argument as
+`whiteNoiseL2_add`. -/
 theorem Sandpile.Support.whiteNoiseL2_smul {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (c : ℝ) (f : Lp ℝ 2 (volume : Measure (Space d))) :
@@ -81,6 +103,9 @@ theorem Sandpile.Support.whiteNoiseL2_smul {Ω : Type*} [MeasurableSpace Ω]
   ring
 
 
+/-- **White-noise evaluation as a linear isometry** `L²(Space d) →ₗᵢ[ℝ] L²(P)`, assembled
+from `whiteNoiseL2` together with its additivity, homogeneity and inner-product-preserving
+properties. -/
 noncomputable def Sandpile.Support.whiteNoiseLinearIsometry {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) :
@@ -92,17 +117,26 @@ noncomputable def Sandpile.Support.whiteNoiseLinearIsometry {Ω : Type*} [Measur
     (Sandpile.Support.inner_whiteNoiseL2 hW)
 
 
+/-- **A Hilbert basis reconstructs every white-noise evaluation**: expanding `f` in a
+Hilbert basis `b` of `L²(Space d)` and applying the continuous linear map underlying
+`whiteNoiseLinearIsometry` transports the basis expansion `HasSum` to `W f`. -/
 theorem Sandpile.Support.hasSum_whiteNoise_hilbertBasis {Ω ι : Type*} [MeasurableSpace Ω]
     {d : ℕ} {P : Measure Ω} {W : (Space d → ℝ) → Ω → ℝ}
     (hW : IsWhiteNoise d W P) (b : HilbertBasis ι ℝ (Lp ℝ 2 (volume : Measure (Space d))))
     (f : Lp ℝ 2 (volume : Measure (Space d))) :
     HasSum (fun i => b.repr f i • Sandpile.Support.whiteNoiseL2 hW (b i))
       (Sandpile.Support.whiteNoiseL2 hW f) := by
-  have h := (b.hasSum_repr f).mapL (Sandpile.Support.whiteNoiseLinearIsometry hW).toContinuousLinearMap
+  have h := (b.hasSum_repr f).mapL
+    (Sandpile.Support.whiteNoiseLinearIsometry hW).toContinuousLinearMap
   simp only [map_smul] at h
   convert! h using 1
 
 
+/-- **Measurability of white noise at every index of a Hilbert basis extends to every `L²`
+test function**: `lpMeas` (the functions `m`-strongly-measurable in the ambient `σ`-algebra)
+is a closed subspace of `L²(P)`, so it contains the sum-limit `whiteNoiseL2 hW f` of the
+Hilbert-basis expansion (`hasSum_whiteNoise_hilbertBasis`) once it contains every basis
+term. -/
 theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_basis {Ω ι : Type*}
     [mΩ : MeasurableSpace Ω] {d : ℕ} {P : Measure Ω}
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)
@@ -114,8 +148,8 @@ theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_basis {Ω ι : Type*
   letI : MeasurableSpace Ω := mΩ
   let F := Sandpile.Support.whiteNoiseL2 hW
   let WF : Lp ℝ 2 (volume : Measure (Space d)) → Ω → ℝ := fun f => F f
-  have hb' : ∀ i, AEStronglyMeasurable[m] (WF (b i)) P :=
-    fun i => (hb i).congr (hW.gaussian.hasGaussianLaw_eval (fun y => b i y)).memLp_two.coeFn_toLp.symm
+  have hb' : ∀ i, AEStronglyMeasurable[m] (WF (b i)) P := fun i =>
+    (hb i).congr (hW.gaussian.hasGaussianLaw_eval (fun y => b i y)).memLp_two.coeFn_toLp.symm
   have hc := isClosed_aestronglyMeasurable (F := ℝ) (p := 2) (μ := P) hm
   have hf' : AEStronglyMeasurable[m] (WF f) P := by
     apply hc.mem_of_tendsto (Sandpile.Support.hasSum_whiteNoise_hilbertBasis hW b f)

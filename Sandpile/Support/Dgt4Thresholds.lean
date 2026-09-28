@@ -1,4 +1,9 @@
-/-
+import Sandpile.Law
+import Sandpile.Walk
+import Sandpile.Frozen.DGT4PathSurvival
+
+/-! # Uniform and Pointwise Contact Thresholds
+
 The uniform contact-threshold estimate `eq:dgt4-uniform-contact-thresholds`
 (`sandpile.tex:5473-5480`), which is the hypothesis of `lem:dgt4-path-survival`
 and is what the two proofs of `prop:dgt4-contact-asymptotics`
@@ -20,9 +25,6 @@ The transcription is character for character the `hthresholds` argument of
 `Sandpile.Frozen.dgt4_path_survival`, so that the sealed lemma applies to it
 directly.
 -/
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Frozen.DGT4PathSurvival
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

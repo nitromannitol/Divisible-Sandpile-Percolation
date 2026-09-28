@@ -1,4 +1,8 @@
-/-
+import Sandpile.Walk
+
+/-!
+# The `ℓ²` contraction of the averaging operator
+
 The averaging operator does not increase the `ℓ²` norm.
 
 `lem:dgt4-linearization-from-survival` uses at `sandpile.tex:5758-5762` the
@@ -11,7 +15,6 @@ the sum: the value of `Pf` at a site is the average of the `2d` neighbouring
 values, so its square is at most the average of their squares, and each of the
 `2d` shifted copies of `∑_z f(z)^2` is that same sum.
 -/
-import Sandpile.Walk
 
 open MeasureTheory
 
@@ -54,6 +57,8 @@ theorem tsum_sq_shift (f : Site d → ℝ) (y : Site d) :
   have h := (Equiv.addRight y).tsum_eq fun z : Site d => (f z) ^ 2
   simpa [Equiv.coe_addRight] using h
 
+/-- Summability of the squares is preserved by translation, transported along
+the shift equivalence `Equiv.addRight y`. -/
 theorem summable_sq_shift {f : Site d → ℝ} (hf : Summable fun z => (f z) ^ 2) (y : Site d) :
     Summable fun x : Site d => (f (x + y)) ^ 2 := by
   have h := (Equiv.addRight y).summable_iff (f := fun z : Site d => (f z) ^ 2) |>.mpr hf
@@ -77,6 +82,10 @@ theorem summable_sq_avg (hd : 1 ≤ d) {f : Site d → ℝ} (hf : Summable fun z
       simpa [sub_eq_add_neg] using summable_sq_shift hf (-unit i))
   refine Summable.of_nonneg_of_le (fun z => sq_nonneg _) (fun z => sq_avg_le hd f z) hmaj
 
+/-- **The `ℓ²` contraction of the averaging operator, as a sum inequality**:
+`∑ (avg f z)² ≤ ∑ f(z)²`, by comparing term by term to the neighbour-average
+majorant of `sq_avg_le` and evaluating that majorant's sum by translation
+invariance. -/
 theorem tsum_sq_avg_le (hd : 1 ≤ d) {f : Site d → ℝ} (hf : Summable fun z => (f z) ^ 2) :
     ∑' z : Site d, (avg f z) ^ 2 ≤ ∑' z : Site d, (f z) ^ 2 := by
   classical

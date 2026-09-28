@@ -1,16 +1,16 @@
-/-
-The exponential moment of the constructed one-site law, the third analytic
-clause of `thm:dgt4-many-limits` (`sandpile.tex:5905-5911`).
-
-The paper's sentence is "Choose `θ ∈ (λ_0ℓ_0, 1)`.  Since `ω_k = c_0e^{-a_k}`, we
-have `∑_k ω_k e^{θ a_k} < ∞` and `E e^{θ|ζ(0)|} < ∞`."  Here the summand
-decomposition of `integrable_bandLaw_of_nonneg` reduces it to two tilts: the
-Gaussian summand is integrable against `e^{cz}` for every real `c`, and the `j`th
-band component, carried by `[-a_j, -ℓ_1a_j]`, contributes at most
-`ω_j e^{|c|a_j}`, which is summable for `|c| < 1` by
-`BandParameters.summable_weight_exp`.
--/
 import Sandpile.Support.Dgt4ABandLawIntegrated
+
+/-!
+# The exponential moment of the constructed one-site law
+
+The summand decomposition of `integrable_bandLaw_of_nonneg` reduces the existence of an
+exponential moment to two one-sided tilts: the Gaussian summand is integrable against `e^{cz}`
+for every real `c`, and the `j`th band component, carried by `[-a_j, -l1 * a_j]`, contributes at
+most `w_j * e^{|c| a_j}`, which is summable for `|c| < 1` by `BandParameters.summable_weight_exp`.
+Combining the two tilts at `±c` gives the two-sided exponential moment `E e^{c|ζ(0)|} < ∞` for
+every rate `c` below one, and comparing `|z|` against `e^{cz} + e^{-cz}` upgrades this further to
+a finite first absolute moment.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -43,7 +43,8 @@ theorem integrable_exp_mul_bandLaw (hw0 : 0 ≤ w0) (hw : ∀ k, 0 ≤ w k) (hθ
     intro n
     cases n with
     | zero =>
-      have hg := (integrable_exp_neg_lam_mul_gaussianPDFReal (mu := mu) (v := v) hv (-c)).const_mul w0
+      have hg :=
+        (integrable_exp_neg_lam_mul_gaussianPDFReal (mu := mu) (v := v) hv (-c)).const_mul w0
       refine hg.congr (Filter.Eventually.of_forall fun x => ?_)
       show w0 * (Real.exp (-(-c * x)) * gaussianPDFReal mu v x)
         = w0 * gaussianPDFReal mu v x * Real.exp (c * x)

@@ -1,27 +1,28 @@
-/-
-The convergence half of `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`)
-reduced to one limit: the limit of the sum of squares of the rescaled
-coefficients.
+import Sandpile.Support.ContWeightedCoeff
+import Sandpile.Support.ContSeqCLT
 
-The proof of the proposition (`sandpile.tex:4717-4731`) has three steps.  The
-first writes the pairing as `∑_z a_R(z) ζ(z)` and bounds the coefficients by
-`C(φ) R^{-d/2}`; that is `Sandpile.Support.latticePairing_weightedField_eq` and
-`Sandpile.Support.abs_scaled_pairCoeff_le`.  The third is the Lindeberg-Feller
-theorem, which is `Sandpile.Support.tendstoInDistribution_linear_pick_mass`.
-The second, the only analytic step, is the local central limit theorem followed
-by a Riemann-sum argument, which identifies
+/-!
+# The weighted-membrane limit reduced to one covariance limit
+
+The convergence half of `prop:weighted-membrane-limit` (`sandpile.tex:4692-4703`) reduced to
+one limit: the limit of the sum of squares of the rescaled coefficients.
+
+The proof of the proposition (`sandpile.tex:4717-4731`) has three steps. The first writes the
+pairing as `∑_z a_R(z) ζ(z)` and bounds the coefficients by `C(φ) R^{-d/2}`; that is
+`Sandpile.Support.latticePairing_weightedField_eq` and
+`Sandpile.Support.abs_scaled_pairCoeff_le`. The third is the Lindeberg-Feller theorem, which is
+`Sandpile.Support.tendstoInDistribution_linear_pick_mass`. The second, the only analytic step,
+is the local central limit theorem followed by a Riemann-sum argument, which identifies
 
   `lim_R ∑_z a_R(z)^2  =  Var(𝒢(φ)) / Var(ζ(0))`.
 
-The theorem below is the proposition's first clause granted exactly that limit,
-whatever its value: it takes the limit `V` of the sums of squares as a
-hypothesis and produces the convergence in distribution of the pairing to the
-centred Gaussian of variance `(∫ z^2 dν) V`.  Nothing else about the weight, the
-test function or the dimension is used, and the proof is the paper's, with the
-local central limit theorem removed.
+`weighted_pairing_tendsto_of_covariance` is the proposition's first clause granted exactly that
+limit, whatever its value: it takes the limit `V` of the sums of squares as a hypothesis and
+produces the convergence in distribution of the pairing to the centred Gaussian of variance
+`(∫ z^2 dν) V`. Nothing else about the weight, the test function or the dimension is used, and
+the proof is the paper's, with the local central limit theorem removed. `variance_scaled_pairing`
+identifies that hypothesis with the paper's `Var(𝓕_R(φ)) → Var(𝓖(φ))` divided by `Var(ζ(0))`.
 -/
-import Sandpile.Support.ContWeightedCoeff
-import Sandpile.Support.ContSeqCLT
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

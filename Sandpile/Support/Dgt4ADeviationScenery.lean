@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4ADeviationLip
+import Sandpile.Support.Dgt4FieldRecursion
+
+/-!
+# The centred deviation in finite-coordinate form
+
 The centred deviation `D_n` of `sandpile.tex:5050-5051` in its finite-coordinate form.
 The field recursion `V_\infty=\zeta+PV_\infty` (`sandpile.tex:5042`) cancels the field
 from `D_n=(V_\infty-u_n)(0)-P(V_\infty-u_n)(0)` and leaves
@@ -7,8 +12,6 @@ from `D_n=(V_\infty-u_n)(0)-P(V_\infty-u_n)(0)` and leaves
 
 a function of the scenery inside the box `Q(0,n+1)` alone.
 -/
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.Dgt4FieldRecursion
 
 open MeasureTheory Filter Topology Set
 

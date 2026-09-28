@@ -1,21 +1,17 @@
-/-
-The two hypotheses of `lem:dgt4-linearization-from-survival` at the time weights
-`q_{R,j} = (1 - j/(R^2T))^κ` of `prop:dgt4-linearization`, supplied by the sealed
-`lem:dgt4-path-survival` from the uniform contact thresholds.
-
-This is the middle sentence of the paper's proof of `prop:dgt4-linearization`
-(`sandpile.tex:5853-5864`): "Lemma~\ref{lem:dgt4-path-survival} then gives
-\eqref{eq:dgt4-averaged-positive-path-limit} and
-\eqref{eq:dgt4-positive-path-covariance}, and
-Lemma~\ref{lem:dgt4-linearization-from-survival} proves
-\eqref{eq:dgt4-linear-approximation}."  The survival indicator and the
-nearest-neighbour path condition are declared once in each of the two frozen
-files and are the same functions (`Support/LinWeights.lean`), so the conclusion
-of the first lemma is literally the hypothesis pair of the second.
--/
 import Sandpile.Support.Dgt4Thresholds
 import Sandpile.Support.LinWeights
 import Sandpile.Frozen.DGT4LinearizationFromSurvival
+
+/-!
+# The survival inputs to the linearization lemma, from the uniform contact thresholds
+
+This file supplies the two hypotheses of `lem:dgt4-linearization-from-survival` at the time
+weights `q_{R,j} = (1 - j/(R^2T))^κ` of `prop:dgt4-linearization`, from the sealed
+`lem:dgt4-path-survival` applied to the uniform contact thresholds. The survival indicator and
+the nearest-neighbour path condition are the same functions in both frozen files
+(`Support/LinWeights.lean`), so the conclusion of `lem:dgt4-path-survival` is literally the
+hypothesis pair of `lem:dgt4-linearization-from-survival`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

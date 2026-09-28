@@ -1,19 +1,25 @@
-/-
-Step 3 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3385-3404`): the
-reflection window `S_R=\sum_{k<n_R}P^kr_{t_R-1-k}` is negligible in `H^{-s}(D)`
-once its mean is removed.
-
-The paper splits the second moment of the window at `A_0\log(t+2)+1`, bounding
-the low part by the mean and the high part by `lem:d4-difference-tail`.  The
-version of that lemma proved in this repository is the exponential moment
-`\E[e^{c(D_t-A_0\log(t+2))_+}-1]\leq C(t+2)^{-2}`, and the split needs no layer
-cake: `e^u-1\geq u^2/2` turns the exponential moment into a second moment of the
-excess directly, and on the event that the window exceeds `A_0\log(t+2)+1` the
-whole difference is at most `(A_0\log(t+2)+1)` times that excess.
--/
 import Sandpile.Frozen.D4DifferenceTail
 import Sandpile.Support.D4WindowMean
 import Sandpile.Support.D4SStep2
+
+/-!
+# Step 3 of the superdiffusive limit: the reflection window vanishes
+
+Step 3 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3385-3404`): the reflection window
+`S_R=\sum_{k<n_R}P^kr_{t_R-1-k}` is negligible in `H^{-s}(D)` once its mean is removed.
+
+The paper splits the second moment of the window at `A_0\log(t+2)+1`, bounding the low part
+by the mean and the high part by `lem:d4-difference-tail`. The version of that lemma proved
+in this repository is the exponential moment `\E[e^{c(D_t-A_0\log(t+2))_+}-1]\leq
+C(t+2)^{-2}`, and the split needs no layer cake: `e^u-1\geq u^2/2`
+(`sq_le_four_div_mul_exp_sub_one`) turns the exponential moment into a second moment of the
+excess directly (`exists_excess_sq_bound_four`), and on the event that the window exceeds
+`A_0\log(t+2)+1` the whole difference is at most `(A_0\log(t+2)+1)` times that excess
+(`window_sq_split`, assembled into `exists_window_second_moment_four`). The mesh sum of this
+uniform bound is controlled by `integral_mesh_sum_le`, the weighted mean still vanishes by
+`tendsto_log_mul_window_mean`, and `tendsto_step3_four` combines everything via Markov's
+inequality into the convergence in probability that Step 3 needs.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -293,7 +299,8 @@ theorem tendsto_step3_four (hVS : Sandpile.External.VarianceScale)
     R⁻¹ ^ 4 * ∑ x ∈ Sandpile.boxFinset (0 : Site 4) (⌈|R| * L⌉₊ + 1),
       (windowField ν α R ζ x) ^ 2 with hY
   set V : ℝ → ℝ := fun R =>
-    2 * ((A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) * mm R + (A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) ^ 2 * (Cx / ((⌊R ^ α⌋₊ : ℝ) + 2) ^ 2))
+    2 * ((A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) * mm R +
+        (A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) ^ 2 * (Cx / ((⌊R ^ α⌋₊ : ℝ) + 2) ^ 2))
       + 2 * (mm R) ^ 2 with hV
   set B : ℝ → ℝ := fun R => K ^ 2 * ((2 * L + 5) ^ 4 * V R) with hB
   -- the scales

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.LimCrossing
+import Sandpile.Support.LimJoint
+
+/-!
+# The crossing chain with the finite-scale maximum law discharged
+
 The two assemblies of the crossing chain with the law of the finite-scale maximum
 discharged.
 
@@ -14,8 +19,6 @@ The statements are those of `Sandpile.Support.finite_scale_extraction_of_inputs`
 and `Sandpile.Support.limiting_odometer_crossing_of_inputs` with the hypothesis
 `hLaw` removed; nothing else changes.
 -/
-import Sandpile.Support.LimCrossing
-import Sandpile.Support.LimJoint
 
 open MeasureTheory ProbabilityTheory Set Filter
 open scoped NNReal ENNReal

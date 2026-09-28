@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinStep2
+import Sandpile.Support.LinStep2Replace
+
+/-! # Step 2 Last-Visit Window
+
 Two pieces of Step 2 of `lem:dgt4-path-survival` that sit between the product over the last
 visits and the deterministic chain already proved in `Support/LinProduct.lean`.
 
@@ -16,8 +20,6 @@ visits and the deterministic chain already proved in `Support/LinProduct.lean`.
   consumes (`Support/LinStep1Factor.lean`, `level_lower_bound_window`).  The constant is
   `\max\{1,4G(0,0)\kappa/(\varepsilon T),2T/(G(0,0)\kappa)\}` and is bound before `R`.
 -/
-import Sandpile.Support.LinStep2
-import Sandpile.Support.LinStep2Replace
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -28,6 +30,8 @@ variable {d : ℕ}
 
 /-! ### The natural form of the last-visit exponent -/
 
+/-- The last-visit times up to `j` form a subset of `range (j+1)`, by definition of
+`lastVisitTimes` as a filter of that range. -/
 theorem lastVisitTimes_subset (j : ℕ) (X : ℕ → Site d) :
     lastVisitTimes j X ⊆ Finset.range (j + 1) := by
   classical

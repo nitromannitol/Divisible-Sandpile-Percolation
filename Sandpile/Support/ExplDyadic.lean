@@ -1,35 +1,19 @@
-/-
-The walk half of the cutoff error of `sandpile.tex:1908-1921`: the dyadic sum.
-
-The display bounds, uniformly over stopping times, the contribution to the
-optimal-stopping value of the region where the cutoff `χ_A` is not one.  Unlike
-its Brownian counterpart the walk reward is the field itself, which is not
-bounded uniformly in `A`, so the region is cut into the dyadic annuli
-`2^j A ≤ |y| < 2^{j+1} A`.  On the `j`-th annulus the Green-kernel estimates and
-`lem:weighted-exp-conc` bound the field by a fixed power of the radius, and the
-walk maximal estimate gives a Gaussian tail for reaching that annulus.  The sum
-of the products is then small, uniformly in the number of annuli, once `A` is
-large: that is `exists_cutoff_radius`, and `exists_walk_cutoff_radius` is the
-same statement in the vocabulary of the walk.
-
-The three steps are separated.  `exists_dyadic_index` and
-`cutoff_compl_mul_le_sum_indicator` are the combinatorics of the decomposition:
-a point outside the ball of radius `A` and inside the ball of radius `2^{n+1}A`
-lies in exactly one of the `n+1` annuli, so the cutoff error at that point is at
-most the corresponding term.  `integral_cutoff_le_sum_reach` integrates that,
-replacing the annulus by the larger event that the inner radius is reached,
-which is the event the maximal estimate speaks about.  `exists_cutoff_radius` is
-the summation: with `M j = K (2^{j+1}A)^p` and a Gaussian tail
-`C e^{-c(2^jA)^2/T}`, the `j`-th term is at most a constant times `(2^p r)^j`
-with `r = e^{-cA/T}`, because `4^j ≥ j+1` and `A^2 ≥ A`, and both `2^p r ≤ 1/2`
-and `A^p r` small hold once `A` is large.
-
-The confinement hypothesis is what makes the sum finite: the walk takes at most
-`t_R` steps, so its scaled position is bounded, and only finitely many annuli
-are charged.  It enters as an almost-everywhere hypothesis, which is how the
-walk supplies it.
--/
 import Sandpile.Support.ExplCutoffError
+
+/-!
+# The dyadic annulus decomposition of the cutoff error
+
+The cutoff error outside a ball of radius `A` is controlled by decomposing the exterior into
+dyadic annuli `2^j A ≤ ‖y‖ < 2^{j+1} A`. `exists_dyadic_index` and
+`cutoff_compl_mul_le_sum_indicator` place each confined point in exactly one annulus and bound
+the error there, and `integral_cutoff_le_sum_reach` integrates this bound against the
+probability of reaching each annulus's inner radius. When the bound on the `j`-th annulus is a
+fixed power `K (2^{j+1}A)^p` and the probability of reaching it decays like a Gaussian tail
+`C e^{-c(2^jA)^2/T}`, `dyadic_term_le` shows each term is at most a constant times a geometric
+ratio `(2^p e^{-cA/T})^j`, using that `4^j ≥ j + 1`. Summing this geometric series gives
+`exists_cutoff_radius`: the total error is at most any `ε > 0` once the cutoff radius `A` is
+large enough, uniformly in the number of confined annuli.
+-/
 
 open MeasureTheory Filter Topology
 open scoped NNReal ENNReal

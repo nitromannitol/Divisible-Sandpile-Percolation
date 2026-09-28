@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.HeatKernelBoundsProved
+import Sandpile.Support.TightD4Covariance
+import Sandpile.Support.TightNegSobolev
+
+/-! # Diffusive Tightness in Dimension Four
+
 Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3317-3324`
 (label `prop:d4-diffusive-tightness`):
 
@@ -38,9 +43,6 @@ the field `R^{-ε}(u_t - E u_t(0))` at `t = ⌊TR²⌋` has covariance at most
 restores the factor `R^{β/2} = R^{ε}`, giving exactly the family of the
 statement.
 -/
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Support.TightD4Covariance
-import Sandpile.Support.TightNegSobolev
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

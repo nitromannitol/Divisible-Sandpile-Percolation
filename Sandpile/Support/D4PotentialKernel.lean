@@ -1,18 +1,21 @@
-/-
+import Sandpile.Support.ExitGreen
+import Sandpile.External.HeatKernelBounds
+
+/-!
+# The Four-Dimensional Potential Kernel
+
 The four-dimensional potential kernel `a(x,y) = ∑_{j≥0}(p_j(x,y) - p_j(0,y))`,
 the kernel of the untruncated centred membrane field of Step 1 of
 `prop:d4-superdiffusive-limit` (`sandpile.tex:3341-3366`).
 
 In dimension four the walk is transient, so each of the two series converges on
-its own and `a(x,y) = G(x,y) - G(0,y)` is a difference of Green functions.  The
+its own and `a(x,y) = G(x,y) - G(0,y)` is a difference of Green functions. The
 subtraction at the base point is what the field needs: the centred field is
 defined modulo additive constants, and `a(0,y) = 0`.
 
 The Gaussian upper bound `eq:rw-gaussian-upper` gives `p_n(x,y) ≤ Cn^{-2}` in
 dimension four, hence a bound on `G` and on `a` that is uniform in both sites.
 -/
-import Sandpile.Support.ExitGreen
-import Sandpile.External.HeatKernelBounds
 
 open MeasureTheory Filter Topology
 

@@ -1,16 +1,17 @@
-/-
-The scale separation of `eq:d4-superdiffusive-scale-separation` against the
-SECOND moment the repository proves (`sandpile.tex:3334-3338`).
-
-Step 2 needs `R^2V_R/n_R\to0` with `V_R` the uniform second moment of the
-linearization error.  The paper quotes `V_R = C(1+\log\log t_R)`;
-`Sandpile.exists_linearization_second_moment_four` proves the cruder
-`(1+\log\log t_R)^2+M`, whose square of a logarithm still vanishes against
-`n_R\asymp R^{1+\alpha/2}` because `\alpha>2`.  The proof is the first limit of
-`eq:d4-superdiffusive-scale-separation` with the squared affine-logarithm
-majorant in place of the affine one.
--/
 import Sandpile.Support.D4ScaleSepLimits
+
+/-!
+# The second-moment scale separation, at the squared second moment
+
+The scale separation of `eq:d4-superdiffusive-scale-separation` against the SECOND moment the
+repository proves (`sandpile.tex:3334-3338`). Step 2 needs `R^2V_R/n_R\to0` with `V_R` the uniform
+second moment of the linearization error. The paper quotes `V_R = C(1+\log\log t_R)`;
+`Sandpile.exists_linearization_second_moment_four` proves the cruder `(1+\log\log t_R)^2+M`, whose
+square of a logarithm still vanishes against `n_R\asymp R^{1+\alpha/2}` because `\alpha>2`
+(`tendsto_scale_sep_first_sq`), using the ratio bound `scale_sep_ratio_bound`. This is the first
+limit of `eq:d4-superdiffusive-scale-separation` with the squared affine-logarithm majorant in
+place of the affine one.
+-/
 
 open Filter Topology
 

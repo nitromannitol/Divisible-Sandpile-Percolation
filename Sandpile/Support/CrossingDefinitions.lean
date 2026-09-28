@@ -1,8 +1,16 @@
-/-
-Finite lattice rectangles and the minimum level attained by a crossing path.
--/
 import Sandpile.Basic
 import Mathlib
+
+/-!
+# Crossing paths and the crossing value of a lattice rectangle
+
+This file sets up the combinatorics of left-to-right crossings of a finite axis-parallel
+rectangle of `ℤ²`, following `sandpile.tex:3442-3450`. `IsLatticeRectangle` singles out the
+rectangles among finite sets of sites, and `IsCrossingPath` singles out the simple paths inside
+such a rectangle that join its left side to its right side. The crossing value `crossingValue`
+of a real-valued field `F` on the rectangle is the supremum, over all crossing paths, of the
+minimum value of `F` along the path.
+-/
 
 namespace Sandpile
 

@@ -1,15 +1,25 @@
-/-
+import Sandpile.Support.ExplGaussianHorizon
+
+/-!
+# Stopped Gaussian Increments Over a Family of Starting Points
+
 Stopped Gaussian increments simultaneously over starting points.
 
 The common noise event is supplied by the field semigroup and continuity before
 choosing any motion from the family. Thus all starting points, horizons and
 bounded natural stopping times share the stopped-increment identity.
 -/
-import Sandpile.Support.ExplGaussianHorizon
+
 open MeasureTheory ProbabilityTheory Filter Topology LatticeProb
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
+
+/-- For almost every noise sample `ω`, and simultaneously over every starting point `x`,
+horizon `t`, extra time `δ` and bounded `B x`-stopping time `τ ≤ t`, the stopped increment
+`Z (t - τ + δ) (B x τ) ω - Z (t - τ) (B x τ) ω` is integrable in the stopping position and its
+expectation equals the deterministic increment `Z (t + δ) x ω - Z t x ω`, proved by applying the
+optional-stopping martingale identity to the heat-semigroup martingale `M` built from `Z`. -/
 theorem gaussianPotential_stopped_increment_integral_family {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}
@@ -29,7 +39,8 @@ theorem gaussianPotential_stopped_increment_integral_family {ΩW ΩB : Type*}
   have hcont : ∀ᵐ ω ∂PW, Continuous fun q : ℝ≥0 × Space d => Z q.1 q.2 ω := by
     have hh := ae_all_iff.mpr (fun n : ℕ => hc ((n : ℝ) + 1) (by positivity))
     exact hh.mono fun ω hω => continuous_nonnegative_time_of_bounded_strips (fun t x => Z t x ω) hω
-  filter_upwards [gaussianPotential_increment_semigroup_common hd hd3 hW ν2 Z hmod hc, hcont] with ω hs hz
+  filter_upwards [gaussianPotential_increment_semigroup_common hd hd3 hW ν2 Z hmod hc, hcont]
+    with ω hs hz
   intro x t δ τ hτ hτt
   let M (r : ℝ≥0) (b : ΩB) := Z (t - min r t + δ : ℝ≥0) (B x (min r t) b) ω -
     Z (t - min r t : ℝ≥0) (B x (min r t) b) ω
@@ -41,7 +52,8 @@ theorem gaussianPotential_stopped_increment_integral_family {ΩW ΩB : Type*}
       simpa only [NNReal.coe_add, add_assoc] using hs r s δ hr s.property δ.property z
   have hMc : ∀ b, Continuous fun r => M r b := by
     intro b
-    exact (hz.comp (((continuous_const.sub (continuous_id.min continuous_const)).add continuous_const).prodMk
+    exact (hz.comp (((continuous_const.sub (continuous_id.min continuous_const)).add
+        continuous_const).prodMk
       ((hBc x b).comp (continuous_id.min continuous_const)))).sub
         (hz.comp ((continuous_const.sub (continuous_id.min continuous_const)).prodMk
           ((hBc x b).comp (continuous_id.min continuous_const))))
@@ -60,6 +72,11 @@ theorem gaussianPotential_stopped_increment_integral_family {ΩW ΩB : Type*}
       simp [M, hb]
     _ = Z (t + δ) x ω - Z t x ω := by simp
 
+/-- If every stopped increment `Z (t - τ) (B x τ) ω` is integrable at time `t`, then the field
+increment `Z T x ω - Z t x ω` (for `t ≤ T`) does not depend on the choice of stopping time used to
+express it: this is `HorizonFreeIncrement`, deduced from
+`gaussianPotential_stopped_increment_integral_family` by taking `δ = T - t` and cancelling the
+common integrable term `∫ Z (t - τ) (B x τ) ω` from both sides. -/
 theorem gaussianPotential_horizonFreeIncrement_family_of_stopped_integrability {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}
@@ -74,7 +91,8 @@ theorem gaussianPotential_horizonFreeIncrement_family_of_stopped_integrability {
       (∀ τ : ΩB → ℝ≥0, IsBrownianStopping (B x) τ → (∀ b, τ b ≤ t) →
         Integrable (fun b => Z ((t : ℝ) - τ b) (B x (τ b) b) ω) PB) →
       HorizonFreeIncrement (B x) PB (fun s y => Z s y ω) t T x := by
-  filter_upwards [gaussianPotential_stopped_increment_integral_family hd hd3 hW ν2 Z hmod hc B hB hBm hBc] with ω hω
+  filter_upwards [gaussianPotential_stopped_increment_integral_family hd hd3 hW ν2 Z hmod hc B hB
+    hBm hBc] with ω hω
   intro x t T htT hI τ hτ hτt
   have hbt : ∀ b, τ b ≤ t := hτt
   have hinc := hω x t (T - t) τ hτ hbt

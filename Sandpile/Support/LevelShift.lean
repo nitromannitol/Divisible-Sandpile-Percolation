@@ -1,19 +1,39 @@
-/-
-Decoupling finite sublevel events through conditional odometers.
--/
 import Sandpile.Support.OdometerLocalization
 import Sandpile.Frozen.DGT4Localization
 import Mathlib.Data.Set.Finite.Powerset
+
+/-!
+# Decoupling odometer sublevel events on separated finite sets
+
+Decoupling finite sublevel events through conditional odometers. The event
+`sublevelWitnessEvent Q W F s` records that some subset `T ⊆ Q` satisfying a fixed property
+`W` witnesses `F ω y ≤ -s` at every `y ∈ T`; it is measurable when `Q` is finite
+(`measurableSet_sublevelWitnessEvent`), and it shifts by at most the sup-error between two
+fields on `Q` (`sublevelWitnessEvent_shift`). For the recentred odometer field
+`F = fun ω y => odometerOf ω t y - m` on two finite sets `K₁, K₂` whose `r`-thickenings are
+disjoint, replacing `F` by its conditional expectation `G` given the coordinates on the
+thickening makes the sublevel events independent (`coordAlg_inter_eq_mul`), while the tail
+bound `Frozen.dgt4_localization` controls the resulting approximation error. Combining these
+through the general two-set bound `measure_inter_le_sq_add_errors` gives the main result
+`odometer_sublevel_decoupling`: if the sublevel events of `F` on `K₁` and `K₂` each have
+probability at most `p`, their intersection has probability at most `p ^ 2` plus an explicit
+error, exponentially small in `a` and `r` and linear in `|K₁| + |K₂|`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
 
 namespace Sandpile
 
+/-- The event that some subset `T ⊆ Q` satisfying the property `W` witnesses `F ω y ≤ -s` for
+every `y ∈ T`: the sublevel event for `F` on `Q`, keyed by a witnessing sub-collection. -/
 def sublevelWitnessEvent {V Ω : Type*} (Q : Set V) (W : Set V → Prop)
     (F : Ω → V → ℝ) (s : ℝ) : Set Ω :=
   {ω | ∃ T ⊆ Q, W T ∧ ∀ y ∈ T, F ω y ≤ -s}
 
+/-- `sublevelWitnessEvent Q W F s` is measurable when `Q` is finite and each `F · y` is
+measurable, by writing it as a countable union over finite subsets `T ⊆ Q` of the
+finite intersection `⋂ y ∈ T, {ω | F ω y ≤ -s}`. -/
 lemma measurableSet_sublevelWitnessEvent {V Ω : Type*} [MeasurableSpace Ω]
     (Q : Set V) (hQ : Q.Finite) (W : Set V → Prop) (F : Ω → V → ℝ)
     (hF : ∀ y, Measurable (fun ω => F ω y)) (s : ℝ) :
@@ -36,6 +56,9 @@ lemma measurableSet_sublevelWitnessEvent {V Ω : Type*} [MeasurableSpace Ω]
       measurableSet_le (hF y) measurable_const)
   · simp only [hW, false_and, Set.setOf_false, MeasurableSet.empty]
 
+/-- If `F` and `G` differ by at most `a` in absolute value on `Q` at the point `ω`, then `ω`
+lying in the level-`s` sublevel event of `F` puts it in the level-`(s - a)` sublevel event of
+`G`, via the same witness set `T`. -/
 lemma sublevelWitnessEvent_shift {V Ω : Type*} (Q : Set V) (W : Set V → Prop)
     (F G : Ω → V → ℝ) (s a : ℝ) (ω : Ω)
     (h : ∀ y ∈ Q, |F ω y - G ω y| ≤ a) :
@@ -46,6 +69,10 @@ lemma sublevelWitnessEvent_shift {V Ω : Type*} (Q : Set V) (W : Set V → Prop)
   have hv := hval y hy
   linarith
 
+/-- Events measurable with respect to the coordinate `σ`-algebras of two disjoint sets `S`,
+`T` are independent under the i.i.d. product measure `Measure.infinitePi`, proved by pulling
+the intersection back through the coordinate-recombination map `LatticeProb.comb` and using
+`LatticeProb.measurePreserving_comb` together with `Measure.prod_prod`. -/
 lemma coordAlg_inter_eq_mul {V : Type*} (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (S T : Set V) [DecidablePred (· ∈ S)] [DecidablePred (· ∈ T)]
     (hST : Disjoint S T) {A B : Set (V → ℝ)}
@@ -76,6 +103,10 @@ lemma coordAlg_inter_eq_mul {V : Type*} (ν : Measure ℝ) [IsProbabilityMeasure
   rw [hpre, Measure.prod_prod] at hp
   exact hp.symm
 
+/-- If each `Aᵢ` is sandwiched between an approximating event `Bᵢ` and an error `Dᵢ`, `Bᵢ` is
+in turn sandwiched between a tail event `Cᵢ` of measure at most `p ≤ 1` and `Dᵢ`, and `B₁`,
+`B₂` are independent, then `μ (A₁ ∩ A₂) ≤ p ^ 2 + 2 * (μ D₁ + μ D₂)`; proved by bounding
+`μ B₁ * μ B₂` termwise and covering `A₁ ∩ A₂` by `(B₁ ∩ B₂) ∪ (D₁ ∪ D₂)`. -/
 lemma measure_inter_le_sq_add_errors {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) [IsProbabilityMeasure μ]
     (A₁ A₂ B₁ B₂ C₁ C₂ D₁ D₂ : Set Ω)
@@ -114,6 +145,16 @@ lemma measure_inter_le_sq_add_errors {Ω : Type*} [MeasurableSpace Ω]
     _ ≤ (p ^ 2 + μ D₁ + μ D₂) + (μ D₁ + μ D₂) := add_le_add hprod le_rfl
     _ = p ^ 2 + 2 * (μ D₁ + μ D₂) := by ring
 
+/-- **Decoupling of odometer sublevel events on separated sets.** In dimension `d ≥ 5`, for
+finite sets `K₁, K₂` whose `r`-thickenings (`Frozen.DGT4Localization.thickening`) are
+disjoint, if the `(s - 2 * a)`-sublevel events of the recentred odometer
+`fun ω y => odometerOf ω t y - m` on `K₁` and `K₂` each have probability at most `p`, then the
+level-`s` sublevel events on `K₁` and `K₂` satisfy `μ (event₁ ∩ event₂) ≤ p ^ 2 + error`,
+where `error` is exponentially small in `a` and `r` with the rate and constant `c` coming
+from `Frozen.dgt4_localization`. The proof replaces the odometer by its conditional
+expectation given the thickening's coordinates, which forces independence across the two
+disjoint thickenings via `coordAlg_inter_eq_mul`, then folds the two approximation errors
+into `measure_inter_le_sq_add_errors`. -/
 lemma odometer_sublevel_decoupling (_hGH : External.GreenBoundsHigh)
     (d : ℕ) (hd : 5 ≤ d) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c : ℝ, 0 < c ∧ ∀ ν : Measure ℝ, IsProbabilityMeasure ν →

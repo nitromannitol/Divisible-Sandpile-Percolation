@@ -1,23 +1,38 @@
-/-
-A uniform finite cover of a lattice box at the next smaller scale.
--/
 import Sandpile.Support.RealBoxes
+
+/-!
+# A uniform finite cover of a lattice box by coarse centers
+
+`coarseCenters x R` is a finite set of at most `259 ^ d` coarse centers spaced `R` apart that
+covers the lattice box of radius `128 * R` around `x` at resolution `R`: `exists_coarseCenter`
+shows every point of that box lies within `boxDist R` of some center, by dividing each coordinate
+of the displacement by `R` with remainder.
+-/
 
 namespace Sandpile
 
 variable {d : ℕ}
 
+/-- The point at coarse-lattice position `k` in the box of side `R` centered at `x`: `x` shifted by
+`R` times `k` in each coordinate. -/
 def coarseCenter (x : Site d) (R : ℕ) (k : Site d) : Site d :=
   fun i => x i + (R : ℤ) * k i
 
+/-- The finite set of coarse centers `coarseCenter x R k` for `k` ranging over the box
+`boxFinset 0 129` of side `259` centered at `0`. -/
 noncomputable def coarseCenters (x : Site d) (R : ℕ) : Finset (Site d) :=
   (boxFinset 0 129).image (coarseCenter x R)
 
+/-- `coarseCenters x R` has at most `259 ^ d` elements, the cardinality of `boxFinset 0 129`
+before the (possibly non-injective) image map `coarseCenter x R`. -/
 lemma card_coarseCenters_le (x : Site d) (R : ℕ) :
     (coarseCenters x R).card ≤ 259 ^ d := by
   refine Finset.card_image_le.trans_eq ?_
   rw [card_boxFinset]
 
+/-- Every point `y` within `boxDist` `128 * R` of `x` lies within `boxDist R` of some coarse
+center in `coarseCenters x R`, obtained by rounding each coordinate of `(y - x) / R` down to
+the nearest integer via `Int.mul_ediv_add_emod`. -/
 lemma exists_coarseCenter (x y : Site d) (R : ℕ) (hR : 1 ≤ R)
     (hy : boxDist y x ≤ 128 * R) :
     ∃ z ∈ coarseCenters x R, boxDist y z ≤ R := by

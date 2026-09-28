@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContRiemann
+import Sandpile.Support.ContMeshIntegral
+
+/-!
+# The Mesh Point and Riemann-Sum Convergence
+
 The mesh point of `ℝ^d` for the mesh `R^{-1}ℤ^d`, which is the space half of the
 Riemann-sum argument of `sandpile.tex:4724-4729`.
 
@@ -10,8 +15,6 @@ and the resulting convergence to the identity, which is what turns that double
 integral into the double integral of the Brownian heat kernel once the times are
 bounded away from zero and the kernel is uniformly continuous there.
 -/
-import Sandpile.Support.ContRiemann
-import Sandpile.Support.ContMeshIntegral
 
 open MeasureTheory Filter Topology
 
@@ -25,6 +28,8 @@ variable {d : ℕ}
 noncomputable def meshPoint (R : ℝ) (u : Space d) : Space d :=
   WithLp.toLp 2 (fun i : Fin d => ((⌊R * u i⌋ : ℤ) : ℝ) / R)
 
+/-- The `i`-th coordinate of the mesh point, unfolded from `meshPoint`'s
+definition as a `WithLp` term. -/
 theorem meshPoint_apply (R : ℝ) (u : Space d) (i : Fin d) :
     meshPoint R u i = ((⌊R * u i⌋ : ℤ) : ℝ) / R := rfl
 
@@ -102,7 +107,8 @@ theorem tendsto_integral2_meshPoint (φ : Space d → ℝ) (hint : Integrable φ
       Measurable P → Integrable (fun v : Space d => K x (P v) * φ v) := by
     intro x P hP
     refine hint.bdd_mul (c := C) ?_ (Filter.Eventually.of_forall fun v => ?_)
-    · exact ((hK.comp ((continuous_const.prodMk continuous_id))).measurable.comp hP).aestronglyMeasurable
+    · exact ((hK.comp ((continuous_const.prodMk continuous_id))).measurable.comp
+        hP).aestronglyMeasurable
     · simpa using hC x (P v)
   have hinnerbd : ∀ (x : Space d) (P : Space d → Space d), Measurable P →
       |∫ v : Space d, K x (P v) * φ v| ≤ C * ∫ v : Space d, |φ v| := by

@@ -1,9 +1,27 @@
 import Sandpile.Support.ExplFieldSemigroup
+
+/-!
+# `L²` bounds for the heat kernel and a single joint heat-noise version
+
+`memLp_heatKernelBM` records that the spatial heat kernel `heatKernelBM d s x` lies in
+`L²(ℝ^d)` for every positive time `s`, since its square is integrable by the semigroup
+identity `integrable_heatKernelBM_mul_space`. `exists_norm_heatKernelBM_toLp_le` bounds the
+`L²` norm of that kernel by a constant times `s^{-d/4}`, using the diagonal semigroup value
+`heatKernelBM d (s+s) x x` and the bound `heatKernelBM_diag_add_le`. `positiveHeatKernel_family`
+packages the kernel as a strongly measurable, jointly integrable family indexed by `(t,x)` for
+dimension at most three, so that `IsWhiteNoise.jointMeas_univ` can be applied to it; this is
+what `exists_joint_integrable_heat_noise` does, producing a single strongly measurable version
+`Y` of the white noise integrated against the heat kernel that is jointly integrable in time,
+space and the probability variable over every bounded time window and finite spatial measure.
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal RealInnerProductSpace
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- The spatial heat kernel `heatKernelBM d s x` lies in `L²(ℝ^d)` for every `s > 0`: its
+square is integrable by the heat-semigroup identity at the doubled time `s+s`. -/
 theorem memLp_heatKernelBM {d : ℕ} (hd : 1 ≤ d) {s : ℝ} (hs : 0 < s)
     (x : Space d) : MemLp (heatKernelBM d s x) 2 (volume : Measure (Space d)) := by
   have hm : AEStronglyMeasurable (heatKernelBM d s x) (volume : Measure (Space d)) := by
@@ -11,6 +29,11 @@ theorem memLp_heatKernelBM {d : ℕ} (hd : 1 ≤ d) {s : ℝ} (hs : 0 < s)
     exact h.aestronglyMeasurable
   rw [memLp_two_iff_integrable_sq hm]
   simpa only [pow_two] using integrable_heatKernelBM_mul_space hd hs hs x
+
+/-- The `L²` norm of the heat kernel `heatKernelBM d s x`, viewed as an `Lp` element, is
+bounded by a constant multiple of `s^{-d/4}`, uniformly in `s > 0` and the centre `x`; the
+constant comes from the diagonal semigroup bound `heatKernelBM_diag_add_le` on
+`heatKernelBM d (s+s) x x`, which computes the squared norm exactly. -/
 theorem exists_norm_heatKernelBM_toLp_le {d : ℕ} (hd : 1 ≤ d) :
     ∃ C : ℝ, 0 < C ∧ ∀ (s : ℝ) (hs : 0 < s) (x : Space d),
       ‖(memLp_heatKernelBM hd hs x).toLp (heatKernelBM d s x)‖ ≤
@@ -37,7 +60,8 @@ theorem exists_norm_heatKernelBM_toLp_le {d : ℕ} (hd : 1 ≤ d) :
   have hn : 0 ≤ Real.sqrt K * s ^ (-(d : ℝ) / 4) := by positivity
   change ‖f‖ ≤ _
   nlinarith [norm_nonneg f]
-/-- The positive-time heat kernel is an integrable family of spatial L2 indices below dimension four. -/
+/-- The positive-time heat kernel is an integrable family of spatial `L²` indices below
+dimension four. -/
 theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     ∃ hf : ∀ q : ℝ × Space d,
         MemLp (fun y => if 0 < q.1 then heatKernelBM d q.1 q.2 y else 0) 2 volume,
@@ -66,7 +90,8 @@ theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
   intro μ hμ T
   letI := hμ
   rcases le_or_gt T 0 with hT | hT
-  · simp only [Set.Ioo_eq_empty (not_lt.mpr hT), Measure.restrict_empty, Measure.zero_prod, integrable_zero_measure]
+  · simp only [Set.Ioo_eq_empty (not_lt.mpr hT), Measure.restrict_empty, Measure.zero_prod,
+      integrable_zero_measure]
   obtain ⟨C, hC, hbound⟩ := exists_norm_heatKernelBM_toLp_le hd
   have hp : (-1 : ℝ) < -(d : ℝ) / 4 := by
     have : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
@@ -89,7 +114,8 @@ theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     rw [h1, h2, if_pos hq]
   rw [he]
   exact hbound q.1 hq q.2
-/-- A single joint heat-noise version, integrable over bounded positive times and any finite measure of centres. -/
+/-- A single joint heat-noise version, integrable over bounded positive times and any finite
+measure of centres. -/
 theorem exists_joint_integrable_heat_noise {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P) :

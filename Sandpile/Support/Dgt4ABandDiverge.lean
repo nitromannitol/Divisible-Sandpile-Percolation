@@ -1,13 +1,16 @@
-/-
-The frozen mean level diverges, and the hitting index of the band exists.
-
-`b_n = E u_n(0) / G(0,0)` is the frozen mean level.  The crude lower bound on the
-mean odometer makes it diverge, so for every band scale the level eventually
-reaches the middle of the band, and the hitting index `τ_k` is well defined.
--/
 import Sandpile.Support.Dgt4MeanDiv
 import Sandpile.Support.Dgt4ABandTau
 import Sandpile.Support.Dgt4ABandParameters
+
+/-!
+# Divergence of the Frozen Mean Level
+
+The frozen mean level diverges, and the hitting index of the band exists.
+
+`b_n = E u_n(0) / G(0,0)` is the frozen mean level. The crude lower bound on the
+mean odometer makes it diverge, so for every band scale the level eventually
+reaches the middle of the band, and the hitting index `τ_k` is well defined.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal

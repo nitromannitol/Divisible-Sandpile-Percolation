@@ -1,4 +1,8 @@
-/-
+import Sandpile.Basic
+import Sandpile.External.ExteriorBoundaryConnected
+
+/-! # Blocking-to-Crossing Lemma
+
 Blocking-to-crossing lemma of sandpile.tex, frozen.  `sandpile.tex:6662-6669`
 (label `lem:dgt4-blocking-to-crossing`):
 
@@ -26,8 +30,6 @@ The `∗`-connected set is required to be `Connected` as an induced subgraph of
 the `∗`-lattice, which forces it to be nonempty, and "meeting" is
 `Set.Nonempty` of the intersection.
 -/
-import Sandpile.Basic
-import Sandpile.External.ExteriorBoundaryConnected
 
 namespace Sandpile.Frozen.DGT4BlockingToCrossing
 
@@ -94,7 +96,8 @@ theorem Sandpile.Frozen.dgt4_blocking_to_crossing
       simpa [Sandpile.axisSite_zero] using (Sandpile.axisSite_adj i (-1)).symm)
   have hD : D.Finite := Set.not_infinite.mp hblocked
   have hDc : ((Sandpile.starLatticeGraph d).induce D).Connected :=
-    (Sandpile.componentIn_connected O 0 h0).mono (fun _ _ h => Sandpile.lattice_le_starLatticeGraph d h)
+    (Sandpile.componentIn_connected O 0 h0).mono
+      (fun _ _ h => Sandpile.lattice_le_starLatticeGraph d h)
   obtain ⟨a, b, ha, hb, hpa, hpb⟩ := Sandpile.exists_exterior_axis_points i D hD hp hm
   obtain ⟨n, x, hx, T, hTΓ, hTbox, hTc, ⟨u, huT, hu⟩, ⟨v, hvT, hv⟩⟩ :=
     Sandpile.exists_crossing_of_finite_boundary (Sandpile.exteriorVertexBoundary D)

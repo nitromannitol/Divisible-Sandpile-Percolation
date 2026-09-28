@@ -1,14 +1,28 @@
-/-
-A uniform mean lower bound and polynomial lower tails for Gaussian square crossings.
--/
 import Sandpile.Support.RectangleDuality
 import Sandpile.Support.GaussianSquareSymmetry
+
+/-!
+# A uniform mean lower bound and polynomial lower tails for Gaussian square crossings
+
+`exists_gaussian_square_mean_lower_bound` bounds the mean of the crossing value of a cutoff
+kernel field over a square uniformly below by `-C√(log r)`, for every variance `v` in a
+bounded range, combining an increment bound with the elementary comparison of the crossing
+value to a horizontal-plus-vertical decomposition (`integrable_vertical_gaussian_far_neg`
+supplies the needed integrability of the vertical part). `exists_gaussian_square_lower_tail`
+then upgrades this mean bound, together with a Gaussian concentration inequality, to a
+polynomial lower tail `r ^ (-(c * a ^ 2))` for the event that the crossing value falls below
+`-a log r`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped NNReal
 noncomputable section
 namespace Sandpile
 
+/-- The vertical crossing value of the negated cutoff kernel field
+`-finiteKernelField (BallGreen.cutField r L φ) ζ` is integrable under the iid Gaussian law
+`iidLaw 4 (gaussianReal 0 v)`, transported from `integrable_gaussian_far_crossing` along the
+measure-preserving negation of the Gaussian coordinates. -/
 lemma integrable_vertical_gaussian_far_neg (r L w h : ℕ)
     (hN : 2 ≤ (planeRectangle h w).card) (φ : ℝ → ℝ) (x : Site 4) (v : ℝ≥0) :
     Integrable (fun ζ : Site 4 → ℝ => verticalCrossingValue w h (fun z =>
@@ -19,6 +33,10 @@ lemma integrable_vertical_gaussian_far_neg (r L w h : ℕ)
   have hh := (measurePreserving_iid_gaussian_neg 4 v).integrable_comp_of_integrable hi
   simpa only [Function.comp_def, finiteKernelField_neg, verticalCrossingValue] using hh
 
+/-- A uniform lower bound `∫ crossingValue ≥ -C√(log r)` on the mean of the crossing value of
+the cutoff kernel field over the square `planeRectangle s s`, for every variance `v ≤ V`,
+derived from the increment bound `exists_gaussian_rectangle_increment_bound` and the pointwise
+comparison of the crossing value to a horizontal-plus-vertical decomposition. -/
 lemma exists_gaussian_square_mean_lower_bound (hBall : External.BallGreenBounds) (V : ℝ≥0) :
     ∃ C > 0, ∀ r L s : ℕ, 2 ≤ r → 2 ≤ L → 1 ≤ s → (planeRectangle s s).card ≤ r ^ 3 →
       ∀ φ : ℝ → ℝ, External.BallGreen.IsCutoff φ → ∀ x : Site 4, ∀ v : ℝ≥0, v ≤ V →
@@ -39,12 +57,17 @@ lemma exists_gaussian_square_mean_lower_bound (hBall : External.BallGreenBounds)
     (fun z : planeRectangle s s => planeTranslate x z) v
   have hiV := integrable_vertical_gaussian_far_neg r L s s hN φ x v
   obtain ⟨hiO, hO⟩ := hinc (planeRectangle s s) r L hr hL hcard φ hφ x v hv
-  have hmean := integral_mono hiO.neg (hiH.add hiV) (fun ζ => crossingValue_add_vertical_neg_ge s s (F ζ))
+  have hmean := integral_mono hiO.neg (hiH.add hiV)
+    (fun ζ => crossingValue_add_vertical_neg_ge s s (F ζ))
   simp only [Pi.neg_apply, Pi.add_apply] at hmean
   rw [integral_neg, integral_add hiH hiV, integral_vertical_gaussian_far_eq_horizontal] at hmean
   have hnonneg : 0 ≤ C * Real.sqrt (Real.log r) := mul_nonneg hC.le (Real.sqrt_nonneg _)
   linarith
 
+/-- A polynomial lower tail: for every `a > 0` there is `r₀` beyond which the crossing value of
+the cutoff kernel field over the square is at most `-a log r` with probability at most
+`r ^ (-(c * a ^ 2))`, uniformly over variances `v ≤ V`, combining the mean lower bound
+`exists_gaussian_square_mean_lower_bound` with Gaussian concentration. -/
 lemma exists_gaussian_square_lower_tail (hBall : External.BallGreenBounds)
     (V : ℝ≥0) (hV : 0 < V) :
     ∃ c > 0, ∀ a : ℝ, 0 < a → ∃ r₀ : ℕ, ∀ r L s : ℕ, r₀ ≤ r → 2 ≤ L → 1 ≤ s →

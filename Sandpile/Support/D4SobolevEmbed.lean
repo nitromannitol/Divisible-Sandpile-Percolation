@@ -1,9 +1,13 @@
-/-
+import Sandpile.Support.TightNegSobolev
+
+/-!
+# The `L²(D) ↪ H^{-s}(D)` Embedding
+
 The embedding `L²(D) ↪ H^{-s}(D)` for `s ≥ 0`, in the dual form the negative
 Sobolev norm reads.
 
 `negSobolevNorm d s D F` is the supremum of `|F φ|` over test functions
-supported in `D` with `sobolevNormSq d s φ ≤ 1`.  Step 3 of
+supported in `D` with `sobolevNormSq d s φ ≤ 1`. Step 3 of
 `prop:d4-superdiffusive-limit` (`sandpile.tex:3399-3420`) ends by passing from an
 `L²(D)` bound on a field to an `H^{-s}(D)` bound on the functional it defines.
 What makes that work is that for `s ≥ 0` the weight `(1 + (2π|ξ|)²)^s` is at
@@ -11,7 +15,6 @@ least one, so the `H^s` unit ball is contained in the `L²` unit ball and the
 supremum defining the `H^{-s}(D)` norm is taken over a smaller set of test
 functions than the one defining the `L²(D)` norm of the same functional.
 -/
-import Sandpile.Support.TightNegSobolev
 
 open MeasureTheory Filter Topology
 open scoped NNReal ENNReal FourierTransform

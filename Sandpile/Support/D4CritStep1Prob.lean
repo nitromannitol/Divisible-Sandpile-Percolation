@@ -1,13 +1,15 @@
-/-
-Step 1 of the dimension-four percolation proof in probability
-(`sandpile.tex:4001-4026`): once the mean of the localized exit value is at
-least `2 b₀ log r`, the concentration of `lem:d4-exit-average-concentration`
-makes the event that `Y_r(z)` falls below `b₀ log r` exponentially unlikely,
-uniformly in the site.
--/
 import Sandpile.Frozen.D4ExitAverageConcentration
 import Sandpile.Frozen.D4FiniteRangeLowerBound
 import Sandpile.Support.D4CritCube
+
+/-!
+# Step 1 of the dimension-four proof in probability
+
+Step 1 of the dimension-four percolation proof in probability (`sandpile.tex:4001-4026`): once
+the mean of the localized exit value is at least `2 b₀ log r`, the concentration of
+`lem:d4-exit-average-concentration` makes the event that `Y_r(z)` falls below `b₀ log r`
+exponentially unlikely, uniformly in the site.
+-/
 
 open MeasureTheory
 

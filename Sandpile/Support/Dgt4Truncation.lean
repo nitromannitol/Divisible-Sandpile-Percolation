@@ -1,19 +1,22 @@
-/-
+import Sandpile.Support.Dgt4LargeSites
+
+/-!
+# Truncation replacing the Step 1 conditioning
+
 The truncation that replaces the conditioning of Step 1 of case (b)
 (`sandpile.tex:5361-5371`).
 
 On `\{A_n=\varnothing\}` every weighted contribution `-G(0,z)\zeta(z)/G(0,0)` is at most the
 level `\eta_n\E Pw_n(0)`, and the paper reads the deviation estimate off the conditional law
-of the scenery there.  That conditional law is a product of conditioned marginals, and the
+of the scenery there. That conditional law is a product of conditioned marginals, and the
 conditioned field is exactly the field truncated from below at the level: raising a scenery
 value that falls below `-t/c_z` to that level changes nothing on the event, while off the
-event it only raises the field.  Since `Pw_n(0)` is nondecreasing in the scenery
+event it only raises the field. Since `Pw_n(0)` is nondecreasing in the scenery
 (`sandpile.tex:5371`) and reads only the box away from the origin, the conditional statement
-becomes an UNCONDITIONED deviation estimate for the truncated field, whose coordinates are
-independent and whose contributions lie in a bounded interval.  That is the form in which
+becomes an unconditioned deviation estimate for the truncated field, whose coordinates are
+independent and whose contributions lie in a bounded interval. That is the form in which
 Freedman's inequality is to be applied.
 -/
-import Sandpile.Support.Dgt4LargeSites
 
 open scoped Classical ENNReal
 open MeasureTheory ProbabilityTheory Filter Topology Set
@@ -327,6 +330,8 @@ the origin. -/
 noncomputable def greenRatioWeight (d : ℕ) : Sandpile.Site d → ℝ :=
   fun z => Sandpile.green d 0 z / Sandpile.green d 0 0
 
+/-- The site weight `greenRatioWeight d z` is nonnegative, since it equals the probability
+that the walk from `z` hits the origin. -/
 theorem greenRatioWeight_nonneg (hd : 5 ≤ d) (z : Sandpile.Site d) :
     0 ≤ greenRatioWeight d z := by
   rw [greenRatioWeight, greenRatio_eq_hitProb (by omega) z]
@@ -342,6 +347,9 @@ noncomputable def truncPairAverage (d : ℕ) (ν : Measure ℝ) (K : ℝ) (n : �
   Sandpile.avg (pairOdometer z₀
     (truncScenery (greenRatioWeight d) (originLevel d ν K n) ζ) n) 0
 
+/-- `truncPairAverage d ν K n z₀` is measurable in the scenery, as the composition of the
+measurable neighbour average `measurable_avg_localizedOdometer` with the measurable
+truncation `measurable_truncScenery`. -/
 theorem measurable_truncPairAverage (hd : 1 ≤ d) (ν : Measure ℝ) (K : ℝ) (n : ℕ)
     (z₀ : Sandpile.Site d) : Measurable (truncPairAverage d ν K n z₀) :=
   (measurable_avg_localizedOdometer hd _ n).comp
@@ -421,6 +429,12 @@ def TruncatedOriginDeviation (d : ℕ) (ν : Measure ℝ) (K β : ℝ) : Prop :=
         {ζ | truncPairAverage d ν K n z₀ ζ ≤ meanOriginAverage d ν n / 6}
       ≤ ENNReal.ofReal (meanOriginAverage d ν n ^ (-β))
 
+/-- **`SmallOriginNeighborAverage` from the truncated deviation estimate.** Given the
+per-configuration bounds `TruncatedOriginDeviation` on the empty-`A_n` event and on each
+singleton `A_n = {z₀}` event, this sums the singleton bounds over the box with a union bound
+(`measure_inter_card_le_one_le_add`), using the summable `p`-th moment weights
+`greenRatioWeight` to keep that sum at most `1`, and concludes the deterministic-level form of
+`eq:dgt4-small-origin-neighbor-average` that Step 1 needs. -/
 theorem smallOriginNeighborAverage_of_truncated
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]

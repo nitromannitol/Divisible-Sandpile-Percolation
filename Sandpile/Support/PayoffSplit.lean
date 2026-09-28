@@ -1,4 +1,17 @@
 import Mathlib
+
+/-!
+# Splitting an expectation across an exit event
+
+Elementary integration lemmas used in the future-height lower bound. `payoff_split` shows that
+if a payoff `E` is at least `m` on a measurable, finite-measure event `A`, then the integral of
+`E` over `A` is at least `m * (μ A).toReal`, by comparing `E` on `A` to the constant indicator
+`m • 𝟙_A`. `infinite_measure_trivial` handles the complementary case `μ A = ∞`, where the bound
+is trivial since `(μ A).toReal = 0` and `E` is assumed nonnegative on `A`. `exit_tail_half`
+is a purely numerical estimate: once `r` clears the threshold `log 2 + log C ≤ c r²`, the tail
+quantity `C * exp (-(c r²))` is at most `1/2`.
+-/
+
 open MeasureTheory
 open scoped ENNReal
 

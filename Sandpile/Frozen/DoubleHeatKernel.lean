@@ -1,6 +1,11 @@
-/-
-Lemma on the doubled heat kernel in dimension four of sandpile.tex, frozen.
-`sandpile.tex:1164-1169` (label `lem:d4-double-heat-kernel`):
+import Sandpile.Support.DoubleHeatKernel
+import Sandpile.External.LocalCLT
+
+/-!
+# The frozen doubled heat-kernel lemma in dimension four
+
+This module states and proves the doubled heat kernel lemma of `sandpile.tex:1164-1169`
+(label `lem:d4-double-heat-kernel`):
 
   "Uniformly for $t\geq2$ and $x,y\in\Z^4$ with $|x-y|^2\leq t$,
    \[
@@ -24,8 +29,6 @@ this repository (`Sandpile.External.localCLT`).
 The threshold `2 ≤ t` and the constraint `sqDist x y ≤ t` keep the argument of
 `Real.log` strictly positive, so the logarithm never takes its junk value at `0`.
 -/
-import Sandpile.Support.DoubleHeatKernel
-import Sandpile.External.LocalCLT
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

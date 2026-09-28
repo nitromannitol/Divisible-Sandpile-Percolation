@@ -1,4 +1,7 @@
-/-
+import Sandpile.Walk
+
+/-! # Optimal-Stopping Representation of the Odometer
+
 External input: the optimal-stopping representation of the divisible sandpile
 odometer, Theorem 3.2 of the work cited as `BPSH` in `sandpile.tex`, as the
 paper restates it in `thm:RW` (`sandpile.tex:857-863`):
@@ -15,7 +18,6 @@ the paper's arbitrary initial configuration `σ` through `ζ = (σ - 1)/(2d)`.
 The dimension carries `1 ≤ d`, since at `d = 0` the averaging operator behind
 `odometerOf` is a junk zero.
 -/
-import Sandpile.Walk
 
 open MeasureTheory
 

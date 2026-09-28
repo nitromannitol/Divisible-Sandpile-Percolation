@@ -1,26 +1,26 @@
-/-
-Theorem 1.3(i)(a) of `sandpile.tex` (`sandpile.tex:206-217`) from
-`cor:dlt4-mean-asymptotic` (`sandpile.tex:2034-2052`), which the proof of
-`thm:main-explosion` names at `sandpile.tex:299`: "Part (i)(a) is
-Corollary~\ref{cor:dlt4-mean-asymptotic}".
-
-The corollary ends with `E u_t(0) ∼ E𝒰(1,0) t^{(4-d)/4}`, and
-`prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`) supplies
-`0 < E𝒰(1,0)^p < ∞` for every `p > 0`, hence at `p = 1` the positivity of the
-constant.  Part (i)(a) asks for a limit of `t^{-(4-d)/4} E u_t(0)` in `(0,∞)`,
-which is exactly those two facts with `L = E𝒰(1,0)`:
-`Sandpile.Support.exists_growth_limit_of_ratio` is that step.
-
-Both inputs are stated for an arbitrary space carrying white noise and an
-arbitrary space carrying the family of Brownian motions, so the assembly
-instantiates them at the spaces built by `Sandpile.Continuum.exists_isWhiteNoise`
-and `Sandpile.Continuum.exists_isBrownian`.  The constant `L` is then
-`∫ 𝒰(1,0) dP_W` on those spaces.
--/
 import Sandpile.Support.ContMeanGrowth
 import Sandpile.Support.MeanAValue
 import Sandpile.Continuum.WhiteNoiseExists
 import Sandpile.Continuum.BrownianExists
+
+/-!
+# Theorem 1.3(i)(a): the mean growth rate from the mean asymptotic
+
+Theorem 1.3(i)(a) of `sandpile.tex` (`sandpile.tex:206-217`) from `cor:dlt4-mean-asymptotic`
+(`sandpile.tex:2034-2052`), which the proof of `thm:main-explosion` names at `sandpile.tex:299`:
+"Part (i)(a) is Corollary~\ref{cor:dlt4-mean-asymptotic}".
+
+The corollary ends with `E u_t(0) ∼ E𝒰(1,0) t^{(4-d)/4}`, and `prop:continuum-value-selfsimilar`
+(`sandpile.tex:1961-1980`) supplies `0 < E𝒰(1,0)^p < ∞` for every `p > 0`, hence at `p = 1` the
+positivity of the constant. Part (i)(a) asks for a limit of `t^{-(4-d)/4} E u_t(0)` in `(0,∞)`,
+which is exactly those two facts with `L = E𝒰(1,0)`: `Sandpile.Support.exists_growth_limit_of_ratio`
+is that step.
+
+Both inputs are stated for an arbitrary space carrying white noise and an arbitrary space carrying
+the family of Brownian motions, so the assembly instantiates them at the spaces built by
+`Sandpile.Continuum.exists_isWhiteNoise` and `Sandpile.Continuum.exists_isBrownian`. The constant
+`L` is then `∫ 𝒰(1,0) dP_W` on those spaces.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

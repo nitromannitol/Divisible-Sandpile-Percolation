@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.ContManyLimits
+
+/-! # Assembling the many-limits theorem
+
 The assembly of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`).
 
 The paper's proof (`sandpile.tex:5930-...`) has three steps.  Step 1 constructs
@@ -19,7 +22,6 @@ The theorem below is the whole node with the scenery existentially quantified:
 it discharges the scenery from `exists_scenery_law`, so the node follows by this
 one application the moment the Step-3 subsequential convergence is available.
 -/
-import Sandpile.Support.ContManyLimits
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

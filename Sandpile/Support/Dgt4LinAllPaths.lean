@@ -1,16 +1,19 @@
-/-
+import Sandpile.Support.Dgt4CaseSelect
+import Sandpile.Support.LinSurvivalInputs
+
+/-!
+# The covariance hypothesis of the linearization, for all pairs of paths
+
 The covariance hypothesis of `lem:dgt4-linearization-from-survival` at the time
 weights of `prop:dgt4-linearization`, for all pairs of paths.
 
 `Support/Dgt4Assembly.lean` supplies it through the sealed
 `lem:dgt4-path-survival`, which states it for nearest-neighbour paths, as the
-paper does.  Step 1 of the linearization integrates the two paths against the
+paper does. Step 1 of the linearization integrates the two paths against the
 law of two independent walks, where the nearest-neighbour property holds only
 almost surely; the underlying estimate of `Support/LinStep3Core.lean` does not
 use it, so the bound is restated here without it.
 -/
-import Sandpile.Support.Dgt4CaseSelect
-import Sandpile.Support.LinSurvivalInputs
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

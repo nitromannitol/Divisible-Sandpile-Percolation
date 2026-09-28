@@ -1,17 +1,23 @@
-/-
-Translation of the top-bottom crossing of the coarse block at `z + e₀`
-into the right half of the wide rectangle anchored at `z`: the square at
-`z + e₀` is the right half of the wide `4r × 2r` rectangle at `z`, so a
-bottom-top walk of the square becomes a bottom-top walk of the wide
-rectangle whose sites all lie in the right half.
--/
 import Sandpile.Support.BlockVerticalWalk
 import Sandpile.Support.BlockGeometry
+
+/-!
+# Square-block crossings translate to wide-rectangle crossings
+
+Translation of the top-bottom crossing of the coarse block at `z + e₀` into the right half of
+the wide rectangle anchored at `z`: the square at `z + e₀` is the right half of the wide
+`4r × 2r` rectangle at `z`, so a bottom-top walk of the square becomes a bottom-top walk of the
+wide rectangle whose sites all lie in the right half.
+-/
 
 open scoped NNReal
 noncomputable section
 namespace Sandpile
 
+/-- Given a top-bottom `ℓ`-good crossing of the coarse block at `z + e₀`, translating it by
+`(2r, 0)` produces a bottom-top walk in the wide `(4r) × (2r)` rectangle at `z` that stays
+`ℓ`-good and whose sites all have horizontal coordinate at least `2r`, i.e. lie in the right
+half of the wide rectangle. -/
 theorem tb_square_to_wide {r : ℕ} (_hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
     (h2 : BlockGood r F ℓ (z + ![(1 : ℤ), (0 : ℤ)])) :
     ∃ (c d : planeRectangle (2 * r + 2 * r) (2 * r))

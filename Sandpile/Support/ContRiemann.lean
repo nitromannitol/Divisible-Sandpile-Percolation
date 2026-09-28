@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.ContWeightedLimit
+
+/-!
+# The Riemann-Sum Form of the Coefficient Sum of Squares
+
 The sum of squares of the coefficients of `prop:weighted-membrane-limit`
 (`sandpile.tex:4717-4731`) written out as a double space sum against a double
 time sum, and the crude bound on the contribution of a block of times.
@@ -26,7 +30,6 @@ which at `A = {(a,b) : a+b < δR^2}`, where `|A| ≤ δ^2R^4`, is
 the cell bound `|m_R(x)| ≤ ‖φ‖_∞ R^{-d}` and the disjointness of the cells are
 used, so the estimate holds in every dimension and needs no kernel asymptotic.
 -/
-import Sandpile.Support.ContWeightedLimit
 
 open MeasureTheory Filter Topology
 
@@ -202,6 +205,8 @@ theorem sum_abs_cellMass_le (R : ℝ) (φ : Space d → ℝ) (hφ : Integrable �
         MeasureTheory.setIntegral_le_integral habs
           (Filter.Eventually.of_forall fun z => abs_nonneg (φ z))
 
+/-- The number of pairs `(a, b) ∈ range N × range N` with `a + b < M` is at most
+`M * M`, since that set embeds into the rectangle `range M × range M`. -/
 theorem card_time_block_le (N M : ℕ) :
     (((Finset.range N) ×ˢ (Finset.range N)).filter (fun p : ℕ × ℕ => p.1 + p.2 < M)).card
       ≤ M * M := by
@@ -216,6 +221,11 @@ theorem card_time_block_le (N M : ℕ) :
       ≤ ((Finset.range M) ×ˢ (Finset.range M)).card := Finset.card_le_card hsub
     _ = M * M := by simp
 
+/-- **The crude bound on a block of scaled times, specialized to the actual
+coefficients.**  Applying `abs_time_double_le` to the cell-mass weight
+`cellMass R φ` and the scaled time weight `q(·/R²)` bounds the contribution of
+any block `A` of time pairs by `|A| * Q² * C * ‖φ‖₁ * R^{-4}`, via the cell bound
+`abs_cellMass_le` and the `L¹` mass bound `sum_abs_cellMass_le`. -/
 theorem abs_scaled_time_block_le (hd : 1 ≤ d) {R : ℝ} (hR : 0 < R) (L : ℝ)
     (q : ℝ → ℝ) (Q : ℝ) (hQ : ∀ r : ℝ, |q r| ≤ Q) (hQ0 : 0 ≤ Q)
     (φ : Space d → ℝ) (hφ : Integrable φ) (C : ℝ) (hC : ∀ z, |φ z| ≤ C)

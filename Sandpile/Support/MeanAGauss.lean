@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.ContWhiteNoise
+import Sandpile.Support.MeanAIncrement
+
+/-!
+# Absolute moments of the Gaussian heat potential's increments
+
 The absolute moments of the increments of the Gaussian heat potential
 `eq:dlt4-linear-gaussian-potential`.
 
@@ -10,8 +15,6 @@ standard deviation to that power, because the standard Gaussian pushed forward
 by a dilation is the Gaussian of the dilated variance.  Together with the Hölder
 bound on the `L²` increment this is the Kolmogorov condition of the potential.
 -/
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.MeanAIncrement
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -25,6 +28,7 @@ variable {d : ℕ}
 /-- The absolute `p`-th moment of the standard Gaussian. -/
 noncomputable def gaussAbsMoment (p : ℝ) : ℝ := ∫ x : ℝ, |x| ^ p ∂(gaussianReal 0 1)
 
+/-- `gaussAbsMoment` is nonnegative, being an integral of an absolute-value power. -/
 theorem gaussAbsMoment_nonneg (p : ℝ) : 0 ≤ gaussAbsMoment p :=
   integral_nonneg fun x => Real.rpow_nonneg (abs_nonneg x) p
 

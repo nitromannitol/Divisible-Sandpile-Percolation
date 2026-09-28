@@ -1,7 +1,17 @@
-/- Tested L² linearization along the scale sequences of the many-limits construction. -/
 import Sandpile.Support.LinJacobianFirstConjunct
 import Sandpile.Support.Dgt4APathSurvivalSequence
 import Sandpile.Support.Dgt4ABandSequence
+
+/-! # Tested Linearization Along Scale Sequences
+
+Tested `L²` linearization along the scale sequences of the many-limits construction.
+`dgt4_tested_linearization_sequence` transports the tested linearization estimate
+`tendsto_l2_frozen_pairing` from a continuous scale parameter to any strictly increasing
+sequence of scales tending to infinity, so survival and pairwise-covariance control need only
+hold along that sequence rather than uniformly in the scale.
+`dgt4_tested_linearization_of_thresholds_sequence` then derives such sequence-indexed
+hypotheses from independent contact thresholds, with the scenery weight `(1 - j/(R²T))^κ`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum
@@ -22,7 +32,8 @@ theorem dgt4_tested_linearization_sequence [NeZero d] (hd : 5 ≤ d)
     (T : ℝ) (hT : 0 < T) (q : ℕ → ℕ → ℝ) (C : ℝ)
     (hsurv : Tendsto (fun k : ℕ => ((Rseq k) ^ 2)⁻¹ *
         ∑ j ∈ Finset.range ⌊(Rseq k) ^ 2 * T⌋₊,
-          ∫ X, |(∫ σ, survivalInd σ ⌊(Rseq k) ^ 2 * T⌋₊ j X ∂(Sandpile.centeredMassLaw d ν)) - q k j|
+          ∫ X, |(∫ σ, survivalInd σ ⌊(Rseq k) ^ 2 * T⌋₊ j X
+              ∂(Sandpile.centeredMassLaw d ν)) - q k j|
             ∂(walkLaw d 0)) atTop (𝓝 0))
     (hcov : ∀ δ : ℝ, δ ∈ Set.Ioo 0 T →
       ∃ εfun : ℕ → ℝ, (∀ k : ℕ, 0 ≤ εfun k) ∧ Tendsto εfun atTop (𝓝 0) ∧
@@ -107,7 +118,8 @@ theorem dgt4_tested_linearization_sequence [NeZero d] (hd : 5 ≤ d)
         rw [hext]
         refine (hε k i j hi hj X Y hX hY).trans ?_
         exact add_le_add
-          (mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right (le_max_left C 0) hden) hsum) le_rfl
+          (mul_le_mul_of_nonneg_right
+            (div_le_div_of_nonneg_right (le_max_left C 0) hden) hsum) le_rfl
       · have hone := abs_cov_survival_le_one ν ⌊R ^ 2 * T⌋₊ i j X Y
         change |_ - _ * _| ≤ _ at hone
         refine hone.trans ?_

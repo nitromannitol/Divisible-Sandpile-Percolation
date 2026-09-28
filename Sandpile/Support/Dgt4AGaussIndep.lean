@@ -1,4 +1,6 @@
-/-
+import LatticeProb.Gauss.IsonormalSum
+
+/-!
 Independence in the isonormal picture of `Support/LinGaussIso.lean`: two isonormal images
 are independent as soon as their coefficient families are orthogonal, and a finite
 orthogonal family of coefficients gives a jointly independent family of images.
@@ -14,7 +16,6 @@ covariance is the Gram matrix of the coefficient families (`map_gaussIso_vector`
 with the theorem that jointly Gaussian and uncorrelated implies independent; the covariance
 is the inner product because the isonormal map is an isometry.
 -/
-import LatticeProb.Gauss.IsonormalSum
 
 open LatticeProb.Isonormal
 
@@ -25,6 +26,9 @@ namespace Sandpile
 
 variable {ι : Type*} [Countable ι]
 
+/-- The pair `(gaussIso f, gaussIso g)` of isonormal images is jointly Gaussian: it is the
+image of the Gaussian `EuclideanSpace ℝ (Fin 2)`-valued vector `gaussIso ![f, g]` under the
+continuous linear coordinate-projection map. -/
 theorem hasGaussianLaw_gaussIso_pair (f g : lp (fun _ : ι => ℝ) 2) :
     HasGaussianLaw (fun ω => ((⇑(LatticeProb.gaussIso f) ω, ⇑(LatticeProb.gaussIso g) ω) : ℝ × ℝ))
       (LatticeProb.gaussLaw ι) := by
@@ -67,6 +71,9 @@ theorem indepFun_gaussIso (f g : lp (fun _ : ι => ℝ) 2) (h : (inner ℝ f g :
   rw [covariance_gaussIso f g]
   exact h
 
+/-- A finite family `gs : Fin m → lp (fun _ : ι => ℝ) 2` of coefficient vectors produces a
+jointly Gaussian family of isonormal images `fun i => gaussIso (gs i)`, obtained as a
+coordinate-continuous-linear-equivalence image of the vector `gaussIso gs`. -/
 theorem hasGaussianLaw_gaussIso_pi {m : ℕ} (gs : Fin m → lp (fun _ : ι => ℝ) 2) :
     HasGaussianLaw (fun ω (i : Fin m) => ⇑(LatticeProb.gaussIso (gs i)) ω)
       (LatticeProb.gaussLaw ι) := by
@@ -80,6 +87,10 @@ theorem hasGaussianLaw_gaussIso_pi {m : ℕ} (gs : Fin m → lp (fun _ : ι => �
     ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin m => ℝ)).toContinuousLinearMap) hvec
     (by fun_prop)
 
+/-- **Pairwise orthogonal coefficient families give a jointly independent family of isonormal
+images.** Combines `hasGaussianLaw_gaussIso_pi` with the fact that a jointly Gaussian family
+is independent as soon as its pairwise covariances, computed via `covariance_gaussIso`,
+vanish. -/
 theorem iIndepFun_gaussIso {m : ℕ} (gs : Fin m → lp (fun _ : ι => ℝ) 2)
     (h : ∀ i j : Fin m, i ≠ j → (inner ℝ (gs i) (gs j) : ℝ) = 0) :
     ProbabilityTheory.iIndepFun (fun i => ⇑(LatticeProb.gaussIso (gs i)))

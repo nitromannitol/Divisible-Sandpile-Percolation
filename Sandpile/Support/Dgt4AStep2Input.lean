@@ -1,22 +1,21 @@
-/-
-Step 2 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:6051-6275`), named.
+import Sandpile.Support.Dgt4AStep2Output
 
-The paper's Step 2 proves the two band limits
-`eq:dgt4-band-contact-rate` and `eq:dgt4-band-contact-comparison` uniformly over
-`δ R_k^2 ≤ n ≤ T R_k^2`, at the exponent `κ_k = 1 + 1/ϑ_k` of the constructed
-scenery.  Those exponents move with the scale, so Step 3
-(`sandpile.tex:6275-6305`) fixes `κ ∈ [3/2,2]`, extracts `k_ℓ ↑ ∞` with
-`κ_{k_ℓ} → κ`, and reads the two limits along `R_{k_ℓ}`; the uniform
-contact-threshold estimate `eq:dgt4-uniform-contact-thresholds` is what
+/-!
+# The Step-2 output of `thm:dgt4-many-limits`, named
+
+Step 2 of the proof of `thm:dgt4-many-limits` (`sandpile.tex:6051-6275`), named. The paper's Step 2
+proves the two band limits `eq:dgt4-band-contact-rate` and `eq:dgt4-band-contact-comparison`
+uniformly over `δ R_k^2 ≤ n ≤ T R_k^2`, at the exponent `κ_k = 1 + 1/ϑ_k` of the constructed
+scenery. Those exponents move with the scale, so Step 3 (`sandpile.tex:6275-6305`) fixes
+`κ ∈ [3/2,2]`, extracts `k_ℓ ↑ ∞` with `κ_{k_ℓ} → κ`, and reads the two limits along `R_{k_ℓ}`; the
+uniform contact-threshold estimate `eq:dgt4-uniform-contact-thresholds` is what
 `lem:dgt4-path-survival` assumes.
 
-`Dgt4AStep2Input d ν` is that output in the form the frozen Step-3 chain
-consumes: one sequence of scales `R_k ↑ ∞` together with, for every
-`κ ∈ [3/2,2]` and every horizon `T > 0`, the uniform contact-threshold estimate
-along those scales.  The extraction of `k_ℓ` is what supplies, for each `κ`, an
-exponent sequence converging to it.
+`Dgt4AStep2Input d ν` is that output in the form the frozen Step-3 chain consumes: one sequence of
+scales `R_k ↑ ∞` together with, for every `κ ∈ [3/2,2]` and every horizon `T > 0`, the uniform
+contact-threshold estimate along those scales. The extraction of `k_ℓ` is what supplies, for each
+`κ`, an exponent sequence converging to it.
 -/
-import Sandpile.Support.Dgt4AStep2Output
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

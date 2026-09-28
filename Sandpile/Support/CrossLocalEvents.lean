@@ -1,12 +1,19 @@
-/-
-Countable representatives of closed superlevel crossings, measurable from the
-field restricted to the rectangle. This local measurability is needed for the
-independence of the separated annuli in the fixed-scale crossing proof.
--/
 import Sandpile.Support.CrossZeroLimit
 import Sandpile.Support.CrossCircuit
 import Sandpile.Support.CrossArmIndep
 import Sandpile.Support.CrossArmDecay
+
+/-!
+# Local measurability of closed superlevel crossing events
+
+This file gives countable representatives `closedCrossEvent` of closed superlevel crossings,
+built as a countable intersection of the finite chain events `crossApprox`, and shows they are
+measurable from the field restricted to the crossing rectangle alone and agree almost everywhere
+with the actual geometric crossing event `Crosses`. This local measurability is what lets the
+four-crossing events attached to separated rectangles be shown independent, which is combined
+with the FKG-type product bound on a single rectangle to bound the probability of avoiding a
+crossing in every one of `n` separated regions.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal
@@ -37,12 +44,17 @@ noncomputable def closedCrossEvent {Ω : Type*} [MeasurableSpace Ω]
     (X : Space 2 → Ω → ℝ) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) : Set Ω :=
   ⋂ n : ℕ, crossApprox X a b i (l - 1 / ((n : ℝ) + 1))
 
+/-- `closedCrossEvent` is measurable as soon as `X` is measurable on the rectangle `rectSet a b`,
+being a countable intersection of the local `crossApprox` events. -/
 theorem measurableSet_closedCrossEvent_local {Ω : Type*} [MeasurableSpace Ω]
     (X : Space 2 → Ω → ℝ) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ)
     (hm : ∀ x ∈ rectSet a b, Measurable (X x)) :
     MeasurableSet (closedCrossEvent X a b i l) :=
   MeasurableSet.iInter fun _ => measurableSet_crossApprox_local X a b i _ hm
 
+/-- The measurable representative `closedCrossEvent` agrees `P`-almost everywhere with the
+geometric crossing event `Crosses a b i {x | l ≤ X x ω}`, given a.e. continuity of the field and a
+nondegenerate rectangle. -/
 theorem closedCrossEvent_ae_eq {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) (X : Space 2 → Ω → ℝ) (a b : Fin 2 → ℝ) (i : Fin 2)
     (hab : ∀ j, a j < b j) (l : ℝ)

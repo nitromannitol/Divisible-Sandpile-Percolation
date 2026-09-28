@@ -1,11 +1,25 @@
-/-
-A mod-two boundary or flux with two endpoints forces graph connectivity between them.
--/
 import Mathlib
+
+/-!
+# Mod-two boundary and flux force connectivity
+
+A mod-two boundary or flux with two endpoints forces graph connectivity between them.
+`reachable_of_mod_two_flux` derives `G.Reachable a b` from a `ZMod 2`-linear flux identity
+tested against every function `V → ZMod 2`, and `reachable_of_mod_two_boundary` derives the
+same conclusion from the pointwise local version of that identity, a mod-two boundary
+condition at each vertex.  Both proceed by contradiction, testing the identity against the
+indicator of reachability from `a`.
+-/
 
 open scoped BigOperators
 namespace Sandpile
 
+/-- If every `ZMod 2`-weighted edge of nonzero weight connects `G`-reachable endpoints, and the
+weighted flux `∑ e, weight e * (f (src e) + f (dst e))` equals `f a + f b` for every
+`f : V → ZMod 2`, then `a` and `b` are `G`-reachable.  Proved by contradiction: testing the
+flux identity against the indicator `c` of reachability from `a`, every summand vanishes
+because `hedge` forces `c (src e) = c (dst e)` on edges of nonzero weight, so the flux is `0`,
+contradicting `c a + c b = 1` when `a` and `b` are not reachable. -/
 lemma reachable_of_mod_two_flux {V E : Type*} [Fintype E]
     (G : SimpleGraph V) (src dst : E → V) (weight : E → ZMod 2) (a b : V)
     (hedge : ∀ e, weight e ≠ 0 → G.Reachable (src e) (dst e))
@@ -28,6 +42,12 @@ lemma reachable_of_mod_two_flux {V E : Type*} [Fintype E]
   rw [Finset.sum_congr rfl (fun e _ => he e), Finset.sum_const_zero] at hh
   simp [c, hab] at hh
 
+/-- The pointwise version of `reachable_of_mod_two_flux`: if every `ZMod 2`-weighted edge of
+nonzero weight connects `G`-reachable endpoints, and at every vertex `x` the weighted count of
+incident edge-endpoints equals the indicator of `x ∈ {a, b}`, then `a` and `b` are
+`G`-reachable.  Proved by contradiction, reducing the boundary identity to the flux identity
+of `reachable_of_mod_two_flux` by pairing each vertex `x` with the reachability indicator
+`c x` and swapping the order of summation (`Finset.sum_comm`). -/
 lemma reachable_of_mod_two_boundary {V E : Type*} [Fintype V] [Fintype E] [DecidableEq V]
     (G : SimpleGraph V) (src dst : E → V) (weight : E → ZMod 2) (a b : V)
     (hedge : ∀ e, weight e ≠ 0 → G.Reachable (src e) (dst e))

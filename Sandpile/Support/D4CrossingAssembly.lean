@@ -1,10 +1,3 @@
-/-
-The dimension-four ball-killed Green crossing estimate, assembled from the
-near-far reduction, the Gaussian comparison and the RSW lower tail.  The
-planar RSW input enters as the explicit hypothesis `External.PlanarRSW`
-(the paper cites the RSW theorem for symmetric positively associated planar
-percolation, sandpile.tex:400, 2064, 2218, 2235).
--/
 import Sandpile.Support.NearFarCrossing
 import Sandpile.Support.PlaneRectangle
 import Sandpile.Support.RswTail
@@ -14,11 +7,30 @@ import Sandpile.Support.BallRectangleDuality
 import Sandpile.External.PlanarRSW
 import Sandpile.Support.FinalBoundThreeTerms
 
+/-!
+# The dimension-four ball-killed Green crossing estimate
+
+The dimension-four ball-killed Green crossing estimate, assembled from the
+near-far reduction, the Gaussian comparison and the RSW lower tail.  The
+planar RSW input enters as the explicit hypothesis `External.PlanarRSW`
+(the paper cites the RSW theorem for symmetric positively associated planar
+percolation, sandpile.tex:400, 2064, 2218, 2235).
+-/
+
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal
 
 namespace Sandpile
 
+/-- The dimension-four ball-killed Green crossing estimate: for any law class satisfying the
+mean, variance and exponential-moment hypotheses, the probability that a `∗`-connected
+top-bottom crossing exists in the low set of `ballGreenField` decays like `C log³(r) r^{-γ}`.
+The proof splits on whether `K₀ > 0` (the non-vacuous case, where the exponential-moment
+hypothesis forces `K₀ ≥ 1`); in that case it chains the near-far crossing reduction
+`exists_near_far_crossing_reduction`, the Gaussian comparison
+`exists_gaussian_aspect_rectangle_comparison`, and the RSW-based Gaussian lower tail
+`gaussian_far_rectangle_lower_tail` (using the hypothesis `hRSW : External.PlanarRSW`), and
+assembles the resulting three error terms with `final_bound_three_terms`. -/
 theorem d4_ball_green_crossing_of_rsw
     (hBallGreen : External.BallGreenBounds) (hRSW : External.PlanarRSW)
     (ν₀ θ₀ K₀ ϑ : ℝ) (_hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) (hϑ : 1 ≤ ϑ) :
@@ -217,7 +229,8 @@ theorem d4_ball_green_crossing_of_rsw
           C₂ * (Real.log r) ^ 3 * (r : ℝ) ^ (-2 * α) + C₁ * (r : ℝ) ^ (-(1:ℝ))) := by
           apply ENNReal.ofReal_le_ofReal
           linarith [hcomp']
-        _ ≤ ENNReal.ofReal ((r : ℝ) ^ (-(c * (ε / 2) ^ 2)) + C₂ * (Real.log r) ^ 3 * (r : ℝ) ^ (-2 * α)
+        _ ≤ ENNReal.ofReal ((r : ℝ) ^ (-(c * (ε / 2) ^ 2))
+              + C₂ * (Real.log r) ^ 3 * (r : ℝ) ^ (-2 * α)
           + C₁ * (r : ℝ) ^ (-(1:ℝ))) := by
           apply ENNReal.ofReal_le_ofReal
           linarith [hGreal]

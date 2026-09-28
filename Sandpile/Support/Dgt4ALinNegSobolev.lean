@@ -1,26 +1,23 @@
-/-
-The `H^{-s}_loc` clause of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5615-5660`, `sandpile.tex:5841-5854`): convergence in probability
-to zero of the tested `L²` estimate (the lemma's first conclusion) upgrades to
-convergence in probability of the whole `H^{-s}(D)` dual norm, given that the
-family is tight in `H^{-s_0}(D)` for some `s_0 < s`.
-
-This is the classical fact that the unit ball of `H^s(D)` is precompact in the
-weaker norm `H^{s_0}(D)` (Rellich-Kondrachov,
-`Sandpile.External.RellichKondrachovNegSobolev`): a functional bounded in the
-`H^{-s_0}(D)` dual norm is controlled, in the `H^{-s}(D)` dual norm, by its
-values on a FIXED finite set of test functions (the shared library's
-`LatticeProb.External.RellichKondrachovNegSobolev`/`negSobolevNorm_le_sup_add`),
-so the whole norm converges to zero in probability once each of those finitely
-many pairings does, which is exactly what the tested `L²` estimate gives after
-Chebyshev's inequality.
--/
 import Sandpile.Support.Dgt4ALinTight
 import Sandpile.Support.LinJacobianFirstConjunct
 import Sandpile.Support.LinMeasureZero
 import Sandpile.Support.Dgt4ANegSobolevBridge
 import Sandpile.External.RellichKondrachovNegSobolev
 import LatticeProb.Analysis.Sobolev.DualNet
+
+/-!
+# Upgrading a tested `L²` estimate to convergence in the negative Sobolev norm
+
+Convergence in probability to zero of a tested `L²` estimate against a fixed test function
+upgrades to convergence in probability of the whole `H^{-s}(D)` dual norm, provided the family
+is additionally tight in the weaker norm `H^{-s₀}(D)` for some `s₀ < s`. The mechanism is the
+classical Rellich-Kondrachov compactness of the unit ball of `H^s(D)` in `H^{-s₀}(D)`
+(`Sandpile.External.RellichKondrachovNegSobolev`): a functional bounded in the `H^{-s₀}(D)`
+dual norm is controlled, in the `H^{-s}(D)` dual norm, by its values on a fixed finite net of
+test functions, so the whole norm converges to zero once each of those finitely many pairings
+does. This file assembles that upgrade and applies it to the odometer's fluctuation field
+arising in the linearization lemma.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -87,7 +84,8 @@ theorem negSobolevNorm_le_sup_add_sub {D : Set (LatticeProb.Sobolev.Space d)} {s
       LatticeProb.Sobolev.IsTestFn D ψ' → F (fun x => φ x - ψ' x) = F φ - F ψ')
     (hsmul : ∀ (c : ℝ) (φ : LatticeProb.Sobolev.Space d → ℝ), F (fun x => c * φ x) = c * F φ)
     (hF : LatticeProb.Sobolev.negSobolevNorm d s₀ D F ≤ 1) :
-    LatticeProb.Sobolev.negSobolevNorm d s D F ≤ (⨆ i, ENNReal.ofReal |F (ψ i)|) + ENNReal.ofReal η := by
+    LatticeProb.Sobolev.negSobolevNorm d s D F
+      ≤ (⨆ i, ENNReal.ofReal |F (ψ i)|) + ENNReal.ofReal η := by
   unfold LatticeProb.Sobolev.negSobolevNorm
   apply sSup_le
   rintro v ⟨φ, hφ, hn, rfl⟩
@@ -226,7 +224,8 @@ theorem tendsto_negSobolevNorm_zero_of_tight
       have := not_lt.mp (hcon2 i)
       exact (ENNReal.ofReal_le_ofReal_iff (by positivity)).mp this
     have hGle1 : Sandpile.Continuum.negSobolevNorm d s₀ D (G ω) ≤ 1 := by
-      have h1 : ENNReal.ofReal (M1.toReal) * Sandpile.Continuum.negSobolevNorm d s₀ D (G ω) ≤ M1 := by
+      have h1 : ENNReal.ofReal (M1.toReal) * Sandpile.Continuum.negSobolevNorm d s₀ D (G ω)
+          ≤ M1 := by
         rw [← hnormEq0 ω]; exact hle1
       rw [ENNReal.ofReal_toReal hM1ne] at h1
       have h1' : Sandpile.Continuum.negSobolevNorm d s₀ D (G ω) * M1 ≤ 1 * M1 := by
@@ -307,18 +306,21 @@ theorem tendsto_negSobolevNorm_zero_of_tight
       _ ≤ P {ω | M1 < Sandpile.Continuum.negSobolevNorm d s₀ D (F R ω)}
           + ∑ i : Fin N, P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|} := by
         gcongr
-  have hcombine' : (P {ω | ENNReal.ofReal ε < Sandpile.Continuum.negSobolevNorm d s D (F R ω)}).toReal
+  have hcombine' :
+      (P {ω | ENNReal.ofReal ε < Sandpile.Continuum.negSobolevNorm d s D (F R ω)}).toReal
       ≤ (P {ω | M1 < Sandpile.Continuum.negSobolevNorm d s₀ D (F R ω)}).toReal
         + ∑ i : Fin N, (P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|}).toReal := by
     have hne : P {ω | M1 < Sandpile.Continuum.negSobolevNorm d s₀ D (F R ω)}
           + ∑ i : Fin N, P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|} ≠ ⊤ :=
-      ENNReal.add_ne_top.mpr ⟨measure_ne_top _ _, ENNReal.sum_ne_top.mpr fun i _ => measure_ne_top _ _⟩
+      ENNReal.add_ne_top.mpr
+        ⟨measure_ne_top _ _, ENNReal.sum_ne_top.mpr fun i _ => measure_ne_top _ _⟩
     have := ENNReal.toReal_mono hne hcombine
     rwa [ENNReal.toReal_add (measure_ne_top _ _)
         (ENNReal.sum_ne_top.mpr fun i _ => measure_ne_top _ _),
       ENNReal.toReal_sum (fun i _ => measure_ne_top _ _)] at this
   have hsum_lt : (P {ω | M1 < Sandpile.Continuum.negSobolevNorm d s₀ D (F R ω)}).toReal
-      + ∑ i : Fin N, (P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|}).toReal < b := by
+      + ∑ i : Fin N, (P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|}).toReal
+      < b := by
     have hstep : ∑ i : Fin N, (P {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|}).toReal
         ≤ ∑ _i : Fin N, b / (3 * N + 3) :=
       Finset.sum_le_sum fun i _ => (hR2 i).le
@@ -467,8 +469,9 @@ theorem tendsto_negSobolevNorm_zero_of_linearization [NeZero d] (hd : 5 ≤ d)
           (Sandpile.centeredMassLaw d ν) := fun x =>
         ((memLp_two_odometer ν hsqν hd1 ⌊R ^ 2 * T⌋₊ x).sub (memLp_const _)).sub
           (Sandpile.Support.memLp_two_weightedField_mass ν hLp hd1 (q R) ⌊R ^ 2 * T⌋₊ x)
-      have h1 := (memLp_two_latticePairing (Sandpile.centeredMassLaw d ν) R _ hF φ hint hsupp).const_mul
-        (R ^ (((d : ℝ) - 4) / 2))
+      have h1 :=
+        (memLp_two_latticePairing (Sandpile.centeredMassLaw d ν) R _ hF φ hint hsupp).const_mul
+          (R ^ (((d : ℝ) - 4) / 2))
       exact h1
     have htim : TendstoInMeasure (Sandpile.centeredMassLaw d ν) (fun R σ => diffField R σ φ)
         atTop 0 :=

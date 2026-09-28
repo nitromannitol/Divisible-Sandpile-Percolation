@@ -1,12 +1,19 @@
-/-
+import Mathlib
+
+/-!
+# Second-moment bound from an exponential moment
+
 A second-moment bound from a bounded exponential moment.
 -/
-import Mathlib
 
 open MeasureTheory
 
 namespace Sandpile
 
+/-- If `∫ exp (θ * |z|) ∂ν ≤ K` for `θ > 0`, then `∫ z ^ 2 ∂ν ≤ (4 / θ ^ 2) * K`, from the
+pointwise bound `z ^ 2 ≤ (4 / θ ^ 2) * exp (θ * |z|)` (split into small `|z| ≤ 2 / θ`, where
+`exp (θ * |z|) ≥ 1`, and large `|z|`, where `t ^ 2 ≤ 2 * exp t` for `t = θ * |z| ≥ 2` via
+`log t ≤ t / 2`). -/
 lemma second_moment_le_of_exp_moment (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (θ : ℝ) (hθ : 0 < θ) (K : ℝ)
     (hint : Integrable (fun z : ℝ => Real.exp (θ * |z|)) ν)

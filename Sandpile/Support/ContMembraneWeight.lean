@@ -1,19 +1,21 @@
-/-
-The time weight `(1 - r/T)^κ` of the power-weighted continuum membrane field
-`ℋ_{κ,T}` (`eq:power-weighted-continuum-membrane`, `sandpile.tex:954-1069`) as a
-function of the exponent.
-
-This is the elementary half of the distinctness clause of
-`thm:dgt4-many-limits`, which the paper states at `sandpile.tex:983-987`: "for
-every `T > 0` and every nonzero nonnegative test function `φ`,
-`Var(ℋ_{κ,T}(φ))` is strictly decreasing in `κ`".  Since
-`0 < 1 - r/T < 1` for `r` in the open interval, the weight decreases in `κ`
-there, strictly, and so does the product of the two weights the covariance is
-built from.  What the covariance still needs is the exchange of the two space
-integrals with the two time integrals, after which the comparison is the one
-proved here against a bounded strictly positive kernel.
--/
 import Sandpile.Continuum.Membrane
+
+/-!
+# The membrane time weight decreases strictly in its exponent
+
+The time weight `(1 - r/T)^κ` of the power-weighted continuum membrane field `ℋ_{κ,T}`
+(`eq:power-weighted-continuum-membrane`, `sandpile.tex:954-1069`) is studied here as a function
+of the exponent `κ`. This is the elementary half of the distinctness clause of
+`thm:dgt4-many-limits` (`sandpile.tex:983-987`): for every `T > 0` and every nonzero nonnegative
+test function `φ`, `Var(ℋ_{κ,T}(φ))` is strictly decreasing in `κ`. `membraneWeight_base_mem`
+records that the weight's base `1 - r/T` lies strictly between zero and one on the open interval
+`0 < r < T`; `membraneWeight_le` and `membraneWeight_lt` give the resulting (non-strict and
+strict) monotonicity of the weight in `κ`, and `membraneWeight_mul_lt` extends the strict
+monotonicity to the product of the two time weights the covariance is built from. What the
+variance comparison still needs, beyond this file, is the exchange of the two space integrals
+with the two time integrals, after which the comparison reduces to the one proved here against a
+bounded strictly positive kernel.
+-/
 
 namespace Sandpile.Support
 

@@ -1,29 +1,28 @@
-/-
-The multilinear interpolation is Lipschitz in each space variable.
-
-`ContInterpLip` proves the one-dimensional statement, that the piecewise-linear
-interpolation from the integer mesh of a family of reals bounded by `M` is
-`2M`-Lipschitz, and reads the time direction of `linInterp` off it.  This module
-does the space direction.
-
-Fix a coordinate `j`.  The `2^d` Boolean corners of the spatial cell split into
-`2^{d-1}` pairs differing only in their `j`-th entry, and the multilinear weight
-of a corner factors as the `j`-th weight times the product over the other
-coordinates.  Summing the pair with the `j`-th weights `1 - t_j` and `t_j`
-therefore writes `linInterp` at `(r,w)` as a convex combination, over the
-corners of the other `d-1` coordinates, of one-dimensional interpolations in
-`R w_j`.  Since the one-dimensional interpolation is linear in its family of
-mesh values, the combination is itself a single one-dimensional interpolation,
-of the family `sliceInterp`, whose values are convex combinations of mesh values
-and so obey the same bound `M`.  The Lipschitz bound of `ContInterpLip` applies
-to it verbatim.
-
-Changing the coordinates one at a time then gives the bound for an arbitrary
-pair of points, with the constant `2M` and the `ℓ¹` distance of the rescaled
-coordinates.
--/
 import Sandpile.Support.ContInterpLip
 import LatticeProb.Support.ContSums
+
+/-!
+# The interpolated field is Lipschitz in the space variable
+
+The multilinear interpolation is Lipschitz in each space variable.
+
+`ContInterpLip` proves the one-dimensional statement, that the piecewise-linear interpolation
+from the integer mesh of a family of reals bounded by `M` is `2M`-Lipschitz, and reads the time
+direction of `linInterp` off it. This module does the space direction.
+
+Fix a coordinate `j`. The `2^d` Boolean corners of the spatial cell split into `2^{d-1}` pairs
+differing only in their `j`-th entry, and the multilinear weight of a corner factors as the
+`j`-th weight times the product over the other coordinates. Summing the pair with the `j`-th
+weights `1 - t_j` and `t_j` therefore writes `linInterp` at `(r,w)` as a convex combination, over
+the corners of the other `d-1` coordinates, of one-dimensional interpolations in `R w_j`. Since
+the one-dimensional interpolation is linear in its family of mesh values, the combination is
+itself a single one-dimensional interpolation, of the family `sliceInterp`, whose values are
+convex combinations of mesh values and so obey the same bound `M`. The Lipschitz bound of
+`ContInterpLip` applies to it verbatim.
+
+Changing the coordinates one at a time then gives the bound for an arbitrary pair of points, with
+the constant `2M` and the `ℓ¹` distance of the rescaled coordinates.
+-/
 
 open LatticeProb
 
@@ -306,7 +305,8 @@ theorem abs_linInterp_sub_space_le (d : ℕ) (R : ℝ) (ζ : Site d → ℝ) (M 
   classical
   have h := abs_linInterp_sub_hybrid_le d R ζ M hM (r := r) hr w w' d le_rfl
   rw [hybridPoint_dim] at h
-  have hfilt : Finset.univ.filter (fun i : Fin d => (i : ℕ) < d) = (Finset.univ : Finset (Fin d)) := by
+  have hfilt : Finset.univ.filter (fun i : Fin d => (i : ℕ) < d)
+      = (Finset.univ : Finset (Fin d)) := by
     ext i
     simp
   rw [hfilt] at h
@@ -564,7 +564,8 @@ theorem abs_linInterp_sub_space_le_of_coord (d : ℕ) (R : ℝ) (ζ : Site d →
                   |R * w i - R * w' i|) := by ring
   have h := key d le_rfl
   rw [hybridPoint_dim] at h
-  have hfilt : Finset.univ.filter (fun i : Fin d => (i : ℕ) < d) = (Finset.univ : Finset (Fin d)) := by
+  have hfilt : Finset.univ.filter (fun i : Fin d => (i : ℕ) < d)
+      = (Finset.univ : Finset (Fin d)) := by
     ext i
     simp
   rw [hfilt] at h

@@ -1,16 +1,15 @@
-/-
-Restricting the scale parameter of a family converging in distribution.
-
-`thm:main-explosion`(i)(b) states the parabolic scaling limit over all real
-scales with the filter `atTop`, while the estimates of `ssec:scaling-dlt4` hold
-only for `R ≥ 1`: the rescaled odometer `𝒰_R(T,x) = R^{-(2-d/2)}u_{⌊R²T⌋}(⌊Rx⌋)`
-is a nonnegative variable with a uniform exponential moment only there, and at
-`R = 0` the prefactor `R^{-(2-d/2)}` is not even the intended one.  The moment
-theorems of `MeanAMoment` ask their hypotheses at EVERY index, so the family is
-first restricted to `[1,∞)`, and the limit is carried back to `atTop` on `ℝ` at
-the end.  Both steps are recorded here.
--/
 import Mathlib
+
+/-!
+# Restricting the scale index to `[1,∞)` and back
+
+`thm:main-explosion`(i)(b) states the parabolic scaling limit over all real scales with the
+filter `atTop`, while the estimates of `ssec:scaling-dlt4` hold only for `R ≥ 1`: the rescaled
+odometer `𝒰_R(T,x) = R^{-(2-d/2)}u_{⌊R²T⌋}(⌊Rx⌋)` is a nonnegative variable with a uniform
+exponential moment only there, and at `R = 0` the prefactor `R^{-(2-d/2)}` is not even the
+intended one. The moment theorems of `MeanAMoment` ask their hypotheses at every index, so this
+file first restricts the family to `[1,∞)` and then carries the limit back to `atTop` on `ℝ`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

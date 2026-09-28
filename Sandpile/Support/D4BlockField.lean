@@ -1,17 +1,23 @@
-/-
-The block field of the dimension-four critical-level percolation argument
-(`sandpile.tex:3860-3880`): the finite-time killed Green field
-`𝓑_{r,N}(z) = ∑_u g_N^{Q(0,r)}(0,u) ζ(z+u)` and the localized exit term
-`Y_r(z)`, together with the finite-range lower bound
-`lem:d4-finite-range-lower-bound`:
-`𝓑_{r,A r²}(z) + Y_r(z) ≤ u_{(A+1) r²}(z)`.
--/
 import Mathlib
 import Sandpile.Support.Killed
 import Sandpile.Support.KilledWalk
 import Sandpile.Support.Localization
 import Sandpile.Support.ExitTail
 import Sandpile.Support.BallCrossingDefinitions
+
+/-!
+# The dimension-four block field and localized exit term
+
+The block field of the dimension-four critical-level percolation argument
+(`sandpile.tex:3860-3880`): the finite-time killed Green field
+`𝓑_{r,N}(z) = ∑_u g_N^{Q(0,r)}(0,u) ζ(z+u)` and the localized exit term
+`Y_r(z)`, together with the finite-range lower bound
+`lem:d4-finite-range-lower-bound`:
+`𝓑_{r,A r²}(z) + Y_r(z) ≤ u_{(A+1) r²}(z)`. `ballGreenFieldTime` is the field itself, unfolded to
+its shifted-scenery sum by `ballGreenFieldTime_eq_tsum`, `cubeExitTime` is the exit time of the
+random walk from the ball cube `Q(z,r)`, and `futureHeight` is the localized exit term `Y_r(z)`,
+the conditional expectation of the localized odometer at the exit point.
+-/
 
 open MeasureTheory
 noncomputable section

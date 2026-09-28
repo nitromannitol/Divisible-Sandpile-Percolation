@@ -1,28 +1,39 @@
-/-
-The converse direction of the planar duality used by the dimension-four
-percolation argument: a crossing value at most a level produces a
-`∗`-connected top-bottom crossing of the low set in the translated coordinate
-rectangle of `sandpile.tex:3436-3440`.
--/
 import Sandpile.Support.BallRectangleDuality
 import Sandpile.Support.RectangleDuality
+
+/-!
+# The converse planar duality for the dimension-four percolation argument
+
+This file proves the converse direction of the planar duality used by the dimension-four
+percolation argument: a crossing value at most a level produces a `∗`-connected top-bottom
+crossing of the low set, in the translated coordinate rectangle of `sandpile.tex:3436-3440`.
+The translation `planeTranslate x` embeds the coordinate-plane rectangle into the ambient
+four-dimensional lattice as a graph homomorphism into the star-adjacency graph, and the
+top-bottom crossing produced by `rectangle_low_star_walk` is pushed forward along it.
+-/
 
 noncomputable section
 namespace Sandpile
 
-
+/-- `planeTranslate x z` agrees with `x` on coordinate `0` after adding `z 0`. -/
 lemma planeTranslate_apply_zero (x : Site 4) (z : Site 2) :
     planeTranslate x z 0 = x 0 + z 0 := rfl
 
+/-- `planeTranslate x z` agrees with `x` on coordinate `1` after adding `z 1`. -/
 lemma planeTranslate_apply_one (x : Site 4) (z : Site 2) :
     planeTranslate x z 1 = x 1 + z 1 := rfl
 
+/-- `planeTranslate x z` leaves coordinate `2` of `x` unchanged. -/
 lemma planeTranslate_apply_two (x : Site 4) (z : Site 2) :
     planeTranslate x z 2 = x 2 := rfl
 
+/-- `planeTranslate x z` leaves coordinate `3` of `x` unchanged. -/
 lemma planeTranslate_apply_three (x : Site 4) (z : Site 2) :
     planeTranslate x z 3 = x 3 := rfl
 
+/-- `planeTranslate x` sends `starLatticeGraph 2`-adjacent sites of the coordinate plane to
+`starGraph`-adjacent sites of the ambient lattice: it changes only the first two coordinates,
+each by at most `1`, and never both to the point of equality. -/
 lemma starGraph_adj_planeTranslate {z w : Site 2}
     (h : (starLatticeGraph 2).Adj z w) (x : Site 4) :
     starGraph.Adj (planeTranslate x z) (planeTranslate x w) := by
@@ -119,6 +130,9 @@ lemma hasStarTopBottomCrossing_of_crossingValue_le {ϑ : ℝ} (hϑ : 0 ≤ ϑ)
     rw [hz', planeTranslate_apply_one, ha]
     ring
 
+/-- **The contrapositive of `hasStarTopBottomCrossing_of_crossingValue_le`.** If there is no
+`∗`-connected top-bottom crossing of the low set, then the crossing value of the translated
+rectangle strictly exceeds the level. -/
 lemma lt_crossingValue_of_not_star {ϑ : ℝ} (hϑ : 0 ≤ ϑ)
     (r : ℕ) (x : Site 4) (F : Site 4 → ℝ) (level : ℝ)
     (h : ¬ HasStarTopBottomCrossing ϑ r x {z | F z ≤ level}) :

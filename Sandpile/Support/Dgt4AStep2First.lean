@@ -1,11 +1,16 @@
-/-
+import Sandpile.Support.Dgt4AStep2Site
+import Sandpile.Support.Dgt4AMeanIncrement
+
+/-!
+# Step 2 of case (a): the first display
+
 The first display of Step 2 of case (a) (`sandpile.tex:5104-5107`):
 
   "By `eq:dgt4-centered-value-decay`, stationarity, Jensen's inequality, and
    `eq:dgt4-mean-increment-bound`,
    `\E u_n(0)\,\E[P^{k_n+1}|V_\infty-u_{n-k_n}+\E u_n(0)|(0)]\to0`."
 
-The four inputs are exactly the four used here.  `P^{k_n+1}` leaves the mean unchanged
+The four inputs are exactly the four used here. `P^{k_n+1}` leaves the mean unchanged
 because the mean of `|V_\infty-u_m+c|` does not depend on the site
 (`Support/Dgt4AStep2Site.lean`); Jensen's inequality turns the second moment of Step 1 into
 the first moment; `eq:dgt4-centered-value-decay` bounds that first moment by
@@ -14,12 +19,10 @@ the first moment; `eq:dgt4-centered-value-decay` bounds that first moment by
 `k_n\E u_n(0)/(n-k_n)`.
 
 The horizon enters only through the two conditions imposed here: `2k_n\leq n`, so that
-`n-k_n` is at least `n/2`, and `k_n\log n/n\to0`.  The paper's
+`n-k_n` is at least `n/2`, and `k_n\log n/n\to0`. The paper's
 `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil` satisfies both, and so does any polylogarithmic
 horizon; the display does not see which.
 -/
-import Sandpile.Support.Dgt4AStep2Site
-import Sandpile.Support.Dgt4AMeanIncrement
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
@@ -28,6 +31,9 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- Shifting the argument of the mean absolute value from one constant `c'` to another `c`
+changes it by at most `|c-c'|`: the triangle inequality `|f x + c| ≤ |f x + c'| + |c - c'|`,
+integrated. -/
 theorem integral_abs_add_const_le {α : Type*} {mα : MeasurableSpace α} {μ : Measure α}
     [IsProbabilityMeasure μ] {f : α → ℝ} (c c' : ℝ)
     (h1 : Integrable (fun x => |f x + c|) μ) (h2 : Integrable (fun x => |f x + c'|) μ) :
@@ -43,6 +49,10 @@ theorem integral_abs_add_const_le {α : Type*} {mα : MeasurableSpace α} {μ : 
         rw [integral_add h2 (integrable_const _), integral_const]
         simp
 
+/-- For `m ≤ n`, `m` times the increment `A n - A m` of the mean odometer `A` is at most
+`(n-m) * A n`: proved by induction on `n` from the single-step concavity bound
+`meanOdometer_increment_le_div`, and used to bound how far the centring constant `A n` can be
+from `A m` at a smaller horizon `m`. -/
 theorem meanOdometer_diff_le (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hint : Integrable id ν) (hmean : ∫ w, w ∂ν = 0)
     (hpos : Integrable (fun z => max z 0) ν) (m : ℕ) (hm : 1 ≤ m) :
@@ -109,6 +119,13 @@ theorem tendsto_sqrt_log_mul_rpow_neg (δ : ℝ) (hδ : 0 < δ) :
 
 
 set_option maxHeartbeats 1000000 in
+/-- The quantitative core of the first display: for any horizon `k` with `2 * k n ≤ n`
+eventually, the mean odometer at `n` times the first absolute moment of the centred value at
+`m = n - k n` is bounded by a constant times the decay rate
+`Real.sqrt (Real.log n) * n ^ (-(d - 4) / (4 * d))` from
+`exists_integral_abs_centeredValue_le_gaussian` plus a constant times the centring-constant
+correction `k n * Real.log n / n`, obtained from `meanOdometer_diff_le` and the growth bound
+`exists_meanOdometer_le_sqrt_log`. -/
 theorem exists_step2_first_bound
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0)
     (k : ℕ → ℕ) (hk2 : ∀ᶠ n : ℕ in atTop, 2 * k n ≤ n) :

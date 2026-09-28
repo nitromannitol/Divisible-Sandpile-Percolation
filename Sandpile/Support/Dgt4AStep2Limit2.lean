@@ -1,8 +1,11 @@
-/-
+import Mathlib
+
+/-!
+# Step 2 of case (a): the shifted rate `√(log(n+2)) · n^{-a} → 0`
+
 The `n + 2` form of the Step-2 limit of case (a) of `prop:dgt4-contact-asymptotics`
 (`sandpile.tex:5098-5100`): `√(log(n+2)) · n^{-a} → 0` for `a > 0`.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology Asymptotics
 
@@ -25,7 +28,8 @@ theorem tendsto_sqrt_log_add_mul_rpow_neg (a : ℝ) (ha : 0 < a) :
       Real.rpow_neg (Nat.cast_nonneg n), div_eq_mul_inv]
     rw [← Real.rpow_mul (Nat.cast_nonneg n)]
     ring_nf
-  have hg : Tendsto (fun n : ℕ => Real.sqrt 2 * (Real.sqrt (Real.log n) * (n : ℝ) ^ (-a))) atTop (𝓝 0) := by
+  have hg : Tendsto (fun n : ℕ => Real.sqrt 2 * (Real.sqrt (Real.log n) * (n : ℝ) ^ (-a)))
+      atTop (𝓝 0) := by
     have := hbase.const_mul (Real.sqrt 2)
     simpa using this
   refine squeeze_zero_norm' ?_ hg

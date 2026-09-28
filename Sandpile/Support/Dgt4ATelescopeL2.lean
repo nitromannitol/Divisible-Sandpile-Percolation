@@ -1,10 +1,13 @@
-/-
-The telescoping sum of Step 1 of case (a) in `L^2` (`sandpile.tex:5074-5077`).  The
-telescoping writes `V_\infty(0)-u_n(0)+\E u_n(0)` as `P^j(V_\infty-u_n+\E u_n(0))(0)` plus
-`\sum_{i<j}P^iD_n(0)`; Cauchy-Schwarz on the `j` summands and the conditional Jensen bound
-give `\E[(\sum_{i<j}P^iD_n(0))^2]\leq j^2\E[D_n^2]`.
--/
 import Sandpile.Support.Dgt4AJensen
+
+/-!
+# The telescoping sum of Step 1 of case (a) in `L^2`
+
+The telescoping sum of Step 1 of case (a) in `L^2` (`sandpile.tex:5074-5077`). The
+telescoping writes `V_\infty(0)-u_n(0)+\E u_n(0)` as `P^j(V_\infty-u_n+\E u_n(0))(0)` plus
+`\sum_{i<j}P^iD_n(0)`; Cauchy-Schwarz on the `j` summands together with the conditional
+Jensen bound give `\E[(\sum_{i<j}P^iD_n(0))^2]\leq j^2\E[D_n^2]`.
+-/
 
 open MeasureTheory Filter Topology Set
 

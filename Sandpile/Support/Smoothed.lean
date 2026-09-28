@@ -1,17 +1,20 @@
-/-
-The smoothed odometer `P^m u_n` as a function of the scenery.
-
-`lem:dgt4-smoothed-odometer-tail` (`sandpile.tex:4417-4428`) applies the
-concentration lemma to `P^m u_n(0)`.  Its coordinate Lipschitz constants are
-`∑_z p_m(0,z) g_n(z,y) = ∑_{j<n} p_{m+j}(0,y)`, by the optimal-stopping
-Lipschitz bound for `u_n` and Chapman-Kolmogorov.  This file reads `P^m u_n(x)`
-as a function of the coordinates of a finite set of sites containing the box it
-reads, and proves that bound in those coordinates.
--/
 import Sandpile.Support.FiniteCoord
 import Sandpile.Support.Iterate
 import Sandpile.Support.Stationary
 import Sandpile.External.GreenBoundsHigh
+
+/-!
+# The smoothed odometer as a function of the scenery
+
+The smoothed odometer `P^m u_n` as a function of the scenery. `lem:dgt4-smoothed-odometer-tail`
+(`sandpile.tex:4417-4428`) applies the concentration lemma to `P^m u_n(0)`. Its coordinate
+Lipschitz constants are `∑_z p_m(0,z) g_n(z,y) = ∑_{j<n} p_{m+j}(0,y)` (`smoothedCoeff`), by the
+optimal-stopping Lipschitz bound for `u_n` and Chapman-Kolmogorov. This file reads `P^m u_n(x)`
+(`scenerySmoothed`) as a function of the coordinates of a finite set of sites containing the box
+it reads, and proves that bound (`abs_scenerySmoothed_update_le`) in those coordinates, together
+with the auxiliary facts about the coefficients, the mean and the finite-coordinate reduction that
+the concentration lemma needs.
+-/
 
 open MeasureTheory
 
@@ -23,9 +26,12 @@ variable {d : ℕ}
 noncomputable def smoothedCoeff (d : ℕ) (m n : ℕ) (x y : Site d) : ℝ :=
   ∑ j ∈ Finset.range n, heatKernel d (m + j) x y
 
+/-- `smoothedCoeff` is a sum of nonnegative heat kernel values, hence nonnegative. -/
 theorem smoothedCoeff_nonneg (m n : ℕ) (x y : Site d) : 0 ≤ smoothedCoeff d m n x y :=
   Finset.sum_nonneg fun _ _ => heatKernel_nonneg _ _ _
 
+/-- Restates `tsum_heatKernel_mul_greenTime` in terms of `smoothedCoeff`: the coefficient
+`∑_z p_m(x,z) g_n(z,y)` equals `smoothedCoeff d m n x y`. -/
 theorem tsum_heatKernel_mul_greenTime' (m n : ℕ) (x y : Site d) :
     ∑' z : Site d, heatKernel d m x z * greenTime d n z y = smoothedCoeff d m n x y :=
   tsum_heatKernel_mul_greenTime m n x y
@@ -36,6 +42,8 @@ noncomputable def scenerySmoothed (s : Finset (Site d)) (m n : ℕ) (x : Site d)
     (ξ : Fin s.card → ℝ) : ℝ :=
   (avg^[m] fun z => odometerOf (siteExtend s ξ) n z) x
 
+/-- Unfolds `scenerySmoothed` as the finite sum `∑_{z ∈ boxFinset x m} p_m(x,z) u_n(z)` over the
+box the outer averaging reads, by one application of `avg_iterate`. -/
 theorem scenerySmoothed_eq (s : Finset (Site d)) (m n : ℕ) (x : Site d)
     (ξ : Fin s.card → ℝ) :
     scenerySmoothed s m n x ξ
@@ -56,6 +64,10 @@ theorem avg_odometerOf_congr_box (m n : ℕ) (x : Site d) (ζ η : Site d → �
     refine odometerOf_congr_box n z ζ η fun w hw => ?_
     exact h w (le_trans (boxDist_trans x z w) (Nat.add_le_add hxz hw))
 
+/-- Reading `scenerySmoothed` at the coordinates of `ζ` enumerated through `s` recovers the
+smoothed odometer `P^m u_n(x)` computed directly on `ζ`, provided `s` contains the whole box of
+radius `m + n` about `x` that `P^m u_n(x)` depends on: an instance of
+`avg_odometerOf_congr_box` via `siteExtend_siteEnum`. -/
 theorem scenerySmoothed_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
     (hsub : boxFinset x (m + n) ⊆ s) (ζ : Site d → ℝ) :
     scenerySmoothed s m n x (fun i => ζ (siteEnum s i))
@@ -63,6 +75,9 @@ theorem scenerySmoothed_pick {s : Finset (Site d)} {m n : ℕ} {x : Site d}
   avg_odometerOf_congr_box m n x _ ζ fun _ hw =>
     siteExtend_siteEnum s ζ (hsub (mem_boxFinset hw))
 
+/-- `scenerySmoothed s m n x` is measurable in the coordinates `ξ`, since by
+`scenerySmoothed_eq` it is a finite sum of constants times `sceneryOdometer`, each of which is
+measurable. -/
 theorem measurable_scenerySmoothed (s : Finset (Site d)) (m n : ℕ) (x : Site d) :
     Measurable (scenerySmoothed s m n x) := by
   have h : ∀ ξ : Fin s.card → ℝ, scenerySmoothed s m n x ξ
@@ -148,11 +163,13 @@ theorem avg_iterate_sub_const (hd : 1 ≤ d) (m : ℕ) (f : Site d → ℝ) (c :
   rw [Finset.sum_congr rfl hexp, Finset.sum_sub_distrib, ← Finset.sum_mul,
     sum_heatKernel_boxFinset hd m x, one_mul]
 
+/-- `m` iterations of the averaging operator fix the zero function. -/
 theorem avg_iterate_zero (m : ℕ) (x : Site d) :
     (avg^[m] fun _ : Site d => (0 : ℝ)) x = 0 := by
   rw [avg_iterate]
   simp
 
+/-- The box of radius `r` about `x` is contained in the box of radius `r'` whenever `r ≤ r'`. -/
 theorem boxFinset_mono {x : Site d} {r r' : ℕ} (h : r ≤ r') :
     boxFinset x r ⊆ boxFinset x r' := by
   intro y hy

@@ -1,17 +1,31 @@
-/-
-The square crossing probability at a small negative level is eventually at
-least one half, from the polynomial Gaussian lower tail for squares.
--/
 import Sandpile.Support.GaussianSquareMean
 import Sandpile.Support.RectangleMonotonicity
 import Sandpile.Support.RswArithmetic
 import Sandpile.Support.CrossingContinuity
+
+/-!
+# Square crossing probability eventually at least one half
+
+The square crossing probability at a small negative level is eventually at least one half, from
+the polynomial Gaussian lower tail for squares. `exists_gaussian_square_crossing_ge_half` combines
+`exists_gaussian_square_lower_tail` (the Gaussian lower tail on the crossing value) with
+`eventually_rpow_neg_le` and `card_double_square_le_cube` (the polynomial-in-`r` decay of that
+tail) to find, for every level slope `b > 0`, a threshold `r₀` past which the crossing value of a
+`2r × 2r` square exceeds `-(b log r)` with probability at least `1/2`, uniformly in the field
+truncation scale `L`, the cutoff `φ`, the base point `x`, and the one-site variance `v ≤ V`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped NNReal ENNReal
 noncomputable section
 namespace Sandpile
 
+/-- **The square crossing probability is eventually at least one half at level `-(b log r)`.**
+For every `b > 0` there is a threshold `r₀` such that for every field scale `r ≥ r₀`, truncation
+scale `L ≥ 2`, cutoff `φ`, base point `x` and one-site variance `v ≤ V`, the crossing value of the
+`2r × 2r` square exceeds `-(b log r)` with probability at least `1/2` under the i.i.d. Gaussian
+field law: obtained from the Gaussian lower tail `exists_gaussian_square_lower_tail` and the
+polynomial decay `eventually_rpow_neg_le`, by complementing the tail event. -/
 lemma exists_gaussian_square_crossing_ge_half (hBall : External.BallGreenBounds)
     (V : ℝ≥0) (hV : 0 < V) :
     ∀ b : ℝ, 0 < b → ∃ r₀ : ℕ, ∀ r L : ℕ, r₀ ≤ r → 2 ≤ L →
@@ -33,7 +47,8 @@ lemma exists_gaussian_square_crossing_ge_half (hBall : External.BallGreenBounds)
   have hA := h₁ r L (2 * r) (by omega) hL (by omega) (card_double_square_le_cube h7) φ hφ x v hv
   set μ := LatticeProb.iidLaw 4 (gaussianReal 0 v) with hμ
   set Lsq : (Site 4 → ℝ) → ℝ := fun ζ => crossingValue (planeRectangle (2 * r) (2 * r))
-    (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) with hLsq
+    (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))
+    with hLsq
   have hf : Measurable Lsq := by
     have hQ : IsLatticeRectangle (planeRectangle (2 * r) (2 * r)) :=
       isLatticeRectangle_planeRectangle _ _

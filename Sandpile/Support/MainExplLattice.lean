@@ -1,20 +1,22 @@
-/-
-The polynomially weighted envelope of the interpolated rescaled field, uniform in
-the scale: for every accuracy there is an amplitude `K`, the same for every
+import Sandpile.Support.MainExplBoxTail
+import Sandpile.Support.IncrementBall
+
+/-!
+# The polynomially weighted envelope of the interpolated field, uniform in the scale
+
+For every accuracy there is an amplitude `K`, the same for every
 scale, such that with that probability the field is bounded by `K(1+|y|)` on the
 whole of `[0,T] × ℝ^d`.
 
 This is the field half of the cutoff error of `sandpile.tex:1908-1921`, which
 asks for "at most a fixed power of the radius, with summable failure
-probabilities" on dyadic annuli.  The power is one and the failure probabilities
+probabilities" on dyadic annuli. The power is one and the failure probabilities
 are summable because the box tail of `exists_box_tail` has the moment exponent
 `p` as its tail exponent, and the boxes of side two centred at the points of the
 lattice cover the space with multiplicity one: a shell of sup-radius `n` carries
 at most `(2n+1)^d` of them, each failing with probability at most a constant
 times `(1+n)^{-p}`, and `p > d+1` makes the sum finite.
 -/
-import Sandpile.Support.MainExplBoxTail
-import Sandpile.Support.IncrementBall
 
 open MeasureTheory ProbabilityTheory Set
 open scoped ENNReal NNReal
@@ -64,10 +66,13 @@ noncomputable def latticePoint (v : Site d) : Sandpile.Continuum.Space d :=
 noncomputable def shellFinset (d : ℕ) (n : ℕ) : Finset (Site d) :=
   (boxFinset (0 : Site d) n).filter (fun v => boxDist (0 : Site d) v = n)
 
+/-- Every lattice point lies in its own shell, the one at its own sup-distance from the
+origin. -/
 theorem mem_shellFinset (v : Site d) : v ∈ shellFinset d (boxDist (0 : Site d) v) := by
   classical
   refine Finset.mem_filter.mpr ⟨mem_boxFinset le_rfl, rfl⟩
 
+/-- The sup-radius `n` shell has at most `(2n+1)^d` points, the size of the enclosing box. -/
 theorem card_shellFinset_le (d n : ℕ) : (shellFinset d n).card ≤ (2 * n + 1) ^ d := by
   classical
   calc (shellFinset d n).card ≤ (boxFinset (0 : Site d) n).card := Finset.card_filter_le _ _

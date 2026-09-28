@@ -1,19 +1,20 @@
-/-
-**The conditioning level of Steps 3 and 4 of case (a)** (`sandpile.tex:5133-5140`):
-`-V_\infty(0)=\E u_n(0)+\Sigma^2y/\E u_n(0)`.
+import Sandpile.Support.Dgt4AStep3Good
+import Sandpile.Support.Dgt4AConditionVar
+import Sandpile.Support.Dgt4ACorrGap
 
-In the splitting of `Support/Dgt4ACondition.lean` the conditioned value is
-`V_\infty(0)=\sqrt v\,s\,\|G(0,\cdot)\|`, so the paper's level `y` is the level
-`s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sigma` of that splitting, which is `condLevel` below.
-At that level the field at the origin is deterministic, which is
-`ae_infiniteGreenField_condLevel`, and the exceptional set of
+/-!
+# The conditioning level of Steps 3 and 4 of case (a)
+
+The conditioning level of Steps 3 and 4 of case (a) (`sandpile.tex:5133-5140`):
+`-V_\infty(0)=\E u_n(0)+\Sigma^2y/\E u_n(0)`. In the splitting of
+`Support/Dgt4ACondition.lean` the conditioned value is `V_\infty(0)=\sqrt v\,s\,\|G(0,\cdot)\|`,
+so the paper's level `y` is the level `s=-(\E u_n(0)+\Sigma^2y/\E u_n(0))/\Sigma` of that
+splitting, which is `condLevel` below. At that level the field at the origin is
+deterministic, which is `ae_infiniteGreenField_condLevel`, and the exceptional set of
 `eq:dgt4-gaussian-positive-off-origin` is `condBad`, whose probability tends to zero by the
 union bound of `Support/Dgt4ACondTail.lean` and the arithmetic of
 `Support/Dgt4AStep3Good.lean`.
 -/
-import Sandpile.Support.Dgt4AStep3Good
-import Sandpile.Support.Dgt4AConditionVar
-import Sandpile.Support.Dgt4ACorrGap
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal
@@ -39,6 +40,9 @@ noncomputable def condLevel (d : ℕ) (hd : 5 ≤ d) (v : ℝ≥0) (y : ℝ) (n 
       + (fieldVar d v : ℝ) * y / meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n)
     / (Real.sqrt (v : ℝ) * ‖greenLp d hd (0 : Site d)‖)
 
+/-- The defining identity of `condLevel`: multiplying it back by `\sqrt v` and
+`\|G(0,\cdot)\|` recovers `-(\E u_n(0)+\Sigma^2y/\E u_n(0))`, so `condLevel` is exactly the
+solution `s` of the splitting equation. -/
 theorem condLevel_mul (hd : 5 ≤ d) {v : ℝ≥0} (hv : v ≠ 0) (y : ℝ) (n : ℕ) :
     Real.sqrt (v : ℝ) * condLevel d hd v y n * ‖greenLp d hd (0 : Site d)‖
       = -(meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n

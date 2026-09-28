@@ -1,21 +1,21 @@
-/-
-The analytic core of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
-(`sandpile.tex:5383-5404`): a regularly varying antitone function may be evaluated at
-a random argument concentrated at a deterministic level, up to a relative error
-tending to zero.
-
-The paper states it twice, once for the integrated lower tail
-(`eq:dgt4-rv-mean-tail-replacement`) and once for the lower tail itself
-(`eq:dgt4-rv-contact-tail-replacement`), and proves both the same way: on the event
-where the random argument is at least a fixed fraction of the level the ratio is
-bounded and converges to one in probability, and the complementary event has
-probability `o(F(a_n))` by Step 1.  Both instances are `tendsto_integral_abs_ratio` below,
-whose proof uses only the DEFINITION of regular variation, at the three fixed ratios
-`\theta`, `1-\eta` and `1+\eta`, together with the monotonicity of `F`; Potter's bounds
-are not needed, because monotonicity already squeezes `F` at a nearby argument between its
-values at the two fixed ratios.
--/
 import Sandpile.Support.Dgt4CaseBPassage
+
+/-!
+# Regularly varying replacement at a concentrated random level
+
+The analytic core of Step 2 of case (b) of `prop:dgt4-contact-asymptotics`
+(`sandpile.tex:5383-5404`): a regularly varying antitone function may be evaluated at a random
+argument concentrated at a deterministic level, up to a relative error tending to zero.
+
+The paper states it twice, once for the integrated lower tail (`eq:dgt4-rv-mean-tail-replacement`)
+and once for the lower tail itself (`eq:dgt4-rv-contact-tail-replacement`), and proves both the
+same way: on the event where the random argument is at least a fixed fraction of the level the
+ratio is bounded and converges to one in probability, and the complementary event has probability
+`o(F(a_n))` by Step 1. Both instances are `tendsto_integral_abs_ratio` below, whose proof uses
+only the DEFINITION of regular variation, at the three fixed ratios `\theta`, `1-\eta` and
+`1+\eta`, together with the monotonicity of `F`; Potter's bounds are not needed, because
+monotonicity already squeezes `F` at a nearby argument between its values at the two fixed ratios.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 

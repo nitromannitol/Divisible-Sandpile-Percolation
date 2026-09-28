@@ -1,9 +1,13 @@
-/-
-The floor-to-continuum passage of Step 2 of `thm:dgt4-many-limits`
-(`sandpile.tex:6245-6250`): `⌊t R²⌋/R² → t` as `R → ∞`, uniformly for `t` in a
-compact interval.
--/
 import Mathlib
+
+/-!
+# The floor-to-continuum passage
+
+The floor-to-continuum passage of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6245-6250`):
+`⌊t R²⌋/R² → t` as `R → ∞`, uniformly for `t` in a compact interval `[δ,T]`
+(`tendsto_floor_mul_div`), obtained by squeezing the pointwise error `|⌊tR²⌋/R² - t|` between
+`0` and `1/R²` using `Nat.floor_le` and `Nat.lt_floor_add_one`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

@@ -1,11 +1,13 @@
-/-
+import LatticeProb.Prob.SubGaussian
+
+/-! # Power Moments from an Exponential Moment
+
 An exponential moment gives every power moment.  The tightness clause of
 `prop:dlt4-heat-potential-invariance` carries the exponential moment
 `∫ exp (θ₀ |z|) ∂ν < ∞` of the paper's hypothesis, while the quantitative
 Kolmogorov criterion asks for `∫ |z|^p ∂ν < ∞` for one `p > 2`; this module
 supplies the passage, which is the elementary bound `|z|^p ≤ C exp (θ₀ |z|)`.
 -/
-import LatticeProb.Prob.SubGaussian
 
 open MeasureTheory ProbabilityTheory
 

@@ -1,6 +1,10 @@
-/-
-The passage from the two displays of Step 1 of `lem:dgt4-linearization-from-survival`
-to `eq:dgt4-derivative-variance-limit` (`sandpile.tex:5769-5783`).
+import Mathlib
+
+/-! # Derivative Variance Limit
+
+The passage from the two displays of Step 1 of
+`lem:dgt4-linearization-from-survival` to `eq:dgt4-derivative-variance-limit`
+(`sandpile.tex:5769-5783`).
 
 The paper combines the early display `eq:dgt4-early-derivative-variance` and the
 late display `eq:dgt4-late-derivative-variance` by
@@ -12,7 +16,6 @@ lets `δ → 0`.  The two lemmas below are that passage: the limsup bound from t
 two displays, and the elementary fact that a nonnegative quantity whose limsup is
 at most `2Cδ²` for every `δ > 0` tends to zero.
 -/
-import Mathlib
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,24 +1,25 @@
-/-
-The lattice side of the hypothesis `hQlim` of
-`Sandpile.Support.heat_potential_fd_of_coeff`: the sums of squares of the
-coefficients of the rescaled linear field, written as an exact double time sum
-of transition probabilities.
+import Sandpile.Support.ContWeightedCoeff
+import Sandpile.Support.ContInterpSmall
+
+/-!
+# Fubini for the doubled interpolation coefficients
+
+The lattice side of the hypothesis `hQlim` of `Sandpile.Support.heat_potential_fd_of_coeff`: the
+sums of squares of the coefficients of the rescaled linear field, written as an exact double time
+sum of transition probabilities.
 
 The identity behind it is Fubini for the two walk times, with no error term:
 
   `∑_z g_k(x,z) g_{k'}(y,z) = ∑_{m<k} ∑_{n<k'} p_{m+n}(x,y)`,
 
-the two-horizon form of `tsum_weightedKernel_mul_weightedKernel`.  The
-coefficient `interpCoeff` is a finite combination, over the `2^d` corners of the
-mesh cell and the two mesh times, of the rescaled truncated Green kernels, so
-the doubled coefficient sum is the same finite combination of double time sums,
-with the prefactor `R^{d-4}`.  What is left for the local central limit theorem
-is then a statement about `R^{d-4} ∑_{m<⌊R^2 r⌋} ∑_{n<⌊R^2 r'⌋} p_{m+n}(x,y)`
-alone, which `ssec:green-estimates` compares with the continuum double time
-integral of `prop:dlt4-heat-potential-invariance`.
+the two-horizon form of `tsum_weightedKernel_mul_weightedKernel`. The coefficient `interpCoeff` is a
+finite combination, over the `2^d` corners of the mesh cell and the two mesh times, of the rescaled
+truncated Green kernels, so the doubled coefficient sum is the same finite combination of double
+time sums, with the prefactor `R^{d-4}`. What is left for the local central limit theorem is then a
+statement about `R^{d-4} ∑_{m<⌊R^2 r⌋} ∑_{n<⌊R^2 r'⌋} p_{m+n}(x,y)` alone, which is what
+`ssec:green-estimates` compares with the continuum double time integral of
+`prop:dlt4-heat-potential-invariance`.
 -/
-import Sandpile.Support.ContWeightedCoeff
-import Sandpile.Support.ContInterpSmall
 
 open MeasureTheory Filter Topology
 
@@ -64,6 +65,8 @@ noncomputable def cornerWeight (d : ℕ) (R : ℝ) (w : Space d) (ε : Fin d →
 noncomputable def cornerSite (d : ℕ) (R : ℝ) (w : Space d) (ε : Fin d → Bool) : Site d :=
   fun i => ⌊R * w i⌋ + if ε i then 1 else 0
 
+/-- Unfolding lemma for `cornerSite`: the corner indexed by `ε` is the site whose `i`-th
+coordinate is `⌊R w i⌋` shifted up by one wherever `ε i` holds. -/
 theorem cornerSite_def (d : ℕ) (R : ℝ) (w : Space d) (ε : Fin d → Bool) :
     cornerSite d R w ε = fun i => ⌊R * w i⌋ + if ε i then 1 else 0 := rfl
 
@@ -82,6 +85,9 @@ noncomputable def interpTermWeight (d : ℕ) (R r : ℝ) (w : Space d)
     (p : (Fin d → Bool) × Bool) : ℝ :=
   cornerWeight d R w p.1 * timeWeight R r p.2
 
+/-- `interpCoeff` expanded as the finite sum, over the `2^d` mesh corners and the two mesh
+times, of `interpTermWeight` times the rescaled truncated Green kernel from the corresponding
+corner and time index. -/
 theorem interpCoeff_eq_sum (d : ℕ) (R r : ℝ) (w : Space d) (y : Site d) :
     interpCoeff d R r w y
       = ∑ p : (Fin d → Bool) × Bool, interpTermWeight d R r w p *
@@ -93,6 +99,10 @@ theorem interpCoeff_eq_sum (d : ℕ) (R r : ℝ) (w : Space d) (y : Site d) :
   simp only [interpTermWeight, cornerWeight, cornerSite_def, timeWeight, timeIndex]
   ring
 
+/-- The sum over all sites of the product of two interpolation coefficients, expanded via
+`interpCoeff_eq_sum` and `tsum_greenTime_mul_greenTime` into a finite double sum, over the
+corner-time pairs of each coefficient, of a double time sum of the heat kernel between the
+two corners. -/
 theorem tsum_interpCoeff_mul (d : ℕ) {R : ℝ} (hR : 0 < R) (r r' : ℝ) (w w' : Space d) :
     ∑' y : Site d, interpCoeff d R r w y * interpCoeff d R r' w' y
       = ∑ p : (Fin d → Bool) × Bool, ∑ q : (Fin d → Bool) × Bool,
@@ -131,6 +141,9 @@ theorem tsum_interpCoeff_mul (d : ℕ) {R : ℝ} (hR : 0 < R) (r r' : ℝ) (w w'
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [tsum_mul_left, tsum_mul_left, tsum_greenTime_mul_greenTime]
 
+/-- `interpCoeff` vanishes outside any finite set `s` that contains the box of radius
+`⌊R^2 r⌋ + 1` around every mesh corner, since each summand's Green kernel is supported (by
+`Sandpile.greenTime_support`) in exactly such a box around its own corner. -/
 theorem interpCoeff_eq_zero_of_notMem (d : ℕ) (R r : ℝ) (w : Space d) {s : Finset (Site d)}
     (hs : ∀ ε : Fin d → Bool,
       Sandpile.boxFinset (cornerSite d R w ε) (⌊R ^ 2 * r⌋₊ + 1) ⊆ s)
@@ -147,6 +160,10 @@ theorem interpCoeff_eq_zero_of_notMem (d : ℕ) (R r : ℝ) (w : Space d) {s : F
   rw [hg]
   ring
 
+/-- The finite sum, over an enumeration of a box `s` large enough to contain the support of
+`interpCoeff d R r w`, of the product of two interpolation coefficients equals the sum over all
+sites: outside `s` the coefficient at `w` vanishes by `interpCoeff_eq_zero_of_notMem`, so the
+finite and infinite sums agree. -/
 theorem sum_siteEnum_interpCoeff_mul (d : ℕ) (R r r' : ℝ) (w w' : Space d)
     {s : Finset (Site d)}
     (hs : ∀ ε : Fin d → Bool,
@@ -243,6 +260,8 @@ theorem sum_interpTermWeight (d : ℕ) (R r : ℝ) (w : Space d) :
     rw [← Finset.mul_sum, sum_timeWeight, mul_one]
   rw [Finset.sum_congr rfl fun ε _ => h ε, sum_cornerWeight]
 
+/-- Each interpolation term weight, the product of a `cornerWeight` and a `timeWeight`, is
+nonnegative, by `cornerWeight_nonneg` and `timeWeight_nonneg`. -/
 theorem interpTermWeight_nonneg {R r : ℝ} (hR : 0 < R) (hr : 0 ≤ r) (d : ℕ) (w : Space d)
     (p : (Fin d → Bool) × Bool) : 0 ≤ interpTermWeight d R r w p :=
   mul_nonneg (cornerWeight_nonneg d R w p.1) (timeWeight_nonneg hR hr p.2)

@@ -1,28 +1,34 @@
-/-
+import Sandpile.Support.Dgt4ABandLaw
+import Sandpile.Support.Dgt4ABandWeights
+
+/-!
+# The scenery-side increment replacement and contact error of Step 2
+
 The scenery side of the increment replacement and the contact error of Step 2 of
 `thm:dgt4-many-limits` (`eq:dgt4-band-increment-replacement` and
 `eq:dgt4-band-contact-error`, `sandpile.tex:6171-6195`).
 
-Both estimates compare the threshold at the random level `W_n = Pw_n(0)` with the
-threshold at the deterministic level `b_n = E u_n(0)/G(0,0)`.  Conditionally on
-`W_n`, which is independent of `ζ(0)`, each comparison is between two
-DETERMINISTIC levels, and that is what is proved here:
+Both estimates compare the threshold at the random level `W_n = Pw_n(0)` with the threshold
+at the deterministic level `b_n = E u_n(0)/G(0,0)`. Conditionally on `W_n`, which is
+independent of `ζ(0)`, each comparison is between two DETERMINISTIC levels, and that is what
+is proved here:
 
-* the mean overshoot is `1`-Lipschitz in the level and does not move at all
-  below the lower of the two levels (`abs_integral_posPart_sub_le`), which is the
-  paper's sentence "the `1`-Lipschitz dependence of `(ξ-w)_+` on `w`";
+* the mean overshoot is `1`-Lipschitz in the level and does not move at all below the lower
+  of the two levels (`abs_integral_posPart_sub_le`, built from `abs_posPart_sub_le` and
+  `posPart_sub_eq_zero`), which is the paper's sentence "the `1`-Lipschitz dependence of
+  `(ξ-w)_+` on `w`";
 * the two threshold events differ by a set whose mass the band density bound
   `eq:dgt4-band-density` controls, once both levels are above `ℓ_1 a_k`
-  (`measure_symmDiff_threshold_le`);
+  (`measure_symmDiff_threshold_le`, `eventually_measure_symmDiff_threshold_le`,
+  `measure_band_le`);
 * the mass above `ℓ_1 a_k` is `(1+η)ω_k` by the band profile at `r = 1`
-  (`measure_gt_band_bottom_le`), which is where the factor `ω_k` in the second
-  term of `eq:dgt4-band-increment-replacement` comes from.
+  (`measure_gt_band_bottom_le`), which is where the factor `ω_k` in the second term of
+  `eq:dgt4-band-increment-replacement` comes from.
 
-The levels below `ℓ_1 a_k`, where these bounds do not apply, are the ones the
-origin-fixed lower tail `eq:dgt4-band-origin-fixed-lower-tail` excludes.
+`measure_symmDiff_threshold_split` combines all three pieces at a level `b` in the band and an
+arbitrary second level `w`. The levels below `ℓ_1 a_k`, where these bounds do not apply, are
+the ones the origin-fixed lower tail `eq:dgt4-band-origin-fixed-lower-tail` excludes.
 -/
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABandWeights
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -37,6 +43,8 @@ theorem thresholdSet_eq_Iio (c : ℝ) : {z : ℝ | -(z) > c} = Iio (-c) := by
   simp only [mem_setOf_eq, mem_Iio, gt_iff_lt]
   constructor <;> intro h <;> linarith
 
+/-- The threshold event `{-z > c}` is measurable, being the preimage `thresholdSet_eq_Iio`
+identifies with the measurable set `Iio (-c)`. -/
 theorem measurableSet_thresholdSet (c : ℝ) : MeasurableSet {z : ℝ | -(z) > c} := by
   rw [thresholdSet_eq_Iio]
   exact measurableSet_Iio

@@ -1,21 +1,27 @@
-/-
-**`eq:dgt4-gaussian-covariance-sampling`** (`sandpile.tex:5115-5123`): "Since
-`(I-P)\Cov(V_\infty(\cdot),V_\infty(0))(x)=\Var(\zeta(0))G(x,0)\geq0`, optional stopping
-gives `0\leq\E_x\Cov(V_\infty(X_\tau),V_\infty(0))\leq\Cov(V_\infty(x),V_\infty(0))` for every
-stopping time `\tau`."
-
-`Support/Dgt4ACovSuper.lean` proved the superharmonicity.  The optional stopping is a
-corollary of the Poisson identity `integral_stopped_poisson` of `Support/ExitGreen.lean`,
-which holds at every field with no growth hypothesis: the stopped value plus the sum of
-`(I-P)f` along the path is the value at the start, and the sum is nonnegative exactly when
-`f` is superharmonic.  The lower bound is the nonnegativity of the Green covariance.
-
-The covariance is also bounded, uniformly in the site: the Cauchy-Schwarz inequality in
-`\ell^2` and the translation invariance `G(x,z)=G(0,z-x)` give
-`\sum_zG(x,z)G(0,z)\leq\sum_zG(0,z)^2`, which is what makes every integral here finite.
--/
 import Sandpile.Support.Dgt4ACovSuper
 import Sandpile.Support.ExitGreen
+
+/-!
+# Optional stopping for the Green covariance
+
+**`eq:dgt4-gaussian-covariance-sampling`** (`sandpile.tex:5115-5123`): "Since
+`(I-P)\Cov(V_\infty(\cdot),V_\infty(0))(x)=\Var(\zeta(0))G(x,0)\geq0`, optional stopping gives
+`0\leq\E_x\Cov(V_\infty(X_\tau),V_\infty(0))\leq\Cov(V_\infty(x),V_\infty(0))` for every
+stopping time `\tau`."
+
+`Support/Dgt4ACovSuper.lean` proved the superharmonicity. The optional stopping
+(`integral_stopped_super_le`) is a corollary of the Poisson identity
+`integral_stopped_poisson` of `Support/ExitGreen.lean`, which holds at every field with no
+growth hypothesis: the stopped value plus the sum of `(I-P)f` along the path is the value at
+the start, and the sum is nonnegative exactly when `f` is superharmonic. The lower bound is
+the nonnegativity of the Green covariance (`greenCovariance_nonneg`).
+
+The covariance is also bounded, uniformly in the site (`greenCovariance_le`): the
+Cauchy-Schwarz inequality in `\ell^2` and the translation invariance `G(x,z)=G(0,z-x)`
+(`norm_greenLp_eq`) give `\sum_zG(x,z)G(0,z)\leq\sum_zG(0,z)^2`, which is what makes every
+integral here finite. `integral_stopped_greenCovariance_le` and
+`integrable_stopped_greenCovariance` package these facts into the display above.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

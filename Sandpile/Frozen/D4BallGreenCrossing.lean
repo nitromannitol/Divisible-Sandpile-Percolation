@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.BallCrossingDefinitions
+import Sandpile.Support.D4CrossingAssembly
+import Sandpile.External.BallGreenBoundsProved
+
+/-!
+# Uniform ball-killed Green crossing estimate in dimension four
+
 Theorem of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3575-3596`
 (label `thm:d4-ball-green-crossing`):
 
@@ -69,14 +75,9 @@ The proof uses the planar RSW theorem of Kohler-Schindler–Tassion (cited at
 RSW framework at `sandpile.tex:661-663`) for the rectangle extension of the
 Gaussian far field, so it enters as the explicit hypothesis `hRSW`.
 -/
-import Sandpile.Support.BallCrossingDefinitions
-import Sandpile.Support.D4CrossingAssembly
-import Sandpile.External.BallGreenBoundsProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
-
-
 
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.d4_ball_green_crossing

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.CrossBlockField
+import Sandpile.Support.CrossPath
+
+/-!
+# Squares of the exploration and the cells they carry
+
 The unit squares of the plane that the exploration of Step 2 processes
 (`sandpile.tex:2255-2268`), and the cells of `ℤ^d` a square carries.
 
@@ -9,8 +14,6 @@ ball field at every point of a square neighbouring `z`.  The two containments pr
 `nearSites_subset_blockSites` and `sqAdj_segPt`, are what make the field on a step of the
 exploration measurable for the cells the exploration has revealed.
 -/
-import Sandpile.Support.CrossBlockField
-import Sandpile.Support.CrossPath
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -20,14 +23,17 @@ namespace Sandpile.Support
 /-- The site of the unit mesh of `ℤ²` whose half-open square contains `u`. -/
 noncomputable def sqOf (u : Space 2) : Sandpile.Site 2 := fun i => ⌊u i⌋
 
+/-- Unfolds `sqOf`: its `i`-th coordinate is `⌊u i⌋`. -/
 theorem sqOf_apply (u : Space 2) (i : Fin 2) : sqOf u i = ⌊u i⌋ := rfl
 
 /-- Two squares are neighbours when their sites differ by at most one in each coordinate. -/
 def sqAdj (z z' : Sandpile.Site 2) : Prop := ∀ i, |z i - z' i| ≤ 1
 
+/-- `sqAdj` is reflexive. -/
 theorem sqAdj_refl (z : Sandpile.Site 2) : sqAdj z z := by
   intro i; simp
 
+/-- `sqAdj` is symmetric. -/
 theorem sqAdj_symm {z z' : Sandpile.Site 2} (h : sqAdj z z') : sqAdj z' z := by
   intro i
   rw [abs_sub_comm]
@@ -47,8 +53,10 @@ theorem sqAdj_sqOf {u v : Space 2} (h : ∀ i, |u i - v i| < 1) : sqAdj (sqOf u)
   rw [abs_le, sqOf_apply, sqOf_apply]
   omega
 
+/-- The lower corner of the square `sqOf u` is at most `u` in every coordinate. -/
 theorem sqOf_mem_le {u : Space 2} (i : Fin 2) : ((sqOf u i : ℤ) : ℝ) ≤ u i := Int.floor_le _
 
+/-- `u` lies strictly below the upper corner of the square `sqOf u` in every coordinate. -/
 theorem sqOf_lt {u : Space 2} (i : Fin 2) : u i < ((sqOf u i : ℤ) : ℝ) + 1 :=
   Int.lt_floor_add_one _
 
@@ -65,6 +73,8 @@ field at every point of every neighbouring square. -/
 noncomputable def blockSites (d : ℕ) (z : Sandpile.Site 2) : Finset (Sandpile.Site d) :=
   Finset.Icc (blockLo d z) (blockHi d z)
 
+/-- A cell lies in `blockSites d z` iff it lies between `blockLo d z` and `blockHi d z`
+in every coordinate. -/
 theorem mem_blockSites {d : ℕ} {z : Sandpile.Site 2} {x : Sandpile.Site d} :
     x ∈ blockSites d z ↔ ∀ i, blockLo d z i ≤ x i ∧ x i ≤ blockHi d z i := by
   rw [blockSites, Finset.mem_Icc]
@@ -72,6 +82,8 @@ theorem mem_blockSites {d : ℕ} {z : Sandpile.Site 2} {x : Sandpile.Site d} :
   · rintro ⟨h1, h2⟩ i; exact ⟨h1 i, h2 i⟩
   · intro h; exact ⟨fun i => (h i).1, fun i => (h i).2⟩
 
+/-- Unfolds `planePoint`: its `i`-th coordinate is the corresponding coordinate of `u`
+when `i < 2`, and `0` otherwise. -/
 theorem planePoint_apply {d : ℕ} (u : Space 2) (i : Fin d) :
     (planePoint (d := d) u) i = if h : (i : ℕ) < 2 then u ⟨(i : ℕ), h⟩ else 0 := rfl
 
@@ -141,6 +153,8 @@ theorem sqAdj_segPt {p p' : Space 2} (h : sqAdj (sqOf p) (sqOf p')) (t : ℝ)
 noncomputable def rectSq (a b : Fin 2 → ℝ) : Finset (Sandpile.Site 2) :=
   Finset.Icc (fun i => ⌊a i⌋) (fun i => ⌊b i⌋)
 
+/-- A point of the rectangle lies in the square its `sqOf` value records among
+`rectSq a b`. -/
 theorem sqOf_mem_rectSq {a b : Fin 2 → ℝ} {u : Space 2} (hu : u ∈ rectSet a b) :
     sqOf u ∈ rectSq a b := by
   rw [rectSq, Finset.mem_Icc]
@@ -150,6 +164,7 @@ theorem sqOf_mem_rectSq {a b : Fin 2 → ℝ} {u : Space 2} (hu : u ∈ rectSet 
   · intro i
     exact Int.floor_le_floor (hu i).2
 
+/-- `rectSq a b` is nonempty as soon as `a i < b i` for a genuine rectangle. -/
 theorem rectSq_nonempty {a b : Fin 2 → ℝ} (hab : ∀ i, a i < b i) : (rectSq a b).Nonempty := by
   refine ⟨fun i => ⌊a i⌋, ?_⟩
   rw [rectSq, Finset.mem_Icc]
@@ -159,10 +174,14 @@ theorem rectSq_nonempty {a b : Fin 2 → ℝ} (hab : ∀ i, a i < b i) : (rectSq
 noncomputable def allSites (d : ℕ) (a b : Fin 2 → ℝ) : Finset (Sandpile.Site d) :=
   (rectSq a b).biUnion (fun z => blockSites d z)
 
+/-- The cells a square carries are among the cells the rectangle's exploration can reveal,
+once the square itself meets the rectangle. -/
 theorem blockSites_subset_allSites {d : ℕ} {a b : Fin 2 → ℝ} {z : Sandpile.Site 2}
     (hz : z ∈ rectSq a b) : blockSites d z ⊆ allSites d a b :=
   fun _ hx => Finset.mem_biUnion.mpr ⟨z, hz, hx⟩
 
+/-- Every square's block of cells is nonempty: the lower corner `blockLo d z` itself
+lies in `blockSites d z`. -/
 theorem blockSites_nonempty (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).Nonempty := by
   refine ⟨blockLo d z, ?_⟩
   rw [mem_blockSites]
@@ -173,6 +192,8 @@ theorem blockSites_nonempty (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).N
   · rw [dif_pos hi, dif_pos hi]; omega
   · rw [dif_neg hi, dif_neg hi]; omega
 
+/-- `allSites d a b` is nonempty for a genuine rectangle, combining `rectSq_nonempty` and
+`blockSites_nonempty`. -/
 theorem allSites_nonempty (d : ℕ) {a b : Fin 2 → ℝ} (hab : ∀ i, a i < b i) :
     (allSites d a b).Nonempty := by
   obtain ⟨z, hz⟩ := rectSq_nonempty hab

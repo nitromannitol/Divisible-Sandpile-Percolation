@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossTranslate
+
+/-!
+# Crossing scale and dilation invariance
+
 The crossing scale `b(s)` of `sandpile.tex:2089-2098` and the dilation of a
 planar crossing, which is the deterministic half of the rescaled crossing
 estimate `sandpile.tex:2394-2402`:
@@ -19,7 +23,6 @@ both dimensions `b(s)/κ(s) = s = h/R`, which is why one and the same level
 survives a dilation of the plane, and survives multiplication of the field and
 the level by a common positive factor.
 -/
-import Sandpile.Support.CrossTranslate
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal
@@ -33,6 +36,7 @@ dimension three. -/
 noncomputable def crossScale (d : ℕ) (s : ℝ) : ℝ :=
   if d = 2 then s ^ 2 else s ^ (3 / 2 : ℝ)
 
+/-- `crossScale d s` is positive whenever `s` is, in either dimension case. -/
 theorem crossScale_pos {d : ℕ} {s : ℝ} (hs : 0 < s) : 0 < crossScale d s := by
   unfold crossScale
   split_ifs with h
@@ -44,6 +48,7 @@ dimension two, `√s` in dimension three. -/
 noncomputable def fieldScale (d : ℕ) (s : ℝ) : ℝ :=
   if d = 2 then s else Real.sqrt s
 
+/-- `fieldScale d s` is positive whenever `s` is, in either dimension case. -/
 theorem fieldScale_pos {d : ℕ} {s : ℝ} (hs : 0 < s) : 0 < fieldScale d s := by
   unfold fieldScale
   split_ifs with h

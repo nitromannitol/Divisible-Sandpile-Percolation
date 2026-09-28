@@ -1,28 +1,27 @@
-/-
-Brownian motion on `ℝ^d`, started at every point of space at once on one
-probability space, with EVERY path continuous and with strongly measurable
-values at each time.
-
-`Sandpile.Continuum.exists_isBrownian` produces the family with the three
-clauses of `Sandpile.Continuum.IsBrownian`, and `IsBrownian` gives continuity of
-the paths only almost surely, through `IsBrownianReal.cont`.  The Brownian half
-of `thm:main-explosion`(i)(b) needs more: the reward is the Gaussian potential,
-which is unbounded on the strip, so the attainable stopped payoffs are bounded
-above and integrable only through an envelope built from the maximal
-displacement, whose measurability reads the path at every sample point.  The
-same two facts are what `lem:brownian-ball-localization` carries beside its
-`IsBrownian`.
-
-They are not an extra assumption on the motion.  The shared library proves
-Kolmogorov-Chentsov in the form that makes every path continuous, and the
-construction of the family is the one `exists_isBrownian` uses: `d` independent
-copies of a real motion with every path continuous, each scaled by `1/√d` and
-translated by the starting point.  Translating does not change the space, so one
-space carries the whole family, and continuity and measurability pass through the
-scaling and the translation coordinatewise.
--/
 import Sandpile.Continuum.BrownianExists
 import LatticeProb.Prob.BrownianContAll
+
+/-!
+# Brownian motion on `ℝ^d` with every path continuous
+
+Brownian motion on `ℝ^d`, started at every point of space at once on one probability space,
+with EVERY path continuous and with strongly measurable values at each time.
+
+`Sandpile.Continuum.exists_isBrownian` produces the family with the three clauses of
+`Sandpile.Continuum.IsBrownian`, and `IsBrownian` gives continuity of the paths only almost
+surely, through `IsBrownianReal.cont`. The Brownian half of `thm:main-explosion`(i)(b) needs
+more: the reward is the Gaussian potential, which is unbounded on the strip, so the attainable
+stopped payoffs are bounded above and integrable only through an envelope built from the maximal
+displacement, whose measurability reads the path at every sample point. The same two facts are
+what `lem:brownian-ball-localization` carries beside its `IsBrownian`.
+
+They are not an extra assumption on the motion. The shared library proves Kolmogorov-Chentsov in
+the form that makes every path continuous, and the construction of the family is the one
+`exists_isBrownian` uses: `d` independent copies of a real motion with every path continuous,
+each scaled by `1/√d` and translated by the starting point. Translating does not change the
+space, so one space carries the whole family, and continuity and measurability pass through the
+scaling and the translation coordinatewise.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

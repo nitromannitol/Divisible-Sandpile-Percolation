@@ -1,16 +1,18 @@
-/-
-Step 1 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3341-3366`): the
-membrane part `V_{t_R}` converges to `𝒢_4^ω` at the superdiffusive times
-`t_R = ⌊R^α⌋`.
-
-The cited convergence of the discrete membrane field to the continuum membrane
-field is `Sandpile.External.MembraneScalingLimitFour`, which carries an `ℓ²`
-hypothesis on the truncation.  That hypothesis is the paper's own new point,
-"the time truncation in `V_{t_R}` washes out at superdiffusive times", and it is
-proved here, not assumed: `Sandpile.tendsto_tsum_sq_membraneDefect`.  What is
-left is to put the two together.
--/
 import Sandpile.Support.D4DefectBound
+
+/-!
+# Step 1 of the superdiffusive limit: the membrane part
+
+Step 1 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3341-3366`): the membrane part
+`V_{t_R}` converges to `𝒢_4^ω` at the superdiffusive times `t_R = ⌊R^α⌋`.
+
+The cited convergence of the discrete membrane field to the continuum membrane field is
+`Sandpile.External.MembraneScalingLimitFour`, which carries an `ℓ²` hypothesis on the
+truncation. That hypothesis is the paper's own new point, "the time truncation in `V_{t_R}`
+washes out at superdiffusive times", and it is proved here, not assumed:
+`Sandpile.tendsto_tsum_sq_membraneDefect`. What is left, done by `d4_superdiffusive_step1`,
+is to put the two together.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

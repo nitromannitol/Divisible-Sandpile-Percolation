@@ -1,4 +1,14 @@
-/-
+import Sandpile.Support.ContValueMeasurable
+import Sandpile.Support.ContValueClamp
+import Sandpile.Support.MainExplBrownCutoff
+import Sandpile.Support.MeanAValue
+import Sandpile.Support.ExplBallBound
+import Sandpile.Support.ExplBallReward
+import Sandpile.Support.ExplBrownianEnvelope
+import Sandpile.Support.StopMeasurable
+
+/-! # Cutoff-weighted Brownian value measurability
+
 Measurability of the true (unclamped) Brownian value in the white-noise sample,
 for a reward of polynomial growth, as used in clause 1 of
 `thm:main-explosion`(i)(b).
@@ -17,14 +27,6 @@ into that box rather than cut off at its boundary (so the composite stays
 `Sandpile.Continuum.integrable_stopped_reward_of_envelope` at growth exponent
 zero, rather than assumed.
 -/
-import Sandpile.Support.ContValueMeasurable
-import Sandpile.Support.ContValueClamp
-import Sandpile.Support.MainExplBrownCutoff
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ExplBallBound
-import Sandpile.Support.ExplBallReward
-import Sandpile.Support.ExplBrownianEnvelope
-import Sandpile.Support.StopMeasurable
 
 open MeasureTheory ProbabilityTheory Filter Topology Set Metric
 open scoped NNReal ENNReal
@@ -92,6 +94,9 @@ noncomputable def retractReward (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     ⟨(Set.projIcc 0 T hT t).2, by
       simpa only [Metric.mem_closedBall, dist_zero_right] using norm_ballRetract_le L hL z⟩⟩
 
+/-- `retractReward T L hT hL v` is continuous on all of `ℝ × Space d`: it is the composite
+of `v`, continuous on the box, with the jointly continuous projection-and-retraction map
+into that box. -/
 theorem continuous_retractReward (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     (v : C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L, ℝ)) :
     Continuous (fun q : ℝ × Space d => retractReward T L hT hL v q.1 q.2) := by
@@ -107,6 +112,9 @@ theorem continuous_retractReward (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
       simpa only [Metric.mem_closedBall, dist_zero_right] using norm_ballRetract_le L hL q.2⟩
   exact v.continuous.comp (hc1.subtype_mk hmem)
 
+/-- `retractReward T L hT hL v` agrees with `v` at any point already inside the box
+`[0,T] × closedBall 0 L`, since both `Set.projIcc` and `ballRetract` fix the points of
+their target set. -/
 theorem retractReward_eq_of_mem (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     (v : C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L, ℝ))
     (t : ℝ) (ht : t ∈ Set.Icc (0:ℝ) T) (z : Space d) (hz : z ∈ Metric.closedBall (0 : Space d) L) :
@@ -120,12 +128,16 @@ theorem retractReward_eq_of_mem (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     rw [h1]
   simp only [h1', h2]
 
+/-- The retracted reward is bounded by the sup norm `‖v‖` of `v` on the box, since it is
+just `v` evaluated at a point of the box. -/
 theorem norm_retractReward_le (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     (v : C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L, ℝ))
     (t : ℝ) (z : Space d) : ‖retractReward T L hT hL v t z‖ ≤ ‖v‖ := by
   unfold retractReward
   exact ContinuousMap.norm_coe_le_norm v _
 
+/-- Two rewards retracted from `v` and `w` differ pointwise by at most the sup distance
+`dist v w` of `v` and `w` on the box. -/
 theorem dist_retractReward_le (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
     (v w : C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L, ℝ))
     (t : ℝ) (z : Space d) :
@@ -466,7 +478,8 @@ theorem abs_brownianValue_cutoff_sub_le_of_growth
       (Filter.Eventually.of_forall fun _ vv hvvT z => ?_)
     rw [Real.norm_eq_abs]
     exact hgrow2 ((vv : ℝ), z) ⟨⟨vv.coe_nonneg, hvvT⟩, Set.mem_univ _⟩
-  have hbdd' : BddAbove (stoppingPayoffs B PB (fun t z => Sandpile.Continuum.cutoff A z * h t z) T) :=
+  have hbdd' :
+      BddAbove (stoppingPayoffs B PB (fun t z => Sandpile.Continuum.cutoff A z * h t z) T) :=
     bddAbove_stoppingPayoffs_cutoff_field B PB x hB hBmM hBc T A hT hApos h hc
   obtain ⟨D, hDint, hDdom⟩ := exists_brownian_envelope_of_polynomial_growth hB hBmM hBc h
     T.toNNReal ((n : ℝ) * (1 + (n : ℝ)) ^ (n : ℕ)) (by positivity) n
@@ -559,8 +572,9 @@ theorem tendsto_brownianValue_cutoff_of_growth
 
 /-- **The Brownian value of a field of almost-everywhere polynomial growth, almost surely
 continuous on the strip, is almost-everywhere measurable in the white-noise sample.** This is
-the measurability assertion used in clause 1 of `thm:main-explosion`(i)(b): the cutoff values converge to
-the true value along a countable sequence of radii (`tendsto_brownianValue_cutoff_of_growth`),
+the measurability assertion used in clause 1 of `thm:main-explosion`(i)(b): the cutoff values
+converge to the true value along a countable sequence of radii
+(`tendsto_brownianValue_cutoff_of_growth`),
 and each cutoff value is measurable (`aemeasurable_brownianValue_cutoff`), so Mathlib's closure
 of `AEMeasurable` under an almost-everywhere pointwise limit along a sequence gives the result. -/
 theorem aemeasurable_brownianValue_of_growth

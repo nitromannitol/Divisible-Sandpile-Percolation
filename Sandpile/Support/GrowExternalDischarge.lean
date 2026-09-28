@@ -1,29 +1,25 @@
-/-
-**The polynomial growth of the continuous version of the Gaussian heat
-potential, proved rather than assumed.**
-
-Until this module, `sandpile.tex:1019-1021`'s sentence "this field has a
-locally continuous modification, and throughout `Z` denotes that version" was
-split in two: the modification and its continuity were constructed
-(`Sandpile.Support.exists_continuous_version`), and its polynomial growth on
-each strip was the external input `Sandpile.External.ContinuousVersionGrowth`
-(Adler and Taylor, *Random Fields and Geometry*, Theorem 2.1.1).  That growth
-is now proved, so the External is discharged: its file and manifest entry are
-removed, and every consumer is re-registered without the hypothesis.
-
-`exists_ae_linear_envelope` (`GrowLatticeEnvelope.lean`) gives the growth bound
-for ONE continuous version `Y`, built by
-`exists_version_continuous_on_strip_meas`.  The statement below is for an
-ARBITRARY field `Z` that is a modification of the potential and almost surely
-continuous on the strip, exactly the form `ssec:scaling-dlt4` needs; two such
-fields are indistinguishable there
-(`ae_forall_eq_of_continuous_modifications`, `ExplFieldEvent.lean`), so the
-bound transfers from `Y` to `Z` without assuming anything about which version
-`Z` is.
--/
 import Sandpile.Support.GrowLatticeEnvelope
 import Sandpile.Support.GrowVersionMeasurable
 import Sandpile.Support.ExplFieldEvent
+
+/-!
+# The polynomial growth of the continuous Gaussian heat potential, proved not assumed
+
+Until this module, `sandpile.tex:1019-1021`'s sentence "this field has a locally continuous
+modification, and throughout `Z` denotes that version" was split in two: the modification and
+its continuity were constructed (`Sandpile.Support.exists_continuous_version`), and its
+polynomial growth on each strip was the external input
+`Sandpile.External.ContinuousVersionGrowth` (Adler and Taylor, *Random Fields and Geometry*,
+Theorem 2.1.1). That growth is now proved, so the External is discharged: its file and manifest
+entry are removed, and every consumer is re-registered without the hypothesis.
+
+`exists_ae_linear_envelope` (`GrowLatticeEnvelope.lean`) gives the growth bound for one
+continuous version `Y`, built by `exists_version_continuous_on_strip_meas`. The statement below
+is for an arbitrary field `Z` that is a modification of the potential and almost surely
+continuous on the strip, exactly the form `ssec:scaling-dlt4` needs; two such fields are
+indistinguishable there (`ae_forall_eq_of_continuous_modifications`, `ExplFieldEvent.lean`), so
+the bound transfers from `Y` to `Z` without assuming anything about which version `Z` is.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -67,7 +63,8 @@ theorem continuousVersionGrowth :
   have hG : ∀ᵐ ω ∂PW, Continuous fun e : ↥strip => G e ω := by
     refine Filter.Eventually.of_forall fun ω => ?_
     refine (hYcont ω).comp (continuous_subtype_val.fst.prodMk ?_)
-    exact (PiLp.lipschitzWith_ofLp 2 (fun _ : Fin d => ℝ)).continuous.comp continuous_subtype_val.snd
+    exact (PiLp.lipschitzWith_ofLp 2 (fun _ : Fin d => ℝ)).continuous.comp
+      continuous_subtype_val.snd
   have hmod : ∀ e : ↥strip, F e =ᵐ[PW] G e := by
     intro e
     have h1 := hZmod e.1.1 e.1.2

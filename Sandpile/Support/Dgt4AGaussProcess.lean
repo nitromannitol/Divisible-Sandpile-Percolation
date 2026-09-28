@@ -1,22 +1,17 @@
-/-
-The isonormal picture of `Support/LinGaussIso.lean` read as a Gaussian PROCESS, so
-that independence is available for infinite families and not only for the finite
-ones of `Support/Dgt4AGaussIndep.lean`.
-
-The conditioning of Step 2 of case (a) (`sandpile.tex:5105-5126`) splits the whole
-scenery, not finitely many of its coordinates, into the direction of the Green
-coefficients at the origin and a residual family, and needs the residual FIELD to
-be independent of that direction.  `IsGaussianProcess` is the right vocabulary:
-every finite-dimensional marginal of a family of isonormal images is Gaussian, by
-the Gram-matrix identification of `map_gaussIso_vector` transported along an
-equivalence with `Fin m`, so two families of isonormal images with orthogonal
-coefficients are independent as processes.
-
-`gaussIso_single` identifies the isonormal image of a unit coordinate family with
-that coordinate, which is what turns the abstract splitting into a statement about
-the scenery itself.
--/
 import Sandpile.Support.Dgt4AGaussIndep
+
+/-!
+# Families of isonormal images as a Gaussian process
+
+The isonormal picture of `Sandpile.Support.LinGaussIso` is reorganised here as a Gaussian
+process, so that independence is available for infinite index families and not only for the
+finite ones already treated. Every finite-dimensional marginal of a family of isonormal
+images `LatticeProb.gaussIso` is a Gaussian vector, via the Gram-matrix identification
+transported along an equivalence with `Fin m`, which makes `IsGaussianProcess` the right
+vocabulary; consequently two such families with pairwise orthogonal coefficients are
+independent as processes. The isonormal image of a unit coordinate family is identified with
+that coordinate itself, connecting the abstract construction to the scenery's coordinates.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

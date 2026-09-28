@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.D4BlockUnion
+import Sandpile.Support.D4SwapField
+import Sandpile.Frozen.D4BallGreenCrossing
+
+/-!
+# Step 3 of the dimension-four proof for the ball field
+
 Step 3 of the dimension-four percolation proof for the ball field: the
 good-block event of `𝓑_{2r}` at the level `-ε log(2r)` fails with probability
 at most `B log³(2r)(2r)^{-γ}`, uniformly in the coarse site.  The four clauses
@@ -6,9 +12,6 @@ of the block event are the four blocking `∗`-crossings of
 `thm:d4-ball-green-crossing` at aspects one and two, the two bottom-top ones
 read at the reflected block corner.
 -/
-import Sandpile.Support.D4BlockUnion
-import Sandpile.Support.D4SwapField
-import Sandpile.Frozen.D4BallGreenCrossing
 
 open MeasureTheory ProbabilityTheory
 

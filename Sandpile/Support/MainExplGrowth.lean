@@ -1,24 +1,25 @@
-/-
-From the almost sure polynomial growth of the limit field to ONE growth bound
-that holds outside an event of prescribed probability.
-
-The binder `hZgrow` of `thm:main-explosion`(i)(b) chooses the amplitude and the
-degree after the sample point, as the repository's consumers take them.  The
-cutoff radius of the proof of that theorem cannot be chosen after the sample
-point: it is fixed before the scale, and the discrete and the Brownian halves of
-the cutoff error must use the same one.  What the proof needs is therefore a
-DETERMINISTIC amplitude and degree valid off an event of probability at most the
-accuracy asked for, and that is what the almost sure binder gives: the events
-`E_n` on which the field exceeds `n(1+|y|)^n` somewhere on the strip decrease
-with `n` and their intersection is contained in the null event where no
-amplitude and degree exist at all, so their probabilities tend to zero.
-
-The events are measurable because the field is continuous on the strip and the
-level is continuous there too, so the supremum over the strip is a supremum over
-a countable dense subset of it, obtained by clamping the time coordinate of a
-countable dense subset of the ambient space.
--/
 import Sandpile.Support.MainExplKolmogorovTail
+
+/-!
+# Deterministic growth bounds from almost sure growth
+
+From the almost sure polynomial growth of the limit field to ONE growth bound that holds
+outside an event of prescribed probability. The binder `hZgrow` of `thm:main-explosion`(i)(b)
+chooses the amplitude and the degree after the sample point, as the repository's consumers
+take them. The cutoff radius of the proof of that theorem cannot be chosen after the sample
+point: it is fixed before the scale, and the discrete and the Brownian halves of the cutoff
+error must use the same one. What the proof needs is therefore a deterministic amplitude and
+degree valid off an event of probability at most the accuracy asked for, and that is what the
+almost sure binder gives: the events `E_n` on which the field exceeds `n(1+|y|)^n` somewhere
+on the strip decrease with `n` (`exists_deterministic_growth`) and their intersection is
+contained in the null event where no amplitude and degree exist at all, so their
+probabilities tend to zero. The events are measurable because the field is continuous on the
+strip and the level is continuous there too, so the supremum over the strip is a supremum
+over a countable dense subset of it, obtained by clamping the time coordinate with
+`stripClamp` (`measurableSet_exists_strip_lt`). `exists_deterministic_growth_ae` extends this
+to the case where the field is continuous on the strip only almost surely, as the Gaussian
+heat potential comes.
+-/
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 open scoped ENNReal NNReal
@@ -31,16 +32,22 @@ variable {d : ℕ}
 noncomputable def stripClamp (T : ℝ) (q : ℝ × Sandpile.Continuum.Space d) :
     ℝ × Sandpile.Continuum.Space d := (max 0 (min T q.1), q.2)
 
+/-- `stripClamp T` is continuous, being built from `max`, `min` and the two coordinate
+projections, each of which is continuous. -/
 theorem continuous_stripClamp (T : ℝ) : Continuous (stripClamp (d := d) T) := by
   apply Continuous.prodMk
   · exact (continuous_const.max (continuous_const.min continuous_fst))
   · exact continuous_snd
 
+/-- For `T ≥ 0`, `stripClamp T q` always lands in the strip `[0, T] × Space d`, since clamping
+the time coordinate with `max 0 (min T ·)` forces it into `[0, T]`. -/
 theorem stripClamp_mem {T : ℝ} (hT : 0 ≤ T) (q : ℝ × Sandpile.Continuum.Space d) :
     stripClamp T q ∈ Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d)) := by
   refine ⟨⟨le_max_left _ _, ?_⟩, Set.mem_univ _⟩
   exact max_le hT (min_le_left _ _)
 
+/-- `stripClamp T` fixes every point already in the strip `[0, T] × Space d`, since the `min`
+and `max` in its definition are then both no-ops. -/
 theorem stripClamp_eq {T : ℝ} {q : ℝ × Sandpile.Continuum.Space d}
     (hq : q ∈ Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) :
     stripClamp T q = q := by

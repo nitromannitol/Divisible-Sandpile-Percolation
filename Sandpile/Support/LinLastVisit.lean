@@ -1,24 +1,25 @@
-/-
+import Sandpile.Support.LinEscape
+import Sandpile.Support.LinHarmonic
+
+/-!
+# The last-visit estimate
+
 The last-visit estimate of `sandpile.tex:4760-4776`
 (label `lem:dgt4-weighted-last-visits`).
 
-The paper proves it from the ergodic theorem for the stationary sequence
-`I_i^∞` of never-return indicators, summation by parts, and the fact that
-`I_{i,j} - I_i^∞` is the event that the first return is finite and later than
-`j`.  The proof here replaces the ergodic theorem by a second moment: the
-correlation of `I_0^∞` and `I_k^∞` is at most twice
-`ρ_k - ρ_∞ = P_0(k < τ_0^+ < ∞)` (`Sandpile.abs_cov_survInd_le`), whose Cesaro
-means vanish, so the weighted sum of the `I_i^∞` concentrates at the rate
-`ε^{-1} (n^{-1} ∑_{m≤n}(ρ_m - ρ_∞))^{1/2}`.  The mean is
-`G(0,0)^{-1} ∑_{i≤j} (n-i)^{-1}`, and the harmonic segment differs from
-`-log(1 - j/n)` by at most `(n-j)^{-1}`.
+The paper proves it from the ergodic theorem for the stationary sequence `I_i^∞` of
+never-return indicators, summation by parts, and the fact that `I_{i,j} - I_i^∞` is the
+event that the first return is finite and later than `j`. The proof here replaces the
+ergodic theorem by a second moment: the correlation of `I_0^∞` and `I_k^∞` is at most
+twice `ρ_k - ρ_∞ = P_0(k < τ_0^+ < ∞)` (`Sandpile.abs_cov_survInd_le`), whose Cesaro means
+vanish, so the weighted sum of the `I_i^∞` concentrates at the rate
+`ε^{-1} (n^{-1} ∑_{m≤n}(ρ_m - ρ_∞))^{1/2}`. The mean is `G(0,0)^{-1} ∑_{i≤j} (n-i)^{-1}`,
+and the harmonic segment differs from `-log(1 - j/n)` by at most `(n-j)^{-1}`.
 
-The three errors are collected in `Sandpile.lastVisit_eventually`, which is the
-lemma in the vocabulary of `Sandpile.visitInd`; the frozen statement reads the
-same sum through the paper's indicator `I_{i,j}`.
+The three errors are collected in `Sandpile.lastVisit_eventually`, which is the lemma in
+the vocabulary of `Sandpile.visitInd`; the frozen statement reads the same sum through the
+paper's indicator `I_{i,j}`.
 -/
-import Sandpile.Support.LinEscape
-import Sandpile.Support.LinHarmonic
 
 open LatticeProb
 
@@ -30,14 +31,21 @@ variable {d : ℕ}
 /-- The distance between two times, as a natural number. -/
 def lag (i i' : ℕ) : ℕ := (i - i') + (i' - i)
 
+/-- `lag` of `i` and `i + k` is `k`, the defining case with no truncated subtraction. -/
 theorem lag_self_add (i k : ℕ) : lag i (i + k) = k := by unfold lag; omega
 
+/-- `lag` is symmetric in its two arguments. -/
 theorem lag_comm (i i' : ℕ) : lag i i' = lag i' i := by unfold lag; omega
 
+/-- When `i' ≤ i`, `lag i i'` reduces to the ordinary difference `i - i'`. -/
 theorem lag_le_of_le {i i' : ℕ} (h : i' ≤ i) : lag i i' = i - i' := by unfold lag; omega
 
+/-- When `i ≤ i'`, `lag i i'` reduces to the ordinary difference `i' - i`. -/
 theorem lag_le_of_ge {i i' : ℕ} (h : i ≤ i') : lag i i' = i' - i := by unfold lag; omega
 
+/-- The covariance of two survival indicators at times `i, i'` is bounded, via
+`Sandpile.abs_cov_survInd_le` and symmetry, by twice `retProb d (lag i i') - escProb d`:
+the bound depends on the two times only through their lag. -/
 theorem abs_cov_pair_le [NeZero d] (i i' : ℕ) :
     |(∫ X, survInd i X * survInd i' X ∂(walkLaw d 0)) - escProb d * escProb d|
       ≤ 2 * (retProb d (lag i i') - escProb d) := by
@@ -53,6 +61,9 @@ theorem abs_cov_pair_le [NeZero d] (i i' : ℕ) :
     rw [integral_congr_ae (Filter.Eventually.of_forall hcomm)]
     exact h2
 
+/-- For a nonnegative `f`, summing `f (lag i i')` over `i' < N` is at most twice the sum
+of `f` itself over `Finset.range N`: the sum splits at `i` into two pieces, each of which
+reindexes injectively into `Finset.range N` by `lag_le_of_le` / `lag_le_of_ge`. -/
 theorem sum_lag_le (N : ℕ) (f : ℕ → ℝ) (hf : ∀ m, 0 ≤ f m) (i : ℕ) (hi : i < N) :
     ∑ i' ∈ Finset.range N, f (lag i i') ≤ 2 * ∑ m ∈ Finset.range N, f m := by
   classical
@@ -97,6 +108,8 @@ theorem sum_lag_le (N : ℕ) (f : ℕ → ℝ) (hf : ∀ m, 0 ≤ f m) (i : ℕ)
   rw [hsplit]
   linarith
 
+/-- The square of a finite sum integrates, term by term, to the double sum of the pairwise
+products: `∫ (∑ᵢ fᵢ)² = ∑ᵢ ∑ᵢ' ∫ fᵢ fᵢ'`, given integrability of every pairwise product. -/
 theorem integral_sq_finsum {Ω ι : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
     (s : Finset ι) (f : ι → Ω → ℝ)
     (hint2 : ∀ i ∈ s, ∀ i' ∈ s, Integrable (fun ω => f i ω * f i' ω) μ) :
@@ -138,22 +151,31 @@ theorem integral_centered_mul [NeZero d] (i i' : ℕ) :
 
 /-! ### The two weighted sums -/
 
+/-- The harmonic weight `1/(n-i)` attached to time `i` in the last-visit sums below. -/
 noncomputable def wcoef (n i : ℕ) : ℝ := 1 / ((n : ℝ) - (i : ℝ))
 
+/-- The paper's weighted last-visit sum `∑_{i≤j} I_{i,j-i}(X) / (n-i)`, built from the
+visit indicator `visitInd`. -/
 noncomputable def lvSum (n j : ℕ) (X : ℕ → Site d) : ℝ :=
   ∑ i ∈ Finset.range (j + 1), visitInd i (j - i) X * wcoef n i
 
+/-- The weighted sum `∑_{i≤j} I_i^∞(X) / (n-i)` of never-return indicators, the object the
+ergodic theorem is replaced with. -/
 noncomputable def svSum (n j : ℕ) (X : ℕ → Site d) : ℝ :=
   ∑ i ∈ Finset.range (j + 1), survInd i X * wcoef n i
 
 /-- `∑_{m ≤ n} (ρ_m - ρ_∞)`, the paper's `∑_{k≤n} P_0(k < τ_0^+ < ∞)`. -/
 noncomputable def tailSum (d n : ℕ) : ℝ := ∑ m ∈ Finset.range (n + 1), (retProb d m - escProb d)
 
+/-- `wcoef n i` is positive whenever `i < n`, since its denominator `n - i` is then
+positive. -/
 theorem wcoef_pos {n i : ℕ} (h : i < n) : 0 < wcoef n i := by
   have : (i : ℝ) < (n : ℝ) := by exact_mod_cast h
   unfold wcoef
   positivity
 
+/-- `wcoef n ·` is monotone increasing on `i ≤ j < n`, since a larger `i` shrinks the
+positive denominator `n - i`. -/
 theorem wcoef_le {n i j : ℕ} (hij : i ≤ j) (hj : j < n) : wcoef n i ≤ wcoef n j := by
   have hi : (i : ℝ) ≤ (j : ℝ) := by exact_mod_cast hij
   have hjn : (j : ℝ) < (n : ℝ) := by exact_mod_cast hj
@@ -161,12 +183,16 @@ theorem wcoef_le {n i j : ℕ} (hij : i ≤ j) (hj : j < n) : wcoef n i ≤ wcoe
   apply one_div_le_one_div_of_le (by linarith)
   linarith
 
+/-- `lvSum` is integrable, being a finite sum of bounded-times-weight terms. -/
 theorem integrable_lvSum [NeZero d] (n j : ℕ) : Integrable (lvSum (d := d) n j) (walkLaw d 0) :=
   integrable_finsetSum _ fun i _ => (integrable_visitInd i (j - i)).mul_const _
 
+/-- `svSum` is integrable, being a finite sum of bounded-times-weight terms. -/
 theorem integrable_svSum [NeZero d] (n j : ℕ) : Integrable (svSum (d := d) n j) (walkLaw d 0) :=
   integrable_finsetSum _ fun i _ => (integrable_survInd i).mul_const _
 
+/-- The mean of `lvSum` is `∑_{i≤j} retProb d (j-i) · wcoef n i`, from `integral_visitInd`
+applied term by term. -/
 theorem integral_lvSum [NeZero d] (n j : ℕ) :
     ∫ X, lvSum (d := d) n j X ∂(walkLaw d 0)
       = ∑ i ∈ Finset.range (j + 1), retProb d (j - i) * wcoef n i := by
@@ -175,6 +201,8 @@ theorem integral_lvSum [NeZero d] (n j : ℕ) :
   exact Finset.sum_congr rfl fun i _ => by
     rw [integral_mul_const, integral_visitInd i (j - i)]
 
+/-- The mean of `svSum` is `∑_{i≤j} escProb d · wcoef n i`, from `integral_survInd`
+applied term by term. -/
 theorem integral_svSum [NeZero d] (n j : ℕ) :
     ∫ X, svSum (d := d) n j X ∂(walkLaw d 0)
       = ∑ i ∈ Finset.range (j + 1), escProb d * wcoef n i := by
@@ -183,6 +211,8 @@ theorem integral_svSum [NeZero d] (n j : ℕ) :
   exact Finset.sum_congr rfl fun i _ => by
     rw [integral_mul_const, integral_survInd i]
 
+/-- `svSum ≤ lvSum` pointwise: eventual survival implies the visit indicator holds
+(`survInd_le_visitInd`), and the shared weights `wcoef` are nonnegative. -/
 theorem svSum_le_lvSum [NeZero d] {n j : ℕ} (hj : j < n) (X : ℕ → Site d) :
     svSum (d := d) n j X ≤ lvSum (d := d) n j X := by
   refine Finset.sum_le_sum fun i hi => ?_
@@ -190,9 +220,12 @@ theorem svSum_le_lvSum [NeZero d] {n j : ℕ} (hj : j < n) (X : ℕ → Site d) 
   exact mul_le_mul_of_nonneg_right (survInd_le_visitInd i (j - i) X)
     (le_of_lt (wcoef_pos (lt_of_le_of_lt hij hj)))
 
+/-- `retProb d m - escProb d` is nonnegative: the escape probability is a lower bound on
+the return-by-time-`m` probability, `escProb_le_retProb`. -/
 theorem retProb_sub_escProb_nonneg [NeZero d] (m : ℕ) : 0 ≤ retProb d m - escProb d :=
   sub_nonneg.mpr (escProb_le_retProb m)
 
+/-- `tailSum d n` is nonnegative, as a sum of nonnegative terms. -/
 theorem tailSum_nonneg [NeZero d] (n : ℕ) : 0 ≤ tailSum d n :=
   Finset.sum_nonneg fun m _ => retProb_sub_escProb_nonneg m
 
@@ -232,6 +265,8 @@ theorem integral_abs_lvSum_sub_svSum_le [NeZero d] {n j : ℕ} (hj : j < n) :
 
 /-! ### The variance of the survival sum -/
 
+/-- The centred survival indicator has absolute value at most `1`, since both `survInd`
+and `escProb` lie in `[0, 1]`. -/
 theorem abs_survInd_sub_escProb_le [NeZero d] (i : ℕ) (X : ℕ → Site d) :
     |survInd i X - escProb d| ≤ 1 := by
   have h1 : escProb d ≤ 1 := le_trans (escProb_le_retProb 0) (retProb_le_one 0)
@@ -241,6 +276,8 @@ theorem abs_survInd_sub_escProb_le [NeZero d] (i : ℕ) (X : ℕ → Site d) :
   rw [abs_le]
   constructor <;> linarith
 
+/-- The product of two weighted centred survival indicators is integrable, being bounded
+by the constant `|wcoef n i| * |wcoef n i'|` via `abs_survInd_sub_escProb_le`. -/
 theorem integrable_centered_mul [NeZero d] (n i i' : ℕ) :
     Integrable (fun X : ℕ → Site d =>
       (survInd i X - escProb d) * wcoef n i * ((survInd i' X - escProb d) * wcoef n i'))
@@ -260,6 +297,8 @@ theorem integrable_centered_mul [NeZero d] (n i i' : ℕ) :
         exact mul_le_mul h1 h2 (by positivity) (by positivity)
     _ = |wcoef n i| * |wcoef n i'| := by ring
 
+/-- `svSum` centred at its mean equals the weighted sum of the centred survival
+indicators, `∑_{i≤j} (survInd i X - escProb d) · wcoef n i`. -/
 theorem svSum_sub_integral [NeZero d] (n j : ℕ) (X : ℕ → Site d) :
     svSum (d := d) n j X - ∫ Y, svSum (d := d) n j Y ∂(walkLaw d 0)
       = ∑ i ∈ Finset.range (j + 1), (survInd i X - escProb d) * wcoef n i := by
@@ -268,6 +307,9 @@ theorem svSum_sub_integral [NeZero d] (n j : ℕ) (X : ℕ → Site d) :
   rw [← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/-- **The variance bound on `svSum`.** The second moment of the centred `svSum` is at most
+`4(j+1) · tailSum d n · (wcoef n j)²`, from `integral_sq_finsum`, the covariance bound
+`abs_cov_pair_le`, and `sum_lag_le` to control the double sum of lagged covariances. -/
 theorem integral_sq_svSum_sub [NeZero d] {n j : ℕ} (hj : j < n) :
     ∫ X, (svSum (d := d) n j X - ∫ Y, svSum (d := d) n j Y ∂(walkLaw d 0)) ^ 2 ∂(walkLaw d 0)
       ≤ 4 * ((j : ℝ) + 1) * tailSum d n * (wcoef n j) ^ 2 := by
@@ -329,9 +371,12 @@ theorem integral_sq_svSum_sub [NeZero d] {n j : ℕ} (hj : j < n) :
 
 /-! ### From the variance to the mean absolute deviation -/
 
+/-- `svSum` is measurable, as a finite sum of measurable terms. -/
 theorem measurable_svSum (n j : ℕ) : Measurable (svSum (d := d) n j) :=
   Finset.measurable_sum _ fun i _ => (measurable_survInd i).mul_const _
 
+/-- `|svSum|` is bounded, pointwise, by the sum of the absolute weights, since each
+`survInd` lies in `[0, 1]`. -/
 theorem abs_svSum_le (n j : ℕ) (X : ℕ → Site d) :
     |svSum (d := d) n j X| ≤ ∑ i ∈ Finset.range (j + 1), |wcoef n i| := by
   refine le_trans (Finset.abs_sum_le_sum_abs _ _) (Finset.sum_le_sum fun i _ => ?_)
@@ -340,6 +385,8 @@ theorem abs_svSum_le (n j : ℕ) (X : ℕ → Site d) :
   rw [abs_of_nonneg (survInd_nonneg i X)]
   exact survInd_le_one i X
 
+/-- **The mean absolute deviation of `svSum` from its mean** is at most the square root of
+the variance bound of `integral_sq_svSum_sub`, by Cauchy-Schwarz (`sq_integral_le`). -/
 theorem integral_abs_svSum_sub_le [NeZero d] {n j : ℕ} (hj : j < n) :
     ∫ X, |svSum (d := d) n j X - ∫ Y, svSum (d := d) n j Y ∂(walkLaw d 0)| ∂(walkLaw d 0)
       ≤ Real.sqrt (4 * ((j : ℝ) + 1) * tailSum d n * (wcoef n j) ^ 2) := by
@@ -379,14 +426,22 @@ theorem integral_abs_svSum_sub_le [NeZero d] {n j : ℕ} (hj : j < n) :
 
 /-! ### The last-visit estimate -/
 
+/-- For `d ≥ 3`, the Green function at the origin is at least `1`, from
+`LatticeProb.one_le_srwGreenInf_origin` and the paper's identification of `green` with the
+infinite Green function. -/
 theorem one_le_green (hd : 3 ≤ d) : (1 : ℝ) ≤ green d 0 0 := by
   have h := LatticeProb.one_le_srwGreenInf_origin (d := d) hd
   rw [Sandpile.External.Sec16.green_eq d 0 0, sub_zero]
   exact h
 
+/-- `lvSum` is measurable, as a finite sum of measurable terms. -/
 theorem measurable_lvSum (n j : ℕ) : Measurable (lvSum (d := d) n j) :=
   Finset.measurable_sum _ fun i _ => (measurable_visitInd i (j - i)).mul_const _
 
+/-- **The main triangle-inequality estimate.** `E|G · lvSum - (-log(1-j/n))|` splits into
+three errors: the `lvSum`-`svSum` gap (`integral_abs_lvSum_sub_svSum_le`), the
+concentration of `svSum` about its mean (`integral_abs_svSum_sub_le`), and the
+deterministic gap between the mean and `-log(1-j/n)` (`abs_harm_log`). -/
 theorem integral_abs_main_le [NeZero d] (hd : 3 ≤ d) {n j : ℕ} (hj : j < n) (hn : 0 < n) :
     ∫ X, |green d 0 0 * lvSum (d := d) n j X + Real.log (1 - (j : ℝ) / (n : ℝ))|
         ∂(walkLaw d 0)
@@ -456,6 +511,8 @@ theorem integral_abs_main_le [NeZero d] (hd : 3 ≤ d) {n j : ℕ} (hj : j < n) 
     Real.sqrt_nonneg _
   nlinarith [hA, hB, hdet, hG0]
 
+/-- `tailSum d n / n → 0`: the Cesaro means of `retProb d m - escProb d` vanish
+(`cesaro_small`, using `tendsto_retProb`). -/
 theorem tendsto_tailSum_div [NeZero d] :
     Tendsto (fun n : ℕ => tailSum d n / (n : ℝ)) atTop (nhds 0) := by
   rw [NormedAddGroup.tendsto_nhds_zero]

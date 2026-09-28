@@ -1,4 +1,9 @@
-/-
+import Sandpile.Walk
+import Sandpile.External.VarianceScale
+import Sandpile.Support.D4PointwiseTail
+
+/-! # Pointwise Linearization in Dimension Four
+
 Proposition of Section 5 of sandpile.tex, frozen.  `sandpile.tex:3087-3102`
 (label `prop:d4-pointwise-linearization`):
 
@@ -19,9 +24,6 @@ deviation event in `ℝ≥0∞`, against `ENNReal.ofReal` of the paper's right-h
 side.  The threshold `t ≥ 3` is the paper's; it keeps `1 + log log t`
 positive, so the ratio `λ²/(1 + log log t)` has no division by zero.
 -/
-import Sandpile.Walk
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4PointwiseTail
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

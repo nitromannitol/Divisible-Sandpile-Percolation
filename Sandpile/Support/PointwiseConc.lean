@@ -1,4 +1,11 @@
-/-
+import Sandpile.Frozen.WeightedExpConcentration
+import Sandpile.Support.GreenHigh
+import Sandpile.Support.FiniteCoord
+import Sandpile.Support.Stationary
+
+/-!
+# Pointwise concentration of the odometer in dimension five and above
+
 The pointwise concentration of the odometer in dimension five and above,
 `eq:dgt4-pointwise-concentration` of `sandpile.tex:4138-4141`, together with the
 two uniform bounds on the Green coefficients that it needs.
@@ -10,10 +17,6 @@ that both the square sum and the supremum of those constants are bounded
 uniformly in the time and in the base point, which turns the lemma's
 `min(s^2/|l|_2^2, s/|l|_inf)` into the paper's `min(s^2, s)`.
 -/
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Stationary
 
 open LatticeProb
 
@@ -24,18 +27,27 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- Every member `z` of a finite set `s` of sites is `siteEnum s i` for some index `i`,
+via the equivalence `s.equivFin` between `↥s` and `Fin s.card`. -/
 theorem exists_siteEnum_eq (s : Finset (Site d)) {z : Site d} (hz : z ∈ s) :
     ∃ i : Fin s.card, siteEnum s i = z := by
   refine ⟨s.equivFin ⟨z, hz⟩, ?_⟩
   show ((s.equivFin.symm (s.equivFin ⟨z, hz⟩) : ↥s) : Site d) = z
   rw [Equiv.symm_apply_apply]
 
+/-- The Green time `greenTime d t x x` from `x` to itself is at least `1`, for `t ≥ 1`: the
+`k = 0` term of the defining sum alone contributes `heatKernel d 0 x x = 1`. -/
 theorem one_le_greenTime_self (t : ℕ) (ht : 1 ≤ t) (x : Site d) : 1 ≤ greenTime d t x x := by
   have h0 : (0 : ℕ) ∈ Finset.range t := Finset.mem_range.mpr ht
   have := Finset.single_le_sum (f := fun k => heatKernel d k x x)
     (fun k _ => heatKernel_nonneg k x x) h0
   simpa [greenTime, LatticeProb.greenTime, heatKernel, LatticeProb.LocalCLT.heatKernel] using this
 
+/-- **Uniform bounds on the Green-time coefficients.** There is a single constant `M ≥ 1`
+bounding both the square sum `∑' greenTime d t x z ^ 2` and the pointwise values
+`greenTime d t x y`, uniformly over every time `t` and base point `x`; obtained from the
+origin-based square-sum and pointwise bounds of `External.GreenBoundsHigh`, transported to
+an arbitrary base point by the shift invariance `greenTime_add_right` of `greenTime`. -/
 theorem exists_greenTime_norm_bounds (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d) :
     ∃ M : ℝ, 1 ≤ M ∧
       (∀ (t : ℕ) (x : Site d), (∑' z : Site d, greenTime d t x z ^ 2) ≤ M) ∧

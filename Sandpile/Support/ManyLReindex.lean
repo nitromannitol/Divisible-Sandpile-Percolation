@@ -1,14 +1,17 @@
-/-
-Reindexing lemmas for the subsequential convergence of `thm:dgt4-many-limits`
-(`sandpile.tex:5900-5928`).
+import Sandpile.Support.ContNonconvergence
+import Sandpile.Continuum.Membrane
+
+/-!
+# Reindexing lemmas for the subsequential convergence of `thm:dgt4-many-limits`
+
+These lemmas support the subsequential convergence statement of
+`thm:dgt4-many-limits` (`sandpile.tex:5900-5928`).
 
 The frozen statement indexes the family by a real `L` and reads it at
 `R_{k_{⌊L⌋}}`, so convergence along `atTop` on `ℝ` is convergence along
 `ℓ → ∞`; the two lemmas here are what lets a convergence statement proved for
 the real-indexed family be read at the natural subsequence, and conversely.
 -/
-import Sandpile.Support.ContNonconvergence
-import Sandpile.Continuum.Membrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

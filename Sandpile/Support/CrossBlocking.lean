@@ -1,21 +1,20 @@
-/-
-The blocking half of Step 1 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2233-2235`): a `{𝒳₁ < 0}` arm from `B(x,r₁)` to `∂B(x,r₂)` must
-avoid the `{𝒳₁ ≥ 0}` circuit of every annulus it crosses.
-
-  "This implies the arm bound by a routine argument: ... choosing a logarithmic
-   number of such annuli ... the arm must avoid all of them."
-
-The two ingredients are here.  `exists_star_walk_of_adj_seq` turns a sequence of
-consecutive adjacencies into a walk through all of them, which is what a chain of
-grid points gives.  `no_lattice_walk_of_levels` is the deterministic blocking:
-`rectangle_nn_star_intersect` of `Sandpile/Support/RectangleIntersection.lean`
-says a nearest-neighbour lattice walk of a rectangle and a star bottom-top walk
-of the same rectangle must meet at a common grid point, where the two level
-bounds contradict each other.  No Jordan curve theorem is used.
--/
 import Sandpile.Support.CrossGrid
 import Sandpile.Support.RectangleIntersection
+
+/-!
+# The deterministic blocking of Step 1
+
+The blocking half of Step 1 of `prop:fixed-scale-crossings` (`sandpile.tex:2233-2235`): a
+`{𝒳₁ < 0}` arm from `B(x,r₁)` to `∂B(x,r₂)` must avoid the `{𝒳₁ ≥ 0}` circuit of every annulus
+it crosses, which implies the arm bound by choosing a logarithmic number of such annuli that
+the arm must avoid all of them. The two ingredients are here. `exists_star_walk_of_adj_seq`
+turns a sequence of consecutive adjacencies into a walk through all of them, which is what a
+chain of grid points gives. `no_lattice_walk_of_levels` is the deterministic blocking:
+`rectangle_nn_star_intersect` of `Sandpile/Support/RectangleIntersection.lean` says a
+nearest-neighbour lattice walk of a rectangle and a star bottom-top walk of the same rectangle
+must meet at a common grid point, where the two level bounds contradict each other. No Jordan
+curve theorem is used.
+-/
 
 open MeasureTheory Set
 
@@ -65,6 +64,8 @@ theorem no_lattice_walk_of_levels {X : Sandpile.Continuum.Space 2 → ℝ}
   linarith
 
 
+/-- Two lattice sites `z` and `w` that agree off a coordinate `i` and differ by exactly `1`
+in coordinate `i` are adjacent in `lattice 2`. -/
 theorem adj_of_coord {z w : Site 2} (i : Fin 2) (hother : ∀ j ≠ i, z j = w j)
     (h : (z i - w i).natAbs = 1) :
     (lattice 2).Adj z w := by
@@ -87,12 +88,16 @@ theorem adj_of_coord {z w : Site 2} (i : Fin 2) (hother : ∀ j ≠ i, z j = w j
     · rw [← hother j hj]
       simp [LatticeProb.unit, hj]
 
+/-- Two sites at Chebyshev distance at most `1` in each coordinate are joined by a walk in
+`lattice 2` of at most two steps that visits both endpoints, going through the common corner
+`m` when `z` and `w` differ in both coordinates. -/
 theorem exists_lattice_walk_pair {z w : Site 2}
     (h : ∀ i : Fin 2, (z i - w i).natAbs ≤ 1) :
     ∃ p : (lattice 2).Walk z w, z ∈ p.support ∧ w ∈ p.support := by
   by_cases hzw : z = w
   · subst hzw
-    exact ⟨SimpleGraph.Walk.nil, SimpleGraph.Walk.start_mem_support _, SimpleGraph.Walk.end_mem_support _⟩
+    exact ⟨SimpleGraph.Walk.nil, SimpleGraph.Walk.start_mem_support _,
+        SimpleGraph.Walk.end_mem_support _⟩
   · have h0 := h 0
     have h1 := h 1
     by_cases hz0 : z 0 = w 0
@@ -102,14 +107,16 @@ theorem exists_lattice_walk_pair {z w : Site 2}
           · exact hz0
           · exact sub_eq_zero.mp (by simpa using hh)
         · omega
-      exact ⟨SimpleGraph.Walk.cons (adj_of_coord 1 (fun j hj => by fin_cases j <;> simp_all) hw1) SimpleGraph.Walk.nil,
+      exact ⟨SimpleGraph.Walk.cons
+          (adj_of_coord 1 (fun j hj => by fin_cases j <;> simp_all) hw1) SimpleGraph.Walk.nil,
         SimpleGraph.Walk.start_mem_support _, SimpleGraph.Walk.end_mem_support _⟩
     · have hz0' : (z 0 - w 0).natAbs = 1 := by
         rcases Nat.eq_zero_or_pos (z 0 - w 0).natAbs with hh | hh
         · exfalso; apply hz0; omega
         · omega
       by_cases hz1 : z 1 = w 1
-      · exact ⟨SimpleGraph.Walk.cons (adj_of_coord 0 (fun j hj => by fin_cases j <;> simp_all) hz0') SimpleGraph.Walk.nil,
+      · exact ⟨SimpleGraph.Walk.cons
+            (adj_of_coord 0 (fun j hj => by fin_cases j <;> simp_all) hz0') SimpleGraph.Walk.nil,
           SimpleGraph.Walk.start_mem_support _, SimpleGraph.Walk.end_mem_support _⟩
       · have hw1' : (z 1 - w 1).natAbs = 1 := by
           rcases Nat.eq_zero_or_pos (z 1 - w 1).natAbs with hh | hh
@@ -135,6 +142,9 @@ theorem exists_lattice_walk_pair {z w : Site 2}
           SimpleGraph.Walk.start_mem_support _, SimpleGraph.Walk.end_mem_support _⟩
 
 
+/-- A sequence of sites that are pairwise within Chebyshev distance `1` of their successor is
+carried by a `lattice 2` walk from `v 0` to `v n` that visits every `v j`, obtained by
+concatenating the two-step walks of `exists_lattice_walk_pair` along the sequence. -/
 theorem exists_lattice_walk_seq {v : ℕ → Site 2} {n : ℕ}
     (h : ∀ j < n, ∀ i : Fin 2, (v j i - v (j + 1) i).natAbs ≤ 1) :
     ∃ p : (lattice 2).Walk (v 0) (v n), ∀ j ≤ n, v j ∈ p.support := by

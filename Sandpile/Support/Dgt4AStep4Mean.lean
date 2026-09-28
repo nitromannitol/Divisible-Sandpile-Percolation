@@ -1,15 +1,18 @@
-/-
-**Step 4 of case (a) for the mean increment** (`sandpile.tex:5291-5301`): dominated
-convergence in the integral representation, and the passage from
+import Sandpile.Support.Dgt4AStep4Dom
+
+/-!
+# Step 4 of case (a) for the mean increment
+
+Step 4 of case (a) for the mean increment (`sandpile.tex:5291-5301`): dominated convergence
+in the integral representation, and the passage from
 
   `\int_\R m_n(y)\rho_n(y)\,dy\longrightarrow\int_0^\infty\frac{y}{G(0,0)}e^{-y}\,dy
      =\frac1{G(0,0)}`
 
 to `eq:dgt4-contact-mean-increment`, `G(0,0)(\E u_{n+1}(0)-\E u_n(0))/
-\E(-V_\infty(0)-\E u_n(0))_+\to1`.  The last step is the Mills ratio: the integrated tail
+\E(-V_\infty(0)-\E u_n(0))_+\to1`. The last step is the Mills ratio: the integrated tail
 `\E(N(0,\Sigma^2)-t)_+` is asymptotic to `\Sigma^2\P(N(0,\Sigma^2)>t)/t`.
 -/
-import Sandpile.Support.Dgt4AStep4Dom
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal
@@ -18,11 +21,14 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- `condLevel` is measurable as a function of the level `y`, being affine in `y`. -/
 theorem measurable_condLevel (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condLevel d hd v y n) := by
   unfold condLevel
   fun_prop
 
+/-- The reflected increment `condReflected`, precomposed with `condLevel`, is jointly
+measurable in the pair `(y, r)` of the level parameter `y` and the residual `r`. -/
 theorem measurable_condReflected_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n t : ℕ) :
     Measurable (fun p : ℝ × (Site d → ℝ) =>
       condReflected d hd c (condLevel d hd v p.1 n) t p.2) := by
@@ -45,6 +51,8 @@ theorem measurable_condReflected_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n 
         (((measurable_odometerOf t _).comp hcs))).div_const _
   exact h1.sub h2
 
+/-- `condMeanReflected` is measurable in the level `y`, obtained by integrating the jointly
+measurable positive part of `condReflected` over the residual. -/
 theorem measurable_condMeanReflected (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condMeanReflected d hd v n y) := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
@@ -57,6 +65,8 @@ theorem measurable_condMeanReflected (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
       measurable_const).stronglyMeasurable
   exact hjoint.integral_prod_right'.measurable
 
+/-- `levelDensity w t` is measurable as a function of the level `y`, being built from the
+measurable Gaussian density `gaussianPDFReal`. -/
 theorem measurable_levelDensity (w : ℝ≥0) (t : ℝ) :
     Measurable (fun y : ℝ => levelDensity w t y) := by
   unfold levelDensity gaussianPDFReal

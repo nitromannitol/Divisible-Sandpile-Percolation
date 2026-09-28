@@ -1,22 +1,19 @@
-/-
-The mean of the reflection window at superdiffusive times, the first half of
-Step 3 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3389-3392`):
-
-  `E S_R(0) ≤ C n_R log(t_R + 2)/(t_R − n_R) ⟶ 0` .
-
-The window mean is the growth of the mean odometer over the window
-(`integral_reflectionSum`), the increments of that mean are nonincreasing
-(`meanOdometerOf_window_le`), and the mean odometer itself is at most
-`C log(t+2)` (`exists_crude_log_upper_four`).  Together these give the bound in
-cleared-denominator form, with no side condition beyond `n ≤ t`.  At
-`t_R = ⌊R^α⌋` and `n_R = ⌊R √t_R⌋` with `α > 2` the majorant vanishes, because
-`log(t_R+2) ≥ 1` turns it into the second limit of
-`eq:d4-superdiffusive-scale-separation`.
--/
 import Sandpile.Support.D4Reflection
 import Sandpile.Support.D4Mean
 import Sandpile.Support.D4Scale
 import Sandpile.Support.D4ScaleSepLimits
+
+/-!
+# The mean of the reflection window at superdiffusive times
+
+The window mean `E S_R(0)` is bounded by `C n_R log(t_R + 2) / (t_R − n_R)`, which tends to
+zero at superdiffusive times. The window mean is the growth of the mean odometer over the
+window (`integral_reflectionSum`), the increments of that mean are nonincreasing
+(`meanOdometerOf_window_le`), and the mean odometer itself is at most `C log(t + 2)`
+(`exists_crude_log_upper_four`); together these give the bound in cleared-denominator form, with
+no side condition beyond `n ≤ t`. At `t_R = ⌊R^α⌋` and `n_R = ⌊R √t_R⌋` with `α > 2` the majorant
+vanishes, since `log(t_R + 2) ≥ 1` turns it into a known scale-separation limit.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal

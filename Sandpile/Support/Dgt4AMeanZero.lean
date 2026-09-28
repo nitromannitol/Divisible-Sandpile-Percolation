@@ -1,11 +1,14 @@
-/-
-The centred deviation `D_n` of `sandpile.tex:5050-5051` has mean zero: "By stationarity,
-`D_n` has mean zero" (`sandpile.tex:5055`).  The neighbour average `P` of a function whose
-expectation is the same at every site has the same expectation as the function itself, so
-`E P(V_∞-u_n)(0)=E(V_∞-u_n)(0)` and the two terms of `D_n` cancel.
--/
 import Sandpile.Support.Dgt4ADeviationAbs
 import Sandpile.Support.Dgt4AAvgIntegral
+
+/-!
+# The centred deviation has mean zero
+
+The centred deviation `D_n` of `sandpile.tex:5050-5051` has mean zero: "by stationarity,
+`D_n` has mean zero" (`sandpile.tex:5055`). The neighbour average `P` of a function whose
+expectation is the same at every site has the same expectation as the function itself, so
+`E P(V_∞-u_n)(0) = E(V_∞-u_n)(0)` and the two terms of `D_n` cancel.
+-/
 
 open MeasureTheory Filter Topology Set
 

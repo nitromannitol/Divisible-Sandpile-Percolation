@@ -1,20 +1,27 @@
-/-
-Backward heat increments along Brownian motion.
-
-The continuous Gaussian field satisfies the homogeneous increment semigroup on
-one common noise event. Brownian transition densities and strong Markov restart
-make these increments martingales. Bounded optional sampling gives the stopped
-increment identity simultaneously for every bounded natural stopping time.
--/
 import Sandpile.Support.ExplHeatDom
 import Sandpile.Support.ExplBrownianDensity
 import Sandpile.Support.ExplBrownianSemigroup
 import Sandpile.Support.ExplOptionalUniform
+
+/-!
+# Backward heat increments along Brownian motion
+
+The continuous Gaussian field satisfies the homogeneous increment semigroup on one common noise
+event. Brownian transition densities and strong Markov restart make these increments martingales
+(`brownian_heat_semigroup_martingale`, `gaussianPotential_backward_increment_martingale`).
+Bounded optional sampling gives the stopped increment identity simultaneously for every bounded
+natural stopping time (`gaussianPotential_stopped_increment_integral`).
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology LatticeProb
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- If `H` is continuous and satisfies the heat-semigroup convolution identity against
+`Continuum.heatKernelBM` (`hS`), then the backward process `r ↦ H(t - r∧t, B(r∧t))` is a
+martingale for the natural filtration of a continuous Brownian motion `B`: the `r = 0` case
+comes from `B`'s start point, and the general step from `brownian_transition_integral`. -/
 theorem brownian_heat_semigroup_martingale {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) {P : Measure Ω} [IsProbabilityMeasure P] {x : Space d}
     {B : ℝ≥0 → Ω → Space d} (hB : IsBrownian d x B P)
@@ -49,9 +56,15 @@ theorem brownian_heat_semigroup_martingale {Ω : Type*} [MeasurableSpace Ω]
       rw [hh, (hS (u - r) hpos (t - u) z).2]
       congr 1
       apply NNReal.coe_injective
-      simp only [NNReal.coe_add, NNReal.coe_sub hru, NNReal.coe_sub hut, NNReal.coe_sub (hru.trans hut)]
+      simp only [NNReal.coe_add, NNReal.coe_sub hru, NNReal.coe_sub hut,
+        NNReal.coe_sub (hru.trans hut)]
       ring
 
+/-- For the actual continuous Gaussian heat potential `Z`, almost surely in the noise, the
+backward increment process `r ↦ Z(t - r∧t + δ, B(r∧t)) - Z(t - r∧t, B(r∧t))` is a martingale for
+every horizon `t` and shift `δ`: the common semigroup identity for increments
+(`gaussianPotential_increment_semigroup_common`) supplies the hypothesis `hS` of
+`brownian_heat_semigroup_martingale`, applied to `H = fun s y => Z (s + δ) y - Z s y`. -/
 theorem gaussianPotential_backward_increment_martingale {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}
@@ -68,7 +81,8 @@ theorem gaussianPotential_backward_increment_martingale {ΩW ΩB : Type*}
   have hcont : ∀ᵐ ω ∂PW, Continuous fun q : ℝ≥0 × Space d => Z q.1 q.2 ω := by
     have hh := ae_all_iff.mpr (fun n : ℕ => hc ((n : ℝ) + 1) (by positivity))
     exact hh.mono fun ω hω => continuous_nonnegative_time_of_bounded_strips (fun t x => Z t x ω) hω
-  filter_upwards [gaussianPotential_increment_semigroup_common hd hd3 hW ν2 Z hmod hc, hcont] with ω hs hz
+  filter_upwards [gaussianPotential_increment_semigroup_common hd hd3 hW ν2 Z hmod hc,
+    hcont] with ω hs hz
   intro t δ
   apply brownian_heat_semigroup_martingale hd hB hBm hBc
     (fun s y => Z (s + δ : ℝ≥0) y ω - Z s y ω) ?_ ?_ t
@@ -76,6 +90,12 @@ theorem gaussianPotential_backward_increment_martingale {ΩW ΩB : Type*}
   · intro r hr s z
     simpa only [NNReal.coe_add, add_assoc] using hs r s δ hr s.property δ.property z
 
+/-- **Bounded optional sampling for the Gaussian potential increment.** Almost surely in the
+noise, for every bounded natural-filtration stopping time `τ ≤ t`, the stopped backward
+increment `b ↦ Z(t - τ b + δ, B(τ b) b) - Z(t - τ b, B(τ b) b)` is integrable and its expectation
+equals `Z(t + δ, x) - Z(t, x)`: the martingale of `gaussianPotential_backward_increment_martingale`
+is stopped via `integrable_stopped_martingale_eq_of_continuous`, using the continuity of both `Z`
+and the paths of `B`, and evaluated at time `0` where `B` starts at `x`. -/
 theorem gaussianPotential_stopped_increment_integral {ΩW ΩB : Type*}
     [MeasurableSpace ΩW] [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {PW : Measure ΩW} [IsProbabilityMeasure PW] {W : (Space d → ℝ) → ΩW → ℝ}
@@ -102,7 +122,8 @@ theorem gaussianPotential_stopped_increment_integral {ΩW ΩB : Type*}
     Z (t - min r t : ℝ≥0) (B (min r t) b) ω
   have hMc : ∀ b, Continuous fun r => M r b := by
     intro b
-    exact (hz.comp (((continuous_const.sub (continuous_id.min continuous_const)).add continuous_const).prodMk
+    exact (hz.comp
+      (((continuous_const.sub (continuous_id.min continuous_const)).add continuous_const).prodMk
       ((hBc b).comp (continuous_id.min continuous_const)))).sub
         (hz.comp ((continuous_const.sub (continuous_id.min continuous_const)).prodMk
           ((hBc b).comp (continuous_id.min continuous_const))))

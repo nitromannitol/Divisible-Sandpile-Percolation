@@ -1,9 +1,15 @@
-/-
-The joint law of a Brownian stopping time, its stopped position, and the
-restarted path. This supplies the product measure used in occupation integrals.
--/
 import Sandpile.Continuum.Stopping
 import LatticeProb.Prob.BrownianRestartIntegral
+
+/-!
+# The joint law of a Brownian stopping time and its restarted path
+
+At a Brownian stopping time `τ`, the pair of the stopped state `(τ, B τ)` and the future
+increments `t ↦ B (τ + t) - B τ` has law equal to the product of the stopped-state law and
+the law of a centred Brownian path started afresh, by the strong Markov property. This
+supplies the product-measure representation used to compute expectations of bounded
+functionals evaluated a fixed time after stopping.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology LatticeProb
 open scoped ENNReal NNReal

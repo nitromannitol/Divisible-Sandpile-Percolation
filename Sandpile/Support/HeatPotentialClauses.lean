@@ -1,18 +1,20 @@
-/-
-The two clauses of `prop:dlt4-heat-potential-invariance` (`sandpile.tex:1841-1848`),
-each from the corresponding input, and their conjunction.
-
-The finite-dimensional clause is the continuum convergence of the rescaled
-double-time sums (`Sandpile.Support.heat_potential_fd`), and the tightness
-clause is the quantitative Kolmogorov criterion applied to the interpolated
-field (`Sandpile.Support.heat_potential_tightness_of_criterion`), whose two
-statements are the library's `LatticeProb.kolmogorovModulusPi` and
-`LatticeProb.kolmogorovBoundPi`.
--/
 import Sandpile.Support.ContKolmogorovAssembly
 import Sandpile.Support.ContContinuumMCT
 import Sandpile.Support.ExpMomentRpow
 import Sandpile.External.HeatKernelBoundsProved
+
+/-!
+# The two clauses of the heat-potential invariance principle
+
+The two clauses of `prop:dlt4-heat-potential-invariance` (`sandpile.tex:1841-1848`), each from
+the corresponding input, and their conjunction.
+
+The finite-dimensional clause is the continuum convergence of the rescaled double-time sums
+(`Sandpile.Support.heat_potential_fd`), and the tightness clause is the quantitative
+Kolmogorov criterion applied to the interpolated field
+(`Sandpile.Support.heat_potential_tightness_of_criterion`), whose two statements are the
+library's `LatticeProb.kolmogorovModulusPi` and `LatticeProb.kolmogorovBoundPi`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open Sandpile.Frozen.HeatPotentialInvariance

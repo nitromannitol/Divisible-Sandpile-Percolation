@@ -1,12 +1,15 @@
-/-
-The `L²` assembly of Step 2 of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5803-5845`): the convex-linear bound of `lem:convex-linear-bound`
-gives `∫(A-B)² ≤ C L² V_R + C η(L) B₀` for every `L > 0`, the variance sum `V_R`
-tends to zero and `η(L) → 0` at infinity, so `∫(A-B)² → 0`; with the coefficient
-replacement `∫C² → 0` the squared difference `∫(A-B-C)² → 0`.
--/
 import Sandpile.Support.LinChooseL
 import Sandpile.Support.LinL2Split
+
+/-!
+# The `L²` assembly of Step 2
+
+This module proves the `L²` assembly of Step 2 of `lem:dgt4-linearization-from-survival`
+(`sandpile.tex:5803-5845`): the convex-linear bound of `lem:convex-linear-bound` gives
+`∫(A-B)² ≤ C L² V_R + C η(L) B₀` for every `L > 0`, the variance sum `V_R` tends to zero and
+`η(L) → 0` at infinity, so `∫(A-B)² → 0`; with the coefficient replacement `∫C² → 0` the squared
+difference `∫(A-B-C)² → 0`.
+-/
 
 open MeasureTheory Filter Topology
 

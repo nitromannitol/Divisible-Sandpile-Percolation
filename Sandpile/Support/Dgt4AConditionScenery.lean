@@ -1,23 +1,26 @@
-/-
-The conditioning of `Support/Dgt4ACondition.lean` carried to the scenery and to the
-mass configuration, which is where Steps 2 to 4 of case (a) read it.
+import Sandpile.Support.Dgt4ACondition
+import Sandpile.Support.LinGaussBridge
+import Sandpile.Support.SceneryBridge
 
-`map_scenery_centeredMassLaw` and `iidLaw_gaussianReal_eq_map` write the law of the
-scenery as the image of the standard Gaussian product under the scaling
-`\omega\mapsto\sqrt v\omega`, so the splitting
-`\omega=\xi(\omega)e+\rho(\omega)` of `Support/Dgt4ACondition.lean` becomes the
+/-!
+# The conditioning carried to the scenery and to the mass configuration
+
+The conditioning of `Support/Dgt4ACondition.lean` carried to the scenery and to the mass
+configuration, which is where Steps 2 to 4 of case (a) read it.
+
+`map_scenery_centeredMassLaw` and `iidLaw_gaussianReal_eq_map` write the law of the scenery as
+the image of the standard Gaussian product under the scaling `\omega\mapsto\sqrt v\omega`, so
+the splitting `\omega=\xi(\omega)e+\rho(\omega)` of `Support/Dgt4ACondition.lean` becomes the
 splitting of the scenery
 
   `\zeta(z)=\sqrt v\,(r(z)+s\,e(z))`,   `s` standard Gaussian, `r` the residual field,
 
-with `s` and `r` independent.  Since `V_\infty(0)=\sqrt v\|G(0,\cdot)\|\,\xi`, fixing
-`s` fixes `-V_\infty(0)`, and the three identities below are the paper's conditioning
-on `-V_\infty(0)` at `sandpile.tex:5105-5109` for probabilities, for means, and for
-the events of the mass configuration.
+with `s` and `r` independent. Since `V_\infty(0)=\sqrt v\|G(0,\cdot)\|\,\xi`, fixing `s` fixes
+`-V_\infty(0)`, and the three theorems below, `measure_iidLaw_gauss_shift`,
+`integral_iidLaw_gauss_shift`, and `measure_centeredMassLaw_gauss_shift`, are the paper's
+conditioning on `-V_\infty(0)` at `sandpile.tex:5105-5109` for probabilities, for means, and
+for the events of the mass configuration.
 -/
-import Sandpile.Support.Dgt4ACondition
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.SceneryBridge
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

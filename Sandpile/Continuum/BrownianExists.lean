@@ -1,19 +1,20 @@
-/-
-Brownian motion on `ℝ^d` with generator `Δ/(2d)` exists, started at every point
-of space at once on a single probability space.
-
-Every statement of the paper that mentions Brownian motion is quantified over a
-probability space carrying a family `B` indexed by the starting point, with
-`Sandpile.Continuum.IsBrownian d y (B y) P` for every `y`.  Without a
-construction those statements would be vacuous, so the construction is recorded
-here as a theorem: `d` independent copies of a real Brownian motion, each scaled
-by `1/√d` and translated by the starting point, have the three properties of the
-predicate, and the translation does not change the space, so one space carries
-the whole family.  This is the same discharge that
-`Sandpile.Continuum.exists_isWhiteNoise` performs for white noise.
--/
 import Sandpile.Continuum.Stopping
 import LatticeProb.Gauss.BrownianCont
+
+/-!
+# Existence of `ℝ^d`-valued Brownian motion from every starting point
+
+Brownian motion on `ℝ^d` with generator `Δ/(2d)` exists, started at every point of space at
+once on a single probability space. Every statement of the paper that mentions Brownian
+motion is quantified over a probability space carrying a family `B` indexed by the starting
+point, with `Sandpile.Continuum.IsBrownian d y (B y) P` for every `y`; without a construction
+those statements would be vacuous, so the construction is recorded here as a theorem.
+`Sandpile.Continuum.exists_isBrownian` builds `d` independent copies of a real Brownian
+motion, each scaled by `1/√d` and translated by the starting point, and checks that the
+three defining properties hold, using that the translation does not change the space, so one
+space carries the whole family. This is the same discharge that
+`Sandpile.Continuum.exists_isWhiteNoise` performs for white noise.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

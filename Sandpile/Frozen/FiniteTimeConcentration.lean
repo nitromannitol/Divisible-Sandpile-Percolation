@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Concentration
+
+/-!
+# Concentration at the fluctuation scale
+
 Proposition "Concentration at the fluctuation scale" of sandpile.tex, frozen.
 `sandpile.tex:1462-1487` (label `prop:finite-time-concentration-scale`):
 
@@ -52,7 +56,6 @@ dimension a theorem parameter instead, it would be in scope at the existential
 and the statement would permit a different constant in each dimension.  The
 covariance clause carries the paper's extra hypothesis `0 < Var(\zeta(0))`.
 -/
-import Sandpile.Support.Concentration
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

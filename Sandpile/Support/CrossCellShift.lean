@@ -1,17 +1,22 @@
-/-
+import Sandpile.Support.CrossFieldTilt
+
+/-!
+# Identifying the adaptive tilt with the Cameron--Martin shift
+
 The identification of the adaptive tilt of `CrossStoppingSet` with the Cameron--Martin shift of
 the white noise, and the level loss of Step 3 of `prop:fixed-scale-crossings` that follows
 (`sandpile.tex:2334-2400`).
 
 The tilt produced by the adaptive comparison is `a ∑ᵢ 𝒲(1_{Q_i}) - a²n/2`, one exponential
-factor per revealed cube.  For pairwise disjoint cubes of volume one the sum of the indicators
-is the indicator of their union, whose `L²` norm squared is the number of cubes, so that tilt
-is exactly the Cameron--Martin tilt `a 𝒲(k) - a²‖k‖²/2` of `CrossCameronMartin` at
-`k = 1_{⋃ Q_i}`.  Combining the two gives the paper's Step 3 in the form the fixed-scale
-proposition consumes: the crossing at a level exceeds the crossing at the level raised by `a𝔪`
-by at most `|a|√(𝔼𝒩)/2`.
+factor per revealed cube. For pairwise disjoint cubes of volume one the sum of the indicators
+is the indicator of their union (`blockUnionInd_eq_sum`), whose `L²` norm squared is the
+number of cubes (`integral_blockUnionInd_sq`, via `volume_blockUnion` and the idempotence
+`blockUnionInd_mul_self`), so that tilt is exactly the Cameron--Martin tilt
+`a 𝒲(k) - a²‖k‖²/2` of `CrossCameronMartin` at `k = 1_{⋃ Q_i}` (`cmLogDensity_univ_ae_eq`).
+Combining the two gives the paper's Step 3 in the form the fixed-scale proposition consumes
+(`cell_tilted_closedCrossEvent`): the crossing at a level exceeds the crossing at the level
+raised by `a𝔪` by at most `|a|√(𝔼𝒩)/2`.
 -/
-import Sandpile.Support.CrossFieldTilt
 
 open MeasureTheory ProbabilityTheory Set
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -32,6 +37,9 @@ section Blocks
 variable {ι : Type} [Fintype ι] [DecidableEq ι] (Q : ι → Set (Space d))
 
 omit [DecidableEq ι] in
+/-- For pairwise disjoint sets, the indicator of their union is the sum of the individual
+indicators, since exactly one term of the sum is nonzero at any point of the union and all
+terms vanish off it. -/
 theorem blockUnionInd_eq_sum (hQdisj : ∀ i j, i ≠ j → Disjoint (Q i) (Q j)) (y : Space d) :
     blockUnionInd Q y = ∑ i : ι, Set.indicator (Q i) (fun _ => (1 : ℝ)) y := by
   classical
@@ -56,6 +64,7 @@ theorem blockUnionInd_eq_sum (hQdisj : ∀ i j, i ≠ j → Disjoint (Q i) (Q j)
     exact Set.indicator_of_notMem (hy i) (fun _ => (1 : ℝ))
 
 omit [Fintype ι] [DecidableEq ι] in
+/-- `blockUnionInd` is a `{0,1}`-valued indicator, hence idempotent under multiplication. -/
 theorem blockUnionInd_mul_self (y : Space d) :
     blockUnionInd Q y * blockUnionInd Q y = blockUnionInd Q y := by
   by_cases hy : y ∈ ⋃ i, Q i
@@ -65,6 +74,8 @@ theorem blockUnionInd_mul_self (y : Space d) :
     norm_num
 
 omit [DecidableEq ι] in
+/-- The union of `Fintype.card ι` pairwise disjoint, measurable, unit-volume sets has volume
+`Fintype.card ι`. -/
 theorem volume_blockUnion (hQm : ∀ i, MeasurableSet (Q i)) (hQvol : ∀ i, volume (Q i) = 1)
     (hQdisj : ∀ i j, i ≠ j → Disjoint (Q i) (Q j)) :
     volume (⋃ i, Q i) = (Fintype.card ι : ℝ≥0∞) := by
@@ -72,6 +83,8 @@ theorem volume_blockUnion (hQm : ∀ i, MeasurableSet (Q i)) (hQvol : ∀ i, vol
   simp [hQvol]
 
 omit [DecidableEq ι] in
+/-- `blockUnionInd` lies in `L²`, since it is the indicator of a measurable set of finite
+volume (`volume_blockUnion`). -/
 theorem memLp_blockUnionInd (hQm : ∀ i, MeasurableSet (Q i)) (hQvol : ∀ i, volume (Q i) = 1)
     (hQdisj : ∀ i j, i ≠ j → Disjoint (Q i) (Q j)) :
     MemLp (blockUnionInd Q) 2 (volume : Measure (Space d)) := by
@@ -80,6 +93,9 @@ theorem memLp_blockUnionInd (hQm : ∀ i, MeasurableSet (Q i)) (hQvol : ∀ i, v
   exact ENNReal.natCast_ne_top _
 
 omit [DecidableEq ι] in
+/-- The squared `L²` norm of `blockUnionInd` is `Fintype.card ι`: idempotence
+(`blockUnionInd_mul_self`) turns the square into the indicator itself, whose integral is the
+volume of the union (`volume_blockUnion`). -/
 theorem integral_blockUnionInd_sq (hQm : ∀ i, MeasurableSet (Q i))
     (hQvol : ∀ i, volume (Q i) = 1) (hQdisj : ∀ i j, i ≠ j → Disjoint (Q i) (Q j)) :
     (∫ y : Space d, blockUnionInd Q y * blockUnionInd Q y) = (Fintype.card ι : ℝ) := by

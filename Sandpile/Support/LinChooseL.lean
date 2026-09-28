@@ -1,10 +1,14 @@
-/-
-The choice of the truncation level in `eq:dgt4-convex-linear-remainder`
-(`sandpile.tex:5803-5817`): the convex-linear bound gives
-`V_R ≤ C L² ∑_i Var(D_i) + C η(L) ∑_i b_i²` for every `L > 0`, the variance sum
-tends to zero, and `η(L) → 0` as `L → ∞`; hence `V_R → 0`.
--/
 import Mathlib
+
+/-!
+# Vanishing of a convex-linear remainder by choice of truncation level
+
+If a nonnegative quantity `V R` is bounded, for every truncation level `L > 0`, by
+`C * L ^ 2 * A R + C * η L * B` with `A R → 0` as `R → l` and `η L → 0` as `L → ∞`,
+then `V R → 0` as `R → l`. The proof lets `L` grow slowly enough that the `η`-term is
+small and then lets `R` follow so that the `A`-term is small, splitting the target bound
+`b` in half between the two terms.
+-/
 
 open Filter Topology
 

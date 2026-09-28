@@ -1,13 +1,22 @@
-/-
-Upper deviations of Gaussian finite-kernel crossing values from their means.
--/
 import Sandpile.Support.GaussianBottleneck
+
+/-!
+# Upper deviations of Gaussian finite-kernel crossing values
+
+Upper deviations of Gaussian finite-kernel crossing values from their means.
+`subgaussian_centered_upper_tail` is the one-sided subgaussian tail bound for a centered
+subgaussian MGF, and `exists_gaussian_far_crossing_upper_concentration` applies it to the crossing
+value of the far Green field on a lattice rectangle, using the second-moment bound
+`cutField_square_sum_bound` to identify the variance proxy.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal
 noncomputable section
 namespace Sandpile
 
+/-- **A one-sided subgaussian tail bound.** If `f - m` has subgaussian MGF with variance proxy
+`c`, the probability that `f` exceeds `m + t` is at most `exp(-t² / (2c))`. -/
 lemma subgaussian_centered_upper_tail {Ω : Type*} [MeasurableSpace Ω]
     {μ : Measure Ω} [IsProbabilityMeasure μ] {f : Ω → ℝ} {m : ℝ} {c : ℝ≥0}
     (hf : HasSubgaussianMGF (fun x => f x - m) c μ) {t : ℝ} (ht : 0 ≤ t) :
@@ -19,17 +28,25 @@ lemma subgaussian_centered_upper_tail {Ω : Type*} [MeasurableSpace Ω]
   rw [he]
   have hh := hf.measure_ge_le ht
   change μ.real {x | t ≤ f x - m} ≤ _ at hh
-  simpa only [Measure.real, ENNReal.ofReal_toReal (measure_ne_top _ _)] using ENNReal.ofReal_le_ofReal hh
+  simpa only [Measure.real, ENNReal.ofReal_toReal (measure_ne_top _ _)] using
+    ENNReal.ofReal_le_ofReal hh
 
+/-- **The far-field crossing value has a Gaussian upper tail around its mean.** For iid Gaussian
+scenery of variance at most `V`, the probability that the crossing value on a lattice rectangle
+`Q` exceeds its mean by `t` is at most `exp(-t² / (C V log r))`, with `C` depending only on the
+dimension. Obtained by bounding the variance proxy of the crossing value's subgaussian MGF via
+`cutField_square_sum_bound` and applying `subgaussian_centered_upper_tail`. -/
 lemma exists_gaussian_far_crossing_upper_concentration (hBall : External.BallGreenBounds) :
     ∃ C > 0, ∀ r : ℕ, 2 ≤ r → ∀ L : ℕ, ∀ φ : ℝ → ℝ, External.BallGreen.IsCutoff φ →
       ∀ Q : Finset (Site 2), IsLatticeRectangle Q → 2 ≤ Q.card → ∀ z : Q → Site 4,
         ∀ v V : ℝ≥0, v ≤ V → ∀ t : ℝ, 0 ≤ t →
           LatticeProb.iidLaw 4 (gaussianReal 0 v)
             {ζ | (∫ ξ : Site 4 → ℝ,
-                crossingValue Q (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ξ (z w))
+                crossingValue Q
+                  (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ξ (z w))
                 ∂LatticeProb.iidLaw 4 (gaussianReal 0 v)) + t ≤
-                crossingValue Q (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w))} ≤
+                crossingValue Q
+                  (fun w => finiteKernelField (External.BallGreen.cutField r L φ) ζ (z w))} ≤
             ENNReal.ofReal (Real.exp (-t ^ 2 / (C * V * Real.log r))) := by
   obtain ⟨G, hG, hsum⟩ := cutField_square_sum_bound hBall
   refine ⟨Real.pi ^ 2 * G / 2, by positivity, ?_⟩
@@ -47,7 +64,8 @@ lemma exists_gaussian_far_crossing_upper_concentration (hBall : External.BallGre
       _ ≤ (V : ℝ) * (G * Real.log r) := mul_le_mul_of_nonneg_left (hsum r hr L φ hφ) V.coe_nonneg
       _ = _ := by ring
   have hSG := hasSubgaussianMGF_finiteKernel_crossing hQ hN (boxFinset 0 r)
-    (fun u hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (summable_cutField_sq r L φ) z v D hD
+    (fun u hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu)
+    (summable_cutField_sq r L φ) z v D hD
   have hp := subgaussian_centered_upper_tail hSG ht
   have hd : 2 * (Real.pi ^ 2 * (D : ℝ) ^ 2 / 4) = (Real.pi ^ 2 * G / 2) * V * Real.log r := by
     change 2 * (Real.pi ^ 2 * Real.sqrt ((V : ℝ) * G * Real.log r) ^ 2 / 4) = _

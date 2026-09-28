@@ -1,24 +1,17 @@
-/-
-The early-time estimate of Step 1 of `lem:dgt4-linearization-from-survival`
-(`eq:dgt4-early-derivative-variance`, `sandpile.tex:5731-5753`), at the
-coordinate derivative of the tested field.
-
-Two things are done here.  First, the early derivative `D^{≤}_{R,z}` of
-`Support/LinEarlyVarDefs.lean`, which is written with the survival indicator of
-the mass configuration, is identified with the time-restricted Jacobian of
-`Support/LinJacobianTimes.lean`, which is written with the odometer of a field;
-that identification is what lets the expansion of the early variance be read at
-the object Step 2 consumes.
-
-Second, the covariance hypothesis of the lemma holds only for the times the
-paper restricts to, `0 ≤ i,j ≤ n_R-\delta R^2`, so the early bound is proved
-here with the covariance hypothesis restricted to the times of the sum.  The
-proof is the paper's: the covariance bound at each pair of times, the
-intersection sum bounded by the intersection count, and the two tested
-intersection moments.
--/
 import Sandpile.Support.LinJacobianTimes
 import Sandpile.Support.LinEarlyVarBound
+
+/-!
+# The early-time variance bound at the time-restricted Jacobian
+
+The early coordinate derivative `earlyDeriv`, written with the survival indicator of the mass
+configuration, is identified here with the time-restricted Jacobian `jacobianTimes`, written with
+the odometer of a field, via `survivalInd_eq_pathSurvivalOf`. Since the covariance hypothesis on
+the survival indicators holds only for the times the sum ranges over, the early variance bound is
+proved with the covariance hypothesis restricted to those times: the covariance bound at each pair
+of times, the intersection sum bounded by an intersection count, and two tested intersection
+moments combine to bound the site sum of the early derivative variances by `Cd * C2 + eps * C1`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Frozen.DGT4SmoothedOdometerTail
+import Sandpile.Support.HeightLower
+
+/-!
+# The crude logarithmic upper bound on the mean odometer
+
 The crude logarithmic upper bound `eq:dgt4-crude-log-upper` of
 `sandpile.tex:4482-4502`.
 
@@ -14,8 +19,6 @@ against `h` in `eq:dgt4-height-increment` gives the increment bound
 `E u_{t+1}(0) - E u_t(0) ≤ C e^{-c E u_t(0)}`, and integrating that is
 `exists_log_upper_of_increment`.
 -/
-import Sandpile.Frozen.DGT4SmoothedOdometerTail
-import Sandpile.Support.HeightLower
 
 open LatticeProb
 

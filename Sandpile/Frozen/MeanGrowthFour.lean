@@ -1,5 +1,9 @@
-/-
-Theorem 1.3(ii)(a) of sandpile.tex, frozen.  `sandpile.tex:241-244`
+import Sandpile.Support.D4Applications
+
+/-!
+# The frozen logarithmic mean-odometer growth in dimension four
+
+This module states and proves Theorem 1.3(ii)(a) of `sandpile.tex:241-244`
 (label `thm:main-explosion`, part (ii)(a)):
 
   "(ii)(a) [$d=4$] The mean odometer is of logarithmic order at each site:
@@ -8,7 +12,6 @@ Theorem 1.3(ii)(a) of sandpile.tex, frozen.  `sandpile.tex:241-244`
 This is the clause the parking paper quotes.  The two comparison constants are
 bound after the law, so they do not depend on `t`.
 -/
-import Sandpile.Support.D4Applications
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

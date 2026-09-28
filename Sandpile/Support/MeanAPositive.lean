@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.MeanAMoment
+import Sandpile.Support.ExplMeanGrowth
+import Sandpile.Support.MainExplBrownianCont
+
+/-! # Positivity of the limiting mean and variance
+
 The positivity clauses of `ssec:scaling-dlt4`.
 
 `cor:dlt4-mean-asymptotic` asserts `Var 𝒰(1,0) > 0` and then divides by
@@ -10,9 +15,6 @@ Gaussian input at all: the value is a limit in distribution of the nonnegative
 rescaled odometers, hence nonnegative, and a nonnegative variable of positive
 variance has positive mean.
 -/
-import Sandpile.Support.MeanAMoment
-import Sandpile.Support.ExplMeanGrowth
-import Sandpile.Support.MainExplBrownianCont
 
 open MeasureTheory Filter Topology ProbabilityTheory
 open scoped NNReal

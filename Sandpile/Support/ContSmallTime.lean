@@ -1,29 +1,29 @@
-/-
-The near-diagonal bound of `ssec:green-estimates` in dimensions below four: the
-rescaled double time sum of transition probabilities over a MICROSCOPIC window of
-one of the two times is small, uniformly in the scale.
-
-This is what separates the local central limit theorem, which is uniform only
-above a fixed multiple of `R^2`, from the double time sum of
-`prop:dlt4-heat-potential-invariance`, which starts at time zero.  Splitting at a
-fixed time would leave the whole near-diagonal region unjustified; the split has
-to be at `ε R^2`, and what has to be shown is that the region below it
-contributes an amount that vanishes with `ε` and not merely with `R`.
-
-The estimate is elementary.  The Gaussian upper bound gives
-`p_n(x,y) ≤ C (n+1)^{-d/2}`, and since `a + b + 1` dominates both `a + 1` and
-`b + 1`, the exponent splits as `d/2 = γ + (d/2 - γ)` into a factor in each time
-variable.  The double sum then factorizes, and `ContPowerSum` bounds each factor
-by a power of its length.  The splitting exponent `γ = min(3/4, d/2)` is chosen so
-that both exponents `1 - γ` and `1 - (d/2 - γ)` lie in `[1/4, 1]` in every
-dimension at most three: the first keeps the microscopic length entering with a
-positive power, and the second keeps the second sum convergent.  The two lengths
-enter as `(εR^2)^{1-γ}` and `(TR^2)^{1-(d/2-γ)}`, whose powers of `R` cancel
-`R^{d-4}` exactly, so what is left is `ε^{1-γ} T^{1-(d/2-γ)}`, and `1 - γ ≥ 1/4`.
--/
 import LatticeProb.Support.PowerSum
 import Sandpile.Support.Kernel
 import Sandpile.External.HeatKernelBoundsProved
+
+/-!
+# The near-diagonal bound for the double time sum of transition probabilities
+
+This is the near-diagonal estimate of `ssec:green-estimates` in dimensions at most three: the
+rescaled double time sum of transition probabilities over a MICROSCOPIC window of one of the two
+times is small, uniformly in the scale. It is what separates the local central limit theorem
+(uniform only above a fixed multiple of `R^2`) from the double time sum of
+`prop:dlt4-heat-potential-invariance`, which starts at time zero; splitting at a fixed time would
+leave the near-diagonal region unjustified, so the split is placed at `δR^2` instead, and what
+must be shown is that the contribution below it vanishes with `δ`, not merely with `R`.
+
+`exists_heatKernel_succ_bound` restates the Gaussian upper bound as `p_n(x,y) ≤ C(n+1)^{-d/2}`,
+uniformly including `n = 0`; `rpow_add_split` and `rpow_prod_collapse` are the elementary `rpow`
+identities that let the exponent `d/2` split as `γ + (d/2 - γ)` into a factor in each time
+variable and let the powers of the scale `R` cancel exactly. The splitting exponent
+`splitExp d = min(3/4, d/2)` is chosen so both `1 - γ` and `1 - (d/2 - γ)` lie in `[1/4, 1]` for
+`d ≤ 3` (`splitExp_nonneg`, `splitExp_le`, `splitExp_le_dim`, `dim_sub_splitExp_nonneg`,
+`dim_sub_splitExp_le`). `double_time_sum_le` factorizes the double sum via
+`LatticeProb.PowerSum`, `exists_smallTime_bound` assembles the near-diagonal bound
+`ε^{1-γ}T^{1-(d/2-γ)}` with exponent at least `1/4`, and `band_time_sum_le` gives the analogous
+bound over a macroscopically thin band, proportional to its width.
+-/
 
 open LatticeProb.PowerSum
 
@@ -139,19 +139,26 @@ theorem rpow_prod_collapse {R : ℝ} (hR : 0 < R) {e p q a b : ℝ} (ha : 0 ≤ 
 /-- The splitting exponent of the two time variables. -/
 noncomputable def splitExp (d : ℕ) : ℝ := min (3 / 4) ((d : ℝ) / 2)
 
+/-- `splitExp d` is nonnegative, being the minimum of the two nonnegative reals `3/4` and
+`d/2`. -/
 theorem splitExp_nonneg (d : ℕ) : 0 ≤ splitExp d := by
   have hd' : (0 : ℝ) ≤ (d : ℝ) := Nat.cast_nonneg d
   rw [splitExp]
   exact le_min (by norm_num) (by linarith)
 
+/-- `splitExp d` is at most `3/4`, since it is a minimum with `3/4` as one term. -/
 theorem splitExp_le (d : ℕ) : splitExp d ≤ 3 / 4 := min_le_left _ _
 
+/-- `splitExp d` is at most `d/2`, since it is a minimum with `d/2` as one term. -/
 theorem splitExp_le_dim (d : ℕ) : splitExp d ≤ (d : ℝ) / 2 := min_le_right _ _
 
+/-- The complementary exponent `d/2 - splitExp d` is nonnegative, by `splitExp_le_dim`. -/
 theorem dim_sub_splitExp_nonneg (d : ℕ) : 0 ≤ (d : ℝ) / 2 - splitExp d := by
   have := splitExp_le_dim d
   linarith
 
+/-- For `d ≤ 3`, the complementary exponent `d/2 - splitExp d` is at most `3/4`, by splitting on
+which of the two terms `min (3/4) (d/2)` attains. -/
 theorem dim_sub_splitExp_le (hd3 : d ≤ 3) : (d : ℝ) / 2 - splitExp d ≤ 3 / 4 := by
   have hd' : (d : ℝ) ≤ 3 := by exact_mod_cast hd3
   rw [splitExp]

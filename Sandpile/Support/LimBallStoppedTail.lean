@@ -1,17 +1,21 @@
-/-
+import Sandpile.Support.LimKernelBounds
+
+/-!
+# Convergence in probability of the ball-stopped field
+
 The `L²` distance between the ball-stopped kernel and the Green function of the
 ball tends to zero, and with it the probability that the two fields differ.
 
 The kernel `k_T` of the ball-stopped field satisfies `0 ≤ k_T ≤ G` with
 `G = 2d · ballKernel` (`Sandpile/Support/LimKernelBounds.lean`), and its mass
-increases to the mass of `G`.  For a difference `D = G - k_T` squeezed between `0`
+increases to the mass of `G`. For a difference `D = G - k_T` squeezed between `0`
 and `G` the elementary split
 
   `D² ≤ D·G ≤ M·D + G²·1_{G > M}`
 
 turns the convergence of the mass, which is an `L¹` statement, into convergence in
 `L²`: choose `M` so that the tail `∫_{G>M} G²` is small, which is possible because
-`G²` is integrable, and then let the horizon grow.  The white-noise average of a
+`G²` is integrable, and then let the horizon grow. The white-noise average of a
 kernel of small `L²` norm is small in probability, by Chebyshev's inequality and
 the covariance clause of the white noise, so the ball-stopped field converges in
 probability to the ball field at each point of the plane.
@@ -20,7 +24,6 @@ What is NOT proved here is the uniformity of that convergence over the points of
 compact rectangle, which is what `Sandpile.Support.BallStoppedApproximation` asks
 for.
 -/
-import Sandpile.Support.LimKernelBounds
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -43,6 +46,8 @@ theorem sq_sub_le_split {G K M : ℝ} (h0 : 0 ≤ K) (hKG : K ≤ G) (hM : 0 ≤
     rw [not_lt] at hc
     nlinarith
 
+/-- The integral form of `sq_sub_le_split`: for `0 ≤ K ≤ G` almost everywhere,
+`∫ (G-K)² ≤ M ∫ (G-K) + ∫_{G>M} G²`, by integrating the pointwise split. -/
 theorem integral_sq_sub_le {α : Type*} [MeasurableSpace α] {μ : Measure α} {G K : α → ℝ}
     (hG : Measurable G) (hGsq : Integrable (fun y => G y ^ 2) μ)
     (hDm : AEStronglyMeasurable (fun y => G y - K y) μ)
@@ -111,11 +116,15 @@ theorem exists_setIntegral_gt_sq_lt {α : Type*} [MeasurableSpace α] {μ : Meas
 
 /-! ### The `L²` convergence of the kernel -/
 
+/-- `ballKernel d s u` is measurable, as the translate of the measurable
+`centredKernel d s` by a fixed shift. -/
 theorem measurable_ballKernel (d : ℕ) (s : ℝ) (u : Space 2) :
     Measurable (ballKernel d s u) := by
   rw [ballKernel_eq_centredKernel]
   exact (measurable_centredKernel d s).comp (measurable_const.sub measurable_id)
 
+/-- The square of `G = 2d · ballKernel d s u` is integrable for `d ∈ {2,3}` and
+`s > 0`, since `ballKernel d s u` is in `L²` by `memLp_ballKernel`. -/
 theorem integrable_sq_ballGreen {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (hs : 0 < s)
     (u : Space 2) :
     Integrable (fun y => (2 * (d : ℝ) * ballKernel d s u y) ^ 2)

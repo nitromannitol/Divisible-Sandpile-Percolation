@@ -1,22 +1,21 @@
-/-
-Integrating a deterministic increment bound.
-
-The upper bounds of `ssec:d5-height-upper` pass from a bound on
-`E u_{t+1}(0) - E u_t(0)` to a bound on `E u_t(0)` itself.  The crude step
-`eq:dgt4-crude-log-upper` of `sandpile.tex:4479-4499` is the case treated here:
-increments at most `C e^{-c a_n}` force logarithmic growth.  The mechanism is
-that `b_n := e^{c a_n}` has increments bounded by a constant, so `b_n` is at
-most linear and `a_n` at most logarithmic.
-
-The opposite direction is the integration step of `prop:dgt4-height-lower-stretched`
-and of `thm:dgt4-height-lower` (`sandpile.tex:4331-4336`): increments at least
-`c e^{-C (a_n+1)^β}` force growth at least `(log t)^{1/β}`.  There the argument
-is by contradiction and needs no asymptotics: summing the increments over the
-last `t/2` steps gives `a_t e^{C(a_t+1)^β} ≥ c t / 2`, while
-`a_t < c' (log t)^{1/β}` with `C 2^β c'^β ≤ 1/2` makes the left side at most
-`K₀ t^{3/4}`, using `log x ≤ (4/β) x^{β/4}`.
--/
 import Mathlib
+
+/-!
+# Integrating a deterministic increment bound
+
+The upper bounds of `ssec:d5-height-upper` pass from a bound on `E u_{t+1}(0) - E u_t(0)` to a
+bound on `E u_t(0)` itself. The crude step `eq:dgt4-crude-log-upper` of `sandpile.tex:4479-4499`
+is the case treated here: increments at most `C e^{-c a_n}` force logarithmic growth. The
+mechanism is that `b_n := e^{c a_n}` has increments bounded by a constant, so `b_n` is at most
+linear and `a_n` at most logarithmic.
+
+The opposite direction is the integration step of `prop:dgt4-height-lower-stretched` and of
+`thm:dgt4-height-lower` (`sandpile.tex:4331-4336`): increments at least `c e^{-C (a_n+1)^β}`
+force growth at least `(log t)^{1/β}`. There the argument is by contradiction and needs no
+asymptotics: summing the increments over the last `t/2` steps gives
+`a_t e^{C(a_t+1)^β} ≥ c t / 2`, while `a_t < c' (log t)^{1/β}` with `C 2^β c'^β ≤ 1/2` makes the
+left side at most `K₀ t^{3/4}`, using `log x ≤ (4/β) x^{β/4}`.
+-/
 
 open Real
 
@@ -72,7 +71,8 @@ theorem exists_log_upper_of_increment (C c : ℝ) (hC : 0 < C) (hc : 0 < c)
             ≤ c * C * E⁻¹ * Real.exp (c * C) := by
           refine mul_le_mul hcΔ (Real.exp_le_exp.mpr hcΔC) (Real.exp_pos _).le ?_
           positivity
-        have hE : E * (Real.exp (c * (a (n + 1) - a n)) - 1) ≤ E * (c * C * E⁻¹ * Real.exp (c * C)) :=
+        have hE : E * (Real.exp (c * (a (n + 1) - a n)) - 1) ≤
+            E * (c * C * E⁻¹ * Real.exp (c * C)) :=
           mul_le_mul_of_nonneg_left (le_trans hstep1 hstep2) hE0.le
         have hcancel : E * (c * C * E⁻¹ * Real.exp (c * C)) = K := by
           rw [hKdef]; field_simp
@@ -202,7 +202,8 @@ theorem log_lower_of_increment_explicit (c C M β : ℝ) (hc : 0 < c) (hC : 0 < 
     linarith
   have hexp0 : (0 : ℝ) < Real.exp (-(C * (a t + 1) ^ β)) := Real.exp_pos _
   have hlow : (t : ℝ) / 2 * (c * Real.exp (-(C * (a t + 1) ^ β))) ≤ a t := by
-    have := mul_le_mul_of_nonneg_right hhalf (by positivity : (0:ℝ) ≤ c * Real.exp (-(C * (a t + 1) ^ β)))
+    have := mul_le_mul_of_nonneg_right hhalf
+      (by positivity : (0:ℝ) ≤ c * Real.exp (-(C * (a t + 1) ^ β)))
     linarith
   by_contra hcon
   simp only [not_le] at hcon

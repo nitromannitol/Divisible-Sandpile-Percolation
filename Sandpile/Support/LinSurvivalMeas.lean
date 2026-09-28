@@ -1,14 +1,17 @@
-/-
-Joint measurability of the survival indicator, and the Fubini exchange it makes
-possible.
+import Sandpile.Support.LinMeanGradient
+import Sandpile.Support.LinStationary
+import LatticeProb.Support.Fubini
+
+/-!
+# Joint measurability of the survival indicator, and the Fubini exchange it makes possible
 
 Step 1 of `lem:dgt4-linearization-from-survival` (`sandpile.tex:5680-5695`) reads
 the mean odometer gradient as `∑_{j<n} E_0[1_{X_j=z} P(S_{n,j}(X)=1 | X)]`, which
-exchanges the integral over the scenery with the integral over path space.  The
+exchanges the integral over the scenery with the integral over path space. The
 exchange needs the survival indicator to be measurable in the PAIR `(σ, X)`, and
 that is what is proved here: `S_{n,j}` is the product over the first `j+1` times
 of the indicators `1_{u_{n-i}(X_i) > 0}`, each of which is the indicator of a set
-of pairs cut out by the jointly measurable function `(σ, X) ↦ u_t(X_i)`.  The
+of pairs cut out by the jointly measurable function `(σ, X) ↦ u_t(X_i)`. The
 lattice is countable, so that function is measurable by the same argument as for
 the localized odometer in `Support/MeanLocalization.lean`.
 
@@ -16,9 +19,6 @@ Since the survival indicator takes values in `{0,1}`, the exchange itself is the
 elementary Fubini theorem for a bounded jointly measurable function of two
 probability spaces, which is stated separately.
 -/
-import Sandpile.Support.LinMeanGradient
-import Sandpile.Support.LinStationary
-import LatticeProb.Support.Fubini
 
 open MeasureTheory Filter Topology
 

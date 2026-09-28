@@ -1,29 +1,29 @@
-/-
-The Brownian half of the cutoff error of `sandpile.tex:1908-1922`.
-
-The display at `sandpile.tex:1908-1921` bounds, uniformly over stopping times,
-the contribution to the optimal-stopping value of the region where the cutoff
-`χ_A` is not one, and the sentence at `sandpile.tex:1922` says that the
-analogous Brownian estimate holds.  For a reward bounded by `M` the Brownian
-estimate is exactly the Brownian maximal estimate: the integrand vanishes unless
-the motion has left the ball of radius `A` about the origin, and a motion started
-at a point of norm at most `ρ` has then moved a distance at least `A - ρ`, an
-event whose probability is at most `C e^{-c(A-ρ)²/(2T)}` by the closed-ball exit
-tail `Sandpile.Continuum.exists_ball_exit_tail_closed_uniform`, whose constants
-depend only on the dimension.
-
-The horizon of the exit tail is `2T` rather than `T` because an admissible
-stopping time may equal the horizon, while the tail is stated for the motion
-strictly before its horizon.
-
-What this does NOT contain is the walk half of the same display, where the
-reward is not bounded uniformly in `A`: there the dyadic annuli, the Green-kernel
-estimates and `lem:weighted-exp-conc` are needed to bound the field on the
-annulus by a power of its radius.
--/
 import Sandpile.Support.ExplValueGap
 import Sandpile.Support.ExplBallExit
 import Sandpile.Support.Localization
+
+/-!
+# The Brownian half of the cutoff error
+
+The Brownian half of the cutoff error of `sandpile.tex:1908-1922`.
+
+The display at `sandpile.tex:1908-1921` bounds, uniformly over stopping times, the contribution to
+the optimal-stopping value of the region where the cutoff `χ_A` is not one, and the sentence at
+`sandpile.tex:1922` says that the analogous Brownian estimate holds. For a reward bounded by `M`
+the Brownian estimate is exactly the Brownian maximal estimate: the integrand vanishes unless the
+motion has left the ball of radius `A` about the origin, and a motion started at a point of norm
+at most `ρ` has then moved a distance at least `A - ρ`, an event whose probability is at most
+`C e^{-c(A-ρ)²/(2T)}` by the closed-ball exit tail
+`Sandpile.Continuum.exists_ball_exit_tail_closed_uniform`, whose constants depend only on the
+dimension.
+
+The horizon of the exit tail is `2T` rather than `T` because an admissible stopping time may equal
+the horizon, while the tail is stated for the motion strictly before its horizon.
+
+What this does NOT contain is the walk half of the same display, where the reward is not bounded
+uniformly in `A`: there the dyadic annuli, the Green-kernel estimates and `lem:weighted-exp-conc`
+are needed to bound the field on the annulus by a power of its radius.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal

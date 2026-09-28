@@ -1,10 +1,13 @@
-/-
+import Mathlib
+
+/-!
+# Uniform convergence of the summed profile
+
 The uniform-convergence step of the summed profile of Step 2 of
 `thm:dgt4-many-limits` (`sandpile.tex:6245-6250`): if the pointwise bound
 `|y(⌊tR_k²⌋)/L_k - t/κ| ≤ C/L_k + 1/(κR_k²) + Tη_k/κ` holds eventually for every
 `t ∈ [δ,T]`, then the supremum over `t ∈ [δ,T]` tends to `0`.
 -/
-import Mathlib
 
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal

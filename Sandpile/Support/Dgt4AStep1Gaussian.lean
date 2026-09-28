@@ -1,17 +1,19 @@
-/-
-Step 1 of case (a) of `prop:dgt4-contact-asymptotics` with its last hypothesis discharged.
+import Sandpile.Support.Dgt4Mills
+import Sandpile.Support.ExponentialMoments
+import Sandpile.Frozen.DGT4HeightUpperTail
+import Sandpile.Support.Dgt4AStep1Decay
 
+/-!
+# Step 1 of case (a) discharged in the Gaussian case
+
+Step 1 of case (a) of `prop:dgt4-contact-asymptotics` with its last hypothesis discharged.
 `eq:dgt4-gaussian-height-order` (`sandpile.tex:5035-5037`) says that in the Gaussian case
-`c\sqrt{\log(n+2)}\leq\E u_n(0)\leq C\sqrt{\log(n+2)}`, and Step 1 uses the upper half.  That
+`c\sqrt{\log(n+2)}\leq\E u_n(0)\leq C\sqrt{\log(n+2)}`, and Step 1 uses the upper half. That
 half is `thm:dgt4-height-upper-tail` at the sub-Gaussian exponent `\gamma=2`: the Gaussian
 lower tail is `\P(\zeta(0)\leq-s)\leq C\exp(-s^2/(8v))`, read off the Mills bound of
 `Support/Dgt4Mills.lean`, and `\min(\gamma,d/2)=2` for `d\geq5`, so the theorem's exponent
 `1/\min(\gamma,d/2)` is `1/2`.
 -/
-import Sandpile.Support.Dgt4Mills
-import Sandpile.Support.ExponentialMoments
-import Sandpile.Frozen.DGT4HeightUpperTail
-import Sandpile.Support.Dgt4AStep1Decay
 
 open LatticeProb
 

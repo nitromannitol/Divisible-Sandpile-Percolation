@@ -1,9 +1,16 @@
-/-
-Superpolynomial control of fixed-length simple paths of near-field
-bad boxes, with polynomially many possible starting vertices.
--/
 import Sandpile.Support.ColoredBoxes
 import Sandpile.Support.BoxPathCount
+
+/-!
+# Superpolynomial control of near-field bad-box paths
+
+Superpolynomial control of fixed-length simple paths of near-field bad boxes, with
+polynomially many possible starting vertices. `exists_near_boxPath_tail` combines the
+per-box tail bound `exists_near_many_boxes_bound` with the path-counting estimate
+`measure_boxPathEvent_le`: the path length `n = 49m` and the exponent `m` are chosen so that
+`b·m ≥ p + 3`, which absorbs both the `9ⁿ` path-counting factor and the polynomial number
+`r³` of possible starting vertices `S`, leaving a net probability bound of order `r^{-p}`.
+-/
 
 open MeasureTheory Set
 open scoped BigOperators ENNReal
@@ -11,6 +18,11 @@ open scoped BigOperators ENNReal
 noncomputable section
 namespace Sandpile
 
+/-- **Superpolynomial control of a fixed-length simple path of near-field bad boxes.**  Fixes
+an exponent `α < 1` and a path length `n = 49m`, with `m` large enough that `b·m ≥ p + 3`, so
+that the per-box tail probability from `exists_near_many_boxes_bound` raised through the
+path-counting bound `measure_boxPathEvent_le` beats both the `9ⁿ` path-counting factor and the
+polynomial `r³` bound on the number `S.card` of possible starting vertices. -/
 lemma exists_near_boxPath_tail (hBall : External.BallGreenBounds)
     (θ K η p : ℝ) (hθ : 0 < θ) (hη : 0 < η) (_hp : 0 < p) :
     ∃ α C : ℝ, 0 < α ∧ α < 1 ∧ 0 < C ∧ ∃ n r₀ : ℕ, 2 ≤ r₀ ∧
@@ -21,9 +33,11 @@ lemma exists_near_boxPath_tail (hBall : External.BallGreenBounds)
           ∀ (x : Site 4) (S : Finset (Site 2)), S.card ≤ r ^ 3 →
             (LatticeProb.iidLaw 4 μ) (boxPathEvent n S (fun a =>
               kernelLowEvent (nearKernel r ⌊(r : ℝ) ^ α⌋₊ φ)
-                (planeBox (coarsePlaneCenter x ⌊(r : ℝ) ^ α⌋₊ a) ⌊(r : ℝ) ^ α⌋₊) (-η * Real.log r))) ≤
+                (planeBox (coarsePlaneCenter x ⌊(r : ℝ) ^ α⌋₊ a) ⌊(r : ℝ) ^ α⌋₊)
+                  (-η * Real.log r))) ≤
               ENNReal.ofReal (C * (r : ℝ) ^ (-p)) := by
-  obtain ⟨α, b, C, hα, hα1, hb, hC, r₀, hr₀, hmany⟩ := exists_near_many_boxes_bound hBall θ K η hθ hη
+  obtain ⟨α, b, C, hα, hα1, hb, hC, r₀, hr₀, hmany⟩ :=
+    exists_near_many_boxes_bound hBall θ K η hθ hη
   let m : ℕ := ⌈(p + 3) / b⌉₊
   have hm : p + 3 ≤ b * (m : ℝ) := by
     have hh := Nat.le_ceil ((p + 3) / b)

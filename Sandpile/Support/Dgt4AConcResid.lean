@@ -1,19 +1,18 @@
-/-
-Gaussian concentration under the conditioning of Step 4 of case (a)
-(`sandpile.tex:5267-5271`).
-
-"Conditioning the Gaussian scenery on the linear functional `-V_\infty(0)` replaces its
-covariance by a rank-one reduction, so the same bound holds conditionally."  The law of
-the residual field is the image of the standard Gaussian product under that reduction, and
-the reduction is a contraction for the `\ell^2` distance at every configuration
-(`Support/Dgt4AConcContract.lean`), so a functional Lipschitz for that distance under the
-residual law lifts to one with the same constant under the product, where the cited
-concentration inequality applies.  The image of the reduction is the same measure whether
-it is taken along the everywhere-defined `projUnit` or along the `L^2` representative
-`residField`, since the two agree almost everywhere.
--/
 import Sandpile.Support.Dgt4AConcContract
 import Sandpile.External.GaussianLipschitzConcentration
+
+/-!
+# Gaussian concentration for the residual field after conditioning
+
+Conditioning the Gaussian scenery on the linear functional `-V_∞(0)` replaces its covariance
+by a rank-one reduction, so the same concentration bound holds conditionally. The law of the
+residual field `residField d hd` is the image of the standard Gaussian product under that
+reduction, and since the reduction (`projUnit`) is a contraction for the `ℓ²` distance at
+every configuration, a functional that is Lipschitz for that distance under the residual law
+lifts to one with the same constant under the product, where the cited Gaussian-Lipschitz
+concentration inequality applies. The image of the reduction agrees with the `L²`
+representative `residField` almost everywhere, so the two descriptions coincide as measures.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,27 +1,17 @@
-/-
-The law of the finite-scale maximum field does not depend on the space carrying
-the white noise.
-
-`lem:finite-scale-extraction` (`sandpile.tex:2415-2425`) and
-`thm:limiting-odometer-crossing` (`sandpile.tex:2515-2530`) fix the level, the
-scales and the horizon before any probability space is mentioned, because the
-fields `𝒳_s` of `sandpile.tex:2076-2088` are white-noise integrals against fixed
-kernels and so have a fixed law.  Mathlib 4.32 constructs no white noise, so the
-space carrying it is quantified over, and a proof which produces the scales by
-continuity from below produces them on one space.  What closes the gap is that
-the joint law of `𝒳_{s_1},…,𝒳_{s_k}`, hence the law of their maximum, is the
-same on any two spaces carrying white noise.
-
-`Sandpile.External.GaussianLawDeterminedByCovariance` is the same fact for two
-centred Gaussian fields on ONE space.  The version needed here compares two
-spaces and is applied to the maximum, which is not Gaussian; what determines its
-law is the joint law of the family it is the maximum of, and that is Gaussian
-with a covariance the white-noise axioms compute.  It is stated here as an
-explicit hypothesis rather than an axiom, in the same style, and it has been
-requested of the shared library.
--/
 import Sandpile.Support.LimMaxField
 import Sandpile.Support.CrossField
+
+/-!
+# Invariance of the finite-scale maximum field's law
+
+The law of the finite-scale maximum field `maxBallField d k W s` does not depend on the
+space carrying the white noise `W`. Since each field `𝒳_s` is a white-noise integral
+against a fixed kernel, the joint law of `𝒳_{s_1}, …, 𝒳_{s_k}` is Gaussian with a
+covariance determined by the white-noise axioms alone, and hence the law of the maximum
+of finitely many such fields agrees across any two spaces carrying white noise. This
+is the analogue, for the maximum of a Gaussian family rather than a single Gaussian
+field, of `Sandpile.External.GaussianLawDeterminedByCovariance`.
+-/
 
 open MeasureTheory Set Filter
 open scoped NNReal ENNReal

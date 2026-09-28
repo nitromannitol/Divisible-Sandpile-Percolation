@@ -289,7 +289,7 @@ automation:
         warning-free build, coverage of every labelled statement of the paper,
         the clause and exponent readings, and quantifier order.  The Lean
         comparator (leanprover/comparator) was run on all twelve Audit pairs
-        on 2026-09-24, at commit 4545f0b, and every pair passed with the Lean
+        on 2026-09-28, at commit 8207a73, and every pair passed with the Lean
         kernel and with the independent nanoda kernel; the results and the
         reproduction steps are in Audit/COMPARATOR_RUNS.md.
         .github/workflows/comparator.yml runs the same check on request.

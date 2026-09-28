@@ -1,4 +1,9 @@
-/-
+import Sandpile.Continuum.Sobolev
+import LatticeProb.External.RellichKondrachovNegSobolev
+
+/-!
+# Rellich-Kondrachov negative-Sobolev embedding
+
 External input: the Rellich-Kondrachov compact embedding used in the
 `H^{-s}_loc` clause of `lem:dgt4-linearization-from-survival`
 (`sandpile.tex:5615-5660`).
@@ -18,8 +23,6 @@ finite-`η`-net form the shared library's copy uses
 Prop, transposed to `Sandpile`'s own `External` namespace so that this repository's
 manifest and external-debt ledger register it like every other cited input.
 -/
-import Sandpile.Continuum.Sobolev
-import LatticeProb.External.RellichKondrachovNegSobolev
 
 -- FROZEN-STATEMENT-BEGIN
 /-- The Rellich-Kondrachov compact embedding `H^s(D) → H^{s_0}(D)` for

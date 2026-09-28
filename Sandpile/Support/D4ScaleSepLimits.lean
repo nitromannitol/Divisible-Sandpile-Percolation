@@ -1,33 +1,37 @@
-/-
-The two limits of `eq:d4-superdiffusive-scale-separation` (`sandpile.tex:3334-3336`),
-which fix the intermediate scale in the proof of `prop:d4-superdiffusive-limit`.
-
-With `t_R = ⌊R^α⌋` and `n_R = ⌊R √t_R⌋` for `α > 2`,
-
-  `R²(1 + log log t_R) / n_R → 0`   and   `n_R log²(t_R + 2) / (t_R − n_R) → 0`.
-
-`Support/D4ScaleSep.lean` and `Support/D4ScaleSepSecond.lean` majorize the two
-quotients by `4(1 + log log t_R)/R^{α/2−1}` and `8 log²(R^α + 2)/R^{α/2−1}`, both
-for `R ≥ 2`, the second under the side condition `n_R ≤ t_R/2`.  What is added
-here is that both majorants vanish, and that the side condition holds for large
-`R`.  The mechanism in each case is the same: the numerator grows like a
-polynomial in `log R` and the denominator like a positive power of `R`, so
-`Real.isLittleO_log_rpow_atTop` closes it.  The first numerator is an iterated
-logarithm, bounded by `α log R` through `log y ≤ y − 1`; the second is a square,
-handled by splitting `R^{α/2−1}` into two equal factors.  The side condition
-`n_R ≤ t_R/2` is `4R² ≤ t_R`, which holds once `R^{α−2} ≥ 5`; this is the only
-place `α > 2` is used quantitatively, and it is why the scale separation fails at
-diffusive times.
--/
 import Sandpile.Support.D4ScaleSep
 import Sandpile.Support.D4ScaleSepSecond
 import Sandpile.Support.D4Scale
+
+/-!
+# The two limits of the superdiffusive scale separation
+
+The two limits of `eq:d4-superdiffusive-scale-separation` (`sandpile.tex:3334-3336`), which fix
+the intermediate scale in the proof of `prop:d4-superdiffusive-limit`. With `t_R = ⌊R^α⌋` and
+`n_R = ⌊R √t_R⌋` for `α > 2`,
+
+  `R²(1 + log log t_R) / n_R → 0`   and   `n_R log²(t_R + 2) / (t_R − n_R) → 0`,
+
+proved by `tendsto_scale_sep_first` and `tendsto_scale_sep_second`. `Support/D4ScaleSep.lean` and
+`Support/D4ScaleSepSecond.lean` majorize the two quotients by `4(1 + log log t_R)/R^{α/2−1}` and
+`8 log²(R^α + 2)/R^{α/2−1}`, both for `R ≥ 2`, the second under the side condition `n_R ≤ t_R/2`
+(`nR_le_half_floor`). What is added here is that both majorants vanish
+(`tendsto_affine_log_div_rpow`, `tendsto_sq_affine_log_div_rpow`), and that the side condition
+holds for large `R`. The mechanism in each case is the same: the numerator grows like a
+polynomial in `log R` and the denominator like a positive power of `R`, so
+`Real.isLittleO_log_rpow_atTop` closes it. The first numerator is an iterated logarithm, bounded
+by `α log R` through `log y ≤ y − 1` (`loglog_floor_rpow_bounds`); the second is a square
+(`log_rpow_add_two_bounds`), handled by splitting `R^{α/2−1}` into two equal factors. The side
+condition `n_R ≤ t_R/2` is `4R² ≤ t_R`, which holds once `R^{α−2} ≥ 5`; this is the only place
+`α > 2` is used quantitatively, and it is why the scale separation fails at diffusive times.
+-/
 
 open Real Filter Topology
 
 namespace Sandpile.D4Super
 
 
+/-- An affine function of `log R` divided by a positive power of `R` tends to `0`, via
+`Real.isLittleO_log_rpow_atTop`. -/
 theorem tendsto_affine_log_div_rpow (a b c : ℝ) (hc : 0 < c) :
     Tendsto (fun R : ℝ => (b + a * Real.log R) / R ^ c) atTop (𝓝 0) := by
   have h1 : Tendsto (fun R : ℝ => R ^ c) atTop atTop := tendsto_rpow_atTop hc
@@ -42,6 +46,8 @@ theorem tendsto_affine_log_div_rpow (a b c : ℝ) (hc : 0 < c) :
   have hRc : (R : ℝ) ^ c ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hR c)
   field_simp
 
+/-- The square of an affine function of `log R` divided by a positive power of `R` tends to `0`,
+by squaring `tendsto_affine_log_div_rpow` with the exponent halved. -/
 theorem tendsto_sq_affine_log_div_rpow (a b c : ℝ) (hc : 0 < c) :
     Tendsto (fun R : ℝ => (b + a * Real.log R) ^ 2 / R ^ c) atTop (𝓝 0) := by
   have hc2 : 0 < c / 2 := by linarith

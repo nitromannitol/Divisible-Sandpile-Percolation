@@ -1,4 +1,10 @@
-/-
+import Sandpile.Support.Dgt4ABandLaw
+import Sandpile.Support.Dgt4ABand
+import Sandpile.Support.Dgt4ABandScaled
+
+/-!
+# Step 2 roadmap
+
 The roadmap of Step 2 of `thm:dgt4-many-limits` (`sandpile.tex:6051-6275`), and
 where each of its three parts lives.
 
@@ -29,6 +35,3 @@ supplied by `Dgt4ABandSlowWeights.lean`.
 sequence-indexed form that Step 3 consumes, and their deterministic-level content
 is `Dgt4ABandReplacement.lean`.
 -/
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABand
-import Sandpile.Support.Dgt4ABandScaled

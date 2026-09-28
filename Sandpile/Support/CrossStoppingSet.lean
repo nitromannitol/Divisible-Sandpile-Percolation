@@ -1,44 +1,24 @@
-/-
-The adaptive Cameron--Martin comparison behind Step 3 of `prop:fixed-scale-crossings`
-(`sandpile.tex:2334-2400`), in the abstract.
-
-The paper shifts the white noise only on the cubes its exploration can reveal, and pays
-relative entropy only for the cubes the exploration actually reveals.  Everything in this
-module is stated for an arbitrary probability space carrying a finite INDEPENDENT family of
-sub-sigma-algebras `G i`, a random finite set `S` of indices that is a STOPPING SET for that
-family (the event that the revealed set is exactly `A` is decided by the coordinates in `A`,
-`sandpile.tex:2354-2360`: "Given `𝔗_{i-1}`, the rule determines `z_i` and the newly revealed
-set `𝒥_i`"), and an event the exploration decides (`sandpile.tex:2390`: "Since `𝔗_M`
-determines `E_R(θ)`").
-
-Three facts are proved.
-
-* `integral_sum_stoppingSet_eq_zero`: the sum of the revealed coordinates has mean zero.
-  This is the martingale property of the paper's exploration.  It needs only the stopping-set
-  property: the event that `i` is NOT revealed is decided by the other coordinates, hence is
-  independent of the `i`-th one, so `E[1_{i ∈ S} ξ_i] = E[ξ_i] - E[1_{i ∉ S} ξ_i] = 0`.
-
-* `tilted_cm_apply_eq_of_decided`: the measure obtained by tilting only the revealed
-  coordinates and the measure obtained by tilting every coordinate assign the same
-  probability to every event the exploration decides.  This is the step that lets the paper
-  replace the shift of the whole rectangle by the shift on the revealed cubes.  The proof
-  splits over the value `A` of the revealed set: on `{S = A}` both the event and the partial
-  density are measurable for the coordinates in `A`, while the remaining factor is
-  independent of them and has mean one.
-
-* `klDiv_tilted_cm_le`: the relative entropy of the adaptive tilt is exactly `a²/2` times the
-  expected number of revealed coordinates, which is the paper's `L²𝔼𝒩/(2𝔪²R²)` with
-  `a = L/(𝔪R)`.  The computation is Mathlib's `integral_llr_tilted_right` together with the
-  martingale property above.
-
-Nothing here mentions a white noise, a ball field or a crossing; the module imports only
-Mathlib and is stated for an arbitrary independent family, so it can move to the shared
-library unchanged.
--/
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Probability.Independence.Integration
 import Mathlib.MeasureTheory.Measure.Tilted
 import Mathlib.InformationTheory.KullbackLeibler.Basic
+
+/-!
+# Adaptive Cameron–Martin comparison for stopping sets
+
+This file proves, in the abstract, the comparison behind Step 3 of `prop:fixed-scale-crossings`
+(`sandpile.tex:2334-2400`). For an arbitrary probability space carrying a finite independent
+family of sub-`σ`-algebras `G i` and a random finite index set `S` that is a stopping set for
+that family (`IsIndepStoppingSet`, meaning the event `S = A` is decided by the coordinates in
+`A`), the sum of the revealed coordinates `∑ i ∈ S ω, ξ i ω` has mean zero
+(`integral_sum_stoppingSet_eq_zero`), tilting only the revealed coordinates and tilting every
+coordinate assign the same probability to any event the exploration decides
+(`tilted_cm_apply_eq_of_decided`), and the relative entropy of the adaptive tilt is exactly
+`a ^ 2 / 2` times the expected number of revealed coordinates (`klDiv_tilted_cm_le`), matching
+the paper's `L² 𝔼 𝒩 / (2 𝔪² R²)` bound with `a = L / (𝔪 R)`. Nothing here mentions a white
+noise, a ball field, or a crossing, so the statements are stated purely in terms of an
+independent family and a stopping set.
+-/
 
 open MeasureTheory ProbabilityTheory
 
@@ -48,18 +28,25 @@ namespace Sandpile.Support
 @[reducible] def indepAlg {Ω ι : Type*} (G : ι → MeasurableSpace Ω) (A : Set ι) :
     MeasurableSpace Ω := ⨆ i ∈ A, G i
 
+/-- The coordinate algebra `G i` sits below the joint algebra `indepAlg G A` of a set `A`
+containing `i`. -/
 theorem le_indepAlg {Ω ι : Type*} (G : ι → MeasurableSpace Ω) {A : Set ι} {i : ι} (hi : i ∈ A) :
     G i ≤ indepAlg G A :=
   le_iSup₂ (f := fun i (_ : i ∈ A) => G i) i hi
 
+/-- `indepAlg G` is monotone in the index set: enlarging `A` to `B` can only enlarge the
+generated algebra. -/
 theorem indepAlg_mono {Ω ι : Type*} (G : ι → MeasurableSpace Ω) {A B : Set ι} (h : A ⊆ B) :
     indepAlg G A ≤ indepAlg G B :=
   iSup₂_le fun _ hi => le_indepAlg G (h hi)
 
+/-- `indepAlg G A` stays below any ambient `σ`-algebra `mΩ` that each `G i` sits below. -/
 theorem indepAlg_le {Ω ι : Type*} {G : ι → MeasurableSpace Ω} {mΩ : MeasurableSpace Ω}
     (hle : ∀ i, G i ≤ mΩ) (A : Set ι) : indepAlg G A ≤ mΩ :=
   iSup₂_le fun i _ => hle i
 
+/-- A finite product `∏ i ∈ B, f i` is measurable for the joint algebra `indepAlg G B` as soon
+as each factor `f i` is measurable for its own coordinate algebra `G i`. -/
 theorem measurable_finset_prod {Ω ι : Type*} {G : ι → MeasurableSpace Ω} (f : ι → Ω → ℝ)
     (hfm : ∀ i, Measurable[G i] (f i)) (B : Finset ι) :
     Measurable[indepAlg G (B : Set ι)] fun ω => ∏ i ∈ B, f i ω :=
@@ -67,11 +54,14 @@ theorem measurable_finset_prod {Ω ι : Type*} {G : ι → MeasurableSpace Ω} (
 
 variable {Ω ι : Type*} [mΩ : MeasurableSpace Ω] {P : Measure Ω}
 
+/-- Independence of two `σ`-algebras passes down to any pair of smaller sub-algebras. -/
 theorem indep_of_le {m₁ m₂ m₁' m₂' : MeasurableSpace Ω} (h : Indep m₁ m₂ P)
     (h1 : m₁' ≤ m₁) (h2 : m₂' ≤ m₂) : Indep m₁' m₂' P := by
   rw [Indep_iff] at h ⊢
   exact fun t1 t2 ht1 ht2 => h t1 t2 (h1 _ ht1) (h2 _ ht2)
 
+/-- If the `σ`-algebras generated by `X` and by `Y` are independent, then `X` and `Y` are
+independent as functions. -/
 theorem indepFun_of_indep {β γ : Type*} [MeasurableSpace β] [MeasurableSpace γ]
     {m₁ m₂ : MeasurableSpace Ω} (h : Indep m₁ m₂ P) {X : Ω → β} {Y : Ω → γ}
     (hX : Measurable[m₁] X) (hY : Measurable[m₂] Y) : IndepFun X Y P := by
@@ -79,11 +69,16 @@ theorem indepFun_of_indep {β γ : Type*} [MeasurableSpace β] [MeasurableSpace 
   intro t1 t2 ht1 ht2
   exact (Indep_iff m₁ m₂ P).mp h t1 t2 (hX.comap_le _ ht1) (hY.comap_le _ ht2)
 
+/-- The joint algebras `indepAlg G A` and `indepAlg G B` of disjoint index sets `A` and `B` are
+independent, for an independent family `G`. -/
 theorem indep_indepAlg {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ)
     (hGindep : iIndep G P) {A B : Set ι} (hAB : Disjoint A B) :
     Indep (indepAlg G A) (indepAlg G B) P :=
   indep_iSup_of_disjoint hGle hGindep hAB
 
+/-- A finite product `∏ i ∈ B, f i` of independent, integrable, mean-one functions is
+integrable and has mean one, proved by induction on `B` using
+`IndepFun.integral_fun_mul_eq_mul_integral`. -/
 theorem integrable_finset_prod_and_integral [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     (f : ι → Ω → ℝ) (hfm : ∀ i, Measurable[G i] (f i)) (hfi : ∀ i, Integrable (f i) P)
@@ -117,11 +112,14 @@ def IsIndepStoppingSet {Ω ι : Type*} (G : ι → MeasurableSpace Ω) (S : Ω �
 
 /-- `E` is decided by the exploration `S`: on the event that the revealed set is `A`,
 membership in `E` is decided by the coordinates in `A`. -/
-def IndepBlockDecides {Ω ι : Type*} (G : ι → MeasurableSpace Ω) (S : Ω → Finset ι) (E : Set Ω) : Prop :=
+def IndepBlockDecides {Ω ι : Type*} (G : ι → MeasurableSpace Ω) (S : Ω → Finset ι)
+    (E : Set Ω) : Prop :=
   ∀ A : Finset ι, MeasurableSet[indepAlg G (A : Set ι)] (E ∩ {ω | S ω = A})
 
 
 omit mΩ in
+/-- The event that a coordinate `i` is not revealed by the stopping set `S` is measurable for
+the joint algebra of every other coordinate. -/
 theorem measurableSet_notMem_stoppingSet [Fintype ι] {G : ι → MeasurableSpace Ω}
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S) (i : ι) :
     MeasurableSet[indepAlg G ({i}ᶜ : Set ι)] {ω | i ∉ S ω} := by
@@ -138,6 +136,8 @@ theorem measurableSet_notMem_stoppingSet [Fintype ι] {G : ι → MeasurableSpac
   rintro rfl
   exact A.2 hx
 
+/-- The event that a coordinate `i` is revealed by the stopping set `S` is measurable in the
+ambient `σ`-algebra, as the complement of `measurableSet_notMem_stoppingSet`. -/
 theorem measurableSet_mem_stoppingSet [Fintype ι] {G : ι → MeasurableSpace Ω}
     (hGle : ∀ i, G i ≤ mΩ) {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S) (i : ι) :
     MeasurableSet {ω | i ∈ S ω} := by
@@ -146,6 +146,8 @@ theorem measurableSet_mem_stoppingSet [Fintype ι] {G : ι → MeasurableSpace �
   rw [hc]
   exact h.compl
 
+/-- Restricted to the event that a fixed coordinate `i` is revealed, the coordinate `ξ i` still
+has mean zero, since the indicator of `i ∉ S` is independent of `ξ i`. -/
 theorem integral_ite_mem_stoppingSet_eq_zero [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)
@@ -188,6 +190,8 @@ theorem integral_ite_mem_stoppingSet_eq_zero [Fintype ι] [DecidableEq ι] [IsPr
   rw [integral_add hint1 hint2, hmul, add_zero] at hz
   exact hz
 
+/-- The martingale property of the exploration: the sum `∑ i ∈ S ω, ξ i ω` of the revealed
+coordinates has mean zero, summing `integral_ite_mem_stoppingSet_eq_zero` over all `i`. -/
 theorem integral_sum_stoppingSet_eq_zero [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)
@@ -214,6 +218,8 @@ theorem integral_sum_stoppingSet_eq_zero [Fintype ι] [DecidableEq ι] [IsProbab
   exact integral_ite_mem_stoppingSet_eq_zero hGle hGindep hS ξ hξm hξi hξ0 i
 
 omit mΩ in
+/-- Summing the indicator of `E ∩ {S = A}` weighted by `g A` over every possible value `A` of
+the stopping set recovers the indicator of `E` weighted by `g` at the actual value `S ω`. -/
 theorem indicator_partition_sum [Fintype ι] [DecidableEq ι] (S : Ω → Finset ι) (E : Set Ω)
     (g : Finset ι → Ω → ℝ) (ω : Ω) :
     (∑ A : Finset ι, Set.indicator (E ∩ {ω | S ω = A}) (g A) ω)
@@ -229,6 +235,9 @@ theorem indicator_partition_sum [Fintype ι] [DecidableEq ι] (S : Ω → Finset
   · intro h
     exact absurd (Finset.mem_univ (S ω)) h
 
+/-- On an event `T` decided by the coordinates in `A`, integrating the indicator of `T` against
+the full product `∏ i : ι, f i` gives the same value as against the partial product `∏ i ∈ A,
+f i`, since the remaining factors are independent of `T` and of mean one. -/
 theorem integral_indicator_prod_univ_eq [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     (f : ι → Ω → ℝ) (hfm : ∀ i, Measurable[G i] (f i)) (hfi : ∀ i, Integrable (f i) P)
@@ -301,6 +310,8 @@ theorem integral_indicator_stoppedDensity_eq [Fintype ι] [DecidableEq ι] [IsPr
   refine Finset.sum_congr rfl fun A _ => ?_
   exact (integral_indicator_prod_univ_eq hGle hGindep f hfm hfi hf1 A (hE A)).symm
 
+/-- The stopped product `∏ i ∈ S ω, f i ω` of the density factors over the revealed set is
+integrable, summing `integrable_finset_prod_and_integral` over every possible value of `S`. -/
 theorem integrable_stoppedDensity [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)
@@ -319,6 +330,8 @@ theorem integrable_stoppedDensity [Fintype ι] [DecidableEq ι] [IsProbabilityMe
   have h := indicator_partition_sum S Set.univ (fun A ω => ∏ i ∈ A, f i ω) ω
   simpa [Set.univ_inter] using h
 
+/-- The stopped density `∏ i ∈ S ω, f i ω` integrates to one, specializing
+`integral_indicator_stoppedDensity_eq` to `E = Set.univ`. -/
 theorem integral_stoppedDensity_eq_one [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)
@@ -369,6 +382,8 @@ noncomputable def cmLogDensity {Ω ι : Type*} (a : ℝ) (ξ : ι → Ω → ℝ
   a * (∑ i ∈ S ω, ξ i ω) - a ^ 2 / 2 * ((S ω).card : ℝ)
 
 omit mΩ in
+/-- The exponential of the adaptive log-density `cmLogDensity` factors into a product of the
+per-coordinate Cameron–Martin factors `cmFactor` over the revealed coordinates. -/
 theorem exp_cmLogDensity (a : ℝ) (ξ : ι → Ω → ℝ) (S : Ω → Finset ι) (ω : Ω) :
     Real.exp (cmLogDensity a ξ S ω) = ∏ i ∈ S ω, cmFactor a ξ i ω := by
   simp only [cmFactor, cmLogDensity]
@@ -378,6 +393,8 @@ theorem exp_cmLogDensity (a : ℝ) (ξ : ι → Ω → ℝ) (S : Ω → Finset �
   ring
 
 omit mΩ in
+/-- Each Cameron–Martin factor `cmFactor a ξ i` is measurable for the coordinate algebra
+`G i`, being built from the measurable coordinate `ξ i` by an affine map composed with `exp`. -/
 theorem measurable_cmFactor {G : ι → MeasurableSpace Ω} (a : ℝ) (ξ : ι → Ω → ℝ)
     (hξm : ∀ i, Measurable[G i] (ξ i)) (i : ι) : Measurable[G i] (cmFactor a ξ i) :=
   (((hξm i).const_mul a).sub_const (a ^ 2 / 2)).exp
@@ -388,6 +405,8 @@ theorem card_stoppingSet_eq_sum [Fintype ι] [DecidableEq ι] (S : Ω → Finset
     ((S ω).card : ℝ) = ∑ i : ι, (if i ∈ S ω then (1 : ℝ) else 0) := by
   rw [Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul, mul_one]
 
+/-- The number of revealed coordinates `(S ω).card` is integrable, being a finite sum of
+indicators of the measurable events `measurableSet_mem_stoppingSet`. -/
 theorem integrable_card_stoppingSet [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S) :
@@ -406,6 +425,8 @@ theorem integrable_card_stoppingSet [Fintype ι] [DecidableEq ι] [IsProbability
   filter_upwards with ω
   exact (card_stoppingSet_eq_sum S ω).symm
 
+/-- The sum `∑ i ∈ S ω, ξ i ω` over the revealed coordinates is integrable, being a finite sum
+of the integrable coordinates `ξ i` restricted to the measurable event `i ∈ S`. -/
 theorem integrable_sum_stoppingSet [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)
@@ -425,6 +446,8 @@ theorem integrable_sum_stoppingSet [Fintype ι] [DecidableEq ι] [IsProbabilityM
   rw [Finset.sum_ite_mem, Finset.univ_inter]
 
 omit mΩ in
+/-- The constant exploration that reveals every coordinate is trivially a stopping set for any
+family `G`. -/
 theorem isIndepStoppingSet_univ [Fintype ι] (G : ι → MeasurableSpace Ω) :
     IsIndepStoppingSet G (fun _ : Ω => (Finset.univ : Finset ι)) := by
   intro A
@@ -433,6 +456,8 @@ theorem isIndepStoppingSet_univ [Fintype ι] (G : ι → MeasurableSpace Ω) :
   · simp [h]
 
 omit mΩ in
+/-- An event `E` decided by the exploration `S` is measurable in any ambient algebra `mΩ'` each
+`G i` sits below, covering `E` by its intersections with the finitely many events `S = A`. -/
 theorem measurableSet_of_indepBlockDecides [Fintype ι] {G : ι → MeasurableSpace Ω}
     {mΩ' : MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ') {S : Ω → Finset ι} {E : Set Ω}
     (hE : IndepBlockDecides G S E) : MeasurableSet[mΩ'] E := by
@@ -484,6 +509,8 @@ theorem klDiv_tilted_cm_le [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P
   exact mul_le_mul_of_nonneg_left hN ha
 
 omit mΩ in
+/-- If the exploration `S` decides `E`, then so does the trivial exploration that always
+reveals every coordinate, since `E` is already measurable for the full joint algebra. -/
 theorem indepBlockDecides_univ [Fintype ι] {G : ι → MeasurableSpace Ω} {S : Ω → Finset ι}
     {E : Set Ω} (hE : IndepBlockDecides G S E) :
     IndepBlockDecides G (fun _ : Ω => (Finset.univ : Finset ι)) E := by
@@ -526,6 +553,8 @@ theorem tilted_cm_apply_eq_of_decided [Fintype ι] [DecidableEq ι] [IsProbabili
   simp_rw [exp_cmLogDensity]
   exact integral_indicator_stoppedDensity_eq hGle hGindep (cmFactor a ξ) hfm hfi hf1 hE
 
+/-- The exponential of the adaptive log-density is integrable, since by `exp_cmLogDensity` it
+equals the integrable stopped product of Cameron–Martin factors. -/
 theorem integrable_exp_cmLogDensity [Fintype ι] [DecidableEq ι] [IsProbabilityMeasure P]
     {G : ι → MeasurableSpace Ω} (hGle : ∀ i, G i ≤ mΩ) (hGindep : iIndep G P)
     {S : Ω → Finset ι} (hS : IsIndepStoppingSet G S)

@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.BlockSubwalk
+import Sandpile.Support.BlockStarIntersect
+import Sandpile.Support.BlockVerticalWalk
+
+/-!
+# The local-rectangle-to-lattice graph homomorphism
+
 Mapping a walk of the local rectangle to a walk of the absolute lattice:
 the embedding `w ↦ blockShift r z w` is a graph homomorphism from the
 rectangle graph to the lattice, and the field bound transfers along it.
 -/
-import Sandpile.Support.BlockSubwalk
-import Sandpile.Support.BlockStarIntersect
-import Sandpile.Support.BlockVerticalWalk
 
 open scoped NNReal
 noncomputable section

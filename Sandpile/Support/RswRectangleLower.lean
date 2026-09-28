@@ -1,10 +1,13 @@
-/-
-A fixed positive lower bound for the crossing probability of the target
-fixed-aspect rectangle at a small negative level, via RSW.
--/
 import Sandpile.Support.RswSquareHalfScale
 import Sandpile.Support.RswHardStep
 import Sandpile.Support.RectangleMonotonicity
+
+/-!
+# The RSW crossing lower bound for the target rectangle
+
+A fixed positive lower bound for the crossing probability of the target fixed-aspect rectangle
+at a small negative level, via RSW.
+-/
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped NNReal ENNReal
@@ -45,7 +48,8 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
     exact h2'
   refine ⟨q, hqpos, ?_⟩
   intro a ha
-  obtain ⟨r₁, h₁⟩ := exists_gaussian_square_crossing_ge_half_scale hBall V hV (a / 4) (by positivity)
+  obtain ⟨r₁, h₁⟩ :=
+    exists_gaussian_square_crossing_ge_half_scale hBall V hV (a / 4) (by positivity)
   refine ⟨2 * r₁ ⊔ 7, ?_⟩
   intro r L hr hL φ hφ x v hv
   obtain ⟨n, h2n, hr2n⟩ : ∃ n : ℕ, 2 * n ≤ r ∧ r ≤ 2 * n + 1 := by
@@ -68,7 +72,8 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
       exact Nat.mul_le_mul h2 h2
     have h3 : (r + 1) * (r + 1) ≤ r * r * r := by
       have h4 : 7 ≤ r := by omega
-      have h5 : ((r + 1 : ℕ) : ℝ) * ((r + 1 : ℕ) : ℝ) ≤ ((r : ℕ) : ℝ) * ((r : ℕ) : ℝ) * ((r : ℕ) : ℝ) := by
+      have h5 : ((r + 1 : ℕ) : ℝ) * ((r + 1 : ℕ) : ℝ)
+          ≤ ((r : ℕ) : ℝ) * ((r : ℕ) : ℝ) * ((r : ℕ) : ℝ) := by
         push_cast
         have h7 : (7 : ℝ) ≤ (r : ℝ) := by exact_mod_cast h4
         nlinarith [h7]
@@ -86,13 +91,18 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
       measurable_finiteKernelField (boxFinset 0 r)
         (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z))
   have hmeasS : MeasurableSet {ζ : Site 4 → ℝ | lvl ≤ crossingValue (planeRectangle (2 * n) (2 * n))
-        (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))} := by
+        (fun z =>
+          finiteKernelField (External.BallGreen.cutField r L φ) ζ
+            (planeTranslate x z))} := by
     show MeasurableSet ((fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) ⁻¹'
       (planarCrossingEvent (2 * n) (2 * n) lvl))
     exact Hmeas (measurableSet_planarCrossingEvent _ _ _)
-  have hmeasE : MeasurableSet {ζ : Site 4 → ℝ | lvl ≤ crossingValue (planeRectangle (2 * n) (2 * ρ * n))
-        (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))} := by
+  have hmeasE : MeasurableSet {ζ : Site 4 → ℝ |
+      lvl ≤ crossingValue (planeRectangle (2 * n) (2 * ρ * n))
+        (fun z =>
+          finiteKernelField (External.BallGreen.cutField r L φ) ζ
+            (planeTranslate x z))} := by
     show MeasurableSet ((fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) ⁻¹'
       (planarCrossingEvent (2 * n) (2 * ρ * n) lvl))
@@ -105,7 +115,9 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
   have hsub : {ζ : Site 4 → ℝ | lvl ≤ crossingValue (planeRectangle (2 * n) (2 * n))
         (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))} ⊆
       {ζ : Site 4 → ℝ | lvl ≤ crossingValue (planeRectangle (2 * n) (2 * ρ * n))
-        (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))} := by
+        (fun z =>
+          finiteKernelField (External.BallGreen.cutField r L φ) ζ
+            (planeTranslate x z))} := by
     intro ζ hζ
     simp only [Set.mem_setOf_eq] at hζ ⊢
     exact hζ.trans (crossingValue_width_height_mono (le_refl _) hρn

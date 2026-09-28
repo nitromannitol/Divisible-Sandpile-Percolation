@@ -5,6 +5,20 @@ import Sandpile.Support.StoppedOdometer
 import Sandpile.Support.Stationary
 import Sandpile.Support.ExitPayoffMeas
 
+/-!
+# Integrability of the exit payoff on the scenery-walk product
+
+The exit payoff reads off the localized odometer at the site where a walk `X` stopped before
+`stopBeforeExit D N (fun _ => N) X` first leaves `D`, paying `0` if it never left. This module
+proves `integrable_uncurry_exit_payoff`: this payoff is integrable jointly in the scenery `ζ`
+and the walk `X`, against the product of the i.i.d. scenery law `LatticeProb.iidLaw d ν` and the
+walk law `walkLaw d x`. The argument uses `MeasureTheory.integrable_prod_iff`: the payoff is
+integrable in `X` for every fixed `ζ` by `integrable_exitAverage_payoff`, and the resulting
+`ζ`-indexed integral of the norm is bounded, uniformly in a full-measure set of scenery paths
+of speed at most linear (`ae_prod_boxDist`), by the finite sum `∑ z ∈ boxFinset x N, odometerOf
+ζ m z`, which is itself integrable by `integrable_odometerOf`.
+-/
+
 open MeasureTheory Filter Topology
 open scoped Classical
 
@@ -27,16 +41,18 @@ theorem integrable_uncurry_exit_payoff (hd : 1 ≤ d) (D : Set (Site d)) (N : �
   haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hmeas : AEStronglyMeasurable (fun p : (Site d → ℝ) × (ℕ → Site d) =>
       if p.2 (stopBeforeExit D N (fun _ => N) p.2) ∈ D then 0
-      else localizedOdometer (E (p.2 (stopBeforeExit D N (fun _ => N) p.2))) p.1 m (p.2 (stopBeforeExit D N (fun _ => N) p.2)))
+      else localizedOdometer (E (p.2 (stopBeforeExit D N (fun _ => N) p.2))) p.1 m
+        (p.2 (stopBeforeExit D N (fun _ => N) p.2)))
       ((LatticeProb.iidLaw d ν).prod (walkLaw d x)) :=
     (measurable_uncurry_exit_payoff hd D N E m).aestronglyMeasurable
   have hae : ∀ᵐ ζ ∂(LatticeProb.iidLaw d ν), Integrable (fun X : ℕ → Site d =>
       if X (stopBeforeExit D N (fun _ => N) X) ∈ D then 0
-      else localizedOdometer (E (X (stopBeforeExit D N (fun _ => N) X))) ζ m (X (stopBeforeExit D N (fun _ => N) X))) (walkLaw d x) :=
+      else localizedOdometer (E (X (stopBeforeExit D N (fun _ => N) X))) ζ m
+        (X (stopBeforeExit D N (fun _ => N) X))) (walkLaw d x) :=
     Filter.Eventually.of_forall fun ζ =>
       integrable_exitAverage_payoff hd D N (fun w => localizedOdometer (E w) ζ m w) x
-  have hτstop : IsWalkStopping (stopBeforeExit D N (fun _ => N)) := isWalkStopping_stopBeforeExit (D := D)
-    (isWalkStopping_const N) (fun _ => le_rfl)
+  have hτstop : IsWalkStopping (stopBeforeExit D N (fun _ => N)) :=
+    isWalkStopping_stopBeforeExit (D := D) (isWalkStopping_const N) (fun _ => le_rfl)
   have hτt : ∀ X, stopBeforeExit D N (fun _ => N) X ≤ N + m := fun X =>
     (stopBeforeExit_le (fun _ : ℕ → Site d => le_refl N) X).trans (Nat.le_add_right _ _)
   have hH : Integrable (fun ζ : Site d → ℝ => ∑ z ∈ boxFinset x N, odometerOf ζ m z)

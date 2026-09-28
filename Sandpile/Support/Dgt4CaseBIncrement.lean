@@ -1,21 +1,24 @@
-/-
-The passage from the two estimates of case (b) of `prop:dgt4-contact-asymptotics`
-to the proposition (`sandpile.tex:5328-5336`).
-
-The paper's sentence is: "By \eqref{eq:dgt4-frechet-integrated-tail},
-$\P(-\zeta(0)>t)\int_0^t dr/\E(-\zeta(0)-r)_+\to1-1/\alpha$.  Since
-$\E u_{n+1}(0)-\E u_n(0)$ is asymptotic to $\E(-\zeta(0)-\E u_n(0)/G(0,0))_+\to0$
-by \eqref{eq:dgt4-b-mean-increment}, we have $\E u_{n+1}(0)/\E u_n(0)\to1$, so by
-regular variation $\E(-\zeta(0)-r)_+\sim\E(-\zeta(0)-\E u_n(0)/G(0,0))_+$
-uniformly for $r$ between $\E u_n(0)/G(0,0)$ and $\E u_{n+1}(0)/G(0,0)$."
-
-Everything in this module is one-dimensional: `I` is the integrated lower tail
-`t \mapsto \E(-\zeta(0)-t)_+`, antitone, positive and regularly varying of index
-`1-\alpha`, and `t n` is the level `\E u_n(0)/G(0,0)`.  The uniform replacement is
-Potter's bounds, which the shared library proves.
--/
 import Sandpile.Support.Dgt4CaseBTail
 import LatticeProb.Prob.KaramataOrigin
+
+/-!
+# From the case (b) estimates to the increment integral
+
+The passage from the two estimates of case (b) of `prop:dgt4-contact-asymptotics` to the
+proposition (`sandpile.tex:5328-5336`).
+
+The paper's sentence is: "By \eqref{eq:dgt4-frechet-integrated-tail},
+$\P(-\zeta(0)>t)\int_0^t dr/\E(-\zeta(0)-r)_+\to1-1/\alpha$. Since $\E u_{n+1}(0)-\E u_n(0)$ is
+asymptotic to $\E(-\zeta(0)-\E u_n(0)/G(0,0))_+\to0$ by \eqref{eq:dgt4-b-mean-increment}, we have
+$\E u_{n+1}(0)/\E u_n(0)\to1$, so by regular variation
+$\E(-\zeta(0)-r)_+\sim\E(-\zeta(0)-\E u_n(0)/G(0,0))_+$ uniformly for $r$ between
+$\E u_n(0)/G(0,0)$ and $\E u_{n+1}(0)/G(0,0)$."
+
+Everything in this module is one-dimensional: `I` is the integrated lower tail
+`t \mapsto \E(-\zeta(0)-t)_+`, antitone, positive and regularly varying of index `1-\alpha`, and
+`t n` is the level `\E u_n(0)/G(0,0)`. The uniform replacement is Potter's bounds, which the
+shared library proves.
+-/
 
 open MeasureTheory Filter Topology Set
 

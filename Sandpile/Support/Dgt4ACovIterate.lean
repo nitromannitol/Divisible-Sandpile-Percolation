@@ -1,18 +1,20 @@
-/-
+import Sandpile.Support.Dgt4AShiftIterate
+import Sandpile.Support.RefinedIncrement
+
+/-!
+# The one-step Lipschitz bound of Step 2
+
 The one-step form of the Lipschitz bound of Step 2, which is what Step 4 uses to dominate the
 integrand for `y\geq0` (`sandpile.tex:5275-5277`): "For `y\geq0`,
 `eq:dgt4-gaussian-covariance-sampling` shows that `m_n` is one-Lipschitz in `y`".
 
-The averaging operator is monotone and the Green covariance is superharmonic, so every
-iterate of the covariance at the origin is at most its value there, which is
-`\Sigma^2=\sum_zG(0,z)^2`.  Feeding that into
-`Support/Dgt4AShiftIterate.lean` at `j=1` bounds the change of `P(V_\infty-u_n)(0)` under a
-change `\delta` of the conditioned level by `|c\delta|\,\|G(0,\cdot)\|=|\delta|\Sigma`,
-which in the variable `y` of Step 4 is exactly the shift `\Sigma^2\delta/\E u_n(0)` of the
-conditioned level itself.
+The averaging operator is monotone and the Green covariance is superharmonic, so every iterate
+of the covariance at the origin is at most its value there, which is `\Sigma^2=\sum_zG(0,z)^2`.
+Feeding that into `Support/Dgt4AShiftIterate.lean` at `j=1` bounds the change of
+`P(V_\infty-u_n)(0)` under a change `\delta` of the conditioned level by
+`|c\delta|\,\|G(0,\cdot)\|=|\delta|\Sigma`, which in the variable `y` of Step 4 is exactly the
+shift `\Sigma^2\delta/\E u_n(0)` of the conditioned level itself.
 -/
-import Sandpile.Support.Dgt4AShiftIterate
-import Sandpile.Support.RefinedIncrement
 
 open MeasureTheory Filter Topology Set
 

@@ -1,26 +1,21 @@
-/-
-The multilinear interpolation of the rescaled linear field is a CONVEX combination
-of the mesh values at the corners of the cell containing the point.
-
-`linInterp` (the frozen definition of `prop:dlt4-heat-potential-invariance`) writes
-the value at `(r,w)` as a sum over the `2^d` corners of the spatial cell, each
-weighted by a product of fractional parts, of the two time values at `⌊R²r⌋` and
-`⌊R²r⌋+1` weighted by the fractional part of `R²r`.  For `r ≥ 0` every one of
-those `2^{d+1}` weights is nonnegative and they sum to one, so the interpolated
-value never leaves the range of the mesh values it interpolates.
-
-That is what reduces a supremum of the interpolated field over a compact set to a
-supremum over the mesh, which is the first step of the tightness clause: the
-uniform norm of `Z_R^{lin}` on a compact set is at most the largest mesh value in
-a neighbourhood of it.
-
-`ContGreenFubini` already carries the same weights under the names `cornerWeight`,
-`timeWeight` and `interpTermWeight`, with their sums and signs; what is added here
-is the elementary consequence for the interpolated VALUE, and the form of the
-weight identity that reads the fractional parts directly.
--/
 import Sandpile.Support.HeatPotentialDefs
 import LatticeProb.Support.ContSums
+
+/-!
+# The interpolated field is a convex combination of its mesh values
+
+`linInterp`, the frozen definition of `prop:dlt4-heat-potential-invariance`, writes the value at
+a point `(r,w)` as a sum over the `2 ^ d` spatial corners of its cell, each weighted by a product
+of fractional parts, of the two time values at `⌊R²r⌋` and `⌊R²r⌋ + 1` weighted by the fractional
+part of `R²r`. `prod_ite_nonneg` and `fract_mem` record that all `2 ^ (d + 1)` of these weights
+are nonnegative for `r ≥ 0`, and `abs_sum_weight_mul_le` is the elementary fact that a convex
+combination is bounded by the largest term combined; `abs_linInterp_le` assembles them to show
+the interpolated value never leaves the range of the mesh values it interpolates. This is the
+first step of the tightness clause, reducing the uniform norm of `Z_R^{lin}` on a compact set to
+the largest mesh value in a neighbourhood of it. `ContGreenFubini` already carries the same
+weights under the names `cornerWeight`, `timeWeight` and `interpTermWeight`; what this file adds
+is the consequence for the interpolated VALUE.
+-/
 
 open LatticeProb
 

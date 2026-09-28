@@ -1,8 +1,13 @@
-/-
-The scaling of a power of a constant multiple, used by clause 3 of
+import Mathlib
+
+/-!
+# The `rpow` scaling of a constant multiple
+
+`mul_rpow_const` is the elementary real-power identity `(T ^ β * u) ^ p = T ^ (p * β) * u ^ p`,
+valid for `0 < T` and any real `u`, including negative `u`, handled by unfolding `Real.rpow`
+through its logarithm on the negative branch. This is the scaling fact used by clause 3 of
 `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`).
 -/
-import Mathlib
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

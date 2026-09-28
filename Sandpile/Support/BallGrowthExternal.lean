@@ -1,15 +1,15 @@
-/-
-The samplewise polynomial growth of the continuous version of the Gaussian heat
-potential, in the form `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-consumes, from the growth of the version itself.
-
-The version is the one of `sandpile.tex:1019-1021`; its polynomial growth on each
-time strip is `Sandpile.Support.continuousVersionGrowth`, and the elementary step
-here rewrites that bound in the shape the localization argument uses: a
-nonnegative amplitude and a natural exponent.
--/
 import Sandpile.Support.ExplBallFinal
 import Sandpile.Support.GrowExternalDischarge
+
+/-!
+# Samplewise polynomial growth for the ball-localization argument
+
+This file derives the samplewise polynomial growth hypothesis that `lem:brownian-ball-localization`
+(`sandpile.tex:1647-1658`) consumes, from the growth of the continuous version of the Gaussian
+heat potential of `sandpile.tex:1019-1021`. The version's polynomial growth on each time strip,
+`Sandpile.Support.continuousVersionGrowth`, is rewritten with a nonnegative amplitude and a
+natural-number exponent, the shape the localization argument uses.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

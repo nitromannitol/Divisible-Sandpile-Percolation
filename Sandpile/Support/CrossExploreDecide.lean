@@ -1,22 +1,22 @@
-/-
-The exploration of Step 2 decides the crossing (`sandpile.tex:2255-2262`, "and stops after
-determining whether `E_R(θ)` occurs").
-
-The crossing event is read through its countable representative: a chain of segments between
-admissible vertices on which the field stays at the level at every rational parameter.  The
-combinatorial content proved here is that every point at which such a chain reads the field
-lies in a square the exploration has processed.  Refining each segment of the chain into steps
-shorter than one, consecutive sample points lie in neighbouring squares and the segment between
-them is a sub-segment of the chain, so the field stays at the level on it; the first vertex
-lies on the starting side of the rectangle, so its square is discovered from the start, and the
-rule only stops once every discovered square has been processed.
-
-Consequently the crossing of the field agrees, on the event that the exploration stops with a
-given set of cells revealed, with the crossing of the field truncated to the processed squares,
-and the latter is decided by the revealed cells.
--/
 import Sandpile.Support.CrossExploreRule
 import Sandpile.Support.CrossLocalEvents
+
+/-!
+# The exploration decides the crossing
+
+The exploration of Step 2 decides the crossing (`sandpile.tex:2255-2262`, "and stops after
+determining whether `E_R(θ)` occurs"). The crossing event is read through its countable
+representative: a chain of segments between admissible vertices on which the field stays at
+the level at every rational parameter. The combinatorial content proved here is that every
+point at which such a chain reads the field lies in a square the exploration has processed.
+Refining each segment of the chain into steps shorter than one, consecutive sample points lie
+in neighbouring squares and the segment between them is a sub-segment of the chain, so the
+field stays at the level on it; the first vertex lies on the starting side of the rectangle,
+so its square is discovered from the start, and the rule only stops once every discovered
+square has been processed. Consequently the crossing of the field agrees, on the event that
+the exploration stops with a given set of cells revealed, with the crossing of the field
+truncated to the processed squares, and the latter is decided by the revealed cells.
+-/
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -230,7 +230,8 @@ theorem segment_reached (hstop : reachSq a b lev bf D ω ⊆ D) {v w : Space 2}
       · rw [hu]
         exact (segPt_segPt v w _ _ s).symm
     · intro s hs0 hs1
-      have hkey : segPt (u t) (u (t + 1)) (s : ℝ) = segPt v w ((r t + s * (r (t + 1) - r t) : ℚ) : ℝ) := by
+      have hkey : segPt (u t) (u (t + 1)) (s : ℝ)
+          = segPt v w ((r t + s * (r (t + 1) - r t) : ℚ) : ℝ) := by
         rw [hu]
         push_cast
         exact segPt_segPt v w _ _ (s : ℝ)
@@ -263,6 +264,7 @@ theorem segment_reached (hstop : reachSq a b lev bf D ω ⊆ D) {v w : Space 2}
   have := hmain M (le_refl M)
   rwa [huM] at this
 
+/-- Every vertex `chainFun ch j` of a vertex chain is admissible. -/
 theorem vertexOK_chainFun {a b : Fin 2 → ℝ} (ch : VertexChain a b) {j : ℕ}
     (hj : j < ch.1 + 2) : VertexOK a b (chainFun ch j) := by
   obtain ⟨m, f⟩ := ch
@@ -330,6 +332,9 @@ noncomputable def truncField (d : ℕ) (a b : Fin 2 → ℝ) (lev : ℝ) (bf : S
   if sqOf u ∈ doneSq d a b A then bf u ω else lev - 1
 
 omit [MeasurableSpace Ω] in
+/-- The value `truncField d a b lev bf A u` is measurable with respect to the coordinates the
+revealed cells `A` determine: it is `bf u` when `u`'s square is processed, which only depends
+on that square's own block, and the constant `lev - 1` otherwise. -/
 theorem measurable_truncField (hm : BlockMeasurable d a b G bf) (A : Finset (cellIdx d a b))
     (u : Space 2) :
     Measurable[indepAlg G (↑A : Set (cellIdx d a b))] (truncField d a b lev bf A u) := by

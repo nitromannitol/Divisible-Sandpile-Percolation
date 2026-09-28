@@ -1,15 +1,16 @@
-/-
-The strong Markov step of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`)
-from the pointwise restart bound at the exit event and an integrable envelope of
-the field.
-
-The pointwise bound on `{τ_{u,A} < τ}` integrates to the conditional bound, and the
-envelope supplies the integrability of the two stopped rewards; the step follows.
--/
 import Sandpile.Support.ExplBallConditional
 import Sandpile.Support.ExplBallConditionalBound
 import Sandpile.Support.ExplBallStepEnvelope
 import Sandpile.Support.ExplBallReward
+
+/-!
+# The strong Markov step from a pointwise restart bound
+
+This file derives the strong Markov step of `lem:brownian-ball-localization` from the pointwise
+restart bound at the exit event and an integrable envelope of the field. The pointwise bound on
+`{τ_{u,A} < τ}` integrates to the conditional bound, and the envelope supplies the integrability
+of the two stopped rewards, from which the step follows.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
@@ -37,7 +38,8 @@ theorem ballExcessStep_of_restart_of_envelope (B : ℝ≥0 → ΩB → Space d) 
   refine Sandpile.Continuum.ballExcessStep_of_conditional_of_envelope B P h T A u S hT hS hcont hm
     (Filter.Eventually.of_forall hcont) hc D hD hdom ?_
   intro τ hτ hbound
-  refine Sandpile.Continuum.ballConditionalBound_of_restart B P h T A u S hT hS hcont hrestart ?_ hmeas τ hτ hbound
+  refine Sandpile.Continuum.ballConditionalBound_of_restart B P h T A u S hT hS hcont hrestart ?_
+      hmeas τ hτ hbound
   intro τ hτ hbound
   have hmin : IsBrownianStopping B fun ω => min (τ ω) (ballExitTime B u A T ω) :=
     isBrownianStopping_min hτ (isBrownianStopping_exitTimeTrunc hcont u A T.toNNReal)

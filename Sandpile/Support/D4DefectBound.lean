@@ -1,20 +1,19 @@
-/-
-The `ℓ²` bound on the truncation defect of Step 1 of
-`prop:d4-superdiffusive-limit`.
-
-The defect at a site `y` is the `ω`-representative of the pairing of
-`g_t(·,y) - a(·,y)` with a test function.  Over the cells of the mesh this is a
-finite sum `∑_x (G(0,y) - ∑_{j≥t}p_j(x,y))m_R(x)`, and the `ω`-shift has total
-mass zero, so both the site-free term `G(0,y)` and the site-free subtraction
-`∑_{j≥t}p_j(0,y)` drop out: the defect is the pairing of the CENTRED tail
-`Δ_t(x,y) = ∑_{j≥t}(p_j(x,y)-p_j(0,y))`.  Cauchy-Schwarz over the cells and the
-uniform `ℓ²` bound on `Δ_t(x,·)` for `|x| ≤ CR` then give
-`∑_y (defect)² ≤ A R t^{-1/2}`, which vanishes at `t = ⌊R^α⌋` exactly when
-`α > 2`.
--/
 import Sandpile.Support.D4DefectOmega
 import Sandpile.Support.ContRiemann
 import Sandpile.External.MembraneScalingFour
+
+/-!
+# The `ℓ²` bound on the truncation defect
+
+This file proves the `ℓ²` bound on the truncation defect of Step 1 of
+`prop:d4-superdiffusive-limit`. The defect at a site `y` is the `ω`-representative of the
+pairing of `g_t(·,y) - a(·,y)` with a test function. Over the cells of the mesh it is a
+finite sum `∑_x (G(0,y) - ∑_{j≥t}p_j(x,y))m_R(x)`, and since the `ω`-shift has total mass
+zero, both the site-free term `G(0,y)` and the site-free subtraction `∑_{j≥t}p_j(0,y)` drop
+out: the defect is the pairing of the centred tail `Δ_t(x,y) = ∑_{j≥t}(p_j(x,y)-p_j(0,y))`.
+Cauchy-Schwarz over the cells combined with a uniform `ℓ²` bound on `Δ_t(x,·)` for `|x| ≤ CR`
+give `∑_y (defect)² ≤ A R t^{-1/2}`, which vanishes at `t = ⌊R^α⌋` exactly when `α > 2`.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal

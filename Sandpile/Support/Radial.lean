@@ -1,4 +1,10 @@
-/-
+import Sandpile.Walk
+import LatticeProb.Walk.Ball
+import LatticeProb.Support.ContSums
+
+/-!
+# Radial sums with a real exponent
+
 Radial sums with a real exponent.  The split of space in the proof of
 `lem:dgt4-stretched-green-scenery-tail` (`sandpile.tex:4385-4390`) needs the
 number of sites in a ball weighted by a power of the radius, which the shell
@@ -6,9 +12,6 @@ decomposition of the shared library turns into a one-dimensional sum of real
 powers.  The two elementary sums are `LatticeProb.sum_rpow_bound` and its
 companions; the ball bound they give is here.
 -/
-import Sandpile.Walk
-import LatticeProb.Walk.Ball
-import LatticeProb.Support.ContSums
 
 open LatticeProb
 
@@ -85,7 +88,8 @@ theorem exists_sum_box_rpow_bound (d : ℕ) (hd : 1 ≤ d) (a : ℝ) (ha : 0 ≤
   rw [hf0] at hshell
   have hchain : ∑ y ∈ LatticeProb.boxFinset (0 : LatticeProb.Site d) n,
       (1 + (LatticeProb.supNorm y : ℝ)) ^ (-a) ≤
-      1 + 2 * (d : ℝ) * 3 ^ (d - 1) * ((1 / ((d : ℝ) - a) + 1) * (1 + (n : ℝ)) ^ ((d : ℝ) - a)) := by
+      1 + 2 * (d : ℝ) * 3 ^ (d - 1) *
+        ((1 / ((d : ℝ) - a) + 1) * (1 + (n : ℝ)) ^ ((d : ℝ) - a)) := by
     refine le_trans hshell ?_
     have := mul_le_mul_of_nonneg_left hsum2 hpos
     linarith

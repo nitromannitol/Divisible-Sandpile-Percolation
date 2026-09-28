@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.PercolationEvents
+import Sandpile.External.HeatKernelBounds
+
+/-! # Domination by Product Measures (LSS)
+
 The block-percolation input of the critical level-set arguments:
 Liggett, Schonmann and Stacey, Domination by product measures,
 Annals of Probability 25(1), 1997, Corollary 1.4, cited at
@@ -25,8 +29,6 @@ this is stronger than the source's block condition at the same range.
 The process is indexed by the planar lattice `Sandpile.Site 2` and takes
 Boolean values; the open set is the preimage of `true`.
 -/
-import Sandpile.Support.PercolationEvents
-import Sandpile.External.HeatKernelBounds
 
 open MeasureTheory ProbabilityTheory Set
 

@@ -1,37 +1,19 @@
-/-
-Theorem of Section 3 of sandpile.tex, frozen.  `sandpile.tex:1730-1748`
-(label `thm:critical-toppling`, with the standing hypotheses of
-Subsection `ssec:expl-d123` stated at `sandpile.tex:1696-1701`):
-
-  "Throughout this subsection, $d\leq3$, the scenery is i.i.d.,
-   $\E\zeta(0)=0$, $0<\Var(\zeta(0))<\infty$, and $\E|\zeta(0)|^3<\infty$.
-
-   [Lower tail at the critical scale]  Fix $\nu_0>0$ and $M<\infty$.  For every
-   $a\in(0,4/(4-d))$ there are $c>0$ and $C<\infty$, depending only on $d$, $a$,
-   $\nu_0$, and $M$, such that every i.i.d.\ mean-zero field with
-   $\Var(\zeta(0))\geq\nu_0^2$, $\E|\zeta(0)|^3\leq M\,\Var(\zeta(0))^{3/2}$
-   satisfies, for all $t\geq3$ and $L\geq2$ with $L^a\leq t/2$,
-   $\P\bigl(u_t(0)\leq t^{(4-d)/4}/L\bigr)\leq CL^{-c}+C\cdot
-   \{(\log t)^{3/4}t^{-1/4}L^{a/4}$ for $d\in\{1,3\}$,
-   $(\log t)^{7/4}t^{-1/2}L^{a/2}$ for $d=2\}$."
-
-The scenery `ζ` is carried by its one-site law `ν`, and the field itself by
-`centeredMassLaw d ν`, the law of `σ = 1 + 2dζ`.  The dimension `d` is bound
-first because the range `(0, 4/(4-d))` of `a` mentions it; then `ν₀` and `M`,
-then `a`, then `c` and `C`, then the law, then `t` and `L`, exactly as the
-paper orders them, so `c` and `C` are uniform over every law satisfying the two
-moment bounds.  The threshold `L` is a real, not an integer, since the
-corollary that follows the theorem applies it with `L = t^{β-γ}`.  The
-probability is stated on the measure of the event in `ℝ≥0∞`, against
-`ENNReal.ofReal` of the paper's right-hand side, so that no `toReal` junk value
-can weaken it; `t ≥ 3` keeps `log t` positive.  Integrability of `|ζ(0)|³` is
-carried as a hypothesis of its own so that the third-moment bound cannot be
-satisfied by the junk value `∫ = 0` of a divergent integral.
--/
 import Sandpile.Law
 import Sandpile.External.BerryEsseen
 import Sandpile.External.VarianceScale
 import Sandpile.Support.CriticalAssembly
+
+/-!
+# The critical lower tail of the odometer
+
+`Sandpile.lowerTailRemainder` is the correction factor of `eq:dlt4-green-lower-tail`,
+`(\log t)^{3/4}t^{-1/4}L^{a/4}` in dimensions `1` and `3` and `(\log t)^{7/4}t^{-1/2}L^{a/2}` in
+dimension `2`.  `Sandpile.Frozen.critical_toppling` is `thm:critical-toppling`: for `d ≤ 3` and
+every mean-zero i.i.d. scenery whose variance is bounded below by `ν₀²` and whose third absolute
+moment is at most `M` times the `3/2` power of the variance, the odometer's lower tail at the
+critical scale `t^{(4-d)/4}/L` is at most `C L^{-c} + C` times that remainder, uniformly for
+`t ≥ 3` and `L ≥ 2` with `L^a ≤ t/2`, with `c` and `C` depending only on `d`, `a`, `ν₀` and `M`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

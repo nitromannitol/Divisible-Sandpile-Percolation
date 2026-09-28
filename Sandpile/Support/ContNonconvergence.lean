@@ -1,4 +1,8 @@
-/-
+import Sandpile.Continuum.Membrane
+
+/-!
+# Nonconvergence from Two Distinct Gaussian Subsequential Limits
+
 The last clause of Theorem 1.3(iii)(d) (`sandpile.tex`, `thm:main-explosion`,
 part (iii)(d)): the rescaled fluctuation field of the odometer does NOT converge
 in `H^{-s}_loc(ℝ^d)`, because two subsequences of it converge to centred Gaussian
@@ -12,7 +16,6 @@ already distinct on the diagonal is injective in its index.  Nothing about the
 sandpile enters; the input is the two subsequential limits produced by
 `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`).
 -/
-import Sandpile.Continuum.Membrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal

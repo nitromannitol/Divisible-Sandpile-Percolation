@@ -1,4 +1,11 @@
-/-
+import Sandpile.Support.TightSmallPower
+import Sandpile.Support.SceneryBridge
+import Sandpile.Support.Concentration
+import Sandpile.Frozen.SobolevTightness
+
+/-!
+# D4 Odometer Covariance Decay
+
 The covariance decay of the diffusively scaled four-dimensional odometer,
 `eq:d4-finite-covariance-bound` and `eq:d4-covariance-decay` of
 `sandpile.tex:3288-3316`, in the form the tightness lemma of
@@ -9,10 +16,6 @@ The chain is the paper's: the covariance of two odometers is between zero and
 the normalization `R^{-ε}` converts the growth `t^{ε}` at `t = ⌊TR²⌋` into the
 constant `T^{ε}`; and `(1+|x-y|²)^{-ε}` is `(1+|x-y|)^{-2ε}` up to `2^{ε}`.
 -/
-import Sandpile.Support.TightSmallPower
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Concentration
-import Sandpile.Frozen.SobolevTightness
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -48,8 +51,9 @@ theorem memLp_two_odometer (ν : Measure ℝ) [IsProbabilityMeasure ν]
       = (fun ζ : Site d → ℝ => odometerOf ζ t x) ∘ (scenery d) := by
     funext σ; exact congrFun (odometer_eq_odometerOf σ t) x
   rw [heq]
-  exact (memLp_map_measure_iff (by rw [hmap]; exact (measurable_odometerOf t x).aestronglyMeasurable)
-    (measurable_scenery d).aemeasurable).mp h
+  exact (memLp_map_measure_iff
+      (by rw [hmap]; exact (measurable_odometerOf t x).aestronglyMeasurable)
+      (measurable_scenery d).aemeasurable).mp h
 
 /-- The odometer of a mass field is integrable when the one-site scenery law is
 integrable on the positive part. -/

@@ -1,5 +1,12 @@
-/-
-Theorem 1.3(iii)(b) of sandpile.tex, frozen.  `sandpile.tex:266-273`
+import Sandpile.Law
+import Sandpile.Frozen.DGT4HeightUpperTail
+import Sandpile.Frozen.DGT4HeightLowerStretched
+import Sandpile.External.GreenBoundsHighProved
+
+/-!
+# The frozen stretched-exponential height-tail theorem
+
+This module states and proves Theorem 1.3(iii)(b) of `sandpile.tex:266-273`
 (label `thm:main-explosion`, part (iii)(b)):
 
   "[$d\geq5$] If, for some $\gamma\in[1,\infty)$ with $\gamma\neq d/2$, we have,
@@ -17,10 +24,6 @@ as an explicit hypothesis.  The exponential-moment bound `K₀` that those two
 statements quantify over is read off the law itself here, since this statement
 fixes the law first.
 -/
-import Sandpile.Law
-import Sandpile.Frozen.DGT4HeightUpperTail
-import Sandpile.Frozen.DGT4HeightLowerStretched
-import Sandpile.External.GreenBoundsHighProved
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

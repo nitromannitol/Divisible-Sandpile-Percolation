@@ -1,29 +1,21 @@
-/-
-A finite family of continuous rewards that approximates every field obeying the
-tightness bounds of `prop:dlt4-heat-potential-invariance`.
-
-This is what replaces the subsequence argument of `sandpile.tex:1878-1880`.  The
-cited stability input produces a threshold that depends on the reward family, on
-the accuracy, on the uniform bound and on the compact set, and on nothing else,
-so `Sandpile.stability_uniform_of_finite` turns it into ONE threshold for a
-FINITE family of rewards.  For that to be useful the random reward has to be
-uniformly close to a member of a fixed finite family, and this module builds one:
-
-* a uniform bound `M` on a compact set `K`, together with a SINGLE pair `(δ, η)`
-  with `|v(p) - v(q)| ≤ η` whenever `p, q ∈ K` and `dist p q < δ`, already places
-  `v` within `2η` of one of finitely many explicitly constructed continuous
-  functions.  No modulus of continuity and no equicontinuity is needed, and the
-  pair `(δ, η)` is exactly what the tightness clause of the proposition delivers.
-
-The family is the tent interpolation of the library's `LatticeProb.netApprox`
-over a `δ/2`-net of `K`, with values in the finite grid `η ℤ ∩ [-M-η, M+η]`.  The
-denominator of the interpolation is kept away from zero by `max _ (δ/2)`, which
-makes each member continuous on the WHOLE space, as the cited input requires,
-while changing nothing on `K`, where the net already forces the denominator above
-`δ/2`.
--/
 import LatticeProb.Prob.NetApprox
 import Mathlib.Topology.MetricSpace.Basic
+
+/-!
+# A finite net of continuous functions approximating tightly oscillating fields
+
+`Sandpile.stability_uniform_of_finite` turns a stability threshold depending on a finite
+family of rewards, an accuracy, a uniform bound, and a compact set into one threshold valid
+for the whole finite family, so a tight random field need only be shown close to one member of
+a fixed finite family. `exists_finite_family_of_compact` builds that family from a single pair
+`(δ, η)`: a uniform bound `M` and oscillation `η` at scale `δ` on a compact set `K` already
+place any such function within `2η` of one of finitely many continuous functions, built as the
+tent interpolation `regApprox` over a `δ/2`-net of `K` with values in the finite grid
+`η ℤ ∩ [-M-η, M+η]`. Keeping the interpolation's denominator away from zero with `max _ (δ/2)`
+makes every member of the family continuous on all of `E`, not merely on `K`, and
+`exists_near_family_of_not_bad` reads the two hypotheses of the family off the two negated
+events of the tightness clause it replaces.
+-/
 
 open Finset
 

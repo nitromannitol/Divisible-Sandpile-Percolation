@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinStep2Uniform
+
+/-!
+# Reducing the averaged limit to uniform smallness
+
 The averaged limit `eq:dgt4-averaged-positive-path-limit` reduced to uniform smallness on
 `j\leq(1-\varepsilon)n_R` (`sandpile.tex:5571-5583`).
 
@@ -6,18 +10,17 @@ The averaged limit `eq:dgt4-averaged-positive-path-limit` reduced to uniform sma
 The averaged sum of the lemma is not of that kind: its summand
 `\int_X|\P(S_{n_R,j}(X)=1\mid X)-(1-j/(R^2T))^\kappa|` is bounded by one only for
 `j<n_R`, since for `j>R^2T` the profile is a real power of a negative base and is not in
-`[0,1]`.  The primed lemmas below are the same three statements with the value bound asked
+`[0,1]`. The primed lemmas below are the same three statements with the value bound asked
 only on `Finset.range n_R`, which is where the split uses it.
 
 `tendsto_averaged_survival_of_uniform` is then the whole of the lemma's first conclusion
 reduced to Step 2: if for every `\varepsilon\in(0,1)` and every target the mean deviation
 of the survival probability from the profile is eventually at most that target uniformly
-over `j\leq(1-\varepsilon)n_R`, then `R^{-2}\sum_{j<n_R}` of it tends to zero.  The
+over `j\leq(1-\varepsilon)n_R`, then `R^{-2}\sum_{j<n_R}` of it tends to zero. The
 summand is bounded by one because the survival probability and the profile both lie in
 `[0,1]` there, and it is integrable because the survival probability is a measurable
 function of the path.
 -/
-import Sandpile.Support.LinStep2Uniform
 
 open MeasureTheory Filter Topology
 
@@ -99,7 +102,8 @@ theorem tendsto_inv_sq_sum_of_uniform' {l : Filter ℝ} (T : ℝ) (hT : 0 < T) (
     field_simp
     norm_num
   filter_upwards [hunif ε ⟨hε0, hε1⟩ c hc0, (eventually_gt_atTop (0 : ℝ)).filter_mono hl,
-    (eventually_ge_atTop (1 : ℝ)).filter_mono hl, (eventually_ge_atTop (1 / T)).filter_mono hl] with R hsmall hR0 hR1 hRT
+      (eventually_ge_atTop (1 : ℝ)).filter_mono hl, (eventually_ge_atTop (1 / T)).filter_mono hl]
+    with R hsmall hR0 hR1 hRT
   have hRT' : (1 : ℝ) ≤ R * T := by
     have h := mul_le_mul_of_nonneg_right hRT hT.le
     rwa [one_div, inv_mul_cancel₀ (ne_of_gt hT)] at h

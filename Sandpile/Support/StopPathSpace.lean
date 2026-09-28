@@ -1,13 +1,19 @@
-/-
+import LatticeProb.Prob.FddTight
+
+/-!
+# Finite-net approximations of continuous fields
+
 Finite-net approximations of continuous fields on a compact metric space.
 The interpolants are Lipschitz functions of their coefficients and converge
 uniformly to each continuous field.
 -/
-import LatticeProb.Prob.FddTight
 
 open MeasureTheory ProbabilityTheory Set Metric Filter Topology
 open scoped ENNReal NNReal
 
+/-- The map sending coefficients `u : Fin m → ℝ` to the net-interpolated continuous function
+`LatticeProb.netApprox x η u` (as an element of `C(E, ℝ)`) is `1`-Lipschitz, via
+`LatticeProb.abs_netApprox_sub_netApprox_le`. -/
 theorem Sandpile.Continuum.lipschitz_net_continuousMap
     {E : Type*} [MetricSpace E] [CompactSpace E]
     {m : ℕ} (x : Fin m → E) (η : ℝ)
@@ -25,6 +31,9 @@ theorem Sandpile.Continuum.lipschitz_net_continuousMap
     (LatticeProb.tentSum_pos (hnet y (mem_univ y)))
     (fun k => by simpa only [Real.dist_eq] using dist_le_pi_dist u v k)
 
+/-- If the net meshes `r n → 0`, the net-interpolation `LatticeProb.netApprox (x n) (r n)` of
+a fixed continuous function `v`'s values at the net points converges to `v` in `C(E, ℝ)`, using
+the uniform continuity of `v` on the compact space `E`. -/
 theorem Sandpile.Continuum.tendsto_net_continuousMap
     {E : Type*} [MetricSpace E] [CompactSpace E]
     (v : C(E, ℝ)) (m : ℕ → ℕ) (x : (n : ℕ) → Fin (m n) → E) (r : ℕ → ℝ)
@@ -55,6 +64,10 @@ theorem Sandpile.Continuum.tendsto_net_continuousMap
   have he := huc (x n k) (mem_univ _) y (mem_univ _) (hk.trans hrn)
   simpa only [Real.dist_eq] using he.le
 
+/-- If `f : Ω → E → ℝ` has `AEMeasurable` pointwise slices and almost surely continuous paths,
+then `ω ↦ ContinuousMap.mkD (f ω) 0` is `AEMeasurable` into `C(E, ℝ)`, obtained as the a.e.
+limit, via `tendsto_net_continuousMap`, of the Lipschitz (hence measurable) net-interpolations
+`F n` from `lipschitz_net_continuousMap`. -/
 theorem Sandpile.Continuum.aemeasurable_continuousMap_mkD
     {E : Type*} [MetricSpace E] [CompactSpace E]
     [MeasurableSpace C(E, ℝ)] [BorelSpace C(E, ℝ)]
@@ -65,13 +78,15 @@ theorem Sandpile.Continuum.aemeasurable_continuousMap_mkD
   classical
   let r : ℕ → ℝ := fun n => 1 / (n + 1)
   have hr : ∀ n, 0 < r n := fun n => by dsimp [r]; positivity
-  choose m x hx hnet using fun n => LatticeProb.exists_net (isCompact_univ : IsCompact (univ : Set E)) (hr n)
+  choose m x hx hnet using fun n =>
+    LatticeProb.exists_net (isCompact_univ : IsCompact (univ : Set E)) (hr n)
   let F : ℕ → Ω → C(E, ℝ) := fun n ω =>
     ⟨LatticeProb.netApprox (x n) (r n) (fun k => f ω (x n k)),
       continuousOn_univ.mp (LatticeProb.continuousOn_netApprox _ (hnet n))⟩
   have hF : ∀ n, AEMeasurable (F n) P := by
     intro n
-    exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n) (hnet n)).continuous.measurable
+    exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n)
+      (hnet n)).continuous.measurable
       |>.comp_aemeasurable (aemeasurable_pi_lambda _ fun k => hf (x n k))
   refine aemeasurable_of_tendsto_metrizable_ae atTop hF ?_
   filter_upwards [hc] with ω hω

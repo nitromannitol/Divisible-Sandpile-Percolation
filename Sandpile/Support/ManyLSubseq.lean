@@ -1,19 +1,21 @@
-/-
-The Step-3 subsequential convergence of `thm:dgt4-many-limits`
-(`sandpile.tex:5900-5928`, proof at `sandpile.tex:6275-6305`).
-
-`dgt4_subseq_pairing` is the per-test-function step: the linearization
-(`prop:dgt4-linearization` read along the subsequence) and the weighted
-membrane limit (`prop:weighted-membrane-limit` at `q(r) = (1-r/T)^κ`) give the
-same limit in distribution, because the two differ by a term of vanishing
-second moment.  `dgt4_odometer_tight_subseq` reindexes the odometer's own
-`H^{-s}_loc` tightness along the subsequence.
--/
 import Sandpile.Support.ManyLReindex
 import Sandpile.Support.ManyLMeasureBridge
 import Sandpile.Support.ContDGT4Membrane
 import Sandpile.Support.TightWeightedMembrane
 import Sandpile.Frozen.WeightedMembraneLimit
+
+/-!
+# Step-3 subsequential convergence for the many-limits theorem
+
+The Step-3 subsequential convergence of `thm:dgt4-many-limits` (`sandpile.tex:5900-5928`,
+proof at `sandpile.tex:6275-6305`). `dgt4_subseq_pairing` is the per-test-function step: the
+linearization (`prop:dgt4-linearization` read along the subsequence) and the weighted
+membrane limit (`prop:weighted-membrane-limit` at `q(r) = (1-r/T)^κ`) give the same limit in
+distribution, because the two differ by a term of vanishing second moment.
+`dgt4_odometer_tight_subseq` reindexes the odometer's own `H^{-s}_loc` tightness along the
+subsequence. `dgt4_subsequential_convergence` combines both into the full convergence in
+`H^{-s}_loc(ℝ^d)` to `ℋ_{κ,T}` along the subsequence.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

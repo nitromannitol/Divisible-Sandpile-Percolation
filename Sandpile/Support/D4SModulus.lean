@@ -1,18 +1,22 @@
-/-
-The `L²` modulus of continuity on the `H^s` unit ball, for the second display of
-Step 2 of `prop:d4-superdiffusive-limit` (`sandpile.tex:3374-3382`).
-
-Step 2 pairs a field that is CONSTANT on each parity class of the lattice
-against the `ω`-shifted test function.  The total mass of the shift vanishes, so
-only the imbalance between the two parity classes survives, and the parity of
-`⌊Rz⌋` flips under the translation by `e_1/R`: the imbalance is therefore at
-most the `L¹` modulus of continuity of the test function at scale `1/R`.  On the
-`H^s` unit ball that modulus is `O(R^{-\min\{s,1\}})`, which is the paper's
-`R^{-2\min\{s,1\}}` after squaring.  The estimate is Plancherel applied to the
-multiplier `1-e^{2\pi i\langle h,\xi\rangle}`, whose square is at most
-`4\min\{1,2\pi|\langle h,\xi\rangle|\}^{2\sigma}` for every `\sigma\leq1`.
--/
 import Sandpile.Support.D4SPlancherel
+
+/-!
+# The `L²` modulus of continuity on the `H^s` unit ball
+
+The `L²` modulus of continuity on the `H^s` unit ball, for the second display of Step 2 of
+`prop:d4-superdiffusive-limit` (`sandpile.tex:3374-3382`).
+
+Step 2 pairs a field that is CONSTANT on each parity class of the lattice against the
+`ω`-shifted test function. The total mass of the shift vanishes, so only the imbalance
+between the two parity classes survives, and the parity of `⌊Rz⌋` flips under the
+translation by `e_1/R`: the imbalance is therefore at most the `L¹` modulus of continuity of
+the test function at scale `1/R`. On the `H^s` unit ball that modulus is
+`O(R^{-\min\{s,1\}})`, which is the paper's `R^{-2\min\{s,1\}}` after squaring. The estimate
+is Plancherel applied to the multiplier `1-e^{2\pi i\langle h,\xi\rangle}`, whose square is
+at most `4\min\{1,2\pi|\langle h,\xi\rangle|\}^{2\sigma}` for every `\sigma\leq1`. The main
+result is `integral_sq_sub_translate_le`; `rpow_le_one_add_sq_rpow` and
+`integral_sobolev_weight_le_one` are the auxiliary algebraic and integrability facts it needs.
+-/
 
 open MeasureTheory Filter Topology
 open scoped ENNReal FourierTransform RealInnerProductSpace
@@ -22,6 +26,9 @@ open Sandpile.Continuum
 
 variable {d : ℕ}
 
+/-- `u ^ (2σ) ≤ (1 + u ^ 2) ^ s` for `0 ≤ σ ≤ s`, by rewriting `u ^ (2σ) = (u ^ 2) ^ σ` and
+then applying monotonicity of `rpow` in the base (`u ^ 2 ≤ 1 + u ^ 2`) followed by
+monotonicity of `rpow` in the exponent (`σ ≤ s`) since `1 + u ^ 2 ≥ 1`. -/
 theorem rpow_le_one_add_sq_rpow (u σ s : ℝ) (hu : 0 ≤ u) (hσ : 0 ≤ σ) (hσs : σ ≤ s) :
     u ^ (2 * σ) ≤ (1 + u ^ 2) ^ s := by
   have hbase : (1:ℝ) ≤ 1 + u ^ 2 := by nlinarith [sq_nonneg u]
@@ -35,6 +42,11 @@ theorem rpow_le_one_add_sq_rpow (u σ s : ℝ) (hu : 0 ≤ u) (hσ : 0 ≤ σ) (
   rw [h1]
   exact le_trans h2 h3
 
+/-- For a smooth, compactly supported `φ` with `sobolevNormSq d s φ ≤ 1`, the weighted
+Fourier-side integrand `(1 + (2π‖ξ‖)^2)^s * ‖𝓕 φ ξ‖^2` is integrable and its integral is at
+most `1`; the integral is obtained from the defining `lintegral` bound via
+`integral_eq_lintegral_of_nonneg_ae`, using continuity of the Fourier transform of the
+`HasCompactSupport.toSchwartzMap` extension of `φ` to `ℂ`-valued functions. -/
 theorem integral_sobolev_weight_le_one (d : ℕ) (s : ℝ) (φ : Space d → ℝ)
     (hsm : ContDiff ℝ (⊤ : ℕ∞) φ) (hcs : HasCompactSupport φ)
     (hnorm : sobolevNormSq d s φ ≤ 1) :

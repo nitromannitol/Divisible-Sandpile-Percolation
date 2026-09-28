@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossExploreDecide
+import Sandpile.Support.CrossAnnulusBlocking
+
+/-! # Positive arm of a discovered square
+
 The arm of Step 2 (`sandpile.tex:2285-2288`): "If `z` is processed, then `{𝒳_1 > 0}` has an arm
 from a fixed ball around `z` down to the bottom side."
 
@@ -10,8 +14,6 @@ therefore, the level being positive, in `{𝒳_1 > 0}`.  The chain is compact an
 joins the square of the discovered point to the starting side of the rectangle, which is the
 arm the estimate of `sandpile.tex:2221-2227` bounds.
 -/
-import Sandpile.Support.CrossExploreDecide
-import Sandpile.Support.CrossAnnulusBlocking
 
 open MeasureTheory ProbabilityTheory
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -22,6 +24,8 @@ namespace Sandpile.Support
 def stepPts (a b : Fin 2 → ℝ) : Set (Space 2) :=
   {u | ∃ p p' : Space 2, p ∈ sampPts a b ∧ p' ∈ sampPts a b ∧ ∃ q : ℚ, u = segPt p p' (q : ℝ)}
 
+/-- `stepPts a b` is countable, being the image of the countable index set
+`sampPts a b × sampPts a b × ℚ` under the segment-point map `segPt`. -/
 theorem countable_stepPts (a b : Fin 2 → ℝ) : (stepPts a b).Countable := by
   classical
   have hc : Countable ↥(sampPts a b) := countable_sampPts_coe a b
@@ -32,9 +36,12 @@ theorem countable_stepPts (a b : Fin 2 → ℝ) : (stepPts a b).Countable := by
     exact ⟨(⟨p, hp⟩, ⟨p', hp'⟩, q), rfl⟩
   exact Set.Countable.mono hsub (Set.countable_range _)
 
+/-- The subtype `↥(stepPts a b)` is countable, transferred from `countable_stepPts`. -/
 instance countable_stepPts_coe (a b : Fin 2 → ℝ) : Countable ↥(stepPts a b) :=
   (countable_stepPts a b).to_subtype
 
+/-- Every rational-parameter point `segPt p p' q` between two sample points
+`p, p' ∈ sampPts a b` lies in `stepPts a b`, directly from the definition. -/
 theorem segPt_mem_stepPts {a b : Fin 2 → ℝ} {p p' : Space 2} (hp : p ∈ sampPts a b)
     (hp' : p' ∈ sampPts a b) (q : ℚ) : segPt p p' (q : ℝ) ∈ stepPts a b :=
   ⟨p, p', hp, hp', q, rfl⟩
@@ -87,8 +94,13 @@ theorem reached_arm (hlev : 0 < lev)
 noncomputable def sqPoint (z : Sandpile.Site 2) : Space 2 :=
   WithLp.toLp 2 (fun i => (z i : ℝ))
 
+/-- `sqPoint z` evaluated at coordinate `i` is the cast `(z i : ℝ)`, unfolding `sqPoint`
+by `rfl`. -/
 theorem sqPoint_apply (z : Sandpile.Site 2) (i : Fin 2) : sqPoint z i = (z i : ℝ) := rfl
 
+/-- If each coordinate difference `|u i - v i|` is at most `2`, then the Euclidean
+distance `‖u - v‖` is at most `3`, since the sum of the squared coordinate differences
+is then at most `9`. -/
 theorem norm_le_three {u v : Space 2} (h : ∀ i, |u i - v i| ≤ 2) : ‖u - v‖ ≤ 3 := by
   rw [EuclideanSpace.norm_eq]
   have hsum : ∑ i : Fin 2, ‖(u - v) i‖ ^ 2 ≤ 9 := by
@@ -105,6 +117,9 @@ theorem norm_le_three {u v : Space 2} (h : ∀ i, |u i - v i| ≤ 2) : ‖u - v�
     _ = 3 := by
         rw [show (9 : ℝ) = 3 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 3)]
 
+/-- If the unit square `sqOf p` is adjacent (`sqAdj`) to the lattice square `z`, then
+each coordinate of `p` is within `2` of the corresponding coordinate of `z`, bounding
+the floor of `p i` against `z i` on both sides. -/
 theorem abs_sub_le_two_of_sqAdj {p : Space 2} {z : Sandpile.Site 2}
     (h : sqAdj (sqOf p) z) (i : Fin 2) : |p i - (z i : ℝ)| ≤ 2 := by
   have hadj := h i

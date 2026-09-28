@@ -1,22 +1,24 @@
-/-
-The continuous cutoff `χ_A` of the proof of Theorem 1.3(i)(b)
-(`sandpile.tex:1892-1893`), and the two bounds the proof uses it for.
-
-The paper writes: "Fix a continuous cutoff `χ_A : ℝ^d → [0,1]` equal to one for
-`|y| ≤ A` and zero for `|y| ≥ 2A`."  One such function is
-`χ_A(y) = min(1, max(0, 2 - |y|/A))`, and that is `cutoff` below.
-
-The cutoff enters the proof twice.  It makes the two rewards
-`(s,y) ↦ -χ_A(y) Z_R^{lin}(s,y)` and `(s,y) ↦ -χ_A(y) Z(s,y)` BOUNDED, which is
-the hypothesis of `Sandpile.External.ContinuumStoppingStability`: a bound for the
-field on the ball of radius `2A` is a bound for the cut-off field everywhere,
-because the cutoff vanishes outside that ball (`abs_cutoff_mul_le`).  And it makes
-their DIFFERENCE uniformly small from a bound on the ball of radius `2A` alone
-(`abs_cutoff_mul_sub_le`), which is the sentence "the paper's field converges only
-locally uniformly, but the difference of the two rewards is supported in a fixed
-compact set".
--/
 import Sandpile.Continuum.Kernel
+
+/-!
+# The continuous spatial cutoff for Theorem 1.3(i)(b)
+
+The continuous cutoff `χ_A` of the proof of Theorem 1.3(i)(b) (`sandpile.tex:1892-1893`), and
+the two bounds the proof uses it for.
+
+The paper writes: "Fix a continuous cutoff `χ_A : ℝ^d → [0,1]` equal to one for `|y| ≤ A` and
+zero for `|y| ≥ 2A`." One such function is `χ_A(y) = min(1, max(0, 2 - |y|/A))`, and that is
+`cutoff` below.
+
+The cutoff enters the proof twice. It makes the two rewards `(s,y) ↦ -χ_A(y) Z_R^{lin}(s,y)`
+and `(s,y) ↦ -χ_A(y) Z(s,y)` BOUNDED, which is the hypothesis of
+`Sandpile.External.ContinuumStoppingStability`: a bound for the field on the ball of radius
+`2A` is a bound for the cut-off field everywhere, because the cutoff vanishes outside that
+ball (`abs_cutoff_mul_le`). And it makes their DIFFERENCE uniformly small from a bound on the
+ball of radius `2A` alone (`abs_cutoff_mul_sub_le`), which is the sentence "the paper's field
+converges only locally uniformly, but the difference of the two rewards is supported in a
+fixed compact set".
+-/
 
 namespace Sandpile.Continuum
 

@@ -1,20 +1,19 @@
-/-
-The side conditions of the band increment and contact estimates, discharged at
-the sandpile law.
-
-`Sandpile.Support.integral_measure_symmDiff_le` and
-`Sandpile.Support.measure_contact_symmDiff_le` are stated for an arbitrary
-probability space carrying the random level.  At the sandpile law the level is
-`W_n(σ) = avg (originOdometer (scenery d σ) n) 0`, and then three of the four
-side conditions are bounded by one and need only measurability: the origin
-odometer is nonnegative, so the exponential weight is at most one, and the other
-two are masses of measurable sets under a probability measure.  The fourth, the
-first absolute moment of the level around a fixed point, is the integrability
-clause of `Sandpile.Support.integrable_band_origin_average`.
--/
 import Sandpile.Support.Dgt4ABandIncrement
 import Sandpile.Support.Dgt4ABandConcentration
 import Sandpile.Support.Dgt4CaseBMeanId
+
+/-!
+# Side conditions of the band estimates at the sandpile law
+
+The side conditions of the band increment and contact estimates, discharged at the sandpile law.
+`Sandpile.Support.integral_measure_symmDiff_le` and `Sandpile.Support.measure_contact_symmDiff_le`
+are stated for an arbitrary probability space carrying the random level. At the sandpile law the
+level is `W_n(σ) = avg (originOdometer (scenery d σ) n) 0`, and then three of the four side
+conditions are bounded by one and need only measurability: the origin odometer is nonnegative, so
+the exponential weight is at most one, and the other two are masses of measurable sets under a
+probability measure. The fourth, the first absolute moment of the level around a fixed point, is
+the integrability clause of `Sandpile.Support.integrable_band_origin_average`.
+-/
 
 open Set Filter MeasureTheory ProbabilityTheory
 open scoped Topology ENNReal NNReal
@@ -76,7 +75,8 @@ theorem bandSide_symmDiff (b : ℝ) :
         (ν (symmDiff {z : ℝ | -(z) > avg (originOdometer (scenery d σ) n) 0}
           {z : ℝ | -(z) > b})).toReal) (centeredMassLaw d ν) := by
   refine Integrable.of_bound (C := 1) ?_ ?_
-  · exact (measurable_measure_symmDiff_level ν _ (measurable_bandLevel d hd n) b).aestronglyMeasurable
+  · exact (measurable_measure_symmDiff_level ν _
+      (measurable_bandLevel d hd n) b).aestronglyMeasurable
   · refine Filter.Eventually.of_forall fun σ => ?_
     rw [Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg]
     exact ENNReal.toReal_mono ENNReal.one_ne_top prob_le_one

@@ -1,5 +1,8 @@
-/-
-The law of the Gaussian Green field under the i.i.d. scenery.
+import Sandpile.Support.LinGaussField
+import Sandpile.Support.SceneryBridge
+
+/-!
+# The law of the Gaussian Green field under the i.i.d. scenery
 
 `Support/LinGaussField.lean` identifies the finite-dimensional laws of
 `eq:dgt4-infinite-green-field` under the standard Gaussian product law pushed
@@ -14,8 +17,6 @@ converge is therefore measurable; that set has full measure under the i.i.d.
 Gaussian law; and on it the field is the limit of the partial sums, so it is an
 almost everywhere limit of measurable functions.
 -/
-import Sandpile.Support.LinGaussField
-import Sandpile.Support.SceneryBridge
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

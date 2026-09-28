@@ -1,8 +1,19 @@
-/-
-Closed planar coarse boxes, finite-range scenery regions and their
-separation under a finite residue coloring.
--/
 import Sandpile.Support.NearBox
+
+/-!
+# Coarse planar boxes and residue-colored separation
+
+Closed planar coarse boxes, finite-range scenery regions and their separation under a finite
+residue coloring. `planeBox` is a planar box of side `L` translated to be anchored at `x`, small
+enough (`card_planeBox_le`, `planeBox_subset_boxFinset`) to sit inside the `boxDist`-ball of
+radius `L`; `nearKernel_planeBox_coordinates` shows a finite-range kernel supported within `3L`
+of `x` vanishes outside that range once evaluated at a difference anchored in `planeBox`.
+`coarsePlaneCenter` places the centers of a coarse grid of such boxes indexed by `Site 2`, and
+`coarsePlaneColor` colors those indices by their coordinates mod `7`; same-colored distinct
+indices are forced apart in some coordinate by at least `7` (`coarsePlaneColor_separation`),
+which is exactly what makes the `3L`-radius boxes around same-colored centers pairwise disjoint
+(`disjoint_coarsePlane_coordinates`).
+-/
 
 open MeasureTheory Set
 open scoped BigOperators
@@ -10,14 +21,20 @@ open scoped BigOperators
 noncomputable section
 namespace Sandpile
 
+/-- The planar box of side length `L`, anchored at `x` by translating the planar rectangle
+`planeRectangle L L` through `planeTranslate x`. -/
 def planeBox (x : Site 4) (L : ℕ) : Finset (Site 4) :=
   (planeRectangle L L).image (planeTranslate x)
 
+/-- `planeBox x L` has at most `(L + 1) ^ 2` elements, inherited from the cardinality of the
+underlying rectangle `planeRectangle L L`. -/
 lemma card_planeBox_le (x : Site 4) (L : ℕ) : (planeBox x L).card ≤ (L + 1) ^ 2 := by
   calc
     _ ≤ (planeRectangle L L).card := Finset.card_image_le
     _ = _ := by rw [card_planeRectangle]; ring
 
+/-- Every point of the planar box `planeBox x L` lies within `boxDist`-distance `L` of `x`,
+i.e. `planeBox x L ⊆ boxFinset x L`. -/
 lemma planeBox_subset_boxFinset (x : Site 4) (L : ℕ) : planeBox x L ⊆ boxFinset x L := by
   intro z hz
   obtain ⟨u, hu, rfl⟩ := Finset.mem_image.mp hz
@@ -37,12 +54,18 @@ lemma planeBox_subset_boxFinset (x : Site 4) (L : ℕ) : planeBox x L ⊆ boxFin
   · simp [planeTranslate]
   · simp [planeTranslate]
 
+/-- The `boxDist` distance from the origin to a difference `y - z` equals the `boxDist`
+distance from `z` to `y` (with the arguments swapped). -/
 lemma boxDist_zero_sub {d : ℕ} (y z : Site d) : boxDist 0 (y - z) = boxDist z y := by
   unfold boxDist
   congr 1
   funext i
   simp
 
+/-- A finite-range kernel `nearKernel r L φ` cut off by `hφ` vanishes on `y - z` whenever `z`
+lies in the planar box `planeBox x L` and `y` lies outside the `3L`-radius box around `x`: the
+triangle inequality `boxDist_trans` puts any such `y` beyond the kernel's support once `z` is
+within `L` of `x`. -/
 lemma nearKernel_planeBox_coordinates (r L : ℕ) (hL : 0 < L)
     {φ : ℝ → ℝ} (hφ : External.BallGreen.IsCutoff φ) (x : Site 4)
     (z : Site 4) (hz : z ∈ planeBox x L) (y : Site 4) (hy : y ∉ boxFinset x (3 * L)) :
@@ -56,17 +79,26 @@ lemma nearKernel_planeBox_coordinates (r L : ℕ) (hL : 0 < L)
     exact mem_boxFinset_iff.mp hnear
   exact mem_boxFinset ((boxDist_trans x z y).trans (by omega))
 
+/-- The center, indexed by `a : Site 2`, of the coarse grid block of side `L` translated
+from `x`: the `a`-th planar block sits at `x` shifted by `L * a` in each planar coordinate. -/
 def coarsePlaneCenter (x : Site 4) (L : ℕ) (a : Site 2) : Site 4 :=
   planeTranslate x (fun i => (L : ℤ) * a i)
 
+/-- On each of the two planar coordinates, `coarsePlaneCenter x L a` equals `x` shifted by
+`L * a i`. -/
 lemma coarsePlaneCenter_coord (x : Site 4) (L : ℕ) (a : Site 2) (i : Fin 2) :
     coarsePlaneCenter x L a (Fin.castLE (by decide : 2 ≤ 4) i) =
       x (Fin.castLE (by decide : 2 ≤ 4) i) + (L : ℤ) * a i := by
   fin_cases i <;> simp [coarsePlaneCenter, planeTranslate]
 
+/-- The residue coloring of a coarse grid index `a : Site 2`, coloring each planar coordinate
+by its value mod `7`. -/
 def coarsePlaneColor (a : Site 2) : Fin 2 → Fin 7 :=
   fun i => ⟨(a i % 7).toNat, by omega⟩
 
+/-- If two distinct grid indices `a ≠ b` receive the same residue color, they must differ in
+some coordinate by at least `7` in absolute value, since equal residues mod `7` for a differing
+coordinate force a gap of at least `7`. -/
 lemma coarsePlaneColor_separation {a b : Site 2} (hne : a ≠ b)
     (hc : coarsePlaneColor a = coarsePlaneColor b) : ∃ i : Fin 2, 7 ≤ |a i - b i| := by
   have hi : ∃ i, a i ≠ b i := by
@@ -84,6 +116,10 @@ lemma coarsePlaneColor_separation {a b : Site 2} (hne : a ≠ b)
   · rw [abs_of_nonneg (sub_nonneg.mpr hba)]
     omega
 
+/-- For distinct grid indices `a ≠ b` receiving the same residue color, the `3L`-radius boxes
+around their coarse centers `coarsePlaneCenter x L a` and `coarsePlaneCenter x L b` are
+disjoint: `coarsePlaneColor_separation` gives a coordinate gap of at least `7`, which after
+scaling by `L` exceeds the combined radius `6L`. -/
 lemma disjoint_coarsePlane_coordinates (x : Site 4) (L : ℕ) (hL : 0 < L)
     {a b : Site 2} (hne : a ≠ b) (hc : coarsePlaneColor a = coarsePlaneColor b) :
     Disjoint (boxFinset (coarsePlaneCenter x L a) (3 * L) : Set (Site 4))
@@ -96,7 +132,8 @@ lemma disjoint_coarsePlane_coordinates (x : Site 4) (L : ℕ) (hL : 0 < L)
     (mem_boxFinset_iff.mp hya) j
   have hB := (boxDist_le_iff_real_coords (coarsePlaneCenter x L b) y (3 * L)).mp
     (mem_boxFinset_iff.mp hyb) j
-  have hdist : |((coarsePlaneCenter x L a j : ℝ) - (coarsePlaneCenter x L b j : ℝ))| ≤ 6 * (L : ℝ) := by
+  have hdist :
+      |((coarsePlaneCenter x L a j : ℝ) - (coarsePlaneCenter x L b j : ℝ))| ≤ 6 * (L : ℝ) := by
     have hh := abs_sub_le (coarsePlaneCenter x L a j : ℝ) (y j : ℝ) (coarsePlaneCenter x L b j : ℝ)
     rw [abs_sub_comm (coarsePlaneCenter x L a j : ℝ) (y j : ℝ)] at hh
     push_cast at hA hB

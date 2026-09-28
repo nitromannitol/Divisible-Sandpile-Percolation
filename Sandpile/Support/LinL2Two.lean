@@ -1,11 +1,13 @@
-/-
+import Sandpile.Support.LinL2Split
+
+/-! # L² Assembly of Step 2
+
 The `L²` assembly of Step 2 of `lem:dgt4-linearization-from-survival`
 (`sandpile.tex:5803-5845`): the frozen integrand is `(A - B - C)²` with
 `A = F_R`, `B = E F_R` and `C` the weighted linear field; the convex-linear
 remainder `(A - B - D)²` and the coefficient replacement `(D - C)²` both vanish
 in `L²`, and `(A-B-C)² ≤ 2(A-B-D)² + 2(D-C)²`.
 -/
-import Sandpile.Support.LinL2Split
 
 open MeasureTheory Filter Topology
 

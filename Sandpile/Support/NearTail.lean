@@ -1,15 +1,23 @@
-/-
+import Sandpile.Support.TwoScaleTail
+import Sandpile.Support.NearKernel
+
+/-!
+# Concentration tail of the near-field kernel
+
 Uniform concentration of the near part of a dimension-four ball Green
 field, with a logarithmic coefficient square sum.
 -/
-import Sandpile.Support.TwoScaleTail
-import Sandpile.Support.NearKernel
 
 open MeasureTheory Set
 open scoped BigOperators
 
 namespace Sandpile
 
+/-- A two-scale exponential tail bound for `finiteKernelField (nearKernel r L φ)`: the ball
+Green coefficient bounds from `nearKernel_coefficients` (max coefficient `G` and squared-sum
+`G * log(2L + 2)`) are fed into the general two-scale tail estimate
+`exists_finite_kernel_field_two_scale_tail`, giving a bound uniform in `r`, `L`, and the cutoff
+`φ`. -/
 lemma exists_near_field_tail (hBall : External.BallGreenBounds) (θ K : ℝ) (hθ : 0 < θ) :
     ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (μ : Measure ℝ), IsProbabilityMeasure μ →
       Integrable (fun x : ℝ => Real.exp (θ * |x|)) μ →
@@ -23,7 +31,8 @@ lemma exists_near_field_tail (hBall : External.BallGreenBounds) (θ K : ℝ) (h�
   refine ⟨c / G, C, div_pos hc hG, hC, ?_⟩
   intro μ hμ hexp hK hmean r L hr hL φ hφ z t ht
   obtain ⟨hmax, hsum⟩ := hcoeff r L hr hL φ hφ
-  have hlog : 0 < Real.log (2 * (L : ℝ) + 2) := Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) L; linarith)
+  have hlog : 0 < Real.log (2 * (L : ℝ) + 2) :=
+    Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) L; linarith)
   have hh := htail 4 μ hμ hexp hK hmean (nearKernel r L φ) (boxFinset 0 r)
     (fun u hu => nearKernel_eq_zero_of_notMem_boxFinset r L φ hu)
     (G * Real.log (2 * (L : ℝ) + 2)) G (mul_pos hG hlog) hG hsum hmax z t ht

@@ -1,20 +1,36 @@
-/-
-The coordinate derivative as a bounded path expectation. Expanding the path
-recursion gives the active-site product, which equals survival until optimal stopping.
--/
 import Sandpile.Support.OdometerJacobian
 import Sandpile.Support.KilledWalk
+
+/-!
+# The odometer's coordinate derivative as a bounded path expectation
+
+The coordinate derivative as a bounded path expectation. Expanding the path
+recursion gives the active-site product, which equals survival until optimal stopping.
+`pathOdometerDerivative` unrolls the averaging operator `avg` in `odometerJacobian`'s
+recursion into a pathwise quantity along a single walk trajectory, whose expectation
+under `walkLaw` recovers `odometerJacobian` (`integral_pathOdometerDerivative`).
+Expanding its recursion further (`pathOdometerDerivative_eq_sum`) exhibits it as a sum
+over visits to a site `z`, weighted by an indicator that every site visited so far still
+has positive future odometer; `lt_optimalStop_iff_active` and
+`active_product_eq_optimalStop_indicator` identify that indicator with survival past the
+optimal stopping time `optimalStop` of `thm:RW`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
 namespace Sandpile
 
+/-- **The pathwise coordinate derivative.** The sample-path analogue of `odometerJacobian`:
+replaces the averaging operator `avg` in that recursion by evaluation along a single walk
+`X`, adding `1` at each step where `X` sits at `z` while the odometer is still active. -/
 noncomputable def pathOdometerDerivative {d : ℕ} (ζ : Site d → ℝ) :
     ℕ → Site d → (ℕ → Site d) → ℝ
   | 0, _, _ => 0
   | n + 1, z, X => if 0 < odometerOf ζ (n + 1) (X 0) then
       (if X 0 = z then 1 else 0) + pathOdometerDerivative ζ n z (fun j => X (j + 1)) else 0
 
+/-- `pathOdometerDerivative ζ n z X` lies in `[0, n]`, by induction on `n` using that each
+step of the recursion adds at most `1`. -/
 theorem pathOdometerDerivative_bounds {d : ℕ} (ζ : Site d → ℝ) :
     ∀ n : ℕ, ∀ z : Site d, ∀ X : ℕ → Site d,
       0 ≤ pathOdometerDerivative ζ n z X ∧ pathOdometerDerivative ζ n z X ≤ n := by
@@ -29,6 +45,8 @@ theorem pathOdometerDerivative_bounds {d : ℕ} (ζ : Site d → ℝ) :
     · split <;> constructor <;> push_cast <;> linarith
     · exact ⟨le_rfl, Nat.cast_nonneg _⟩
 
+/-- `pathOdometerDerivative ζ n z X` depends on `X` only through its first `n + 1`
+coordinates, since the recursion only ever consumes `X 0` at each step. -/
 theorem pathOdometerDerivative_congr {d : ℕ} (ζ : Site d → ℝ) :
     ∀ n : ℕ, ∀ z : Site d, ∀ X Y : ℕ → Site d,
       (∀ j ≤ n, X j = Y j) → pathOdometerDerivative ζ n z X = pathOdometerDerivative ζ n z Y := by
@@ -42,16 +60,24 @@ theorem pathOdometerDerivative_congr {d : ℕ} (ζ : Site d → ℝ) :
       ih z _ _ fun j hj => h (j + 1) (by omega)
     simp only [pathOdometerDerivative, h 0 (by omega), hshift]
 
+/-- `pathOdometerDerivative ζ n z` is measurable, since by `pathOdometerDerivative_congr`
+it depends only on finitely many coordinates of `X`. -/
 theorem measurable_pathOdometerDerivative {d : ℕ} (ζ : Site d → ℝ) (n : ℕ) (z : Site d) :
     Measurable (pathOdometerDerivative ζ n z) :=
   measurable_of_dependsOn n _ (pathOdometerDerivative_congr ζ n z)
 
+/-- Almost every path under `walkLaw d x` starts at `x`, since `walkPath x` does so for
+every choice of increments. -/
 theorem ae_walkLaw_zero {d : ℕ} (x : Site d) :
     ∀ᵐ X ∂walkLaw d x, X 0 = x := by
   rw [walkLaw, ae_map_iff (measurable_walkPath x).aemeasurable
     (measurableSet_eq_fun (measurable_pi_apply 0) measurable_const)]
   exact Eventually.of_forall fun ξ => walkPath_zero x ξ
 
+/-- **The expectation of the pathwise derivative recovers `odometerJacobian`.** Induction on
+`n`, using the induction hypothesis to rewrite the shifted expectation as `avg` applied to
+`odometerJacobian ζ n` (via `LatticeProb.integral_comp_shiftPath`), matching the `avg` step
+of `odometerJacobian`'s own recursion. -/
 theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d → ℝ) :
     ∀ n : ℕ, ∀ x z : Site d,
       (∫ X, pathOdometerDerivative ζ n z X ∂walkLaw d x) = odometerJacobian ζ n x z := by
@@ -75,7 +101,8 @@ theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d �
         pathOdometerDerivative ζ n z (fun j => X (j + 1))) (walkLaw d x) := by
       apply Integrable.of_bound
         ((measurable_pathOdometerDerivative ζ n z).comp
-          (measurable_pi_lambda _ fun j => measurable_pi_apply (j + 1))).aestronglyMeasurable (n : ℝ)
+          (measurable_pi_lambda _ fun j => measurable_pi_apply (j + 1))).aestronglyMeasurable
+        (n : ℝ)
       exact Eventually.of_forall fun X => hbound _
     rw [integral_congr_ae (show (fun X => pathOdometerDerivative ζ (n + 1) z X) =ᵐ[walkLaw d x]
         (fun X => if 0 < odometerOf ζ (n + 1) x then (if x = z then 1 else 0) +
@@ -88,6 +115,10 @@ theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d �
       simp
     · simp only [if_neg ha, integral_zero, odometerJacobian]
 
+/-- **The pathwise derivative unrolled as an explicit sum.** `pathOdometerDerivative ζ n z X`
+equals the sum over visit times `j < n` of the indicator that `X j = z`, weighted by the
+product of the "still active" indicators `0 < odometerOf ζ (n - i) (X i)` for every `i ≤ j`;
+obtained by fully expanding the defining recursion. -/
 theorem pathOdometerDerivative_eq_sum {d : ℕ} (ζ : Site d → ℝ) :
     ∀ n : ℕ, ∀ z : Site d, ∀ X : ℕ → Site d,
       pathOdometerDerivative ζ n z X = ∑ j ∈ Finset.range n,
@@ -116,6 +147,12 @@ theorem pathOdometerDerivative_eq_sum {d : ℕ} (ζ : Site d → ℝ) :
     · simp [ha, pathOdometerDerivative, ih, add_comm]
     · simp [ha, pathOdometerDerivative]
 
+/-- **`optimalStop` is the first exit from the active set.** For `j ≤ n`, the walk has not
+yet reached the optimal stopping time `optimalStop ζ n X` at step `j` if and only if every
+site visited up to and including step `j` still has positive future odometer; uses that
+`optimalStop` is the least `k` with `stoppingValue ζ (n - k) (X k) = 0` and the `d ≥ 1`
+optimal-stopping identity `Sandpile.External.OptimalStopping` equating `odometerOf` with
+`stoppingValue`. -/
 theorem lt_optimalStop_iff_active {d : ℕ} (hOS : External.OptimalStopping) (hd : 1 ≤ d)
     (ζ : Site d → ℝ) (n j : ℕ) (hj : j ≤ n) (X : ℕ → Site d) :
     j < optimalStop ζ n X ↔ ∀ i ≤ j, 0 < odometerOf ζ (n - i) (X i) := by
@@ -143,6 +180,11 @@ theorem lt_optimalStop_iff_active {d : ℕ} (hOS : External.OptimalStopping) (hd
     rw [hzero] at hpos
     exact lt_irrefl _ hpos
 
+/-- **The active-site product is the optimal-stopping survival indicator.** Rewrites the
+product `∏_{i ≤ j} [0 < odometerOf ζ (n - i) (X i)]` as `[j < optimalStop ζ n X]`, via
+`lt_optimalStop_iff_active`; combined with `pathOdometerDerivative_eq_sum` this identifies
+`pathOdometerDerivative` with the number of visits to `z` strictly before the walk's optimal
+stopping time. -/
 theorem active_product_eq_optimalStop_indicator {d : ℕ} (hOS : External.OptimalStopping)
     (hd : 1 ≤ d) (ζ : Site d → ℝ) (n j : ℕ) (hj : j ≤ n) (X : ℕ → Site d) :
     (∏ i ∈ Finset.range (j + 1),

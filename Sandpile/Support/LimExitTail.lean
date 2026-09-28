@@ -1,4 +1,9 @@
-/-
+import Sandpile.Continuum.Stopping
+import Mathlib
+
+/-!
+# Exponential tail of the Euclidean ball exit time
+
 The exponential tail of the exit time of a Euclidean ball for Brownian motion
 (`sandpile.tex:2495-2513`): "the exit time of a ball has
 exponential moments".  This is the quantitative input `BallStoppedApproximation`
@@ -18,8 +23,6 @@ ball-exit event to a SINGLE coordinate of the `d`-dimensional motion (via
 `IsBrownian`'s definition, `coord`) avoids any need for a union bound over
 dimensions.
 -/
-import Sandpile.Continuum.Stopping
-import Mathlib
 
 open MeasureTheory ProbabilityTheory Filter
 open scoped ENNReal NNReal Topology
@@ -68,10 +71,12 @@ theorem gaussianReal_zero_Ioo_le {v : ℝ≥0} (hv : v ≠ 0) (c L : ℝ) :
 /-- The `k`-th block boundary for a block length `T0`. -/
 noncomputable def blockTime (T0 : ℝ≥0) (k : ℕ) : ℝ≥0 := (k : ℝ≥0) * T0
 
+/-- The block boundaries are monotone in the block index. -/
 theorem blockTime_mono (T0 : ℝ≥0) : Monotone (blockTime T0) := by
   intro a b hab
   exact mul_le_mul_of_nonneg_right (by exact_mod_cast hab) bot_le
 
+/-- Consecutive block boundaries differ by one block length `T0`. -/
 theorem blockTime_succ (T0 : ℝ≥0) (n : ℕ) :
     blockTime T0 (n + 1) = blockTime T0 n + T0 := by
   unfold blockTime
@@ -99,6 +104,8 @@ the `n+1` sampled times `0,T0,...,nT0`. -/
 def blockEvent {Ω : Type*} (X : ℝ≥0 → Ω → ℝ) (T0 : ℝ≥0) (A : ℝ) (n : ℕ) : Set Ω :=
   {ω | ∀ k : Fin (n + 1), |X (blockTime T0 k) ω| < A}
 
+/-- The block event at `n+1` splits as the block event at `n` intersected with the
+condition at the new, `(n+1)`-th block boundary. -/
 theorem blockEvent_succ {Ω : Type*} (X : ℝ≥0 → Ω → ℝ) (T0 : ℝ≥0) (A : ℝ) (n : ℕ) :
     blockEvent X T0 A (n + 1)
       = blockEvent X T0 A n ∩ {ω | |X (blockTime T0 (n + 1)) ω| < A} := by

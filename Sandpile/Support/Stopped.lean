@@ -1,23 +1,29 @@
-/-
+import Sandpile.Support.StrongMarkov
+import Sandpile.Support.Walk
+
+/-!
+# The optimal-stopping identity for the membrane field
+
 The optimal-stopping identity behind `lem:difference-representation` and
 `lem:localization-killing`: for a stopping time `τ ≤ t`,
 
   `E_x[∑_{j<τ} ζ(X_j) + V_{t-τ}(X_τ)] = V_t(x)`.
 
-Write `M_n := ∑_{j<n} ζ(X_j) + V_{t-n}(X_n)`.  The membrane recursion
-`V_{m+1} = ζ + P V_m` gives `M_{n+1} - M_n = V_{t-n-1}(X_{n+1}) - P V_{t-n-1}(X_n)`,
-whose integral against an event determined by the first `n` positions vanishes by
-the one-step Markov property of `Sandpile/Support/StrongMarkov.lean`.  Since `τ`
-is bounded by `t`, `M_τ - M_0` is a finite sum of such increments.  No shift, and
-so no strong Markov property, is needed.
+Write `M_n := ∑_{j<n} ζ(X_j) + V_{t-n}(X_n)`. The membrane recursion `V_{m+1} = ζ + P V_m` gives
+`M_{n+1} - M_n = V_{t-n-1}(X_{n+1}) - P V_{t-n-1}(X_n)`, whose integral against an event
+determined by the first `n` positions vanishes by the one-step Markov property of
+`Sandpile/Support/StrongMarkov.lean`. Since `τ` is bounded by `t`, `M_τ - M_0` is a finite sum of
+such increments (`integral_stopped_membrane`). No shift, and so no strong Markov property, is
+needed.
 
-`walk_one_step` asks for a bounded field and the membrane field is unbounded, so
-each increment is taken against the truncation of the field to a box large enough
-to contain everything the walk can reach by time `n + 1`, together with its
-neighbours.  `boxDist_walkPath_le` is what makes that replacement invisible.
+`walk_one_step` asks for a bounded field and the membrane field is unbounded, so each increment
+is taken against the truncation of the field (`trunc`) to a box large enough to contain
+everything the walk can reach by time `n + 1`, together with its neighbours. `boxDist_walkPath_le`
+is what makes that replacement invisible (`integral_increment_zero`). Integrability of the two
+stopped terms (`integrable_stoppedScenery`, `integrable_stoppedMembrane`) and the resulting
+separated identity (`integral_neg_stoppedMembrane`) follow from uniform bounds on a box the walk
+cannot leave by time `t` (`sceneryBound`, `membraneBound`).
 -/
-import Sandpile.Support.StrongMarkov
-import Sandpile.Support.Walk
 
 open MeasureTheory ProbabilityTheory
 
@@ -39,9 +45,11 @@ theorem exists_bound_of_eqOn_zero (s : Finset (Site d)) (f : Site d → ℝ)
 noncomputable def trunc (s : Finset (Site d)) (f : Site d → ℝ) (y : Site d) : ℝ :=
   if y ∈ s then f y else 0
 
+/-- The truncation of `f` agrees with `f` on the set it was truncated to. -/
 theorem trunc_eq_of_mem {s : Finset (Site d)} {f : Site d → ℝ} {y : Site d} (h : y ∈ s) :
     trunc s f y = f y := by simp [trunc, h]
 
+/-- The truncation of any field to a finite set is bounded, since it vanishes off that set. -/
 theorem exists_bound_trunc (s : Finset (Site d)) (f : Site d → ℝ) :
     ∃ M : ℝ, ∀ y, |trunc s f y| ≤ M :=
   exists_bound_of_eqOn_zero s _ fun y hy => by simp [trunc, hy]
@@ -55,6 +63,8 @@ theorem avg_congr {f g : Site d → ℝ} {y : Site d}
   congr 1
   exact Finset.sum_congr rfl fun i _ => by rw [(h i).1, (h i).2]
 
+/-- The neighbour average of a field bounded by `M` is itself bounded by `M`, since it is an
+average of `2d` values each of absolute value at most `M`. -/
 theorem abs_avg_le (hd : 1 ≤ d) {f : Site d → ℝ} {M : ℝ} (hf : ∀ y, |f y| ≤ M) (y : Site d) :
     |avg f y| ≤ M := by
   have hM : 0 ≤ M := le_trans (abs_nonneg _) (hf y)
@@ -80,10 +90,15 @@ noncomputable def stopIndicator (x : Site d) (n : ℕ) (τ : (ℕ → Site d) �
     (u : ↥(Finset.range n) → Site d) : ℝ :=
   if n < τ (walkPath x (extendPrefix n u)) then 1 else 0
 
+/-- `stopIndicator` only takes the values `0` and `1`, so it is bounded by `1` in absolute
+value. -/
 theorem abs_stopIndicator_le (x : Site d) (n : ℕ) (τ : (ℕ → Site d) → ℕ)
     (u : ↥(Finset.range n) → Site d) : |stopIndicator x n τ u| ≤ 1 := by
   unfold stopIndicator; split <;> simp
 
+/-- `stopIndicator`, evaluated on the restriction of a full path `ξ` to its first `n` steps,
+agrees with the indicator of `{n < τ (walkPath x ξ)}` computed from `ξ` itself: the stopping
+time `τ` only reads the first `n` increments up to that point, by `IsWalkStopping.le_iff`. -/
 theorem stopIndicator_restrict (x : Site d) (n : ℕ) {τ : (ℕ → Site d) → ℕ}
     (hτ : IsWalkStopping τ) (ξ : ℕ → Site d) :
     stopIndicator x n τ ((Finset.range n).restrict ξ)
@@ -270,6 +285,7 @@ theorem measurable_of_isWalkStopping (t : ℕ) {τ : (ℕ → Site d) → ℕ}
   rw [hrep]
   exact (measurable_of_countable _).comp (Finset.measurable_restrict _)
 
+/-- A single value `|f y|` for `y` in a finite set `s` is at most the sum of `|f z|` over `s`. -/
 theorem le_sum_abs_of_mem {s : Finset (Site d)} {f : Site d → ℝ} {y : Site d} (h : y ∈ s) :
     |f y| ≤ ∑ z ∈ s, |f z| :=
   Finset.single_le_sum (f := fun z => |f z|) (fun _ _ => abs_nonneg _) h
@@ -292,6 +308,9 @@ theorem isWalkStopping_dependsOn {t : ℕ} {τ : (ℕ → Site d) → ℕ} (hτ 
     (hτt : ∀ X, τ X ≤ t) (X Y : ℕ → Site d) (h : ∀ j ≤ t, X j = Y j) : τ X = τ Y :=
   (hτ (τ X) X Y (fun j hj => h j (le_trans hj (hτt X))) rfl).symm
 
+/-- The stopped scenery sum `X ↦ sceneryPartialSum ζ (τ X) X` is measurable, as an instance of
+`measurable_of_dependsOn`: it depends on `X` only through its first `t + 1` values, since
+`τ X ≤ t` and the sum only reads the coordinates before `τ X`. -/
 theorem measurable_stoppedScenery (t : ℕ) (ζ : Site d → ℝ) {τ : (ℕ → Site d) → ℕ}
     (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Measurable fun X : ℕ → Site d => sceneryPartialSum ζ (τ X) X := by
@@ -304,6 +323,8 @@ theorem measurable_stoppedScenery (t : ℕ) (ζ : Site d → ℝ) {τ : (ℕ →
   have hkt : k ≤ t := by have := hτt Y; omega
   rw [h k hkt]
 
+/-- The stopped membrane value `X ↦ membrane ζ (t - τ X) (X (τ X))` is measurable, since it
+depends on `X` only through its first `t + 1` values, by `measurable_of_dependsOn`. -/
 theorem measurable_stoppedMembrane (t : ℕ) (ζ : Site d → ℝ) {τ : (ℕ → Site d) → ℕ}
     (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Measurable fun X : ℕ → Site d => membrane ζ (t - τ X) (X (τ X)) := by
@@ -319,10 +340,14 @@ noncomputable def sceneryBound (x : Site d) (t : ℕ) (ζ : Site d → ℝ) : �
 noncomputable def membraneBound (x : Site d) (t : ℕ) (ζ : Site d → ℝ) : ℝ :=
   ∑ m ∈ Finset.range (t + 1), ∑ z ∈ boxFinset x t, |membrane ζ m z|
 
+/-- `sceneryBound`, a sum of absolute values, is nonnegative. -/
 theorem sceneryBound_nonneg (x : Site d) (t : ℕ) (ζ : Site d → ℝ) :
     0 ≤ sceneryBound x t ζ :=
   Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/-- Almost surely, the stopped scenery sum is bounded by `t` times the scenery bound on the
+box the walk cannot leave by time `t`: each of the at most `t` terms is one summand of
+`sceneryBound x t ζ`, using that the walk stays in `boxFinset x t` (`ae_boxDist_walkPath`). -/
 theorem ae_abs_stoppedScenery_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτt : ∀ X, τ X ≤ t) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d),
@@ -341,6 +366,8 @@ theorem ae_abs_stoppedScenery_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d → �
     _ ≤ t * sceneryBound x t ζ := by
         exact mul_le_mul_of_nonneg_right (by exact_mod_cast hτ') (sceneryBound_nonneg x t ζ)
 
+/-- Almost surely, the stopped membrane value is bounded by `membraneBound x t ζ`, since the
+stopped position lies in `boxFinset x t` and the time index `t - τ` lies in `[0, t]`. -/
 theorem ae_abs_stoppedMembrane_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτt : ∀ X, τ X ≤ t) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d),
@@ -359,6 +386,8 @@ theorem ae_abs_stoppedMembrane_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d → �
           (f := fun m => ∑ z ∈ boxFinset x t, |membrane ζ m z|)
           (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) hm
 
+/-- The stopped scenery sum is integrable, by domination with the almost-sure bound
+`ae_abs_stoppedScenery_le` and measurability from `measurable_stoppedScenery`. -/
 theorem integrable_stoppedScenery (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun ξ => sceneryPartialSum ζ (τ (walkPath x ξ)) (walkPath x ξ))
@@ -370,6 +399,8 @@ theorem integrable_stoppedScenery (hd : 1 ≤ d) (x : Site d) (ζ : Site d → �
   filter_upwards [ae_abs_stoppedScenery_le hd x ζ t hτt] with ξ h
   simpa [Real.norm_eq_abs] using h
 
+/-- The stopped membrane value is integrable, by domination with the almost-sure bound
+`ae_abs_stoppedMembrane_le` and measurability from `measurable_stoppedMembrane`. -/
 theorem integrable_stoppedMembrane (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable

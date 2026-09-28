@@ -1,23 +1,26 @@
-/-
-A rate for the `L²` convergence of the ball-stopped kernel.
-
-`LimBallStoppedTail.lean` proves `‖2d·ballKernel − k_{s,T,u}‖_{L²} → 0` by a split at
-a level `M`, with the tail `∫_{G>M} G²` handled by dominated convergence, which gives
-no rate.  A rate is what the chaining estimate needs, because the modulus
-constant of the Green kernel grows with the horizon.
-
-The rate comes from one extra integrability: the ball kernel is not only square
-integrable but integrable to the power `5/2`, since its singularity is `log(1/r)` in
-dimension two and `1/r` in dimension three, and `5/2 < 3`.  Chebyshev then bounds the
-tail by `M^{-1/2}∫G^{5/2}`, and the choice `M = ε^{-2/3}` turns the mass `ε = ∫(G − k)`
-into
-
-  `‖G − k‖²_{L²} ≤ ε^{1/3}·(1 + ∫ G^{5/2})`.
-
-With the geometric decay of the mass (`LimExitMean.lean`) this is a geometric rate.
--/
 import Sandpile.Support.LimBallStoppedTail
 import Sandpile.Support.LimExitMean
+
+/-!
+# A rate for the `L²` convergence of the ball-stopped kernel
+
+`Sandpile.Support.LimBallStoppedTail` proves `‖2d·ballKernel − k_{s,T,u}‖_{L²} → 0` by a split at
+a level `M`, with the tail `∫_{G>M} G²` handled by dominated convergence, which gives no rate. A
+rate is what the chaining estimate needs, because the modulus constant of the Green kernel grows
+with the horizon.
+
+The rate comes from one extra integrability: the ball kernel is not only square integrable but
+integrable to the power `5/2` (`integrable_centredKernel_rpow`, via the pointwise bounds
+`centredKernel_two_rpow_le` and `centredKernel_three_rpow_le`), since its singularity is
+`log(1/r)` in dimension two and `1/r` in dimension three, and `5/2 < 3`. Chebyshev then bounds the
+tail by `M^{-1/2}∫G^{5/2}` (`sq_le_split`, `integral_sq_le_split`), and the choice `M = ε^{-2/3}`
+turns the mass `ε = ∫(G − k)` into
+
+  `‖G − k‖²_{L²} ≤ ε^{1/3}·(1 + ∫ G^{5/2})`
+
+(`integral_sq_le_rpow_mass`). With the geometric decay of the mass
+(`Sandpile.Support.LimExitMean`) this is a geometric rate.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
@@ -27,6 +30,8 @@ namespace Sandpile.Support
 
 /-! ### The power `5/2` of the ball kernel is integrable -/
 
+/-- For `x ≥ 1`, `(log x)^{5/2} ≤ (5/2)^{5/2} x`: the elementary bound `log x ≤ (5/2) x^{2/5}`
+from `Real.log_le_sub_one_of_pos` applied to `x^{2/5}`, raised to the power `5/2`. -/
 theorem log_rpow_le {x : ℝ} (hx : 1 ≤ x) :
     Real.log x ^ ((5 : ℝ) / 2) ≤ ((5 : ℝ) / 2) ^ ((5 : ℝ) / 2) * x := by
   have hx0 : (0 : ℝ) < x := lt_of_lt_of_le zero_lt_one hx
@@ -44,6 +49,8 @@ theorem log_rpow_le {x : ℝ} (hx : 1 ≤ x) :
         rw [Real.mul_rpow (by norm_num) (Real.rpow_nonneg hx0.le _), ← Real.rpow_mul hx0.le]
         norm_num
 
+/-- `centredKernel d s y` is nonnegative at any nonzero `y`, by cases on which branch of its
+piecewise definition applies. -/
 theorem centredKernel_nonneg_pos {d : ℕ} {s : ℝ} {y : Space d} (hy : y ≠ 0) :
     0 ≤ centredKernel d s y := by
   have hpos : (0 : ℝ) < ‖y‖ := norm_pos_iff.mpr hy

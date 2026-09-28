@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.D23LSS
+import Sandpile.Support.D4CritRange
+
+/-!
+# Finite dependence range of the dimension-two and dimension-three block process
+
 The finite dependence range of the good-block process of the dimension-two and
 dimension-three percolation argument (`sandpile.tex:2585-2590`): the localized
 odometer at a plane site reads only the scenery in the box `Q(x,R)` about that
@@ -6,8 +11,6 @@ site, so the good block at a coarse site reads only the scenery in one box about
 the block, and blocks more than ten apart in the coarse lattice read disjoint
 boxes.
 -/
-import Sandpile.Support.D23LSS
-import Sandpile.Support.D4CritRange
 
 open MeasureTheory ProbabilityTheory
 

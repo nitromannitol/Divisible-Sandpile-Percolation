@@ -1,23 +1,26 @@
-/-
+import Sandpile.Support.KillCutoff
+import Sandpile.Support.ContLcltPoint
+
+/-!
+# Cutoff radius and side conditions for the killed problem
+
 The radius at which the cutoff of the proof of Theorem 1.3(i)(b) is one on the whole
 killed problem, and the two side conditions the killed walk value needs.
 
 `Sandpile/Support/KillCutoff.lean` shows that a cutoff equal to one at every site a
-killed walk can occupy does not change the killed value.  `cutoff_one_of_killed_site`
+killed walk can occupy does not change the killed value. `cutoff_one_of_killed_site`
 says which radius that is: a walk killed on exiting `Q(⌊Ru⌋,R)` is within `⌊R⌋+1` of
 `⌊Ru⌋` in every coordinate, so its rescaling is within `2√d` of `⌊Ru⌋/R`, which is
 itself within `√d` of `u`; a radius `‖u‖+3√d` therefore covers the whole killed
 problem for every scale `R ≥ 1`.
 
 The two side conditions are measurability and integrability of the rescaled reward read
-along a bounded walk stopping time.  Both hold for a BOUNDED reward and for no further
+along a bounded walk stopping time. Both hold for a BOUNDED reward and for no further
 reason: the reward at a stopping time bounded by `n` reads only the positions up to `n`,
 so it is measurable, and a bounded measurable function on a probability space is
-integrable.  This is the walk half of the side conditions of
+integrable. This is the walk half of the side conditions of
 `Sandpile.killed_stability_gap_of_close`.
 -/
-import Sandpile.Support.KillCutoff
-import Sandpile.Support.ContLcltPoint
 
 open MeasureTheory
 open scoped NNReal

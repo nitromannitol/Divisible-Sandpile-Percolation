@@ -1,4 +1,8 @@
-/-
+import Sandpile.External.VarianceScaleProved
+import Sandpile.Support.FiniteCoord
+
+/-! # Uniform Green weights at the parabolic scale
+
 The uniform Green weights of the rescaled odometer at the parabolic scale, the
 coefficient bound behind the uniform exponential moment of
 `sandpile.tex:1995-2007`.
@@ -14,8 +18,6 @@ The supremum of the weights is then bounded by the square root of the same
 constant, so both norms that `lem:weighted-exp-conc` reads off the weights are
 uniform in `R`.
 -/
-import Sandpile.External.VarianceScaleProved
-import Sandpile.Support.FiniteCoord
 
 open MeasureTheory ProbabilityTheory
 

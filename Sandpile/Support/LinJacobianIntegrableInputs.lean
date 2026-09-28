@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.LinJacobianCoefInput
+import Sandpile.Support.Concentration
+
+/-! # Jacobian Integrable Inputs
+
 The three square-integrability hypotheses of Step 2 of
 `lem:dgt4-linearization-from-survival`.
 
@@ -10,8 +14,6 @@ odometers, which are square integrable whenever the one-site law is
 (`Support/Concentration.lean`), and each coordinate of the i.i.d. field has the
 one-site law itself as its image measure.
 -/
-import Sandpile.Support.LinJacobianCoefInput
-import Sandpile.Support.Concentration
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

@@ -1,14 +1,17 @@
-/-
-Translation covariance of the finite-range field of `lem:d4-finite-range-lower-bound`
-(`sandpile.tex:3861-3887`).  The killed Green field and the localized exit value
-both commute with translation of the scenery, so the good-block process of the
-coordinate plane is stationary under the i.i.d. scenery law, which is the
-hypothesis of \citet[Corollary~1.4]{LSS} used at `sandpile.tex:3991-3995`.
--/
 import Sandpile.Support.D4CritExitProb
 import Sandpile.Support.LocalizationRecursion
 import Sandpile.Support.ExitAverage
 import Sandpile.Support.Translation
+
+/-!
+# Translation covariance of the finite-range field
+
+Translation covariance of the finite-range field of `lem:d4-finite-range-lower-bound`
+(`sandpile.tex:3861-3887`). The killed Green field and the localized exit value both commute
+with translation of the scenery, so the good-block process of the coordinate plane is stationary
+under the i.i.d. scenery law, which is the hypothesis of \citet[Corollary~1.4]{LSS} used at
+`sandpile.tex:3991-3995`.
+-/
 
 open MeasureTheory
 
@@ -49,6 +52,8 @@ theorem localizedOdometer_translate (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site
         rw [localizedOdometer_of_notMem _ _ _ hx',
           localizedOdometer_of_notMem D _ _ hx]
 
+/-- Translating a path by a fixed `y` (pointwise addition) is a measurable map on path
+space. -/
 theorem measurable_pathTranslateFun (y : Site d) :
     Measurable (fun (X : ℕ → Site d) (k : ℕ) => y + X k) :=
   measurable_pi_lambda _ fun k => by fun_prop
@@ -62,6 +67,8 @@ def pathTranslate (y : Site d) : (ℕ → Site d) ≃ᵐ (ℕ → Site d) where
   measurable_toFun := measurable_pathTranslateFun y
   measurable_invFun := measurable_pathTranslateFun (-y)
 
+/-- `pathTranslate y` carries `walkLaw d x` to `walkLaw d (x + y)`: translating a random walk
+started at `x` by `y` gives the law of a random walk started at `x + y`. -/
 theorem measurePreserving_pathTranslate (x y : Site d) :
     MeasurePreserving (pathTranslate y) (walkLaw d x) (walkLaw d (x + y)) := by
   refine ⟨(pathTranslate y).measurable, ?_⟩

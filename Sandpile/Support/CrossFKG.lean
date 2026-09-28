@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossField
+
+/-!
+# Positive association (FKG) for crossing events
+
 Positive association for the events the crossing argument uses
 (`sandpile.tex:2104`, `sandpile.tex:2229`).
 
@@ -28,7 +32,6 @@ Nothing here approximates a general measurable increasing event: that would need
 a martingale argument, and the field is not a product measure.  The three layers
 are exactly the ones the chain events are built in.
 -/
-import Sandpile.Support.CrossField
 
 open MeasureTheory ProbabilityTheory Set Filter Topology
 
@@ -43,6 +46,8 @@ def UpperCylinder (X : Sandpile.Continuum.Space 2 → Ω → ℝ) (A : Set Ω) :
   ∃ (k : ℕ) (q : Fin k → Sandpile.Continuum.Space 2) (U : Set (Fin k → ℝ)),
     MeasurableSet U ∧ IsUpperSet U ∧ A = {ω | (fun i => X (q i) ω) ∈ U}
 
+/-- An upper cylinder is measurable: it is the preimage of the measurable upper set `U`
+under the measurable map into the finitely many coordinates `X (q i)`. -/
 theorem measurableSet_of_upperCylinder [MeasurableSpace Ω] {X : Sandpile.Continuum.Space 2 → Ω → ℝ}
     (hmeas : ∀ u, Measurable (X u)) {A : Set Ω} (hA : UpperCylinder X A) :
     MeasurableSet A := by
@@ -276,10 +281,13 @@ theorem fkg_pass_iUnion [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeas
 def UpperLimit (X : Sandpile.Continuum.Space 2 → Ω → ℝ) (A : Set Ω) : Prop :=
   ∃ C : ℕ → Set Ω, Antitone C ∧ (∀ n, UpperCylinder X (C n)) ∧ A = ⋂ n, C n
 
+/-- Every upper cylinder is an upper limit, taken along the constant sequence at `A`. -/
 theorem upperLimit_of_upperCylinder {X : Sandpile.Continuum.Space 2 → Ω → ℝ} {A : Set Ω}
     (hA : UpperCylinder X A) : UpperLimit X A :=
   ⟨fun _ => A, fun _ _ _ => le_refl _, fun _ => hA, (Set.iInter_const A).symm⟩
 
+/-- An upper limit is measurable, being a countable intersection of the measurable upper
+cylinders that witness it (`measurableSet_of_upperCylinder`). -/
 theorem measurableSet_of_upperLimit [MeasurableSpace Ω]
     {X : Sandpile.Continuum.Space 2 → Ω → ℝ} (hmeas : ∀ u, Measurable (X u)) {A : Set Ω}
     (hA : UpperLimit X A) : MeasurableSet A := by
@@ -374,15 +382,18 @@ theorem fkg_upperLimit [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasu
   rw [mul_comm, Set.inter_comm]
   exact hstep
 
-/-- A countable increasing limit of decreasing limits of upper cylinders: the
-class the chain events of `Sandpile/Support/CrossUnion.lean` belong to. -/
+/-- A countable increasing limit of decreasing limits of upper cylinders; this is the
+category the chain events of `Sandpile/Support/CrossUnion.lean` belong to. -/
 def UpperEvent (X : Sandpile.Continuum.Space 2 → Ω → ℝ) (A : Set Ω) : Prop :=
   ∃ D : ℕ → Set Ω, Monotone D ∧ (∀ n, UpperLimit X (D n)) ∧ A = ⋃ n, D n
 
+/-- Every upper limit is an upper event, taken along the constant sequence at `A`. -/
 theorem upperEvent_of_upperLimit {X : Sandpile.Continuum.Space 2 → Ω → ℝ} {A : Set Ω}
     (hA : UpperLimit X A) : UpperEvent X A :=
   ⟨fun _ => A, fun _ _ _ => le_refl _, fun _ => hA, (Set.iUnion_const A).symm⟩
 
+/-- An upper event is measurable, being a countable union of the measurable upper limits
+that witness it (`measurableSet_of_upperLimit`). -/
 theorem measurableSet_of_upperEvent [MeasurableSpace Ω]
     {X : Sandpile.Continuum.Space 2 → Ω → ℝ} (hmeas : ∀ u, Measurable (X u)) {A : Set Ω}
     (hA : UpperEvent X A) : MeasurableSet A := by

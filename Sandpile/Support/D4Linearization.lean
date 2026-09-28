@@ -1,4 +1,10 @@
-/-
+import LatticeProb.Walk.ExteriorDirichlet
+import Sandpile.Support.RefinedIncrement
+import Sandpile.Support.D4Difference
+
+/-!
+# Backward Decomposition of the Pointwise Linearization
+
 The backward decomposition of `prop:d4-pointwise-linearization`.
 
 `sandpile.tex:3078-3098` writes, for `2 ≤ t - n < t`,
@@ -6,14 +12,11 @@ The backward decomposition of `prop:d4-pointwise-linearization`.
     u_t - E u_t(0) - V_t = P^n (u_{t-n} - E u_{t-n}(0) - V_{t-n})
                             + ∑_{k<n} P^k (r_{t-1-k} - E r_{t-1-k}(0)) ,
 
-where `r_s = (-ζ - P u_s)_+`.  The identity is the recursion `u_{s+1} =
+where `r_s = (-ζ - P u_s)_+`. The identity is the recursion `u_{s+1} =
 ζ + P u_s + r_s`, which is `a₊ = a + (-a)₊` applied to `a = ζ + P u_s`,
-iterated backwards against `V_t = ∑_{k<n} P^k ζ + P^n V_{t-n}`.  This file
+iterated backwards against `V_t = ∑_{k<n} P^k ζ + P^n V_{t-n}`. This file
 carries that algebra; the two tails it is fed to are in the files that follow.
 -/
-import LatticeProb.Walk.ExteriorDirichlet
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Support.D4Difference
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal
@@ -26,6 +29,7 @@ variable {d : ℕ}
 noncomputable def reflectionTerm (ζ : Site d → ℝ) (s : ℕ) (x : Site d) : ℝ :=
   max 0 (-(ζ x) - avg (odometerOf ζ s) x)
 
+/-- `reflectionTerm` is nonnegative, since it is defined as a maximum with `0`. -/
 theorem reflectionTerm_nonneg (ζ : Site d → ℝ) (s : ℕ) (x : Site d) :
     0 ≤ reflectionTerm ζ s x := le_max_left _ _
 
@@ -42,6 +46,8 @@ theorem odometerOf_succ_eq_add_reflection (ζ : Site d → ℝ) (s : ℕ) (x : S
 noncomputable def diffField (ζ : Site d → ℝ) (t : ℕ) (x : Site d) : ℝ :=
   odometerOf ζ t x - membrane ζ t x
 
+/-- `diffField ζ 0 x = 0`, since both `odometerOf ζ 0 x` and `membrane ζ 0 x` unfold to
+`0` at time `0`. -/
 theorem diffField_zero (ζ : Site d → ℝ) (x : Site d) : diffField ζ 0 x = 0 := by
   simp [diffField, odometerOf, membrane]
 

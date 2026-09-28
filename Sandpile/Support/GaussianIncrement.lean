@@ -1,9 +1,22 @@
-/-
-Sub-Gaussian bounds and expected finite maxima of far Green-field
-increments at distances controlled by the cutoff scale.
--/
 import Sandpile.Support.GaussianLinear
 import Sandpile.Support.SubgaussianMaximum
+
+/-!
+# Sub-Gaussian Far-Increment Bounds
+
+Sub-Gaussian bounds and expected finite maxima of far Green-field
+increments at distances controlled by the cutoff scale.
+
+This module shows that the increment of a cutoff Green kernel field between two
+sites at least `M · L` apart in lattice norm has a sub-Gaussian moment
+generating function with a variance proxy controlled by `M`
+(`exists_hasSubgaussianMGF_far_increment`), and combines this with the finite
+maximal inequality for sub-Gaussian families to bound the expected maximum of
+finitely many such increments in terms of `log r`
+(`exists_gaussian_far_increment_maximum_bound`). A logarithmic comparison lemma
+(`log_two_card_le_log_scale`) converts a polynomial bound on the index set's
+cardinality into the logarithmic rate needed there.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped BigOperators NNReal ENNReal
@@ -11,13 +24,19 @@ open scoped BigOperators NNReal ENNReal
 noncomputable section
 namespace Sandpile
 
+/-- The increment `finiteKernelField (cutField r L φ) ζ z - finiteKernelField (cutField r L φ) ζ
+w` of the cutoff Green field between sites `z, w` at lattice distance at most `M · L` has a
+sub-Gaussian moment generating function with variance proxy `v · G · (1 + M)^4`, where `G` comes
+from `External.BallGreenBounds`: the increment is a finite sum of i.i.d. coordinates weighted by
+`k y = h (y - z) - h (y - w)`, whose squared sum is controlled by the ball shift bound. -/
 lemma exists_hasSubgaussianMGF_far_increment (hBall : External.BallGreenBounds) :
     ∃ G : ℝ≥0, 0 < G ∧ ∀ r L : ℕ, 2 ≤ r → 2 ≤ L → ∀ φ : ℝ → ℝ, External.BallGreen.IsCutoff φ →
       ∀ M : ℝ, 1 ≤ M → ∀ z w : Site 4, External.BallGreen.latticeNorm (w - z) ≤ M * L →
         ∀ v : ℝ≥0, HasSubgaussianMGF
           (fun ζ : Site 4 → ℝ => finiteKernelField (External.BallGreen.cutField r L φ) ζ z -
             finiteKernelField (External.BallGreen.cutField r L φ) ζ w)
-          ⟨(v : ℝ) * (G : ℝ) * (1 + M) ^ 4, by positivity⟩ (LatticeProb.iidLaw 4 (gaussianReal 0 v)) := by
+          ⟨(v : ℝ) * (G : ℝ) * (1 + M) ^ 4, by positivity⟩
+            (LatticeProb.iidLaw 4 (gaussianReal 0 v)) := by
   classical
   obtain ⟨G, g, hG, _, hball⟩ := hBall
   refine ⟨⟨G, hG.le⟩, (show (0 : ℝ≥0) < ⟨G, hG.le⟩ from hG), ?_⟩
@@ -49,11 +68,14 @@ lemma exists_hasSubgaussianMGF_far_increment (hBall : External.BallGreenBounds) 
   have hfield (ζ : Site 4 → ℝ) : finiteKernelField h ζ z - finiteKernelField h ζ w =
       ∑ y ∈ s, k y * ζ y := by
     rw [finiteKernelField_sub_eq_tsum h z w s hz hw]
-    exact tsum_eq_sum (fun y hy => by rw [show h (y - z) - h (y - w) = k y from rfl, hk y hy, zero_mul])
+    exact tsum_eq_sum (fun y hy => by
+      rw [show h (y - z) - h (y - w) = k y from rfl, hk y hy, zero_mul])
   change HasSubgaussianMGF (fun ζ : Site 4 → ℝ => finiteKernelField h ζ z - finiteKernelField h ζ w)
     ⟨(v : ℝ) * G * (1 + M) ^ 4, by positivity⟩ (LatticeProb.iidLaw 4 (gaussianReal 0 v))
   simpa only [hfield] using hh
 
+/-- If a finite index set `I` has cardinality at most `r^m`, then `log(2 |I|) ≤ (m + 1) log r`,
+by taking logs of the cardinality bound and absorbing the constant `2 ≤ r`. -/
 lemma log_two_card_le_log_scale {I : Type*} [Fintype I] [Nonempty I]
     {r : ℕ} (hr : 2 ≤ r) {m : ℝ} (hcard : (Fintype.card I : ℝ) ≤ (r : ℝ) ^ m) :
     Real.log (2 * Fintype.card I) ≤ (m + 1) * Real.log r := by
@@ -65,6 +87,12 @@ lemma log_two_card_le_log_scale {I : Type*} [Fintype I] [Nonempty I]
   have htwo : Real.log 2 ≤ Real.log r := Real.log_le_log (by norm_num) (by exact_mod_cast hr)
   nlinarith
 
+/-- Over a finite index set `I` of cardinality at most `r^m`, the expected maximum of the absolute
+cutoff-field increments between `M · L`-far pairs `(z i, w i)`, for noise variance `v ≤ V`, is at
+most `C √(log r)` for a constant `C` depending only on `M`, `m` and `V`: combine the sub-Gaussian
+bound `exists_hasSubgaussianMGF_far_increment` with the finite maximal inequality
+`integral_finiteMaximum_abs_le` and the cardinality-to-log conversion
+`log_two_card_le_log_scale`. -/
 lemma exists_gaussian_far_increment_maximum_bound (hBall : External.BallGreenBounds)
     (M m : ℝ) (hM : 1 ≤ M) (hm : 0 ≤ m) (V : ℝ≥0) :
     ∃ C > 0, ∀ (I : Type*) [Fintype I] [Nonempty I], ∀ r L : ℕ, 2 ≤ r → 2 ≤ L →
@@ -83,15 +111,19 @@ lemma exists_gaussian_far_increment_maximum_bound (hBall : External.BallGreenBou
   intro I _ _ r L hr hL hcard φ hφ z w hzw v hv
   have hi (i : I) : HasSubgaussianMGF
       (fun ζ : Site 4 → ℝ => finiteKernelField (External.BallGreen.cutField r L φ) ζ (z i) -
-        finiteKernelField (External.BallGreen.cutField r L φ) ζ (w i)) c (LatticeProb.iidLaw 4 (gaussianReal 0 v)) := by
+        finiteKernelField (External.BallGreen.cutField r L φ) ζ (w i)) c
+        (LatticeProb.iidLaw 4 (gaussianReal 0 v)) := by
     apply hasSubgaussianMGF_mono (hinc r L hr hL φ hφ M hM (z i) (w i) (hzw i) v)
     change (v : ℝ) * G * (1 + M) ^ 4 ≤ (V : ℝ) * G * (1 + M) ^ 4
-    exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (show (v : ℝ) ≤ V from hv) G.coe_nonneg)
+    exact mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_right (show (v : ℝ) ≤ V from hv) G.coe_nonneg)
       (by positivity)
   calc
-    _ ≤ (1 + (c : ℝ) / 2) * Real.sqrt (Real.log (2 * Fintype.card I)) := integral_finiteMaximum_abs_le hi
+    _ ≤ (1 + (c : ℝ) / 2) * Real.sqrt (Real.log (2 * Fintype.card I)) :=
+      integral_finiteMaximum_abs_le hi
     _ ≤ (1 + (c : ℝ) / 2) * Real.sqrt ((m + 1) * Real.log r) :=
-      mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt (log_two_card_le_log_scale hr hcard)) (by positivity)
+      mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt (log_two_card_le_log_scale hr hcard))
+        (by positivity)
     _ = C * Real.sqrt (Real.log r) := by
       rw [Real.sqrt_mul (by linarith : 0 ≤ m + 1)]
       exact (mul_assoc _ _ _).symm

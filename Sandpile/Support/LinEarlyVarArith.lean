@@ -1,11 +1,14 @@
-/-
+import Sandpile.Support.LinEarlyVar
+
+/-!
+# The early-variance arithmetic, restated
+
 The arithmetic of `eq:dgt4-early-derivative-variance` (`sandpile.tex:5731-5753`).
 
-The paper bounds the double sum of the intersection indicator against the
-conditional covariance by the square of the intersection count plus the error
-term, which is the estimate `sum_indicator_mul_cov_le` of `Support/LinEarlyVar`.
+The paper bounds the double sum of the intersection indicator against the conditional
+covariance by the square of the intersection count plus the error term, which is the
+estimate `sum_indicator_mul_cov_le` of `Support/LinEarlyVar`.
 -/
-import Sandpile.Support.LinEarlyVar
 
 open MeasureTheory
 

@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4AConcSharp
+import Sandpile.Support.Dgt4AShiftLip
+
+/-!
+# Lipschitz bound for the conditioned `Θ_n`
+
 `\Theta_n` at the conditioned level, and its Lipschitz constant for the `\ell^2` distance of
 the residual (`sandpile.tex:5266-5271`).
 
@@ -10,8 +15,6 @@ untouched.  With the sharp constant of `Support/Dgt4AConcSharp.lean` this gives 
 Lipschitz constant `|c|\,\|\sum_{j\geq k_n+1}p_j(0,\cdot)\|`, the square root of the
 "Gaussian concentration proxy" of `sandpile.tex:5269`.
 -/
-import Sandpile.Support.Dgt4AConcSharp
-import Sandpile.Support.Dgt4AShiftLip
 
 open MeasureTheory Filter Topology
 

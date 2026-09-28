@@ -1,81 +1,24 @@
-/-
-Corollary of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2068-2086`
-(label `cor:dlt4-mean-asymptotic`):
-
-  "For every $T>0$ and $x\in\R^d$,
-   \[
-     \E\mathcal U_R(T,x)
-     \longrightarrow
-     \E\mathcal U(T,x)=T^{(4-d)/4}\E\mathcal U(1,0)
-     \qquad\text{and}\qquad
-     \Var\mathcal U_R(T,x)
-     \longrightarrow
-     T^{(4-d)/2}\Var\mathcal U(1,0)\, ,
-   \]
-   and $\Var\mathcal U(1,0)>0$.  Consequently, as $t\to\infty$,
-   \[
-     \E u_t(0)\sim \E\mathcal U(1,0)t^{(4-d)/4}\, ,
-     \qquad
-     \Var(u_t(0))\sim \Var\bigl(\mathcal U(1,0)\bigr) t^{(4-d)/2}\, ."
-
-The two objects come from the running text of `ssec:scaling-dlt4`.
-`sandpile.tex:1817-1821`: "For $T>0,\ x\in\R^d$, define the rescaled odometer by
-$\mathcal U_R(T,x)\coloneqq R^{-(2-d/2)} u_{\lfloor R^2T\rfloor}(\lfloor Rx\rfloor)$,
-with the floor taken coordinatewise."  `sandpile.tex:1824-1825`: "In this
-subsection, write $\mathcal U$ for the value $\mathcal U_Z$ from
-\eqref{eq:continuum-membrane-stopping-value}."  They are `Sandpile.Continuum.rescaledOdometer` and
-`Sandpile.Continuum.continuumValue`.
-
-The standing hypotheses are those of `sandpile.tex:1810-1814`: `d ≤ 3`,
-`E ζ(0) = 0`, `0 < Var(ζ(0)) < ∞`, and `E e^{θ₀|ζ(0)|} < ∞` for some `θ₀ > 0`.
-
-Modelling choices.
-
-The scenery is carried by its one-site law `ν` and the mass field by
-`centeredMassLaw d ν`, the law of `σ = 1 + 2dζ`, so that `u_t` is
-`Sandpile.odometer σ t` and `E u_t(0)` is `Sandpile.meanOdometer`, exactly as in
-the frozen Theorem 1.3.  The variance of the scenery, which is the `Var(ζ(0))`
-appearing in `Z`, is `variance id ν`.
-
-The Gaussian heat potential is read through the continuous version fixed at
-`sandpile.tex:1019-1021` and `sandpile.tex:2104`: the field `Z` is a
-modification of `eq:dlt4-linear-gaussian-potential`, almost surely continuous on
-each strip `[0,T] × ℝ^d` and of polynomial growth there, and the value
-`𝒰 = 𝒰_Z` is built from it.  Continuity and growth are what make the supremum
-over the Brownian stopping rules a supremum over a bounded set of reals, so that
-`𝒰(T,x)` is the value of `eq:continuum-membrane-stopping-value` and not the
-junk value of an unbounded supremum.  These are the binders
-`prop:continuum-value-selfsimilar` carries, in the same form and the same
-position.
-
-Mathlib 4.32 constructs neither white noise nor a Brownian motion, so the
-statement is quantified over a space `ΩW` carrying white noise and a space `ΩB`
-carrying Brownian motion; the field is frozen at a point of `ΩW` while the
-Brownian expectation integrates over `ΩB`, which is the paper's convention that
-`B` is independent of `𝒲` and that the white noise is held fixed inside the
-stopping value.  `brownianValue` carries its starting point only through the
-Brownian motion, so a value at every starting point needs a family `B` indexed
-by the starting point, with `B y` started at `y`.  The motion carries the two
-binders of `lem:brownian-ball-localization`, continuity of EVERY path and strong
-measurability of the value at each time, without which the supremum defining the
-continuum value is the junk value of an unbounded supremum, and `ΩB` names its
-universe because the cited stability input is a hypothesis about a realization
-space and is taken at the universe where the motion lives.
-
-`R → ∞` is `atTop` on `ℝ`, matching the index set `R ≥ 1` of the family.
-`f ∼ g` is `Tendsto (fun t => f t / g t) atTop (𝓝 1)`.
-
-Junk values: an integral of a non-integrable function and the variance of a
-function not in `L²` are both zero in Mathlib, which would make the limit
-statements empty.  The corollary presupposes that all four quantities are
-finite, so square-integrability of the rescaled odometers, of the odometer
-itself, and of the limiting value is asserted as part of the conclusion.  Real
-powers `t^{(4-d)/4}` are `Real.rpow` of a nonnegative base.
--/
 import Sandpile.Continuum.Stopping
 import Sandpile.Law
 import Sandpile.External.LocalCLTProved
 import Sandpile.Support.MeanACorollary
+
+/-!
+# Mean and variance asymptotics from the continuum value, below dimension four
+
+This file proves the frozen statement of `cor:dlt4-mean-asymptotic` (`sandpile.tex:2068-2086`),
+for `d ≤ 3` and scenery with mean zero, finite positive variance, and a finite exponential moment.
+The rescaled odometer `𝒰_R(T,x) = R^{-(2-d/2)} u_{⌊R²T⌋}(⌊Rx⌋)`
+(`Sandpile.Continuum.rescaledOdometer`) has mean and variance converging as `R → ∞` to those of
+the continuum stopping value `𝒰 = 𝒰_Z` (`Sandpile.Continuum.continuumValue`) at `(T,x)`, which by
+self-similarity equal `T^{(4-d)/4} E 𝒰(1,0)` and `T^{(4-d)/2} Var(𝒰(1,0))` with `Var(𝒰(1,0)) > 0`.
+Consequently `E u_t(0) ∼ E 𝒰(1,0) t^{(4-d)/4}` and `Var(u_t(0)) ∼ Var(𝒰(1,0)) t^{(4-d)/2}` as
+`t → ∞`. Since Mathlib constructs neither white noise nor Brownian motion, both are quantified
+over abstract realization spaces `ΩW` and `ΩB`, and the statement carries the continuum stopping
+stability input as an explicit hypothesis together with the square-integrability of all four
+limiting quantities, since Mathlib's junk value for a non-integrable mean or an out-of-`L²`
+variance is zero.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

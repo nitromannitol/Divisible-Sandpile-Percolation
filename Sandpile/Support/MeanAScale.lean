@@ -1,26 +1,24 @@
-/-
-The exact parabolic scaling identity of the DISCRETE rescaled odometer, and the
-translation invariance behind it.
-
-`sandpile.tex:1817-1821` defines `𝒰_R(T,x) = R^{-(2-d/2)}u_{⌊R²T⌋}(⌊Rx⌋)`.  At the
-scale `S = R√T` one has `S² = R²T` and `R^{-(2-d/2)} = T^{(4-d)/4}S^{-(2-d/2)}`, so
-
-  `𝒰_R(T,x) = T^{(4-d)/4}·S^{-(2-d/2)}u_{⌊S²⌋}(⌊Rx⌋)`   pointwise,
-
-and the i.i.d. mass law is invariant under translation of the lattice, so the site
-`⌊Rx⌋` may be moved to the origin inside any law-determined quantity.  Hence
-
-  `E𝒰_R(T,x) = T^{(4-d)/4}E𝒰_{R√T}(1,0)`,
-  `Var𝒰_R(T,x) = T^{(4-d)/2}Var𝒰_{R√T}(1,0)`,
-
-both exactly, for every `R > 0` and `T > 0`.  These are the discrete forms of the
-two self-similarity identities the corollary states for the limit, and they are
-unconditional: nothing about the scaling limit enters.
--/
 import Sandpile.Support.ContLawTransfer
 import Sandpile.Support.LinStationary
 import Sandpile.Support.Translation
 import Sandpile.Support.MeanAValue
+
+/-!
+# Exact parabolic scaling of the discrete rescaled odometer
+
+The exact parabolic scaling identity of the discrete rescaled odometer, and the translation
+invariance behind it. `sandpile.tex:1817-1821` defines
+`𝒰_R(T,x) = R^{-(2-d/2)}u_{⌊R²T⌋}(⌊Rx⌋)`. At the scale `S = R√T` one has `S² = R²T` and
+`R^{-(2-d/2)} = T^{(4-d)/4}S^{-(2-d/2)}`, so `𝒰_R(T,x) = T^{(4-d)/4}·S^{-(2-d/2)}u_{⌊S²⌋}(⌊Rx⌋)`
+pointwise (`rescaledOdometer_eq_scale`), and the i.i.d. mass law is invariant under
+translation of the lattice (`map_odometer_eq`, `map_odometer_centered_eq`), so the site
+`⌊Rx⌋` may be moved to the origin inside any law-determined quantity. Hence
+`E𝒰_R(T,x) = T^{(4-d)/4}E𝒰_{R√T}(1,0)` (`integral_rescaledOdometer_scale`) and
+`Var𝒰_R(T,x) = T^{(4-d)/2}Var𝒰_{R√T}(1,0)` (`variance_rescaledOdometer_scale`), both exactly,
+for every `R > 0` and `T > 0`. These are the discrete forms of the two self-similarity
+identities the corollary states for the limit, and they are unconditional: nothing about the
+scaling limit enters.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

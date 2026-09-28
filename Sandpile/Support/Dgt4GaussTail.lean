@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4CaseA
+import Sandpile.Support.LinGaussBridge
+import Sandpile.Support.LinGaussFactor
+
+/-! # Gaussian Case Infinite Field Tail
+
 The law of the infinite Green field of `eq:dgt4-infinite-green-field` in the Gaussian case
 (a) of `prop:dgt4-contact-asymptotics`.
 
@@ -20,9 +25,6 @@ With this, the Gaussian branch of `prop:dgt4-contact-asymptotics` rests on the t
 `eq:dgt4-contact-mean-increment` and `eq:dgt4-contact-threshold-relative-error` of
 `sandpile.tex:4977-4984`, which Steps 1-4 verify, and on nothing else.
 -/
-import Sandpile.Support.Dgt4CaseA
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.LinGaussFactor
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

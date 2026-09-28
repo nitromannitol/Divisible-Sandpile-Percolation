@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.Dgt4AOdometerTailMoment
+
+/-!
+# Variance decay of the iterated odometer average
+
 The variance of `P^ju_n(0)` decays like `j^{(4-d)/2}`, uniformly in `n`: the square sum of
 the tail kernel is `O(j^{(4-d)/2})` (`eq:dgt4-tail-kernel`, `sandpile.tex:1303-1306`), and
 the product moment bound at `p=2` turns that into the variance.
 -/
-import Sandpile.Support.Dgt4AOdometerTailMoment
 
 open LatticeProb
 

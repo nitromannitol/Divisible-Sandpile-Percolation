@@ -1,18 +1,19 @@
-/-
+import Sandpile.Support.ContBMKernel
+import Mathlib.Probability.Distributions.Gaussian.Real
+
+/-!
+# Total mass of the Brownian heat kernel
+
 The total mass of the Brownian heat kernel of `eq:brownian-heat-green-kernels`
 (`sandpile.tex:963-968`): `∫ p^{BM}_t(x,y) dy = 1` for every positive time.
 
-The kernel `p^{BM}_t(x,y) = (4\pi t/(2d))^{-d/2}e^{-d|x-y|^2/(2t)}` is the
-density of the Gaussian of variance `t/d` in each coordinate, so it factors as a
-product of one-dimensional Gaussian densities and its integral is the product of
-their integrals.  This is what bounds a double space integral against the kernel
-by the product of the sup-norm and the `L¹` norm of the test function,
-`∫∫|φ(u)||φ(v)|p^{BM}_t(u,v) ≤ ‖φ‖_∞‖φ‖_1`, uniformly in `t`, which is the
-estimate that removes the small times from the double time integral of
-`prop:weighted-membrane-limit`.
+The kernel `p^{BM}_t(x,y) = (4\pi t/(2d))^{-d/2}e^{-d|x-y|^2/(2t)}` is the density of the
+Gaussian of variance `t/d` in each coordinate, so it factors as a product of one-dimensional
+Gaussian densities and its integral is the product of their integrals. This is what bounds a
+double space integral against the kernel by the product of the sup-norm and the `L¹` norm of the
+test function, `∫∫|φ(u)||φ(v)|p^{BM}_t(u,v) ≤ ‖φ‖_∞‖φ‖_1`, uniformly in `t`, which is the estimate
+that removes the small times from the double time integral of `prop:weighted-membrane-limit`.
 -/
-import Sandpile.Support.ContBMKernel
-import Mathlib.Probability.Distributions.Gaussian.Real
 
 open MeasureTheory Filter Topology
 open scoped NNReal

@@ -1,31 +1,22 @@
-/-
-The assembly of `lem:brownian-ball-localization` (`sandpile.tex:1647-1658`) from
-the exit-time tail and the strong Markov step of its proof.
-
-The paper proves the lattice analogue `lem:localization-killing`
-(`sandpile.tex:1618-1630`) like this: fix a stopping time `τ ≤ t`, split the
-reward at the first exit `τ_D`, keep the part before `τ_D` inside the localized
-value, and bound the rest by the strong Markov property at `τ_D`.  It then says
-(`sandpile.tex:1640`) that the same argument extends to the Brownian value.
-
-Two of the three ingredients are here and are unconditional.  The exit-time tail
-is `Sandpile.Continuum.exists_ball_exit_tail_closed`.  That `τ ∧ τ_{u,A}` is
-again admissible, and belongs to the attainable set of the localized value, is
-`isBrownianStopping_min`, `isBrownianStopping_exitTimeTrunc` and
-`ball_condition_of_le_exitTime`.  Together they reduce the lemma to ONE estimate,
-`BallExcessStep`: replacing a single stopping time `τ ≤ T` by `τ ∧ τ_{u,A}`
-costs at most the probability of leaving the ball before `T`, times the supremum
-of the value over the points at distance at most `A` from `K`.  That estimate is
-the strong Markov step, and carries with it the monotonicity of the value in its
-time argument that the paper's right-hand side uses; both are discussed in the
-run notes of this node.
-
-The reduction is a genuine one: `BallExcessStep` speaks about one stopping time
-at a time, with no supremum, no compact set and no localized value, while the
-conclusion is an inequality between two suprema, uniform over `u ∈ K`.
--/
 import Sandpile.Support.ExplBallExit
 import Sandpile.Support.ExplBallValue
+
+/-!
+# Ball localization from the strong Markov step
+
+This file assembles `lem:brownian-ball-localization` from the exit-time tail and the strong
+Markov step of its proof, following the paper's proof of the lattice analogue
+`lem:localization-killing`: fix a stopping time `τ ≤ T`, split the reward at the exit time
+`τ_{u,A}` of a ball, keep the part before the exit inside the localized value, and bound the
+rest by the strong Markov property at the exit time. Two of the three ingredients are supplied
+unconditionally here, the exit-time tail and the admissibility of the capped stopping time
+`τ ∧ τ_{u,A}` for the localized value, reducing the lemma to the single estimate
+`BallExcessStep`: replacing `τ` by `τ ∧ τ_{u,A}` costs at most the probability of leaving the
+ball before `T`, times the supremum of the value over the points at distance at most `A` from
+`K`. `BallExcessStep` speaks of one stopping time at a time, with no supremum and no compact
+set, while the conclusion of `ball_localization_of_input` is an inequality between two suprema,
+uniform over `u ∈ K`.
+-/
 
 open MeasureTheory ProbabilityTheory
 open scoped NNReal ENNReal
@@ -47,10 +38,12 @@ def ballStoppingPayoffs (B : ℝ≥0 → ΩB → Space d) (P : Measure ΩB) (h :
     (∀ᵐ ω ∂P, ∀ s : ℝ≥0, s < τ ω → ‖B s ω - u‖ ≤ A) ∧
     a = ∫ ω, -h (T - τ ω) (B (τ ω) ω) ∂P}
 
+/-- `brownianDiscount` unfolds to the supremum of `stoppingPayoffs`, by definition. -/
 theorem brownianDiscount_eq_sSup (B : ℝ≥0 → ΩB → Space d) (P : Measure ΩB)
     (h : ℝ → Space d → ℝ) (T : ℝ) :
     brownianDiscount B P h T = sSup (stoppingPayoffs B P h T) := rfl
 
+/-- `brownianDiscountBall` unfolds to the supremum of `ballStoppingPayoffs`, by definition. -/
 theorem brownianDiscountBall_eq_sSup (B : ℝ≥0 → ΩB → Space d) (P : Measure ΩB)
     (h : ℝ → Space d → ℝ) (T A : ℝ) (u : Space d) :
     brownianDiscountBall B P h T A u = sSup (ballStoppingPayoffs B P h T A u) := rfl

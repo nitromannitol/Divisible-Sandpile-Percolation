@@ -1,73 +1,26 @@
-/-
-Lemma of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2451-2461`
-(label `lem:finite-scale-extraction`):
-
-  "[Finite-scale extraction]  Fix $N\geq1$ axis-parallel rectangles
-   $\mathcal R_1,\ldots,\mathcal R_N$ in the plane and a coordinate crossing
-   direction for each rectangle.  For every $\varepsilon>0$, there are $c>0$
-   and rational scales $s_1,\ldots,s_k\in(0,1)$ such that
-   \[
-     \P\left(
-     \bigcap_{j=1}^N H_{\mathcal R_j}(4c;\max_{1\leq i\leq k}\mathcal X_{s_i})
-     \right)\geq1-\varepsilon\, ."
-
-The objects are those of `ssec:admissible` and of the paragraph opening the
-subsubsection.
-
-`sandpile.tex:2074-2088`: "Fix $d=2$ or $d=3$.  For $u\in\R^2$ and $0<s\leq1$,
-let
-\[
-  \mathcal X_s(u)\coloneqq
-  \begin{cases}
-  \int_{\R^2}\frac1{2\pi}\log\frac{s}{|u-z|}\mathbf 1_{\{|u-z|<s\}}\mathcal W(dz),& d=2\, ,\\
-  \int_{\R^3}\frac1{4\pi}\left(\frac1{|(u,0)-z|}-\frac1s\right)\mathbf 1_{\{|(u,0)-z|<s\}}\mathcal W(dz),& d=3\, .
-  \end{cases}
-\]"
-That is `ballField` below, the white noise tested against `ballKernel`.
-
-`sandpile.tex:2404-2406`: "Recall that $H_{\mathcal R}(\ell)$ is the event that
-$\{\mathcal X_1\geq\ell\}$ crosses the rectangle $\mathcal R$ in the prescribed
-coordinate direction.  For a planar field $F$, we write $H_{\mathcal R}(\ell;F)$
-for the same event with $F$ in place of $\mathcal X_1$."  Crossing itself is
-`sandpile.tex:2112-2118`: "the set contains a compact connected subset joining
-the two opposite sides", inside the rectangle.  That is `Crosses` below,
-applied to the level set `{u : 4c ≤ max_i 𝒳_{s_i}(u)}`.
-
-Modelling choices.
-
-The rectangles are given by their corner vectors `a j`, `b j`, nondegenerate,
-and the prescribed direction by `dir j : Fin 2`; crossing in direction `i`
-means meeting both the face `p i = a i` and the face `p i = b i`.
-
-`c` and the scales depend only on the rectangles, the directions, and `ε`, so
-they are bound before the space carrying the white noise; Mathlib 4.32
-constructs no white noise, so that space is quantified over, and taken in
-`Type` so that it can be bound inside the existential.
-
-The list of scales is a function `s : Fin k → ℚ` with `k ≥ 1`; the paper writes
-`s_1,\ldots,s_k`, which presumes at least one scale, and `k ≥ 1` is what keeps
-`⨆ i : Fin k` from taking the junk value `sSup ∅ = 0`.  The supremum of a
-finite nonempty family of reals is its maximum, so `⨆` is the paper's `\max`.
-
-The intersection over `j` is a universally quantified conjunction inside the
-event.  The event need not be measurable: `P` of a set is its outer measure,
-and the comparison is made in `ℝ≥0∞` with `ENNReal.ofReal (1 - ε)`, which
-avoids any `toReal` junk.
-
-The proof of the lemma rests on the rescaled crossing estimate of
-`sandpile.tex:2429-2436`, which is `prop:fixed-scale-crossings` rescaled, and
-that proposition's proof applies the continuum form of the RSW theorem of
-Köhler-Schindler and Tassion at `sandpile.tex:2218`.  By standing convention R1 the
-cited comparison is an explicit hypothesis, `Sandpile.External.ContinuumRSW`,
-and nothing more.  Added at version 3, together with the restatement of that
-comparison on the field.
--/
 import Sandpile.Continuum.WhiteNoise
 import Sandpile.External.ContinuumRSW
 import Sandpile.External.PittGaussianFKG
 import Sandpile.External.GaussianLawCovarianceProved
 import Sandpile.Support.LimUnconditional
 import Sandpile.Support.LimScaleZeroOne
+
+/-!
+# Finite-scale extraction from fixed-scale crossings
+
+This file proves the frozen statement of `lem:finite-scale-extraction` (`sandpile.tex:2451-2461`):
+given `N ≥ 1` axis-parallel rectangles with a prescribed coordinate crossing direction each, for
+every `ε > 0` there are `c > 0` and finitely many rational scales `s₁, …, s_k ∈ (0,1)` such that
+the intersection of the crossing events for `4c` against `max_i 𝒳_{s_i}` has probability at least
+`1 - ε`. The ball field `𝒳_s(u)` (`ballField`) is the planar white noise `W` tested against the
+Green-function kernel of the ball of radius `s` about `u` (`ballKernel`), in dimension `d = 2` or
+`d = 3` with points of the plane read as `(u, 0)` (`planePoint`); a set crosses a rectangle
+(`Crosses`) when it contains a compact connected subset meeting both faces perpendicular to the
+prescribed direction. The proof rescales the fixed-scale crossing estimate
+`prop:fixed-scale-crossings`, whose own proof applies the continuum RSW theorem of
+Köhler-Schindler and Tassion, carried here as the explicit hypothesis
+`Sandpile.External.ContinuumRSW`.
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal

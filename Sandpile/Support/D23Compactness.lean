@@ -1,9 +1,12 @@
-/-
+import Sandpile.Support.PercVarianceSubseq
+
+/-!
+# Stationarity and variance compactness for the critical contradiction
+
 Stationarity and variance compactness in the contradiction argument for
 critical percolation, `sandpile.tex:2613-2627`. It suffices to exclude bad
 blocks at the origin along laws whose variances converge to a positive limit.
 -/
-import Sandpile.Support.PercVarianceSubseq
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

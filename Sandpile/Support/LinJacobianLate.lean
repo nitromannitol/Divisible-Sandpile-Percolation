@@ -1,23 +1,18 @@
-/-
-The late-time estimate of Step 1 of `lem:dgt4-linearization-from-survival`
-(`sandpile.tex:5755-5767`), at the coordinate derivative of the tested field
-itself.
-
-The paper writes
-
-  "For every `z ∈ Z^d`, `S_{n_R,i} ≤ 1` and symmetry of `P` give
-   `0 ≤ D^{>}_{R,z} ≤ ∑_{n_R-δR² < i < n_R}(P^i a_R)(z)`",
-
-and then bounds the sum of squares by `(δR²+2)² ∑_z a_R(z)²`.  Both steps are
-below with the set of late times abstract: dropping the survival factor turns
-the time-restricted derivative into a sum of heat kernels, the weighted sum of
-heat kernels over the sites carrying a weight is the iterated average by
-symmetry of the kernel, and `Sandpile.tsum_sq_sum_iterate_avg_le` is the
-Cauchy-Schwarz step.
--/
 import Sandpile.Support.LinJacobianTimes
 import Sandpile.Support.LinLateVar
 import Sandpile.Support.TightSmallPower
+
+/-!
+# The late-time bound on the coordinate derivative of the tested field
+
+Dropping the survival factor `S_{n,i} ≤ 1` turns the time-restricted coordinate derivative
+`∑ x ∈ s, a x * jacobianTimes ζ n t x z` into a sum of heat kernels `∑ i ∈ t, (P^i a) z`, using
+that the weighted sum of heat kernels over a finite set of sites carrying a weight `a` equals the
+iterated average `avg^[i] a`, by symmetry of the kernel. Combined with a Cauchy-Schwarz bound on
+the sum of squares of iterated averages, this gives the pointwise and `L²` late-time estimates on
+the time-restricted derivative: the sum over sites of its square is at most `t.card ^ 2` times
+`∑_z a(z) ^ 2`.
+-/
 
 open MeasureTheory Filter Topology
 
@@ -52,6 +47,8 @@ theorem sum_a_jacobianTimes_le [NeZero d] (hd : 1 ≤ d) (s : Finset (Site d)) (
     _ = ∑ j ∈ t, (avg^[j] a) z :=
         Finset.sum_congr rfl fun j _ => sum_mul_heatKernel_eq_avg_iterate s a hsupp j z
 
+/-- The time-restricted coordinate derivative `∑ x ∈ s, a x * jacobianTimes ζ n t x z` is
+nonnegative when the weight `a` is. -/
 theorem sum_a_jacobianTimes_nonneg (s : Finset (Site d)) (a : Site d → ℝ)
     (ha : ∀ x, 0 ≤ a x) (ζ : Site d → ℝ) (n : ℕ) (t : Finset ℕ) (z : Site d) :
     0 ≤ ∑ x ∈ s, a x * jacobianTimes ζ n t x z :=

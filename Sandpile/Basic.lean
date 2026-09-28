@@ -1,4 +1,8 @@
-/-
+import LatticeProb.Site
+import LatticeProb.IID
+
+/-! # Divisible Sandpile Basics
+
 The divisible sandpile of Levine and Peres on `ℤ^d`, as the paper defines it
 (`sandpile.tex`, Section 1): the initial mass at a site is `σ(x)`, a site with
 mass above one keeps one unit and shares the excess equally with its `2d`
@@ -14,8 +18,6 @@ How the paper's objects are modelled here:
   value rather than a junk one.
 - The toppled set is `{x : 0 < u_∞ x}`.
 -/
-import LatticeProb.Site
-import LatticeProb.IID
 
 open scoped ENNReal
 

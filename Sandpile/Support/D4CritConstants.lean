@@ -1,11 +1,14 @@
-/-
+import Mathlib
+import Sandpile.Support.PlaneRectangle
+
+/-!
+# Constants for Step 1 of the dimension-four percolation proof
+
 The constants of Step 1 of the dimension-four percolation proof
 (`sandpile.tex:4008-4018`): a localization radius `A_loc` making the
 localization deficit at most a quarter of the mean, and an exit horizon `A_ex`
 making the exit tail at most one half.
 -/
-import Mathlib
-import Sandpile.Support.PlaneRectangle
 
 open Filter Topology
 

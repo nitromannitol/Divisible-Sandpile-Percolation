@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.Dgt4Thresholds
+
+/-!
+# Contact asymptotics from pointwise contact thresholds
+
 `prop:dgt4-contact-asymptotics` (`sandpile.tex:4823-4825`) from the pointwise
 contact thresholds, and the uniform form of those thresholds that
 `lem:dgt4-path-survival` consumes.
@@ -6,7 +10,7 @@ contact thresholds, and the uniform form of those thresholds that
 The paper's own proof of `prop:dgt4-linearization` (`sandpile.tex:5853-5864`)
 reads: "The two case-specific parts of Proposition~\ref{prop:dgt4-contact-asymptotics}
 give the threshold asymptotic and threshold comparison, hence
-\eqref{eq:dgt4-uniform-contact-thresholds}."  Those two are exactly the two
+\eqref{eq:dgt4-uniform-contact-thresholds}." Those two are exactly the two
 limits of `PointwiseContactThresholds`, and this file performs the two
 deductions the sentence names.
 
@@ -16,12 +20,11 @@ deductions the sentence names.
 * `dgt4_contact_of_pointwise`: `P(u_n(0)=0)` and `P(J(0)>E u_{n-1}(0))` differ
   by at most the measure of the symmetric difference of the two events, which is
   `o(1/n)`; so the second limit transports the first from the threshold event to
-  the contact event.  Neither event needs to be measurable: a measure is an outer
-  measure, and `S ⊆ T ∪ (S Δ T)` is a set inclusion.  That matters, because the
+  the contact event. Neither event needs to be measurable: a measure is an outer
+  measure, and `S ⊆ T ∪ (S Δ T)` is a set inclusion. That matters, because the
   threshold event of the Gaussian branch is only null measurable
   (`Support/LinThresholdNull.lean`).
 -/
-import Sandpile.Support.Dgt4Thresholds
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

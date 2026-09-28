@@ -1,17 +1,21 @@
-/-
+import Sandpile.Support.ScaleDeviation
+
+/-!
+# The third-moment rate in terms of the time and the level
+
 The third-moment rate in terms of the time and the level.
 
-`sandpile.tex:1791-1793` ends by "using `m ≤ C log t` and `N ≥ c t L^{-a}`".
-The second of those is this file: with `N ≥ t L^{-a}/2`, the rate
-`S(N)/N^{(4-d)/4}` is `t^{-1/4}L^{a/4}` up to a constant in dimensions one and
-three, and `(1+log t) t^{-1/2} L^{a/2}` in dimension two, which are exactly the
-two branches of `Sandpile.lowerTailRemainder` once the factor `m^{3/4}` is put
+`sandpile.tex:1791-1793` ends by "using `m ≤ C log t` and `N ≥ c t L^{-a}`". The second of those
+is this file: with `N ≥ t L^{-a}/2`, the rate `S(N)/N^{(4-d)/4}` is `t^{-1/4}L^{a/4}` up to a
+constant in dimensions one and three, and `(1+log t) t^{-1/2} L^{a/2}` in dimension two, which
+are exactly the two branches of `Sandpile.lowerTailRemainder` once the factor `m^{3/4}` is put
 back.
 -/
-import Sandpile.Support.ScaleDeviation
 
 namespace Sandpile
 
+/-- A negative power `x ↦ x ^ (-p)` (for `p ≥ 0`) is antitone on the positives: if `0 < x ≤ y`
+then `y ^ (-p) ≤ x ^ (-p)`. -/
 theorem rpow_neg_antitone {x y p : ℝ} (hx : 0 < x) (hxy : x ≤ y) (hp : 0 ≤ p) :
     y ^ (-p) ≤ x ^ (-p) := by
   have hy : (0 : ℝ) < y := lt_of_lt_of_le hx hxy
@@ -19,6 +23,9 @@ theorem rpow_neg_antitone {x y p : ℝ} (hx : 0 < x) (hxy : x ≤ y) (hp : 0 ≤
   have h := Real.rpow_le_rpow hx.le hxy hp
   exact inv_anti₀ (Real.rpow_pos_of_pos hx p) h
 
+/-- Turns a lower bound `N ≥ t L^{-a}/2` into an upper bound `N ^ (-p) ≤ 2^p (t^{-p} L^{ap})`, by
+applying `rpow_neg_antitone` to the hypothesis and then simplifying the negative-power algebra
+of the product `t * L^{-a} / 2`. -/
 theorem rpow_neg_scale_le {t N : ℕ} {a L p : ℝ} (hp : 0 < p) (hL : 2 ≤ L) (ht : 1 ≤ t)
     (_hN1 : 1 ≤ N) (hNlow : (t : ℝ) * L ^ (-a) / 2 ≤ (N : ℝ)) :
     (N : ℝ) ^ (-p) ≤ 2 ^ p * ((t : ℝ) ^ (-p) * L ^ (a * p)) := by
@@ -46,6 +53,8 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- In dimensions `d ∈ {1, 3}`, the rate `supOverSd d N` equals the pure power `N ^ (-1/4)`,
+computed by unfolding the explicit values of `greenSupRate` at `d = 1` and `d = 3`. -/
 theorem supOverSd_ne_two (hd : 1 ≤ d) (hd3 : d ≤ 3) (hd2 : d ≠ 2) {N : ℕ} (hN : 1 ≤ N) :
     supOverSd d N = (N : ℝ) ^ (-((1 : ℝ) / 4)) := by
   have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
@@ -63,6 +72,8 @@ theorem supOverSd_ne_two (hd : 1 ≤ d) (hd3 : d ≤ 3) (hd2 : d ≠ 2) {N : ℕ
     norm_num
     rw [Real.rpow_neg hN0.le, ← one_div]
 
+/-- In dimension `d = 2`, the rate `supOverSd 2 N` equals `(1 + log N) * N ^ (-1/2)`, computed by
+unfolding the explicit value of `greenSupRate` at `d = 2`. -/
 theorem supOverSd_two {N : ℕ} (hN : 1 ≤ N) :
     supOverSd 2 N = (1 + Real.log (N : ℝ)) * (N : ℝ) ^ (-((1 : ℝ) / 2)) := by
   have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
@@ -77,10 +88,14 @@ namespace Sandpile
 
 variable {d : ℕ}
 
+/-- `2 ^ p ≤ 2` for every exponent `p ≤ 1`, since `x ↦ 2 ^ x` is monotone and `2 ^ 1 = 2`. -/
 theorem two_rpow_le_two {p : ℝ} (_hp0 : 0 ≤ p) (hp1 : p ≤ 1) : (2 : ℝ) ^ p ≤ 2 := by
   have h := Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) hp1
   rwa [Real.rpow_one] at h
 
+/-- For `d ∈ {1, 3}` and `N ≥ t L^{-a}/2`, the rate `supOverSd d N` is at most
+`2 * (t^{-1/4} L^{a/4})`, combining the exact formula `supOverSd_ne_two` with the scale
+estimate `rpow_neg_scale_le` and the bound `two_rpow_le_two`. -/
 theorem supOverSd_le_scale_ne_two (hd : 1 ≤ d) (hd3 : d ≤ 3) (hd2 : d ≠ 2) {t N : ℕ}
     {a L : ℝ} (hL : 2 ≤ L) (ht : 1 ≤ t) (hN1 : 1 ≤ N)
     (hNlow : (t : ℝ) * L ^ (-a) / 2 ≤ (N : ℝ)) :
@@ -93,6 +108,9 @@ theorem supOverSd_le_scale_ne_two (hd : 1 ≤ d) (hd3 : d ≤ 3) (hd2 : d ≠ 2)
   have h2 : (2 : ℝ) ^ ((1 : ℝ) / 4) ≤ 2 := two_rpow_le_two (by norm_num) (by norm_num)
   nlinarith [h, h2, hX]
 
+/-- For `d = 2`, `N ≤ t` and `N ≥ t L^{-a}/2`, the rate `supOverSd 2 N` is at most
+`2 * (1 + log t) * (t^{-1/2} L^{a/2})`, combining the exact formula `supOverSd_two` with the
+monotonicity of `log` in `N ≤ t` and the scale estimate `rpow_neg_scale_le`. -/
 theorem supOverSd_le_scale_two {t N : ℕ} {a L : ℝ} (hL : 2 ≤ L) (ht : 1 ≤ t) (hN1 : 1 ≤ N)
     (hNt : N ≤ t) (hNlow : (t : ℝ) * L ^ (-a) / 2 ≤ (N : ℝ)) :
     supOverSd 2 N

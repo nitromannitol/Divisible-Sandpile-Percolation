@@ -1,4 +1,9 @@
-/-
+import Sandpile.Support.Dgt4ACovStop
+import Sandpile.Support.LinCorrGap
+
+/-!
+# Conditional means off the origin
+
 **The conditional means off the origin** (`sandpile.tex:5157-5183`): "By
 `eq:dgt4-gaussian-correlation-gap`, the conditional means in the previous display are at
 least `c\E u_n(0)` for `z\ne0` and `|y|\leq K`".
@@ -13,8 +18,6 @@ the conditioned value is `-(\E u_n(0)+\Sigma^2y/\E u_n(0))`, so the conditional 
 `\E u_n(0)(1-\rho)-K\Sigma^2\rho/\E u_n(0)`, which is at least half of
 `\E u_n(0)(1-\rho)` once `2K\Sigma^2\rho\leq(\E u_n(0))^2(1-\rho)`.
 -/
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.LinCorrGap
 
 open MeasureTheory Filter Topology Set
 

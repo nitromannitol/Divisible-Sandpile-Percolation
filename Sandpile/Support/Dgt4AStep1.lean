@@ -1,23 +1,24 @@
-/-
-Step 1 of case (a) of `prop:dgt4-contact-asymptotics` (`sandpile.tex:5031-5080`), assembled
-at a fixed horizon `j`.
-
-The telescoping of `sandpile.tex:5074-5077` writes
-`V_\infty(0)-u_n(0)+\E u_n(0)` as the sum of three terms,
-
-  `\sum_{i<j}P^iD_n(0)`,  `P^jV_\infty(0)`,  and  `-(P^ju_n(0)-\E u_n(0))`,
-
-and the elementary inequality `(a+b+c)^2\leq3(a^2+b^2+c^2)` replaces the `L^2` triangle
-inequality; the constant `3` is free because the conclusion carries an existential constant.
-The three terms are bounded by `j^2\E[D_n^2]` (`Support/Dgt4ATelescopeL2.lean`), by
-`v\sum_z(\sum_{r\geq j}p_r(0,z))^2` (`Support/Dgt4AGaussTailVar.lean`) and by the same square
-sum times a moment of the scenery (`Support/Dgt4AOdometerTailVar.lean`).
--/
 import Sandpile.Support.Dgt4AGaussTailVar
 import Sandpile.Support.Dgt4ATelescopeL2
 import Sandpile.Support.Dgt4AOdometerTailVar
 import Sandpile.Support.Dgt4AIterateSub
 import Sandpile.Support.Dgt4ATelescope
+
+/-!
+# Step 1 of case (a), at a fixed horizon
+
+Step 1 of case (a) of `prop:dgt4-contact-asymptotics` (`sandpile.tex:5031-5080`), assembled at a
+fixed horizon `j`. The telescoping of `sandpile.tex:5074-5077` writes
+`V_\infty(0)-u_n(0)+\E u_n(0)` as the sum of three terms,
+
+  `\sum_{i<j}P^iD_n(0)`,  `P^jV_\infty(0)`,  and  `-(P^ju_n(0)-\E u_n(0))`,
+
+and the elementary inequality `(a+b+c)^2\leq3(a^2+b^2+c^2)` replaces the `L^2` triangle
+inequality; the constant `3` is free because the conclusion carries an existential constant. The
+three terms are bounded by `j^2\E[D_n^2]` (`Support/Dgt4ATelescopeL2.lean`), by
+`v\sum_z(\sum_{r\geq j}p_r(0,z))^2` (`Support/Dgt4AGaussTailVar.lean`) and by the same square sum
+times a moment of the scenery (`Support/Dgt4AOdometerTailVar.lean`).
+-/
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal

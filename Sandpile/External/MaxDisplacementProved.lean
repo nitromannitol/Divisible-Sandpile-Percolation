@@ -1,4 +1,9 @@
-/-
+import Sandpile.External.HeatKernelBounds
+import LatticeProb.Walk.MaxDisp
+
+/-!
+# Maximal-displacement estimate, proved
+
 The maximal-displacement estimate is no longer assumed.
 
 `Sandpile/External/HeatKernelBounds.lean` states three displays of
@@ -16,8 +21,6 @@ paper's `|X_k - x|` is Euclidean; since `|v|₂ ≤ |v|₁`, the event of the pa
 contained in the event of the library, and monotonicity of the measure transfers
 the bound with the same constants.
 -/
-import Sandpile.External.HeatKernelBounds
-import LatticeProb.Walk.MaxDisp
 
 open MeasureTheory
 open scoped ENNReal
@@ -40,7 +43,8 @@ theorem latticeDist_le_graphNorm {d : ℕ} (x y : Sandpile.Site d) :
       ring
     rw [hexp]
     have hterm : ∀ i : Fin d, i ∈ (Finset.univ : Finset (Fin d)) →
-        ((x i - y i : ℤ) : ℝ) ^ 2 ≤ |((x i - y i : ℤ) : ℝ)| * ∑ j : Fin d, |((x j - y j : ℤ) : ℝ)| := by
+        ((x i - y i : ℤ) : ℝ) ^ 2 ≤
+          |((x i - y i : ℤ) : ℝ)| * ∑ j : Fin d, |((x j - y j : ℤ) : ℝ)| := by
       intro i _
       have h1 : |((x i - y i : ℤ) : ℝ)| ≤ ∑ j : Fin d, |((x j - y j : ℤ) : ℝ)| :=
         Finset.single_le_sum (f := fun j : Fin d => |((x j - y j : ℤ) : ℝ)|)

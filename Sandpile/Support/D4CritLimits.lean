@@ -1,10 +1,18 @@
-/-
+import Mathlib
+
+/-!
+# Decay estimates for the dimension-four block scheme
+
 The two decay estimates the block scheme of the dimension-four percolation proof
 needs at large radius: the Gaussian factor `exp(-c (log r)²)` beats the
 polynomial block count `r²` of `sandpile.tex:4022-4026`, and the crossing bound
-`log³(r) r^{-γ}` of `thm:d4-ball-green-crossing` tends to zero.
+`log³(r) r^{-γ}` of `thm:d4-ball-green-crossing` tends to zero. The first is
+`eventually_sq_exp_sq_log_le`, built from the elementary quadratic-beats-linear inequality
+`quad_dominates_linear`, the exponential identity `exp_neg_two_log`, and the divergence
+`tendsto_log_natCast_atTop` of `log R` along the naturals; the second is
+`eventually_log_cube_rpow_le`, obtained by composing the standard limit
+`Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero` with `tendsto_log_natCast_atTop`.
 -/
-import Mathlib
 
 open Filter Topology
 
@@ -20,6 +28,8 @@ theorem quad_dominates_linear (c M L : ℝ) (hc : 0 < c) (hL1 : 1 ≤ L)
     linarith
   nlinarith [hkey, hL1, hM0, hMle]
 
+/-- The elementary exponential identity `exp(-2 log r) = 1/r²` for `r > 0`, rewriting the
+exponent as `log r * (-2)` and applying `Real.exp_log`. -/
 theorem exp_neg_two_log (r : ℕ) (hr : 0 < r) :
     Real.exp (-(2 * Real.log r)) = 1 / (r : ℝ) ^ 2 := by
   have hr0 : (0 : ℝ) < (r : ℝ) := by exact_mod_cast hr
@@ -28,6 +38,8 @@ theorem exp_neg_two_log (r : ℕ) (hr : 0 < r) :
   rw [h3, Real.exp_mul, Real.exp_log hr0, Real.rpow_neg (le_of_lt hr0)]
   norm_num
 
+/-- `log R → ∞` along the naturals `R → ∞`, composing `Real.tendsto_log_atTop` with the
+divergence of the cast `R ↦ (R : ℝ)`. -/
 theorem tendsto_log_natCast_atTop :
     Tendsto (fun R : ℕ => Real.log R) atTop atTop :=
   Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop

@@ -1,5 +1,9 @@
-/-
-Three deterministic inequalities used by the survival lemma
+import Mathlib
+
+/-!
+# Deterministic inequalities for the path-survival estimate
+
+This module proves the deterministic inequalities used by the survival lemma
 `sandpile.tex:5469-5486` (label `lem:dgt4-path-survival`).
 
 `abs_prod_sub_prod_le` is the paper's
@@ -28,12 +32,13 @@ used to replace the exponent by the substituted one.
 `sum_inv_sq_Icc_le` is its square companion `∑_{m=k}^n 1/m² ≤ 2/k - 2/(n+1)`, the paper's
 `∑_{r=0}^j π_{R,r}² ≤ C(ε)/n_R` once `π_{R,r} ≍ G(0,0)κ/(n_R-r)`.
 -/
-import Mathlib
 
 open Finset
 
 namespace Sandpile
 
+/-- **`log(1-π) = -π + O(π²)`, in the explicit form `|log(1-π) + π| ≤ 2π²`** for `0 ≤ π ≤ 1/2`.
+Both directions come from `log x ≤ x - 1`, the second applied to `1/(1-π)`. -/
 theorem abs_log_one_sub_add_le (p : ℝ) (hp0 : 0 ≤ p) (hp : p ≤ 1/2) :
     |Real.log (1 - p) + p| ≤ 2 * p ^ 2 := by
   have h1p : (0:ℝ) < 1 - p := by linarith
@@ -54,6 +59,8 @@ theorem abs_log_one_sub_add_le (p : ℝ) (hp0 : 0 ≤ p) (hp : p ≤ 1/2) :
   rw [abs_le]
   constructor <;> nlinarith [hup, hlow, hkey, hb, hpp]
 
+/-- **For every `0 ≤ a,b ≤ 1`, `0 ≤ 1 - max{a,b} - (1-a)(1-b) ≤ a + b`**, the per-site comparison
+at a shared site whose last visits along the two paths fall at different times. -/
 theorem one_sub_max_sub_mul_le (a b : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1)
     (hb0 : 0 ≤ b) (hb1 : b ≤ 1) :
     0 ≤ 1 - max a b - (1 - a) * (1 - b) ∧ 1 - max a b - (1 - a) * (1 - b) ≤ a + b := by
@@ -67,6 +74,9 @@ theorem one_sub_max_sub_mul_le (a b : ℝ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1)
     · nlinarith [mul_nonneg hb0 (by linarith : (0:ℝ) ≤ 1 - a)]
     · nlinarith [mul_nonneg hb0 (by linarith : (0:ℝ) ≤ 1 - a), ha0]
 
+/-- **`|∏_x s_x - ∏_x t_x| ≤ ∑_x |s_x - t_x|` for factors `s_x, t_x ∈ [0,1]`**, proved by
+induction on the finite set `A`, which turns the difference of two factorized approximations
+into a sum over the shared sites. -/
 theorem abs_prod_sub_prod_le {ι : Type*} [DecidableEq ι] (A : Finset ι) (s t : ι → ℝ)
     (hs0 : ∀ i, 0 ≤ s i) (hs1 : ∀ i, s i ≤ 1) (ht0 : ∀ i, 0 ≤ t i) (ht1 : ∀ i, t i ≤ 1) :
     |(∏ i ∈ A, s i) - ∏ i ∈ A, t i| ≤ ∑ i ∈ A, |s i - t i| := by

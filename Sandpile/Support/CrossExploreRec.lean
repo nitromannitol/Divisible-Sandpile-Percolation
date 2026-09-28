@@ -1,4 +1,7 @@
-/-
+import Sandpile.Support.CrossStoppingSet
+
+/-! # Abstract exploration recursion
+
 The exploration of Step 2 of `prop:fixed-scale-crossings` (`sandpile.tex:2255-2262`) in the
 abstract:
 
@@ -26,7 +29,6 @@ Two facts are proved.
 revealed cells decide, in the sense that on `{S = A}` membership in it agrees with a set read
 off the coordinates in `A`, is decided by the exploration.
 -/
-import Sandpile.Support.CrossStoppingSet
 
 open MeasureTheory ProbabilityTheory
 
@@ -52,9 +54,12 @@ def exploreStep [DecidableEq ι] (next : Finset ι → Ω → Option ι) : ℕ �
       | none => exploreStep next n ω
       | some i => insert i (exploreStep next n ω)
 
+/-- `exploreStep next 0` reveals nothing: the empty set, by definition. -/
 @[simp] theorem exploreStep_zero [DecidableEq ι] (next : Finset ι → Ω → Option ι) (ω : Ω) :
     exploreStep next 0 ω = ∅ := rfl
 
+/-- If the rule stops at the set revealed after `n` steps (`next ... = none`), the set
+revealed after `n + 1` steps is unchanged. -/
 theorem exploreStep_succ_of_none [DecidableEq ι] (next : Finset ι → Ω → Option ι) (n : ℕ)
     (ω : Ω) (h : next (exploreStep next n ω) ω = none) :
     exploreStep next (n + 1) ω = exploreStep next n ω := by
@@ -63,6 +68,8 @@ theorem exploreStep_succ_of_none [DecidableEq ι] (next : Finset ι → Ω → O
       | some i => insert i (exploreStep next n ω)) = exploreStep next n ω
   rw [h]
 
+/-- If the rule names `i` next at the set revealed after `n` steps, the set revealed
+after `n + 1` steps is that set with `i` inserted. -/
 theorem exploreStep_succ_of_some [DecidableEq ι] (next : Finset ι → Ω → Option ι) (n : ℕ)
     (ω : Ω) {i : ι} (h : next (exploreStep next n ω) ω = some i) :
     exploreStep next (n + 1) ω = insert i (exploreStep next n ω) := by
@@ -186,6 +193,9 @@ theorem exploreStep_stabilises [Fintype ι] [DecidableEq ι] {G : ι → Measura
 def exploreSet [Fintype ι] [DecidableEq ι] (next : Finset ι → Ω → Option ι) (ω : Ω) :
     Finset ι := exploreStep next (Fintype.card ι) ω
 
+/-- `exploreSet next` (the set the rule reveals before stopping) is a stopping set for
+the independent family `G`, specializing `isIndepStoppingSet_exploreStep` at the step
+count `Fintype.card ι`. -/
 theorem isIndepStoppingSet_exploreSet [Fintype ι] [DecidableEq ι] {G : ι → MeasurableSpace Ω}
     {next : Finset ι → Ω → Option ι} (h : IsExplorationRule G next) :
     IsIndepStoppingSet G (exploreSet next) :=

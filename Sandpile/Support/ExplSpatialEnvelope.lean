@@ -1,9 +1,30 @@
 import Sandpile.Support.ExplHeatPrimitive
+
+/-!
+# Almost-Everywhere Space-Time Envelopes for the Gaussian Potential
+
+This module upgrades a pointwise-in-space integrable envelope of a continuous
+field into a joint space-time envelope valid for almost every point and almost
+every noise sample. It first shows that a bound holding almost surely at each
+fixed space-index `u`, for a field with continuous, jointly measurable time
+sections, in fact holds for almost every pair `(u, ω)` and every time `t`
+simultaneously (`ae_space_time_bound_of_continuous_sections`), by testing the
+bound along a countable dense set of times and using continuity to pass to all
+times. It then applies this to the Gaussian potential field to produce, for
+almost every noise sample, a single spatially integrable function dominating
+the field over any compact time interval
+(`gaussianPotential_integrable_space_time_envelope`).
+-/
+
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal
 namespace Sandpile.Support
 open Sandpile.Continuum
 
+/-- A bound `‖Z t u ω‖ ≤ D u ω` holding for almost every `ω` at each fixed `u` extends to a bound
+holding simultaneously for almost every `(ω, u)` and every time `t`, provided `Z` has continuous
+time-sections a.e. and is jointly measurable in `t`: the bound is first pushed through a countable
+dense set of times via `Measure.ae_prod_iff_ae_ae`, then extended to all `t` by continuity. -/
 theorem ae_space_time_bound_of_continuous_sections {E U Ω : Type*}
     [Nonempty E] [TopologicalSpace E] [TopologicalSpace.SeparableSpace E]
     [MeasurableSpace U] [MeasurableSpace Ω]
@@ -26,8 +47,10 @@ theorem ae_space_time_bound_of_continuous_sections {E U Ω : Type*}
       ((hpc p.1).norm.min continuous_const) (hpc p.1).norm
       (funext fun n => min_eq_left (hp n))
     exact fun t => min_eq_left_iff.mp (congrFun he t)
-  exact Measure.ae_ae_of_ae_prod ((Measure.measurePreserving_swap (μ := P) (ν := μ)).quasiMeasurePreserving.ae hfull)
-/-- For any finite spatial measure, an integrable envelope bounds the continuous field at all compact times. -/
+  exact Measure.ae_ae_of_ae_prod
+    ((Measure.measurePreserving_swap (μ := P) (ν := μ)).quasiMeasurePreserving.ae hfull)
+/-- For any finite spatial measure, an integrable envelope bounds the continuous field at all
+compact times. -/
 theorem gaussianPotential_integrable_space_time_envelope {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {P : Measure Ω} [IsProbabilityMeasure P]
     {W : (Space d → ℝ) → Ω → ℝ} (hW : IsWhiteNoise d W P)

@@ -1,4 +1,10 @@
-/-
+import Sandpile.Law
+import Sandpile.External.LocalCLTProved
+import Sandpile.Support.D23PlaneSite
+import Sandpile.Support.D23Final
+
+/-! # Critical Level-Set Percolation in Dimensions 2 and 3
+
 Theorem of Section 4 of sandpile.tex, frozen.  `sandpile.tex:2596-2611`
 (label `thm:d23-critical-level-percolation`):
 
@@ -32,10 +38,6 @@ exponential, as the paper's `K₀ < ∞` requires: the Bochner integral of a
 non-integrable nonnegative function is zero, so the bound alone would hold for
 every law with no exponential moment.
 -/
-import Sandpile.Law
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.D23PlaneSite
-import Sandpile.Support.D23Final
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

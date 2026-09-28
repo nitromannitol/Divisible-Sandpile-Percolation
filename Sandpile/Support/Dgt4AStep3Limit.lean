@@ -1,20 +1,20 @@
-/-
-**Step 3 of case (a), the two limits** (`eq:dgt4-gaussian-conditional-contact` and
-`eq:dgt4-gaussian-reflected-limit`, `sandpile.tex:5141-5155`), at a fixed level `y`.
+import Sandpile.Support.Dgt4AStep3Level
+import Sandpile.Support.Dgt4AStep3Mean
+import Sandpile.Support.Dgt4ACondStep2Limit
 
+/-!
+# Step 3 of case (a): the two limits
+
+Step 3 of case (a), the two limits (`eq:dgt4-gaussian-conditional-contact` and
+`eq:dgt4-gaussian-reflected-limit`, `sandpile.tex:5141-5155`), at a fixed level `y`.
 Everything needed is in place: the pointwise comparison of `Support/Dgt4AStep3Point.lean`,
 the exceptional set of `Support/Dgt4AStep3Level.lean`, the mean and probability comparisons
 of `Support/Dgt4AStep3Mean.lean`, the conclusion of Step 2 and the hitting limit
-`tendsto_avg_srwHitBy`.  What is assembled here is the passage from the errors to the
-limits.
-
+`tendsto_avg_srwHitBy`. What is assembled here is the passage from the errors to the limits.
 The horizon is below the time: `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil` is a power of a
 logarithm, so `k_n\leq n` for all large `n`, which is what lets the comparison be read at
 `m=n-k_n` and `m+k_n=n`.
 -/
-import Sandpile.Support.Dgt4AStep3Level
-import Sandpile.Support.Dgt4AStep3Mean
-import Sandpile.Support.Dgt4ACondStep2Limit
 
 open MeasureTheory ProbabilityTheory Filter Topology Set
 open scoped ENNReal NNReal

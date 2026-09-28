@@ -1,4 +1,8 @@
-/-
+import LatticeProb.Prob.EfronStein
+import LatticeProb.Prob.Bernstein
+
+/-! # Bernstein Concentration for Bounded Lipschitz Functions
+
 A Bernstein-type exponential concentration inequality for a bounded, coordinatewise
 Lipschitz function of independent coordinates.
 
@@ -14,8 +18,6 @@ head therefore goes through and produces the Bernstein exponent, whose quadratic
 the second moment of the one-site law times the square sum of the Lipschitz coefficients
 and whose linear term is the oscillation.
 -/
-import LatticeProb.Prob.EfronStein
-import LatticeProb.Prob.Bernstein
 
 open MeasureTheory ProbabilityTheory Filter Topology
 

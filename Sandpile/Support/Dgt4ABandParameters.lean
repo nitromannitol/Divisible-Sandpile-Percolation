@@ -1,10 +1,13 @@
-/-
+import Sandpile.Support.Dgt4ABandWeights
+
+/-!
+# Band parameter choices for Step 1
+
 The parameter choices in Step 1 of `thm:dgt4-many-limits`
 (`sandpile.tex:5938-5951`). The exponent sequence has precisely `[1,2]` as
 its set of subsequential limits. The extraction for each stopping exponent
 is made independently of the horizon.
 -/
-import Sandpile.Support.Dgt4ABandWeights
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
@@ -54,7 +57,8 @@ theorem BandParameters.exists_recurrent
     obtain ⟨kl, hkl, ht⟩ := hlim (1 / (κ - 1)) hθ
     refine ⟨kl, hkl, ?_⟩
     have hc := ((tendsto_const_nhds (x := (1 : ℝ))).div ht (one_div_ne_zero hk.ne')).const_add 1
-    simpa only [Pi.div_apply, Function.comp_def, one_div_one_div, show 1 + (κ - 1) = κ by ring] using hc
+    simpa only [Pi.div_apply, Function.comp_def, one_div_one_div,
+      show 1 + (κ - 1) = κ by ring] using hc
 
 /-- The numerical choices and exponent sequence in Step 1 can be made
 simultaneously, with positive mass left for the atom at zero. -/

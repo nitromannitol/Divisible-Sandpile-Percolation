@@ -1,4 +1,8 @@
-/-
+import Sandpile.Support.CrossVertex
+
+/-!
+# The chain-event union and the two-sided crossing estimate
+
 The countable union of the chain events, and the two-sided estimate it gives for
 the crossing probability of an almost surely continuous planar field.
 
@@ -27,7 +31,6 @@ This is the vocabulary a restatement of the continuum crossing comparison has to
 be given in; `Sandpile/Support/CrossVacuity.lean` records why the statement on
 the space of all planar functions cannot be.
 -/
-import Sandpile.Support.CrossVertex
 
 open MeasureTheory Set
 
@@ -67,6 +70,8 @@ theorem countable_vertexOK (a b : Fin 2 → ℝ) :
 abbrev VertexChain (a b : Fin 2 → ℝ) : Type :=
   Σ m : ℕ, Fin (m + 2) → {p : Sandpile.Continuum.Space 2 // VertexOK a b p}
 
+/-- `VertexChain a b` is countable: it is a sigma type over `ℕ` of functions into the
+countable set of admissible vertices (`countable_vertexOK`). -/
 instance countable_vertexChain (a b : Fin 2 → ℝ) : Countable (VertexChain a b) :=
   have : Countable {p : Sandpile.Continuum.Space 2 // VertexOK a b p} :=
     (countable_vertexOK a b).to_subtype
@@ -77,6 +82,7 @@ noncomputable def chainFun {a b : Fin 2 → ℝ} (ch : VertexChain a b) :
     ℕ → Sandpile.Continuum.Space 2 :=
   fun j => if h : j < ch.1 + 2 then (ch.2 ⟨j, h⟩ : Sandpile.Continuum.Space 2) else 0
 
+/-- Unfolds `chainFun` on an explicit chain `⟨m, f⟩` at an index within range. -/
 theorem chainFun_apply {a b : Fin 2 → ℝ} (m : ℕ)
     (f : Fin (m + 2) → {p : Sandpile.Continuum.Space 2 // VertexOK a b p})
     (j : ℕ) (hj : j < m + 2) :
@@ -223,6 +229,8 @@ theorem measure_crossing_le_of_lt {Ω : Type*} [MeasurableSpace Ω] (P : Measure
   have hrw : l - (l - l') = l' := by ring
   rwa [hrw] at h
 
+/-- The reverse bracket: the chain measure at a level is at most the crossing probability
+at any lower or equal level. -/
 theorem measure_crossApprox_le_of_le {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
     {X : Sandpile.Continuum.Space 2 → Ω → ℝ} {a b : Fin 2 → ℝ} {i : Fin 2} {l l' : ℝ}
     (hl : l ≤ l') (hcont : ∀ᵐ ω ∂P, Continuous fun u => X u ω) :

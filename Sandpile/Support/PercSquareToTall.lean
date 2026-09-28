@@ -1,15 +1,23 @@
-/-
+import Sandpile.Support.BlockVerticalWalk
+import Sandpile.Support.BlockGeometry
+
+/-!
+# Square-to-tall-rectangle crossing translation
+
 The left-right crossing of the square at the coarse site `z + e₁`, translated
 up into the tall rectangle: a left-right walk of the `2r × 4r` rectangle
 whose support lies in the top half, at field level `ℓ`.
 -/
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.BlockGeometry
 
 open scoped NNReal
 noncomputable section
 namespace Sandpile
 
+/-- Translates a left-right crossing of the square block at the coarse site `z + ![0, 1]`
+(the hypothesis `BlockGood r F ℓ (z + ![0, 1])`) up into the `2 * r × 4 * r` tall rectangle:
+builds a left-right walk `q`, from column `0` to column `2 * r`, whose support lies entirely
+in the top half (second coordinate `≥ 2 * r`) and along which the shifted field
+`F ∘ blockShift r z` stays at least `ℓ`. -/
 theorem lr_square_to_tall {r : ℕ} (_hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
     (h2 : BlockGood r F ℓ (z + ![(0 : ℤ), (1 : ℤ)])) :
     ∃ (c d : planeRectangle (2 * r) (2 * r + 2 * r))

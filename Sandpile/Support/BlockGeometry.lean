@@ -1,20 +1,21 @@
-/-
-Deterministic block geometry for the dimension-four critical level-set
-percolation theorem (`sandpile.tex:3979-4002`).  A coarse site `z` of the
-lattice `(2r)·ℤ²` is *good* for a planar field `F` at level `ℓ` when the four
-crossings of `sandpile.tex:3979-3986` hold in the four rectangles anchored at
-`2r·z`: the left-right and top-bottom crossings of the side-`2r` square, the
-left-right crossing of the twice-as-wide rectangle, and the top-bottom
-crossing of the twice-as-tall rectangle.  The half-shifted overlap of the
-wide and tall rectangles with the neighbouring squares is what makes
-adjacent good coarse sites belong to one component; the paper records the
-deterministic implication at `sandpile.tex:3979-3986` ("if a planar set has
-all these crossings ... for every `z` in an infinite nearest-neighbor
-subset, then it has an unbounded connected component").
--/
 import Sandpile.Support.RectangleTranspose
 import Sandpile.Support.RectangleIntersection
 import Sandpile.Support.StarCrossings
+
+/-!
+# Block geometry for the dimension-four percolation theorem
+
+Deterministic block geometry for the dimension-four critical level-set percolation theorem
+(`sandpile.tex:3979-4002`). A coarse site `z` of the lattice `(2r)·ℤ²` is *good* for a planar
+field `F` at level `ℓ` when the four crossings of `sandpile.tex:3979-3986` hold in the four
+rectangles anchored at `2r·z`: the left-right and top-bottom crossings of the side-`2r` square,
+the left-right crossing of the twice-as-wide rectangle, and the top-bottom crossing of the
+twice-as-tall rectangle. The half-shifted overlap of the wide and tall rectangles with the
+neighbouring squares is what makes adjacent good coarse sites belong to one component; the paper
+records the deterministic implication at `sandpile.tex:3979-3986` ("if a planar set has all these
+crossings ... for every `z` in an infinite nearest-neighbor subset, then it has an unbounded
+connected component").
+-/
 
 open scoped NNReal
 noncomputable section

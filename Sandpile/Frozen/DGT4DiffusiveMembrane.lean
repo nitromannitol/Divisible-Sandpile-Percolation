@@ -1,4 +1,17 @@
-/-
+import Sandpile.Law
+import Sandpile.Walk
+import Sandpile.Continuum.Membrane
+import Sandpile.External.HeatKernelBounds
+import Sandpile.External.GreenBoundsHigh
+import Sandpile.External.NormalComparison
+import Sandpile.External.LocalCLT
+import Sandpile.External.LocalCLTProved
+import Sandpile.External.ContinuumBesovTightness
+import Sandpile.External.GaussianLipschitzConcentration
+import Sandpile.Support.ManyLMembrane
+
+/-! # Diffusive Membrane Limit in Dimension `d ≥ 5`
+
 Theorem of sandpile.tex, frozen.  `sandpile.tex:4687-4710`
 (label `thm:dgt4-diffusive-membrane`):
 
@@ -64,17 +77,6 @@ the hypothesis vacuously.
 the measure of that event.  `G(0,0)` is `Sandpile.green d 0 0`, which is the
 genuine Green function because `5 ≤ d`.
 -/
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.NormalComparison
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.GaussianLipschitzConcentration
-import Sandpile.Support.ManyLMembrane
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped ENNReal NNReal

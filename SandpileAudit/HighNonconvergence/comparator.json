@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.HighNonconvergence.Challenge",
+  "solution_module": "SandpileAudit.HighNonconvergence.Solution",
+  "theorem_names": [
+    "SandpileAudit.high_nonconvergence"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

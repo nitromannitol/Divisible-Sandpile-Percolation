@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.FourGaussian.Challenge",
+  "solution_module": "SandpileAudit.FourGaussian.Solution",
+  "theorem_names": [
+    "SandpileAudit.four_gaussian"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

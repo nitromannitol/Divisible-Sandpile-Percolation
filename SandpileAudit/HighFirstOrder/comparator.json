@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.HighFirstOrder.Challenge",
+  "solution_module": "SandpileAudit.HighFirstOrder.Solution",
+  "theorem_names": [
+    "SandpileAudit.high_first_order"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

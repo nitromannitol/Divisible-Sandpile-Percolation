@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.FourSobolev.Challenge",
+  "solution_module": "SandpileAudit.FourSobolev.Solution",
+  "theorem_names": [
+    "SandpileAudit.four_sobolev"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

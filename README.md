@@ -239,7 +239,7 @@ The certificate of the build and of each node's axiom closure is
 ## Guarantees
 
 - **No `sorry`** in the library.  Each of the twelve comparator challenges under
-  `Audit/` contains one intentional statement-level `sorry`, which the
+  `SandpileAudit/` contains one intentional statement-level `sorry`, which the
   corresponding solution file proves.
 - **No custom axiom.**  The twelve main theorems reduce to `mathlib`'s three
   standard foundational axioms `propext`, `Classical.choice` and `Quot.sound`.
@@ -255,18 +255,18 @@ The certificate of the build and of each node's axiom closure is
 - **Independent check of the statements.**  Each main theorem is restated, with
   every definition rebuilt from Mathlib primitives alone (no project or library
   definitions), in
-  [`Audit/Nontriviality/Challenge.lean`](Audit/Nontriviality/Challenge.lean),
-  [`Audit/CriticalLevels/Challenge.lean`](Audit/CriticalLevels/Challenge.lean),
-  [`Audit/MeanGrowthLow/Challenge.lean`](Audit/MeanGrowthLow/Challenge.lean),
-  [`Audit/BrownianScalingLimit/Challenge.lean`](Audit/BrownianScalingLimit/Challenge.lean),
-  [`Audit/MeanGrowthFour/Challenge.lean`](Audit/MeanGrowthFour/Challenge.lean),
-  [`Audit/FourFirstOrder/Challenge.lean`](Audit/FourFirstOrder/Challenge.lean),
-  [`Audit/FourGaussian/Challenge.lean`](Audit/FourGaussian/Challenge.lean),
-  [`Audit/FourSobolev/Challenge.lean`](Audit/FourSobolev/Challenge.lean),
-  [`Audit/HighFirstOrder/Challenge.lean`](Audit/HighFirstOrder/Challenge.lean),
-  [`Audit/HighTail/Challenge.lean`](Audit/HighTail/Challenge.lean),
-  [`Audit/HighSobolevLimit/Challenge.lean`](Audit/HighSobolevLimit/Challenge.lean),
-  [`Audit/HighNonconvergence/Challenge.lean`](Audit/HighNonconvergence/Challenge.lean).
+  [`SandpileAudit/Nontriviality/Challenge.lean`](SandpileAudit/Nontriviality/Challenge.lean),
+  [`SandpileAudit/CriticalLevels/Challenge.lean`](SandpileAudit/CriticalLevels/Challenge.lean),
+  [`SandpileAudit/MeanGrowthLow/Challenge.lean`](SandpileAudit/MeanGrowthLow/Challenge.lean),
+  [`SandpileAudit/BrownianScalingLimit/Challenge.lean`](SandpileAudit/BrownianScalingLimit/Challenge.lean),
+  [`SandpileAudit/MeanGrowthFour/Challenge.lean`](SandpileAudit/MeanGrowthFour/Challenge.lean),
+  [`SandpileAudit/FourFirstOrder/Challenge.lean`](SandpileAudit/FourFirstOrder/Challenge.lean),
+  [`SandpileAudit/FourGaussian/Challenge.lean`](SandpileAudit/FourGaussian/Challenge.lean),
+  [`SandpileAudit/FourSobolev/Challenge.lean`](SandpileAudit/FourSobolev/Challenge.lean),
+  [`SandpileAudit/HighFirstOrder/Challenge.lean`](SandpileAudit/HighFirstOrder/Challenge.lean),
+  [`SandpileAudit/HighTail/Challenge.lean`](SandpileAudit/HighTail/Challenge.lean),
+  [`SandpileAudit/HighSobolevLimit/Challenge.lean`](SandpileAudit/HighSobolevLimit/Challenge.lean),
+  [`SandpileAudit/HighNonconvergence/Challenge.lean`](SandpileAudit/HighNonconvergence/Challenge.lean).
   Each challenge rebuilds every definition the statement reaches: the lattice,
   i.i.d. laws, the heat kernel and the Brownian exit time as in
   `Lattice-Probability`; the odometer, the walk and its stopping problems; the
@@ -274,19 +274,17 @@ The certificate of the build and of each node's axiom closure is
   Brownian stopping values; the planar crossing events and continuum planar
   fields; and the cited results it assumes.  It ends in one statement-level
   `sorry`, which the corresponding `Solution.lean` fills from the library
-  through the bridges in `Audit/Support/`.  The configurations
-  `Audit/*/comparator.json` are for
+  through the pair's bridge in `SandpileAudit/Support/`.  The configurations
+  `SandpileAudit/*/comparator.json` are for
   [`leanprover/comparator`](https://github.com/leanprover/comparator), which
   confirms that the two statements have identical elaborated types and that the
   proof reduces to the three standard axioms; it passes on all twelve pairs,
   with the Lean kernel and with the independent nanoda kernel.  The workflow
   [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml) runs the
-  same check on request, and
-  [`Audit/StatementRegression.lean`](Audit/StatementRegression.lean) checks
-  locally that each solution statement is exactly the challenge statement and
-  mentions no constant of `Sandpile` or `LatticeProb`.  See
-  [`Audit/README.md`](Audit/README.md) and
-  [`Audit/COMPARATOR_RUNS.md`](Audit/COMPARATOR_RUNS.md).
+  same check on request.  The comparator itself checks each solution statement
+  against its challenge and the dependency closure against Mathlib.  See
+  [`SandpileAudit/README.md`](SandpileAudit/README.md) and
+  [`SandpileAudit/COMPARATOR_RUNS.md`](SandpileAudit/COMPARATOR_RUNS.md).
 - **Pinned toolchain.**  Lean `v4.32.0`, `mathlib` at revision
   `81a5d257c8e410db227a6665ed08f64fea08e997` and `Lattice-Probability` at commit
   `9d44b4d4670df393bb86ac5a4e042f215001cddf`, recorded in
@@ -316,8 +314,7 @@ lake build           # compile the project
 
 ```bash
 lake build Sandpile.Meta.AxiomsAudit   # print the axioms of the twelve main theorems
-lake build Audit                       # the comparator challenges and solutions
-lake build Audit.StatementRegression
+lake build SandpileAudit               # the comparator challenges and solutions
 ```
 
 To use the library, `import Sandpile` pulls in the whole development; the main
@@ -365,7 +362,12 @@ Sandpile/
   Law.lean            the centred mass law and the mean odometer
   Walk.lean           the heat and Green kernels, the walk and its stopping problems
 Sandpile.lean         the root module (imports the whole library)
-Audit/                Mathlib-only comparator challenges and solutions
+SandpileAudit/        Mathlib-only comparator challenges and solutions
+  README.md           what each comparator pair checks
+  DESIGN.md           how the pairs are built: vocabulary, bridges
+  COMPARATOR_RUNS.md  the comparator pins and results
+  <Pair>/             Challenge.lean, SolutionBasic.lean, Solution.lean, comparator.json
+  Support/            one bridge per pair, identifying the vocabulary with the library
 ASSUMPTIONS.md        the cited results assumed, with their Lean statements (generated)
 CORRESPONDENCE.md     paper ↔ Lean, node by node
 CERTIFICATE.md        generated record of the toolchain, the build and each node's axiom closure
@@ -400,7 +402,7 @@ Panagiotis.  To cite the formalization, use [`CITATION.cff`](CITATION.cff).
 This formalization is built on [Lean 4](https://lean-lang.org),
 [Mathlib](https://github.com/leanprover-community/mathlib4) and the shared
 library [`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability);
-the comparator audit in [`Audit/`](Audit/) is set up for
+the comparator audit in [`SandpileAudit/`](SandpileAudit/) is set up for
 [`leanprover/comparator`](https://github.com/leanprover/comparator).
 
 ## License

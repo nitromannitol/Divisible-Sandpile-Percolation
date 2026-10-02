@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.MeanGrowthLow.Challenge",
+  "solution_module": "SandpileAudit.MeanGrowthLow.Solution",
+  "theorem_names": [
+    "SandpileAudit.mean_growth_le_three"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

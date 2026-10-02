@@ -36,22 +36,22 @@ headers.
 The main results are additionally exposed, stated in full, in
 [`Sandpile/MainTheorems.lean`](Sandpile/MainTheorems.lean), each proved by
 `exact` of its certified statement, and all twelve are restated over a
-Mathlib-only vocabulary for the comparator (see [`Audit/`](Audit/)).
+Mathlib-only vocabulary for the comparator (see [`SandpileAudit/`](SandpileAudit/)).
 
 | Source | Main theorem | Certified statement | Comparator |
 |---|---|---|---|
-| Theorem 1.1, `thm:main-nontriviality` | `Sandpile.percolation_below_criticality` | `Sandpile.Frozen.percolation_below_criticality` | `Audit/Nontriviality/` |
-| Theorem 1.2, `thm:main-critical-level-percolation` | `Sandpile.critical_level_percolation` | `Sandpile.Frozen.critical_level_percolation` | `Audit/CriticalLevels/` |
-| Theorem 1.3(i)(a), `thm:main-explosion` | `Sandpile.mean_growth_le_three` | `Sandpile.Frozen.mean_growth_le_three` | `Audit/MeanGrowthLow/` |
-| Theorem 1.3(i)(b), `thm:main-explosion` | `Sandpile.brownian_scaling_limit` | `Sandpile.Frozen.brownian_scaling_limit` | `Audit/BrownianScalingLimit/` |
-| Theorem 1.3(ii)(a), first clause, `thm:main-explosion` | `Sandpile.mean_growth_four` | `Sandpile.Frozen.mean_growth_four` | `Audit/MeanGrowthFour/` |
-| Theorem 1.3(ii)(a), second clause, `thm:main-explosion` | `Sandpile.four_first_order` | `Sandpile.Frozen.four_first_order` | `Audit/FourFirstOrder/` |
-| Theorem 1.3(ii)(b), `thm:main-explosion` | `Sandpile.four_gaussian` | `Sandpile.Frozen.four_gaussian` | `Audit/FourGaussian/` |
-| Theorem 1.3(ii)(c), `thm:main-explosion` | `Sandpile.four_sobolev` | `Sandpile.Frozen.four_sobolev` | `Audit/FourSobolev/` |
-| Theorem 1.3(iii)(a), `thm:main-explosion` | `Sandpile.high_first_order` | `Sandpile.Frozen.high_first_order` | `Audit/HighFirstOrder/` |
-| Theorem 1.3(iii)(b), `thm:main-explosion` | `Sandpile.high_tail` | `Sandpile.Frozen.high_tail` | `Audit/HighTail/` |
-| Theorem 1.3(iii)(c), `thm:main-explosion` | `Sandpile.high_sobolev_limit` | `Sandpile.Frozen.high_sobolev_limit` | `Audit/HighSobolevLimit/` |
-| Theorem 1.3(iii)(d), `thm:main-explosion` | `Sandpile.high_nonconvergence` | `Sandpile.Frozen.high_nonconvergence` | `Audit/HighNonconvergence/` |
+| Theorem 1.1, `thm:main-nontriviality` | `Sandpile.percolation_below_criticality` | `Sandpile.Frozen.percolation_below_criticality` | `SandpileAudit/Nontriviality/` |
+| Theorem 1.2, `thm:main-critical-level-percolation` | `Sandpile.critical_level_percolation` | `Sandpile.Frozen.critical_level_percolation` | `SandpileAudit/CriticalLevels/` |
+| Theorem 1.3(i)(a), `thm:main-explosion` | `Sandpile.mean_growth_le_three` | `Sandpile.Frozen.mean_growth_le_three` | `SandpileAudit/MeanGrowthLow/` |
+| Theorem 1.3(i)(b), `thm:main-explosion` | `Sandpile.brownian_scaling_limit` | `Sandpile.Frozen.brownian_scaling_limit` | `SandpileAudit/BrownianScalingLimit/` |
+| Theorem 1.3(ii)(a), first clause, `thm:main-explosion` | `Sandpile.mean_growth_four` | `Sandpile.Frozen.mean_growth_four` | `SandpileAudit/MeanGrowthFour/` |
+| Theorem 1.3(ii)(a), second clause, `thm:main-explosion` | `Sandpile.four_first_order` | `Sandpile.Frozen.four_first_order` | `SandpileAudit/FourFirstOrder/` |
+| Theorem 1.3(ii)(b), `thm:main-explosion` | `Sandpile.four_gaussian` | `Sandpile.Frozen.four_gaussian` | `SandpileAudit/FourGaussian/` |
+| Theorem 1.3(ii)(c), `thm:main-explosion` | `Sandpile.four_sobolev` | `Sandpile.Frozen.four_sobolev` | `SandpileAudit/FourSobolev/` |
+| Theorem 1.3(iii)(a), `thm:main-explosion` | `Sandpile.high_first_order` | `Sandpile.Frozen.high_first_order` | `SandpileAudit/HighFirstOrder/` |
+| Theorem 1.3(iii)(b), `thm:main-explosion` | `Sandpile.high_tail` | `Sandpile.Frozen.high_tail` | `SandpileAudit/HighTail/` |
+| Theorem 1.3(iii)(c), `thm:main-explosion` | `Sandpile.high_sobolev_limit` | `Sandpile.Frozen.high_sobolev_limit` | `SandpileAudit/HighSobolevLimit/` |
+| Theorem 1.3(iii)(d), `thm:main-explosion` | `Sandpile.high_nonconvergence` | `Sandpile.Frozen.high_nonconvergence` | `SandpileAudit/HighNonconvergence/` |
 
 ## How the paper's objects are modelled
 

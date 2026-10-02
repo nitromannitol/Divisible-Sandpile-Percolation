@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.Nontriviality.Challenge",
+  "solution_module": "SandpileAudit.Nontriviality.Solution",
+  "theorem_names": [
+    "SandpileAudit.percolation_below_criticality"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

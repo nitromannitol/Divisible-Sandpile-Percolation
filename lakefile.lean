@@ -10,11 +10,12 @@ require «lattice-probability» from git
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4" @ "81a5d257c8e410db227a6665ed08f64fea08e997"
 
-/-- The comparator audit surface (`Audit/*/Challenge.lean`, `Audit/*/Solution.lean` and
-`Audit/Support/`).  Not a default target: it builds only on demand (`lake build Audit`), so the
-ordinary build of `Sandpile` is unchanged. -/
-lean_lib «Audit» where
-  globs := #[.submodules `Audit]
+/-- The comparator audit surface (`SandpileAudit/*/Challenge.lean`,
+`SandpileAudit/*/SolutionBasic.lean`, `SandpileAudit/*/Solution.lean` and
+`SandpileAudit/Support/`).  Not a default target: it builds only on demand
+(`lake build SandpileAudit`), so the ordinary build of `Sandpile` is unchanged. -/
+lean_lib «SandpileAudit» where
+  globs := #[.submodules `SandpileAudit]
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩,

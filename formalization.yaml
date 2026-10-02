@@ -17,7 +17,7 @@ project:
     Sixteen results the paper cites from the literature are explicit
     hypotheses of the theorems that use them, and ten further cited results
     are proved. The twelve main theorems are independently checked by the
-    Audit/ comparator pairs over a Mathlib-only vocabulary.
+    SandpileAudit/ comparator pairs over a Mathlib-only vocabulary.
   authors:
     - "Ahmed Bou-Rabee"
   license: "Apache-2.0"
@@ -70,7 +70,7 @@ status:
     (including the nonpercolation remark at low mean, which quotes a Peierls
     argument of Fey, Meester and Redig), and the figures.  The main theorems are
     stated in full in Sandpile/MainTheorems.lean; all twelve are additionally
-    restated over a Mathlib-only vocabulary for the Lean comparator (Audit/).
+    restated over a Mathlib-only vocabulary for the Lean comparator (SandpileAudit/).
   sorry_count: 0
   sorry_count_scope: "Sandpile production library only"
   comparator_challenge_sorry_count: 12
@@ -84,7 +84,7 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/Nontriviality/comparator.json"
+      comparator_config: "SandpileAudit/Nontriviality/comparator.json"
       literature_dependencies:
         - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
@@ -104,7 +104,7 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/CriticalLevels/comparator.json"
+      comparator_config: "SandpileAudit/CriticalLevels/comparator.json"
       literature_dependencies:
         - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
@@ -124,7 +124,7 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/MeanGrowthLow/comparator.json"
+      comparator_config: "SandpileAudit/MeanGrowthLow/comparator.json"
       literature_dependencies:
         - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
@@ -134,7 +134,7 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/BrownianScalingLimit/comparator.json"
+      comparator_config: "SandpileAudit/BrownianScalingLimit/comparator.json"
       literature_dependencies:
         - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
@@ -142,25 +142,25 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/MeanGrowthFour/comparator.json"
+      comparator_config: "SandpileAudit/MeanGrowthFour/comparator.json"
       literature_dependencies: []
     - declaration: "Sandpile.four_first_order"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourFirstOrder/comparator.json"
+      comparator_config: "SandpileAudit/FourFirstOrder/comparator.json"
       literature_dependencies: []
     - declaration: "Sandpile.four_gaussian"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourGaussian/comparator.json"
+      comparator_config: "SandpileAudit/FourGaussian/comparator.json"
       literature_dependencies: []
     - declaration: "Sandpile.four_sobolev"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourSobolev/comparator.json"
+      comparator_config: "SandpileAudit/FourSobolev/comparator.json"
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
@@ -170,19 +170,19 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighFirstOrder/comparator.json"
+      comparator_config: "SandpileAudit/HighFirstOrder/comparator.json"
       literature_dependencies: []
     - declaration: "Sandpile.high_tail"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighTail/comparator.json"
+      comparator_config: "SandpileAudit/HighTail/comparator.json"
       literature_dependencies: []
     - declaration: "Sandpile.high_sobolev_limit"
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighSobolevLimit/comparator.json"
+      comparator_config: "SandpileAudit/HighSobolevLimit/comparator.json"
       literature_dependencies:
         - statement: "Gaussian concentration for Lipschitz functionals (Sandpile.External.GaussianLipschitzConcentration); carried as an explicit hypothesis"
           source: "Borell; Tsirelson, Ibragimov and Sudakov"
@@ -194,15 +194,15 @@ status:
       file: "Sandpile/MainTheorems.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighNonconvergence/comparator.json"
+      comparator_config: "SandpileAudit/HighNonconvergence/comparator.json"
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
     - declaration: "SandpileAudit.percolation_below_criticality"
-      file: "Audit/Nontriviality/Solution.lean"
+      file: "SandpileAudit/Nontriviality/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/Nontriviality/comparator.json"
+      comparator_config: "SandpileAudit/Nontriviality/comparator.json"
       literature_dependencies:
         - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
@@ -219,10 +219,10 @@ status:
         - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "SandpileAudit.critical_level_percolation"
-      file: "Audit/CriticalLevels/Solution.lean"
+      file: "SandpileAudit/CriticalLevels/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/CriticalLevels/comparator.json"
+      comparator_config: "SandpileAudit/CriticalLevels/comparator.json"
       literature_dependencies:
         - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
@@ -239,68 +239,68 @@ status:
         - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "SandpileAudit.mean_growth_le_three"
-      file: "Audit/MeanGrowthLow/Solution.lean"
+      file: "SandpileAudit/MeanGrowthLow/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/MeanGrowthLow/comparator.json"
+      comparator_config: "SandpileAudit/MeanGrowthLow/comparator.json"
       literature_dependencies:
         - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
         - statement: "finite-horizon optimal stopping for Brownian motion (Sandpile.External.ContinuumOptimalStopping); carried as an explicit hypothesis"
           source: "Peskir and Shiryaev, Theorem 2.2"
     - declaration: "SandpileAudit.brownian_scaling_limit"
-      file: "Audit/BrownianScalingLimit/Solution.lean"
+      file: "SandpileAudit/BrownianScalingLimit/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/BrownianScalingLimit/comparator.json"
+      comparator_config: "SandpileAudit/BrownianScalingLimit/comparator.json"
       literature_dependencies:
         - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
     - declaration: "SandpileAudit.mean_growth_four"
-      file: "Audit/MeanGrowthFour/Solution.lean"
+      file: "SandpileAudit/MeanGrowthFour/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/MeanGrowthFour/comparator.json"
+      comparator_config: "SandpileAudit/MeanGrowthFour/comparator.json"
       literature_dependencies: []
     - declaration: "SandpileAudit.four_first_order"
-      file: "Audit/FourFirstOrder/Solution.lean"
+      file: "SandpileAudit/FourFirstOrder/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourFirstOrder/comparator.json"
+      comparator_config: "SandpileAudit/FourFirstOrder/comparator.json"
       literature_dependencies: []
     - declaration: "SandpileAudit.four_gaussian"
-      file: "Audit/FourGaussian/Solution.lean"
+      file: "SandpileAudit/FourGaussian/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourGaussian/comparator.json"
+      comparator_config: "SandpileAudit/FourGaussian/comparator.json"
       literature_dependencies: []
     - declaration: "SandpileAudit.four_sobolev"
-      file: "Audit/FourSobolev/Solution.lean"
+      file: "SandpileAudit/FourSobolev/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/FourSobolev/comparator.json"
+      comparator_config: "SandpileAudit/FourSobolev/comparator.json"
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
         - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis"
           source: "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11"
     - declaration: "SandpileAudit.high_first_order"
-      file: "Audit/HighFirstOrder/Solution.lean"
+      file: "SandpileAudit/HighFirstOrder/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighFirstOrder/comparator.json"
+      comparator_config: "SandpileAudit/HighFirstOrder/comparator.json"
       literature_dependencies: []
     - declaration: "SandpileAudit.high_tail"
-      file: "Audit/HighTail/Solution.lean"
+      file: "SandpileAudit/HighTail/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighTail/comparator.json"
+      comparator_config: "SandpileAudit/HighTail/comparator.json"
       literature_dependencies: []
     - declaration: "SandpileAudit.high_sobolev_limit"
-      file: "Audit/HighSobolevLimit/Solution.lean"
+      file: "SandpileAudit/HighSobolevLimit/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighSobolevLimit/comparator.json"
+      comparator_config: "SandpileAudit/HighSobolevLimit/comparator.json"
       literature_dependencies:
         - statement: "Gaussian concentration for Lipschitz functionals (Sandpile.External.GaussianLipschitzConcentration); carried as an explicit hypothesis"
           source: "Borell; Tsirelson, Ibragimov and Sudakov"
@@ -309,10 +309,10 @@ status:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
     - declaration: "SandpileAudit.high_nonconvergence"
-      file: "Audit/HighNonconvergence/Solution.lean"
+      file: "SandpileAudit/HighNonconvergence/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/HighNonconvergence/comparator.json"
+      comparator_config: "SandpileAudit/HighNonconvergence/comparator.json"
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
@@ -349,9 +349,9 @@ automation:
         axiom closure of every node, a warning-free build, coverage of every
         labelled statement of the paper, the clause and exponent readings, and
         quantifier order.  The Lean
-        comparator (leanprover/comparator) passes on all twelve Audit pairs
+        comparator (leanprover/comparator) passes on all twelve SandpileAudit pairs
         with the Lean kernel and with the independent nanoda kernel; the
-        results and the reproduction steps are in Audit/COMPARATOR_RUNS.md, and
+        results and the reproduction steps are in SandpileAudit/COMPARATOR_RUNS.md, and
         .github/workflows/comparator.yml runs the same check on request, with
         leanprover/comparator at commit 5756749, lean4export v4.32.0,
         nanoda_lib at commit 6ae1f0c and landrun at commit 811cfff.
@@ -371,9 +371,9 @@ automation:
     Mathlib; the verified library contains no sorry and no custom axiom.  The
     results the paper cites without proof enter as explicit hypotheses, not
     axioms.  The Mathlib-only comparator challenge files
-    (Audit/*/Challenge.lean) each contain exactly one intentional
+    (SandpileAudit/*/Challenge.lean) each contain exactly one intentional
     statement-level sorry (the theorem body), which is filled by the
-    corresponding Audit/*/Solution.lean.  The shared library
+    corresponding SandpileAudit/*/Solution.lean.  The shared library
     Lattice-Probability is a separate formalization by the same author, also
     written with AI models, not part of this repository.
 
@@ -414,62 +414,62 @@ alignment:
       lean: "Sandpile.percolation_below_criticality"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.percolation_below_criticality. Comparator challenge Audit/Nontriviality/."
+      note: "Certified statement Sandpile.Frozen.percolation_below_criticality. Comparator challenge SandpileAudit/Nontriviality/."
     - source: "Theorem 1.2 (thm:main-critical-level-percolation)"
       lean: "Sandpile.critical_level_percolation"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.critical_level_percolation. Comparator challenge Audit/CriticalLevels/."
+      note: "Certified statement Sandpile.Frozen.critical_level_percolation. Comparator challenge SandpileAudit/CriticalLevels/."
     - source: "Theorem 1.3(i)(a) (thm:main-explosion)"
       lean: "Sandpile.mean_growth_le_three"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.mean_growth_le_three. Comparator challenge Audit/MeanGrowthLow/."
+      note: "Certified statement Sandpile.Frozen.mean_growth_le_three. Comparator challenge SandpileAudit/MeanGrowthLow/."
     - source: "Theorem 1.3(i)(b) (thm:main-explosion)"
       lean: "Sandpile.brownian_scaling_limit"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.brownian_scaling_limit. Comparator challenge Audit/BrownianScalingLimit/."
+      note: "Certified statement Sandpile.Frozen.brownian_scaling_limit. Comparator challenge SandpileAudit/BrownianScalingLimit/."
     - source: "Theorem 1.3(ii)(a), first clause (thm:main-explosion)"
       lean: "Sandpile.mean_growth_four"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.mean_growth_four. Comparator challenge Audit/MeanGrowthFour/."
+      note: "Certified statement Sandpile.Frozen.mean_growth_four. Comparator challenge SandpileAudit/MeanGrowthFour/."
     - source: "Theorem 1.3(ii)(a), second clause (thm:main-explosion)"
       lean: "Sandpile.four_first_order"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.four_first_order. Comparator challenge Audit/FourFirstOrder/."
+      note: "Certified statement Sandpile.Frozen.four_first_order. Comparator challenge SandpileAudit/FourFirstOrder/."
     - source: "Theorem 1.3(ii)(b) (thm:main-explosion)"
       lean: "Sandpile.four_gaussian"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.four_gaussian. Comparator challenge Audit/FourGaussian/."
+      note: "Certified statement Sandpile.Frozen.four_gaussian. Comparator challenge SandpileAudit/FourGaussian/."
     - source: "Theorem 1.3(ii)(c) (thm:main-explosion)"
       lean: "Sandpile.four_sobolev"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.four_sobolev. Comparator challenge Audit/FourSobolev/."
+      note: "Certified statement Sandpile.Frozen.four_sobolev. Comparator challenge SandpileAudit/FourSobolev/."
     - source: "Theorem 1.3(iii)(a) (thm:main-explosion)"
       lean: "Sandpile.high_first_order"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.high_first_order. Comparator challenge Audit/HighFirstOrder/."
+      note: "Certified statement Sandpile.Frozen.high_first_order. Comparator challenge SandpileAudit/HighFirstOrder/."
     - source: "Theorem 1.3(iii)(b) (thm:main-explosion)"
       lean: "Sandpile.high_tail"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.high_tail. Comparator challenge Audit/HighTail/."
+      note: "Certified statement Sandpile.Frozen.high_tail. Comparator challenge SandpileAudit/HighTail/."
     - source: "Theorem 1.3(iii)(c) (thm:main-explosion)"
       lean: "Sandpile.high_sobolev_limit"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.high_sobolev_limit. Comparator challenge Audit/HighSobolevLimit/."
+      note: "Certified statement Sandpile.Frozen.high_sobolev_limit. Comparator challenge SandpileAudit/HighSobolevLimit/."
     - source: "Theorem 1.3(iii)(d) (thm:main-explosion)"
       lean: "Sandpile.high_nonconvergence"
       module: "Sandpile.MainTheorems"
       status: "proved"
-      note: "Certified statement Sandpile.Frozen.high_nonconvergence. Comparator challenge Audit/HighNonconvergence/."
+      note: "Certified statement Sandpile.Frozen.high_nonconvergence. Comparator challenge SandpileAudit/HighNonconvergence/."
     - source: "The lemmas, propositions and corollaries of the paper, and the other parts of multi-part statements"
       lean: "Sandpile.Frozen.*"
       module: "Sandpile.Frozen"

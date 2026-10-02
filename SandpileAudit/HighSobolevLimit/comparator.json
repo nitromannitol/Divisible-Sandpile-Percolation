@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.HighSobolevLimit.Challenge",
+  "solution_module": "SandpileAudit.HighSobolevLimit.Solution",
+  "theorem_names": [
+    "SandpileAudit.high_sobolev_limit"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

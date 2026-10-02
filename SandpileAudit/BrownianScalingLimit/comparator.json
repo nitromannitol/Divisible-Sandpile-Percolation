@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.BrownianScalingLimit.Challenge",
+  "solution_module": "SandpileAudit.BrownianScalingLimit.Solution",
+  "theorem_names": [
+    "SandpileAudit.brownian_scaling_limit"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

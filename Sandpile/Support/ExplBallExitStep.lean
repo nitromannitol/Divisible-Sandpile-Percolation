@@ -21,10 +21,9 @@ recentred at `u` elsewhere in this development; the bound on its integral does n
 starting point because the growth amplitude is bounded on the compact `A`-neighbourhood of `K`.
 Passing from the supremum over every remaining horizon to the supremum at `T` alone uses the
 monotonicity of the Brownian value of the Gaussian heat potential in the horizon,
-`Sandpile.Frozen.brownian_value_mono_horizon`, the one dependency of this file that is still a
-registered `sorry`. That dependency is isolated to the thin wrapper
-`ballStepResidual_of_exitStep`: the bulk of the argument, `ballStepResidual_of_exitStep_of_mono`,
-takes the monotonicity fact as an explicit hypothesis and is sorry-free.
+`Sandpile.Frozen.brownian_value_mono_horizon`, which is proved. The thin wrapper
+`ballStepResidual_of_exitStep` obtains that step from it; the bulk of the argument,
+`ballStepResidual_of_exitStep_of_mono`, takes the monotonicity fact as an explicit hypothesis.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -145,7 +144,7 @@ theorem ballStepResidual_of_exitStep_of_mono (d : ℕ)
 /-- The strong Markov step residual of `lem:brownian-ball-localization` from the strong Markov
 property at the exit time of the ball and the polynomial growth of the field, supplying the
 monotonicity of the Brownian value in the horizon from
-`Sandpile.Frozen.brownian_value_mono_horizon`, which is still a registered `sorry`. -/
+`Sandpile.Frozen.brownian_value_mono_horizon`, which is proved. -/
 theorem ballStepResidual_of_exitStep (d : ℕ) (hd : d < 4)
     (hExit : Sandpile.External.BrownianExitStep) (hgrowth : BallGrowthResidual d) :
     BallStepResidual d :=

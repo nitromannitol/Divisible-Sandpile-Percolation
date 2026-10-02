@@ -110,16 +110,15 @@ statement, over definitions that can be read without the library.
   in the statements depends on the library beyond what the vocabulary
   displays; a reader still has to check the vocabulary against the paper.
 
-## 6. Uncertainties
+## 6. Notes
 
 - **U1 (instance environments).**  The solutions import both the repository
   and the vocabulary, and both declare that the two mass laws are probability
   measures.  `Audit/StatementRegression.lean` checks that no solution statement
   picked up a repository or library constant, in particular not the
   repository's instances.
-- **U2 (resolved).**  `leanprover/comparator` was run on all twelve pairs on
-  2026-09-24, at commit `4545f0b`, and every pair passed with the Lean kernel
-  and with the independent nanoda kernel (see `Audit/COMPARATOR_RUNS.md`).
-  The local regression compares the solution types with the
-  challenge-environment types up to the auxiliary proof lemmas that a `def`
-  abstracts; the comparator's own closure check is stricter.
+- **U2 (comparator closure check).**  `leanprover/comparator` passes on all
+  twelve pairs, with the Lean kernel and with the independent nanoda kernel (see
+  `Audit/COMPARATOR_RUNS.md`).  The local regression compares the solution types
+  with the challenge-environment types up to the auxiliary proof lemmas that a
+  `def` abstracts; the comparator's own closure check is stricter.

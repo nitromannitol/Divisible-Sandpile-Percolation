@@ -821,7 +821,7 @@ nodes:
   - id: ext-paired-local-clt-four
     version: 2
     kind: theorem
-    source: sandpile.tex:1145-1172 (LawlerLimic Theorem 2.1.3 Eq. (2.8), paired dimension-four estimate); proved outright from the Fourier-inversion and Gaussian-comparison lemmas, no longer assumed
+    source: sandpile.tex:1145-1172 (LawlerLimic Theorem 2.1.3 Eq. (2.8), paired dimension-four estimate); proved outright from the Fourier-inversion and Gaussian-comparison lemmas
     file: Sandpile/External/PairedLocalCLTFourProved.lean
     export: Sandpile.External.pairedLocalCLTFour
     state: SEALED
@@ -832,7 +832,7 @@ nodes:
   - id: ext-local-clt
     version: 2
     kind: theorem
-    source: external input, Lawler-Limic Theorem 2.1.3 Eq. (2.8), the local central limit theorem of ssec-green-estimates; proved outright from the Fourier-inversion parity decomposition and Gaussian comparison, no longer assumed
+    source: external input, Lawler-Limic Theorem 2.1.3 Eq. (2.8), the local central limit theorem of ssec-green-estimates; proved outright from the Fourier-inversion parity decomposition and Gaussian comparison
     file: Sandpile/External/LocalCLTProved.lean
     export: Sandpile.External.localCLT
     state: SEALED
@@ -843,7 +843,7 @@ nodes:
   - id: ext-ball-green-bounds
     version: 2
     kind: theorem
-    source: external input, Lawler-Limic Theorem 4.3.1 and Chapter 6, the ball-killed estimates of ssec-green-estimates; proved outright from the Green-function asymptotic, killed-walk energy estimates, and annular summation, no longer assumed
+    source: external input, Lawler-Limic Theorem 4.3.1 and Chapter 6, the ball-killed estimates of ssec-green-estimates; proved outright from the Green-function asymptotic, killed-walk energy estimates, and annular summation
     file: Sandpile/External/BallGreenBoundsProved.lean
     export: Sandpile.External.ballGreenBounds
     state: SEALED
@@ -1074,7 +1074,7 @@ nodes:
   - id: ext-brownian-exit-step
     version: 3
     kind: definition
-    source: sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; repaired 2026-09-27, see ledger/decisions.md D-001
+    source: sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16
     file: Sandpile/External/BrownianExitStep.lean
     export: Sandpile.External.BrownianExitStep
     state: FROZEN

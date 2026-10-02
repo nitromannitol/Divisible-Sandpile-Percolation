@@ -41,7 +41,7 @@ def Sandpile.External.BallOccupationDensity : Prop :=
 
 * **Lean name** `Sandpile.External.BrownianExitStep`
 * **File** `Sandpile/External/BrownianExitStep.lean`
-* **Cited at** sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; repaired 2026-09-27, see ledger/decisions.md D-001
+* **Cited at** sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16
 * **Not proved here**: this one is assumed outright
 
 ```lean

@@ -10,9 +10,9 @@ abstract: >-
   mean one percolate at an explicit dimension-dependent scale h(t)
   (Theorem 1.2), and the quantitative explosion and scaling results at mean
   one in every dimension (Theorem 1.3), together with every lemma,
-  proposition and corollary of the paper.  The results the paper cites
-  without proof are taken as explicit hypotheses.  The development contains
-  no sorry and no custom axiom.
+  proposition and corollary of the paper.  Sixteen results the paper cites
+  without proof are taken as explicit hypotheses of the theorems that use
+  them.  The development contains no sorry and no custom axiom.
 type: software
 authors:
   - family-names: Bou-Rabee
@@ -26,7 +26,6 @@ keywords:
   - optimal stopping
   - membrane model
 license: Apache-2.0
-# Add a Zenodo DOI here once an archived release is minted.
 repository-code: "https://github.com/nitromannitol/Divisible-Sandpile-Percolation"
 references:
   - type: article

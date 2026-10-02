@@ -37,3 +37,27 @@ A few practical notes for working with this development:
 - **The main results** are in `Sandpile/MainTheorems.lean`; the axiom audit is
   `lake build Sandpile.Meta.AxiomsAudit`, and the comparator surface is
   `lake build Audit`.
+
+## Elaboration policy for new files
+
+These rules apply to new Lean files; they keep elaboration cheap and predictable
+in a development of this size.
+
+- Close arithmetic goals with named monotonicity lemmas and `calc`, not with
+  `nlinarith`. In particular never call `nlinarith` on a goal that contains
+  `Real.rpow` or `Real.exp`: when a nonlinear fact is needed, hoist it into a
+  small `private` lemma over abstract real variables, so that those terms never
+  enter a numeric tactic.
+- Prefer the explicit `mul_le_mul_of_nonneg_*` / `add_le_add_*` lemmas to
+  `gcongr` on goals over `ℝ`. Over `ℝ≥0∞` or `ℕ` the tactic is cheap and fine.
+- Before `ring` or `field_simp` on an expression built with `set`, run
+  `clear_value` on the bound names; otherwise the let-bodies are unfolded inside
+  the tactic.
+- Do not split a file, narrow its imports, or add an instance cache "for
+  performance" without a warm profile before and after
+  (`lake env lean --profile <file>`); the profiler's default 100 ms floor hides
+  diffuse costs, so use `-D profiler.threshold=1` when hunting them.
+- A default-budget failure is a design signal (usually a wrong lemma orientation
+  or a `set`-bound term), not a reason to raise `maxHeartbeats`.
+- Keep Lean files under 1500 lines.
+- Never run `lake clean` (see above).

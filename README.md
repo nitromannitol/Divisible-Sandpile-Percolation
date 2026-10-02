@@ -7,10 +7,15 @@ A machine-checked **Lean 4** formalization of the paper
 library [`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability)
 (`LatticeProb`).
 
+Every labelled theorem, lemma, proposition and corollary of the paper is stated
+and proved in Lean.  Sixteen results that the paper quotes from the literature
+are not proved here; each is stated as a proposition and carried as an explicit
+hypothesis by every theorem that uses it.
+
 [![CI](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml/badge.svg)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml)
 [![Comparator audit](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml/badge.svg)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml)
 
-## What this is
+## What is proved
 
 The divisible sandpile on `ℤ^d` starts from an i.i.d. mass `σ(x)` at each site.
 A site is unstable when its mass exceeds one; an unstable site topples, keeping
@@ -43,47 +48,103 @@ the mean, the weighted membrane limits, and a scenery whose rescaled
 fluctuations have uncountably many distinct subsequential limits.
 
 This repository formalizes **every labelled theorem, lemma, proposition and
-corollary of the paper**: 58 labelled statements, registered as 70 nodes
-because a statement in several parts is registered one part per node
-(Theorem 1.3 alone is ten nodes).  Not formalized: the proof-overview,
-related-work and open-problem subsections, the unlabelled remarks (including
-the nonpercolation remark at low mean, which quotes a Peierls argument of Fey,
-Meester and Redig rather than proving one), and the figures.
+corollary of the paper**: 58 labelled statements, registered as 69 nodes in
+`Sandpile/Frozen/` because a statement in several parts is registered one part
+per node (Theorem 1.3 alone is ten nodes).  Two further nodes prove that white
+noise and Brownian motion exist (`Sandpile/Continuum/`), so that the predicates
+over which the statements quantify are not vacuous.  Not formalized: the
+proof-overview, related-work and open-problem subsections, the unlabelled
+remarks (including the nonpercolation remark at low mean, which quotes a
+Peierls argument of Fey, Meester and Redig rather than proving one), and the
+figures.
 
-**What is assumed.**  Results that the paper quotes from the literature are
-stated in Lean as propositions in `Sandpile/External/`, and every theorem whose
-proof uses one takes it as an explicit hypothesis, so the statement shows
-exactly which of them it rests on.  There are **16** such propositions, **not
-proved here**.  [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 16 with their
-verbatim Lean statements.  They are the crossing comparisons of
+### Main results
+
+The main theorems are stated in full in
+[`Sandpile/MainTheorems.lean`](Sandpile/MainTheorems.lean), each proved by
+`exact` of its certified counterpart in `Sandpile/Frozen/`, so the statements
+displayed there are the certified ones.  The hypotheses listed are the cited
+results each theorem carries (see "What is assumed" below).
+
+* **`Sandpile.percolation_below_criticality`** (Theorem 1.1,
+  `thm:main-nontriviality`): for `d ≥ 2` and a family of laws `μ_ρ` of mean
+  `ρ`, with `Var_{μ_ρ} σ(0) ≥ ν₀²` and `E_{μ_ρ} e^{θ₀|σ(0)−ρ|} ≤ K₀` for
+  `ρ ∈ [ρ₀, 1)`, there is `ρ₊ ∈ [ρ₀, 1)` such that for every `ρ ∈ (ρ₊, 1)` the
+  toppled set contains an infinite component almost surely.  Hypotheses:
+  `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`,
+  `PittGaussianFKG`, `BallOccupationDensity`, `CubeStoppingStability`.
+* **`Sandpile.critical_level_percolation`** (Theorem 1.2,
+  `thm:main-critical-level-percolation`): there are `c > 0` and `t₀`, depending
+  only on `d, ν₀, θ₀, K₀`, such that for every mean-one law with those bounds and
+  every `t ≥ t₀`, `{x : u_t(x) > c h(t)}` contains an infinite component almost
+  surely.  Hypotheses: the same seven as Theorem 1.1.
+* **`Sandpile.mean_growth_le_three`** (Theorem 1.3(i)(a)): in `d ≤ 3`,
+  `t^{−(4−d)/4} E u_t(0)` converges to a positive limit.  Hypotheses:
+  `ContinuumStoppingStability`, `ContinuumOptimalStopping`.
+* **`Sandpile.brownian_scaling_limit`** (Theorem 1.3(i)(b)): in `d ≤ 3`, the
+  multilinear interpolation of `R^{−(2−d/2)} u_{⌊TR²⌋}` converges in
+  finite-dimensional distributions to the Brownian stopping value `𝒰(T, ·)` and
+  is tight in the uniform norm on compact sets.  Hypothesis:
+  `ContinuumStoppingStability`.
+* **`Sandpile.mean_growth_four`** (Theorem 1.3(ii)(a), first clause): in
+  `d = 4`, `c log t ≤ E u_t(0) ≤ C log t` for `t ≥ 2`.  No hypotheses.
+* **`Sandpile.four_first_order`** (Theorem 1.3(ii)(a), second clause): in
+  `d = 4`, `u_t(x)/E u_t(0) → 1` in `L²` and almost surely.  No hypotheses.
+* **`Sandpile.four_gaussian`** (Theorem 1.3(ii)(b)): in `d = 4`,
+  `(u_t(0) − E u_t(0))/√(log t)` converges in distribution to
+  `N(0, 4 Var(ζ(0))/π²)`, and `Var(u_t(0))/log t` converges to the same
+  constant.  No hypotheses.
+* **`Sandpile.four_sobolev`** (Theorem 1.3(ii)(c)): in `d = 4`, the centred
+  fields at diffusive times are tight in `H^{−s}_loc`, and at the superdiffusive
+  times `⌊R^α⌋`, `α > 2`, they converge modulo constants to the membrane model
+  `𝒢_4`.  Hypotheses: `ContinuumBesovTightness`, `MembraneScalingLimitFour`.
+* **`Sandpile.high_first_order`** (Theorem 1.3(iii)(a)): in `d ≥ 5`,
+  `u_t(x)/E u_t(0) → 1` in `L²` and almost surely, and
+  `E u_t(0) ≥ c (log t)^{2/d}` for all large `t`.  No hypotheses.
+* **`Sandpile.high_tail`** (Theorem 1.3(iii)(b)): in `d ≥ 5`, if
+  `−log P(ζ(0) ≤ −s) ≍ s^γ` with `γ ≥ 1`, `γ ≠ d/2`, then
+  `E u_t(0) ≍ (log t)^{1/min{γ,d/2}}`.  No hypotheses.
+* **`Sandpile.high_sobolev_limit`** (Theorem 1.3(iii)(c)): in `d ≥ 5`, the
+  fields `R^{(d−4)/2}(u_{⌊TR²⌋} − E u_{⌊TR²⌋}(0))^{(R)}` converge in
+  `H^{−s}_loc`, `s > (d−4)/2`, to `ℋ_{1,T}` for Gaussian scenery and to
+  `ℋ_{1−1/α,T}` for atomless scenery bounded above with a regularly varying
+  lower tail of index `α > 2`.  Hypotheses: `GaussianLipschitzConcentration`,
+  `NormalComparison`, `ContinuumBesovTightness`.
+* **`Sandpile.high_nonconvergence`** (Theorem 1.3(iii)(d)): in `d ≥ 5`, there
+  is a law with mean zero, variance one, a smooth positive density and an
+  exponential moment whose rescaled fluctuations are tight in `H^{−s}_loc` but
+  have uncountably many distinct subsequential limits, and so do not converge.
+  Hypothesis: `ContinuumBesovTightness`.
+
+### What is assumed
+
+Results that the paper quotes from the literature are stated in Lean as
+propositions in `Sandpile/External/`.  When this repository does not prove one,
+every theorem whose proof uses it takes it as an explicit hypothesis, so the
+statement shows exactly which of them it rests on.  There are **16** such
+propositions, **not proved here**.  [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all
+16 with their verbatim Lean statements.  They are the crossing comparisons of
 Köhler-Schindler and Tassion in planar and continuum form, Pitt's Gaussian FKG
 inequality, the normal comparison inequality of Li and Shao, Gaussian
 Lipschitz concentration, the Liggett-Schonmann-Stacey domination, optimal
-stopping for Brownian motion and the stability of optimal-stopping values, the
-occupation density of a Euclidean ball, the strong Markov property at the ball
-exit time, a Besov tightness criterion, the compact negative-Sobolev
-embedding, the four-dimensional membrane scaling limit, the multivariate
-Berry-Esseen comparison, and Timár's exterior boundary connectivity.
+stopping for Brownian motion and the stability of optimal-stopping values (in
+its whole-space and cube-killed forms), the occupation density of a Euclidean
+ball, the strong Markov property at the ball exit time, a Besov tightness
+criterion, the compact negative-Sobolev embedding, the four-dimensional
+membrane scaling limit, the multivariate Berry-Esseen comparison, and Timár's
+exterior boundary connectivity.  The twelve main theorems carry thirteen of
+them; `MultivariateBerryEsseen`, `RellichKondrachovNegSobolev` and
+`BrownianExitStep` are hypotheses of intermediate statements in
+`Sandpile/Frozen/` only.
 
 Ten further results the paper cites without proof are **proved unconditionally
 in this repository** (`Sandpile/External/*Proved.lean`) and so are not carried
-as a hypothesis by any statement here: the `d ≥ 5` Green-function estimates,
-the finite-time variance scale, the heat-kernel bounds, the discrete
+as a hypothesis by any main theorem: the `d ≥ 5` Green-function estimates, the
+finite-time variance scale, the heat-kernel bounds, the discrete
 optimal-stopping representation of the odometer, the determination of a
 centred Gaussian law by its covariance, Pinsker's inequality, the second
 intersection moment of two independent walks, the local central limit
 theorem, its paired dimension-four form, and the ball-killed Green bounds.
-
-- **No `sorry`** anywhere in the library.  (Each Mathlib-only comparator
-  challenge in `Audit/` contains its single intentional statement-level
-  `sorry`, filled by the corresponding solution file.)
-- **No custom `axiom`.**  The main theorems reduce to `mathlib`'s three
-  standard foundational axioms `propext`, `Classical.choice` and `Quot.sound`,
-  verified by [`Sandpile/Meta/AxiomsAudit.lean`](Sandpile/Meta/AxiomsAudit.lean).
-  The cited results above are hypotheses, not axioms.
-- Pinned to Lean `v4.32.0`, `mathlib` at revision
-  `81a5d257c8e410db227a6665ed08f64fea08e997` and `Lattice-Probability` at
-  commit `bbe0b90`.
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
@@ -98,73 +159,7 @@ have not confirmed.
 
 <!-- STATUS-END -->
 
-## Main results
-
-The main theorems are stated in full in
-[`Sandpile/MainTheorems.lean`](Sandpile/MainTheorems.lean), each proved by
-`exact` of its certified counterpart in `Sandpile/Frozen/`, so the statements
-displayed there are the certified ones.  The hypotheses listed are the cited
-results each theorem carries; those marked † are also proved in this
-repository and can be discharged.
-
-* **`Sandpile.percolation_below_criticality`** (Theorem 1.1,
-  `thm:main-nontriviality`): for `d ≥ 2` and a family of laws `μ_ρ` of mean
-  `ρ`, with `Var_{μ_ρ} σ(0) ≥ ν₀²` and `E_{μ_ρ} e^{θ₀|σ(0)−ρ|} ≤ K₀` for
-  `ρ ∈ [ρ₀, 1)`, there is `ρ₊ ∈ [ρ₀, 1)` such that for every `ρ ∈ (ρ₊, 1)` the
-  toppled set contains an infinite component almost surely.  Hypotheses:
-  `BallGreenBounds`†, `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`,
-  `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `LocalCLT`†,
-  `CubeStoppingStability`.
-* **`Sandpile.critical_level_percolation`** (Theorem 1.2,
-  `thm:main-critical-level-percolation`): there are `c > 0` and `t₀`, depending
-  only on `d, ν₀, θ₀, K₀`, such that for every mean-one law with those bounds and
-  every `t ≥ t₀`, `{x : u_t(x) > c h(t)}` contains an infinite component almost
-  surely.  Hypotheses: those of Theorem 1.1 together with `GreenBoundsHigh`† and
-  `VarianceScale`†.
-* **`Sandpile.mean_growth_le_three`** (Theorem 1.3(i)(a)): in `d ≤ 3`,
-  `t^{−(4−d)/4} E u_t(0)` converges to a positive limit.  Hypotheses:
-  `LocalCLT`†, `ContinuumStoppingStability`, `VarianceScale`†,
-  `ContinuumOptimalStopping`.
-* **`Sandpile.brownian_scaling_limit`** (Theorem 1.3(i)(b)): in `d ≤ 3`, the
-  multilinear interpolation of `R^{−(2−d/2)} u_{⌊TR²⌋}` converges in
-  finite-dimensional distributions to the Brownian stopping value `𝒰(T, ·)` and
-  is tight in the uniform norm on compact sets.  Hypotheses: `LocalCLT`†,
-  `ContinuumStoppingStability`.
-* **`Sandpile.mean_growth_four`** (Theorem 1.3(ii)(a), first clause): in
-  `d = 4`, `c log t ≤ E u_t(0) ≤ C log t` for `t ≥ 2`.  No hypotheses.
-* **`Sandpile.four_first_order`** (Theorem 1.3(ii)(a), second clause): in
-  `d = 4`, `u_t(x)/E u_t(0) → 1` in `L²` and almost surely.  No hypotheses.
-* **`Sandpile.four_gaussian`** (Theorem 1.3(ii)(b)): in `d = 4`,
-  `(u_t(0) − E u_t(0))/√(log t)` converges in distribution to
-  `N(0, 4 Var(ζ(0))/π²)`, and `Var(u_t(0))/log t` converges to the same
-  constant.  Hypothesis: `PairedLocalCLTFour`†.
-* **`Sandpile.four_sobolev`** (Theorem 1.3(ii)(c)): in `d = 4`, the centred
-  fields at diffusive times are tight in `H^{−s}_loc`, and at the superdiffusive
-  times `⌊R^α⌋`, `α > 2`, they converge modulo constants to the membrane model
-  `𝒢_4`.  Hypotheses: `HeatKernelBounds`†, `VarianceScale`†,
-  `ContinuumBesovTightness`, `MembraneScalingLimitFour`.
-* **`Sandpile.high_first_order`** (Theorem 1.3(iii)(a)): in `d ≥ 5`,
-  `u_t(x)/E u_t(0) → 1` in `L²` and almost surely, and
-  `E u_t(0) ≥ c (log t)^{2/d}` for all large `t`.  Hypothesis:
-  `GreenBoundsHigh`†.
-* **`Sandpile.high_tail`** (Theorem 1.3(iii)(b)): in `d ≥ 5`, if
-  `−log P(ζ(0) ≤ −s) ≍ s^γ` with `γ ≥ 1`, `γ ≠ d/2`, then
-  `E u_t(0) ≍ (log t)^{1/min{γ,d/2}}`.  Hypothesis: `GreenBoundsHigh`†.
-* **`Sandpile.high_sobolev_limit`** (Theorem 1.3(iii)(c)): in `d ≥ 5`, the
-  fields `R^{(d−4)/2}(u_{⌊TR²⌋} − E u_{⌊TR²⌋}(0))^{(R)}` converge in
-  `H^{−s}_loc`, `s > (d−4)/2`, to `ℋ_{1,T}` for Gaussian scenery and to
-  `ℋ_{1−1/α,T}` for atomless scenery bounded above with a regularly varying
-  lower tail of index `α > 2`.  Hypotheses: `HeatKernelBounds`†,
-  `GreenBoundsHigh`†, `GaussianLipschitzConcentration`, `NormalComparison`,
-  `IntersectionSecondMoment`†, `LocalCLT`†, `ContinuumBesovTightness`.
-* **`Sandpile.high_nonconvergence`** (Theorem 1.3(iii)(d)): in `d ≥ 5`, there
-  is a law with mean zero, variance one, a smooth positive density and an
-  exponential moment whose rescaled fluctuations are tight in `H^{−s}_loc` but
-  have uncountably many distinct subsequential limits, and so do not converge.
-  Hypotheses: `IntersectionSecondMoment`†, `LocalCLT`†,
-  `ContinuumBesovTightness`.
-
-## Scope and faithfulness
+### Scope and faithfulness
 
 Every labelled statement of the paper is registered: one Lean declaration per
 theorem, lemma, proposition and corollary, or per part of one, and one
@@ -238,38 +233,71 @@ the form of a Lean statement differs from the paper's are these:
   K₀` and before `ρ`, the reading under which the paper's membership
   `ρ₊ ∈ [ρ₀, 1)` holds.
 
-## Verified against a Mathlib-only statement
+The certificate of the build and of each node's axiom closure is
+[`CERTIFICATE.md`](CERTIFICATE.md).
 
-So that the main claims can be read without trusting the development, all
-twelve main theorems are restated using **only Mathlib**, with no project or
-library definitions, in `Audit/<Thm>/Challenge.lean`.  Each challenge rebuilds
-from Mathlib primitives every definition the statement reaches: the lattice,
-i.i.d. laws, the heat kernel and the Brownian exit time as in
-`Lattice-Probability`; the odometer, the walk and its stopping problems; the
-continuum kernels, Sobolev norms, white noise, Brownian motion and the Brownian
-stopping values; the planar crossing events and continuum planar fields; and
-the cited results it assumes.  It contains one intentional statement-level
-`sorry`, which the corresponding `Solution.lean` fills from the library through
-the bridges in `Audit/Support/`.  The configurations in
-`Audit/*/comparator.json` are for
-[`leanprover/comparator`](https://github.com/leanprover/comparator), which
-confirms that the two statements have identical elaborated types and that the
-proof reduces to the three standard axioms (see
-[`Audit/README.md`](Audit/README.md)).
+## Guarantees
 
-The twelve pairs are `Nontriviality`, `CriticalLevels`, `MeanGrowthLow`,
-`BrownianScalingLimit`, `MeanGrowthFour`, `FourFirstOrder`, `FourGaussian`,
-`FourSobolev`, `HighFirstOrder`, `HighTail`, `HighSobolevLimit` and
-`HighNonconvergence`.  All twelve solutions build and depend only on
-`propext`, `Classical.choice` and `Quot.sound`, and
-`Audit/StatementRegression.lean` checks locally that each solution statement is
-exactly the challenge statement and mentions no constant of `Sandpile` or
-`LatticeProb`.  The comparator was run on all twelve pairs on 2026-09-28, at
-commit `8207a73`, and every pair passed with the Lean kernel and with the
-independent nanoda kernel; the results and the reproduction steps are in
-[`Audit/COMPARATOR_RUNS.md`](Audit/COMPARATOR_RUNS.md).  The workflow
-[`.github/workflows/comparator.yml`](.github/workflows/comparator.yml) runs
-the same check on request.
+- **No `sorry`** in the library.  Each of the twelve comparator challenges under
+  `Audit/` contains one intentional statement-level `sorry`, which the
+  corresponding solution file proves.
+- **No custom axiom.**  The twelve main theorems reduce to `mathlib`'s three
+  standard foundational axioms `propext`, `Classical.choice` and `Quot.sound`.
+  [`Sandpile/Meta/AxiomsAudit.lean`](Sandpile/Meta/AxiomsAudit.lean) prints their
+  axiom dependencies, and `python3 tools/check_axioms.py` checks the axiom
+  closure of every registered statement.  The `Axiom audit` step of the CI
+  workflow [`.github/workflows/build.yml`](.github/workflows/build.yml), which
+  runs on request, builds that module and fails on any warning or `sorry`.  The
+  cited results above are hypotheses, not axioms.
+- **Pinned statements.**  Every registered statement is pinned by the SHA-256 of
+  its text in [`ledger/manifest.yaml`](ledger/manifest.yaml), checked by
+  `python3 tools/check_manifest.py`.
+- **Independent check of the statements.**  Each main theorem is restated, with
+  every definition rebuilt from Mathlib primitives alone (no project or library
+  definitions), in
+  [`Audit/Nontriviality/Challenge.lean`](Audit/Nontriviality/Challenge.lean),
+  [`Audit/CriticalLevels/Challenge.lean`](Audit/CriticalLevels/Challenge.lean),
+  [`Audit/MeanGrowthLow/Challenge.lean`](Audit/MeanGrowthLow/Challenge.lean),
+  [`Audit/BrownianScalingLimit/Challenge.lean`](Audit/BrownianScalingLimit/Challenge.lean),
+  [`Audit/MeanGrowthFour/Challenge.lean`](Audit/MeanGrowthFour/Challenge.lean),
+  [`Audit/FourFirstOrder/Challenge.lean`](Audit/FourFirstOrder/Challenge.lean),
+  [`Audit/FourGaussian/Challenge.lean`](Audit/FourGaussian/Challenge.lean),
+  [`Audit/FourSobolev/Challenge.lean`](Audit/FourSobolev/Challenge.lean),
+  [`Audit/HighFirstOrder/Challenge.lean`](Audit/HighFirstOrder/Challenge.lean),
+  [`Audit/HighTail/Challenge.lean`](Audit/HighTail/Challenge.lean),
+  [`Audit/HighSobolevLimit/Challenge.lean`](Audit/HighSobolevLimit/Challenge.lean),
+  [`Audit/HighNonconvergence/Challenge.lean`](Audit/HighNonconvergence/Challenge.lean).
+  Each challenge rebuilds every definition the statement reaches: the lattice,
+  i.i.d. laws, the heat kernel and the Brownian exit time as in
+  `Lattice-Probability`; the odometer, the walk and its stopping problems; the
+  continuum kernels, Sobolev norms, white noise, Brownian motion and the
+  Brownian stopping values; the planar crossing events and continuum planar
+  fields; and the cited results it assumes.  It ends in one statement-level
+  `sorry`, which the corresponding `Solution.lean` fills from the library
+  through the bridges in `Audit/Support/`.  The configurations
+  `Audit/*/comparator.json` are for
+  [`leanprover/comparator`](https://github.com/leanprover/comparator), which
+  confirms that the two statements have identical elaborated types and that the
+  proof reduces to the three standard axioms; it passes on all twelve pairs,
+  with the Lean kernel and with the independent nanoda kernel.  The workflow
+  [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml) runs the
+  same check on request, and
+  [`Audit/StatementRegression.lean`](Audit/StatementRegression.lean) checks
+  locally that each solution statement is exactly the challenge statement and
+  mentions no constant of `Sandpile` or `LatticeProb`.  See
+  [`Audit/README.md`](Audit/README.md) and
+  [`Audit/COMPARATOR_RUNS.md`](Audit/COMPARATOR_RUNS.md).
+- **Pinned toolchain.**  Lean `v4.32.0`, `mathlib` at revision
+  `81a5d257c8e410db227a6665ed08f64fea08e997` and `Lattice-Probability` at commit
+  `9d44b4d4670df393bb86ac5a4e042f215001cddf`, recorded in
+  [`lean-toolchain`](lean-toolchain), [`lakefile.lean`](lakefile.lean) and
+  [`lake-manifest.json`](lake-manifest.json).
+
+## Size
+
+About 198,000 lines of Lean in 1,137 modules, of which about 150,000 lines are
+code once comments and blank lines are removed, on top of `mathlib` and the
+`Lattice-Probability` library.
 
 ## Building
 
@@ -277,8 +305,9 @@ The project uses [`elan`](https://github.com/leanprover/elan) (the Lean
 toolchain manager) and Lake.  The toolchain is pinned in
 [`lean-toolchain`](lean-toolchain) (`leanprover/lean4:v4.32.0`), so `elan`
 installs the right Lean version automatically, and the dependencies are pinned
-to commits in `lakefile.lean` and [`lake-manifest.json`](lake-manifest.json);
-`lake` fetches `Lattice-Probability` together with Mathlib.
+to commits in [`lakefile.lean`](lakefile.lean) and
+[`lake-manifest.json`](lake-manifest.json); `lake` fetches `Lattice-Probability`
+together with Mathlib.
 
 ```bash
 lake exe cache get   # prebuilt Mathlib
@@ -292,7 +321,8 @@ lake build Audit.StatementRegression
 ```
 
 To use the library, `import Sandpile` pulls in the whole development; the main
-results are in `import Sandpile.MainTheorems`.
+results are in `import Sandpile.MainTheorems`.  Building notes are in
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 The checkers in `tools/` need Python 3 and PyYAML (`pip install pyyaml`).
 `check_axioms.py` and `check_warnings.py` run Lean; the others read the
@@ -323,7 +353,8 @@ verifies it is current); `certificate.py` regenerates `CERTIFICATE.md`;
 Sandpile/
   MainTheorems.lean   the main theorems, stated in full
   Frozen/             the certified statement surface, one frozen statement per file
-  External/           the cited results, each a frozen Prop; the *Proved.lean files prove six
+  External/           the cited results, each a frozen Prop; the *Proved.lean files prove ten
+                      of them
   Support/            the paper-specific definitions and lemmas the frozen statements are proved
                       from; general probability and analysis (Efron–Stein, smooth maxima,
                       weighted CLT, Taylor comparison, Laplace and exponential-moment bounds,
@@ -344,52 +375,26 @@ paper/sandpile.tex    the paper, pinned by the SHA-256 in ledger/manifest.yaml
 paper/sandpile-arxiv.tex  the unmodified arXiv source (paper/arxiv/: its bibliography and figures)
 paper/CHANGES_FROM_ARXIV.md  the differences between the two
 tools/                the checkers and generators listed under Building
+.github/workflows/    the CI build and the comparator audit
+lakefile.lean, lake-manifest.json, lean-toolchain   the pinned build
+CITATION.cff, formalization.yaml, CONTRIBUTING.md, LICENSE
 ```
 
 ## How this was built
 
-The Lean code in this repository was written by AI models under the
-supervision of the author, over 1007 commits between 2026-09-06 and
-2026-09-23. A supervising Claude Code session set up the frozen-statement
-scaffold, carried out the author's decisions and merged the agents' branches. Claude
-Opus generals, running as Claude Code subagents in shifts from 2026-09-10,
-wrote much of the continuum and tightness chain, the dimension greater than
-four linearization and many-limits chain, the killed scaling remark and the
-assembly of the main theorems; the records call them Opus generals and do not
-name the model version. OpenAI's gpt-6-astra, through Codex, worked the
-dimension-four chain (2026-09-07) and, in later runs, repaired the
-limiting-crossing, stopping and white-noise work and wrote the fourth version
-of the crossing statement (2026-09-12). DeepSeek-v4.1-flash generals, run by a
-custom API driver, worked the continuum, crossing, linearization, dimension
-greater than four and Brownian ball chains (2026-09-11 to 2026-09-15), and
-DeepSeek-v4.1-flash and GLM-5.3-flash agents drafted compile-filtered
-candidates for short proof bodies. GLM-5.3 generals worked the percolation and
-linearization chain and the growth chain. From 2026-09-16 Claude Sonnet
-generals, launched through Claude Code, continued the many-limits, Brownian
-ball, crossing, growth and Theorem 1.3 work; the records do not name the
-Sonnet version. A Kimi Code agent (kimi-code/k3-256k) worked on Theorem
-1.3(i)(b) on a separate branch that was not merged. Claude Opus 5.5 wrote
-`Sandpile/MainTheorems.lean`, the comparator surface in `Audit/` and the
-release documentation. In a final pass on 2026-09-26 and 2026-09-27, a Claude
-Opus 5.5 general in Claude Code and Claude Sonnet 5 subagents it dispatched
-proved further cited inputs and removed them as hypotheses of the main
-theorems, brought the comparator surface in line with the certified statements
-and re-ran the comparator, and named and documented the remaining helper
-lemmas; OpenAI's gpt-6-luna and gpt-5.6-luna, through Codex, were commissioned
-for some of those proofs, and everything kept was checked and gated.  The
-models, tooling, cost, and review status are
-disclosed in full in [`formalization.yaml`](formalization.yaml), following the
+The Lean code was written by Claude (Opus 5.5, Sonnet 5, and further Opus and
+Sonnet models whose versions were not recorded), OpenAI's gpt-6-astra, gpt-6-luna
+and gpt-5.6-luna, DeepSeek-v4.1-flash, GLM-5.3 and GLM-5.3-flash under the close
+supervision of the author; models, tooling and cost are disclosed in
+[`formalization.yaml`](formalization.yaml), following the
 [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml)
 standard.
 
-## Authors and citation
+## Authors, citation, acknowledgements
 
-The Lean development is by **Ahmed Bou-Rabee**.  The paper it formalizes is
-joint work of Ahmed Bou-Rabee and Christoforos Panagiotis.  If you use this
-formalization, please cite it using the metadata in
-[`CITATION.cff`](CITATION.cff).
-
-## Acknowledgements
+The Lean development is by **Ahmed Bou-Rabee**.  The paper it formalizes
+(arXiv:2609.02829) is joint work of Ahmed Bou-Rabee and Christoforos
+Panagiotis.  To cite the formalization, use [`CITATION.cff`](CITATION.cff).
 
 This formalization is built on [Lean 4](https://lean-lang.org),
 [Mathlib](https://github.com/leanprover-community/mathlib4) and the shared

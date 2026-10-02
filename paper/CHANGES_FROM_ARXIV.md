@@ -180,8 +180,8 @@ Added at the end of the proof:
 > $J_{z_1z_2z_3}(F_1)\leq e^{C\beta(\log N)\|F_1-F\|_\infty}J_{z_1z_2z_3}(F)$
 > for every $F,F_1$.
 
-Item 6 above already attributes exactly this multiplicative stability to "the
-proof of `lem:d4-soft-bottleneck`," but the lemma's proof never stated it.
+Item 6 above attributes exactly this multiplicative stability to "the proof of
+`lem:d4-soft-bottleneck`," but the proof in the arXiv version does not state it.
 The sentence above supplies it, matching
 `Sandpile/Support/PositiveJet.lean`, where the same recursive construction's
 derivative envelopes are `ExpStable`: a nonnegative function whose value at
@@ -189,10 +189,10 @@ one field is at most $e^{K\delta}$ times its value at a field $\delta$ away
 in sup norm, because every softmax weight obeys this bound
 (`LatticeProb.softWeight_stability`) and sums and products of `ExpStable`
 functions are again `ExpStable` with constants added (`ExpStable.sum`,
-`.mul`). The lemma's statement, and its frozen Lean formalization
-`Sandpile.Frozen.d4_soft_bottleneck`, are unchanged; the addition is to the
-proof only. The Step 5 sentence at line 3840 now cites this addition instead
-of asserting the stability without a citation.
+`.mul`). The lemma's statement is the same in both versions, and
+`Sandpile.Frozen.d4_soft_bottleneck` formalizes it; the addition is to the
+proof only. The Step 5 sentence at line 3840 of the corrected text cites this
+addition, where the arXiv version asserts the stability without a citation.
 
 ## 9. Section 3.2, proof of `lem:brownian-ball-localization`, line 1660
 
@@ -236,7 +236,6 @@ horizon is a property of $Z$ and needs the argument of the second paragraph;
 for a general continuous field it is false.  The proof also makes explicit the
 integrability that the strong Markov step needs.  The lemma's statement is
 unchanged.  In the formalization the strong Markov step is the cited input
-`Sandpile.External.BrownianExitStep`, stated with an integrable envelope and
-with the value at the remaining horizon (see `ledger/decisions.md`, D-001), and
-the monotonicity in the horizon is the repository node
-`Sandpile.Frozen.brownian_value_mono_horizon`.
+`Sandpile.External.BrownianExitStep`, stated for a field with an integrable
+envelope and with the value at the remaining horizon, and the monotonicity in the
+horizon is the repository node `Sandpile.Frozen.brownian_value_mono_horizon`.

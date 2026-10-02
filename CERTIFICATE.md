@@ -153,7 +153,8 @@ nowhere below.
 | 99 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `lem:brownian-ball-localization` | classical only |
 
 99 of 99 nodes depend on nothing beyond the three classical
-axioms.  Every node's state in `ledger/manifest.yaml` is `SEALED`.
+axioms.  In `ledger/manifest.yaml`, 83 nodes are `SEALED` and 16 are
+`FROZEN` (the assumed cited results).
 
 ## Frozen statements
 

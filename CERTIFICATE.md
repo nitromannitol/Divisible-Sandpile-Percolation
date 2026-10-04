@@ -8,7 +8,7 @@ edit it by hand.
 ## What is claimed
 
 Every theorem, lemma, proposition and corollary of the paper is stated in
-Lean 4: 71 nodes, all `SEALED`, proved from Mathlib and the shared
+Lean 4: 71 nodes, all `PROVED`, proved from Mathlib and the shared
 library Lattice-Probability.  No node contains a `sorry` and none adds an
 axiom.
 
@@ -27,7 +27,7 @@ listed with their statements in `ASSUMPTIONS.md`.
 | Paper (`paper/sandpile.tex`) SHA-256 | `886793b75289a92d7acbbf93231f5b86a6b1eae1e444e64751a08193e707d5ca` |
 | Build | succeeded, 10229 jobs |
 | Build warnings | 0 |
-| Generated | 2026-09-28 |
+| Generated | 2026-10-04 |
 
 ## Reproducing it
 
@@ -153,7 +153,7 @@ nowhere below.
 | 99 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `lem:brownian-ball-localization` | classical only |
 
 99 of 99 nodes depend on nothing beyond the three classical
-axioms.  In `ledger/manifest.yaml`, 83 nodes are `SEALED` and 16 are
+axioms.  In `ledger/manifest.yaml`, 83 nodes are `PROVED` and 16 are
 `FROZEN` (the assumed cited results).
 
 ## Frozen statements

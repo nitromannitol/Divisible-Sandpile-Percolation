@@ -446,7 +446,7 @@ alignment:
       lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker,intersectionSecondMoment,localCLT,pairedLocalCLTFour,ballGreenBounds}"
       module: "Sandpile.External"
       status: "proved"
-      note: "10 propositions the paper cites without proof, proved unconditionally from the shared library Lattice-Probability; each is a SEALED manifest node, and none is a hypothesis of a main theorem."
+      note: "10 propositions the paper cites without proof, proved unconditionally from the shared library Lattice-Probability; each is a PROVED manifest node, and none is a hypothesis of a main theorem."
 
 acknowledgements: >-
   The paper is joint work with Christoforos Panagiotis.  Built on Lean 4,

@@ -33,6 +33,17 @@ STATUS_END = "<!-- STATUS-END -->"
 LABEL_RE = re.compile(r"label ([A-Za-z][A-Za-z0-9:_-]*)")
 RANGE_RE = re.compile(r"sandpile\.tex:\d+-\d+")
 
+# A theorem node is proved when its proof is machine-checked and its axiom
+# closure is clean.  `PROVED` is a `SEALED` node promoted after an independent
+# refutation-first audit found no defect, so both count as proved.
+PROVED_STATES = ("PROVED", "SEALED")
+
+
+def proved_state_label(counts: Counter) -> str:
+    """The proved state(s) present, preferring the audited `PROVED`."""
+    present = [s for s in PROVED_STATES if counts.get(s)]
+    return "/".join(present) if present else "PROVED"
+
 
 def paper_cell(source: str) -> str:
     """The `paper` column: line range plus label, or the guard's own wording."""
@@ -54,7 +65,9 @@ def surface_table(nodes: list[dict]) -> str:
 
 def status_block(nodes: list[dict]) -> str:
     counts = Counter(n["state"] for n in nodes)
-    parts = ", ".join(f"{counts[s]} `{s}`" for s in sorted(counts))
+    proved = sum(counts.get(s, 0) for s in PROVED_STATES)
+    state_label = proved_state_label(counts)
+    frozen = counts["FROZEN"]
     draft = [n["id"] for n in nodes if n["state"] == "DRAFT_SORRY"]
     # State what is actually true.  Claiming a clean axiom closure while a
     # `DRAFT_SORRY` node exists is exactly the drift these blocks exist to stop.
@@ -67,24 +80,20 @@ def status_block(nodes: list[dict]) -> str:
             tail = (f"The remaining {len(draft)} nodes have frozen statements and\n"
                     f"registered `sorry` proofs; the table in `CORRESPONDENCE.md` says\n"
                     f"which.")
-        sealed = counts["SEALED"]
         body = (
-            f"The {sealed} sealed nodes are machine-checked and no\n"
-            f"sealed node's axiom closure contains `sorryAx`.  {tail}")
+            f"The {proved} `{state_label}` nodes are machine-checked and no\n"
+            f"proved node's axiom closure contains `sorryAx`.  {tail}")
     else:
-        sealed = counts["SEALED"]
-        frozen = counts["FROZEN"]
         body = (
-            f"The {sealed} sealed nodes are machine-checked and no sealed node's\n"
-            f"axiom closure contains `sorryAx`.")
+            f"The {proved} `{state_label}` nodes are machine-checked and no proved\n"
+            f"node's axiom closure contains `sorryAx`.")
         if frozen:
             body += (
                 f"  The {frozen} `FROZEN` nodes are cited results, stated in\n"
                 f"`Sandpile/External/` and carried as explicit hypotheses by the theorems\n"
                 f"that use them; they are assumed here, not proved.")
-    sealed, frozen = counts["SEALED"], counts["FROZEN"]
     return (
-        f"Status: **{len(nodes)} registered statements: {sealed} `SEALED`, "
+        f"Status: **{len(nodes)} registered statements: {proved} `{state_label}`, "
         f"proved here, and {frozen} `FROZEN`, cited results that are assumed.**  "
         f"{body}  Run\n"
         f"`python3 tools/check_axioms.py` to confirm.  Counts here are generated\n"

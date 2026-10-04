@@ -389,104 +389,104 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 
 | id | Lean | paper | state |
 |---|---|---|---|
-| `ext-green-bounds-high` | `Sandpile.External.greenBoundsHigh` | external input, Lawler-Limic Theorem 4.3.1 and Lawler Chapter 3, the d at least five estimates of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
-| `ext-variance-scale` | `Sandpile.External.varianceScale` | external input, the finite-time variance scale, membrane correlations and window bounds of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
-| `lem-reflection-increment` | `Sandpile.Frozen.reflection_increment` | `sandpile.tex:899-905`, `lem-reflection-increment` | SEALED |
-| `ext-optimal-stopping` | `Sandpile.External.optimalStopping` | external input, Theorem 3.2 of BPSH, the statement of thm-RW; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
-| `thm-gaussian-upper-proved` | `Sandpile.External.gaussianUpper` | the cited Gaussian upper bound on the heat kernel, proved from the shared library rather than assumed | SEALED |
-| `lem-weighted-exp-conc` | `Sandpile.Frozen.weighted_exp_concentration` | `sandpile.tex:1345-1405`, `lem-weighted-exp-conc` | SEALED |
-| `lem-convex-linear-bound` | `Sandpile.Frozen.convex_linear_bound` | `sandpile.tex:1548-1570`, `lem-convex-linear-bound` | SEALED |
+| `ext-green-bounds-high` | `Sandpile.External.greenBoundsHigh` | external input, Lawler-Limic Theorem 4.3.1 and Lawler Chapter 3, the d at least five estimates of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
+| `ext-variance-scale` | `Sandpile.External.varianceScale` | external input, the finite-time variance scale, membrane correlations and window bounds of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
+| `lem-reflection-increment` | `Sandpile.Frozen.reflection_increment` | `sandpile.tex:899-905`, `lem-reflection-increment` | PROVED |
+| `ext-optimal-stopping` | `Sandpile.External.optimalStopping` | external input, Theorem 3.2 of BPSH, the statement of thm-RW; a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
+| `thm-gaussian-upper-proved` | `Sandpile.External.gaussianUpper` | the cited Gaussian upper bound on the heat kernel, proved from the shared library rather than assumed | PROVED |
+| `lem-weighted-exp-conc` | `Sandpile.Frozen.weighted_exp_concentration` | `sandpile.tex:1345-1405`, `lem-weighted-exp-conc` | PROVED |
+| `lem-convex-linear-bound` | `Sandpile.Frozen.convex_linear_bound` | `sandpile.tex:1548-1570`, `lem-convex-linear-bound` | PROVED |
 | `ext-multivariate-berry-esseen` | `Sandpile.External.MultivariateBerryEsseen` | external input, Raic Theorem 1.1, the multivariate Berry-Esseen comparison used in the proof of thm-critical-toppling | FROZEN |
-| `thm-white-noise-exists` | `Sandpile.Continuum.exists_isWhiteNoise` | the existence of white noise on R^d, proved from the shared library rather than assumed | SEALED |
-| `thm-brownian-exists` | `Sandpile.Continuum.exists_isBrownian` | the existence of Brownian motion on R^d with generator Delta over 2d, proved from the shared library rather than assumed | SEALED |
-| `cor-dgt4-mean-lower` | `Sandpile.Frozen.dgt4_mean_lower` | `sandpile.tex:4326-4341`, `cor-dgt4-mean-lower` | SEALED |
-| `cor-d4-logarithmic-mean-lower` | `Sandpile.Frozen.d4_log_mean_lower` | `sandpile.tex:2998-3005`, `cor-d4-logarithmic-mean-lower` | SEALED |
-| `lem-d4-finite-range-lower-bound` | `Sandpile.Frozen.d4_finite_range_lower_bound` | `sandpile.tex:3950-3958`, `lem-d4-finite-range-lower-bound` | SEALED |
-| `thm-main-explosion-ii-a` | `Sandpile.Frozen.mean_growth_four` | `sandpile.tex:241-244`, `thm:main-explosion` | SEALED |
-| `thm-main-explosion-ii-a-first-order` | `Sandpile.Frozen.four_first_order` | `sandpile.tex:245-246`, `thm:main-explosion` | SEALED |
-| `lem-d4-soft-bottleneck` | `Sandpile.Frozen.d4_soft_bottleneck` | `sandpile.tex:3478-3500`, `lem-d4-soft-bottleneck` | SEALED |
+| `thm-white-noise-exists` | `Sandpile.Continuum.exists_isWhiteNoise` | the existence of white noise on R^d, proved from the shared library rather than assumed | PROVED |
+| `thm-brownian-exists` | `Sandpile.Continuum.exists_isBrownian` | the existence of Brownian motion on R^d with generator Delta over 2d, proved from the shared library rather than assumed | PROVED |
+| `cor-dgt4-mean-lower` | `Sandpile.Frozen.dgt4_mean_lower` | `sandpile.tex:4326-4341`, `cor-dgt4-mean-lower` | PROVED |
+| `cor-d4-logarithmic-mean-lower` | `Sandpile.Frozen.d4_log_mean_lower` | `sandpile.tex:2998-3005`, `cor-d4-logarithmic-mean-lower` | PROVED |
+| `lem-d4-finite-range-lower-bound` | `Sandpile.Frozen.d4_finite_range_lower_bound` | `sandpile.tex:3950-3958`, `lem-d4-finite-range-lower-bound` | PROVED |
+| `thm-main-explosion-ii-a` | `Sandpile.Frozen.mean_growth_four` | `sandpile.tex:241-244`, `thm:main-explosion` | PROVED |
+| `thm-main-explosion-ii-a-first-order` | `Sandpile.Frozen.four_first_order` | `sandpile.tex:245-246`, `thm:main-explosion` | PROVED |
+| `lem-d4-soft-bottleneck` | `Sandpile.Frozen.d4_soft_bottleneck` | `sandpile.tex:3478-3500`, `lem-d4-soft-bottleneck` | PROVED |
 | `ext-exterior-boundary-connected` | `Sandpile.External.ExteriorBoundaryConnected` | sandpile.tex:6600 (Timar Theorem 3, exterior nearest-neighbor boundary connectivity) | FROZEN |
-| `lem-dgt4-blocking-to-crossing` | `Sandpile.Frozen.dgt4_blocking_to_crossing` | `sandpile.tex:6662-6669`, `lem-dgt4-blocking-to-crossing` | SEALED |
+| `lem-dgt4-blocking-to-crossing` | `Sandpile.Frozen.dgt4_blocking_to_crossing` | `sandpile.tex:6662-6669`, `lem-dgt4-blocking-to-crossing` | PROVED |
 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | sandpile.tex:2262-2264 (Kohler-Schindler–Tassion Theorem 1 and Comment 1, planar crossing comparison) | FROZEN |
 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | sandpile.tex:2589,3992 (LSS Corollary 1.4) | FROZEN |
 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion) | FROZEN |
-| `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `sandpile.tex:1083-1099`, `prop-brownian-os` | SEALED |
-| `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `sandpile.tex:1692-1702`, `lem-sobolev-tightness` | SEALED |
-| `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `sandpile.tex:4831-4847`, `lem-dgt4-weighted-last-visits` | SEALED |
+| `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `sandpile.tex:1083-1099`, `prop-brownian-os` | PROVED |
+| `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `sandpile.tex:1692-1702`, `lem-sobolev-tightness` | PROVED |
+| `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `sandpile.tex:4831-4847`, `lem-dgt4-weighted-last-visits` | PROVED |
 | `ext-normal-comparison` | `Sandpile.External.NormalComparison` | sandpile.tex:5536-5543 (LiShao Corollary 2.1 p. 496, normal comparison inequality) | FROZEN |
 | `ext-continuum-rsw` | `Sandpile.External.ContinuumRSW` | sandpile.tex:2218 (KST Theorem 1 and Comment 1, continuum form on a field over a probability space) | FROZEN |
 | `ext-pitt-gaussian-fkg` | `Sandpile.External.PittGaussianFKG` | sandpile.tex:2104 (Pitt Theorem p. 496 Eq. (1), Gaussian FKG) | FROZEN |
-| `ext-gaussian-law-covariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` | sandpile.tex:2137-2138 (the unit-scale field's invariances, which this classical fact supports, namely that a centred Gaussian field is determined in law by its covariance); a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
-| `ext-pinsker` | `Sandpile.External.pinsker` | sandpile.tex:2390 (Pinsker inequality, total variation against relative entropy); a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
+| `ext-gaussian-law-covariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` | sandpile.tex:2137-2138 (the unit-scale field's invariances, which this classical fact supports, namely that a centred Gaussian field is determined in law by its covariance); a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
+| `ext-pinsker` | `Sandpile.External.pinsker` | sandpile.tex:2390 (Pinsker inequality, total variation against relative entropy); a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
 | `ext-cube-stopping-stability` | `Sandpile.External.CubeStoppingStability` | sandpile.tex:1956-1958 and sandpile.tex:1900-1907 (CoquetToldo Theorem 3 and Corollary 4, stability of killed optimal-stopping values) | FROZEN |
 | `ext-gaussian-lipschitz-concentration` | `Sandpile.External.GaussianLipschitzConcentration` | sandpile.tex:5300-5305 (Borell 1975 and Tsirelson-Ibragimov-Sudakov 1976, Gaussian concentration for a Lipschitz functional) | FROZEN |
 | `ext-membrane-scaling-four` | `Sandpile.External.MembraneScalingLimitFour` | external input, Cipriani-Hazra-Ruszel Theorem 2 and Cipriani-Dan-Hazra Theorem 3.11, the scaling limit of the four-dimensional discrete membrane field cited in Step 1 of prop-d4-superdiffusive-limit | FROZEN |
 | `ext-continuum-stopping-stability` | `Sandpile.External.ContinuumStoppingStability` | sandpile.tex:1927-1934 (CoquetToldo Theorem 3 and Corollary 4, stability of optimal-stopping values) | FROZEN |
 | `ext-rellich-kondrachov-negsobolev` | `Sandpile.External.RellichKondrachovNegSobolev` | sandpile.tex:5642-5687 (RellichKondrachov compact Sobolev embedding, cited implicitly in the H-s-loc clause of lem:dgt4-linearization-from-survival) | FROZEN |
 | `ext-ball-occupation-density` | `Sandpile.External.BallOccupationDensity` | sandpile.tex:2101-2115 (the kernel of X_s, in the context of eq:dlt4-linear-gaussian-potential), sandpile.tex:2499-2503 (expected occupation density); Morters-Peres, Brownian Motion, Ch. 3, Green function of a ball, theorem number not verified | FROZEN |
-| `lem-recursion` | `Sandpile.Frozen.odometer_recursion` | `sandpile.tex:817-822`, `lem-recursion` | SEALED |
-| `lem-finite-scale-extraction` | `Sandpile.Frozen.finite_scale_extraction` | `sandpile.tex:2451-2461`, `lem-finite-scale-extraction` | SEALED |
-| `thm-limiting-odometer-crossing` | `Sandpile.Frozen.limiting_odometer_crossing` | sandpile.tex:2542-2557 (thm-limiting-odometer-crossing); the stopping value is evaluated at the continuous heat-potential modification fixed at sandpile.tex:1019-1021, required by the stopped-field comparison at sandpile.tex:2500-2513; ball-field continuity is retained for finite-scale extraction | SEALED |
-| `prop-fixed-scale-crossings` | `Sandpile.Frozen.fixed_scale_crossings` | `sandpile.tex:2157-2164`, `prop-fixed-scale-crossings` | SEALED |
-| `prop-finite-time-concentration-scale` | `Sandpile.Frozen.finite_time_concentration_scale` | `sandpile.tex:1462-1487`, `prop-finite-time-concentration-scale` | SEALED |
-| `ext-heat-kernel-bounds` | `Sandpile.External.heatKernelBounds` | external input, Lawler-Limic Propositions 2.4.1 and 2.4.4 with Hoeffding, the estimates of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
-| `thm-max-displacement-proved` | `Sandpile.External.maxDisplacement` | the cited maximal-displacement estimate, proved from the shared library rather than assumed | SEALED |
+| `lem-recursion` | `Sandpile.Frozen.odometer_recursion` | `sandpile.tex:817-822`, `lem-recursion` | PROVED |
+| `lem-finite-scale-extraction` | `Sandpile.Frozen.finite_scale_extraction` | `sandpile.tex:2451-2461`, `lem-finite-scale-extraction` | PROVED |
+| `thm-limiting-odometer-crossing` | `Sandpile.Frozen.limiting_odometer_crossing` | sandpile.tex:2542-2557 (thm-limiting-odometer-crossing); the stopping value is evaluated at the continuous heat-potential modification fixed at sandpile.tex:1019-1021, required by the stopped-field comparison at sandpile.tex:2500-2513; ball-field continuity is retained for finite-scale extraction | PROVED |
+| `prop-fixed-scale-crossings` | `Sandpile.Frozen.fixed_scale_crossings` | `sandpile.tex:2157-2164`, `prop-fixed-scale-crossings` | PROVED |
+| `prop-finite-time-concentration-scale` | `Sandpile.Frozen.finite_time_concentration_scale` | `sandpile.tex:1462-1487`, `prop-finite-time-concentration-scale` | PROVED |
+| `ext-heat-kernel-bounds` | `Sandpile.External.heatKernelBounds` | external input, Lawler-Limic Propositions 2.4.1 and 2.4.4 with Hoeffding, the estimates of ssec-green-estimates; a cited result, proved unconditionally in this repository from the shared library rather than assumed | PROVED |
+| `thm-max-displacement-proved` | `Sandpile.External.maxDisplacement` | the cited maximal-displacement estimate, proved from the shared library rather than assumed | PROVED |
 | `ext-continuum-besov-tightness` | `Sandpile.External.ContinuumBesovTightness` | sandpile.tex:1703-1707 (FurlanMourrat Theorem 2.30 at p=q=2, covariance form, with the Besov-Sobolev identification) | FROZEN |
-| `thm-rw` | `Sandpile.Frozen.random_walk_representation` | `sandpile.tex:857-863`, `thm-RW` | SEALED |
-| `lem-difference-representation` | `Sandpile.Frozen.difference_representation` | `sandpile.tex:928-936`, `lem-difference-representation` | SEALED |
-| `lem-localization-killing` | `Sandpile.Frozen.localization_killing` | `sandpile.tex:1612-1617`, `lem-localization-killing` | SEALED |
-| `lem-odometer-derivative` | `Sandpile.Frozen.odometer_derivative` | `sandpile.tex:868-881`, `lem-odometer-derivative` | SEALED |
-| `thm-main-explosion-iii-a` | `Sandpile.Frozen.high_first_order` | `sandpile.tex:263-265`, `thm:main-explosion` | SEALED |
-| `thm-main-explosion-iii-b` | `Sandpile.Frozen.high_tail` | `sandpile.tex:266-273`, `thm:main-explosion` | SEALED |
-| `thm-main-explosion-ii-c` | `Sandpile.Frozen.four_sobolev` | `sandpile.tex:254-258`, `thm:main-explosion` | SEALED |
-| `ext-intersection-second-moment` | `Sandpile.External.intersectionSecondMoment` | `sandpile.tex:1319-1324`, `eq-dgt4-intersection-second-moment` | SEALED |
-| `cor-mean-localization` | `Sandpile.Frozen.mean_localization` | `sandpile.tex:1624-1634`, `cor-mean-localization` | SEALED |
-| `prop-d4-diffusive-tightness` | `Sandpile.Frozen.d4_diffusive_tightness` | `sandpile.tex:3317-3324`, `prop-d4-diffusive-tightness` | SEALED |
-| `thm-critical-toppling` | `Sandpile.Frozen.critical_toppling` | `sandpile.tex:1730-1748`, `thm-critical-toppling` | SEALED |
-| `cor-critical-mean-one` | `Sandpile.Frozen.critical_mean_one` | `sandpile.tex:1820-1826`, `cor-critical-mean-one` | SEALED |
-| `lem-d4-difference-tail` | `Sandpile.Frozen.d4_difference_tail` | `sandpile.tex:3029-3042`, `lem-d4-difference-tail` | SEALED |
-| `prop-d4-pointwise-linearization` | `Sandpile.Frozen.d4_pointwise_linearization` | `sandpile.tex:3087-3102`, `prop-d4-pointwise-linearization` | SEALED |
-| `thm-critical-toppling-d4` | `Sandpile.Frozen.critical_toppling_d4` | `sandpile.tex:2719-2748`, `thm-critical-toppling-d4` | SEALED |
-| `prop-d4-superdiffusive-limit` | `Sandpile.Frozen.d4_superdiffusive_limit` | `sandpile.tex:3356-3364`, `prop-d4-superdiffusive-limit` | SEALED |
-| `lem-dgt4-cascade` | `Sandpile.Frozen.dgt4_cascade` | `sandpile.tex:6570-6579`, `lem-dgt4-cascade` | SEALED |
-| `prop-dgt4-contact-asymptotics` | `Sandpile.Frozen.dgt4_contact_asymptotics` | `sandpile.tex:4894-4896`, `prop-dgt4-contact-asymptotics` | SEALED |
-| `lem-dgt4-stretched-green-scenery-tail` | `Sandpile.Frozen.dgt4_green_scenery_tail` | `sandpile.tex:4412-4429`, `lem-dgt4-stretched-green-scenery-tail` | SEALED |
-| `thm-dgt4-height-lower` | `Sandpile.Frozen.dgt4_height_lower` | `sandpile.tex:4195-4218`, `thm-dgt4-height-lower` | SEALED |
-| `prop-dgt4-height-lower-stretched` | `Sandpile.Frozen.dgt4_height_lower_stretched` | `sandpile.tex:4366-4377`, `prop-dgt4-height-lower-stretched` | SEALED |
-| `thm-dgt4-height-upper-tail` | `Sandpile.Frozen.dgt4_height_upper_tail` | `sandpile.tex:4528-4539`, `thm-dgt4-height-upper-tail` | SEALED |
-| `lem-dgt4-level-shift-decoupling` | `Sandpile.Frozen.dgt4_level_shift_decoupling` | `sandpile.tex:6499-6513`, `lem-dgt4-level-shift-decoupling` | SEALED |
-| `lem-dgt4-linearization-from-survival` | `Sandpile.Frozen.dgt4_linearization_from_survival` | `sandpile.tex:5686-5731`, `lem-dgt4-linearization-from-survival` | SEALED |
-| `prop-dgt4-linearization` | `Sandpile.Frozen.dgt4_linearization` | `sandpile.tex:4809-4825`, `prop-dgt4-linearization` | SEALED |
-| `lem-dgt4-localization` | `Sandpile.Frozen.dgt4_localization` | `sandpile.tex:6451-6462`, `lem-dgt4-localization` | SEALED |
-| `thm-dgt4-nontriviality` | `Sandpile.Frozen.dgt4_nontriviality` | `sandpile.tex:6699-6721`, `thm-dgt4-nontriviality` | SEALED |
-| `lem-dgt4-origin-frozen` | `Sandpile.Frozen.dgt4_origin_frozen` | `sandpile.tex:4909-4945`, `lem-dgt4-origin-frozen` | SEALED |
-| `lem-dgt4-path-survival` | `Sandpile.Frozen.dgt4_path_survival` | `sandpile.tex:5540-5557`, `lem-dgt4-path-survival` | SEALED |
-| `lem-dgt4-smoothed-odometer-tail` | `Sandpile.Frozen.dgt4_smoothed_odometer_tail` | `sandpile.tex:4488-4499`, `lem-dgt4-smoothed-odometer-tail` | SEALED |
-| `ext-paired-local-clt-four` | `Sandpile.External.pairedLocalCLTFour` | sandpile.tex:1145-1172 (LawlerLimic Theorem 2.1.3 Eq. (2.8), paired dimension-four estimate); proved outright from the Fourier-inversion and Gaussian-comparison lemmas | SEALED |
-| `ext-local-clt` | `Sandpile.External.localCLT` | external input, Lawler-Limic Theorem 2.1.3 Eq. (2.8), the local central limit theorem of ssec-green-estimates; proved outright from the Fourier-inversion parity decomposition and Gaussian comparison | SEALED |
-| `ext-ball-green-bounds` | `Sandpile.External.ballGreenBounds` | external input, Lawler-Limic Theorem 4.3.1 and Chapter 6, the ball-killed estimates of ssec-green-estimates; proved outright from the Green-function asymptotic, killed-walk energy estimates, and annular summation | SEALED |
-| `thm-dgt4-many-limits` | `Sandpile.Frozen.dgt4_many_limits` | `sandpile.tex:5971-5999`, `thm-dgt4-many-limits` | SEALED |
-| `thm-d23-critical-level-percolation` | `Sandpile.Frozen.d23_critical_level_percolation` | `sandpile.tex:2596-2611`, `thm-d23-critical-level-percolation` | SEALED |
-| `prop-continuum-value-selfsimilar` | `Sandpile.Frozen.continuum_value_self_similar` | `sandpile.tex:1989-2008`, `prop-continuum-value-selfsimilar` | SEALED |
-| `thm-main-explosion-i-b` | `Sandpile.Frozen.brownian_scaling_limit` | `sandpile.tex:216-236`, `thm-main-explosion` | SEALED |
-| `lem-d4-double-heat-kernel` | `Sandpile.Frozen.d4_double_heat_kernel` | `sandpile.tex:1164-1169`, `lem-d4-double-heat-kernel` | SEALED |
-| `thm-dgt4-diffusive-membrane` | `Sandpile.Frozen.dgt4_diffusive_membrane` | `sandpile.tex:4687-4710`, `thm-dgt4-diffusive-membrane` | SEALED |
-| `prop-dlt4-heat-potential-invariance` | `Sandpile.Frozen.heat_potential_invariance` | `sandpile.tex:1869-1876`, `prop-dlt4-heat-potential-invariance` | SEALED |
-| `thm-main-explosion-i-a` | `Sandpile.Frozen.mean_growth_le_three` | `sandpile.tex:213-215`, `thm:main-explosion` | SEALED |
-| `cor-dlt4-mean-asymptotic` | `Sandpile.Frozen.dlt4_mean_asymptotic` | `sandpile.tex:2068-2086`, `cor-dlt4-mean-asymptotic` | SEALED |
-| `thm-main-explosion-iii-d` | `Sandpile.Frozen.high_nonconvergence` | `sandpile.tex:286-293`, `thm-main-explosion` | SEALED |
-| `prop-weighted-membrane-limit` | `Sandpile.Frozen.weighted_membrane_limit` | `sandpile.tex:4763-4774`, `prop-weighted-membrane-limit` | SEALED |
-| `rem-dlt4-killed-scaling` | `Sandpile.Frozen.dlt4_killed_scaling` | `sandpile.tex:1957-1984`, `rem-dlt4-killed-scaling` | SEALED |
-| `thm-main-explosion-iii-c` | `Sandpile.Frozen.high_sobolev_limit` | `sandpile.tex:274-285`, `thm-main-explosion` | SEALED |
-| `prop-d4-one-point-gaussian` | `Sandpile.Frozen.d4_one_point_gaussian` | `sandpile.tex:3270-3283`, `prop-d4-one-point-gaussian` | SEALED |
-| `thm-main-explosion-ii-b` | `Sandpile.Frozen.four_gaussian` | `sandpile.tex:247-253`, `thm-main-explosion` | SEALED |
-| `thm-main-nontriviality` | `Sandpile.Frozen.percolation_below_criticality` | `sandpile.tex:95-103`, `thm-main-nontriviality` | SEALED |
-| `thm-main-critical-level-percolation` | `Sandpile.Frozen.critical_level_percolation` | `sandpile.tex:113-126`, `thm-main-critical-level-percolation` | SEALED |
-| `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `sandpile.tex:3575-3596`, `thm:d4-ball-green-crossing` | SEALED |
-| `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `sandpile.tex:3974-3985`, `lem-d4-exit-average-concentration` | SEALED |
-| `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `sandpile.tex:4023-4039`, `thm:d4-critical-level-percolation` | SEALED |
+| `thm-rw` | `Sandpile.Frozen.random_walk_representation` | `sandpile.tex:857-863`, `thm-RW` | PROVED |
+| `lem-difference-representation` | `Sandpile.Frozen.difference_representation` | `sandpile.tex:928-936`, `lem-difference-representation` | PROVED |
+| `lem-localization-killing` | `Sandpile.Frozen.localization_killing` | `sandpile.tex:1612-1617`, `lem-localization-killing` | PROVED |
+| `lem-odometer-derivative` | `Sandpile.Frozen.odometer_derivative` | `sandpile.tex:868-881`, `lem-odometer-derivative` | PROVED |
+| `thm-main-explosion-iii-a` | `Sandpile.Frozen.high_first_order` | `sandpile.tex:263-265`, `thm:main-explosion` | PROVED |
+| `thm-main-explosion-iii-b` | `Sandpile.Frozen.high_tail` | `sandpile.tex:266-273`, `thm:main-explosion` | PROVED |
+| `thm-main-explosion-ii-c` | `Sandpile.Frozen.four_sobolev` | `sandpile.tex:254-258`, `thm:main-explosion` | PROVED |
+| `ext-intersection-second-moment` | `Sandpile.External.intersectionSecondMoment` | `sandpile.tex:1319-1324`, `eq-dgt4-intersection-second-moment` | PROVED |
+| `cor-mean-localization` | `Sandpile.Frozen.mean_localization` | `sandpile.tex:1624-1634`, `cor-mean-localization` | PROVED |
+| `prop-d4-diffusive-tightness` | `Sandpile.Frozen.d4_diffusive_tightness` | `sandpile.tex:3317-3324`, `prop-d4-diffusive-tightness` | PROVED |
+| `thm-critical-toppling` | `Sandpile.Frozen.critical_toppling` | `sandpile.tex:1730-1748`, `thm-critical-toppling` | PROVED |
+| `cor-critical-mean-one` | `Sandpile.Frozen.critical_mean_one` | `sandpile.tex:1820-1826`, `cor-critical-mean-one` | PROVED |
+| `lem-d4-difference-tail` | `Sandpile.Frozen.d4_difference_tail` | `sandpile.tex:3029-3042`, `lem-d4-difference-tail` | PROVED |
+| `prop-d4-pointwise-linearization` | `Sandpile.Frozen.d4_pointwise_linearization` | `sandpile.tex:3087-3102`, `prop-d4-pointwise-linearization` | PROVED |
+| `thm-critical-toppling-d4` | `Sandpile.Frozen.critical_toppling_d4` | `sandpile.tex:2719-2748`, `thm-critical-toppling-d4` | PROVED |
+| `prop-d4-superdiffusive-limit` | `Sandpile.Frozen.d4_superdiffusive_limit` | `sandpile.tex:3356-3364`, `prop-d4-superdiffusive-limit` | PROVED |
+| `lem-dgt4-cascade` | `Sandpile.Frozen.dgt4_cascade` | `sandpile.tex:6570-6579`, `lem-dgt4-cascade` | PROVED |
+| `prop-dgt4-contact-asymptotics` | `Sandpile.Frozen.dgt4_contact_asymptotics` | `sandpile.tex:4894-4896`, `prop-dgt4-contact-asymptotics` | PROVED |
+| `lem-dgt4-stretched-green-scenery-tail` | `Sandpile.Frozen.dgt4_green_scenery_tail` | `sandpile.tex:4412-4429`, `lem-dgt4-stretched-green-scenery-tail` | PROVED |
+| `thm-dgt4-height-lower` | `Sandpile.Frozen.dgt4_height_lower` | `sandpile.tex:4195-4218`, `thm-dgt4-height-lower` | PROVED |
+| `prop-dgt4-height-lower-stretched` | `Sandpile.Frozen.dgt4_height_lower_stretched` | `sandpile.tex:4366-4377`, `prop-dgt4-height-lower-stretched` | PROVED |
+| `thm-dgt4-height-upper-tail` | `Sandpile.Frozen.dgt4_height_upper_tail` | `sandpile.tex:4528-4539`, `thm-dgt4-height-upper-tail` | PROVED |
+| `lem-dgt4-level-shift-decoupling` | `Sandpile.Frozen.dgt4_level_shift_decoupling` | `sandpile.tex:6499-6513`, `lem-dgt4-level-shift-decoupling` | PROVED |
+| `lem-dgt4-linearization-from-survival` | `Sandpile.Frozen.dgt4_linearization_from_survival` | `sandpile.tex:5686-5731`, `lem-dgt4-linearization-from-survival` | PROVED |
+| `prop-dgt4-linearization` | `Sandpile.Frozen.dgt4_linearization` | `sandpile.tex:4809-4825`, `prop-dgt4-linearization` | PROVED |
+| `lem-dgt4-localization` | `Sandpile.Frozen.dgt4_localization` | `sandpile.tex:6451-6462`, `lem-dgt4-localization` | PROVED |
+| `thm-dgt4-nontriviality` | `Sandpile.Frozen.dgt4_nontriviality` | `sandpile.tex:6699-6721`, `thm-dgt4-nontriviality` | PROVED |
+| `lem-dgt4-origin-frozen` | `Sandpile.Frozen.dgt4_origin_frozen` | `sandpile.tex:4909-4945`, `lem-dgt4-origin-frozen` | PROVED |
+| `lem-dgt4-path-survival` | `Sandpile.Frozen.dgt4_path_survival` | `sandpile.tex:5540-5557`, `lem-dgt4-path-survival` | PROVED |
+| `lem-dgt4-smoothed-odometer-tail` | `Sandpile.Frozen.dgt4_smoothed_odometer_tail` | `sandpile.tex:4488-4499`, `lem-dgt4-smoothed-odometer-tail` | PROVED |
+| `ext-paired-local-clt-four` | `Sandpile.External.pairedLocalCLTFour` | sandpile.tex:1145-1172 (LawlerLimic Theorem 2.1.3 Eq. (2.8), paired dimension-four estimate); proved outright from the Fourier-inversion and Gaussian-comparison lemmas | PROVED |
+| `ext-local-clt` | `Sandpile.External.localCLT` | external input, Lawler-Limic Theorem 2.1.3 Eq. (2.8), the local central limit theorem of ssec-green-estimates; proved outright from the Fourier-inversion parity decomposition and Gaussian comparison | PROVED |
+| `ext-ball-green-bounds` | `Sandpile.External.ballGreenBounds` | external input, Lawler-Limic Theorem 4.3.1 and Chapter 6, the ball-killed estimates of ssec-green-estimates; proved outright from the Green-function asymptotic, killed-walk energy estimates, and annular summation | PROVED |
+| `thm-dgt4-many-limits` | `Sandpile.Frozen.dgt4_many_limits` | `sandpile.tex:5971-5999`, `thm-dgt4-many-limits` | PROVED |
+| `thm-d23-critical-level-percolation` | `Sandpile.Frozen.d23_critical_level_percolation` | `sandpile.tex:2596-2611`, `thm-d23-critical-level-percolation` | PROVED |
+| `prop-continuum-value-selfsimilar` | `Sandpile.Frozen.continuum_value_self_similar` | `sandpile.tex:1989-2008`, `prop-continuum-value-selfsimilar` | PROVED |
+| `thm-main-explosion-i-b` | `Sandpile.Frozen.brownian_scaling_limit` | `sandpile.tex:216-236`, `thm-main-explosion` | PROVED |
+| `lem-d4-double-heat-kernel` | `Sandpile.Frozen.d4_double_heat_kernel` | `sandpile.tex:1164-1169`, `lem-d4-double-heat-kernel` | PROVED |
+| `thm-dgt4-diffusive-membrane` | `Sandpile.Frozen.dgt4_diffusive_membrane` | `sandpile.tex:4687-4710`, `thm-dgt4-diffusive-membrane` | PROVED |
+| `prop-dlt4-heat-potential-invariance` | `Sandpile.Frozen.heat_potential_invariance` | `sandpile.tex:1869-1876`, `prop-dlt4-heat-potential-invariance` | PROVED |
+| `thm-main-explosion-i-a` | `Sandpile.Frozen.mean_growth_le_three` | `sandpile.tex:213-215`, `thm:main-explosion` | PROVED |
+| `cor-dlt4-mean-asymptotic` | `Sandpile.Frozen.dlt4_mean_asymptotic` | `sandpile.tex:2068-2086`, `cor-dlt4-mean-asymptotic` | PROVED |
+| `thm-main-explosion-iii-d` | `Sandpile.Frozen.high_nonconvergence` | `sandpile.tex:286-293`, `thm-main-explosion` | PROVED |
+| `prop-weighted-membrane-limit` | `Sandpile.Frozen.weighted_membrane_limit` | `sandpile.tex:4763-4774`, `prop-weighted-membrane-limit` | PROVED |
+| `rem-dlt4-killed-scaling` | `Sandpile.Frozen.dlt4_killed_scaling` | `sandpile.tex:1957-1984`, `rem-dlt4-killed-scaling` | PROVED |
+| `thm-main-explosion-iii-c` | `Sandpile.Frozen.high_sobolev_limit` | `sandpile.tex:274-285`, `thm-main-explosion` | PROVED |
+| `prop-d4-one-point-gaussian` | `Sandpile.Frozen.d4_one_point_gaussian` | `sandpile.tex:3270-3283`, `prop-d4-one-point-gaussian` | PROVED |
+| `thm-main-explosion-ii-b` | `Sandpile.Frozen.four_gaussian` | `sandpile.tex:247-253`, `thm-main-explosion` | PROVED |
+| `thm-main-nontriviality` | `Sandpile.Frozen.percolation_below_criticality` | `sandpile.tex:95-103`, `thm-main-nontriviality` | PROVED |
+| `thm-main-critical-level-percolation` | `Sandpile.Frozen.critical_level_percolation` | `sandpile.tex:113-126`, `thm-main-critical-level-percolation` | PROVED |
+| `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `sandpile.tex:3575-3596`, `thm:d4-ball-green-crossing` | PROVED |
+| `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `sandpile.tex:3974-3985`, `lem-d4-exit-average-concentration` | PROVED |
+| `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `sandpile.tex:4023-4039`, `thm:d4-critical-level-percolation` | PROVED |
 | `ext-brownian-exit-step` | `Sandpile.External.BrownianExitStep` | sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16 | FROZEN |
-| `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | SEALED |
-| `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | SEALED |
+| `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
+| `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
 
 <!-- FROZEN-SURFACE-END -->

@@ -23,6 +23,8 @@ try:
 except ImportError:
     sys.exit("certificate.py: PyYAML is required (pip install pyyaml)")
 
+from sync_docs import PROVED_STATES, proved_state_label
+
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "ledger" / "manifest.yaml"
 OUT = ROOT / "CERTIFICATE.md"
@@ -83,6 +85,9 @@ def build() -> str:
     manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
     nodes = manifest["nodes"]
     exports = [n["export"] for n in nodes]
+    proved = sum(n["state"] in PROVED_STATES for n in nodes)
+    state_label = proved_state_label(
+        {s: sum(n["state"] == s for n in nodes) for s in PROVED_STATES})
 
     r = run(["lake", "build", "Sandpile"], timeout=7200)
     jobs = re.search(r"Build completed successfully \((\d+) jobs\)", r.stdout)
@@ -113,7 +118,7 @@ def build() -> str:
     _ext = [n for n in nodes if n["file"].startswith("Sandpile/External/")]
     _assumed = [n for n in _ext if n["state"] == "FROZEN"]
     A(f"Every theorem, lemma, proposition and corollary of the paper is stated in")
-    A(f"Lean 4: {len(_paper)} nodes, all `SEALED`, proved from Mathlib and the shared")
+    A(f"Lean 4: {len(_paper)} nodes, all `{state_label}`, proved from Mathlib and the shared")
     A(f"library Lattice-Probability.  No node contains a `sorry` and none adds an")
     A(f"axiom.")
     A("")
@@ -172,9 +177,8 @@ def build() -> str:
         A(f"| {i} | `{n['id']}` | `{e}` | {paper_cell} | {verdict} |")
     A("")
     A(f"{clean} of {len(nodes)} nodes depend on nothing beyond the three classical")
-    n_sealed = sum(1 for n in nodes if n["state"] == "SEALED")
     n_frozen = sum(1 for n in nodes if n["state"] == "FROZEN")
-    A(f"axioms.  In `ledger/manifest.yaml`, {n_sealed} nodes are `SEALED` and {n_frozen} are")
+    A(f"axioms.  In `ledger/manifest.yaml`, {proved} nodes are `{state_label}` and {n_frozen} are")
     A("`FROZEN` (the assumed cited results).")
     A("")
     A("## Frozen statements")

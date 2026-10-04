@@ -102,6 +102,34 @@ single scratch module; each export resolved exactly once and every closure was
 `{propext, Classical.choice, Quot.sound}`. For all 20 batch nodes the output line
 is `clean <node-id>`.
 
+A second, targeted probe (`lake env lean` on a file importing only the 20 batch
+modules, run 2026-10-04) printed the exact closure of each export:
+
+```
+'Sandpile.External.varianceScale'                    depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.greenBoundsHigh'                  depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.optimalStopping'                  depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.gaussianUpper'                    depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.maxDisplacement'                  depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.heatKernelBounds'                 depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.gaussianLawDeterminedByCovariance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.pinsker'                          depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.localCLT'                         depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.pairedLocalCLTFour'               depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.intersectionSecondMoment'         depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.External.ballGreenBounds'                  depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Continuum.exists_isWhiteNoise'             depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Continuum.exists_isBrownian'               depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.reflection_increment'               depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.weighted_exp_concentration'         depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.convex_linear_bound'                depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.odometer_recursion'                 depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.finite_time_concentration_scale'    depends on axioms: [propext, Classical.choice, Quot.sound]
+'Sandpile.Frozen.d4_double_heat_kernel'              depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+Each closure is **exactly** the three standard axioms, as required.
+
 ### Build reproducibility note
 
 The first `lake build Sandpile` (log `/tmp/sandpile_build.log`) reported eight

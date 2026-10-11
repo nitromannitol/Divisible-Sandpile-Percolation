@@ -250,7 +250,7 @@ The certificate of the build and of each node's axiom closure is
   axiom dependencies, and `python3 tools/check_axioms.py` checks the axiom
   closure of every registered statement.  The `Axiom audit` step of the CI
   workflow [`.github/workflows/build.yml`](.github/workflows/build.yml), which
-  runs on request, builds that module and fails on any warning or `sorry`.  The
+  runs on relevant changes to `main` or by manual dispatch, builds that module and fails on any warning or `sorry`.  The
   cited results above are hypotheses, not axioms.
 - **Pinned statements.**  Every registered statement is pinned by the SHA-256 of
   its text in [`ledger/manifest.yaml`](ledger/manifest.yaml), checked by
@@ -284,7 +284,7 @@ The certificate of the build and of each node's axiom closure is
   proof reduces to the three standard axioms; it passes on all twelve pairs,
   with the Lean kernel and with the independent nanoda kernel.  The workflow
   [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml) runs the
-  same check on request.  The comparator itself checks each solution statement
+  same check on relevant changes to `main` or by manual dispatch.  The comparator itself checks each solution statement
   against its challenge and the dependency closure against Mathlib.  See
   [`SandpileAudit/README.md`](SandpileAudit/README.md) and
   [`SandpileAudit/COMPARATOR_RUNS.md`](SandpileAudit/COMPARATOR_RUNS.md).

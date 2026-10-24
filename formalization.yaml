@@ -37,7 +37,7 @@ sources:
       theorem, lemma, proposition and corollary is formalized; see
       status.scope for the scope boundary and fidelity.divergences for the
       differences in form.
-    license: ""                 # TODO(author): the license under which the paper is posted
+    license: "arXiv non-exclusive distribution license 1.0"
     author_contacted: "n/a"     # the formalizer is an author of the source
     prior_work: ""
 

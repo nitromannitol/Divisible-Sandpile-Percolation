@@ -337,7 +337,6 @@ manifest, the paper and the Lean sources.
 | `python3 tools/check_coverage.py` | every labelled theorem, lemma, proposition and corollary of `paper/sandpile.tex` is named in the `source` of some manifest node |
 | `python3 tools/check_clauses.py` | compares the assertion count of each paper statement with the conjunct count of its Lean statement, and requires a recorded reading of every node |
 | `python3 tools/check_exponents.py` | compares the exponents written in a paper statement with those in its Lean statement and the definitions it names |
-| `python3 tools/check_progress.py` | counts the open holes in the tree against the baseline in `ledger/holes.json` |
 
 Also in `tools/`: `paper_anchors.py` and `paper_citations.py` check the
 `sandpile.tex:<lines>` ranges in the manifest and in the Lean docstrings
@@ -375,7 +374,6 @@ ASSUMPTIONS.md        the cited results assumed, with their Lean statements (gen
 CORRESPONDENCE.md     paper ↔ Lean, node by node
 CERTIFICATE.md        generated record of the toolchain, the build and each node's axiom closure
 ledger/manifest.yaml  one row per registered statement: hash, paper source, state
-ledger/holes.json     the open-hole baseline of tools/check_progress.py
 paper/sandpile.tex    the paper, pinned by the SHA-256 in ledger/manifest.yaml
 paper/sandpile-arxiv.tex  the unmodified arXiv source (paper/arxiv/: its bibliography and figures)
 paper/CHANGES_FROM_ARXIV.md  the differences between the two
@@ -387,7 +385,11 @@ CITATION.cff, formalization.yaml, CONTRIBUTING.md, LICENSE
 
 ## How this was built
 
-The Lean code was written by AI coding agents under the close supervision of the author; the models, tooling and cost are disclosed in [`formalization.yaml`](formalization.yaml).
+The Lean code was written with AI assistance, using models from Anthropic (Claude) and
+DeepSeek, under the direction of the author. Every proof is checked by the Lean kernel. The
+models, tooling, cost and review status are disclosed in [`formalization.yaml`](formalization.yaml),
+following the [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml)
+standard.
 
 ## Authors, citation, acknowledgements
 

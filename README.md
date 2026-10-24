@@ -1,19 +1,21 @@
-# Divisible-Sandpile-Percolation
+# Quantitative explosion and percolation of the divisible sandpile
 
 A machine-checked **Lean 4** formalization of the paper
-[*Quantitative explosion and percolation of the divisible sandpile*](https://arxiv.org/abs/2609.02829)
-(Ahmed Bou-Rabee and Christoforos Panagiotis, arXiv:2609.02829), built on
-[`mathlib`](https://github.com/leanprover-community/mathlib4) and the shared
-library [`Lattice-Probability`](https://github.com/nitromannitol/Lattice-Probability)
-(`LatticeProb`).
+
+> Ahmed Bou-Rabee and Christoforos Panagiotis,
+> [*Quantitative explosion and percolation of the divisible sandpile*](https://arxiv.org/abs/2609.02829),
+> arXiv:2609.02829.
+
+The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and the shared library
+[Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability) (`LatticeProb`).
 
 Every labelled theorem, lemma, proposition and corollary of the paper is stated
 and proved in Lean.  Sixteen results that the paper quotes from the literature
 are not proved here; each is stated as a proposition and carried as an explicit
 hypothesis by every theorem that uses it.
 
-[![CI](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml/badge.svg)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml)
-[![Comparator audit](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml/badge.svg)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml)
+[![CI](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/build.yml)
+[![Comparator audit](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml/badge.svg?branch=main)](https://github.com/nitromannitol/Divisible-Sandpile-Percolation/actions/workflows/comparator.yml)
 
 ## What is proved
 

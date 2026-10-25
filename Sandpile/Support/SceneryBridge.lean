@@ -63,7 +63,7 @@ theorem map_scenery_centeredMassLaw (d : ℕ) (ν : Measure ℝ) [IsProbabilityM
 
 /-- The scenery is a measurable map of the mass field. -/
 theorem measurable_scenery (d : ℕ) : Measurable (scenery (d := d)) := by
-  refine measurable_pi_lambda _ fun x => ?_
+  refine measurable_pi_iff.mpr fun x => ?_
   exact ((measurable_pi_apply x).sub measurable_const).div_const _
 
 /-- Any event of the scenery has the same probability under the mass law as under

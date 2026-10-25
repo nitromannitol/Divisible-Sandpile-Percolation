@@ -1,7 +1,7 @@
 module
 
 public import Mathlib
-public import Sandpile.MainTheorems
+public import Sandpile.Frozen.MeanGrowthFour
 public import SandpileAudit.MeanGrowthFour.SolutionBasic
 public import SandpileAudit.Support.MeanGrowthFourBridge
 
@@ -13,7 +13,7 @@ public import SandpileAudit.Support.MeanGrowthFourBridge
 The challenge module `SandpileAudit/MeanGrowthFour/Challenge.lean` imports only Mathlib and states
 the theorem with one intentional `sorry`.  This solution imports the repository together with
 `SandpileAudit.MeanGrowthFour.SolutionBasic`, a verbatim copy of the challenge's vocabulary, and
-proves the byte-identical statement from `Sandpile.mean_growth_four` through the bridges in
+proves the byte-identical statement from `Sandpile.Frozen.mean_growth_four`, the same theorem used by the public wrapper, through the bridges in
 `SandpileAudit/Support/MeanGrowthFourBridge.lean`.
 -/
 
@@ -31,6 +31,6 @@ theorem mean_growth_four
       c * Real.log t ≤ meanOdometer (centeredMassLaw 4 ν) t ∧
         meanOdometer (centeredMassLaw 4 ν) t ≤ C * Real.log t := by
   rw [Bridge.meanOdometer_eq]
-  exact Sandpile.mean_growth_four ν hprob hmean hvar hvar' θ₀ hθ₀ hexp
+  exact Sandpile.Frozen.mean_growth_four ν hprob hmean hvar hvar' θ₀ hθ₀ hexp
 
 end SandpileAudit

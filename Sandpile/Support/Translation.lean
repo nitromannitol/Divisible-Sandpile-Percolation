@@ -28,7 +28,7 @@ def shiftField (y : Site d) (σ : Site d → ℝ) : Site d → ℝ := fun z => �
 
 /-- `shiftField y` is measurable, as a coordinate relabelling of `Site d → ℝ`. -/
 theorem measurable_shiftField (y : Site d) : Measurable (shiftField (d := d) y) :=
-  measurable_pi_lambda _ fun _ => measurable_pi_apply _
+  measurable_pi_iff.mpr fun _ => measurable_pi_apply _
 
 /-- The odometer commutes with translation. -/
 theorem odometer_shiftField (σ : Site d → ℝ) (y : Site d) :

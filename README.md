@@ -292,7 +292,7 @@ The certificate of the build and of each node's axiom closure is
   [`SandpileAudit/COMPARATOR_RUNS.md`](SandpileAudit/COMPARATOR_RUNS.md).
 - **Pinned toolchain.**  Lean `v4.35.0-rc2`, `mathlib` at revision
   `065356127b1dc0016f66b7283ce0ce2c4055aa55` and `Lattice-Probability` at commit
-  `f5e0412c1b144ea3f341d0dd64d66e9defe53b19`, recorded in
+  `e3c318679e1f9d8a08ebd7159b0281962b19943c`, recorded in
   [`lean-toolchain`](lean-toolchain), [`lakefile.lean`](lakefile.lean) and
   [`lake-manifest.json`](lake-manifest.json).
 
@@ -428,3 +428,7 @@ to the selected toolchain; mathematical definitions and frozen statements are
 retained. The selected Challenge retains every vocabulary declaration: only blank
 lines and introductory comment wrapping are reduced to meet the source line cap.
 Verification and registration of other comparator configurations are separate.
+
+Existing product-measurability and ergodicity proof calls use the corresponding
+current Mathlib lemmas, retaining their original maps and hypotheses. The selected
+preflight scope is its unchanged Challenge; other configurations are separate.

@@ -61,7 +61,7 @@ variable {d : ℕ}
 /-- `walkPath x`, the walk started at `x` as a function of its increment sequence, is measurable:
 each coordinate is a finite sum of measurable coordinate projections. -/
 theorem measurable_walkPath (x : Site d) : Measurable (walkPath x) := by
-  refine measurable_pi_lambda _ fun k => ?_
+  refine measurable_pi_iff.mpr fun k => ?_
   unfold walkPath
   fun_prop
 

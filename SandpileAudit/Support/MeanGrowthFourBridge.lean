@@ -1,7 +1,7 @@
 module
 
 public import Mathlib
-public import Sandpile.MainTheorems
+public import Sandpile.Frozen.MeanGrowthFour
 public import SandpileAudit.MeanGrowthFour.SolutionBasic
 
 @[expose] public section

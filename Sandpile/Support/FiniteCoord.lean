@@ -98,7 +98,7 @@ theorem siteExtend_update (s : Finset (Site d)) (ξ : Fin s.card → ℝ)
 `z ∈ s`) or the constant `0` (otherwise), and `measurable_pi_lambda` reduces to these cases. -/
 theorem measurable_siteExtend (s : Finset (Site d)) : Measurable (siteExtend s) := by
   classical
-  refine measurable_pi_lambda _ fun z => ?_
+  refine measurable_pi_iff.mpr fun z => ?_
   by_cases hz : z ∈ s
   · simp only [siteExtend, hz, dif_pos]
     exact measurable_pi_apply _

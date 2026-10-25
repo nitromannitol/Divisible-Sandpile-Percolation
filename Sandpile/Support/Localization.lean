@@ -326,7 +326,7 @@ theorem afterExit_shift (s : Finset (Site d)) (ζ : Site d → ℝ)
 /-- `gluePath k` is measurable as a function of the pair of paths it glues together. -/
 theorem measurable_gluePath (k : ℕ) :
     Measurable fun p : (ℕ → Site d) × (ℕ → Site d) => gluePath k p.1 p.2 := by
-  refine measurable_pi_lambda _ fun j => ?_
+  refine measurable_pi_iff.mpr fun j => ?_
   unfold gluePath
   by_cases h : j ≤ k
   · simp only [if_pos h]

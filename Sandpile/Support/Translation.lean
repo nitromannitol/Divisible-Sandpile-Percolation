@@ -154,7 +154,7 @@ theorem scenery_integrable_and_mean (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ)
     positivity
   set g : ℝ → ℝ := fun z => 1 + 2 * (d : ℝ) * z with hg
   haveI : IsProbabilityMeasure (ν.map g) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    (Measure.isProbabilityMeasure_map_iff (by fun_prop)).2 inferInstance
   have hcoord : (centeredMassLaw d ν).map (fun σ : Site d → ℝ => σ 0) = ν.map g := by
     unfold centeredMassLaw massLaw LatticeProb.iidLaw
     exact Measure.infinitePi_map_eval _ 0

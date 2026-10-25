@@ -1,5 +1,9 @@
-import Sandpile.Support.GridReachability
-import Sandpile.Support.GridRectangle
+module
+
+public import Sandpile.Support.GridReachability
+public import Sandpile.Support.GridRectangle
+
+@[expose] public section
 
 /-!
 # Open paths from an extended grid to a lattice rectangle

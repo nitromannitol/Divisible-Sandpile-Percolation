@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Membrane
+module
+
+public import Sandpile.Continuum.Membrane
+
+@[expose] public section
 
 /-!
 # Nonconvergence from Two Distinct Gaussian Subsequential Limits

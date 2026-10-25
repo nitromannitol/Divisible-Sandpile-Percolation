@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandLawLower
-import Sandpile.Support.Dgt4ABandIntegrated
+module
+
+public import Sandpile.Support.Dgt4ABandLawLower
+public import Sandpile.Support.Dgt4ABandIntegrated
+
+@[expose] public section
 
 /-!
 # Integrated band profile of the constructed law

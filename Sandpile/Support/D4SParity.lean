@@ -1,4 +1,8 @@
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # The parity imbalance of the mesh

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ATerminalDom
-import Sandpile.Support.Dgt4AConcBound
+module
+
+public import Sandpile.Support.Dgt4ATerminalDom
+public import Sandpile.Support.Dgt4AConcBound
+
+@[expose] public section
 
 /-!
 # Step 3 of case (a): the pointwise comparison

@@ -1,5 +1,9 @@
-import Sandpile.Support.BoundaryParity
-import Sandpile.Support.IntervalFlux
+module
+
+public import Sandpile.Support.BoundaryParity
+public import Sandpile.Support.IntervalFlux
+
+@[expose] public section
 
 /-! # Dual Grid Mod-Two Flux and Connectivity
 

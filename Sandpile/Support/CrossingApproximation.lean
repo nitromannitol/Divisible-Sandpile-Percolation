@@ -1,6 +1,10 @@
-import Sandpile.Support.EuclideanField
-import Sandpile.Support.StableBottleneck
-import Mathlib.Analysis.Calculus.ContDiff.WithLp
+module
+
+public import Sandpile.Support.EuclideanField
+public import Sandpile.Support.StableBottleneck
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
+
+@[expose] public section
 
 /-!
 # Smooth uniform approximation of crossing values on Euclidean fields

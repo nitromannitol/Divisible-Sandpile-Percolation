@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4Thresholds
+module
+
+public import Sandpile.Support.Dgt4Thresholds
+
+@[expose] public section
 
 /-!
 # The threshold chain from the case-specific displays to the contact thresholds

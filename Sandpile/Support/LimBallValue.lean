@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Stopping
+module
+
+public import Sandpile.Continuum.Stopping
+
+@[expose] public section
 
 /-!
 # One admissible stopping rule bounds the ball-localized value from below

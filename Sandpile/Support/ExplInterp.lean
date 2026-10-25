@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Sandpile.Continuum.Sobolev
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Sobolev
+
+@[expose] public section
 
 /-!
 # Multilinear interpolation from the parabolic mesh

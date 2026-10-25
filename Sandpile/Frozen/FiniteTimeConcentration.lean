@@ -1,4 +1,8 @@
-import Sandpile.Support.Concentration
+module
+
+public import Sandpile.Support.Concentration
+
+@[expose] public section
 
 /-!
 # Concentration at the fluctuation scale

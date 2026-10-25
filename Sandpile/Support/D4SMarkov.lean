@@ -1,4 +1,8 @@
-import Sandpile.Support.TightNegSobolev
+module
+
+public import Sandpile.Support.TightNegSobolev
+
+@[expose] public section
 
 /-!
 # Markov's inequality for a norm dominated by a square root

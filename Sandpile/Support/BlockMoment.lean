@@ -1,6 +1,10 @@
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
-import Sandpile.Support.UniformTail
+module
+
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+public import Sandpile.Support.UniformTail
+
+@[expose] public section
 
 /-!
 # Exponential lower bounds for the block-tail moment generating function

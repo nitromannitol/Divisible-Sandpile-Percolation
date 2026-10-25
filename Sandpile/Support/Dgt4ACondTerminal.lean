@@ -1,9 +1,13 @@
-import Sandpile.Support.Dgt4ACondIntegrable
-import Sandpile.Support.Dgt4ACovIterate
-import Sandpile.Support.Dgt4ACondMeas
-import Sandpile.Support.Dgt4AStep2Prep
-import Sandpile.Support.Dgt4AStep2Site
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Support.Dgt4ACondIntegrable
+public import Sandpile.Support.Dgt4ACovIterate
+public import Sandpile.Support.Dgt4ACondMeas
+public import Sandpile.Support.Dgt4AStep2Prep
+public import Sandpile.Support.Dgt4AStep2Site
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # The terminal quantity of Step 2 at every level

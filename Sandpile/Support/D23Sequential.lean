@@ -1,5 +1,9 @@
-import Sandpile.Support.D23Input
-import Sandpile.Support.ExponentialMoments
+module
+
+public import Sandpile.Support.D23Input
+public import Sandpile.Support.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # The sequential-contradiction reduction, dimensions two and three

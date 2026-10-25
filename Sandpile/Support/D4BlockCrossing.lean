@@ -1,6 +1,10 @@
-import Sandpile.Support.D4StarDuality
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.BlockVerticalWalk
+module
+
+public import Sandpile.Support.D4StarDuality
+public import Sandpile.Support.D4PlaneEmbed
+public import Sandpile.Support.BlockVerticalWalk
+
+@[expose] public section
 
 /-!
 # Good-block crossing clauses in dimension four

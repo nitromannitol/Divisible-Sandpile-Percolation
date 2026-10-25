@@ -1,6 +1,10 @@
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.VarianceScaleProved
-import LatticeProb.Walk.GreenPointwise
+module
+
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.VarianceScaleProved
+public import LatticeProb.Walk.GreenPointwise
+
+@[expose] public section
 
 /-!
 # The high-dimensional Green estimates are proved

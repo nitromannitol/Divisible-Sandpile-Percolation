@@ -1,4 +1,8 @@
-import Sandpile.Support.IncrementBall
+module
+
+public import Sandpile.Support.IncrementBall
+
+@[expose] public section
 
 /-
 # A uniform lower-tail bound from variance and exponential-moment bounds

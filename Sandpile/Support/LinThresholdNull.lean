@@ -1,6 +1,10 @@
-import Sandpile.Support.LinThreshold
-import Sandpile.Support.Odometer
-import Sandpile.Support.LinGaussFactor
+module
+
+public import Sandpile.Support.LinThreshold
+public import Sandpile.Support.Odometer
+public import Sandpile.Support.LinGaussFactor
+
+@[expose] public section
 
 /-! # Null-measurable threshold replacement
 

@@ -1,7 +1,11 @@
-import Sandpile.Support.LinAnnular
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.ContRiemann
-import Sandpile.Support.ContWeightedLimit
+module
+
+public import Sandpile.Support.LinAnnular
+public import Sandpile.Support.LinIntersect
+public import Sandpile.Support.ContRiemann
+public import Sandpile.Support.ContWeightedLimit
+
+@[expose] public section
 
 /-!
 # The tested intersection kernel is bounded uniformly in the scale

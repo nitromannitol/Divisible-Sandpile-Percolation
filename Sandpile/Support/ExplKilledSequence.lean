@@ -1,9 +1,13 @@
-import Sandpile.Support.ExplKilledValue
-import Sandpile.Support.StopValue
-import Sandpile.Support.KillCutoff
-import Sandpile.Support.D23KilledCoupling
-import Sandpile.Support.ContFDSeq
-import Sandpile.Support.ContContinuumMCT
+module
+
+public import Sandpile.Support.ExplKilledValue
+public import Sandpile.Support.StopValue
+public import Sandpile.Support.KillCutoff
+public import Sandpile.Support.D23KilledCoupling
+public import Sandpile.Support.ContFDSeq
+public import Sandpile.Support.ContContinuumMCT
+
+@[expose] public section
 
 /-!
 # The cube-killed scaling limit along a sequence of scenery laws

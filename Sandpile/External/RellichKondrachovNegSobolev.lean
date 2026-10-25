@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Sobolev
-import LatticeProb.External.RellichKondrachovNegSobolev
+module
+
+public import Sandpile.Continuum.Sobolev
+public import LatticeProb.External.RellichKondrachovNegSobolev
+
+@[expose] public section
 
 /-!
 # Rellich-Kondrachov negative-Sobolev embedding

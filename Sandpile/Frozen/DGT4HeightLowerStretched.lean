@@ -1,8 +1,12 @@
-import Sandpile.Law
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.IncrementBall
-import Sandpile.Support.Increment
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Law
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.IncrementBall
+public import Sandpile.Support.Increment
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # Height lower bound under a stretched-exponential tail

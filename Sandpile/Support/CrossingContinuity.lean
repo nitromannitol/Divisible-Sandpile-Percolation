@@ -1,4 +1,8 @@
-import Sandpile.Support.RectangleBottleneck
+module
+
+public import Sandpile.Support.RectangleBottleneck
+
+@[expose] public section
 
 /-!
 # Continuity of the crossing bottleneck value

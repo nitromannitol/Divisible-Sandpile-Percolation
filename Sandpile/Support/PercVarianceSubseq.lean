@@ -1,4 +1,8 @@
-import Sandpile.Support.D23Sequential
+module
+
+public import Sandpile.Support.D23Sequential
+
+@[expose] public section
 
 /-!
 # Bolzano-Weierstrass step for the variance subsequence

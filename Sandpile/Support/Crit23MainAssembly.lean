@@ -1,11 +1,15 @@
-import Sandpile.Frozen.D23CriticalLevelPercolation
-import Sandpile.Frozen.D4CriticalLevelPercolation
-import Sandpile.Frozen.DGT4Nontriviality
-import Sandpile.Support.Crit23Centering
-import Sandpile.Support.D23Component
-import Sandpile.Support.D4Centering
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.ExponentialMoments
+module
+
+public import Sandpile.Frozen.D23CriticalLevelPercolation
+public import Sandpile.Frozen.D4CriticalLevelPercolation
+public import Sandpile.Frozen.DGT4Nontriviality
+public import Sandpile.Support.Crit23Centering
+public import Sandpile.Support.D23Component
+public import Sandpile.Support.D4Centering
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # Assembling Theorem 1.2 from its three regime theorems

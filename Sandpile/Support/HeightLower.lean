@@ -1,5 +1,9 @@
-import Sandpile.Support.MassConc
-import Sandpile.Support.UniformTail
+module
+
+public import Sandpile.Support.MassConc
+public import Sandpile.Support.UniformTail
+
+@[expose] public section
 
 /-!
 # The three clauses of the height lower bound `thm:dgt4-height-lower`

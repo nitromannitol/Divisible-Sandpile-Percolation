@@ -1,5 +1,9 @@
-import Sandpile.Support.LinTestedField
-import Sandpile.Support.OdometerJacobian
+module
+
+public import Sandpile.Support.LinTestedField
+public import Sandpile.Support.OdometerJacobian
+
+@[expose] public section
 
 /-! # The tested field's derivative is its Jacobian
 

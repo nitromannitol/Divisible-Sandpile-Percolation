@@ -1,8 +1,12 @@
-import Sandpile.Support.LimNoiseCoordinates
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.Support.CrossLevelLoss
-import Sandpile.Support.CrossFixedScaleBall
+module
+
+public import Sandpile.Support.LimNoiseCoordinates
+public import Sandpile.Support.ContWhiteNoise
+public import Sandpile.Support.CrossBallMemLp
+public import Sandpile.Support.CrossLevelLoss
+public import Sandpile.Support.CrossFixedScaleBall
+
+@[expose] public section
 
 /-!
 # The trace laws of Step 3

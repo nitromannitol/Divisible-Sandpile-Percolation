@@ -1,6 +1,10 @@
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.Kernel
-import Sandpile.Support.Radial
+module
+
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.Kernel
+public import Sandpile.Support.Radial
+
+@[expose] public section
 
 /-!
 # Pointwise Green-function bounds above dimension four

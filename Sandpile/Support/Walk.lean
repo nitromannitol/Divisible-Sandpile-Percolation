@@ -1,4 +1,8 @@
-import Sandpile.Walk
+module
+
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-!
 # Elementary facts about the walk vocabulary

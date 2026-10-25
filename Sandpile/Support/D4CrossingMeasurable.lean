@@ -1,4 +1,8 @@
-import Sandpile.Support.BallCrossingDefinitions
+module
+
+public import Sandpile.Support.BallCrossingDefinitions
+
+@[expose] public section
 
 /-!
 # Measurability of the ball Green field and the star-crossing event

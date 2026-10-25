@@ -1,4 +1,8 @@
-import Sandpile.Support.D4ScaleSepLimits
+module
+
+public import Sandpile.Support.D4ScaleSepLimits
+
+@[expose] public section
 
 /-!
 # The second-moment scale separation, at the squared second moment

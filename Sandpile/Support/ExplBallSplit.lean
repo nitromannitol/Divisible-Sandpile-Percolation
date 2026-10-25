@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallGap
+module
+
+public import Sandpile.Support.ExplBallGap
+
+@[expose] public section
 
 /-!
 # Where the capped exit time differs from the stopping time

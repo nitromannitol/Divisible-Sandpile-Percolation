@@ -1,6 +1,10 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ExplBallExit
-import LatticeProb.Prob.BrownianPathLaw
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Support.ExplBallExit
+public import LatticeProb.Prob.BrownianPathLaw
+
+@[expose] public section
 
 /-!
 # The law of a centred Brownian path is base-point- and space-independent

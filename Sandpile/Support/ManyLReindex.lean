@@ -1,5 +1,9 @@
-import Sandpile.Support.ContNonconvergence
-import Sandpile.Continuum.Membrane
+module
+
+public import Sandpile.Support.ContNonconvergence
+public import Sandpile.Continuum.Membrane
+
+@[expose] public section
 
 /-!
 # Reindexing lemmas for the subsequential convergence of `thm:dgt4-many-limits`

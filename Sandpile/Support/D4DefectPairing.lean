@@ -1,4 +1,8 @@
-import Sandpile.Support.D4DefectParity
+module
+
+public import Sandpile.Support.D4DefectParity
+
+@[expose] public section
 
 /-!
 # The Cauchy-Schwarz pairing bound for the dimension-four defect

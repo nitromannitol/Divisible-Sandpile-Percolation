@@ -1,5 +1,9 @@
-import Sandpile.Support.MeanAScale
-import Sandpile.Support.MeanAIndex
+module
+
+public import Sandpile.Support.MeanAScale
+public import Sandpile.Support.MeanAIndex
+
+@[expose] public section
 
 /-!
 # The self-similarity law identity from the parabolic limit

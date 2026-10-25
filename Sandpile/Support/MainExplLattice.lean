@@ -1,5 +1,9 @@
-import Sandpile.Support.MainExplBoxTail
-import Sandpile.Support.IncrementBall
+module
+
+public import Sandpile.Support.MainExplBoxTail
+public import Sandpile.Support.IncrementBall
+
+@[expose] public section
 
 /-!
 # The polynomially weighted envelope of the interpolated field, uniform in the scale

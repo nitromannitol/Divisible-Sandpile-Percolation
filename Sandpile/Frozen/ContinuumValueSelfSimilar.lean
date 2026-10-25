@@ -1,10 +1,14 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Law
-import Sandpile.Support.MeanAValue
-import Sandpile.External.VarianceScale
-import Sandpile.External.ContinuumOptimalStopping
-import Sandpile.Frozen.BrownianScalingLimit
-import Sandpile.Support.ContSelfSimilarFromScaling
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Law
+public import Sandpile.Support.MeanAValue
+public import Sandpile.External.VarianceScale
+public import Sandpile.External.ContinuumOptimalStopping
+public import Sandpile.Frozen.BrownianScalingLimit
+public import Sandpile.Support.ContSelfSimilarFromScaling
+
+@[expose] public section
 
 /-!
 # Self-similarity of the continuum value

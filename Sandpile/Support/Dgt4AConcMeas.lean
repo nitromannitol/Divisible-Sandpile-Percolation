@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4AConcTheta
-import Sandpile.Support.Dgt4ACondTerminal
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Support.Dgt4AConcTheta
+public import Sandpile.Support.Dgt4ACondTerminal
+public import Sandpile.Support.LinGaussBridge
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # The Green field and `\Theta_n` are everywhere measurable

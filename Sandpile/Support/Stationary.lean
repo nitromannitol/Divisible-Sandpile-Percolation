@@ -1,8 +1,12 @@
-import Sandpile.Law
-import Sandpile.Support.Odometer
-import Sandpile.Support.Kernel
-import Sandpile.Support.Translation
-import LatticeProb.Prob.WeightedCLT
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.Odometer
+public import Sandpile.Support.Kernel
+public import Sandpile.Support.Translation
+public import LatticeProb.Prob.WeightedCLT
+
+@[expose] public section
 
 /-!
 # Stationarity and integrability of the odometer in the scenery

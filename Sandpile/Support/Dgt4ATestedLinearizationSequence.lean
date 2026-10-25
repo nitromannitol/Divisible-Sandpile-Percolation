@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.Support.Dgt4APathSurvivalSequence
-import Sandpile.Support.Dgt4ABandSequence
+module
+
+public import Sandpile.Support.LinJacobianFirstConjunct
+public import Sandpile.Support.Dgt4APathSurvivalSequence
+public import Sandpile.Support.Dgt4ABandSequence
+
+@[expose] public section
 
 /-! # Tested Linearization Along Scale Sequences
 

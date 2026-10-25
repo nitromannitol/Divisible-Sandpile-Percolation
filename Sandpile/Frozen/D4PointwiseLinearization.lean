@@ -1,6 +1,10 @@
-import Sandpile.Walk
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4PointwiseTail
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.D4PointwiseTail
+
+@[expose] public section
 
 /-! # Pointwise Linearization in Dimension Four
 

@@ -1,5 +1,9 @@
-import Sandpile.Continuum.BrownianExists
-import LatticeProb.Prob.BrownianContAll
+module
+
+public import Sandpile.Continuum.BrownianExists
+public import LatticeProb.Prob.BrownianContAll
+
+@[expose] public section
 
 /-!
 # Brownian motion on `ℝ^d` with every path continuous

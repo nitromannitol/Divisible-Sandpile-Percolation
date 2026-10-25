@@ -1,5 +1,9 @@
-import Sandpile.Support.ContMeshPoint
-import Mathlib
+module
+
+public import Sandpile.Support.ContMeshPoint
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Uniform parabolic mesh approximation threshold

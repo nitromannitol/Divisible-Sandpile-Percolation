@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ADeviationField
-import Sandpile.Support.BlockIncrement
-import Sandpile.Support.D4Smoothed
+module
+
+public import Sandpile.Support.Dgt4ADeviationField
+public import Sandpile.Support.BlockIncrement
+public import Sandpile.Support.D4Smoothed
+
+@[expose] public section
 
 /-!
 # The conditional Jensen step of the telescoping

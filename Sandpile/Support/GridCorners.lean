@@ -1,4 +1,8 @@
-import Sandpile.Support.StarCrossings
+module
+
+public import Sandpile.Support.StarCrossings
+
+@[expose] public section
 
 /-!
 # Star connectivity of bad corners in a finite lattice grid

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4AFirstMomentTwo
-import Sandpile.Support.Dgt4AMeanIncrementInt
-import Sandpile.Support.Dgt4AMeanIncrement
+module
+
+public import Sandpile.Support.Dgt4AFirstMomentTwo
+public import Sandpile.Support.Dgt4AMeanIncrementInt
+public import Sandpile.Support.Dgt4AMeanIncrement
+
+@[expose] public section
 
 /-!
 # First-moment bound for the centred deviation

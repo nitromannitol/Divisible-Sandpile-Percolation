@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ATailPointwise
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+module
+
+public import Sandpile.Support.Dgt4ATailPointwise
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+
+@[expose] public section
 
 /-!
 # Integrability of the layer-cake integrand

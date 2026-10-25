@@ -1,4 +1,8 @@
-import Sandpile.Support.ScaleCount
+module
+
+public import Sandpile.Support.ScaleCount
+
+@[expose] public section
 
 /-!
 # The scale `N`, the threshold, and the bounded range of `L`

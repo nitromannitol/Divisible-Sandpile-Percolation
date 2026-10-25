@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACondTerminal
-import Sandpile.Support.Dgt4ACondCompare
+module
+
+public import Sandpile.Support.Dgt4ACondTerminal
+public import Sandpile.Support.Dgt4ACondCompare
+
+@[expose] public section
 
 /-!
 # The comparison of Step 2 at the conditioned level

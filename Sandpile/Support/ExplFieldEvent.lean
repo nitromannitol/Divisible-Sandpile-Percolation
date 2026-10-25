@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplFieldSemigroup
+module
+
+public import Sandpile.Support.ExplFieldSemigroup
+
+@[expose] public section
 
 /-!
 # Continuity lemmas and the common heat-semigroup event

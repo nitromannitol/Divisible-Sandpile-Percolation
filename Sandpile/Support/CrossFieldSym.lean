@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossField
-import Sandpile.Support.CrossTranslate
+module
+
+public import Sandpile.Support.CrossField
+public import Sandpile.Support.CrossTranslate
+
+@[expose] public section
 
 /-!
 # Symmetries of a planar field for the crossing estimates

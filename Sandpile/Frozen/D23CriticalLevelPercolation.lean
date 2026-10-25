@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.D23PlaneSite
-import Sandpile.Support.D23Final
+module
+
+public import Sandpile.Law
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.Support.D23PlaneSite
+public import Sandpile.Support.D23Final
+
+@[expose] public section
 
 /-! # Critical Level-Set Percolation in Dimensions 2 and 3
 

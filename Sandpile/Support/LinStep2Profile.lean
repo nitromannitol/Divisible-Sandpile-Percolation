@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Connect
+module
+
+public import Sandpile.Support.LinStep2Connect
+
+@[expose] public section
 
 /-!
 # Replacing `n_R` by `R²T` in the time-weight profile

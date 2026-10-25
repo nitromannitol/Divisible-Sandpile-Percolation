@@ -1,9 +1,13 @@
-import Sandpile.Law
-import Sandpile.Support.MeanAExplosionA
-import Sandpile.External.ContStoppingStability
-import Sandpile.External.VarianceScaleProved
-import Sandpile.External.ContinuumOptimalStopping
-import Sandpile.External.LocalCLTProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.MeanAExplosionA
+public import Sandpile.External.ContStoppingStability
+public import Sandpile.External.VarianceScaleProved
+public import Sandpile.External.ContinuumOptimalStopping
+public import Sandpile.External.LocalCLTProved
+
+@[expose] public section
 
 /-!
 # Mean growth rate below dimension four

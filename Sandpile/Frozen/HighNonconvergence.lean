@@ -1,14 +1,18 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.Support.ExplFluctuation
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.Dgt4AManyLimitsAssembly
-import Sandpile.Support.ExplHighNonconvergence
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.External.IntersectionSecondMomentProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+public import Sandpile.Support.ExplFluctuation
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.Support.Dgt4AManyLimitsAssembly
+public import Sandpile.Support.ExplHighNonconvergence
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.External.IntersectionSecondMomentProved
+
+@[expose] public section
 
 /-!
 # High-dimensional non-convergence, frozen

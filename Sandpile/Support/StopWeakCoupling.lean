@@ -1,4 +1,8 @@
-import Sandpile.Support.StopCoupling
+module
+
+public import Sandpile.Support.StopCoupling
+
+@[expose] public section
 
 /-!
 # Couplings realizing weak convergence with small discrepancy

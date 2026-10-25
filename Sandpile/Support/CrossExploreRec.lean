@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossStoppingSet
+module
+
+public import Sandpile.Support.CrossStoppingSet
+
+@[expose] public section
 
 /-! # Abstract exploration recursion
 

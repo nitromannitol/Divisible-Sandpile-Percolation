@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.Law
-import Sandpile.Support.BallCrossingDefinitions
+module
+
+public import Mathlib
+public import Sandpile.Law
+public import Sandpile.Support.BallCrossingDefinitions
+
+@[expose] public section
 
 /-!
 # Coordinate-block independence under the i.i.d. scenery law

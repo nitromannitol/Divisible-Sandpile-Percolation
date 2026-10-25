@@ -1,6 +1,10 @@
-import Sandpile.Walk
-import Sandpile.Law
-import Sandpile.Support.Translation
+module
+
+public import Sandpile.Walk
+public import Sandpile.Law
+public import Sandpile.Support.Translation
+
+@[expose] public section
 
 /-!
 # Reflection increment identity for the mean odometer

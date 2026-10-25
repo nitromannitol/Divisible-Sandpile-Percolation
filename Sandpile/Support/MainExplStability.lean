@@ -1,5 +1,9 @@
-import Sandpile.Support.MainExplWalkValue
-import Sandpile.Support.StopValue
+module
+
+public import Sandpile.Support.MainExplWalkValue
+public import Sandpile.Support.StopValue
+
+@[expose] public section
 
 /-! # The two-reward stability gap
 

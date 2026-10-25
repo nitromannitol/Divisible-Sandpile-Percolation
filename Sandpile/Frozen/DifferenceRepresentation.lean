@@ -1,5 +1,9 @@
-import Sandpile.External.BPSHProved
-import Sandpile.Support.Stopped
+module
+
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.Stopped
+
+@[expose] public section
 
 /-!
 # The odometer minus the membrane as an optimal-stopping value

@@ -1,6 +1,10 @@
-import LatticeProb.Prob.LpSmooth
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
+module
+
+public import LatticeProb.Prob.LpSmooth
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+
+@[expose] public section
 
 /-!
 # The weighted exponential concentration lemma, frozen

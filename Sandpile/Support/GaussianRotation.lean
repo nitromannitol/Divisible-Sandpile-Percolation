@@ -1,6 +1,10 @@
-import Sandpile.Support.GaussianIntegrability
-import Sandpile.Support.RotationCalculus
-import Mathlib.Probability.Moments.SubGaussian
+module
+
+public import Sandpile.Support.GaussianIntegrability
+public import Sandpile.Support.RotationCalculus
+public import Mathlib.Probability.Moments.SubGaussian
+
+@[expose] public section
 
 /-!
 # Gaussian concentration for smooth Lipschitz functions via rotation interpolation

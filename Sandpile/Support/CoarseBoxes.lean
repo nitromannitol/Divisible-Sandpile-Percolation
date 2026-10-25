@@ -1,4 +1,8 @@
-import Sandpile.Support.RealBoxes
+module
+
+public import Sandpile.Support.RealBoxes
+
+@[expose] public section
 
 /-!
 # A uniform finite cover of a lattice box by coarse centers

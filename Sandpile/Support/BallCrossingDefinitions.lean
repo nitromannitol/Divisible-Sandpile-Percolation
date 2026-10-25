@@ -1,5 +1,9 @@
-import Sandpile.Walk
-import Sandpile.External.BallGreenBounds
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.BallGreenBounds
+
+@[expose] public section
 
 /-!
 # Ball crossing definitions in dimension four

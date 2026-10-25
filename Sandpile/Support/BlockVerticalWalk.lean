@@ -1,4 +1,8 @@
-import Sandpile.Support.BlockGeometry
+module
+
+public import Sandpile.Support.BlockGeometry
+
+@[expose] public section
 
 /-!
 # The vertical crossing value and the good-block predicate

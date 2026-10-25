@@ -1,6 +1,10 @@
-import Sandpile.Walk
-import LatticeProb.Walk.Ball
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Walk
+public import LatticeProb.Walk.Ball
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # Radial sums with a real exponent

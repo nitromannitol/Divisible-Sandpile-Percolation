@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossExploreArm
-import Sandpile.Support.CrossExplore
-import Mathlib.Data.Pi.Interval
+module
+
+public import Sandpile.Support.CrossExploreArm
+public import Sandpile.Support.CrossExplore
+public import Mathlib.Data.Pi.Interval
+
+@[expose] public section
 
 /-!
 # The subquadratic count of the exploration

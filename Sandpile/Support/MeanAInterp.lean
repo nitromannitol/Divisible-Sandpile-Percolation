@@ -1,6 +1,10 @@
-import Sandpile.Support.ContMeshPoint
-import Sandpile.Support.ExplInterp
-import Sandpile.Support.MeanAValue
+module
+
+public import Sandpile.Support.ContMeshPoint
+public import Sandpile.Support.ExplInterp
+public import Sandpile.Support.MeanAValue
+
+@[expose] public section
 
 /-!
 # The rescaled odometer as the interpolated field at a mesh point

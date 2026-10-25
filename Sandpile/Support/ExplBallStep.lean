@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallSplit
+module
+
+public import Sandpile.Support.ExplBallSplit
+
+@[expose] public section
 
 /-!
 # The strong Markov step, sharpened to the capped-time exit cost

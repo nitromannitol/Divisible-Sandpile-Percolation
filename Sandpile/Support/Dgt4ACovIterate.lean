@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AShiftIterate
-import Sandpile.Support.RefinedIncrement
+module
+
+public import Sandpile.Support.Dgt4AShiftIterate
+public import Sandpile.Support.RefinedIncrement
+
+@[expose] public section
 
 /-!
 # The one-step Lipschitz bound of Step 2

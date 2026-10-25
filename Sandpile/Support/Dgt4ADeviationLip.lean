@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AOriginDeviation
-import Sandpile.Support.Dgt4AAvgDeviation
+module
+
+public import Sandpile.Support.Dgt4AOriginDeviation
+public import Sandpile.Support.Dgt4AAvgDeviation
+
+@[expose] public section
 
 /-!
 # Two-site Lipschitz bound for the centred deviation

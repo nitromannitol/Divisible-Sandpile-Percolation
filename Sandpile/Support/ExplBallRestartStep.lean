@@ -1,7 +1,11 @@
-import Sandpile.Support.ExplBallConditional
-import Sandpile.Support.ExplBallConditionalBound
-import Sandpile.Support.ExplBallStepEnvelope
-import Sandpile.Support.ExplBallReward
+module
+
+public import Sandpile.Support.ExplBallConditional
+public import Sandpile.Support.ExplBallConditionalBound
+public import Sandpile.Support.ExplBallStepEnvelope
+public import Sandpile.Support.ExplBallReward
+
+@[expose] public section
 
 /-!
 # The strong Markov step from a pointwise restart bound

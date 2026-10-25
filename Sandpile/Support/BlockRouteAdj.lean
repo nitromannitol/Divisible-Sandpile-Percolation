@@ -1,7 +1,11 @@
-import Sandpile.Support.BlockAdjacency
-import Sandpile.Support.PercSquareToWide
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.BlockSubwalk
+module
+
+public import Sandpile.Support.BlockAdjacency
+public import Sandpile.Support.PercSquareToWide
+public import Sandpile.Support.BlockVerticalWalk
+public import Sandpile.Support.BlockSubwalk
+
+@[expose] public section
 
 /-!
 # Routing across adjacent good coarse blocks

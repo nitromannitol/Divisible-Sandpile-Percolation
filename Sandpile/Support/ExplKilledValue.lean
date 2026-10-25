@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallGap
+module
+
+public import Sandpile.Support.ExplBallGap
+
+@[expose] public section
 
 /-!
 # The cube-killed Brownian stopping value

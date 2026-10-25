@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallFinal
-import Sandpile.Support.GrowExternalDischarge
+module
+
+public import Sandpile.Support.ExplBallFinal
+public import Sandpile.Support.GrowExternalDischarge
+
+@[expose] public section
 
 /-!
 # Samplewise polynomial growth for the ball-localization argument

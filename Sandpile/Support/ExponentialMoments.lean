@@ -1,5 +1,9 @@
-import Sandpile.Support.FiniteLindeberg
-import LatticeProb.Prob.ExponentialMoments
+module
+
+public import Sandpile.Support.FiniteLindeberg
+public import LatticeProb.Prob.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # Matching third moments between an exponential-type law and its Gaussian counterpart

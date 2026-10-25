@@ -1,5 +1,9 @@
-import Sandpile.Support.ContHeatPotentialFD
-import Sandpile.Support.GreenSup
+module
+
+public import Sandpile.Support.ContHeatPotentialFD
+public import Sandpile.Support.GreenSup
+
+@[expose] public section
 
 /-!
 # Lindeberg Smallness of the Rescaled Linear Field's Coefficients

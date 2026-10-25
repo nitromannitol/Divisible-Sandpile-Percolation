@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4CaseBReplace
+module
+
+public import Sandpile.Support.Dgt4CaseBReplace
+
+@[expose] public section
 
 /-! # Case B Convergence in Probability
 

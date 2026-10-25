@@ -1,7 +1,11 @@
-import Sandpile.Support.KernelPermutation
-import Sandpile.Support.CrossingContinuity
-import LatticeProb.Prob.MapPi
-import LatticeProb.Prob.ZeroOne
+module
+
+public import Sandpile.Support.KernelPermutation
+public import Sandpile.Support.CrossingContinuity
+public import LatticeProb.Prob.MapPi
+public import LatticeProb.Prob.ZeroOne
+
+@[expose] public section
 
 /-!
 # Affine coordinate symmetries of finite-kernel fields, and sign reversal of the Gaussian law

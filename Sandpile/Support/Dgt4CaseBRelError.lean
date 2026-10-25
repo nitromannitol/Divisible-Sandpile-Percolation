@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4CaseBMeanId
-import Sandpile.Support.Dgt4CaseBReplace
-import Sandpile.Support.Dgt4Killed
-import Sandpile.Support.Dgt4CaseB
+module
+
+public import Sandpile.Support.Dgt4CaseBMeanId
+public import Sandpile.Support.Dgt4CaseBReplace
+public import Sandpile.Support.Dgt4Killed
+public import Sandpile.Support.Dgt4CaseB
+
+@[expose] public section
 
 /-!
 # The relative-error half of case (b) of the contact asymptotics

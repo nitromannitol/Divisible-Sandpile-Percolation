@@ -1,7 +1,11 @@
-import Sandpile.Support.BottleneckComparison
-import Sandpile.Support.StableBottleneck
-import Sandpile.Support.CrossingContinuity
-import Sandpile.Support.FiniteKernel
+module
+
+public import Sandpile.Support.BottleneckComparison
+public import Sandpile.Support.StableBottleneck
+public import Sandpile.Support.CrossingContinuity
+public import Sandpile.Support.FiniteKernel
+
+@[expose] public section
 
 /-!
 # Gaussian comparison for rectangle crossing values

@@ -1,9 +1,13 @@
-import Sandpile.Support.Dgt4ABandOneStepLaw
-import Sandpile.Support.Dgt4ABandIndex
-import Sandpile.Support.Dgt4ABandSlowWeights
-import Sandpile.Support.Dgt4ABandInvert
-import Sandpile.Support.Dgt4AStep2Output
-import Sandpile.Support.GreenRatioStrict
+module
+
+public import Sandpile.Support.Dgt4ABandOneStepLaw
+public import Sandpile.Support.Dgt4ABandIndex
+public import Sandpile.Support.Dgt4ABandSlowWeights
+public import Sandpile.Support.Dgt4ABandInvert
+public import Sandpile.Support.Dgt4AStep2Output
+public import Sandpile.Support.GreenRatioStrict
+
+@[expose] public section
 
 /-!
 # Step 2 of the many-limits theorem, stated end to end

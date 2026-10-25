@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossBallGauss
+module
+
+public import Sandpile.Support.CrossBallGauss
+
+@[expose] public section
 
 /-!
 # Square integrability of the ball kernel

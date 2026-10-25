@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4Mills
-import Sandpile.Support.ExponentialMoments
-import Sandpile.Frozen.DGT4HeightUpperTail
-import Sandpile.Support.Dgt4AStep1Decay
+module
+
+public import Sandpile.Support.Dgt4Mills
+public import Sandpile.Support.ExponentialMoments
+public import Sandpile.Frozen.DGT4HeightUpperTail
+public import Sandpile.Support.Dgt4AStep1Decay
+
+@[expose] public section
 
 /-!
 # Step 1 of case (a) discharged in the Gaussian case

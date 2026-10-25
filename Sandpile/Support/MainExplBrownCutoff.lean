@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplDyadic
-import Sandpile.Support.ExplBallExit
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.ExplDyadic
+public import Sandpile.Support.ExplBallExit
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-! # The Brownian dyadic-annulus cutoff error
 

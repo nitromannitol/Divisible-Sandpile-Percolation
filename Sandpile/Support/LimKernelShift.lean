@@ -1,4 +1,8 @@
-import Sandpile.Support.LimKernelRate
+module
+
+public import Sandpile.Support.LimKernelRate
+
+@[expose] public section
 
 /-!
 # The spatial modulus of the ball kernel in `L²`

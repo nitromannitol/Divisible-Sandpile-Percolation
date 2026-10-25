@@ -1,7 +1,11 @@
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.External.ContinuumRSW
-import Sandpile.External.PittGaussianFKG
-import Sandpile.Support.CrossExploreExists
+module
+
+public import Sandpile.Continuum.WhiteNoise
+public import Sandpile.External.ContinuumRSW
+public import Sandpile.External.PittGaussianFKG
+public import Sandpile.Support.CrossExploreExists
+
+@[expose] public section
 
 /-!
 # The frozen fixed-scale crossing proposition

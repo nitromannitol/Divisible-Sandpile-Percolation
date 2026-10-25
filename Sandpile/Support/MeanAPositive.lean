@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAMoment
-import Sandpile.Support.ExplMeanGrowth
-import Sandpile.Support.MainExplBrownianCont
+module
+
+public import Sandpile.Support.MeanAMoment
+public import Sandpile.Support.ExplMeanGrowth
+public import Sandpile.Support.MainExplBrownianCont
+
+@[expose] public section
 
 /-! # Positivity of the limiting mean and variance
 

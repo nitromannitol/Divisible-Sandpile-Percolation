@@ -1,4 +1,8 @@
-import Sandpile.External.ContinuumOptimalStopping
+module
+
+public import Sandpile.External.ContinuumOptimalStopping
+
+@[expose] public section
 
 /-!
 # Brownian optimal-stopping representation

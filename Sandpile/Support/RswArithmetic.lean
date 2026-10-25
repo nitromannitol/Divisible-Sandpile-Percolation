@@ -1,5 +1,9 @@
-import Sandpile.Support.PlaneRectangle
-import Mathlib
+module
+
+public import Sandpile.Support.PlaneRectangle
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Arithmetic helpers for the RSW amplification

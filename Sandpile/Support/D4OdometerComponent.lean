@@ -1,6 +1,10 @@
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Barrier
+module
+
+public import Sandpile.Support.D4PlaneEmbed
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Barrier
+
+@[expose] public section
 
 /-!
 # Transferring an infinite component from a dominated field to the odometer

@@ -1,5 +1,9 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarFubini
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarFubini
+
+@[expose] public section
 
 /-! # Early Variance Covariance Bound
 

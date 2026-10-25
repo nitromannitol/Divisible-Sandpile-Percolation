@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossExploreCount
-import Sandpile.Support.CrossExploreReduction
-import Sandpile.External.PinskerProved
+module
+
+public import Sandpile.Support.CrossExploreCount
+public import Sandpile.Support.CrossExploreReduction
+public import Sandpile.External.PinskerProved
+
+@[expose] public section
 
 /-!
 # Existence of the Step 2 exploration, and `prop:fixed-scale-crossings`

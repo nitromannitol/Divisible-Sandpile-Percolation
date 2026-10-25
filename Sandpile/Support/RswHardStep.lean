@@ -1,6 +1,10 @@
-import Sandpile.Support.KernelPlanarLaw
-import Sandpile.Support.RectangleMonotonicity
-import Sandpile.External.PlanarRSW
+module
+
+public import Sandpile.Support.KernelPlanarLaw
+public import Sandpile.Support.RectangleMonotonicity
+public import Sandpile.External.PlanarRSW
+
+@[expose] public section
 
 /-!
 # The RSW hard-rectangle step

@@ -1,6 +1,10 @@
-import Sandpile.Support.MainExplLattice
-import Sandpile.Support.ExplWalkCutoff
-import Sandpile.Support.ExplValueGap
+module
+
+public import Sandpile.Support.MainExplLattice
+public import Sandpile.Support.ExplWalkCutoff
+public import Sandpile.Support.ExplValueGap
+
+@[expose] public section
 
 /-!
 # The field half of the cutoff error: the bound on the dyadic annuli

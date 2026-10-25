@@ -1,6 +1,10 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ContinuumPlanar
-import LatticeProb.Prob.BrownianExitTime
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Support.ContinuumPlanar
+public import LatticeProb.Prob.BrownianExitTime
+
+@[expose] public section
 
 /-!
 # The ball Green function in occupation-density form

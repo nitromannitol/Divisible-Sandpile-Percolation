@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ADeviationSplit
+module
+
+public import Sandpile.Support.Dgt4ADeviationSplit
+
+@[expose] public section
 
 /-!
 # Pointwise bound on the centred deviation `D_n`

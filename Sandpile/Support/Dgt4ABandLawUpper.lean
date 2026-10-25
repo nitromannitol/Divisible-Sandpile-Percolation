@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawDensity
+module
+
+public import Sandpile.Support.Dgt4ABandLawDensity
+
+@[expose] public section
 
 /-!
 # Step-1 upper isolation for the band law

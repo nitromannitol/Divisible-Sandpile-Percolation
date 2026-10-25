@@ -1,5 +1,9 @@
-import Sandpile.Support.CoarseMap
-import Sandpile.Support.NearPath
+module
+
+public import Sandpile.Support.CoarseMap
+public import Sandpile.Support.NearPath
+
+@[expose] public section
 
 /-!
 # Near-low component diameter bounds

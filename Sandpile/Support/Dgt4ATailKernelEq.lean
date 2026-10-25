@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ATailLip
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.Dgt4ATailLip
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 The `j`-step tail of the heat kernel in the two forms the paper uses: the sum

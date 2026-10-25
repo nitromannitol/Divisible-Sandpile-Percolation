@@ -1,4 +1,8 @@
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # A mean-increment bound for the mean odometer

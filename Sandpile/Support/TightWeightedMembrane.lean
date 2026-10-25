@@ -1,9 +1,13 @@
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Iterate
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.TightNegSobolev
-import Sandpile.Frozen.SobolevTightness
-import Sandpile.Support.TightD4Covariance
+module
+
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.Iterate
+public import Sandpile.Support.GreenHigh
+public import Sandpile.Support.TightNegSobolev
+public import Sandpile.Frozen.SobolevTightness
+public import Sandpile.Support.TightD4Covariance
+
+@[expose] public section
 
 /-!
 # Tightness of the time-weighted membrane field

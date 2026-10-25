@@ -1,6 +1,10 @@
-import Sandpile.Support.LinEarlyVar
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarFubini
+module
+
+public import Sandpile.Support.LinEarlyVar
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarFubini
+
+@[expose] public section
 
 /-!
 # Covariance of two path integrals against the walk-pair law

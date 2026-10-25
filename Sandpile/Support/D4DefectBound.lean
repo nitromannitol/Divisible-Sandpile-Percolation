@@ -1,6 +1,10 @@
-import Sandpile.Support.D4DefectOmega
-import Sandpile.Support.ContRiemann
-import Sandpile.External.MembraneScalingFour
+module
+
+public import Sandpile.Support.D4DefectOmega
+public import Sandpile.Support.ContRiemann
+public import Sandpile.External.MembraneScalingFour
+
+@[expose] public section
 
 /-!
 # The `ℓ²` bound on the truncation defect

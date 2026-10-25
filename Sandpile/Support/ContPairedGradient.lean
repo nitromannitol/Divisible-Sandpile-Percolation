@@ -1,5 +1,9 @@
-import Sandpile.Support.ContHeatGradient
-import Sandpile.Support.ContLcltPoint
+module
+
+public import Sandpile.Support.ContHeatGradient
+public import Sandpile.Support.ContLcltPoint
+
+@[expose] public section
 
 /-!
 # The paired kernel and its parity-free gradient bound

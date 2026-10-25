@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Membrane
+module
+
+public import Sandpile.Continuum.Membrane
+
+@[expose] public section
 
 /-!
 # The membrane time weight decreases strictly in its exponent

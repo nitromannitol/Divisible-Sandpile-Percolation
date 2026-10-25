@@ -1,14 +1,18 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GaussianLipschitzConcentration
-import Sandpile.External.NormalComparison
-import Sandpile.External.IntersectionSecondMomentProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.Support.Dgt4LinAllPaths
-import Sandpile.Support.Dgt4AFinal
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GaussianLipschitzConcentration
+public import Sandpile.External.NormalComparison
+public import Sandpile.External.IntersectionSecondMomentProved
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.Support.LinJacobianFirstConjunct
+public import Sandpile.Support.Dgt4LinAllPaths
+public import Sandpile.Support.Dgt4AFinal
+
+@[expose] public section
 
 /-!
 # Linearization of the rescaled odometer above dimension four

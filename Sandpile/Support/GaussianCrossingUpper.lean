@@ -1,4 +1,8 @@
-import Sandpile.Support.GaussianBottleneck
+module
+
+public import Sandpile.Support.GaussianBottleneck
+
+@[expose] public section
 
 /-!
 # Upper deviations of Gaussian finite-kernel crossing values

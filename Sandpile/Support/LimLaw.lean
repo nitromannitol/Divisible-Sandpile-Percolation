@@ -1,5 +1,9 @@
-import Sandpile.Support.LimMaxField
-import Sandpile.Support.CrossField
+module
+
+public import Sandpile.Support.LimMaxField
+public import Sandpile.Support.CrossField
+
+@[expose] public section
 
 /-!
 # Invariance of the finite-scale maximum field's law

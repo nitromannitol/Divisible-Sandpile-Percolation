@@ -1,6 +1,10 @@
-import Sandpile.Support.MainExplAnnulus
-import Sandpile.Support.MeanAPosVar
-import Sandpile.Support.ContClause3
+module
+
+public import Sandpile.Support.MainExplAnnulus
+public import Sandpile.Support.MeanAPosVar
+public import Sandpile.Support.ContClause3
+
+@[expose] public section
 
 /-! # Continuum value power moments
 

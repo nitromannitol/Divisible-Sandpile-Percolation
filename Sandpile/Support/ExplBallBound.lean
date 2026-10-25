@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallGaussian
-import Sandpile.Support.ExplBrownianEnvelope
+module
+
+public import Sandpile.Support.ExplBallGaussian
+public import Sandpile.Support.ExplBrownianEnvelope
+
+@[expose] public section
 
 /-!
 # Boundedness and growth inputs of ball localization

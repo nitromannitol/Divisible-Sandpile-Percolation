@@ -1,6 +1,10 @@
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
-import Sandpile.Support.ExitAverage
+module
+
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+public import Sandpile.Support.ExitAverage
+
+@[expose] public section
 
 /-! # Exit-Averaged Concentration in Dimension Four
 

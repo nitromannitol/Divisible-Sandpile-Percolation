@@ -1,4 +1,8 @@
-import Sandpile.Continuum.WhiteNoise
+module
+
+public import Sandpile.Continuum.WhiteNoise
+
+@[expose] public section
 
 /-!
 # Modifications of white noise on null fibers

@@ -1,5 +1,9 @@
-import LatticeProb.Walk.WindowD4
-import LatticeProb.Walk.GreenSq
+module
+
+public import LatticeProb.Walk.WindowD4
+public import LatticeProb.Walk.GreenSq
+
+@[expose] public section
 
 /-!
 # Paired time-step estimates for doubled sums

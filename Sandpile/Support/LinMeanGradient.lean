@@ -1,5 +1,9 @@
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.OdometerPathDerivative
+module
+
+public import Sandpile.Support.LinIntersect
+public import Sandpile.Support.OdometerPathDerivative
+
+@[expose] public section
 
 /-!
 # The triangle-inequality bound of Step 1, `eq:dgt4-mean-gradient-approximation`

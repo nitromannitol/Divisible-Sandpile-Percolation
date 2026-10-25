@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.Dgt4AIterateSub
-import Sandpile.Support.Dgt4AIterateAbs
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+public import Sandpile.Support.Dgt4AIterateSub
+public import Sandpile.Support.Dgt4AIterateAbs
+
+@[expose] public section
 
 /-!
 # The `j`-step Lipschitz bound of Step 1

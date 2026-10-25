@@ -1,5 +1,9 @@
-import Sandpile.Support.StarCrossings
-import Sandpile.Support.CoarseBoxes
+module
+
+public import Sandpile.Support.StarCrossings
+public import Sandpile.Support.CoarseBoxes
+
+@[expose] public section
 
 /-!
 # Separated subcrossings of an annular crossing

@@ -1,8 +1,12 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GaussianLipschitzConcentration
-import Sandpile.Support.Dgt4AFinal
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GaussianLipschitzConcentration
+public import Sandpile.Support.Dgt4AFinal
+
+@[expose] public section
 
 /-!
 # Contact-probability asymptotics above dimension four

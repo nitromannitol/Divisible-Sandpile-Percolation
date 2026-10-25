@@ -1,12 +1,16 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ContinuumPlanar
-import Sandpile.External.ContinuumRSW
-import Sandpile.External.PittGaussianFKG
-import Sandpile.External.BallOccupationDensity
-import Sandpile.External.GaussianLawCovarianceProved
-import Sandpile.Support.LimUnconditional
-import Sandpile.Support.LimScaleZeroOne
-import Sandpile.Support.LimApproxAssembly
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Support.ContinuumPlanar
+public import Sandpile.External.ContinuumRSW
+public import Sandpile.External.PittGaussianFKG
+public import Sandpile.External.BallOccupationDensity
+public import Sandpile.External.GaussianLawCovarianceProved
+public import Sandpile.Support.LimUnconditional
+public import Sandpile.Support.LimScaleZeroOne
+public import Sandpile.Support.LimApproxAssembly
+
+@[expose] public section
 
 /-!
 # Localized Brownian crossings of the limiting odometer

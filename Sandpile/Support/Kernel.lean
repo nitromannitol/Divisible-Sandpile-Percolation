@@ -1,4 +1,8 @@
-import Sandpile.Walk
+module
+
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-!
 # Nonnegativity and finite propagation speed of the lattice heat kernel

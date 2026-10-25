@@ -1,7 +1,11 @@
-import Sandpile.Support.TightSmallPower
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Concentration
-import Sandpile.Frozen.SobolevTightness
+module
+
+public import Sandpile.Support.TightSmallPower
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Concentration
+public import Sandpile.Frozen.SobolevTightness
+
+@[expose] public section
 
 /-!
 # D4 Odometer Covariance Decay

@@ -1,10 +1,14 @@
-import Mathlib
-import Sandpile.Law
-import Sandpile.External.VarianceScale
-import Sandpile.External.HeatKernelBounds
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.MeanLocalization
-import Sandpile.Frozen.MeanLocalization
+module
+
+public import Mathlib
+public import Sandpile.Law
+public import Sandpile.External.VarianceScale
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.MeanLocalization
+public import Sandpile.Frozen.MeanLocalization
+
+@[expose] public section
 
 /-!
 # Critical-Level Block Assembly

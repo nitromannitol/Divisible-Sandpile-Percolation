@@ -1,13 +1,17 @@
-import Sandpile.Support.MainExplWalkValue
-import Sandpile.Support.ExplStability
-import Sandpile.Support.D4CritStationary
-import Sandpile.Support.KillBox
-import Sandpile.Support.ExplCutoff
-import Sandpile.Continuum.WhiteNoiseExists
-import Sandpile.Frozen.HeatPotentialInvariance
-import Sandpile.Support.MainExplAnnulus
-import Sandpile.Support.ExplWalkCutoff
-import Sandpile.External.HeatKernelBoundsProved
+module
+
+public import Sandpile.Support.MainExplWalkValue
+public import Sandpile.Support.ExplStability
+public import Sandpile.Support.D4CritStationary
+public import Sandpile.Support.KillBox
+public import Sandpile.Support.ExplCutoff
+public import Sandpile.Continuum.WhiteNoiseExists
+public import Sandpile.Frozen.HeatPotentialInvariance
+public import Sandpile.Support.MainExplAnnulus
+public import Sandpile.Support.ExplWalkCutoff
+public import Sandpile.External.HeatKernelBoundsProved
+
+@[expose] public section
 
 /-!
 # The walk value at a translated starting site, and the oscillation of the odometer

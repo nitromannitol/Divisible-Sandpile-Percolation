@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4Assembly
-import Sandpile.Support.Dgt4ThresholdChain
-import Sandpile.Support.InfiniteGreenField
+module
+
+public import Sandpile.Support.Dgt4Assembly
+public import Sandpile.Support.Dgt4ThresholdChain
+public import Sandpile.Support.InfiniteGreenField
+
+@[expose] public section
 
 /-!
 # Selecting the threshold field by case

@@ -1,7 +1,11 @@
-import Sandpile.Support.LinJacobianTestedL2
-import Sandpile.Support.LinL2Two
-import Sandpile.Support.ContDGT4Membrane
-import Sandpile.Support.ContDominated
+module
+
+public import Sandpile.Support.LinJacobianTestedL2
+public import Sandpile.Support.LinL2Two
+public import Sandpile.Support.ContDGT4Membrane
+public import Sandpile.Support.ContDominated
+
+@[expose] public section
 
 /-!
 # The first conclusion of the linearization lemma, for a signed test function

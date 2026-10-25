@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4AStep3Level
-import Sandpile.Support.Dgt4AStep3Mean
-import Sandpile.Support.Dgt4ACondStep2Limit
+module
+
+public import Sandpile.Support.Dgt4AStep3Level
+public import Sandpile.Support.Dgt4AStep3Mean
+public import Sandpile.Support.Dgt4ACondStep2Limit
+
+@[expose] public section
 
 /-!
 # Step 3 of case (a): the two limits

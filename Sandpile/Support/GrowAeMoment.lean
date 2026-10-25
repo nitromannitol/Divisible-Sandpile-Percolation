@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanAKolmogorov
+module
+
+public import Sandpile.Support.MeanAKolmogorov
+
+@[expose] public section
 
 /-!
 # Moments are invariant under almost-sure modification

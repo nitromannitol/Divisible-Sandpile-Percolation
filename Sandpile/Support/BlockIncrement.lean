@@ -1,4 +1,8 @@
-import Sandpile.Support.D4Reflection
+module
+
+public import Sandpile.Support.D4Reflection
+
+@[expose] public section
 
 /-!
 # Mean growth over a time block

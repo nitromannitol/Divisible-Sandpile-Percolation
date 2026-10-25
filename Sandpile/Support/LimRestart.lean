@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Stopping
-import LatticeProb.Prob.BrownianRestartIntegral
+module
+
+public import Sandpile.Continuum.Stopping
+public import LatticeProb.Prob.BrownianRestartIntegral
+
+@[expose] public section
 
 /-!
 # The joint law of a Brownian stopping time and its restarted path

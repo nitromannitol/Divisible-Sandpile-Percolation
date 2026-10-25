@@ -1,5 +1,9 @@
-import Sandpile.Support.LimLaw
-import LatticeProb.Prob.GaussianLaw
+module
+
+public import Sandpile.Support.LimLaw
+public import LatticeProb.Prob.GaussianLaw
+
+@[expose] public section
 
 /-!
 # The joint law determines the law of the finite-scale maximum

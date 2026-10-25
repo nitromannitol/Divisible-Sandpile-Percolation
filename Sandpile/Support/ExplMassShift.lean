@@ -1,5 +1,9 @@
-import Sandpile.Support.Odometer
-import Sandpile.Law
+module
+
+public import Sandpile.Support.Odometer
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # The Mass Shift of Theorem 1.1

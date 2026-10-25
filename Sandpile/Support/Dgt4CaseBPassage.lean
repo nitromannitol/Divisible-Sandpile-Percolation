@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4CaseBIncrement
-import Sandpile.Support.Dgt4CaseSelect
-import Sandpile.Support.Dgt4MeanDiv
+module
+
+public import Sandpile.Support.Dgt4CaseBIncrement
+public import Sandpile.Support.Dgt4CaseSelect
+public import Sandpile.Support.Dgt4MeanDiv
+
+@[expose] public section
 
 /-!
 # Case (b) of the contact-threshold asymptotics: the heavy-tailed branch

@@ -1,4 +1,8 @@
-import Sandpile.Support.LimPathHit
+module
+
+public import Sandpile.Support.LimPathHit
+
+@[expose] public section
 
 /-!
 # Transferring the ball-stopped reward across motions

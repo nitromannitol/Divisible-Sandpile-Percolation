@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Uniform
+module
+
+public import Sandpile.Support.LinStep2Uniform
+
+@[expose] public section
 
 /-!
 # Reducing the averaged limit to uniform smallness

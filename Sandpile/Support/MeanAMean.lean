@@ -1,7 +1,11 @@
-import Sandpile.Support.MeanAMgf
-import Sandpile.Support.MeanAScale
-import Sandpile.Support.ContMeanAsymptotic
-import Sandpile.Support.MeanAInterp
+module
+
+public import Sandpile.Support.MeanAMgf
+public import Sandpile.Support.MeanAScale
+public import Sandpile.Support.ContMeanAsymptotic
+public import Sandpile.Support.MeanAInterp
+
+@[expose] public section
 
 /-!
 # Uniform mean and variance bounds for the rescaled odometer

@@ -1,5 +1,9 @@
-import Sandpile.External.GaussianLawCovariance
-import LatticeProb.Prob.GaussianLaw
+module
+
+public import Sandpile.External.GaussianLawCovariance
+public import LatticeProb.Prob.GaussianLaw
+
+@[expose] public section
 
 /-!
 # Gaussian law determined by covariance, proved

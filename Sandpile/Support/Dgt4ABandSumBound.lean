@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Support.Dgt4ABandSum
+module
+
+public import Mathlib
+public import Sandpile.Support.Dgt4ABandSum
+
+@[expose] public section
 
 /-!
 # Summing the one-step increment bound

@@ -1,4 +1,8 @@
-import Sandpile.Law
+module
+
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # The critical scale of Theorem 1.2

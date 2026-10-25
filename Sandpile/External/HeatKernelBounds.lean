@@ -1,4 +1,8 @@
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # Heat-kernel bounds for simple random walk

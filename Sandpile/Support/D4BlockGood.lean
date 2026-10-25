@@ -1,5 +1,9 @@
-import Sandpile.Support.D4BlockCrossing
-import Sandpile.Support.RectangleTranspose
+module
+
+public import Sandpile.Support.D4BlockCrossing
+public import Sandpile.Support.RectangleTranspose
+
+@[expose] public section
 
 /-!
 # The deterministic good-block event in dimension four

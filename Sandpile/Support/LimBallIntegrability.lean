@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Support.LimBallBounds
+module
+
+public import Mathlib
+public import Sandpile.Support.LimBallBounds
+
+@[expose] public section
 
 /-!
 # Integrability of a continuous reward at a ball-stopped time

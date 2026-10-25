@@ -1,4 +1,8 @@
-import Sandpile.Support.LinL2Split
+module
+
+public import Sandpile.Support.LinL2Split
+
+@[expose] public section
 
 /-! # L² Assembly of Step 2
 

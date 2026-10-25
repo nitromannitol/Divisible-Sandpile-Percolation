@@ -1,4 +1,8 @@
-import Sandpile.Support.LinEarlyVar
+module
+
+public import Sandpile.Support.LinEarlyVar
+
+@[expose] public section
 
 /-!
 # The early-variance arithmetic, restated

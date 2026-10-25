@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossBallMemLp
+module
+
+public import Sandpile.Support.CrossBallMemLp
+
+@[expose] public section
 
 /-!
 # The dependence range of the unit-scale field

@@ -1,6 +1,10 @@
-import Sandpile.Support.CorrelationRow
-import Sandpile.Support.GeomRow
-import Sandpile.Support.GreenSup
+module
+
+public import Sandpile.Support.CorrelationRow
+public import Sandpile.Support.GeomRow
+public import Sandpile.Support.GreenSup
+
+@[expose] public section
 
 /-!
 # The rates at the geometric scales

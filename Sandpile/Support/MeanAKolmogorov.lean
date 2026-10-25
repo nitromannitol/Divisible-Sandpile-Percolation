@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAGauss
-import Sandpile.Support.ExplFieldEvent
-import LatticeProb.Prob.ChentsovPiModification
+module
+
+public import Sandpile.Support.MeanAGauss
+public import Sandpile.Support.ExplFieldEvent
+public import LatticeProb.Prob.ChentsovPiModification
+
+@[expose] public section
 
 /-! # Kolmogorov continuity of the Gaussian heat potential
 

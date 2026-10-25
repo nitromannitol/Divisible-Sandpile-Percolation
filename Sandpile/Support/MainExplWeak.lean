@@ -1,4 +1,8 @@
-import Sandpile.Support.StopWeakCoupling
+module
+
+public import Sandpile.Support.StopWeakCoupling
+
+@[expose] public section
 
 /-!
 # From a coupling at every scale to convergence in distribution

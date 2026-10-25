@@ -1,6 +1,10 @@
-import Sandpile.Support.Localization
-import Sandpile.Support.ExitAverage
-import Sandpile.Support.OriginKilled
+module
+
+public import Sandpile.Support.Localization
+public import Sandpile.Support.ExitAverage
+public import Sandpile.Support.OriginKilled
+
+@[expose] public section
 
 /-!
 # Measurability of the exit payoff

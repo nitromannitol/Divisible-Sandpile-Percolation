@@ -1,6 +1,10 @@
-import Sandpile.Support.CoarseBox
-import Sandpile.Support.ClusterPath
-import Sandpile.Support.StarCrossings
+module
+
+public import Sandpile.Support.CoarseBox
+public import Sandpile.Support.ClusterPath
+public import Sandpile.Support.StarCrossings
+
+@[expose] public section
 
 /-!
 # Coarse indexing of a planar slice, and fine/coarse distance comparison

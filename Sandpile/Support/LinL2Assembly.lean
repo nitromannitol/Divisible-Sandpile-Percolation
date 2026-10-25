@@ -1,5 +1,9 @@
-import Sandpile.Support.LinChooseL
-import Sandpile.Support.LinL2Split
+module
+
+public import Sandpile.Support.LinChooseL
+public import Sandpile.Support.LinL2Split
+
+@[expose] public section
 
 /-!
 # The `L²` assembly of Step 2

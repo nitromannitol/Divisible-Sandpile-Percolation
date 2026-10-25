@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AIterateAbs
+module
+
+public import Sandpile.Support.Dgt4AIterateAbs
+
+@[expose] public section
 
 /-!
 # Iterating the averaging operator on a constant function

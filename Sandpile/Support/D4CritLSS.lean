@@ -1,9 +1,13 @@
-import Sandpile.Support.D4CritStationary
-import Sandpile.Support.D4CritBlock
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.CrossingContinuity
-import Sandpile.Support.ExitAverage
-import Sandpile.Support.Killed
+module
+
+public import Sandpile.Support.D4CritStationary
+public import Sandpile.Support.D4CritBlock
+public import Sandpile.Support.D4PlaneEmbed
+public import Sandpile.Support.CrossingContinuity
+public import Sandpile.Support.ExitAverage
+public import Sandpile.Support.Killed
+
+@[expose] public section
 
 /-!
 # Measurability and stationarity of the dimension-four good-block process

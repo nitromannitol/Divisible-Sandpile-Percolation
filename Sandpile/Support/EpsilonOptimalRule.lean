@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.Walk
-import Sandpile.Support.Localization
+module
+
+public import Mathlib
+public import Sandpile.Walk
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-! # Epsilon-Optimal Localized Stopping Rules
 

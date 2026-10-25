@@ -1,6 +1,10 @@
-import LatticeProb.Prob.EfronSteinCov
-import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
-import Mathlib.MeasureTheory.Function.L2Space
+module
+
+public import LatticeProb.Prob.EfronSteinCov
+public import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
+public import Mathlib.MeasureTheory.Function.L2Space
+
+@[expose] public section
 
 /-!
 # Convergence in measure from vanishing second moments

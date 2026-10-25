@@ -1,4 +1,8 @@
-import Sandpile.Support.LimStepOne
+module
+
+public import Sandpile.Support.LimStepOne
+
+@[expose] public section
 
 /-!
 # A countable measurable approximation to the infinite-scale crossing event

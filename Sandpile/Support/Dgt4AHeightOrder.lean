@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep1Gaussian
-import Sandpile.Frozen.DGT4HeightLowerStretched
+module
+
+public import Sandpile.Support.Dgt4AStep1Gaussian
+public import Sandpile.Frozen.DGT4HeightLowerStretched
+
+@[expose] public section
 
 /-!
 # The lower half of the Gaussian height-order estimate

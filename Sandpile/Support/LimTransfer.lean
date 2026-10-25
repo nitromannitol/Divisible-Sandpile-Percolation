@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossLaw
+module
+
+public import Sandpile.Support.CrossLaw
+
+@[expose] public section
 
 /-!
 # Transferring an all-rectangles crossing bound between spaces

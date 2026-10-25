@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep2Output
+module
+
+public import Sandpile.Support.Dgt4AStep2Output
+
+@[expose] public section
 
 /-!
 # The Step-2 output of `thm:dgt4-many-limits`, named

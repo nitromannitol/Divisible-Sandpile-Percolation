@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawIntegrated
+module
+
+public import Sandpile.Support.Dgt4ABandLawIntegrated
+
+@[expose] public section
 
 /-!
 # The exponential moment of the constructed one-site law

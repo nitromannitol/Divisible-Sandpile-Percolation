@@ -1,8 +1,12 @@
-import Sandpile.Walk
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Support.Stationary
-import Sandpile.Support.MeanLocalization
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.MeanLocalization
+
+@[expose] public section
 
 /-!
 # The frozen mean-localization corollary

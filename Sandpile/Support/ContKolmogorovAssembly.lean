@@ -1,6 +1,10 @@
-import Sandpile.Support.ContMomentModulus
-import Sandpile.Support.ContKolmogorovMoments
-import LatticeProb.Prob.KolmogorovBound
+module
+
+public import Sandpile.Support.ContMomentModulus
+public import Sandpile.Support.ContKolmogorovMoments
+public import LatticeProb.Prob.KolmogorovBound
+
+@[expose] public section
 
 /-!
 # The tightness clause via the multi-parameter Kolmogorov criterion

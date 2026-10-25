@@ -1,6 +1,10 @@
-import Sandpile.Support.StrongMarkov
-import Sandpile.Support.LinEarlyVar
-import Sandpile.Frozen.DGT4PathSurvival
+module
+
+public import Sandpile.Support.StrongMarkov
+public import Sandpile.Support.LinEarlyVar
+public import Sandpile.Frozen.DGT4PathSurvival
+
+@[expose] public section
 
 /-!
 # The walk is nearest-neighbour almost surely

@@ -1,5 +1,9 @@
-import Sandpile.External.Pinsker
-import LatticeProb.Prob.Pinsker
+module
+
+public import Sandpile.External.Pinsker
+public import LatticeProb.Prob.Pinsker
+
+@[expose] public section
 
 /-!
 # Pinsker's inequality is proved

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.External.GaussianLawCovariance
+module
+
+public import Sandpile.Support.CrossBallMemLp
+public import Sandpile.External.GaussianLawCovariance
+
+@[expose] public section
 
 /-!
 # The plane symmetries acting on the ball field

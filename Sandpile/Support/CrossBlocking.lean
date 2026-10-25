@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossGrid
-import Sandpile.Support.RectangleIntersection
+module
+
+public import Sandpile.Support.CrossGrid
+public import Sandpile.Support.RectangleIntersection
+
+@[expose] public section
 
 /-!
 # The deterministic blocking of Step 1

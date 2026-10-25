@@ -1,5 +1,9 @@
-import Sandpile.Support.PlanarLaw
-import Sandpile.Continuum.Kernel
+module
+
+public import Sandpile.Support.PlanarLaw
+public import Sandpile.Continuum.Kernel
+
+@[expose] public section
 
 /-! # Continuum planar crossing vocabulary
 

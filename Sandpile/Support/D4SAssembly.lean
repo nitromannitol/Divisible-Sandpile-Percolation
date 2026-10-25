@@ -1,6 +1,10 @@
-import Sandpile.Support.D4SStepsPairing
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.D4Step1
+module
+
+public import Sandpile.Support.D4SStepsPairing
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.D4Step1
+
+@[expose] public section
 
 /-!
 # Assembly of the dimension-four superdiffusive limit's first clause

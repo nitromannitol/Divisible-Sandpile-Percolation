@@ -1,5 +1,9 @@
-import Sandpile.Support.LinEscape
-import Sandpile.Support.LinHarmonic
+module
+
+public import Sandpile.Support.LinEscape
+public import Sandpile.Support.LinHarmonic
+
+@[expose] public section
 
 /-!
 # The last-visit estimate

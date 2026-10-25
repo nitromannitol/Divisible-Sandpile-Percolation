@@ -1,4 +1,8 @@
-import LatticeProb.Gauss.IsonormalSum
+module
+
+public import LatticeProb.Gauss.IsonormalSum
+
+@[expose] public section
 
 /-!
 Independence in the isonormal picture of `Support/LinGaussIso.lean`: two isonormal images

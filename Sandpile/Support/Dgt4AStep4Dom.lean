@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep4Repr
+module
+
+public import Sandpile.Support.Dgt4AStep4Repr
+
+@[expose] public section
 
 /-!
 # The dominating function of Step 4 of case (a)

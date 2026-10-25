@@ -1,6 +1,10 @@
-import Sandpile.Support.OdometerLocalization
-import Sandpile.Support.IncrementBall
-import Sandpile.Frozen.DGT4Localization
+module
+
+public import Sandpile.Support.OdometerLocalization
+public import Sandpile.Support.IncrementBall
+public import Sandpile.Frozen.DGT4Localization
+
+@[expose] public section
 
 /-!
 # Real-radius lattice boxes

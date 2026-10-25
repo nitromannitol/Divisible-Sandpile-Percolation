@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AConditionScenery
+module
+
+public import Sandpile.Support.Dgt4AConditionScenery
+
+@[expose] public section
 
 /-!
 # Integrability of the conditional expectation in Step 2

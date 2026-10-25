@@ -1,6 +1,10 @@
-import Sandpile.Support.BallCrossingDefinitions
-import Sandpile.Support.KernelPermutation
-import Sandpile.Law
+module
+
+public import Sandpile.Support.BallCrossingDefinitions
+public import Sandpile.Support.KernelPermutation
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # Coordinate-Permutation Symmetry of the Ball Field

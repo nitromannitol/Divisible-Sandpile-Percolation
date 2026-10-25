@@ -1,4 +1,8 @@
-import Sandpile.Support.ScaleThreshold
+module
+
+public import Sandpile.Support.ScaleThreshold
+
+@[expose] public section
 
 /-!
 # The membrane standard deviation lower bound

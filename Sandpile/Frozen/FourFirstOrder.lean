@@ -1,4 +1,8 @@
-import Sandpile.Support.D4Applications
+module
+
+public import Sandpile.Support.D4Applications
+
+@[expose] public section
 
 /-!
 # First-order odometer convergence at `d = 4`, frozen

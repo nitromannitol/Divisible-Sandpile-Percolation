@@ -1,4 +1,8 @@
-import Sandpile.Support.LinContract
+module
+
+public import Sandpile.Support.LinContract
+
+@[expose] public section
 
 /-!
 # The late-time bound of Step 1

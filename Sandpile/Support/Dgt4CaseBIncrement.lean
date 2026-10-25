@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4CaseBTail
-import LatticeProb.Prob.KaramataOrigin
+module
+
+public import Sandpile.Support.Dgt4CaseBTail
+public import LatticeProb.Prob.KaramataOrigin
+
+@[expose] public section
 
 /-!
 # From the case (b) estimates to the increment integral

@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Frozen.DGT4HeightLower
-import Sandpile.External.GreenBoundsHighProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Frozen.DGT4HeightLower
+public import Sandpile.External.GreenBoundsHighProved
+
+@[expose] public section
 
 /-!
 # First-order behavior of the height in dimension five and above

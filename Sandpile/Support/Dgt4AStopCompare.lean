@@ -1,8 +1,12 @@
-import Sandpile.Support.Dgt4FieldRecursion
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Support.Killed
-import Sandpile.Support.LinLastVisit
-import Sandpile.Support.OriginConcentration
+module
+
+public import Sandpile.Support.Dgt4FieldRecursion
+public import Sandpile.Support.RefinedIncrement
+public import Sandpile.Support.Killed
+public import Sandpile.Support.LinLastVisit
+public import Sandpile.Support.OriginConcentration
+
+@[expose] public section
 
 /-!
 **The stopping comparison of Step 3 of case (a)**

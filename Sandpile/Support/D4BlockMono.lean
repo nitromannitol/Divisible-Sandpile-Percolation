@@ -1,4 +1,8 @@
-import Sandpile.Support.D4BlockGood
+module
+
+public import Sandpile.Support.D4BlockGood
+
+@[expose] public section
 
 /-!
 # Monotonicity of crossing values and the good-block event

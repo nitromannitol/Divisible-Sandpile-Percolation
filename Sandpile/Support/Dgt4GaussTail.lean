@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4CaseA
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.LinGaussFactor
+module
+
+public import Sandpile.Support.Dgt4CaseA
+public import Sandpile.Support.LinGaussBridge
+public import Sandpile.Support.LinGaussFactor
+
+@[expose] public section
 
 /-! # Gaussian Case Infinite Field Tail
 

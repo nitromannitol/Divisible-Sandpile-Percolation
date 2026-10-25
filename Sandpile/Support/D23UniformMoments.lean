@@ -1,6 +1,10 @@
-import Sandpile.Support.ExpMomentRpow
-import LatticeProb.Prob.LpSmooth
-import Sandpile.Support.Norms
+module
+
+public import Sandpile.Support.ExpMomentRpow
+public import LatticeProb.Prob.LpSmooth
+public import Sandpile.Support.Norms
+
+@[expose] public section
 
 /-!
 # Uniform resampling moments under a common exponential-moment bound

@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMGreenIdentity
+module
+
+public import Sandpile.Support.ContBMGreenIdentity
+
+@[expose] public section
 
 /-!
 # `L²` increments of the finite-time Green kernel

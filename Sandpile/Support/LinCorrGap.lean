@@ -1,6 +1,10 @@
-import Sandpile.Support.LinGaussFactor
-import Sandpile.Support.LinPairSum
-import Sandpile.Support.LinLastVisit
+module
+
+public import Sandpile.Support.LinGaussFactor
+public import Sandpile.Support.LinPairSum
+public import Sandpile.Support.LinLastVisit
+
+@[expose] public section
 
 /-!
 # The Gaussian correlation gap

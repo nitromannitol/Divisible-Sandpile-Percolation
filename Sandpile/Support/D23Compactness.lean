@@ -1,4 +1,8 @@
-import Sandpile.Support.PercVarianceSubseq
+module
+
+public import Sandpile.Support.PercVarianceSubseq
+
+@[expose] public section
 
 /-!
 # Stationarity and variance compactness for the critical contradiction

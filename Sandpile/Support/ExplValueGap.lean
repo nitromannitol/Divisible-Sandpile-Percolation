@@ -1,7 +1,11 @@
-import Sandpile.Support.ExplScalingId
-import Sandpile.Support.ExplHorizon
-import Sandpile.Support.ExplCutoff
-import Sandpile.External.LocalCLT
+module
+
+public import Sandpile.Support.ExplScalingId
+public import Sandpile.Support.ExplHorizon
+public import Sandpile.Support.ExplCutoff
+public import Sandpile.External.LocalCLT
+
+@[expose] public section
 
 /-!
 # The four-term error decomposition of the odometer-Brownian gap

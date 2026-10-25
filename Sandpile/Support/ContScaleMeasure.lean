@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Kernel
-import Mathlib
+module
+
+public import Sandpile.Continuum.Kernel
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # The affine rescaling map and its action on Lebesgue measure

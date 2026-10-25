@@ -1,5 +1,9 @@
-import Sandpile.Support.LinStep2
-import Sandpile.Support.LinStep2Replace
+module
+
+public import Sandpile.Support.LinStep2
+public import Sandpile.Support.LinStep2Replace
+
+@[expose] public section
 
 /-! # Step 2 Last-Visit Window
 

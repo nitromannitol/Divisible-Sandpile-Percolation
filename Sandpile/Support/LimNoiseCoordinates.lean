@@ -1,4 +1,8 @@
-import Sandpile.Continuum.WhiteNoise
+module
+
+public import Sandpile.Continuum.WhiteNoise
+
+@[expose] public section
 
 /-!
 # White noise as a linear isometry on `L²`

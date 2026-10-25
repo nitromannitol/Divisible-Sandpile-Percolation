@@ -1,6 +1,10 @@
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.Support.ContCell
-import Sandpile.Support.TightFloorComparison
+module
+
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.Support.ContCell
+public import Sandpile.Support.TightFloorComparison
+
+@[expose] public section
 
 /-!
 # Tightness in negative Sobolev norm from covariance decay

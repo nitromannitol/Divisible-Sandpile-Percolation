@@ -1,6 +1,10 @@
-import Sandpile.Frozen.D4DifferenceTail
-import Sandpile.Support.D4WindowMean
-import Sandpile.Support.D4SStep2
+module
+
+public import Sandpile.Frozen.D4DifferenceTail
+public import Sandpile.Support.D4WindowMean
+public import Sandpile.Support.D4SStep2
+
+@[expose] public section
 
 /-!
 # Step 3 of the superdiffusive limit: the reflection window vanishes

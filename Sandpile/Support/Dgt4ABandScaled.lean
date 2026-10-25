@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandPointwiseBound
-import Sandpile.Support.Dgt4ABandSupConv
-import Sandpile.Support.Dgt4ABandBoundTendsto
+module
+
+public import Sandpile.Support.Dgt4ABandPointwiseBound
+public import Sandpile.Support.Dgt4ABandSupConv
+public import Sandpile.Support.Dgt4ABandBoundTendsto
+
+@[expose] public section
 
 /-!
 # Summed profile of Step 2

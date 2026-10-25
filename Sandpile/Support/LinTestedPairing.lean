@@ -1,9 +1,13 @@
-import Sandpile.Support.LinTestedField
-import Sandpile.Support.LinScaledPairing
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Stationary
-import Sandpile.Support.Iterate
-import Sandpile.Support.ContDGT4Membrane
+module
+
+public import Sandpile.Support.LinTestedField
+public import Sandpile.Support.LinScaledPairing
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.Iterate
+public import Sandpile.Support.ContDGT4Membrane
+
+@[expose] public section
 
 /-!
 # The tested field is the scaled lattice pairing

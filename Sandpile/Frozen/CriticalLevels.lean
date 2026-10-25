@@ -1,14 +1,18 @@
-import Sandpile.Law
-import Sandpile.Support.Crit23Scale
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.BallGreenBoundsProved
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.External.VarianceScaleProved
-import Sandpile.External.PlanarRSW
-import Sandpile.External.LSSDomination
-import Sandpile.External.ExteriorBoundaryConnected
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.Crit23MainAssembly
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.Crit23Scale
+public import Sandpile.External.BallGreenBounds
+public import Sandpile.External.BallGreenBoundsProved
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.External.VarianceScaleProved
+public import Sandpile.External.PlanarRSW
+public import Sandpile.External.LSSDomination
+public import Sandpile.External.ExteriorBoundaryConnected
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.Support.Crit23MainAssembly
+
+@[expose] public section
 
 /-!
 # Critical-level percolation

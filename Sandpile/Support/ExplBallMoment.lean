@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBrownianEnvelope
+module
+
+public import Sandpile.Support.ExplBrownianEnvelope
+
+@[expose] public section
 
 /-!
 # A uniform polynomial moment for the Brownian path radius

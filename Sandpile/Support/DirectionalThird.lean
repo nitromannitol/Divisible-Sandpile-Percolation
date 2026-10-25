@@ -1,5 +1,9 @@
-import LatticeProb.Analysis.SoftStability
-import Mathlib.Analysis.Calculus.Taylor
+module
+
+public import LatticeProb.Analysis.SoftStability
+public import Mathlib.Analysis.Calculus.Taylor
+
+@[expose] public section
 
 /-!
 # Third directional derivatives along field lines

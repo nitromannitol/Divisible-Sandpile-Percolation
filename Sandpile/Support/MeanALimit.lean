@@ -1,8 +1,12 @@
-import Sandpile.Support.MeanAIndex
-import Sandpile.Support.MeanAMoment
-import Sandpile.Support.MeanAPositive
-import Sandpile.Support.ContMeanAsymptotic
-import Sandpile.Support.Odometer
+module
+
+public import Sandpile.Support.MeanAIndex
+public import Sandpile.Support.MeanAMoment
+public import Sandpile.Support.MeanAPositive
+public import Sandpile.Support.ContMeanAsymptotic
+public import Sandpile.Support.Odometer
+
+@[expose] public section
 
 /-! # Moment convergence at the origin from convergence in distribution
 

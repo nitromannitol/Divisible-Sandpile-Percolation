@@ -1,5 +1,9 @@
-import Sandpile.Support.RectangleDuality
-import Sandpile.Support.GaussianSquareSymmetry
+module
+
+public import Sandpile.Support.RectangleDuality
+public import Sandpile.Support.GaussianSquareSymmetry
+
+@[expose] public section
 
 /-!
 # A uniform mean lower bound and polynomial lower tails for Gaussian square crossings

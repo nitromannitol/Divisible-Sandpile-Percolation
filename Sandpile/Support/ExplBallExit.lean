@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Stopping
-import LatticeProb
+module
+
+public import Sandpile.Continuum.Stopping
+public import LatticeProb
+
+@[expose] public section
 
 /-!
 # The exit time of a ball and its tail

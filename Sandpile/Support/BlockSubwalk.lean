@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockGeometry
-import Mathlib.Combinatorics.SimpleGraph.Walk.Decomp
+module
+
+public import Sandpile.Support.BlockGeometry
+public import Mathlib.Combinatorics.SimpleGraph.Walk.Decomp
+
+@[expose] public section
 
 /-!
 # Subwalk extraction

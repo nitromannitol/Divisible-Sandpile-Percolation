@@ -1,7 +1,11 @@
-import Sandpile.Support.CrossExplore
-import Sandpile.Support.CrossTrace
-import Sandpile.Support.CrossEntropyPi
-import Sandpile.External.Pinsker
+module
+
+public import Sandpile.Support.CrossExplore
+public import Sandpile.Support.CrossTrace
+public import Sandpile.Support.CrossEntropyPi
+public import Sandpile.External.Pinsker
+
+@[expose] public section
 
 /-!
 # The level loss from the Cameron-Martin shift

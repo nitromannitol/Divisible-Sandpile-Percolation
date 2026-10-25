@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossFieldSym
-import Sandpile.Support.CrossLaw
-import Sandpile.Support.CrossGrid
+module
+
+public import Sandpile.Support.CrossFieldSym
+public import Sandpile.Support.CrossLaw
+public import Sandpile.Support.CrossGrid
+
+@[expose] public section
 
 /-!
 # The square crossing estimate from planar duality

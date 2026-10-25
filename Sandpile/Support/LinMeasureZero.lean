@@ -1,4 +1,8 @@
-import Sandpile.Support.ContDGT4Membrane
+module
+
+public import Sandpile.Support.ContDGT4Membrane
+
+@[expose] public section
 
 /-!
 # From vanishing second moment to convergence in measure

@@ -1,5 +1,9 @@
-import Sandpile.Support.GaussianRotation
-import Mathlib.Analysis.Calculus.ContDiff.WithLp
+module
+
+public import Sandpile.Support.GaussianRotation
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
+
+@[expose] public section
 
 /-!
 # Variance scaling and transport of subgaussian bounds

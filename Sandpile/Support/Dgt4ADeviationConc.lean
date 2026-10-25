@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ADeviationL2Lip
-import Sandpile.Support.Dgt4ATwoSided
-import Sandpile.Support.Dgt4ACondition
-import Sandpile.External.GaussianLipschitzConcentration
+module
+
+public import Sandpile.Support.Dgt4ADeviationL2Lip
+public import Sandpile.Support.Dgt4ATwoSided
+public import Sandpile.Support.Dgt4ACondition
+public import Sandpile.External.GaussianLipschitzConcentration
+
+@[expose] public section
 
 /-!
 # Gaussian concentration of the centred deviation

@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.IncrementBall
-import LatticeProb.Invariance
+module
+
+public import Mathlib
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.IncrementBall
+public import LatticeProb.Invariance
+
+@[expose] public section
 
 /-!
 # Exit tail from a box

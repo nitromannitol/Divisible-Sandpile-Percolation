@@ -1,7 +1,11 @@
-import Sandpile.Support.Kernel
-import Sandpile.External.VarianceScaleProved
-import LatticeProb.Walk.SRWSup
-import LatticeProb.Walk.Series
+module
+
+public import Sandpile.Support.Kernel
+public import Sandpile.External.VarianceScaleProved
+public import LatticeProb.Walk.SRWSup
+public import LatticeProb.Walk.Series
+
+@[expose] public section
 
 /-!
 # The supremum of the truncated Green kernel in dimensions one to three

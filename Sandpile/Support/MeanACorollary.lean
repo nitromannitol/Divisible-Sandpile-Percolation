@@ -1,7 +1,11 @@
-import Sandpile.Support.MeanAAssembly
-import Sandpile.Support.Dgt4OriginProb
-import Sandpile.Frozen.BrownianScalingLimit
-import Sandpile.Frozen.ContinuumValueSelfSimilar
+module
+
+public import Sandpile.Support.MeanAAssembly
+public import Sandpile.Support.Dgt4OriginProb
+public import Sandpile.Frozen.BrownianScalingLimit
+public import Sandpile.Frozen.ContinuumValueSelfSimilar
+
+@[expose] public section
 
 /-!
 # `cor:dlt4-mean-asymptotic` wired to its two frozen inputs

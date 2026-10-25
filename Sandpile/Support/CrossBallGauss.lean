@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossBall
-import Sandpile.External.PittGaussianFKG
-import Sandpile.Continuum.WhiteNoise
+module
+
+public import Sandpile.Support.CrossBall
+public import Sandpile.External.PittGaussianFKG
+public import Sandpile.Continuum.WhiteNoise
+
+@[expose] public section
 
 /-! # Ball field Gaussian association
 

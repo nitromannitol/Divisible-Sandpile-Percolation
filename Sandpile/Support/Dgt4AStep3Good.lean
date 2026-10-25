@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4AHeightOrder
-import Sandpile.Support.Dgt4ACondTail
-import Sandpile.Support.IncrementBall
-import Sandpile.Support.Dgt4AStep2LipHorizon
+module
+
+public import Sandpile.Support.Dgt4AHeightOrder
+public import Sandpile.Support.Dgt4ACondTail
+public import Sandpile.Support.IncrementBall
+public import Sandpile.Support.Dgt4AStep2LipHorizon
+
+@[expose] public section
 
 /-!
 # Step 3 of case (a): the good event

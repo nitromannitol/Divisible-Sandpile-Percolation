@@ -1,5 +1,9 @@
-import Sandpile.Support.D4CritLSS
-import LatticeProb.Prob.Blocks
+module
+
+public import Sandpile.Support.D4CritLSS
+public import LatticeProb.Prob.Blocks
+
+@[expose] public section
 
 /-!
 # Finite dependence range of the good-block process

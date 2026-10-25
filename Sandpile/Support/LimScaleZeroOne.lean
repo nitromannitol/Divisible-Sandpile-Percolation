@@ -1,7 +1,11 @@
-import Sandpile.Support.LimBoundedBasis
-import Sandpile.Support.LimKernelL1
-import Sandpile.Support.LimNoiseProjection
-import Sandpile.Support.LimChainTail
+module
+
+public import Sandpile.Support.LimBoundedBasis
+public import Sandpile.Support.LimKernelL1
+public import Sandpile.Support.LimNoiseProjection
+public import Sandpile.Support.LimChainTail
+
+@[expose] public section
 
 /-!
 # The zero-one law for the infinite-scale crossing event

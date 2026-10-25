@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep2Chain
-import Sandpile.Support.LinSurvivalMeas
-import Sandpile.Support.LinStep2
+module
+
+public import Sandpile.Support.LinStep2Chain
+public import Sandpile.Support.LinSurvivalMeas
+public import Sandpile.Support.LinStep2
+
+@[expose] public section
 
 /-!
 # Integrating Step 2 of the path-survival lemma over the walk

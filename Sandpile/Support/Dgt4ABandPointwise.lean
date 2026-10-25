@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandIndex
-import Sandpile.Walk
-import Sandpile.Law
+module
+
+public import Sandpile.Support.Dgt4ABandIndex
+public import Sandpile.Walk
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # The pointwise passage of Step 2

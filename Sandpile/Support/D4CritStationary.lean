@@ -1,7 +1,11 @@
-import Sandpile.Support.D4CritExitProb
-import Sandpile.Support.LocalizationRecursion
-import Sandpile.Support.ExitAverage
-import Sandpile.Support.Translation
+module
+
+public import Sandpile.Support.D4CritExitProb
+public import Sandpile.Support.LocalizationRecursion
+public import Sandpile.Support.ExitAverage
+public import Sandpile.Support.Translation
+
+@[expose] public section
 
 /-!
 # Translation covariance of the finite-range field

@@ -1,4 +1,8 @@
-import Sandpile.Support.ContKolmogorovAssembly
+module
+
+public import Sandpile.Support.ContKolmogorovAssembly
+
+@[expose] public section
 
 /-!
 # A quantitative Kolmogorov tail bound for the supremum on a box

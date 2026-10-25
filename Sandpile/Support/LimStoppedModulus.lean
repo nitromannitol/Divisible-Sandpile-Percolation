@@ -1,8 +1,12 @@
-import Sandpile.Support.LimStoppedKernel
-import Sandpile.Support.LimStoppedTransfer
-import Sandpile.Support.MeanAIncrement
-import Sandpile.Support.LimKernelShift
-import Sandpile.Support.LimStoppedContinuity
+module
+
+public import Sandpile.Support.LimStoppedKernel
+public import Sandpile.Support.LimStoppedTransfer
+public import Sandpile.Support.MeanAIncrement
+public import Sandpile.Support.LimKernelShift
+public import Sandpile.Support.LimStoppedContinuity
+
+@[expose] public section
 
 /-!
 # The spatial modulus of the ball-stopped kernel

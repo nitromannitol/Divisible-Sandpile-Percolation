@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplMassShift
-import Sandpile.Support.PercolationEvents
-import Sandpile.Frozen.CriticalLevels
+module
+
+public import Sandpile.Support.ExplMassShift
+public import Sandpile.Support.PercolationEvents
+public import Sandpile.Frozen.CriticalLevels
+
+@[expose] public section
 
 /-!
 # Theorem 1.1 From Theorem 1.2 by a Mass Shift

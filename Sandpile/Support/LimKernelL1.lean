@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.Support.CrossBallScale
-import Sandpile.Support.CrossScale
+module
+
+public import Sandpile.Support.CrossBallMemLp
+public import Sandpile.Support.CrossBallScale
+public import Sandpile.Support.CrossScale
+
+@[expose] public section
 
 /-!
 # `L¹` bounds for the ball Green kernel

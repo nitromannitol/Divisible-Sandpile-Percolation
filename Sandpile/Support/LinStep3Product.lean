@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Split
+module
+
+public import Sandpile.Support.LinStep2Split
+
+@[expose] public section
 
 /-! # Step 3 threshold-product bookkeeping
 

@@ -1,6 +1,10 @@
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.OriginConcentration
-import Sandpile.External.BallGreenBounds
+module
+
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.OriginConcentration
+public import Sandpile.External.BallGreenBounds
+
+@[expose] public section
 
 /-! # Exit-Averaged Payoffs and Green-Time Lipschitz Bounds
 

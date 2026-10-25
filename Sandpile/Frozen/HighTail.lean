@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.Frozen.DGT4HeightUpperTail
-import Sandpile.Frozen.DGT4HeightLowerStretched
-import Sandpile.External.GreenBoundsHighProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Frozen.DGT4HeightUpperTail
+public import Sandpile.Frozen.DGT4HeightLowerStretched
+public import Sandpile.External.GreenBoundsHighProved
+
+@[expose] public section
 
 /-!
 # The frozen stretched-exponential height-tail theorem

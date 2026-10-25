@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossDilate
-import Sandpile.Support.CrossUnion
-import Sandpile.Support.CrossLaw
+module
+
+public import Sandpile.Support.CrossDilate
+public import Sandpile.Support.CrossUnion
+public import Sandpile.Support.CrossLaw
+
+@[expose] public section
 
 /-!
 # The chain vocabulary under a rational dilation

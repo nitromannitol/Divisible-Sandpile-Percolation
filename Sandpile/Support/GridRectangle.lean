@@ -1,6 +1,10 @@
-import Sandpile.Support.GridCorners
-import Sandpile.Support.RectangleTranspose
-import Sandpile.Support.StarNN
+module
+
+public import Sandpile.Support.GridCorners
+public import Sandpile.Support.RectangleTranspose
+public import Sandpile.Support.StarNN
+
+@[expose] public section
 
 /-!
 # The coordinate map from a grid with one virtual column to a lattice rectangle

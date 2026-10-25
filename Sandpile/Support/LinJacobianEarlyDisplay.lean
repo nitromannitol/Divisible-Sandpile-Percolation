@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianStep1Limit
-import Sandpile.Support.LinJacobianLateDisplay
+module
+
+public import Sandpile.Support.LinJacobianStep1Limit
+public import Sandpile.Support.LinJacobianLateDisplay
+
+@[expose] public section
 
 /-!
 # The early display of Step 1, and Step 1 itself

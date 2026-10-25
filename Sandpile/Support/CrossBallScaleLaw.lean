@@ -1,7 +1,11 @@
-import Sandpile.Support.CrossBallScale
-import Sandpile.Support.CrossBallGauss
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.External.GaussianLawCovariance
+module
+
+public import Sandpile.Support.CrossBallScale
+public import Sandpile.Support.CrossBallGauss
+public import Sandpile.Support.CrossBallMemLp
+public import Sandpile.External.GaussianLawCovariance
+
+@[expose] public section
 
 /-!
 # White-noise scaling of the ball field

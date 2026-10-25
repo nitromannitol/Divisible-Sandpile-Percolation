@@ -1,5 +1,9 @@
-import Sandpile.Support.BrownianValueMono.AffineZeroDim
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.BrownianValueMono.AffineZeroDim
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-!
 # Horizon-freeness of the payoff in dimension zero

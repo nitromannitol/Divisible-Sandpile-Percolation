@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourFirstOrder.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourFirstOrder.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `FourFirstOrder`: Mathlib-only vocabulary to the repository

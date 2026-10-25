@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ASceneryBox
-import Sandpile.Support.Dgt4ASceneryLip
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.Dgt4ASceneryBox
+public import Sandpile.Support.Dgt4ASceneryLip
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 # `D_n` as a function of finitely many box coordinates

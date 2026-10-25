@@ -1,6 +1,10 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarSite
-import Sandpile.Support.LinEarlyVarNorm
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarSite
+public import Sandpile.Support.LinEarlyVarNorm
+
+@[expose] public section
 
 /-!
 # Integrability and summability of the per-site covariance integrand

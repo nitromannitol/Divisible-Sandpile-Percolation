@@ -1,8 +1,12 @@
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.InfiniteGreenField
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Support.LinGaussField
-import Sandpile.Support.MeanLocalization
+module
+
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.InfiniteGreenField
+public import Sandpile.Support.RefinedIncrement
+public import Sandpile.Support.LinGaussField
+public import Sandpile.Support.MeanLocalization
+
+@[expose] public section
 
 /-!
 # The recursion of the infinite Green field, and its optimal-stopping form

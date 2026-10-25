@@ -1,4 +1,8 @@
-import Sandpile.Frozen.DGT4DiffusiveMembrane
+module
+
+public import Sandpile.Frozen.DGT4DiffusiveMembrane
+
+@[expose] public section
 
 /-!
 # High-Sobolev Limit From the Diffusive Membrane Theorem

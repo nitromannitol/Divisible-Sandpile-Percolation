@@ -1,7 +1,11 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarSite
-import Sandpile.Support.LinEarlyVarCovBound
-import Sandpile.Support.LinEarlyVarCollapse
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarSite
+public import Sandpile.Support.LinEarlyVarCovBound
+public import Sandpile.Support.LinEarlyVarCollapse
+
+@[expose] public section
 
 /-!
 # A site-sum bound on the visit-weighted covariance sum

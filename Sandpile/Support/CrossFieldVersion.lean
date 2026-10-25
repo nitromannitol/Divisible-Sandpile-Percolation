@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFieldTilt
+module
+
+public import Sandpile.Support.CrossFieldTilt
+
+@[expose] public section
 
 /-!
 # Field versions and the mass of the unit kernel

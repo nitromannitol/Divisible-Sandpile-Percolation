@@ -1,4 +1,8 @@
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # The membrane field as a stopping-time competitor

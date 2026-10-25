@@ -1,7 +1,11 @@
-import Sandpile.Support.TightD4Covariance
-import Sandpile.Support.ContMeanGrowth
-import Sandpile.Support.ExplMeanAsymptotic
-import Sandpile.Support.MeanAValue
+module
+
+public import Sandpile.Support.TightD4Covariance
+public import Sandpile.Support.ContMeanGrowth
+public import Sandpile.Support.ExplMeanAsymptotic
+public import Sandpile.Support.MeanAValue
+
+@[expose] public section
 
 /-!
 # Square Integrability for the Mean-Asymptotic Corollary

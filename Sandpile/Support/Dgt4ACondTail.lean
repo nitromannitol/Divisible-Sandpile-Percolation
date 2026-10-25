@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ACondMeas
-import Sandpile.Support.Dgt4ACondUnion
-import Sandpile.Support.Dgt4ACorrGap
+module
+
+public import Sandpile.Support.Dgt4ACondMeas
+public import Sandpile.Support.Dgt4ACondUnion
+public import Sandpile.Support.Dgt4ACorrGap
+
+@[expose] public section
 
 /-!
 # One-site Gaussian tail of the conditioned field

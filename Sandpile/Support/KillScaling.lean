@@ -1,10 +1,14 @@
-import Sandpile.Support.KillFieldCoupling
-import Sandpile.Support.KillValueStability
-import Sandpile.Support.KillMeshApproximation
-import Sandpile.Support.KillAssembly
-import Sandpile.Support.KillRadius
-import Sandpile.Support.ExplRewardFamily
-import Sandpile.Frozen.HeatPotentialInvariance
+module
+
+public import Sandpile.Support.KillFieldCoupling
+public import Sandpile.Support.KillValueStability
+public import Sandpile.Support.KillMeshApproximation
+public import Sandpile.Support.KillAssembly
+public import Sandpile.Support.KillRadius
+public import Sandpile.Support.ExplRewardFamily
+public import Sandpile.Frozen.HeatPotentialInvariance
+
+@[expose] public section
 
 /-!
 # The cube-killed scaling limit for centered scenery

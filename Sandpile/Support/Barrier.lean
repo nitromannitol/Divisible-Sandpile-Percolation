@@ -1,7 +1,11 @@
-import Sandpile.Support.Odometer
-import Sandpile.Support.Kernel
-import Sandpile.Support.Stationary
-import LatticeProb.Walk.SRWDiag
+module
+
+public import Sandpile.Support.Odometer
+public import Sandpile.Support.Kernel
+public import Sandpile.Support.Stationary
+public import LatticeProb.Walk.SRWDiag
+
+@[expose] public section
 
 /-!
 # The parabolic barrier

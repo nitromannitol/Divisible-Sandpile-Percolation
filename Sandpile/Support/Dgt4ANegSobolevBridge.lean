@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Sobolev
-import LatticeProb.Analysis.Sobolev.Defs
+module
+
+public import Sandpile.Continuum.Sobolev
+public import LatticeProb.Analysis.Sobolev.Defs
+
+@[expose] public section
 
 /-!
 # Bridging the repository's negative-order Sobolev norm to the library's

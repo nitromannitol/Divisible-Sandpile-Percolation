@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Frozen.DGT4PathSurvival
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Frozen.DGT4PathSurvival
+
+@[expose] public section
 
 /-! # Uniform and Pointwise Contact Thresholds
 

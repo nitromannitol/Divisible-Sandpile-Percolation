@@ -1,5 +1,9 @@
-import Sandpile.Support.ContWeightedCoeff
-import Sandpile.Support.ContInterpSmall
+module
+
+public import Sandpile.Support.ContWeightedCoeff
+public import Sandpile.Support.ContInterpSmall
+
+@[expose] public section
 
 /-!
 # Fubini for the doubled interpolation coefficients

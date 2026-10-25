@@ -1,5 +1,9 @@
-import Sandpile.Support.LinGaussField
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Support.LinGaussField
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # The law of the Gaussian Green field under the i.i.d. scenery

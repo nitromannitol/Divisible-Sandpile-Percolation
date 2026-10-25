@@ -1,7 +1,11 @@
-import Sandpile.Support.D4Reflection
-import Sandpile.Support.D4Mean
-import Sandpile.Support.D4Scale
-import Sandpile.Support.D4ScaleSepLimits
+module
+
+public import Sandpile.Support.D4Reflection
+public import Sandpile.Support.D4Mean
+public import Sandpile.Support.D4Scale
+public import Sandpile.Support.D4ScaleSepLimits
+
+@[expose] public section
 
 /-!
 # The mean of the reflection window at superdiffusive times

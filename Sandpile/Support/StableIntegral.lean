@@ -1,6 +1,10 @@
-import LatticeProb.Analysis.SoftStability
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import LatticeProb.Prob.ExponentialMoments
+module
+
+public import LatticeProb.Analysis.SoftStability
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import LatticeProb.Prob.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # Integral comparison for exponentially stable envelopes

@@ -1,6 +1,10 @@
-import Sandpile.Support.D4BlockGood
-import Sandpile.Support.D4FieldSymmetry
-import Sandpile.Support.D4CrossingMeasurable
+module
+
+public import Sandpile.Support.D4BlockGood
+public import Sandpile.Support.D4FieldSymmetry
+public import Sandpile.Support.D4CrossingMeasurable
+
+@[expose] public section
 
 /-!
 # The diagonal plane reflection and the ball Green field

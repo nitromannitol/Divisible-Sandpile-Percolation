@@ -1,6 +1,10 @@
-import Sandpile.Frozen.DGT4LevelShiftDecoupling
-import Sandpile.Support.RealBoxes
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+module
+
+public import Sandpile.Frozen.DGT4LevelShiftDecoupling
+public import Sandpile.Support.RealBoxes
+public import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+
+@[expose] public section
 
 /-!
 # Star-lattice walk prefixes and annular crossing witnesses

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ACondition
+module
+
+public import Sandpile.Support.Dgt4ACondition
+
+@[expose] public section
 
 /-!
 # The Green field is deterministic at the conditioned level

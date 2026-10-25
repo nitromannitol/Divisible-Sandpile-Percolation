@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossField
+module
+
+public import Sandpile.Support.CrossField
+
+@[expose] public section
 
 /-!
 # Positive association (FKG) for crossing events

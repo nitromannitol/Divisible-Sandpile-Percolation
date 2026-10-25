@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianTimes
-import Sandpile.Support.LinLateVar
-import Sandpile.Support.TightSmallPower
+module
+
+public import Sandpile.Support.LinJacobianTimes
+public import Sandpile.Support.LinLateVar
+public import Sandpile.Support.TightSmallPower
+
+@[expose] public section
 
 /-!
 # The late-time bound on the coordinate derivative of the tested field

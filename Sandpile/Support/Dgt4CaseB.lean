@@ -1,6 +1,10 @@
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Dgt4Thresholds
-import Sandpile.Support.Dgt4ThresholdChain
+module
+
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Dgt4Thresholds
+public import Sandpile.Support.Dgt4ThresholdChain
+
+@[expose] public section
 
 /-!
 # The threshold probability of case (b)

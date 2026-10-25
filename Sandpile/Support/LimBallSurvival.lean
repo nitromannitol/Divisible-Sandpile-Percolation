@@ -1,6 +1,10 @@
-import Mathlib
-import LatticeProb.Prob.BrownianExitTime
-import LatticeProb.Prob.BrownianExit
+module
+
+public import Mathlib
+public import LatticeProb.Prob.BrownianExitTime
+public import LatticeProb.Prob.BrownianExit
+
+@[expose] public section
 
 /-!
 # Ball-survival estimates for Brownian motion

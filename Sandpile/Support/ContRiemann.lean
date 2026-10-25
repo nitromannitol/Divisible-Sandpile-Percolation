@@ -1,4 +1,8 @@
-import Sandpile.Support.ContWeightedLimit
+module
+
+public import Sandpile.Support.ContWeightedLimit
+
+@[expose] public section
 
 /-!
 # The Riemann-Sum Form of the Coefficient Sum of Squares

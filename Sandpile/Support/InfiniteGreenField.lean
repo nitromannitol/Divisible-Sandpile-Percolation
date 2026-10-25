@@ -1,5 +1,9 @@
-import Sandpile.Basic
-import Sandpile.Walk
+module
+
+public import Sandpile.Basic
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-!
 # Infinite Gaussian Green field

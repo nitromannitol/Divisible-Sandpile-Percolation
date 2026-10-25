@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawUpper
+module
+
+public import Sandpile.Support.Dgt4ABandLawUpper
+
+@[expose] public section
 
 /-!
 # The Step-1 lower isolation estimate for the constructed law

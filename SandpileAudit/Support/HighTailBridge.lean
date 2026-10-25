@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighTail.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighTail.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `HighTail`: Mathlib-only vocabulary to the repository

@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossVertex
+module
+
+public import Sandpile.Support.CrossVertex
+
+@[expose] public section
 
 /-!
 # The chain-event union and the two-sided crossing estimate

@@ -1,15 +1,19 @@
-import Sandpile.Frozen.Nontriviality
-import Sandpile.Frozen.CriticalLevels
-import Sandpile.Frozen.MeanGrowthLow
-import Sandpile.Frozen.BrownianScalingLimit
-import Sandpile.Frozen.MeanGrowthFour
-import Sandpile.Frozen.FourFirstOrder
-import Sandpile.Frozen.FourGaussian
-import Sandpile.Frozen.FourSobolev
-import Sandpile.Frozen.HighFirstOrder
-import Sandpile.Frozen.HighTail
-import Sandpile.Frozen.HighSobolevLimit
-import Sandpile.Frozen.HighNonconvergence
+module
+
+public import Sandpile.Frozen.Nontriviality
+public import Sandpile.Frozen.CriticalLevels
+public import Sandpile.Frozen.MeanGrowthLow
+public import Sandpile.Frozen.BrownianScalingLimit
+public import Sandpile.Frozen.MeanGrowthFour
+public import Sandpile.Frozen.FourFirstOrder
+public import Sandpile.Frozen.FourGaussian
+public import Sandpile.Frozen.FourSobolev
+public import Sandpile.Frozen.HighFirstOrder
+public import Sandpile.Frozen.HighTail
+public import Sandpile.Frozen.HighSobolevLimit
+public import Sandpile.Frozen.HighNonconvergence
+
+@[expose] public section
 
 /-!
 # Main results

@@ -1,6 +1,10 @@
-import Sandpile.Support.GaussianScale
-import Sandpile.Support.GaussianApproximation
-import Sandpile.Support.CrossingApproximation
+module
+
+public import Sandpile.Support.GaussianScale
+public import Sandpile.Support.GaussianApproximation
+public import Sandpile.Support.CrossingApproximation
+
+@[expose] public section
 
 /-!
 # Gaussian exponential concentration for rectangle crossing values

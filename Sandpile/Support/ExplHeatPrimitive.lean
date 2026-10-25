@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplHeatNoise
-import Sandpile.Support.ExplFieldEvent
+module
+
+public import Sandpile.Support.ExplHeatNoise
+public import Sandpile.Support.ExplFieldEvent
+
+@[expose] public section
 
 /-!
 # The time-integrated heat kernel and a uniform envelope for the Gaussian potential

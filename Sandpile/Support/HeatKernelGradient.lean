@@ -1,6 +1,10 @@
-import Sandpile.External.GaussianUpperProved
-import Sandpile.External.VarianceScaleProved
-import LatticeProb.Walk.GenGrad
+module
+
+public import Sandpile.External.GaussianUpperProved
+public import Sandpile.External.VarianceScaleProved
+public import LatticeProb.Walk.GenGrad
+
+@[expose] public section
 
 /-!
 # The same-parity heat-kernel gradient in the Euclidean metric

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4Contact
-import Sandpile.Support.Dgt4LinInputs
-import Sandpile.Support.LinLastVisit
+module
+
+public import Sandpile.Support.Dgt4Contact
+public import Sandpile.Support.Dgt4LinInputs
+public import Sandpile.Support.LinLastVisit
+
+@[expose] public section
 
 /-!
 # Assembling the contact-threshold and linearization propositions

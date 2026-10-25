@@ -1,4 +1,8 @@
-import Sandpile.Support.Iterate
+module
+
+public import Sandpile.Support.Iterate
+
+@[expose] public section
 
 /-!
 # The killed heat kernel and killed Green time

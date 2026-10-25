@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossFixedScale
-import Sandpile.Support.CrossBallSym
-import Sandpile.External.GaussianLawCovarianceProved
+module
+
+public import Sandpile.Support.CrossFixedScale
+public import Sandpile.Support.CrossBallSym
+public import Sandpile.External.GaussianLawCovarianceProved
+
+@[expose] public section
 
 /-!
 # `prop:fixed-scale-crossings` for the ball field

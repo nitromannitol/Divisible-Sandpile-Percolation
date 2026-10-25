@@ -1,5 +1,9 @@
-import Sandpile.Support.FiniteProductSplit
-import Sandpile.Support.BernoulliInterpolation
+module
+
+public import Sandpile.Support.FiniteProductSplit
+public import Sandpile.Support.BernoulliInterpolation
+
+@[expose] public section
 
 /-!
 # Corner expectations under mixed finite product measures

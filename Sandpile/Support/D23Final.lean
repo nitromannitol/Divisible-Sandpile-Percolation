@@ -1,5 +1,9 @@
-import Sandpile.Support.D23SequentialStep
-import Sandpile.Support.D23Assembly
+module
+
+public import Sandpile.Support.D23SequentialStep
+public import Sandpile.Support.D23Assembly
+
+@[expose] public section
 
 /-!
 # Assembling the critical-level percolation theorem in dimensions two and three

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep1
+module
+
+public import Sandpile.Support.Dgt4AStep1
+
+@[expose] public section
 
 /-!
 # Step 1 of case (a): the centred-value decay bound

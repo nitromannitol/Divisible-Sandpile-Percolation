@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+
+@[expose] public section
 
 /-!
 # Diffusive Odometer Fluctuation

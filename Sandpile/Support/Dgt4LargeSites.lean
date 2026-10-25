@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4CaseBStep1
-import Sandpile.Support.Dgt4LowerTailMoment
+module
+
+public import Sandpile.Support.Dgt4CaseBStep1
+public import Sandpile.Support.Dgt4LowerTailMoment
+
+@[expose] public section
 
 /-!
 # Step 1 of case (b), reduced to its conditional deviation estimate

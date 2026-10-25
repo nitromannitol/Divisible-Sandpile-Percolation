@@ -1,5 +1,9 @@
-import Sandpile.Support.LimValueApproximation
-import Sandpile.Support.ExplGreenFubini
+module
+
+public import Sandpile.Support.LimValueApproximation
+public import Sandpile.Support.ExplGreenFubini
+
+@[expose] public section
 
 /-!
 # White-noise representation of the ball-stopped field

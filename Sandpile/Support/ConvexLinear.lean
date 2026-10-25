@@ -1,4 +1,8 @@
-import LatticeProb.Prob.LpSmooth
+module
+
+public import LatticeProb.Prob.LpSmooth
+
+@[expose] public section
 
 /-!
 # Convexity bound on the resampling quotient

@@ -1,4 +1,8 @@
-import Sandpile.Support.HeatKernelGradient
+module
+
+public import Sandpile.Support.HeatKernelGradient
+
+@[expose] public section
 
 /-!
 # The heat-kernel estimates are proved

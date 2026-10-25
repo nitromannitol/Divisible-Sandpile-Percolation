@@ -1,5 +1,9 @@
-import Sandpile.Support.Localization
-import LatticeProb.Graph.ZdKilled
+module
+
+public import Sandpile.Support.Localization
+public import LatticeProb.Graph.ZdKilled
+
+@[expose] public section
 
 /-! # The localized odometer's one-step recursion
 

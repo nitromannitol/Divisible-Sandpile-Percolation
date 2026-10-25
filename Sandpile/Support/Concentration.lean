@@ -1,8 +1,12 @@
-import Sandpile.Support.FiniteCoord
-import LatticeProb.Prob.LpSmooth
-import LatticeProb.Prob.EfronSteinInequality
-import LatticeProb.Prob.Harris
-import LatticeProb.Prob.EfronSteinCov
+module
+
+public import Sandpile.Support.FiniteCoord
+public import LatticeProb.Prob.LpSmooth
+public import LatticeProb.Prob.EfronSteinInequality
+public import LatticeProb.Prob.Harris
+public import LatticeProb.Prob.EfronSteinCov
+
+@[expose] public section
 
 /-!
 # Concentration of the odometer at the fluctuation scale

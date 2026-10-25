@@ -1,5 +1,9 @@
-import Sandpile.Support.Kernel
-import Sandpile.Continuum.Kernel
+module
+
+public import Sandpile.Support.Kernel
+public import Sandpile.Continuum.Kernel
+
+@[expose] public section
 
 /-!
 # Local central limit theorem, parity form

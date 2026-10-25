@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandConcentration
+module
+
+public import Sandpile.Support.Dgt4ABandConcentration
+
+@[expose] public section
 
 /-!
 # Strict Green Ratio for the Simple Random Walk

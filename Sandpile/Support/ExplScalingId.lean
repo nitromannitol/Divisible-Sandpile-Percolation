@@ -1,8 +1,12 @@
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Frozen.DifferenceRepresentation
-import Sandpile.External.BPSHProved
-import Sandpile.Support.Membrane
-import Sandpile.Support.Walk
+module
+
+public import Sandpile.Support.HeatPotentialDefs
+public import Sandpile.Frozen.DifferenceRepresentation
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.Membrane
+public import Sandpile.Support.Walk
+
+@[expose] public section
 
 /-!
 # The exact identity of the parabolic-scale rescaling

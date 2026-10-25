@@ -1,4 +1,8 @@
-import Sandpile.Support.WalkRay
+module
+
+public import Sandpile.Support.WalkRay
+
+@[expose] public section
 
 /-!
 # Nearest-neighbor and star crossing intersection

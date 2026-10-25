@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABoxDeviation
-import Sandpile.Support.Concentration
-import Sandpile.Support.LinGreenTail
+module
+
+public import Sandpile.Support.Dgt4ABoxDeviation
+public import Sandpile.Support.Concentration
+public import Sandpile.Support.LinGreenTail
+
+@[expose] public section
 
 /-!
 Uniform moments for `D_n`.  Its coordinate Lipschitz coefficients `2G(0,z)` are square

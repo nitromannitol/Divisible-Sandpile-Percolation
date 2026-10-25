@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallLocal
+module
+
+public import Sandpile.Support.ExplBallLocal
+
+@[expose] public section
 
 /-! # Strong Markov Property at a Ball's Exit Time
 

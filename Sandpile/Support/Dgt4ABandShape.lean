@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandBump
+module
+
+public import Sandpile.Support.Dgt4ABandBump
+
+@[expose] public section
 
 /-!
 # The smooth band profile

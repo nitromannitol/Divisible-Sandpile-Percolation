@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.LinCorrGap
+module
+
+public import Sandpile.Support.Dgt4ACovStop
+public import Sandpile.Support.LinCorrGap
+
+@[expose] public section
 
 /-!
 # Conditional means off the origin

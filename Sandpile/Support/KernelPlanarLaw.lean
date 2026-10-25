@@ -1,6 +1,10 @@
-import Sandpile.Support.KernelReflection
-import Sandpile.Support.PlanarLaw
-import Sandpile.Support.GaussianSquareSymmetry
+module
+
+public import Sandpile.Support.KernelReflection
+public import Sandpile.Support.PlanarLaw
+public import Sandpile.Support.GaussianSquareSymmetry
+
+@[expose] public section
 
 /-!
 # Spatial symmetries and positive association of planar finite-kernel fields

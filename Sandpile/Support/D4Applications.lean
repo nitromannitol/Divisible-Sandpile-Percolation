@@ -1,5 +1,9 @@
-import Sandpile.Frozen.CriticalTopplingD4
-import Sandpile.External.VarianceScaleProved
+module
+
+public import Sandpile.Frozen.CriticalTopplingD4
+public import Sandpile.External.VarianceScaleProved
+
+@[expose] public section
 
 /-!
 # Logarithmic growth of the odometer for a fixed scenery law in dimension four

@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighFirstOrder.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighFirstOrder.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `HighFirstOrder`: Mathlib-only vocabulary to the repository

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossGrid
-import Sandpile.Support.CrossBlocking
+module
+
+public import Sandpile.Support.CrossGrid
+public import Sandpile.Support.CrossBlocking
+
+@[expose] public section
 
 /-!
 # Transferring a connected set to a nearest-neighbour lattice walk

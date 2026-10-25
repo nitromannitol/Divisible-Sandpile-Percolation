@@ -1,10 +1,14 @@
-import Sandpile.Support.RswSquareHalf
-import Sandpile.Support.RswHardStep
-import Sandpile.Support.RswRectangleLower
-import Sandpile.Support.RpowNegSmall
-import Sandpile.Support.GaussianCrossingUpper
-import Sandpile.Support.GaussianBottleneck
-import Sandpile.External.PlanarRSW
+module
+
+public import Sandpile.Support.RswSquareHalf
+public import Sandpile.Support.RswHardStep
+public import Sandpile.Support.RswRectangleLower
+public import Sandpile.Support.RpowNegSmall
+public import Sandpile.Support.GaussianCrossingUpper
+public import Sandpile.Support.GaussianBottleneck
+public import Sandpile.External.PlanarRSW
+
+@[expose] public section
 
 /-!
 # The RSW mean lower bound for Gaussian rectangle crossings

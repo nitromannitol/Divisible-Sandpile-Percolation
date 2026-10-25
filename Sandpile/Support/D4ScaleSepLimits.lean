@@ -1,6 +1,10 @@
-import Sandpile.Support.D4ScaleSep
-import Sandpile.Support.D4ScaleSepSecond
-import Sandpile.Support.D4Scale
+module
+
+public import Sandpile.Support.D4ScaleSep
+public import Sandpile.Support.D4ScaleSepSecond
+public import Sandpile.Support.D4Scale
+
+@[expose] public section
 
 /-!
 # The two limits of the superdiffusive scale separation

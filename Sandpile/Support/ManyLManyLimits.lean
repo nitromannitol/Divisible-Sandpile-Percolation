@@ -1,4 +1,8 @@
-import Sandpile.Support.ContManyLimits
+module
+
+public import Sandpile.Support.ContManyLimits
+
+@[expose] public section
 
 /-! # Assembling the many-limits theorem
 

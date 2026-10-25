@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Harmonic-sum/logarithm comparison and a Cesàro smallness estimate

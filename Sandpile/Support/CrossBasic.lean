@@ -1,4 +1,8 @@
-import Sandpile.Support.ContinuumPlanar
+module
+
+public import Sandpile.Support.ContinuumPlanar
+
+@[expose] public section
 
 /-! # Basic crossing geometry
 

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandStep2
+module
+
+public import Sandpile.Support.Dgt4ABandStep2
+
+@[expose] public section
 
 /-!
 # The bridge from Step 2 to Step 3

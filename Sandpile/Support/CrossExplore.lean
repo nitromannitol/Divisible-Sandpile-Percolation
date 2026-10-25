@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFixedScale
+module
+
+public import Sandpile.Support.CrossFixedScale
+
+@[expose] public section
 
 /-!
 # Subquadratic count for the fixed-scale exploration

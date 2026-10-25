@@ -1,4 +1,8 @@
-import Sandpile.Support.CascadeGeometry
+module
+
+public import Sandpile.Support.CascadeGeometry
+
+@[expose] public section
 
 /-!
 # Exterior Boundary and Axis-Ray Annular Crossings

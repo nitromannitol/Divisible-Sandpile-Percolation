@@ -1,5 +1,9 @@
-import Sandpile.Support.GaussianScale
-import Sandpile.Support.FiniteKernelTail
+module
+
+public import Sandpile.Support.GaussianScale
+public import Sandpile.Support.FiniteKernelTail
+
+@[expose] public section
 
 /-!
 # Exact exponential moments of finite Gaussian linear combinations

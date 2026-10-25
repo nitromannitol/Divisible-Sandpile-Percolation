@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Mathlib.Probability.Distributions.Gaussian.Multivariate
+module
+
+public import Sandpile.Law
+public import Mathlib.Probability.Distributions.Gaussian.Multivariate
+
+@[expose] public section
 
 /-!
 # The multivariate Berry-Esseen theorem, standardized

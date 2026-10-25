@@ -1,5 +1,9 @@
-import Sandpile.Support.LinReturn
-import LatticeProb.Prob.EfronSteinInequality
+module
+
+public import Sandpile.Support.LinReturn
+public import LatticeProb.Prob.EfronSteinInequality
+
+@[expose] public section
 
 /-!
 # Covariance of the survival indicators at two times

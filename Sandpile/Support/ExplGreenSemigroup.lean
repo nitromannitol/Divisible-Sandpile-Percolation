@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Support.ContBMGreenIdentity
+module
+
+public import Mathlib
+public import Sandpile.Support.ContBMGreenIdentity
+
+@[expose] public section
 
 /-!
 # The heat semigroup applied to a finite-time Brownian Green kernel

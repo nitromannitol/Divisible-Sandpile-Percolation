@@ -1,7 +1,11 @@
-import Sandpile.Support.GaussianSquareMean
-import Sandpile.Support.RectangleMonotonicity
-import Sandpile.Support.RswArithmetic
-import Sandpile.Support.CrossingContinuity
+module
+
+public import Sandpile.Support.GaussianSquareMean
+public import Sandpile.Support.RectangleMonotonicity
+public import Sandpile.Support.RswArithmetic
+public import Sandpile.Support.CrossingContinuity
+
+@[expose] public section
 
 /-!
 # Square crossing probability eventually at least one half

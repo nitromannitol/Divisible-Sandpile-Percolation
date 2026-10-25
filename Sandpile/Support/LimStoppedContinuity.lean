@@ -1,5 +1,9 @@
-import Sandpile.Support.LimStoppedTransfer
-import Sandpile.Support.LimStoppedKernel
+module
+
+public import Sandpile.Support.LimStoppedTransfer
+public import Sandpile.Support.LimStoppedKernel
+
+@[expose] public section
 
 /-!
 # Continuity of the ball-stopped field in the plane point

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContBMGreenIdentity
-import Mathlib
+module
+
+public import Sandpile.Support.ContBMGreenIdentity
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Measurable L2 Families of Brownian Green Kernels

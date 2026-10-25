@@ -1,7 +1,11 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Law
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.MeanACorollary
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Law
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.Support.MeanACorollary
+
+@[expose] public section
 
 /-!
 # Mean and variance asymptotics from the continuum value, below dimension four

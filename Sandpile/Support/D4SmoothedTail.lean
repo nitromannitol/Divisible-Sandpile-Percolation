@@ -1,7 +1,11 @@
-import Sandpile.Support.D4Smoothed
-import Sandpile.Support.D4Difference
-import Sandpile.External.VarianceScale
-import Sandpile.Frozen.WeightedExpConcentration
+module
+
+public import Sandpile.Support.D4Smoothed
+public import Sandpile.Support.D4Difference
+public import Sandpile.External.VarianceScale
+public import Sandpile.Frozen.WeightedExpConcentration
+
+@[expose] public section
 
 /-!
 # The tail of the smoothed difference in dimension four

@@ -1,6 +1,10 @@
-import Sandpile.Support.KernelSymmetry
-import Sandpile.Support.RectangleTranspose
-import LatticeProb.Prob.Harris
+module
+
+public import Sandpile.Support.KernelSymmetry
+public import Sandpile.Support.RectangleTranspose
+public import LatticeProb.Prob.Harris
+
+@[expose] public section
 
 /-!
 # Symmetry and association for planar lattice fields

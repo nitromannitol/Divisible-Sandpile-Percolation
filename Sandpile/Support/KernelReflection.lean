@@ -1,4 +1,8 @@
-import Sandpile.Support.KernelPermutation
+module
+
+public import Sandpile.Support.KernelPermutation
+
+@[expose] public section
 
 /-!
 # Coordinate-reflection covariance of the killed kernel and the cutoff Green field

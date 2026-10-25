@@ -1,4 +1,8 @@
-import LatticeProb.Analysis.SoftComposition
+module
+
+public import LatticeProb.Analysis.SoftComposition
+
+@[expose] public section
 
 /-!
 # Balanced bottleneck recursions

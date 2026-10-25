@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4Truncation
+module
+
+public import Sandpile.Support.Dgt4Truncation
+
+@[expose] public section
 
 /-! # Pair-Killed Green Kernel Lipschitz Bound
 

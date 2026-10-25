@@ -1,7 +1,11 @@
-import Sandpile.Support.ContMeanGrowth
-import Sandpile.Support.MeanAValue
-import Sandpile.Continuum.WhiteNoiseExists
-import Sandpile.Continuum.BrownianExists
+module
+
+public import Sandpile.Support.ContMeanGrowth
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Continuum.WhiteNoiseExists
+public import Sandpile.Continuum.BrownianExists
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(i)(a): the mean growth rate from the mean asymptotic

@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAGauss
-import Sandpile.Support.MeanAZeroTime
-import Sandpile.Support.MeanAPositive
+module
+
+public import Sandpile.Support.MeanAGauss
+public import Sandpile.Support.MeanAZeroTime
+public import Sandpile.Support.MeanAPositive
+
+@[expose] public section
 
 /-!
 # Positivity of the limiting variance

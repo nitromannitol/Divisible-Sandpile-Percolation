@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallStep
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.ExplBallStep
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-! # Integrability of the Stopped Reward
 

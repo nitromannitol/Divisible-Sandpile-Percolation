@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMKernel
+module
+
+public import Sandpile.Support.ContBMKernel
+
+@[expose] public section
 
 /-!
 # The Continuous Time Cutoff

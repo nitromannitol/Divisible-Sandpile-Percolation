@@ -1,4 +1,8 @@
-import Sandpile.Support.CriticalScaleBound
+module
+
+public import Sandpile.Support.CriticalScaleBound
+
+@[expose] public section
 
 /-!
 # Geometric scale counting

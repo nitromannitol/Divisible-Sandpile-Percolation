@@ -1,5 +1,9 @@
-import Sandpile.Support.LimBallStoppedTail
-import Sandpile.Support.LimExitMean
+module
+
+public import Sandpile.Support.LimBallStoppedTail
+public import Sandpile.Support.LimExitMean
+
+@[expose] public section
 
 /-!
 # A rate for the `L²` convergence of the ball-stopped kernel

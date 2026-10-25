@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighNonconvergence.SolutionBasic
-import SandpileAudit.Support.HighNonconvergenceBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighNonconvergence.SolutionBasic
+public import SandpileAudit.Support.HighNonconvergenceBridge
+
+@[expose] public section
 
 /-!
 # Solution: HighNonconvergence

@@ -1,4 +1,8 @@
-import Sandpile.External.LocalCLT
+module
+
+public import Sandpile.External.LocalCLT
+
+@[expose] public section
 
 /-!
 # The Gaussian Fourier transform and the rescaled heat kernel

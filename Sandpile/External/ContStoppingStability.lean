@@ -1,6 +1,10 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.External.LocalCLT
-import Sandpile.Walk
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.External.LocalCLT
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-!
 # Optimal-stopping value stability under uniform reward convergence

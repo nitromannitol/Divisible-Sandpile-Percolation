@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Stopping
+module
+
+public import Sandpile.Continuum.Stopping
+
+@[expose] public section
 
 /-!
 # The finite-horizon optimal-stopping theorem, cited

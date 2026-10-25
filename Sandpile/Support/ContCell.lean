@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Sobolev
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Continuum.Sobolev
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # Mesh cells and the lattice pairing as a sum over them

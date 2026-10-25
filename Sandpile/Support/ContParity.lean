@@ -1,4 +1,8 @@
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # Parity of simple random walk on `ℤ^d`

@@ -1,4 +1,8 @@
-import LatticeProb.Gauss.Coords
+module
+
+public import LatticeProb.Gauss.Coords
+
+@[expose] public section
 
 /-!
 # Gaussian concentration for a Lipschitz functional

@@ -1,6 +1,10 @@
-import Sandpile.Support.D4Scale
-import Sandpile.Support.D4SmoothedTail
-import Sandpile.Support.D4Reflection
+module
+
+public import Sandpile.Support.D4Scale
+public import Sandpile.Support.D4SmoothedTail
+public import Sandpile.Support.D4Reflection
+
+@[expose] public section
 
 /-!
 # Step 4 pointwise linearization tail in dimension four

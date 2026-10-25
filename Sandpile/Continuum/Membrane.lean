@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Sobolev
-import Mathlib
+module
+
+public import Sandpile.Continuum.Sobolev
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Continuum membrane fields and convergence in negative Sobolev norms

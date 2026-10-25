@@ -1,4 +1,8 @@
-import Sandpile.Support.LinProduct
+module
+
+public import Sandpile.Support.LinProduct
+
+@[expose] public section
 
 /-!
 # Threshold replacement and reindexing by last-visit times

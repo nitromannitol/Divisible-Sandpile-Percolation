@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AShiftLip
+module
+
+public import Sandpile.Support.Dgt4AShiftLip
+
+@[expose] public section
 
 /-!
 # Measurability of the conditioned Green field

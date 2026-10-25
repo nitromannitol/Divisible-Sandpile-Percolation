@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplHeatPrimitive
+module
+
+public import Sandpile.Support.ExplHeatPrimitive
+
+@[expose] public section
 
 /-!
 # Almost-Everywhere Space-Time Envelopes for the Gaussian Potential

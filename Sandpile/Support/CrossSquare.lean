@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossBlockField
-import Sandpile.Support.CrossPath
+module
+
+public import Sandpile.Support.CrossBlockField
+public import Sandpile.Support.CrossPath
+
+@[expose] public section
 
 /-!
 # Squares of the exploration and the cells they carry

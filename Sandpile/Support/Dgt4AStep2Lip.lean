@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AGaussTailLp
-import Sandpile.Support.LinGaussFactor
+module
+
+public import Sandpile.Support.Dgt4AGaussTailLp
+public import Sandpile.Support.LinGaussFactor
+
+@[expose] public section
 
 /-!
 # The Lipschitz constant of Step 2, case (a)

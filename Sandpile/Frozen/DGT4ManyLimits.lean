@@ -1,11 +1,15 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.External.IntersectionSecondMomentProved
-import Sandpile.Support.Dgt4AManyLimitsAssembly
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.External.IntersectionSecondMomentProved
+public import Sandpile.Support.Dgt4AManyLimitsAssembly
+
+@[expose] public section
 
 /-!
 # Many superdiffusive limits, frozen

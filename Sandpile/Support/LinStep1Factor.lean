@@ -1,5 +1,9 @@
-import Sandpile.Support.LinStep1Sum
-import Sandpile.Support.LinMills
+module
+
+public import Sandpile.Support.LinStep1Sum
+public import Sandpile.Support.LinMills
+
+@[expose] public section
 
 /-!
 # Step 1 of the path-survival lemma, Gaussian branch

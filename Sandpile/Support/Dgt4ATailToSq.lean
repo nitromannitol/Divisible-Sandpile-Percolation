@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ATailPointwise
-import Mathlib.MeasureTheory.Integral.Gamma
+module
+
+public import Sandpile.Support.Dgt4ATailPointwise
+public import Mathlib.MeasureTheory.Integral.Gamma
+
+@[expose] public section
 
 /-!
 # Second moment from a two-sided Gaussian tail

@@ -1,4 +1,8 @@
-import LatticeProb.Prob.Karamata
+module
+
+public import LatticeProb.Prob.Karamata
+
+@[expose] public section
 
 /-! # Lower-Tail Moment and Multiplicity Bounds
 

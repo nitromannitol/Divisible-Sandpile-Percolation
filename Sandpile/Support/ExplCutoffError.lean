@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplValueGap
-import Sandpile.Support.ExplBallExit
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.Support.ExplValueGap
+public import Sandpile.Support.ExplBallExit
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # The Brownian half of the cutoff error

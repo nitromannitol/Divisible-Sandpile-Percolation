@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossingDefinitions
-import Sandpile.External.BallGreenBounds
-import Sandpile.Support.FarComparison
+module
+
+public import Sandpile.Support.CrossingDefinitions
+public import Sandpile.External.BallGreenBounds
+public import Sandpile.Support.FarComparison
+
+@[expose] public section
 
 /-!
 # Fixed-aspect rectangles and an explicit far-field cutoff

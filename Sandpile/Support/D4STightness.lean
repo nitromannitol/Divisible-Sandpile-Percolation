@@ -1,5 +1,9 @@
-import Sandpile.Support.D4STightSmall
-import Sandpile.Support.D4SAssembly
+module
+
+public import Sandpile.Support.D4STightSmall
+public import Sandpile.Support.D4SAssembly
+
+@[expose] public section
 
 /-!
 # The tightness clause of `prop:d4-superdiffusive-limit`

@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplHorizon
-import Sandpile.Support.ExplOptionalSampling
+module
+
+public import Sandpile.Support.ExplHorizon
+public import Sandpile.Support.ExplOptionalSampling
+
+@[expose] public section
 
 /-!
 # Horizon-free Brownian rewards from a backward heat-increment martingale

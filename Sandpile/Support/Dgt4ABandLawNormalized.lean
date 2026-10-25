@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandLawVariance
-import Sandpile.Support.Dgt4ABandLawTail
-import Sandpile.Support.Dgt4ABandParameters
+module
+
+public import Sandpile.Support.Dgt4ABandLawVariance
+public import Sandpile.Support.Dgt4ABandLawTail
+public import Sandpile.Support.Dgt4ABandParameters
+
+@[expose] public section
 
 /-!
 # The centered, variance-one band law

@@ -1,4 +1,8 @@
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # Square summability of the tail kernel

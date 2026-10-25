@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplNoiseFubini
-import Sandpile.Support.ExplKernelFamily
+module
+
+public import Sandpile.Support.ExplNoiseFubini
+public import Sandpile.Support.ExplKernelFamily
+
+@[expose] public section
 
 /-!
 # Stochastic Fubini for the continuous Gaussian heat potential

@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Support.Odometer
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.Odometer
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # Mass field / scenery bridge

@@ -1,8 +1,12 @@
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.AnnularPercolation
-import Sandpile.Support.UniformTail
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.AnnularPercolation
+public import Sandpile.Support.UniformTail
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # High-dimensional critical percolation, frozen

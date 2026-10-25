@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ASceneryFirstMoment
-import Sandpile.Support.Dgt4AMoment4
-import Sandpile.Support.Dgt4AL2Interp
-import LatticeProb.Prob.LpSmooth
+module
+
+public import Sandpile.Support.Dgt4ASceneryFirstMoment
+public import Sandpile.Support.Dgt4AMoment4
+public import Sandpile.Support.Dgt4AL2Interp
+public import LatticeProb.Prob.LpSmooth
+
+@[expose] public section
 
 /-!
 # The second moment of the centred deviation `D_n`

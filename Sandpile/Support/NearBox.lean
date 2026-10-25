@@ -1,5 +1,9 @@
-import Sandpile.Support.FarOscillation
-import Sandpile.Support.NearTail
+module
+
+public import Sandpile.Support.FarOscillation
+public import Sandpile.Support.NearTail
+
+@[expose] public section
 
 /-!
 # Near-field tail and bad-box probabilities

@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplGaussianHorizon
+module
+
+public import Sandpile.Support.ExplGaussianHorizon
+
+@[expose] public section
 
 /-!
 # Stopped Gaussian Increments Over a Family of Starting Points

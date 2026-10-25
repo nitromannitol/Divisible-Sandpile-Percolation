@@ -1,4 +1,8 @@
-import Sandpile.Support.MainExplKolmogorovTail
+module
+
+public import Sandpile.Support.MainExplKolmogorovTail
+
+@[expose] public section
 
 /-!
 # A polynomial tail for the box supremum, uniform in scale and centre

@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianIntegrableInputs
-import Sandpile.Support.LinTestedPairing
-import Sandpile.Support.ContWeightedLimit
+module
+
+public import Sandpile.Support.LinJacobianIntegrableInputs
+public import Sandpile.Support.LinTestedPairing
+public import Sandpile.Support.ContWeightedLimit
+
+@[expose] public section
 
 /-!
 # The `L²` linearization limit for a nonnegative test function

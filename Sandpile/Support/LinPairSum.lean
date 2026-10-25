@@ -1,5 +1,9 @@
-import Sandpile.Support.LinProduct
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.LinProduct
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # Near/far pair arithmetic of Step 1 of the path-survival lemma

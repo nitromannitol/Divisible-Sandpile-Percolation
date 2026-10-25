@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplOptionalSampling
+module
+
+public import Sandpile.Support.ExplOptionalSampling
+
+@[expose] public section
 
 /-!
 # Bounded Optional Sampling for Continuous Martingales

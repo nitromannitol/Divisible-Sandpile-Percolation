@@ -1,5 +1,9 @@
-import Sandpile.Support.IncrementBall
-import Mathlib
+module
+
+public import Sandpile.Support.IncrementBall
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Bounded-step path enumeration and a union bound

@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplInterp
-import Sandpile.Support.ContInterpSpace
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.ExplInterp
+public import Sandpile.Support.ContInterpSpace
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # Spatial regularity of the multilinear interpolation

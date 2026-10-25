@@ -1,5 +1,9 @@
-import Sandpile.Support.ContInterpSmall
-import Sandpile.Support.ContBMSquare
+module
+
+public import Sandpile.Support.ContInterpSmall
+public import Sandpile.Support.ContBMSquare
+
+@[expose] public section
 
 /-!
 # Finite-dimensional convergence from the coefficient asymptotics

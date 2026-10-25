@@ -1,5 +1,9 @@
-import Sandpile.Support.D23Field
-import Sandpile.Support.D4CritLSS
+module
+
+public import Sandpile.Support.D23Field
+public import Sandpile.Support.D4CritLSS
+
+@[expose] public section
 
 /-!
 # Measurability and stationarity of the dimension two/three good-block process

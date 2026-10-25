@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.CriticalLevels.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.CriticalLevels.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `CriticalLevels`: Mathlib-only vocabulary to the repository

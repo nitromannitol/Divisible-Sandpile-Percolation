@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4AOdometerTailLip
-import Sandpile.Support.Dgt4ATailKernelSq
-import Sandpile.Support.Concentration
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.Dgt4AOdometerTailLip
+public import Sandpile.Support.Dgt4ATailKernelSq
+public import Sandpile.Support.Concentration
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 # Moment bound for the iterated odometer average at the tail-kernel coefficients

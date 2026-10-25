@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplScalingId
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.Support.ExplScalingId
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # The killed form of the exact difference representation

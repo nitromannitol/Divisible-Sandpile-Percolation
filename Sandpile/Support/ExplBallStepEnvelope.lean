@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallReward
+module
+
+public import Sandpile.Support.ExplBallReward
+
+@[expose] public section
 
 /-!
 # The strong Markov step of the ball-localization lemma

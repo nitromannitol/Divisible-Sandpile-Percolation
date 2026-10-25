@@ -1,5 +1,9 @@
-import Sandpile.Support.GreenSceneryTail
-import Sandpile.Support.PinnedConcentration
+module
+
+public import Sandpile.Support.GreenSceneryTail
+public import Sandpile.Support.PinnedConcentration
+
+@[expose] public section
 
 /-!
 # Conditional odometer localization from the Green tail outside a box

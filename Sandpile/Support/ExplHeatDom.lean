@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplSpatialEnvelope
+module
+
+public import Sandpile.Support.ExplSpatialEnvelope
+
+@[expose] public section
 
 /-!
 # Domination of the Brownian heat kernel and the common-event heat semigroup

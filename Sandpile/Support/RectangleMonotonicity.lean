@@ -1,5 +1,9 @@
-import Sandpile.Support.PlanarLaw
-import Sandpile.Support.RectangleIncrement
+module
+
+public import Sandpile.Support.PlanarLaw
+public import Sandpile.Support.RectangleIncrement
+
+@[expose] public section
 
 /-!
 # Rectangle crossing-value monotonicity

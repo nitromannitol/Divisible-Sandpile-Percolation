@@ -1,4 +1,8 @@
-import Sandpile.Support.LimTailEvents
+module
+
+public import Sandpile.Support.LimTailEvents
+
+@[expose] public section
 
 /-!
 # Crossing chains under almost-sure equality and Kolmogorov's zero-one law

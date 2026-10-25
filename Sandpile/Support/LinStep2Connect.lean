@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Averaged
+module
+
+public import Sandpile.Support.LinStep2Averaged
+
+@[expose] public section
 
 /-! # Step 2 Window Connectors
 

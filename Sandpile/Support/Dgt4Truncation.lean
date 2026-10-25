@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4LargeSites
+module
+
+public import Sandpile.Support.Dgt4LargeSites
+
+@[expose] public section
 
 /-!
 # Truncation replacing the Step 1 conditioning

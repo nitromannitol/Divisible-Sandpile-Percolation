@@ -1,4 +1,8 @@
-import Sandpile.Support.RealBoxes
+module
+
+public import Sandpile.Support.RealBoxes
+
+@[expose] public section
 
 /-!
 # Uniform double-exponential decay for a quadratic recurrence

@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighSobolevLimit.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighSobolevLimit.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `HighSobolevLimit`: Mathlib-only vocabulary to the repository

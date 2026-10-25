@@ -1,4 +1,8 @@
-import Sandpile.Support.MainExplOsc
+module
+
+public import Sandpile.Support.MainExplOsc
+
+@[expose] public section
 
 /-!
 # Oscillation of the rescaled odometer at a fixed continuum mesh distance

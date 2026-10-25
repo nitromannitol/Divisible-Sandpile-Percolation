@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AIterateConst
-import Sandpile.Support.Dgt4AIterateMulConst
+module
+
+public import Sandpile.Support.Dgt4AIterateConst
+public import Sandpile.Support.Dgt4AIterateMulConst
+
+@[expose] public section
 
 /-!
 # The `P^j` telescoping identity

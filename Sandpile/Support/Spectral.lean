@@ -1,5 +1,9 @@
-import Sandpile.Support.CorrelationRow
-import Sandpile.Support.GaussPersist
+module
+
+public import Sandpile.Support.CorrelationRow
+public import Sandpile.Support.GaussPersist
+
+@[expose] public section
 
 /-!
 # The covariance matrix at the geometric scales is nearly isotropic

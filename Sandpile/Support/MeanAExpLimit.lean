@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanAMoment
+module
+
+public import Sandpile.Support.MeanAMoment
+
+@[expose] public section
 
 /-!
 # The limit of a uniform exponential moment has the same moment

@@ -1,8 +1,12 @@
-import Sandpile.Support.MeanAAssembly
-import Sandpile.Support.MeanAVersion
-import Sandpile.Support.Dgt4OriginProb
-import Sandpile.Frozen.BrownianScalingLimit
-import Sandpile.Frozen.ContinuumValueSelfSimilar
+module
+
+public import Sandpile.Support.MeanAAssembly
+public import Sandpile.Support.MeanAVersion
+public import Sandpile.Support.Dgt4OriginProb
+public import Sandpile.Frozen.BrownianScalingLimit
+public import Sandpile.Frozen.ContinuumValueSelfSimilar
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(i)(a): the mean odometer growth rate at the origin

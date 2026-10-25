@@ -1,6 +1,10 @@
-import Sandpile.Support.DualFlux
-import Sandpile.Support.BoundaryGraph
-import Sandpile.Support.GridCorners
+module
+
+public import Sandpile.Support.DualFlux
+public import Sandpile.Support.BoundaryGraph
+public import Sandpile.Support.GridCorners
+
+@[expose] public section
 
 /-!
 # Star connectivity through bad sites bridged by a coloring's changing edges

@@ -1,9 +1,13 @@
-import Sandpile.Support.LimLaw
-import Sandpile.Support.LimStepOne
-import Sandpile.Support.LimTransfer
-import Sandpile.Support.LimSymmetry
-import Sandpile.Support.CrossBallSym
-import Sandpile.Frozen.FixedScaleCrossings
+module
+
+public import Sandpile.Support.LimLaw
+public import Sandpile.Support.LimStepOne
+public import Sandpile.Support.LimTransfer
+public import Sandpile.Support.LimSymmetry
+public import Sandpile.Support.CrossBallSym
+public import Sandpile.Frozen.FixedScaleCrossings
+
+@[expose] public section
 
 /-!
 # Finite-scale extraction

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContTimeSwap
-import Sandpile.Support.ContCutoff
+module
+
+public import Sandpile.Support.ContTimeSwap
+public import Sandpile.Support.ContCutoff
+
+@[expose] public section
 
 /-!
 # Removing the Time Cutoff from the Weighted Membrane Limit

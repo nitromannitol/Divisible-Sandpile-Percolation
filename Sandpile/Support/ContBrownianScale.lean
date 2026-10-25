@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Stopping
+module
+
+public import Sandpile.Continuum.Stopping
+
+@[expose] public section
 
 /-!
 # Brownian scaling of the motion and its stopping times

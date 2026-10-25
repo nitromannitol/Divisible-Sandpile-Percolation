@@ -1,9 +1,13 @@
-import Sandpile.Support.ManyLManyLimits
-import Sandpile.Support.ContLogisticLaw
-import Sandpile.Frozen.DGT4PathSurvival
-import Sandpile.Frozen.DGT4LinearizationFromSurvival
-import Sandpile.Frozen.WeightedMembraneLimit
-import Sandpile.Support.ContDGT4Membrane
+module
+
+public import Sandpile.Support.ManyLManyLimits
+public import Sandpile.Support.ContLogisticLaw
+public import Sandpile.Frozen.DGT4PathSurvival
+public import Sandpile.Frozen.DGT4LinearizationFromSurvival
+public import Sandpile.Frozen.WeightedMembraneLimit
+public import Sandpile.Support.ContDGT4Membrane
+
+@[expose] public section
 
 /-!
 # Step 3 of `thm:dgt4-many-limits`: linearization from uniform contact thresholds

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandDiverge
-import Sandpile.Support.Dgt4ABandScaled
+module
+
+public import Sandpile.Support.Dgt4ABandDiverge
+public import Sandpile.Support.Dgt4ABandScaled
+
+@[expose] public section
 
 /-!
 # The hitting-index properties the summed profile consumes

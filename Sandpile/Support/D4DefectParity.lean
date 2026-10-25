@@ -1,5 +1,9 @@
-import Sandpile.Support.D4DefectTail
-import Sandpile.Support.ContPairedGradient
+module
+
+public import Sandpile.Support.D4DefectTail
+public import Sandpile.Support.ContPairedGradient
+
+@[expose] public section
 
 /-!
 # The ℓ² truncation defect across a parity change

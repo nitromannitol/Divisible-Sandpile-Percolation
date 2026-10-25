@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMDoubleTime
+module
+
+public import Sandpile.Support.ContBMDoubleTime
+
+@[expose] public section
 
 /-!
 # Square integrability of the finite-time Brownian Green kernel

@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighFirstOrder.SolutionBasic
-import SandpileAudit.Support.HighFirstOrderBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighFirstOrder.SolutionBasic
+public import SandpileAudit.Support.HighFirstOrderBridge
+
+@[expose] public section
 
 /-!
 # Solution: HighFirstOrder

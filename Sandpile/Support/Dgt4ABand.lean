@@ -1,6 +1,10 @@
-import Sandpile.Support.ManyLStep3
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABandIndex
+module
+
+public import Sandpile.Support.ManyLStep3
+public import Sandpile.Support.Dgt4ABandLaw
+public import Sandpile.Support.Dgt4ABandIndex
+
+@[expose] public section
 
 /-!
 # The band contact-rate and contact-comparison estimates

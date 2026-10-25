@@ -1,9 +1,13 @@
-import Sandpile.Support.D4SStep2Inputs
-import Sandpile.Support.D4SStep2Scales
-import Sandpile.Support.D4SStep2Second
-import Sandpile.Support.D4SStep2Mesh
-import Sandpile.Support.D4SMarkov
-import Sandpile.Support.ContDGT4Membrane
+module
+
+public import Sandpile.Support.D4SStep2Inputs
+public import Sandpile.Support.D4SStep2Scales
+public import Sandpile.Support.D4SStep2Second
+public import Sandpile.Support.D4SStep2Mesh
+public import Sandpile.Support.D4SMarkov
+public import Sandpile.Support.ContDGT4Membrane
+
+@[expose] public section
 
 /-!
 # Step 2: Negligibility of the Smoothed Linearization Error

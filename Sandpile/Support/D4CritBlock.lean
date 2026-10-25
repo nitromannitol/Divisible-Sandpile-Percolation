@@ -1,4 +1,8 @@
-import Sandpile.Support.D4BlockMono
+module
+
+public import Sandpile.Support.D4BlockMono
+
+@[expose] public section
 
 /-!
 # Step 3 of the dimension-four percolation proof, read on one block

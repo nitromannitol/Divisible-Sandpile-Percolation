@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ADeviationScenery
-import Sandpile.Support.Dgt4AAvgIntegral
-import Sandpile.Support.IncrementBall
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.Dgt4ADeviationScenery
+public import Sandpile.Support.Dgt4AAvgIntegral
+public import Sandpile.Support.IncrementBall
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 `\E D_n=0` (`sandpile.tex:5055`), read off the finite-coordinate form

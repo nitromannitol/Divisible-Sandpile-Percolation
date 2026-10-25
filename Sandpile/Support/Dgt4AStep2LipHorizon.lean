@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep2Lip
-import Sandpile.Support.Dgt4AStep2Horizon
+module
+
+public import Sandpile.Support.Dgt4AStep2Lip
+public import Sandpile.Support.Dgt4AStep2Horizon
+
+@[expose] public section
 
 /-!
 # Step 2 of case (a): the closing Lipschitz-horizon bound

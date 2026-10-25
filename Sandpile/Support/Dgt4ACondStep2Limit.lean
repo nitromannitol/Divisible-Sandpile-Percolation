@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ACondStep2
-import Sandpile.Support.Dgt4AStep2LipHorizon
-import Sandpile.Support.Dgt4AStep2Horizon
-import Sandpile.Support.Dgt4CaseBPassage
+module
+
+public import Sandpile.Support.Dgt4ACondStep2
+public import Sandpile.Support.Dgt4AStep2LipHorizon
+public import Sandpile.Support.Dgt4AStep2Horizon
+public import Sandpile.Support.Dgt4CaseBPassage
+
+@[expose] public section
 
 /-!
 # The conditional terminal quantity vanishes uniformly over the conditioning levels

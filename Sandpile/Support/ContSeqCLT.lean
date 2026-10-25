@@ -1,6 +1,10 @@
-import LatticeProb.Prob.WeightedCLT
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.FiniteCoord
+module
+
+public import LatticeProb.Prob.WeightedCLT
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.FiniteCoord
+
+@[expose] public section
 
 /-!
 # The Lindeberg-Feller step along a real parameter

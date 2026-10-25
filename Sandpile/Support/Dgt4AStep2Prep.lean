@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep1Gaussian
+module
+
+public import Sandpile.Support.Dgt4AStep1Gaussian
+
+@[expose] public section
 
 /-!
 The two elementary inputs that Step 2 of case (a) takes from Step 1

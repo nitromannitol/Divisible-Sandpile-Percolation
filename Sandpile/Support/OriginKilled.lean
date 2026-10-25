@@ -1,7 +1,11 @@
-import Sandpile.Support.LocalizationRecursion
-import Sandpile.Support.MeanLocalization
-import Sandpile.Support.HeightLower
-import LatticeProb.Prob.Splice
+module
+
+public import Sandpile.Support.LocalizationRecursion
+public import Sandpile.Support.MeanLocalization
+public import Sandpile.Support.HeightLower
+public import LatticeProb.Prob.Splice
+
+@[expose] public section
 
 /-!
 # The origin-frozen odometer

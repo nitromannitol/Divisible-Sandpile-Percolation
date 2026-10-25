@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4Convergence
-import Sandpile.Support.D4Mean
+module
+
+public import Sandpile.Law
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.D4Convergence
+public import Sandpile.Support.D4Mean
+
+@[expose] public section
 
 /-!
 # The critical dimension-four toppling law of large numbers

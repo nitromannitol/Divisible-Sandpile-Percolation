@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Sandpile.Support.D4IntegrableMean
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.D4IntegrableMean
+
+@[expose] public section
 
 /-!
 # Logarithmic mean lower bound in dimension four, frozen

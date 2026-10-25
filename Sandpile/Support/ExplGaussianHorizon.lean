@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplGaussianMartingale
-import Sandpile.Support.ExplHorizon
+module
+
+public import Sandpile.Support.ExplGaussianMartingale
+public import Sandpile.Support.ExplHorizon
+
+@[expose] public section
 
 /-!
 # Horizon-free rewards of the continuous Gaussian heat potential

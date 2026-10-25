@@ -1,5 +1,9 @@
-import Sandpile.Basic
-import LatticeProb.Walk.LatticeGreen
+module
+
+public import Sandpile.Basic
+public import LatticeProb.Walk.LatticeGreen
+
+@[expose] public section
 
 /-!
 # Simple random walk, its kernels, and the optimal-stopping vocabulary

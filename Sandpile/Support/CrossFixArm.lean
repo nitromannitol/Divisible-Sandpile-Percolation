@@ -1,8 +1,12 @@
-import Sandpile.Support.CrossArmDecay
-import Sandpile.Support.CrossCircuit
-import Sandpile.Support.CrossBallMemLp
-import Sandpile.Support.CrossArmIndep
-import Sandpile.Support.CrossBallMemLp
+module
+
+public import Sandpile.Support.CrossArmDecay
+public import Sandpile.Support.CrossCircuit
+public import Sandpile.Support.CrossBallMemLp
+public import Sandpile.Support.CrossArmIndep
+public import Sandpile.Support.CrossBallMemLp
+
+@[expose] public section
 
 /-!
 # The arm bound of Step 1 via independent blocking circuits

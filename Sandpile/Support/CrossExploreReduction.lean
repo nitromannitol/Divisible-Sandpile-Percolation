@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossExploreLoss
-import Sandpile.Support.CrossFieldVersion
-import Sandpile.Support.CrossFixedScaleZero
+module
+
+public import Sandpile.Support.CrossExploreLoss
+public import Sandpile.Support.CrossFieldVersion
+public import Sandpile.Support.CrossFixedScaleZero
+
+@[expose] public section
 
 /-! # Fixed-scale crossings via exploration
 

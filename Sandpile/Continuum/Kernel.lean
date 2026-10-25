@@ -1,5 +1,9 @@
-import Sandpile.Basic
-import LatticeProb.Analysis.Sobolev.Defs
+module
+
+public import Sandpile.Basic
+public import LatticeProb.Analysis.Sobolev.Defs
+
+@[expose] public section
 
 /-!
 # The Brownian heat and Green kernels

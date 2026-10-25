@@ -1,10 +1,14 @@
-import Sandpile.Support.BrownianValueMono.GreenZeroDim
-import Sandpile.Support.BrownianValueMono.AffineZeroDim
-import Sandpile.Support.BrownianValueMono.HorizonFreeZeroDim
-import Sandpile.Support.BrownianValueMono.Envelope
-import Sandpile.Support.BrownianValueMono.PositiveDim
-import Sandpile.Support.BrownianValueMono.ZeroDimPackaged
-import Sandpile.Support.BrownianValueMono.MonoHorizon
+module
+
+public import Sandpile.Support.BrownianValueMono.GreenZeroDim
+public import Sandpile.Support.BrownianValueMono.AffineZeroDim
+public import Sandpile.Support.BrownianValueMono.HorizonFreeZeroDim
+public import Sandpile.Support.BrownianValueMono.Envelope
+public import Sandpile.Support.BrownianValueMono.PositiveDim
+public import Sandpile.Support.BrownianValueMono.ZeroDimPackaged
+public import Sandpile.Support.BrownianValueMono.MonoHorizon
+
+@[expose] public section
 
 /-!
 # Horizon monotonicity of the Gaussian heat potential's Brownian value

@@ -1,7 +1,11 @@
-import Sandpile.Support.ContDoubleTimeLimit
-import Sandpile.Support.ContLcltPoint
-import Sandpile.Support.ContGreenFubini
-import Sandpile.Support.ContHeatPotentialDoubleTime
+module
+
+public import Sandpile.Support.ContDoubleTimeLimit
+public import Sandpile.Support.ContLcltPoint
+public import Sandpile.Support.ContGreenFubini
+public import Sandpile.Support.ContHeatPotentialDoubleTime
+
+@[expose] public section
 
 /-!
 # From the double time limit at one mesh corner to the full interpolated sum

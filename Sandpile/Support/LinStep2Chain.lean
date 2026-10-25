@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Window
+module
+
+public import Sandpile.Support.LinStep2Window
+
+@[expose] public section
 
 /-!
 # Step 2 of the path-survival estimate, assembled along one path

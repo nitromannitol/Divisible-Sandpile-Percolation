@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ABandRandomLevel
-import Sandpile.Support.Dgt4CaseBSplit
-import Sandpile.Support.HeightLower
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Support.Dgt4ABandRandomLevel
+public import Sandpile.Support.Dgt4CaseBSplit
+public import Sandpile.Support.HeightLower
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # The independence of the random level from the scenery at the origin

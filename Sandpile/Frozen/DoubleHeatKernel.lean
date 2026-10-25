@@ -1,5 +1,9 @@
-import Sandpile.Support.DoubleHeatKernel
-import Sandpile.External.LocalCLT
+module
+
+public import Sandpile.Support.DoubleHeatKernel
+public import Sandpile.External.LocalCLT
+
+@[expose] public section
 
 /-!
 # The frozen doubled heat-kernel lemma in dimension four

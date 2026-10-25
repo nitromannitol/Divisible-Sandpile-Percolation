@@ -1,7 +1,11 @@
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Frozen.WeightedExpConcentration
+public import Sandpile.Support.GreenHigh
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # Pointwise concentration of the odometer in dimension five and above

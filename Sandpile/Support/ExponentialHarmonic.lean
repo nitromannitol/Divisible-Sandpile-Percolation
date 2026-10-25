@@ -1,5 +1,9 @@
-import Sandpile.Support.UniformTail
-import LatticeProb.Walk.WindowD4
+module
+
+public import Sandpile.Support.UniformTail
+public import LatticeProb.Walk.WindowD4
+
+@[expose] public section
 
 /-!
 # The exponentially cut off harmonic sum is close to a logarithm

@@ -1,6 +1,10 @@
-import Sandpile.Support.LimDiffKernel
-import Sandpile.Support.LimBoxUniform
-import Sandpile.Support.LimFieldVersion
+module
+
+public import Sandpile.Support.LimDiffKernel
+public import Sandpile.Support.LimBoxUniform
+public import Sandpile.Support.LimFieldVersion
+
+@[expose] public section
 
 /-!
 # Uniform approximation by the ball-stopped field

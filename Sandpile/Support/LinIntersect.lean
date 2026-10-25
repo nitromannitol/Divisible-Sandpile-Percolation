@@ -1,6 +1,10 @@
-import Sandpile.External.IntersectionSecondMoment
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.LinReturn
+module
+
+public import Sandpile.External.IntersectionSecondMoment
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.LinReturn
+
+@[expose] public section
 
 /-!
 # The intersection count of two walks, and its first moment

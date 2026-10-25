@@ -1,5 +1,9 @@
-import LatticeProb.Prob.NetApprox
-import Mathlib.Topology.MetricSpace.Basic
+module
+
+public import LatticeProb.Prob.NetApprox
+public import Mathlib.Topology.MetricSpace.Basic
+
+@[expose] public section
 
 /-!
 # A finite net of continuous functions approximating tightly oscillating fields

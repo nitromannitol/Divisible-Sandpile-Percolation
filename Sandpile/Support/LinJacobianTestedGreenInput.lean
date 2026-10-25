@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianTestedStep1
-import Sandpile.Support.LinTestedGreen
-import Sandpile.Support.LinTestedStep2
+module
+
+public import Sandpile.Support.LinJacobianTestedStep1
+public import Sandpile.Support.LinTestedGreen
+public import Sandpile.Support.LinTestedStep2
+
+@[expose] public section
 
 /-! # Jacobian Tested Green Input
 

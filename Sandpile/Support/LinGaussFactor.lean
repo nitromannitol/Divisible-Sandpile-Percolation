@@ -1,7 +1,11 @@
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.ExitGreen
-import Sandpile.External.NormalComparison
-import Sandpile.External.GreenBoundsHighProved
+module
+
+public import Sandpile.Support.LinGaussBridge
+public import Sandpile.Support.ExitGreen
+public import Sandpile.External.NormalComparison
+public import Sandpile.External.GreenBoundsHighProved
+
+@[expose] public section
 
 /-!
 # The Gaussian threshold field and the normal comparison factorization

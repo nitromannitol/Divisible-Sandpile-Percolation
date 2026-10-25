@@ -1,5 +1,9 @@
-import Sandpile.Support.LimBallBounds
-import Sandpile.Support.LimBallRule
+module
+
+public import Sandpile.Support.LimBallBounds
+public import Sandpile.Support.LimBallRule
+
+@[expose] public section
 
 /-!
 # Continuity of the reward bounds the ball-localized value

@@ -1,5 +1,9 @@
-import Sandpile.Support.D4Difference
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Support.D4Difference
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # Uniform pointwise concentration and logarithmic variance in dimension four

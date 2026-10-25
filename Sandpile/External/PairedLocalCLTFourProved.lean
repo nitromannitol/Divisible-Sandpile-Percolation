@@ -1,7 +1,11 @@
-import Sandpile.External.PairedLocalCLTFour
-import Sandpile.External.LocalCLTProved
-import Sandpile.External.GaussianFourierProved
-import Sandpile.Support.TightKernel
+module
+
+public import Sandpile.External.PairedLocalCLTFour
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.External.GaussianFourierProved
+public import Sandpile.Support.TightKernel
+
+@[expose] public section
 
 /-!
 # The dimension-four paired local limit theorem is proved

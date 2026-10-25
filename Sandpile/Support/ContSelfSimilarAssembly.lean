@@ -1,7 +1,11 @@
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ContClause1
-import Sandpile.Support.ContClause3
-import Sandpile.Support.ContValueMemLp
+module
+
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.ContClause1
+public import Sandpile.Support.ContClause3
+public import Sandpile.Support.ContValueMemLp
+
+@[expose] public section
 
 /-! # Continuum self-similarity assembly
 

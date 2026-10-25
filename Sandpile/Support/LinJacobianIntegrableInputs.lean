@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianCoefInput
-import Sandpile.Support.Concentration
+module
+
+public import Sandpile.Support.LinJacobianCoefInput
+public import Sandpile.Support.Concentration
+
+@[expose] public section
 
 /-! # Jacobian Integrable Inputs
 

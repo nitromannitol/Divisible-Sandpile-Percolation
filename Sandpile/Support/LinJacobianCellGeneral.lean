@@ -1,4 +1,8 @@
-import Sandpile.Support.LinJacobianCell
+module
+
+public import Sandpile.Support.LinJacobianCell
+
+@[expose] public section
 
 /-!
 # The cell `L²` bound for a general test function

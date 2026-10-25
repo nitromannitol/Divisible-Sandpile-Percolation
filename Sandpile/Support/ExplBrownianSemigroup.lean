@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplOptionalSampling
-import Sandpile.Support.ExplBallExit
+module
+
+public import Sandpile.Support.ExplOptionalSampling
+public import Sandpile.Support.ExplBallExit
+
+@[expose] public section
 
 /-!
 # Backward semigroup martingales from the strong Markov restart

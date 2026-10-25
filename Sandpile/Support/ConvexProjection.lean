@@ -1,7 +1,11 @@
-import Sandpile.Support.BinaryProjection
-import Sandpile.Support.ConditionalProduct
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.IncrementBall
+module
+
+public import Sandpile.Support.BinaryProjection
+public import Sandpile.Support.ConditionalProduct
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.IncrementBall
+
+@[expose] public section
 
 /-! # Convex projection of the box odometer
 

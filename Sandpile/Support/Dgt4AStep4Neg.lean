@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep4Tail
-import Sandpile.Support.Dgt4AStep4Rep
+module
+
+public import Sandpile.Support.Dgt4AStep4Tail
+public import Sandpile.Support.Dgt4AStep4Rep
+
+@[expose] public section
 
 /-!
 # The `y ≤ -1` bound of Step 4, case (a)

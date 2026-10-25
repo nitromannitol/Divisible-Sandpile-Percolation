@@ -1,4 +1,8 @@
-import Sandpile.Support.D4TruncationDefect
+module
+
+public import Sandpile.Support.D4TruncationDefect
+
+@[expose] public section
 
 /-!
 # The `ℓ²` size of the truncation defect in dimension four

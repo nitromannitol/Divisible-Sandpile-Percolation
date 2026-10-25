@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4MeanDiv
-import Sandpile.Support.ContLogisticLaw
+module
+
+public import Sandpile.Support.Dgt4MeanDiv
+public import Sandpile.Support.ContLogisticLaw
+
+@[expose] public section
 
 /-!
 # Step 2's lower tail cannot be centered at the scenery value

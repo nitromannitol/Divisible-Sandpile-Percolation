@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ADeviationScenery
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Stationary
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Dgt4ADeviationScenery
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # `D_n` depends on the scenery only through a finite box

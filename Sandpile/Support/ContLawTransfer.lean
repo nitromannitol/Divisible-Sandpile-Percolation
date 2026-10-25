@@ -1,5 +1,9 @@
-import Sandpile.Support.MeanAValue
-import Mathlib
+module
+
+public import Sandpile.Support.MeanAValue
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Moment and variance identities transferred along an identity of laws

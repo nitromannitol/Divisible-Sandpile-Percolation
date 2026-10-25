@@ -1,5 +1,9 @@
-import Sandpile.Support.ExitGreen
-import Sandpile.External.HeatKernelBounds
+module
+
+public import Sandpile.Support.ExitGreen
+public import Sandpile.External.HeatKernelBounds
+
+@[expose] public section
 
 /-!
 # The Four-Dimensional Potential Kernel

@@ -1,6 +1,10 @@
-import LatticeProb.Walk.ExteriorDirichlet
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Support.D4Difference
+module
+
+public import LatticeProb.Walk.ExteriorDirichlet
+public import Sandpile.Support.RefinedIncrement
+public import Sandpile.Support.D4Difference
+
+@[expose] public section
 
 /-!
 # Backward Decomposition of the Pointwise Linearization

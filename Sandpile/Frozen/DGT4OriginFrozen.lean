@@ -1,7 +1,11 @@
-import Sandpile.Support.OriginConcentration
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.OriginConcentration
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # The frozen origin lemma of `sandpile.tex:4909-4945`

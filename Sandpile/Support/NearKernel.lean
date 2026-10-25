@@ -1,5 +1,9 @@
-import Sandpile.Support.FiniteKernelTail
-import Sandpile.Support.BallCrossingDefinitions
+module
+
+public import Sandpile.Support.FiniteKernelTail
+public import Sandpile.Support.BallCrossingDefinitions
+
+@[expose] public section
 
 /-!
 # Near-field kernel: support, bounds, and the near-far decomposition

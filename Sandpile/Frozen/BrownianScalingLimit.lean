@@ -1,9 +1,13 @@
-import Sandpile.Support.MainExplScaling
-import Sandpile.Law
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ExplInterp
-import Sandpile.External.ContStoppingStability
-import Sandpile.External.LocalCLTProved
+module
+
+public import Sandpile.Support.MainExplScaling
+public import Sandpile.Law
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Support.ExplInterp
+public import Sandpile.External.ContStoppingStability
+public import Sandpile.External.LocalCLTProved
+
+@[expose] public section
 
 /-!
 # The Brownian optimal-stopping scaling limit

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrudeIncrement
-import Sandpile.Frozen.DGT4GreenSceneryTail
+module
+
+public import Sandpile.Support.CrudeIncrement
+public import Sandpile.Frozen.DGT4GreenSceneryTail
+
+@[expose] public section
 
 /-!
 # The refined increment bound

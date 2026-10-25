@@ -1,5 +1,9 @@
-import Sandpile.Support.LimExitTail
-import LatticeProb.Prob.BrownianExitTime
+module
+
+public import Sandpile.Support.LimExitTail
+public import LatticeProb.Prob.BrownianExitTime
+
+@[expose] public section
 
 /-!
 # Geometric decay of the mean ball-exit overshoot

@@ -1,11 +1,15 @@
-import Sandpile.Support.NearFarCrossing
-import Sandpile.Support.PlaneRectangle
-import Sandpile.Support.RswTail
-import Sandpile.Support.SecondMomentExp
-import Sandpile.Support.RpowEventual
-import Sandpile.Support.BallRectangleDuality
-import Sandpile.External.PlanarRSW
-import Sandpile.Support.FinalBoundThreeTerms
+module
+
+public import Sandpile.Support.NearFarCrossing
+public import Sandpile.Support.PlaneRectangle
+public import Sandpile.Support.RswTail
+public import Sandpile.Support.SecondMomentExp
+public import Sandpile.Support.RpowEventual
+public import Sandpile.Support.BallRectangleDuality
+public import Sandpile.External.PlanarRSW
+public import Sandpile.Support.FinalBoundThreeTerms
+
+@[expose] public section
 
 /-!
 # The dimension-four ball-killed Green crossing estimate

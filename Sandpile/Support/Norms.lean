@@ -1,5 +1,9 @@
-import Sandpile.Law
-import LatticeProb.Prob.WeightedConc
+module
+
+public import Sandpile.Law
+public import LatticeProb.Prob.WeightedConc
+
+@[expose] public section
 
 /-!
 # Norms for the one-site resampling concentration lemma

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContVectorCLT
-import Sandpile.Support.ContHeatPotential
+module
+
+public import Sandpile.Support.ContVectorCLT
+public import Sandpile.Support.ContHeatPotential
+
+@[expose] public section
 
 /-!
 # The Finite-Dimensional Clause Reduced to Coefficient Statements

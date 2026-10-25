@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianEarly
-import Sandpile.Support.LinWeights
+module
+
+public import Sandpile.Support.LinJacobianEarly
+public import Sandpile.Support.LinWeights
+
+@[expose] public section
 
 /-!
 # The covariance hypothesis, in Step 1's vocabulary

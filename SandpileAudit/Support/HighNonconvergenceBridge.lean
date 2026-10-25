@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighNonconvergence.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighNonconvergence.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `HighNonconvergence`: Mathlib-only vocabulary to the repository

@@ -1,5 +1,9 @@
-import Sandpile.External.BPSH
-import LatticeProb.Graph.ZdRepresentation
+module
+
+public import Sandpile.External.BPSH
+public import LatticeProb.Graph.ZdRepresentation
+
+@[expose] public section
 
 /-! # Optimal-Stopping Representation, Proved
 

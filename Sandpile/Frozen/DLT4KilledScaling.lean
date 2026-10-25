@@ -1,10 +1,14 @@
-import Sandpile.Law
-import Sandpile.Support.ExplKilledValue
-import Sandpile.External.ContStoppingStability
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.Support.KillScaling
-import Sandpile.Support.ExplKilledSequence
-import Sandpile.External.LocalCLTProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.ExplKilledValue
+public import Sandpile.External.ContStoppingStability
+public import Sandpile.Frozen.MeanLocalization
+public import Sandpile.Support.KillScaling
+public import Sandpile.Support.ExplKilledSequence
+public import Sandpile.External.LocalCLTProved
+
+@[expose] public section
 
 /-!
 # The cube-killed scaling limit, frozen

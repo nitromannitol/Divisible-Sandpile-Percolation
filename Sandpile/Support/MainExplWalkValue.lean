@@ -1,5 +1,9 @@
-import Sandpile.Support.StoppedOdometer
-import Sandpile.Support.ExplStability
+module
+
+public import Sandpile.Support.StoppedOdometer
+public import Sandpile.Support.ExplStability
+
+@[expose] public section
 
 /-!
 # Attainable values of the unkilled walk at a bounded horizon

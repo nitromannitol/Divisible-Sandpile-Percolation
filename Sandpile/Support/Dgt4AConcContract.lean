@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConcLp
-import Sandpile.Support.Dgt4AConcProj
+module
+
+public import Sandpile.Support.Dgt4AConcLp
+public import Sandpile.Support.Dgt4AConcProj
+
+@[expose] public section
 
 /-!
 # The rank-one reduction is a contraction everywhere

@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourSobolev.SolutionBasic
-import SandpileAudit.Support.FourSobolevBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourSobolev.SolutionBasic
+public import SandpileAudit.Support.FourSobolevBridge
+
+@[expose] public section
 
 /-!
 # Solution: FourSobolev

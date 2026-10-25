@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 The floor scale `j_n = ⌊n^{1/d}⌋` of Step 2 of case (a) of

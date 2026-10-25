@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossSquare
-import Sandpile.Support.CrossExploreRec
-import Sandpile.Support.CrossUnion
+module
+
+public import Sandpile.Support.CrossSquare
+public import Sandpile.Support.CrossExploreRec
+public import Sandpile.Support.CrossUnion
+
+@[expose] public section
 
 /-! # The exploration rule of Step 2
 

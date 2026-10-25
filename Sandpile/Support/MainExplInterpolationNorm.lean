@@ -1,5 +1,9 @@
-import Sandpile.Support.MainExplInterpolationTightness
-import Mathlib.MeasureTheory.Measure.RegularityCompacts
+module
+
+public import Sandpile.Support.MainExplInterpolationTightness
+public import Mathlib.MeasureTheory.Measure.RegularityCompacts
+
+@[expose] public section
 
 /-!
 # Uniform interpolation-norm bounds for the odometer

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AHeatGreen
+module
+
+public import Sandpile.Support.Dgt4AHeatGreen
+
+@[expose] public section
 
 /-!
 # The `j`-step average of the Green function as a tail kernel

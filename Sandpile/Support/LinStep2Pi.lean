@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep2Profile
-import Sandpile.Support.LinStep1Bridge
-import Sandpile.Support.LinThresholdNull
+module
+
+public import Sandpile.Support.LinStep2Profile
+public import Sandpile.Support.LinStep1Bridge
+public import Sandpile.Support.LinThresholdNull
+
+@[expose] public section
 
 /-!
 # Four connectors between the paper's Step 2 data and the one-path chain

@@ -1,4 +1,8 @@
-import Sandpile.External.BPSHProved
+module
+
+public import Sandpile.External.BPSHProved
+
+@[expose] public section
 
 /-!
 # The optimal-stopping representation of the odometer

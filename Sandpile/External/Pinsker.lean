@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossField
-import Mathlib.InformationTheory.KullbackLeibler.Basic
+module
+
+public import Sandpile.Support.CrossField
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+
+@[expose] public section
 
 /-!
 # Pinsker's inequality

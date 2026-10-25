@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4CaseBSplit
-import Sandpile.Frozen.DGT4OriginFrozen
+module
+
+public import Sandpile.Support.Dgt4CaseBSplit
+public import Sandpile.Frozen.DGT4OriginFrozen
+
+@[expose] public section
 
 /-!
 # Case (b): the mean-increment identity

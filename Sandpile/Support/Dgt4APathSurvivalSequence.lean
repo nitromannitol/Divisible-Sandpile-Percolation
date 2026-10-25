@@ -1,5 +1,9 @@
-import Sandpile.Support.LinStep3Core
-import Sandpile.Frozen.DGT4PathSurvival
+module
+
+public import Sandpile.Support.LinStep3Core
+public import Sandpile.Frozen.DGT4PathSurvival
+
+@[expose] public section
 
 /-!
 The sequence-indexed independent-threshold form of `lem:dgt4-path-survival`

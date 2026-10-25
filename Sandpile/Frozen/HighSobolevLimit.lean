@@ -1,10 +1,14 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.LocalCLT
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.ExplHighSobolev
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.ExplHighSobolev
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(iii)(c): the high-Sobolev scaling limit above dimension four

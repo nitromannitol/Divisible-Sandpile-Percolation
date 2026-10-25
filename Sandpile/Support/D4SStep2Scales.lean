@@ -1,4 +1,8 @@
-import Sandpile.Support.D4SScaleSq
+module
+
+public import Sandpile.Support.D4SScaleSq
+
+@[expose] public section
 
 /-!
 # Scale bookkeeping for Step 2

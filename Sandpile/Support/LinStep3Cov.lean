@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep3Sites
-import Sandpile.Support.LinStep2Pi
-import Sandpile.Support.LinHarmonicWindow
+module
+
+public import Sandpile.Support.LinStep3Sites
+public import Sandpile.Support.LinStep2Pi
+public import Sandpile.Support.LinHarmonicWindow
+
+@[expose] public section
 
 /-!
 # The Step 3 covariance estimate along one pair of paths

@@ -1,5 +1,9 @@
-import Sandpile.Support.LinDerivVarLimit
-import Sandpile.Support.LinMeanGradientApprox
+module
+
+public import Sandpile.Support.LinDerivVarLimit
+public import Sandpile.Support.LinMeanGradientApprox
+
+@[expose] public section
 
 /-!
 # Assembly of the vanishing derivative-variance sum

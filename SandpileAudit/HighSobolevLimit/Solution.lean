@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighSobolevLimit.SolutionBasic
-import SandpileAudit.Support.HighSobolevLimitBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighSobolevLimit.SolutionBasic
+public import SandpileAudit.Support.HighSobolevLimitBridge
+
+@[expose] public section
 
 /-!
 # Solution: HighSobolevLimit

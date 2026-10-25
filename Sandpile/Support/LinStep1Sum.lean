@@ -1,4 +1,8 @@
-import Sandpile.Support.LinCorrGap
+module
+
+public import Sandpile.Support.LinCorrGap
+
+@[expose] public section
 
 /-!
 # Closing the arithmetic of Step 1 of the path-survival lemma

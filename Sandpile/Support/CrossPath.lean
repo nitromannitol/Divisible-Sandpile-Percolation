@@ -1,5 +1,9 @@
-import Mathlib.Analysis.Real.Cardinality
-import Sandpile.Support.CrossBasic
+module
+
+public import Mathlib.Analysis.Real.Cardinality
+public import Sandpile.Support.CrossBasic
+
+@[expose] public section
 
 /-!
 # Crossing events read along a countable set of points

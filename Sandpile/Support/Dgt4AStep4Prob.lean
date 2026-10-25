@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep4Mean
+module
+
+public import Sandpile.Support.Dgt4AStep4Mean
+
+@[expose] public section
 
 /-!
 # Step 4 of case (a): the conditional contact probability

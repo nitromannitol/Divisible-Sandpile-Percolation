@@ -1,12 +1,16 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.IntersectionSecondMomentProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.RellichKondrachovNegSobolev
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.Support.Dgt4ALinNegSobolev
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.IntersectionSecondMomentProved
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.External.RellichKondrachovNegSobolev
+public import Sandpile.Support.LinJacobianFirstConjunct
+public import Sandpile.Support.Dgt4ALinNegSobolev
+
+@[expose] public section
 
 /-! # Linearization from Path Survival
 

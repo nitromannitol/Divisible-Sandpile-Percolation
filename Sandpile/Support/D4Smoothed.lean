@@ -1,5 +1,9 @@
-import Sandpile.Support.Smoothed
-import Sandpile.Support.D4Linearization
+module
+
+public import Sandpile.Support.Smoothed
+public import Sandpile.Support.D4Linearization
+
+@[expose] public section
 
 /-!
 # The smoothed difference as a function of finitely many scenery coordinates

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4CaseBRelError
-import Sandpile.Support.OriginConcentration
-import Sandpile.Frozen.DGT4OriginFrozen
+module
+
+public import Sandpile.Support.Dgt4CaseBRelError
+public import Sandpile.Support.OriginConcentration
+public import Sandpile.Frozen.DGT4OriginFrozen
+
+@[expose] public section
 
 /-!
 # Convergence in probability of the neighbour average at the origin

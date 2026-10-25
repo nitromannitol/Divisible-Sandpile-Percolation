@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplValueGap
-import Sandpile.Support.Localization
-import Sandpile.External.ContStoppingStability
+module
+
+public import Sandpile.Support.ExplValueGap
+public import Sandpile.Support.Localization
+public import Sandpile.External.ContStoppingStability
+
+@[expose] public section
 
 /-!
 # The stability gap, without the paper's subsequence argument

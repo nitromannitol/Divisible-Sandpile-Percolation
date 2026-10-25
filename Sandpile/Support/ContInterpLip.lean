@@ -1,5 +1,9 @@
-import Sandpile.Support.ContInterpBound
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContInterpBound
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # Lipschitz bound for the one-dimensional mesh interpolation

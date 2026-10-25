@@ -1,7 +1,11 @@
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.NearKernel
+module
+
+public import Sandpile.External.BallGreenBounds
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.NearKernel
+
+@[expose] public section
 
 /-!
 # The ball-killed Green estimates, proved

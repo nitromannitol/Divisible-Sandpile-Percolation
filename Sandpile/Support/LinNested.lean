@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Frozen.DGT4LastVisits
+module
+
+public import Mathlib
+public import Sandpile.Frozen.DGT4LastVisits
+
+@[expose] public section
 
 /-!
 # Only the last visit to a site matters

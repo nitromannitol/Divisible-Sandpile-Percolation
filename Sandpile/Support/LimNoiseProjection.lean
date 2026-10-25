@@ -1,4 +1,8 @@
-import Sandpile.Support.LimNoiseCoordinates
+module
+
+public import Sandpile.Support.LimNoiseCoordinates
+
+@[expose] public section
 
 /-!
 # Removing finitely many coordinates leaves white noise measurable in the rest

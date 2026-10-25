@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMSpace
+module
+
+public import Sandpile.Support.ContBMSpace
+
+@[expose] public section
 
 /-!
 # The space integral commutes with the double time integral against the Brownian kernel

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossCubeBlocks
-import Sandpile.Support.CrossBallMemLp
+module
+
+public import Sandpile.Support.CrossCubeBlocks
+public import Sandpile.Support.CrossBallMemLp
+
+@[expose] public section
 
 /-!
 # The field the exploration of Step 2 actually computes

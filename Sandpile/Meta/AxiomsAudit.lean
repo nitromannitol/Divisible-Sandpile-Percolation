@@ -1,4 +1,8 @@
-import Sandpile.MainTheorems
+module
+
+public import Sandpile.MainTheorems
+
+@[expose] public section
 
 /-!
 # Axioms audit

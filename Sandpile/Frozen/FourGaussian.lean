@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Frozen.D4OnePointGaussian
-import Sandpile.External.VarianceScaleProved
+module
+
+public import Sandpile.Law
+public import Sandpile.Frozen.D4OnePointGaussian
+public import Sandpile.External.VarianceScaleProved
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(ii)(b): Gaussian fluctuations in dimension four

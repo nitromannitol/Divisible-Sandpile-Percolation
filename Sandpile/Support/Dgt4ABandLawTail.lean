@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawMoment
+module
+
+public import Sandpile.Support.Dgt4ABandLawMoment
+
+@[expose] public section
 
 /-!
 # The two-sided linear log tail of the constructed law

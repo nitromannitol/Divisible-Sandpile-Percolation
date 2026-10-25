@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossingWitness
-import Sandpile.Support.KernelPermutation
-import Sandpile.Support.PlaneRectangle
+module
+
+public import Sandpile.Support.CrossingWitness
+public import Sandpile.Support.KernelPermutation
+public import Sandpile.Support.PlaneRectangle
+
+@[expose] public section
 
 /-!
 # Coordinate transposition and vertical crossing values

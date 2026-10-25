@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep2First
+module
+
+public import Sandpile.Support.Dgt4AStep2First
+
+@[expose] public section
 
 /-!
 The horizon of Step 2 of case (a) (`sandpile.tex:5092`): `k_n=\lceil(\log(n+2))^{6/(d-4)}\rceil`.

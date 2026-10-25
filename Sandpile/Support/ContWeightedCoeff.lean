@@ -1,5 +1,9 @@
-import Sandpile.Support.ContCell
-import Sandpile.Support.TightWeightedMembrane
+module
+
+public import Sandpile.Support.ContCell
+public import Sandpile.Support.TightWeightedMembrane
+
+@[expose] public section
 
 /-!
 # Coefficients of the weighted-membrane pairing

@@ -1,4 +1,8 @@
-import Sandpile.Support.TightWeightedMembrane
+module
+
+public import Sandpile.Support.TightWeightedMembrane
+
+@[expose] public section
 
 /-!
 # Tightness of the odometer/weighted-linear-field difference

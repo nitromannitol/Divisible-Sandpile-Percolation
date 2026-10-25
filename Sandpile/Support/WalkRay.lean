@@ -1,4 +1,8 @@
-import Sandpile.Support.RectangleDuality
+module
+
+public import Sandpile.Support.RectangleDuality
+
+@[expose] public section
 
 /-!
 # Ray parity along a nearest-neighbor walk

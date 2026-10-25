@@ -1,9 +1,13 @@
-import Mathlib
-import Sandpile.Support.Killed
-import Sandpile.Support.KilledWalk
-import Sandpile.Support.Localization
-import Sandpile.Support.ExitTail
-import Sandpile.Support.BallCrossingDefinitions
+module
+
+public import Mathlib
+public import Sandpile.Support.Killed
+public import Sandpile.Support.KilledWalk
+public import Sandpile.Support.Localization
+public import Sandpile.Support.ExitTail
+public import Sandpile.Support.BallCrossingDefinitions
+
+@[expose] public section
 
 /-!
 # The dimension-four block field and localized exit term

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABand
-import Sandpile.Support.Dgt4Thresholds
+module
+
+public import Sandpile.Support.Dgt4ABand
+public import Sandpile.Support.Dgt4Thresholds
+
+@[expose] public section
 
 /-!
 # The band-uniform contact comparison

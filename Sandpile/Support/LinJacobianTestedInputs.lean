@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianInterMoments
-import Sandpile.Support.LinTested
+module
+
+public import Sandpile.Support.LinJacobianInterMoments
+public import Sandpile.Support.LinTested
+
+@[expose] public section
 
 /-!
 # The tested intersection moments, specialized to every starting pair

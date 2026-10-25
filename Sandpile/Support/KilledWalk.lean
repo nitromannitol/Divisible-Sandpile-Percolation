@@ -1,7 +1,11 @@
-import Sandpile.Support.Killed
-import Sandpile.Support.Localization
-import Sandpile.Support.Smoothed
-import Sandpile.Support.MembraneStopping
+module
+
+public import Sandpile.Support.Killed
+public import Sandpile.Support.Localization
+public import Sandpile.Support.Smoothed
+public import Sandpile.Support.MembraneStopping
+
+@[expose] public section
 
 /-!
 # The killed kernel is the walk's transition probability before the exit

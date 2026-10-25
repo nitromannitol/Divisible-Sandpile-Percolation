@@ -1,4 +1,8 @@
-import Sandpile.External.GaussianLipschitzConcentration
+module
+
+public import Sandpile.External.GaussianLipschitzConcentration
+
+@[expose] public section
 
 /-!
 # Two-sided Gaussian concentration from the one-sided bounds

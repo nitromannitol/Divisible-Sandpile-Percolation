@@ -1,9 +1,13 @@
-import Sandpile.Support.Dgt4ALinTight
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.Support.LinMeasureZero
-import Sandpile.Support.Dgt4ANegSobolevBridge
-import Sandpile.External.RellichKondrachovNegSobolev
-import LatticeProb.Analysis.Sobolev.DualNet
+module
+
+public import Sandpile.Support.Dgt4ALinTight
+public import Sandpile.Support.LinJacobianFirstConjunct
+public import Sandpile.Support.LinMeasureZero
+public import Sandpile.Support.Dgt4ANegSobolevBridge
+public import Sandpile.External.RellichKondrachovNegSobolev
+public import LatticeProb.Analysis.Sobolev.DualNet
+
+@[expose] public section
 
 /-!
 # Upgrading a tested `L²` estimate to convergence in the negative Sobolev norm

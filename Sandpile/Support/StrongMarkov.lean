@@ -1,4 +1,8 @@
-import Sandpile.Support.Membrane
+module
+
+public import Sandpile.Support.Membrane
+
+@[expose] public section
 
 /-!
 # The one-step Markov property of the walk

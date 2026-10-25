@@ -1,5 +1,9 @@
-import Sandpile.Support.OdometerPathDerivative
-import Sandpile.Support.LinIntersect
+module
+
+public import Sandpile.Support.OdometerPathDerivative
+public import Sandpile.Support.LinIntersect
+
+@[expose] public section
 
 /-!
 # The time-restricted coordinate derivative of the tested field

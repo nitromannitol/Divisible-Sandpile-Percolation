@@ -1,5 +1,9 @@
-import Sandpile.Walk
-import Sandpile.Continuum.Kernel
+module
+
+public import Sandpile.Walk
+public import Sandpile.Continuum.Kernel
+
+@[expose] public section
 
 /-!
 # The rescaled linear field `Z_R` and its standard interpolation `Z_R^{\rm lin}`

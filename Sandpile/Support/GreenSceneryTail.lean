@@ -1,5 +1,9 @@
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.SceneryTail
+module
+
+public import Sandpile.Support.GreenHigh
+public import Sandpile.Support.SceneryTail
+
+@[expose] public section
 
 /-!
 # The space sum of the log-Laplace transform of the scenery

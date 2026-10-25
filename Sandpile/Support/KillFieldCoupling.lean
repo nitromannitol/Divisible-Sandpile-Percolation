@@ -1,7 +1,11 @@
-import Sandpile.Support.StopFieldCoupling
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.Law
+module
+
+public import Sandpile.Support.StopFieldCoupling
+public import Sandpile.Support.HeatPotentialDefs
+public import Sandpile.Continuum.WhiteNoise
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # Coupling the rescaled heat potential with its Gaussian limit

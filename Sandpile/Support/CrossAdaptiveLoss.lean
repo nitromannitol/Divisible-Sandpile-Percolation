@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossStoppingSet
-import Sandpile.External.Pinsker
+module
+
+public import Sandpile.Support.CrossStoppingSet
+public import Sandpile.External.Pinsker
+
+@[expose] public section
 
 /-!
 # Pinsker bound for the adaptive Cameron-Martin tilt

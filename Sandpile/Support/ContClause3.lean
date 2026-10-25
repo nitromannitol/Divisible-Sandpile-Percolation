@@ -1,5 +1,9 @@
-import Sandpile.Support.ContLawTransfer
-import Sandpile.Support.ContRpowConst
+module
+
+public import Sandpile.Support.ContLawTransfer
+public import Sandpile.Support.ContRpowConst
+
+@[expose] public section
 
 /-!
 # Power-moment scaling from the law identity

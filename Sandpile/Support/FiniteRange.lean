@@ -1,4 +1,8 @@
-import Sandpile.Support.StoppedOdometer
+module
+
+public import Sandpile.Support.StoppedOdometer
+
+@[expose] public section
 
 /-!
 # Measurability of the Killed Green Field and Exit Continuation

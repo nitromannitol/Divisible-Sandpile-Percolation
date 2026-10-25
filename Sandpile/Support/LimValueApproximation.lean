@@ -1,5 +1,9 @@
-import Sandpile.Support.LimValue
-import Sandpile.Support.LimBallContinuity
+module
+
+public import Sandpile.Support.LimValue
+public import Sandpile.Support.LimBallContinuity
+
+@[expose] public section
 
 /-!
 # The ball-stopped field and its approximation of the localized value

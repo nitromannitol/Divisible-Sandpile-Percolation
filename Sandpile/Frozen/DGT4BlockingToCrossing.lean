@@ -1,5 +1,9 @@
-import Sandpile.Basic
-import Sandpile.External.ExteriorBoundaryConnected
+module
+
+public import Sandpile.Basic
+public import Sandpile.External.ExteriorBoundaryConnected
+
+@[expose] public section
 
 /-! # Blocking-to-Crossing Lemma
 

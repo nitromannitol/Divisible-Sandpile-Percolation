@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossPath
-import Sandpile.Support.RectangleIntersection
-import Sandpile.Support.BlockGeometry
+module
+
+public import Sandpile.Support.CrossPath
+public import Sandpile.Support.RectangleIntersection
+public import Sandpile.Support.BlockGeometry
+
+@[expose] public section
 
 /-! # Discretized planar duality
 

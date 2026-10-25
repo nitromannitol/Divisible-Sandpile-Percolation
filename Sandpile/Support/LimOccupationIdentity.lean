@@ -1,7 +1,11 @@
-import Sandpile.Support.LimStoppedKernel
-import Sandpile.Support.LimRestart
-import Sandpile.Support.ExplBrownianDensity
-import Sandpile.Support.LimOccupationLimit
+module
+
+public import Sandpile.Support.LimStoppedKernel
+public import Sandpile.Support.LimRestart
+public import Sandpile.Support.ExplBrownianDensity
+public import Sandpile.Support.LimOccupationLimit
+
+@[expose] public section
 
 /-!
 # The ball-stopped occupation identity

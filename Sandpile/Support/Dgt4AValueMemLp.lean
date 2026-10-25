@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep2Prep
+module
+
+public import Sandpile.Support.Dgt4AStep2Prep
+
+@[expose] public section
 
 /-!
 # Square integrability of the centred value

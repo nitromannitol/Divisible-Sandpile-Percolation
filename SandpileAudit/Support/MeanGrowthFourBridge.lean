@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.MeanGrowthFour.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.MeanGrowthFour.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `MeanGrowthFour`: Mathlib-only vocabulary to the repository

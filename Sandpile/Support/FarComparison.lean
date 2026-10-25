@@ -1,4 +1,8 @@
-import Sandpile.Support.RectangleComparison
+module
+
+public import Sandpile.Support.RectangleComparison
+
+@[expose] public section
 
 /-!
 # Logarithmic-scale Gaussian comparison for large ball radii

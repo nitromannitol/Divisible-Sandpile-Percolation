@@ -1,6 +1,10 @@
-import Sandpile.Walk
-import Sandpile.External.BPSHProved
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # The localization-killing lemma, frozen

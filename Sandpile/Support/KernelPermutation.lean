@@ -1,4 +1,8 @@
-import Sandpile.Support.FiniteKernel
+module
+
+public import Sandpile.Support.FiniteKernel
+
+@[expose] public section
 
 /-!
 # Coordinate-permutation covariance of killed kernels and the radial cutoff Green kernel

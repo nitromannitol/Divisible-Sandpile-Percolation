@@ -1,6 +1,10 @@
-import Sandpile.Support.ExitConcentration
-import Sandpile.Support.FiniteKernel
-import Sandpile.Support.ExponentialMoments
+module
+
+public import Sandpile.Support.ExitConcentration
+public import Sandpile.Support.FiniteKernel
+public import Sandpile.Support.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # Exponential tail bounds for centered finite-kernel fields

@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Iterate
-import Sandpile.Support.Stationary
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.Iterate
+public import Sandpile.Support.Stationary
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # The smoothed odometer as a function of the scenery

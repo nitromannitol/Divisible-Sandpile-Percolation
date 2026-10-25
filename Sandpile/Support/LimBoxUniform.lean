@@ -1,5 +1,9 @@
-import LatticeProb.Prob.KolmogorovBound
-import Mathlib
+module
+
+public import LatticeProb.Prob.KolmogorovBound
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # From small moments to a small supremum on a box

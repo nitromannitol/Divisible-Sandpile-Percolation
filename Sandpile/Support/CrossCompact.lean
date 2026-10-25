@@ -1,5 +1,9 @@
-import Mathlib.Topology.Sets.VietorisTopology
-import Mathlib.Topology.Separation.Regular
+module
+
+public import Mathlib.Topology.Sets.VietorisTopology
+public import Mathlib.Topology.Separation.Regular
+
+@[expose] public section
 
 /-!
 # Compactness of connected crossing witnesses

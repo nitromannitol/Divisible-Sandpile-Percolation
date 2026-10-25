@@ -49,7 +49,7 @@ related_formalizations:
     note: >-
       Lattice-Probability (LatticeProb), a separate Lean library by the same
       author, pinned as a git dependency at commit
-      9d44b4d4670df393bb86ac5a4e042f215001cddf. The formalization uses it for
+      f5e0412c1b144ea3f341d0dd64d66e9defe53b19. The formalization uses it for
       the lattice and walk vocabulary and for general probability and analysis.
 
 status:

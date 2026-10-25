@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplCutoffError
+module
+
+public import Sandpile.Support.ExplCutoffError
+
+@[expose] public section
 
 /-!
 # The dyadic annulus decomposition of the cutoff error

@@ -1,5 +1,9 @@
-import Sandpile.Support.TwoScaleTail
-import Sandpile.Support.NearKernel
+module
+
+public import Sandpile.Support.TwoScaleTail
+public import Sandpile.Support.NearKernel
+
+@[expose] public section
 
 /-!
 # Concentration tail of the near-field kernel

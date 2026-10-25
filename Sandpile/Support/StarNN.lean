@@ -1,5 +1,9 @@
-import Sandpile.Support.RectangleIncrement
-import Sandpile.Support.StarCrossings
+module
+
+public import Sandpile.Support.RectangleIncrement
+public import Sandpile.Support.StarCrossings
+
+@[expose] public section
 
 /-!
 # Replacing star steps by nearest-neighbor steps

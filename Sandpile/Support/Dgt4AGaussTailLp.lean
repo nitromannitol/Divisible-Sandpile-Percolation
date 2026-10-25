@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ATailKernelEq
-import Sandpile.Support.Dgt4ATailKernelSq
-import Sandpile.Support.LinGaussField
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.Dgt4ATailKernelEq
+public import Sandpile.Support.Dgt4ATailKernelSq
+public import Sandpile.Support.LinGaussField
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 The heat-kernel tail `\sum_{r\geq j}p_r(0,z)` of `eq:dgt4-tail-kernel` as a square-summable

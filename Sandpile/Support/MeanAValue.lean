@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Law
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # The rescaled odometer and the continuum stopping value

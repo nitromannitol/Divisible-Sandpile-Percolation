@@ -1,6 +1,10 @@
-import Sandpile.Support.RectangleTranspose
-import Sandpile.Support.RectangleIntersection
-import Sandpile.Support.StarCrossings
+module
+
+public import Sandpile.Support.RectangleTranspose
+public import Sandpile.Support.RectangleIntersection
+public import Sandpile.Support.StarCrossings
+
+@[expose] public section
 
 /-!
 # Block geometry for the dimension-four percolation theorem

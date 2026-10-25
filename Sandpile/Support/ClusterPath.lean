@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Support.BallCrossingDefinitions
+module
+
+public import Mathlib
+public import Sandpile.Support.BallCrossingDefinitions
+
+@[expose] public section
 
 /-!
 # Replacing a crossing through small low components by a nearby field level

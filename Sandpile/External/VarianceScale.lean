@@ -1,4 +1,8 @@
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # The finite-time variance scale and correlation bounds

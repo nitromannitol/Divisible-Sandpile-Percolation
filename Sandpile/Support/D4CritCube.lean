@@ -1,8 +1,12 @@
-import Sandpile.Frozen.D4ExitAverageConcentration
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.Frozen.D4FiniteRangeLowerBound
-import Sandpile.Support.BallCrossingDefinitions
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.Frozen.D4ExitAverageConcentration
+public import Sandpile.Frozen.MeanLocalization
+public import Sandpile.Frozen.D4FiniteRangeLowerBound
+public import Sandpile.Support.BallCrossingDefinitions
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # Box identifications and exit-time translation for the dimension-four argument

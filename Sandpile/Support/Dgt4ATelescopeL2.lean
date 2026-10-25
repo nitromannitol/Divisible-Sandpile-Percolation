@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AJensen
+module
+
+public import Sandpile.Support.Dgt4AJensen
+
+@[expose] public section
 
 /-!
 # The telescoping sum of Step 1 of case (a) in `L^2`

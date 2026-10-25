@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.Nontriviality.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.Nontriviality.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `Nontriviality`: Mathlib-only vocabulary to the repository

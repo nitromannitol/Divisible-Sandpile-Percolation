@@ -1,6 +1,10 @@
-import Sandpile.Support.ContTimeSwap
-import Sandpile.Support.ContMembraneWeight
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.ContTimeSwap
+public import Sandpile.Support.ContMembraneWeight
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # The membrane covariance is strictly decreasing in the exponent `κ`

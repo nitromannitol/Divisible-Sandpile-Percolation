@@ -1,9 +1,13 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Support.InfiniteGreenField
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.NormalComparison
-import Sandpile.Support.LinStep3Core
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Support.InfiniteGreenField
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.NormalComparison
+public import Sandpile.Support.LinStep3Core
+
+@[expose] public section
 
 /-!
 # The path-survival lemma, frozen

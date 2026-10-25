@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourFirstOrder.SolutionBasic
-import SandpileAudit.Support.FourFirstOrderBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourFirstOrder.SolutionBasic
+public import SandpileAudit.Support.FourFirstOrderBridge
+
+@[expose] public section
 
 /-!
 # Solution: FourFirstOrder

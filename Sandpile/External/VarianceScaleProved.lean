@@ -1,7 +1,11 @@
-import Sandpile.External.VarianceScale
-import LatticeProb.Walk.VarianceScale
-import LatticeProb.Walk.WindowD4
-import LatticeProb.Walk.Correlation
+module
+
+public import Sandpile.External.VarianceScale
+public import LatticeProb.Walk.VarianceScale
+public import LatticeProb.Walk.WindowD4
+public import LatticeProb.Walk.Correlation
+
+@[expose] public section
 
 /-!
 # The finite-time variance scale is proved

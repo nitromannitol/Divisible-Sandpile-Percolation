@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandPointwise
-import Sandpile.Support.Dgt4ABand
+module
+
+public import Sandpile.Support.Dgt4ABandPointwise
+public import Sandpile.Support.Dgt4ABand
+
+@[expose] public section
 
 /-!
 # Contact thresholds along a sequence of band exponents

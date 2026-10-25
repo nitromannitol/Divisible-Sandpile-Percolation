@@ -1,6 +1,10 @@
-import Sandpile.Support.OdometerLocalization
-import Sandpile.Frozen.DGT4Localization
-import Mathlib.Data.Set.Finite.Powerset
+module
+
+public import Sandpile.Support.OdometerLocalization
+public import Sandpile.Frozen.DGT4Localization
+public import Mathlib.Data.Set.Finite.Powerset
+
+@[expose] public section
 
 /-!
 # Decoupling odometer sublevel events on separated finite sets

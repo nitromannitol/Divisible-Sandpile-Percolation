@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockMoment
-import Sandpile.Support.D4Difference
+module
+
+public import Sandpile.Support.BlockMoment
+public import Sandpile.Support.D4Difference
+
+@[expose] public section
 
 /-!
 # The uniform block tail

@@ -1,5 +1,9 @@
-import Sandpile.Support.D4PotentialKernel
-import Sandpile.Support.Iterate
+module
+
+public import Sandpile.Support.D4PotentialKernel
+public import Sandpile.Support.Iterate
+
+@[expose] public section
 
 /-!
 # The ℓ² size of a heat-kernel increment

@@ -1,6 +1,10 @@
-import Sandpile.External.BallOccupationDensity
-import Sandpile.Support.LimBallSurvival
-import Sandpile.Support.ExplBallExit
+module
+
+public import Sandpile.External.BallOccupationDensity
+public import Sandpile.Support.LimBallSurvival
+public import Sandpile.Support.ExplBallExit
+
+@[expose] public section
 
 /-!
 # Capped ball-occupation rewards and their limit

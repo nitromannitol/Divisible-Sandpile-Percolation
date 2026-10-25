@@ -1,5 +1,9 @@
-import Sandpile.External.VarianceScaleProved
-import Sandpile.Support.FiniteCoord
+module
+
+public import Sandpile.External.VarianceScaleProved
+public import Sandpile.Support.FiniteCoord
+
+@[expose] public section
 
 /-! # Uniform Green weights at the parabolic scale
 

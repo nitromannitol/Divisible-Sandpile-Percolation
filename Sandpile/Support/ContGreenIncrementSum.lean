@@ -1,7 +1,11 @@
-import Sandpile.Support.ContGreenIncrement
-import Sandpile.Support.Radial
-import Sandpile.Support.TightKernel
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContGreenIncrement
+public import Sandpile.Support.Radial
+public import Sandpile.Support.TightKernel
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # The double time sum of the squared Green increment

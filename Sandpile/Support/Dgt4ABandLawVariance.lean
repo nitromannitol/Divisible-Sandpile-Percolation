@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawMean
+module
+
+public import Sandpile.Support.Dgt4ABandLawMean
+
+@[expose] public section
 
 /-!
 # Second moment of the band law

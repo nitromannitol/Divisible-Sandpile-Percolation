@@ -1,4 +1,8 @@
-import Sandpile.External.BerryEsseen
+module
+
+public import Sandpile.External.BerryEsseen
+
+@[expose] public section
 
 /-!
 # The covariance matrix of the linear forms is positive semidefinite

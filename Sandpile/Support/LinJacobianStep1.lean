@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianEarly
-import Sandpile.Support.LinJacobianLate
-import Sandpile.Support.LinVarSplit
+module
+
+public import Sandpile.Support.LinJacobianEarly
+public import Sandpile.Support.LinJacobianLate
+public import Sandpile.Support.LinVarSplit
+
+@[expose] public section
 
 /-!
 # The early/late split of the coordinate-derivative variance in Step 1

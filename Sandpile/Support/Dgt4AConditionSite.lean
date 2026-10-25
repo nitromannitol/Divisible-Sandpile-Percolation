@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACovSuper
-import Sandpile.Support.Dgt4AConditionField
+module
+
+public import Sandpile.Support.Dgt4ACovSuper
+public import Sandpile.Support.Dgt4AConditionField
+
+@[expose] public section
 
 /-!
 # The linear regression formula at a general site

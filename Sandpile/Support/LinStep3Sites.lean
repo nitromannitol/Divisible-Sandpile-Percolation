@@ -1,5 +1,9 @@
-import Sandpile.Support.LinStep3Product
-import Sandpile.Support.LinThresholdNull
+module
+
+public import Sandpile.Support.LinStep3Product
+public import Sandpile.Support.LinThresholdNull
+
+@[expose] public section
 
 /-!
 # The site bookkeeping of Step 3 of `lem:dgt4-path-survival`

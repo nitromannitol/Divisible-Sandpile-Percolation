@@ -1,5 +1,9 @@
-import Sandpile.Support.KernelBlocks
-import Sandpile.Support.CoarseBox
+module
+
+public import Sandpile.Support.KernelBlocks
+public import Sandpile.Support.CoarseBox
+
+@[expose] public section
 
 /-!
 # Joint bad-box bounds from a coloring of the coarse plane

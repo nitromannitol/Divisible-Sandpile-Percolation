@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACondition
-import Sandpile.Support.ExitGreen
+module
+
+public import Sandpile.Support.Dgt4ACondition
+public import Sandpile.Support.ExitGreen
+
+@[expose] public section
 
 /-!
 # The Green covariance is superharmonic

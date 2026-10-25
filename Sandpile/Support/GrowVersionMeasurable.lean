@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanAKolmogorov
+module
+
+public import Sandpile.Support.MeanAKolmogorov
+
+@[expose] public section
 
 /-!
 # Measurable Continuous Version of the Gaussian Heat Potential

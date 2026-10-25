@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4Thresholds
-import Sandpile.Support.LinWeights
-import Sandpile.Frozen.DGT4LinearizationFromSurvival
+module
+
+public import Sandpile.Support.Dgt4Thresholds
+public import Sandpile.Support.LinWeights
+public import Sandpile.Frozen.DGT4LinearizationFromSurvival
+
+@[expose] public section
 
 /-!
 # The survival inputs to the linearization lemma, from the uniform contact thresholds

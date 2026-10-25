@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAKolmogorov
-import Sandpile.Support.GrowExternalDischarge
-import Sandpile.Continuum.WhiteNoiseExists
+module
+
+public import Sandpile.Support.MeanAKolmogorov
+public import Sandpile.Support.GrowExternalDischarge
+public import Sandpile.Continuum.WhiteNoiseExists
+
+@[expose] public section
 
 /-!
 # A continuous, polynomially growing version of the heat potential

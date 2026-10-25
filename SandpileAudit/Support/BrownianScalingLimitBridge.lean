@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.BrownianScalingLimit.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.BrownianScalingLimit.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `BrownianScalingLimit`: Mathlib-only vocabulary to the repository

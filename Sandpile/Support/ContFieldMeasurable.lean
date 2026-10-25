@@ -1,5 +1,9 @@
-import Sandpile.Support.ContBMSquare
-import Sandpile.Continuum.WhiteNoise
+module
+
+public import Sandpile.Support.ContBMSquare
+public import Sandpile.Continuum.WhiteNoise
+
+@[expose] public section
 
 /-!
 # Almost-everywhere measurability of the Gaussian heat potential

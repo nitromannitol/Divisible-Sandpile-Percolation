@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFixBlocking
+module
+
+public import Sandpile.Support.CrossFixBlocking
+
+@[expose] public section
 
 /-!
 # Lattice approximation at every sufficiently fine mesh

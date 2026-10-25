@@ -1,5 +1,9 @@
-import Sandpile.Support.PercolationEvents
-import Sandpile.External.HeatKernelBounds
+module
+
+public import Sandpile.Support.PercolationEvents
+public import Sandpile.External.HeatKernelBounds
+
+@[expose] public section
 
 /-! # Domination by Product Measures (LSS)
 

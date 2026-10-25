@@ -1,5 +1,9 @@
-import Sandpile.Support.ContDominated
-import Sandpile.Support.ContCutLimit
+module
+
+public import Sandpile.Support.ContDominated
+public import Sandpile.Support.ContCutLimit
+
+@[expose] public section
 
 /-!
 # The limit of the variance of the rescaled pairing

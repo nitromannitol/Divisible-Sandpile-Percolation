@@ -1,5 +1,9 @@
-import Sandpile.Support.CriticalAssembly
-import Sandpile.Support.Increment
+module
+
+public import Sandpile.Support.CriticalAssembly
+public import Sandpile.Support.Increment
+
+@[expose] public section
 
 /-!
 # Elementary rates behind the critical mean corollary

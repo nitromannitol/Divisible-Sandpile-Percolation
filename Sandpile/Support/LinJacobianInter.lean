@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianCovBridge
-import Sandpile.External.IntersectionSecondMoment
+module
+
+public import Sandpile.Support.LinJacobianCovBridge
+public import Sandpile.External.IntersectionSecondMoment
+
+@[expose] public section
 
 /-!
 # The real-valued intersection count, and its majorization of finite double sums

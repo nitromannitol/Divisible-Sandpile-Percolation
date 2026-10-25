@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMChapman
+module
+
+public import Sandpile.Support.ContBMChapman
+
+@[expose] public section
 
 /-!
 # The time integral of the Brownian heat kernel away from the diagonal

@@ -1,5 +1,9 @@
-import Sandpile.Support.D23LSS
-import Sandpile.Support.D4CritRange
+module
+
+public import Sandpile.Support.D23LSS
+public import Sandpile.Support.D4CritRange
+
+@[expose] public section
 
 /-!
 # Finite dependence range of the dimension-two and dimension-three block process

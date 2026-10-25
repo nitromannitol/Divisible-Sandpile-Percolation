@@ -1,4 +1,8 @@
-import Sandpile.Support.MainExplInterpolationNorm
+module
+
+public import Sandpile.Support.MainExplInterpolationNorm
+
+@[expose] public section
 
 /-!
 # Finite-dimensional limit and tightness of the interpolated odometer

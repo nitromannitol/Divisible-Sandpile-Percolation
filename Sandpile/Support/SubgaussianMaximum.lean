@@ -1,7 +1,11 @@
-import Sandpile.Support.GaussianIntegrability
-import Sandpile.Support.CrossingContinuity
-import Sandpile.Support.ExponentialMoments
-import Mathlib.Probability.Moments.SubGaussian
+module
+
+public import Sandpile.Support.GaussianIntegrability
+public import Sandpile.Support.CrossingContinuity
+public import Sandpile.Support.ExponentialMoments
+public import Mathlib.Probability.Moments.SubGaussian
+
+@[expose] public section
 
 /-!
 # Expected maximum of a sub-Gaussian family

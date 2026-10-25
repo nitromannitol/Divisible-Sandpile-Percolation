@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4CaseBPassage
+module
+
+public import Sandpile.Support.Dgt4CaseBPassage
+
+@[expose] public section
 
 /-!
 # Regularly varying replacement at a concentrated random level

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandReplacement
+module
+
+public import Sandpile.Support.Dgt4ABandReplacement
+
+@[expose] public section
 
 /-!
 # The exponentially weighted bound at a random level

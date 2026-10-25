@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplStability
+module
+
+public import Sandpile.Support.ExplStability
+
+@[expose] public section
 
 /-!
 # The Brownian value is Lipschitz in the field

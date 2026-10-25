@@ -1,5 +1,9 @@
-import Sandpile.Continuum.WhiteNoise
-import LatticeProb.Gauss.WhiteNoise
+module
+
+public import Sandpile.Continuum.WhiteNoise
+public import LatticeProb.Gauss.WhiteNoise
+
+@[expose] public section
 
 /-!
 # Existence of white noise on `ℝ^d`

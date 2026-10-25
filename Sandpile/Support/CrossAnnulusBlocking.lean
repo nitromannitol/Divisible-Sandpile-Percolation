@@ -1,7 +1,11 @@
-import Sandpile.Support.CrossRectangleWalk
-import Sandpile.Support.CrossAnnuli
-import Sandpile.Support.CrossPathContact
-import Mathlib.Topology.Connected.LocallyPathConnected
+module
+
+public import Sandpile.Support.CrossRectangleWalk
+public import Sandpile.Support.CrossAnnuli
+public import Sandpile.Support.CrossPathContact
+public import Mathlib.Topology.Connected.LocallyPathConnected
+
+@[expose] public section
 
 /-! # Positive-arm annulus blocking
 

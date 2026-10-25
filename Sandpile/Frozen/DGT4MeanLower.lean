@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.Support.IncrementBall
-import Sandpile.Support.Increment
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.IncrementBall
+public import Sandpile.Support.Increment
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # A mean lower bound with only a first moment

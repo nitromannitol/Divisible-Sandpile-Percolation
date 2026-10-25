@@ -1,7 +1,11 @@
-import Sandpile.Support.ExplBrownianSemigroup
-import Sandpile.Support.ExplHorizon
-import Sandpile.Support.StopMeasurable
-import Sandpile.Support.ExplGreenFubini
+module
+
+public import Sandpile.Support.ExplBrownianSemigroup
+public import Sandpile.Support.ExplHorizon
+public import Sandpile.Support.StopMeasurable
+public import Sandpile.Support.ExplGreenFubini
+
+@[expose] public section
 
 /-!
 # Brownian Path-Radius Envelope

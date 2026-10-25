@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ACondTail
+module
+
+public import Sandpile.Support.Dgt4ACondTail
+
+@[expose] public section
 
 /-!
 # An everywhere-defined rank-one projection onto the conditioned direction

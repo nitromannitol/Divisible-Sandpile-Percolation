@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplFieldSemigroup
-import Sandpile.Support.StopMeasurable
-import LatticeProb.Prob.GaussDensity
+module
+
+public import Sandpile.Support.ExplFieldSemigroup
+public import Sandpile.Support.StopMeasurable
+public import LatticeProb.Prob.GaussDensity
+
+@[expose] public section
 
 /-!
 # The Brownian transition density for the generator `Δ/(2d)`

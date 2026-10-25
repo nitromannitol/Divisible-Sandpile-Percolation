@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABand
-import Sandpile.Support.Dgt4ABandScaled
+module
+
+public import Sandpile.Support.Dgt4ABandLaw
+public import Sandpile.Support.Dgt4ABand
+public import Sandpile.Support.Dgt4ABandScaled
+
+@[expose] public section
 
 /-!
 # Step 2 roadmap

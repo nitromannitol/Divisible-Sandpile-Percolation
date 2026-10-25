@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplFieldAverage
-import Sandpile.Support.ExplGreenSemigroup
+module
+
+public import Sandpile.Support.ExplFieldAverage
+public import Sandpile.Support.ExplGreenSemigroup
+
+@[expose] public section
 
 /-!
 # Heat Semigroup Identity for the Gaussian Field

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContCoeffL2
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContCoeffL2
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # The `ℓ²` modulus of the coefficient vector of the interpolated field

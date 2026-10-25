@@ -1,8 +1,12 @@
-import Sandpile.Support.Stopped
-import Sandpile.Support.Odometer
-import Sandpile.External.BPSH
-import Sandpile.External.BPSHProved
-import LatticeProb.Walk.Markov
+module
+
+public import Sandpile.Support.Stopped
+public import Sandpile.Support.Odometer
+public import Sandpile.External.BPSH
+public import Sandpile.External.BPSHProved
+public import LatticeProb.Walk.Markov
+
+@[expose] public section
 
 /-!
 # The localized odometer compared to the odometer

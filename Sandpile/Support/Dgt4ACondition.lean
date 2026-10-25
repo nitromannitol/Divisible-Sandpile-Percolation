@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AGaussProcess
-import Sandpile.Support.LinGaussFactor
+module
+
+public import Sandpile.Support.Dgt4AGaussProcess
+public import Sandpile.Support.LinGaussFactor
+
+@[expose] public section
 
 /-!
 # The conditioning of Step 2 as a deterministic shift

@@ -1,9 +1,13 @@
-import Sandpile.Support.D4CritConstants
-import Sandpile.Support.D4CritLocalize
-import Sandpile.Support.D4CritStep1
-import Sandpile.Support.D4CritExitProb
-import Sandpile.Frozen.CriticalTopplingD4
-import LatticeProb.Prob.SubGaussian
+module
+
+public import Sandpile.Support.D4CritConstants
+public import Sandpile.Support.D4CritLocalize
+public import Sandpile.Support.D4CritStep1
+public import Sandpile.Support.D4CritExitProb
+public import Sandpile.Frozen.CriticalTopplingD4
+public import LatticeProb.Prob.SubGaussian
+
+@[expose] public section
 
 /-!
 # Step 1a of the dimension-four percolation proof

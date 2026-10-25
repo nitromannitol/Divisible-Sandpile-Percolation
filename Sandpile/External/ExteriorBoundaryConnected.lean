@@ -1,4 +1,8 @@
-import Sandpile.Support.ExteriorBoundary
+module
+
+public import Sandpile.Support.ExteriorBoundary
+
+@[expose] public section
 
 /-!
 # Timár's exterior-boundary connectivity theorem

@@ -1,10 +1,14 @@
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.Walk
-import Sandpile.Law
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Support.HeatPotentialClauses
+module
+
+public import Sandpile.Continuum.WhiteNoise
+public import Sandpile.Walk
+public import Sandpile.Law
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.Support.HeatPotentialDefs
+public import Sandpile.Support.HeatPotentialClauses
+
+@[expose] public section
 
 /-!
 # Invariance of the heat potential

@@ -1,6 +1,10 @@
-import Sandpile.Support.D23Rectangle
-import Sandpile.Support.D4CritBlock
-import Sandpile.Support.CrossingContinuity
+module
+
+public import Sandpile.Support.D23Rectangle
+public import Sandpile.Support.D4CritBlock
+public import Sandpile.Support.CrossingContinuity
+
+@[expose] public section
 
 /-!
 # Transferring continuum crossings to discrete good blocks

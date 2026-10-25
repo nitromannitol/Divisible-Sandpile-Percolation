@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Kernel
+module
+
+public import Sandpile.Continuum.Kernel
+
+@[expose] public section
 
 /-!
 # The continuous spatial cutoff for Theorem 1.3(i)(b)

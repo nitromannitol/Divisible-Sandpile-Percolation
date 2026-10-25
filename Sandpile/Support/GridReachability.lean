@@ -1,5 +1,9 @@
-import Sandpile.Support.GridDuality
-import Sandpile.Support.StarNN
+module
+
+public import Sandpile.Support.GridDuality
+public import Sandpile.Support.StarNN
+
+@[expose] public section
 
 /-!
 # No open left-right crossing forces a closed star crossing

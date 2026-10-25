@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConcMeas
-import Sandpile.Support.Dgt4AConcResid
+module
+
+public import Sandpile.Support.Dgt4AConcMeas
+public import Sandpile.Support.Dgt4AConcResid
+
+@[expose] public section
 
 /-!
 # The conditional concentration bound for `\Theta_n`

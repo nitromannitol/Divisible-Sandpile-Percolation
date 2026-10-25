@@ -1,4 +1,8 @@
-import Sandpile.Support.D4Applications
+module
+
+public import Sandpile.Support.D4Applications
+
+@[expose] public section
 
 /-!
 # The frozen logarithmic mean-odometer growth in dimension four

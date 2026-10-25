@@ -1,4 +1,8 @@
-import LatticeProb.Prob.SubGaussian
+module
+
+public import LatticeProb.Prob.SubGaussian
+
+@[expose] public section
 
 /-! # Power Moments from an Exponential Moment
 

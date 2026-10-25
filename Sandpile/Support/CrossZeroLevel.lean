@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossFieldSym
-import Sandpile.External.ContinuumRSW
+module
+
+public import Sandpile.Support.CrossFieldSym
+public import Sandpile.External.ContinuumRSW
+
+@[expose] public section
 
 /-!
 # Step 1: the uniform aspect-`θ` crossing constant

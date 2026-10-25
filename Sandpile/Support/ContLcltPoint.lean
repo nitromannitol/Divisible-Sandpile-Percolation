@@ -1,5 +1,9 @@
-import Sandpile.Support.ContLcltStep
-import Sandpile.Support.ContMeshPoint
+module
+
+public import Sandpile.Support.ContLcltStep
+public import Sandpile.Support.ContMeshPoint
+
+@[expose] public section
 
 /-!
 # The two mesh sites the local central limit theorem is applied at

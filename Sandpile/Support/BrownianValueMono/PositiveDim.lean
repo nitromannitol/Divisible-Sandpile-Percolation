@@ -1,6 +1,10 @@
-import Sandpile.Support.BrownianValueMono.Envelope
-import Sandpile.Support.ExplGaussianFamily
-import Sandpile.Support.BallGrowthExternal
+module
+
+public import Sandpile.Support.BrownianValueMono.Envelope
+public import Sandpile.Support.ExplGaussianFamily
+public import Sandpile.Support.BallGrowthExternal
+
+@[expose] public section
 
 /-!
 # The horizon-monotonicity hypotheses in dimension `1 ≤ d ≤ 3`

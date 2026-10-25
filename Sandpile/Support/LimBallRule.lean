@@ -1,5 +1,9 @@
-import Sandpile.Support.LimBallValue
-import Sandpile.Support.ExplBallLocal
+module
+
+public import Sandpile.Support.LimBallValue
+public import Sandpile.Support.ExplBallLocal
+
+@[expose] public section
 
 /-!
 # A ball-exit stopping rule lower-bounds the localized Brownian value

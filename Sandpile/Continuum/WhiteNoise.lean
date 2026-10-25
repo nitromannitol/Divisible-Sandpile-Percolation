@@ -1,6 +1,10 @@
-import Sandpile.Continuum.Kernel
-import LatticeProb.Prob.L2JointVersion
-import Mathlib
+module
+
+public import Sandpile.Continuum.Kernel
+public import LatticeProb.Prob.L2JointVersion
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # White noise and the Gaussian point field

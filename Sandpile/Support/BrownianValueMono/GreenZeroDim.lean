@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Kernel
+module
+
+public import Sandpile.Continuum.Kernel
+
+@[expose] public section
 
 /-!
 # The dimension-zero heat and Green kernels

@@ -1,4 +1,8 @@
-import Sandpile.Support.LimPathLaw
+module
+
+public import Sandpile.Support.LimPathLaw
+
+@[expose] public section
 
 /-!
 # The exit event of a ball as a countable condition on the path

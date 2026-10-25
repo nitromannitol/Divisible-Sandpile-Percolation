@@ -1,6 +1,10 @@
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Support.TightD4Covariance
-import Sandpile.Support.TightNegSobolev
+module
+
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.Support.TightD4Covariance
+public import Sandpile.Support.TightNegSobolev
+
+@[expose] public section
 
 /-! # Diffusive Tightness in Dimension Four
 

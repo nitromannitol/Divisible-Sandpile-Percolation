@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AL2Tri
+module
+
+public import Sandpile.Support.Dgt4AL2Tri
+
+@[expose] public section
 
 /-!
 # An `L²` bound for a finite sum of functions

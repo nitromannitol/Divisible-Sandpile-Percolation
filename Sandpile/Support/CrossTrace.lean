@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFixArm
+module
+
+public import Sandpile.Support.CrossFixArm
+
+@[expose] public section
 
 /-!
 # The exploration trace as a finite-dimensional measurable map

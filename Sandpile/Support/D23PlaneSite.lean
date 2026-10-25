@@ -1,4 +1,8 @@
-import Sandpile.Support.PercolationEvents
+module
+
+public import Sandpile.Support.PercolationEvents
+
+@[expose] public section
 
 /-!
 # The plane embedding into the `d`-dimensional lattice

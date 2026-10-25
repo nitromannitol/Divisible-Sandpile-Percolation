@@ -1,4 +1,8 @@
-import Sandpile.Support.LinSurvivalMeas
+module
+
+public import Sandpile.Support.LinSurvivalMeas
+
+@[expose] public section
 
 /-! # Early Variance Fubini
 

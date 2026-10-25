@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandComponent
-import Mathlib.Probability.Distributions.Gaussian.Real
+module
+
+public import Sandpile.Support.Dgt4ABandComponent
+public import Mathlib.Probability.Distributions.Gaussian.Real
+
+@[expose] public section
 
 /-!
 # The one-site density as a mixture of band components

@@ -1,4 +1,8 @@
-import Sandpile.Basic
+module
+
+public import Sandpile.Basic
+
+@[expose] public section
 
 /-!
 # Mass laws and the mean odometer

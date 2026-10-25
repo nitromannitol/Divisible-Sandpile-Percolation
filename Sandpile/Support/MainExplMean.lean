@@ -1,9 +1,13 @@
-import Sandpile.Support.MainExplScaling
-import Sandpile.Support.MeanAAssembly
-import Sandpile.Support.MeanAVersion
-import Sandpile.Support.MeanAMean
-import Sandpile.Support.MeanAExpLimit
-import Sandpile.Support.Dgt4OriginProb
+module
+
+public import Sandpile.Support.MainExplScaling
+public import Sandpile.Support.MeanAAssembly
+public import Sandpile.Support.MeanAVersion
+public import Sandpile.Support.MeanAMean
+public import Sandpile.Support.MeanAExpLimit
+public import Sandpile.Support.Dgt4OriginProb
+
+@[expose] public section
 
 /-! # Positivity of the limiting mean at the origin
 

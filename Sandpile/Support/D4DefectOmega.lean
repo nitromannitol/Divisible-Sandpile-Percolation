@@ -1,5 +1,9 @@
-import Sandpile.Support.D4DefectPairing
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.D4DefectPairing
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # The `ω`-Shifted Test Function

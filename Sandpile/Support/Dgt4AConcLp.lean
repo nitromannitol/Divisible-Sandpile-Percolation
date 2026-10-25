@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ACondTail
+module
+
+public import Sandpile.Support.Dgt4ACondTail
+
+@[expose] public section
 
 /-!
 # The rank-one reduction is a contraction for the `\ell^2` distance

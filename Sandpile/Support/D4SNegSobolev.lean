@@ -1,7 +1,11 @@
-import Sandpile.Support.D4SCellL2
-import Sandpile.Support.D4SPlancherel
-import Sandpile.Support.D4DefectOmega
-import Sandpile.Support.TightNegSobolev
+module
+
+public import Sandpile.Support.D4SCellL2
+public import Sandpile.Support.D4SPlancherel
+public import Sandpile.Support.D4DefectOmega
+public import Sandpile.Support.TightNegSobolev
+
+@[expose] public section
 
 /-!
 # The `H^{-s}(D)` norm of the `ω`-representative of a rescaled lattice field

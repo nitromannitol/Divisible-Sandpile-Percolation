@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossingDefinitions
-import Sandpile.Support.BoundedBottleneck
+module
+
+public import Sandpile.Support.CrossingDefinitions
+public import Sandpile.Support.BoundedBottleneck
+
+@[expose] public section
 
 /-!
 # Smooth crossing values for finite lattice rectangles

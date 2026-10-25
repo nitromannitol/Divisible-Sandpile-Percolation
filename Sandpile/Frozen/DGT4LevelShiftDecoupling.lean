@@ -1,7 +1,11 @@
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.LevelShift
-import Sandpile.Support.RealBoxes
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.LevelShift
+public import Sandpile.Support.RealBoxes
+
+@[expose] public section
 
 /-!
 # The level-shift decoupling lemma, frozen

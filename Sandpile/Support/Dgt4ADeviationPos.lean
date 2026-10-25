@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ADeviationSplit
+module
+
+public import Sandpile.Support.Dgt4ADeviationSplit
+
+@[expose] public section
 
 /-!
 # Positive-part bound for the centred deviation `D_n`

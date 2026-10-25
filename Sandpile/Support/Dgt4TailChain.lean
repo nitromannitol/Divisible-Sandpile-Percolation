@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ThresholdChain
+module
+
+public import Sandpile.Support.Dgt4ThresholdChain
+
+@[expose] public section
 
 /-!
 # From the mean-increment estimate to the reciprocal threshold chain

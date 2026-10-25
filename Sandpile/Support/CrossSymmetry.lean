@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossTranslate
+module
+
+public import Sandpile.Support.CrossTranslate
+
+@[expose] public section
 
 /-!
 # Coordinate-interchange and sign-flip symmetries of crossing events

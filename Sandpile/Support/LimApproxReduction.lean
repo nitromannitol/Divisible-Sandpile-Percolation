@@ -1,8 +1,12 @@
-import Sandpile.Support.LimUnconditional
-import Sandpile.Support.LimScaleZeroOne
-import Sandpile.Support.LimValueApproximation
-import Sandpile.External.GaussianLawCovarianceProved
-import Sandpile.Frozen.LimitingOdometerCrossing
+module
+
+public import Sandpile.Support.LimUnconditional
+public import Sandpile.Support.LimScaleZeroOne
+public import Sandpile.Support.LimValueApproximation
+public import Sandpile.External.GaussianLawCovarianceProved
+public import Sandpile.Frozen.LimitingOdometerCrossing
+
+@[expose] public section
 
 /-!
 # Reducing the crossing theorem to the ball-stopped approximation

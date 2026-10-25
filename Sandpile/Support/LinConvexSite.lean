@@ -1,6 +1,10 @@
-import Sandpile.Frozen.ConvexLinearBound
-import Sandpile.Support.LinL2Split
-import LatticeProb.Prob.FiniteMarginal
+module
+
+public import Sandpile.Frozen.ConvexLinearBound
+public import Sandpile.Support.LinL2Split
+public import LatticeProb.Prob.FiniteMarginal
+
+@[expose] public section
 
 /-!
 # The convex-linear bound read on a finite set of sites of the lattice field

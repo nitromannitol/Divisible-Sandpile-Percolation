@@ -1,4 +1,8 @@
-import Sandpile.Support.D4DefectBound
+module
+
+public import Sandpile.Support.D4DefectBound
+
+@[expose] public section
 
 /-!
 # Step 1 of the superdiffusive limit: the membrane part

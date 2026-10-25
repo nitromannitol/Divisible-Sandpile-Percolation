@@ -1,5 +1,9 @@
-import Sandpile.Support.HeatPotentialDefs
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.HeatPotentialDefs
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # The interpolated field is a convex combination of its mesh values

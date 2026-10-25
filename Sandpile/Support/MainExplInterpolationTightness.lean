@@ -1,5 +1,9 @@
-import Sandpile.Support.MainExplInterpolationLimit
-import Sandpile.Support.MainExplBoundedScale
+module
+
+public import Sandpile.Support.MainExplInterpolationLimit
+public import Sandpile.Support.MainExplBoundedScale
+
+@[expose] public section
 
 /-!
 # The spatial modulus of the interpolated odometer at large scales

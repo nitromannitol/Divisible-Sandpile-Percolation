@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossCellShift
-import Sandpile.Support.CrossLevelLoss
+module
+
+public import Sandpile.Support.CrossCellShift
+public import Sandpile.Support.CrossLevelLoss
+
+@[expose] public section
 
 /-!
 # Level loss from an adaptive cell exploration

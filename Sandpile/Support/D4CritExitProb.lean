@@ -1,5 +1,9 @@
-import Sandpile.Support.ExitTail
-import Sandpile.Support.D4CritCube
+module
+
+public import Sandpile.Support.ExitTail
+public import Sandpile.Support.D4CritCube
+
+@[expose] public section
 
 /-!
 # Step 1a exit probability of the dimension-four random walk

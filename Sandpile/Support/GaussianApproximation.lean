@@ -1,4 +1,8 @@
-import Sandpile.Support.GaussianRotation
+module
+
+public import Sandpile.Support.GaussianRotation
+
+@[expose] public section
 
 /-!
 # Gaussian exponential concentration through smooth uniform approximation

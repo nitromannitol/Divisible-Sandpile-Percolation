@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.Walk
-import Sandpile.Support.Localization
-import Sandpile.Support.EpsilonOptimalRule
+module
+
+public import Mathlib
+public import Sandpile.Walk
+public import Sandpile.Support.Localization
+public import Sandpile.Support.EpsilonOptimalRule
+
+@[expose] public section
 
 /-!
 # The glued stopping rule for a localized restart

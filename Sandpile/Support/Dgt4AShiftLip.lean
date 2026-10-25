@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.Dgt4AConditionSite
-import Sandpile.Support.Dgt4FieldRecursion
+module
+
+public import Sandpile.Support.Dgt4ACovStop
+public import Sandpile.Support.Dgt4AConditionSite
+public import Sandpile.Support.Dgt4FieldRecursion
+
+@[expose] public section
 
 /-!
 **The Lipschitz step of Step 2** (`sandpile.tex:5111-5126`): "Raising `b` to `b+s` shifts

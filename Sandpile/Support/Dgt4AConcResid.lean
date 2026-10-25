@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConcContract
-import Sandpile.External.GaussianLipschitzConcentration
+module
+
+public import Sandpile.Support.Dgt4AConcContract
+public import Sandpile.External.GaussianLipschitzConcentration
+
+@[expose] public section
 
 /-!
 # Gaussian concentration for the residual field after conditioning

@@ -1,5 +1,9 @@
-import Sandpile.Support.RectangleIntersection
-import Sandpile.Support.NearFarCrossing
+module
+
+public import Sandpile.Support.RectangleIntersection
+public import Sandpile.Support.NearFarCrossing
+
+@[expose] public section
 
 /-!
 # Star crossings in four-dimensional ball-rectangles as planar crossings

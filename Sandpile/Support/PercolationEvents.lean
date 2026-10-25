@@ -1,5 +1,9 @@
-import Sandpile.Support.ExteriorBoundary
-import LatticeProb.Prob.Translation
+module
+
+public import Sandpile.Support.ExteriorBoundary
+public import LatticeProb.Prob.Translation
+
+@[expose] public section
 
 /-!
 # Measurability and translation invariance of odometer percolation

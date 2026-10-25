@@ -1,4 +1,8 @@
-import Sandpile.Support.D4BlockGood
+module
+
+public import Sandpile.Support.D4BlockGood
+
+@[expose] public section
 
 /-!
 # The union bound for the good-block event

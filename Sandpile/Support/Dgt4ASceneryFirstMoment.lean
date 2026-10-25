@@ -1,8 +1,12 @@
-import Sandpile.Support.Dgt4ASceneryMeanZero
-import Sandpile.Support.Dgt4ABoxDeviation
-import Sandpile.Support.Dgt4AMeanIncrement
-import Sandpile.Support.Dgt4AMeanIncrementInt
-import Sandpile.Support.D4Reflection
+module
+
+public import Sandpile.Support.Dgt4ASceneryMeanZero
+public import Sandpile.Support.Dgt4ABoxDeviation
+public import Sandpile.Support.Dgt4AMeanIncrement
+public import Sandpile.Support.Dgt4AMeanIncrementInt
+public import Sandpile.Support.D4Reflection
+
+@[expose] public section
 
 /-!
 # First-moment bound in finite-coordinate form

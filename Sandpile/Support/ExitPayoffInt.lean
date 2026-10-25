@@ -1,9 +1,13 @@
-import Sandpile.Support.Localization
-import Sandpile.Support.ExitAverage
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.StoppedOdometer
-import Sandpile.Support.Stationary
-import Sandpile.Support.ExitPayoffMeas
+module
+
+public import Sandpile.Support.Localization
+public import Sandpile.Support.ExitAverage
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.StoppedOdometer
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.ExitPayoffMeas
+
+@[expose] public section
 
 /-!
 # Integrability of the exit payoff on the scenery-walk product

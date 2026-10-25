@@ -1,5 +1,9 @@
-import Sandpile.Support.D4SmoothL2
-import Sandpile.Support.D4SNegSobolev
+module
+
+public import Sandpile.Support.D4SmoothL2
+public import Sandpile.Support.D4SNegSobolev
+
+@[expose] public section
 
 /-!
 # The first display of Step 2, over the cells of the mesh

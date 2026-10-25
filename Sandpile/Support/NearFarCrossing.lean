@@ -1,5 +1,9 @@
-import Sandpile.Support.NearCluster
-import Sandpile.Support.FarOscillation
+module
+
+public import Sandpile.Support.NearCluster
+public import Sandpile.Support.FarOscillation
+
+@[expose] public section
 
 /-!
 # Near-far reduction for ball Green crossings

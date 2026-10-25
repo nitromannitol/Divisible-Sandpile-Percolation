@@ -1,5 +1,9 @@
-import Sandpile.Support.KillFieldCoupling
-import Sandpile.Support.D23UniformTightness
+module
+
+public import Sandpile.Support.KillFieldCoupling
+public import Sandpile.Support.D23UniformTightness
+
+@[expose] public section
 
 /-!
 # Sequential heat-potential coupling from tightness and finite-dimensional convergence

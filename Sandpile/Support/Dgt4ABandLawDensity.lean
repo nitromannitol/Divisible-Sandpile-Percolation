@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawParameters
+module
+
+public import Sandpile.Support.Dgt4ABandLawParameters
+
+@[expose] public section
 
 /-!
 # The Step-1 density bound for the constructed one-site law

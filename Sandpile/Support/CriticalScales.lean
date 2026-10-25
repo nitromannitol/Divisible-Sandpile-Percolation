@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.GreenSup
-import Sandpile.Support.Gram
-import Sandpile.Support.Schur
+module
+
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.GreenSup
+public import Sandpile.Support.Gram
+public import Sandpile.Support.Schur
+
+@[expose] public section
 
 /-!
 # Scales, standardized coefficients, and the correlation matrix

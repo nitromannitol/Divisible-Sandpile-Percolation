@@ -1,10 +1,14 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.External.MembraneScalingFour
-import Sandpile.External.VarianceScaleProved
-import Sandpile.Support.ExplFourSobolev
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.External.MembraneScalingFour
+public import Sandpile.External.VarianceScaleProved
+public import Sandpile.Support.ExplFourSobolev
+
+@[expose] public section
 
 /-!
 # The frozen four-dimensional Sobolev tightness and scaling limit

@@ -1,4 +1,8 @@
-import Sandpile.Support.LimOccupationIdentity
+module
+
+public import Sandpile.Support.LimOccupationIdentity
+
+@[expose] public section
 
 /-!
 # Bounds on the ball-stopped kernel

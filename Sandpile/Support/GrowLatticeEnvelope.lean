@@ -1,5 +1,9 @@
-import Sandpile.Support.GrowBoxTail
-import Sandpile.Support.MainExplLattice
+module
+
+public import Sandpile.Support.GrowBoxTail
+public import Sandpile.Support.MainExplLattice
+
+@[expose] public section
 
 /-!
 # An almost-sure linear envelope for the continuous potential

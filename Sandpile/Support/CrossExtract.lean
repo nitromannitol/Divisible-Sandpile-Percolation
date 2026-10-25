@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossBasic
+module
+
+public import Sandpile.Support.CrossBasic
+
+@[expose] public section
 
 /-!
 # Extracting finitely many deterministic scales

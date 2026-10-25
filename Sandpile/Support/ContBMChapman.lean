@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMMass
+module
+
+public import Sandpile.Support.ContBMMass
+
+@[expose] public section
 
 /-!
 # Chapman-Kolmogorov for the Brownian heat kernel

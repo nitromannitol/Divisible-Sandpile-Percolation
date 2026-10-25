@@ -1,7 +1,11 @@
-import Sandpile.Support.InfiniteGreenField
-import Sandpile.Support.Kernel
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.LinAnnular
+module
+
+public import Sandpile.Support.InfiniteGreenField
+public import Sandpile.Support.Kernel
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.LinAnnular
+
+@[expose] public section
 
 /-! # Green Function Square Tail
 

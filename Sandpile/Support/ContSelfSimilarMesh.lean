@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAInterp
-import Sandpile.Support.MeanAIndex
-import Sandpile.Support.LinStationary
+module
+
+public import Sandpile.Support.MeanAInterp
+public import Sandpile.Support.MeanAIndex
+public import Sandpile.Support.LinStationary
+
+@[expose] public section
 
 /-!
 # From the interpolated parabolic limit to the lattice value

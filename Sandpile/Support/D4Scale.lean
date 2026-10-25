@@ -1,4 +1,8 @@
-import Sandpile.Support.D4Difference
+module
+
+public import Sandpile.Support.D4Difference
+
+@[expose] public section
 
 /-!
 # The smoothing scale in Step 4 of the pointwise linearization

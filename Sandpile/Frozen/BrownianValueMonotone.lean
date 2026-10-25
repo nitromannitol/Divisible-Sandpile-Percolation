@@ -1,6 +1,10 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.Support.ExplBallLocal
-import Sandpile.Support.BrownianValueMono
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.Support.ExplBallLocal
+public import Sandpile.Support.BrownianValueMono
+
+@[expose] public section
 
 /-!
 # The Brownian value of the Gaussian heat potential increases with the horizon

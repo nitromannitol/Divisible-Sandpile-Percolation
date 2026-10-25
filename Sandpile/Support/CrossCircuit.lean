@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFKG
+module
+
+public import Sandpile.Support.CrossFKG
+
+@[expose] public section
 
 /-!
 # The FKG circuit probability of Step 1

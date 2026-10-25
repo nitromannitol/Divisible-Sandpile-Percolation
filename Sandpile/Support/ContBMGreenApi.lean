@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMSquare
+module
+
+public import Sandpile.Support.ContBMSquare
+
+@[expose] public section
 
 /-!
 # API for the finite-time Brownian Green kernel

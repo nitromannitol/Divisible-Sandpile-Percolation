@@ -1,4 +1,8 @@
-import Sandpile.Walk
+module
+
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-! # Optimal-Stopping Representation of the Odometer
 

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.Dgt4FieldRecursion
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+public import Sandpile.Support.Dgt4FieldRecursion
+
+@[expose] public section
 
 /-!
 # The centred deviation in finite-coordinate form

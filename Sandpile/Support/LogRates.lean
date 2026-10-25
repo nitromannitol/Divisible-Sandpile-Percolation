@@ -1,4 +1,8 @@
-import Sandpile.Support.RemainderRate
+module
+
+public import Sandpile.Support.RemainderRate
+
+@[expose] public section
 
 /-!
 # Logarithmic factors of the Berry-Esseen remainder

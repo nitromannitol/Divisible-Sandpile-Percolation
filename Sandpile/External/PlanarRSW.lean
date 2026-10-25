@@ -1,4 +1,8 @@
-import Sandpile.Support.PlanarLaw
+module
+
+public import Sandpile.Support.PlanarLaw
+
+@[expose] public section
 
 /-! # Planar RSW for Site Percolation
 

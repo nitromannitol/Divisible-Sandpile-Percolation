@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep3Core
-import Sandpile.Support.LinWeights
-import Sandpile.Frozen.DGT4LinearizationFromSurvival
+module
+
+public import Sandpile.Support.LinStep3Core
+public import Sandpile.Support.LinWeights
+public import Sandpile.Frozen.DGT4LinearizationFromSurvival
+
+@[expose] public section
 
 /-!
 # The linearization-from-survival hypotheses at the paper's time-weight profile

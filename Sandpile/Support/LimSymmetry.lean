@@ -1,5 +1,9 @@
-import Sandpile.Support.LimTransfer
-import Sandpile.Support.CrossSymmetry
+module
+
+public import Sandpile.Support.LimTransfer
+public import Sandpile.Support.CrossSymmetry
+
+@[expose] public section
 
 /-!
 # Symmetry transfer for the fixed-scale crossing bound

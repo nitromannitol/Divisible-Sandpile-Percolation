@@ -1,4 +1,8 @@
-import Sandpile.Support.RectangleBottleneck
+module
+
+public import Sandpile.Support.RectangleBottleneck
+
+@[expose] public section
 
 /-!
 # Smooth soft bottleneck functional on a rectangle

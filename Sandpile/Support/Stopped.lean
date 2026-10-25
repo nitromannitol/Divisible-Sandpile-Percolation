@@ -1,5 +1,9 @@
-import Sandpile.Support.StrongMarkov
-import Sandpile.Support.Walk
+module
+
+public import Sandpile.Support.StrongMarkov
+public import Sandpile.Support.Walk
+
+@[expose] public section
 
 /-!
 # The optimal-stopping identity for the membrane field

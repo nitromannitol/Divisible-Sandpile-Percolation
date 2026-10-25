@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAConc
-import Sandpile.Support.PointwiseConc
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Support.MeanAConc
+public import Sandpile.Support.PointwiseConc
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # The uniform exponential moment of the centred rescaled odometer

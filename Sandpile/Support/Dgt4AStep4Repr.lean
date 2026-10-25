@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep4Neg
-import Sandpile.Support.Dgt4ASceneryFirstMoment
+module
+
+public import Sandpile.Support.Dgt4AStep4Neg
+public import Sandpile.Support.Dgt4ASceneryFirstMoment
+
+@[expose] public section
 
 /-!
 **The integral representation of Step 4 of case (a)**

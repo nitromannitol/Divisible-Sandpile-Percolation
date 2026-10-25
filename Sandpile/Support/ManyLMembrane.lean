@@ -1,7 +1,11 @@
-import Sandpile.Support.ContDGT4Membrane
-import Sandpile.Frozen.DGT4Linearization
-import Sandpile.External.NormalComparison
-import Sandpile.Frozen.DGT4ContactAsymptotics
+module
+
+public import Sandpile.Support.ContDGT4Membrane
+public import Sandpile.Frozen.DGT4Linearization
+public import Sandpile.External.NormalComparison
+public import Sandpile.Frozen.DGT4ContactAsymptotics
+
+@[expose] public section
 
 /-!
 # Assembly of the diffusive membrane theorem

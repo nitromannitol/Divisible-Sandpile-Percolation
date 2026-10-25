@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Stopping
-import LatticeProb.Gauss.BrownianCont
+module
+
+public import Sandpile.Continuum.Stopping
+public import LatticeProb.Gauss.BrownianCont
+
+@[expose] public section
 
 /-!
 # Existence of `ℝ^d`-valued Brownian motion from every starting point

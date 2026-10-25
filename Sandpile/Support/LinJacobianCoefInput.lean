@@ -1,10 +1,14 @@
-import Sandpile.Support.LinJacobianTestedGreenInput
-import Sandpile.Support.LinJacobianCellGeneral
-import Sandpile.Support.LinMeanGradientApprox
-import Sandpile.Support.LinYoung
-import Sandpile.Support.LinTestedPairing
-import Sandpile.Support.Stationary
-import Sandpile.Support.LinGreenTail
+module
+
+public import Sandpile.Support.LinJacobianTestedGreenInput
+public import Sandpile.Support.LinJacobianCellGeneral
+public import Sandpile.Support.LinMeanGradientApprox
+public import Sandpile.Support.LinYoung
+public import Sandpile.Support.LinTestedPairing
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.LinGreenTail
+
+@[expose] public section
 
 /-!
 # The tested coefficient error as a convolution with the mean-gradient error

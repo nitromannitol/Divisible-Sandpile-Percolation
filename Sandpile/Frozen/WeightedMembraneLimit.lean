@@ -1,16 +1,20 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.Support.ContVarianceLimit
-import Sandpile.Support.TightWeightedMembrane
-import Sandpile.Support.ContSeqCLT
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.Support.ContVarianceLimit
+public import Sandpile.Support.TightWeightedMembrane
+public import Sandpile.Support.ContSeqCLT
+
+@[expose] public section
 
 /-!
 # The weighted membrane limit, frozen

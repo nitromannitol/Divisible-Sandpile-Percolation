@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandIncrement
-import Sandpile.Support.Dgt4ABandConcentration
-import Sandpile.Support.Dgt4CaseBMeanId
+module
+
+public import Sandpile.Support.Dgt4ABandIncrement
+public import Sandpile.Support.Dgt4ABandConcentration
+public import Sandpile.Support.Dgt4CaseBMeanId
+
+@[expose] public section
 
 /-!
 # Side conditions of the band estimates at the sandpile law

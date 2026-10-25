@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallBound
-import Sandpile.Support.ExplBallMoment
+module
+
+public import Sandpile.Support.ExplBallBound
+public import Sandpile.Support.ExplBallMoment
+
+@[expose] public section
 
 /-!
 # Uniform boundedness of the far values, from a uniform path-radius moment

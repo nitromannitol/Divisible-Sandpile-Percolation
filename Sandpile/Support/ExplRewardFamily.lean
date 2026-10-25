@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplNetFamily
-import Sandpile.Support.ExplCutoff
+module
+
+public import Sandpile.Support.ExplNetFamily
+public import Sandpile.Support.ExplCutoff
+
+@[expose] public section
 
 /-!
 # The finite family of continuous cut-off rewards

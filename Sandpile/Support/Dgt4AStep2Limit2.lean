@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Step 2 of case (a): the shifted rate `√(log(n+2)) · n^{-a} → 0`

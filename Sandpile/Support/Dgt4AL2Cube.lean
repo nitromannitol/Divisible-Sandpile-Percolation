@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AL2Bound
+module
+
+public import Sandpile.Support.Dgt4AL2Bound
+
+@[expose] public section
 
 /-!
 # The second moment of `D_n` at the optimized horizon

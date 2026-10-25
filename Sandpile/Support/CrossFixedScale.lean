@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossZeroLevel
-import Sandpile.Support.CrossLiminf
-import Sandpile.Support.CrossDuality
+module
+
+public import Sandpile.Support.CrossZeroLevel
+public import Sandpile.Support.CrossLiminf
+public import Sandpile.Support.CrossDuality
+
+@[expose] public section
 
 /-!
 # Assembling the fixed-scale crossing proposition

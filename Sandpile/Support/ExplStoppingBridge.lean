@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplGreenFubini
-import Sandpile.Support.ExplHorizonMartingale
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.ExplGreenFubini
+public import Sandpile.Support.ExplHorizonMartingale
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-!
 # Natural stopping times in the continuous Fubini and horizon identities

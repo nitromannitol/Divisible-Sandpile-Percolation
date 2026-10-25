@@ -1,8 +1,12 @@
-import Sandpile.Support.Dgt4AStep4Rel
-import Sandpile.Support.Dgt4GaussTail
-import Sandpile.Support.Dgt4PairHitting
-import Sandpile.Support.Dgt4LowerTailMoment
-import Sandpile.Support.LinWeights
+module
+
+public import Sandpile.Support.Dgt4AStep4Rel
+public import Sandpile.Support.Dgt4GaussTail
+public import Sandpile.Support.Dgt4PairHitting
+public import Sandpile.Support.Dgt4LowerTailMoment
+public import Sandpile.Support.LinWeights
+
+@[expose] public section
 
 /-!
 # The threshold field of the contact-time asymptotics, assembled from the case dichotomy

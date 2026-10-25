@@ -1,6 +1,10 @@
-import Sandpile.Continuum.WhiteNoise
-import LatticeProb.Prob.BrownianMarkov
-import Mathlib
+module
+
+public import Sandpile.Continuum.WhiteNoise
+public import LatticeProb.Prob.BrownianMarkov
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Brownian motion and the Brownian optimal-stopping value

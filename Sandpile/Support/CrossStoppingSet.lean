@@ -1,7 +1,11 @@
-import Mathlib.Probability.Independence.Basic
-import Mathlib.Probability.Independence.Integration
-import Mathlib.MeasureTheory.Measure.Tilted
-import Mathlib.InformationTheory.KullbackLeibler.Basic
+module
+
+public import Mathlib.Probability.Independence.Basic
+public import Mathlib.Probability.Independence.Integration
+public import Mathlib.MeasureTheory.Measure.Tilted
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+
+@[expose] public section
 
 /-!
 # Adaptive Cameron–Martin comparison for stopping sets

@@ -1,4 +1,8 @@
-import Sandpile.Support.FiniteRange
+module
+
+public import Sandpile.Support.FiniteRange
+
+@[expose] public section
 
 /-!
 # Finite-range lower bound in dimension four

@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallSplit
+module
+
+public import Sandpile.Support.ExplBallSplit
+
+@[expose] public section
 
 /-!
 # Ball localization for the Gaussian heat potential

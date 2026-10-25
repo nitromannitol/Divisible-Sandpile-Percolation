@@ -1,4 +1,8 @@
-import Sandpile.Support.OriginProfile
+module
+
+public import Sandpile.Support.OriginProfile
+
+@[expose] public section
 
 /-!
 # Divergence of the mean odometer

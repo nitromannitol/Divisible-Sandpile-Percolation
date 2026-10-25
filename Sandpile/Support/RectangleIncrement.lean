@@ -1,5 +1,9 @@
-import Sandpile.Support.GaussianIncrement
-import Sandpile.Support.FarOscillation
+module
+
+public import Sandpile.Support.GaussianIncrement
+public import Sandpile.Support.FarOscillation
+
+@[expose] public section
 
 /-!
 # Edge oscillation and Gaussian far-field increment bounds

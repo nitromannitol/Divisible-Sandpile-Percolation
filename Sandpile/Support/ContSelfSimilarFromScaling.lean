@@ -1,11 +1,15 @@
-import Sandpile.Support.ContSelfSimilarLimit
-import Sandpile.Support.ContSelfSimilarMesh
-import Sandpile.Support.ContSelfSimilarMoments
-import Sandpile.Support.ContClause1
-import Sandpile.Support.MeanAMean
-import Sandpile.Support.MeanAExpLimit
-import Sandpile.Support.MeanALimit
-import Sandpile.Support.Dgt4OriginProb
+module
+
+public import Sandpile.Support.ContSelfSimilarLimit
+public import Sandpile.Support.ContSelfSimilarMesh
+public import Sandpile.Support.ContSelfSimilarMoments
+public import Sandpile.Support.ContClause1
+public import Sandpile.Support.MeanAMean
+public import Sandpile.Support.MeanAExpLimit
+public import Sandpile.Support.MeanALimit
+public import Sandpile.Support.Dgt4OriginProb
+
+@[expose] public section
 
 /-!
 # Self-similarity from the parabolic scaling limit

@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep3Limit
+module
+
+public import Sandpile.Support.Dgt4AStep3Limit
+
+@[expose] public section
 
 /-!
 # The integral representation of Step 4 of case (a)

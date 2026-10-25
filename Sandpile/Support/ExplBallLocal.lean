@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallExit
-import Sandpile.Support.ExplBallValue
+module
+
+public import Sandpile.Support.ExplBallExit
+public import Sandpile.Support.ExplBallValue
+
+@[expose] public section
 
 /-!
 # Ball localization from the strong Markov step

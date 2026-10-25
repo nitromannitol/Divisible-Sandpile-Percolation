@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandLawProfile
-import Sandpile.Support.Dgt4ABandWeights
+module
+
+public import Sandpile.Support.Dgt4ABandLawProfile
+public import Sandpile.Support.Dgt4ABandWeights
+
+@[expose] public section
 
 /-!
 # The one-site law of a set of band parameters

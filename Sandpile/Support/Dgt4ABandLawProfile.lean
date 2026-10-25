@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandMeasure
+module
+
+public import Sandpile.Support.Dgt4ABandMeasure
+
+@[expose] public section
 
 /-!
 # Step-1 tail profile of the band law

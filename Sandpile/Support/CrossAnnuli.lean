@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossLocalEvents
-import Sandpile.Support.CrossFixedScaleZero
-import Sandpile.Support.LimSymmetry
+module
+
+public import Sandpile.Support.CrossLocalEvents
+public import Sandpile.Support.CrossFixedScaleZero
+public import Sandpile.Support.LimSymmetry
+
+@[expose] public section
 
 /-!
 # Four-crossing avoidance around a square annulus

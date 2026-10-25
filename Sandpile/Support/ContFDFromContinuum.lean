@@ -1,4 +1,8 @@
-import Sandpile.Support.ContInterpDoubleTime
+module
+
+public import Sandpile.Support.ContInterpDoubleTime
+
+@[expose] public section
 
 /-!
 # The finite-dimensional clause, reduced to a single continuum statement

@@ -1,6 +1,10 @@
-import Sandpile.Support.D4SMarkov
-import Sandpile.Support.D4SNegSobolev
-import Sandpile.Support.D4STight
+module
+
+public import Sandpile.Support.D4SMarkov
+public import Sandpile.Support.D4SNegSobolev
+public import Sandpile.Support.D4STight
+
+@[expose] public section
 
 /-!
 # Tightness on the small-scale range

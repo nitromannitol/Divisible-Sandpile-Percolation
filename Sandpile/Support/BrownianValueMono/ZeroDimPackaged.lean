@@ -1,6 +1,10 @@
-import Sandpile.Support.BrownianValueMono.HorizonFreeZeroDim
-import Sandpile.Support.BrownianValueMono.Envelope
-import Sandpile.Support.ExplBallGrowthZero
+module
+
+public import Sandpile.Support.BrownianValueMono.HorizonFreeZeroDim
+public import Sandpile.Support.BrownianValueMono.Envelope
+public import Sandpile.Support.ExplBallGrowthZero
+
+@[expose] public section
 
 /-!
 # The horizon-monotonicity hypotheses in dimension zero

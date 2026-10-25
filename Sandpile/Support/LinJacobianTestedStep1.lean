@@ -1,7 +1,11 @@
-import Sandpile.Support.LinJacobianCovInput
-import Sandpile.Support.LinJacobianStep1Bridge
-import Sandpile.Support.LinJacobianCell
-import Sandpile.Support.LinJacobianCellGeneral
+module
+
+public import Sandpile.Support.LinJacobianCovInput
+public import Sandpile.Support.LinJacobianStep1Bridge
+public import Sandpile.Support.LinJacobianCell
+public import Sandpile.Support.LinJacobianCellGeneral
+
+@[expose] public section
 
 /-! # Jacobian Step 1 at the Tested Weight
 

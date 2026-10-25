@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.Nontriviality.SolutionBasic
-import SandpileAudit.Support.NontrivialityBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.Nontriviality.SolutionBasic
+public import SandpileAudit.Support.NontrivialityBridge
+
+@[expose] public section
 
 /-!
 # Solution: Nontriviality

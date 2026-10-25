@@ -1,6 +1,10 @@
-import Sandpile.Support.SmoothCutoff
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Mathlib.MeasureTheory.Integral.Bochner.Set
+module
+
+public import Sandpile.Support.SmoothCutoff
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+
+@[expose] public section
 
 /-!
 # A smooth probability density on `[0, 1]` and its distribution function

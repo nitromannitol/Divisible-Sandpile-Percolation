@@ -1,6 +1,10 @@
-import Sandpile.Support.KillRep
-import Sandpile.Support.ExplStability
-import Sandpile.Support.ExplKilledValue
+module
+
+public import Sandpile.Support.KillRep
+public import Sandpile.Support.ExplStability
+public import Sandpile.Support.ExplKilledValue
+
+@[expose] public section
 
 /-!
 # The two values of `rem:dlt4-killed-scaling` are 1-Lipschitz in the reward

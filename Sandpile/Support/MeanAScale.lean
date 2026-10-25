@@ -1,7 +1,11 @@
-import Sandpile.Support.ContLawTransfer
-import Sandpile.Support.LinStationary
-import Sandpile.Support.Translation
-import Sandpile.Support.MeanAValue
+module
+
+public import Sandpile.Support.ContLawTransfer
+public import Sandpile.Support.LinStationary
+public import Sandpile.Support.Translation
+public import Sandpile.Support.MeanAValue
+
+@[expose] public section
 
 /-!
 # Exact parabolic scaling of the discrete rescaled odometer

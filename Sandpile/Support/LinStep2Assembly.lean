@@ -1,5 +1,9 @@
-import Sandpile.Support.LinStep2Pi
-import Sandpile.Support.LinStep2Targets
+module
+
+public import Sandpile.Support.LinStep2Pi
+public import Sandpile.Support.LinStep2Targets
+
+@[expose] public section
 
 /-!
 # Step 2 of the path-survival lemma, with the paper's levels and weights in place

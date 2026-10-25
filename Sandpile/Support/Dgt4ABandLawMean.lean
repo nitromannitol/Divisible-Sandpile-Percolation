@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLawMoment
+module
+
+public import Sandpile.Support.Dgt4ABandLawMoment
+
+@[expose] public section
 
 /-!
 # The mean of the constructed one-site law, and the shift that centers it

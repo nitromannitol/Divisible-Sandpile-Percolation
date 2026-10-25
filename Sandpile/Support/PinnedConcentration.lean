@@ -1,4 +1,8 @@
-import Sandpile.Support.ConditionalConcentration
+module
+
+public import Sandpile.Support.ConditionalConcentration
+
+@[expose] public section
 
 /-!
 # Conditional concentration for finite-coordinate scenery functionals

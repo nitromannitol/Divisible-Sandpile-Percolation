@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossBallScaleLaw
+module
+
+public import Sandpile.Support.CrossBallScaleLaw
+
+@[expose] public section
 
 /-!
 # Dilating a crossing event

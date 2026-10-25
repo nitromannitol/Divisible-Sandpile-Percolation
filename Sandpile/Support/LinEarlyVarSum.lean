@@ -1,5 +1,9 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarFubini
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarFubini
+
+@[expose] public section
 
 /-!
 # Variance of a finite sum as a double sum of covariances

@@ -1,9 +1,13 @@
-import Sandpile.Support.ContInterpSpace
-import Sandpile.Support.ContHeatPotential
-import Sandpile.Support.ContGreenIncrementSum
-import Sandpile.Support.ContPairedGradient
-import Sandpile.Support.ContInterpBound
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContInterpSpace
+public import Sandpile.Support.ContHeatPotential
+public import Sandpile.Support.ContGreenIncrementSum
+public import Sandpile.Support.ContPairedGradient
+public import Sandpile.Support.ContInterpBound
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # `ℓ²` Bound on the Coefficient-Vector Increment

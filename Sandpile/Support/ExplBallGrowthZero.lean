@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallFinal
+module
+
+public import Sandpile.Support.ExplBallFinal
+
+@[expose] public section
 
 /-!
 # The growth residual in dimension zero

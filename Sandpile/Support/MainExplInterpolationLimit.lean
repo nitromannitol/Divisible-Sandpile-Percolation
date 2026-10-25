@@ -1,8 +1,12 @@
-import Sandpile.Support.MainExplAssemblyZ
-import Sandpile.Support.MainExplContValueMeas
-import Sandpile.Support.MainExplInterp
-import Sandpile.Support.MainExplOscGeneral
-import Sandpile.Support.MainExplWeak
+module
+
+public import Sandpile.Support.MainExplAssemblyZ
+public import Sandpile.Support.MainExplContValueMeas
+public import Sandpile.Support.MainExplInterp
+public import Sandpile.Support.MainExplOscGeneral
+public import Sandpile.Support.MainExplWeak
+
+@[expose] public section
 
 /-! # Lattice-to-interpolation coupling for Theorem 1.3(i)(b)
 

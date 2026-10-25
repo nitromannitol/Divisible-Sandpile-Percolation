@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossPath
+module
+
+public import Sandpile.Support.CrossPath
+
+@[expose] public section
 
 /-!
 # Vacuity of continuum crossing events off continuous sample paths

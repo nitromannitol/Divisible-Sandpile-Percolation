@@ -1,4 +1,8 @@
-import Sandpile.Support.ContDGT4Membrane
+module
+
+public import Sandpile.Support.ContDGT4Membrane
+
+@[expose] public section
 
 /-!
 # Measure-theoretic bridge for the many-limits step 3

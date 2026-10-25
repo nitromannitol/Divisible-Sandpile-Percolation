@@ -1,5 +1,9 @@
-import Sandpile.Support.Iterate
-import Sandpile.Support.ExitGreen
+module
+
+public import Sandpile.Support.Iterate
+public import Sandpile.Support.ExitGreen
+
+@[expose] public section
 
 /-!
 The semigroup identity for the Green function: the `j`-step heat kernel convolved with the

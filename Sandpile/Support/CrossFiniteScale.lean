@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossRescaleCrossing
+module
+
+public import Sandpile.Support.CrossRescaleCrossing
+
+@[expose] public section
 
 /-! # Finite-scale extraction, Step 1
 

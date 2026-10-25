@@ -1,6 +1,10 @@
-import Sandpile.Support.LimExtraction
-import Sandpile.Support.CrossBrownian
-import Sandpile.Continuum.Stopping
+module
+
+public import Sandpile.Support.LimExtraction
+public import Sandpile.Support.CrossBrownian
+public import Sandpile.Continuum.Stopping
+
+@[expose] public section
 
 /-!
 # The localized value and its approximation hypothesis

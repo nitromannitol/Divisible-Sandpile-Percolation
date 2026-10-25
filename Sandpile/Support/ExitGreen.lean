@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteRange
-import Sandpile.Support.HitProb
-import LatticeProb.Graph.ExitDecomp
-import LatticeProb.Graph.ExitTime
+module
+
+public import Sandpile.Support.FiniteRange
+public import Sandpile.Support.HitProb
+public import LatticeProb.Graph.ExitDecomp
+public import LatticeProb.Graph.ExitTime
+
+@[expose] public section
 
 /-!
 # The first-passage decomposition of the Green function

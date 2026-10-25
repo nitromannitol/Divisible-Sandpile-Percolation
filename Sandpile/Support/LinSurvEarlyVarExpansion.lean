@@ -1,7 +1,11 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarSite
-import Sandpile.Support.LinEarlyVarSum
-import Sandpile.Support.LinEarlyVarIntegrable
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarSite
+public import Sandpile.Support.LinEarlyVarSum
+public import Sandpile.Support.LinEarlyVarIntegrable
+
+@[expose] public section
 
 /-!
 # The early-derivative variance expansion over `walkPairLaw`

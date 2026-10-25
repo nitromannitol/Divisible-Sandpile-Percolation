@@ -1,10 +1,14 @@
-import Sandpile.Support.Dgt4AConcLp
-import Sandpile.Support.Dgt4AIterateAbs
-import Sandpile.Support.Dgt4AIterateConst
-import Sandpile.Support.Dgt4AIterateSub
-import Sandpile.Support.Dgt4ACovStop
-import Sandpile.Support.Dgt4FieldRecursion
-import Sandpile.Support.LinGreenTail
+module
+
+public import Sandpile.Support.Dgt4AConcLp
+public import Sandpile.Support.Dgt4AIterateAbs
+public import Sandpile.Support.Dgt4AIterateConst
+public import Sandpile.Support.Dgt4AIterateSub
+public import Sandpile.Support.Dgt4ACovStop
+public import Sandpile.Support.Dgt4FieldRecursion
+public import Sandpile.Support.LinGreenTail
+
+@[expose] public section
 
 /-!
 # Lipschitz bound for the Green field

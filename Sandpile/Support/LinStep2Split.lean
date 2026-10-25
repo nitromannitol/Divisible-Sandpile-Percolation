@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Integral
+module
+
+public import Sandpile.Support.LinStep2Integral
+
+@[expose] public section
 
 /-! # Step 2 Sum Split
 

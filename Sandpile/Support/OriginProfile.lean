@@ -1,8 +1,12 @@
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.HitProb
-import Sandpile.Support.RefinedIncrement
-import Sandpile.Frozen.DGT4MeanLower
-import LatticeProb.Prob.Coordinate
+module
+
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.HitProb
+public import Sandpile.Support.RefinedIncrement
+public import Sandpile.Frozen.DGT4MeanLower
+public import LatticeProb.Prob.Coordinate
+
+@[expose] public section
 
 /-!
 # The mean profile of the origin-killed odometer

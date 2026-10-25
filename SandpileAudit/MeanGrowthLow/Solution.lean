@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.MeanGrowthLow.SolutionBasic
-import SandpileAudit.Support.MeanGrowthLowBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.MeanGrowthLow.SolutionBasic
+public import SandpileAudit.Support.MeanGrowthLowBridge
+
+@[expose] public section
 
 /-!
 # Solution: MeanGrowthLow

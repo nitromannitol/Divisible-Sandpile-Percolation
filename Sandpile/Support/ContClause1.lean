@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ContValueMeasurable
-import Sandpile.Support.ContValueTransfer
+module
+
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.ContValueMeasurable
+public import Sandpile.Support.ContValueTransfer
+
+@[expose] public section
 
 /-!
 # Clause 1 of the Continuum Value Self-Similarity Proposition

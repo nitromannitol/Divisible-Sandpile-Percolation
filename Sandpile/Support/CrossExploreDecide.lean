@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossExploreRule
-import Sandpile.Support.CrossLocalEvents
+module
+
+public import Sandpile.Support.CrossExploreRule
+public import Sandpile.Support.CrossLocalEvents
+
+@[expose] public section
 
 /-!
 # The exploration decides the crossing

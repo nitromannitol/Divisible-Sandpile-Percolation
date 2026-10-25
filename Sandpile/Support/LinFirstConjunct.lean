@@ -1,5 +1,9 @@
-import Sandpile.Support.LinL2Assembly
-import Sandpile.Support.LinPairingSplit
+module
+
+public import Sandpile.Support.LinL2Assembly
+public import Sandpile.Support.LinPairingSplit
+
+@[expose] public section
 
 /-! # Frozen First Conjunct
 

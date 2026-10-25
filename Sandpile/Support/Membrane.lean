@@ -1,4 +1,8 @@
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # The membrane field agrees with its Green-function form

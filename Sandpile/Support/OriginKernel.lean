@@ -1,7 +1,11 @@
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.HitProb
-import Sandpile.Support.RefinedIncrement
-import LatticeProb.Graph.ExitDecomp
+module
+
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.HitProb
+public import Sandpile.Support.RefinedIncrement
+public import LatticeProb.Graph.ExitDecomp
+
+@[expose] public section
 
 /-!
 # The origin-killed heat kernel and the influence bound it gives

@@ -1,6 +1,10 @@
-import LatticeProb.Support.PowerSum
-import Sandpile.Support.Kernel
-import Sandpile.External.HeatKernelBoundsProved
+module
+
+public import LatticeProb.Support.PowerSum
+public import Sandpile.Support.Kernel
+public import Sandpile.External.HeatKernelBoundsProved
+
+@[expose] public section
 
 /-!
 # The near-diagonal bound for the double time sum of transition probabilities

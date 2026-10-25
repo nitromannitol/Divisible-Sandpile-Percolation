@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBrownianEnvelope
+module
+
+public import Sandpile.Support.ExplBrownianEnvelope
+
+@[expose] public section
 
 /-!
 # An integrable envelope, and its consequences, from samplewise polynomial growth

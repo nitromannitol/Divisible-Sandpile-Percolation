@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossFieldSym
-import Sandpile.Support.CrossSymmetry
+module
+
+public import Sandpile.Support.CrossFieldSym
+public import Sandpile.Support.CrossSymmetry
+
+@[expose] public section
 
 /-!
 # Crossing events depend on the field only through its law

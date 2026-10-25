@@ -1,5 +1,9 @@
-import Sandpile.Frozen.D4DiffusiveTightness
-import Sandpile.Frozen.D4SuperdiffusiveLimit
+module
+
+public import Sandpile.Frozen.D4DiffusiveTightness
+public import Sandpile.Frozen.D4SuperdiffusiveLimit
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(ii)(c): diffusive tightness plus the superdiffusive limit

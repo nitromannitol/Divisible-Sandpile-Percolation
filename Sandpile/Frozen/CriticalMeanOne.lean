@@ -1,8 +1,12 @@
-import Sandpile.Law
-import Sandpile.External.BerryEsseen
-import Sandpile.External.VarianceScale
-import Sandpile.Frozen.CriticalToppling
-import Sandpile.Support.CriticalMean
+module
+
+public import Sandpile.Law
+public import Sandpile.External.BerryEsseen
+public import Sandpile.External.VarianceScale
+public import Sandpile.Frozen.CriticalToppling
+public import Sandpile.Support.CriticalMean
+
+@[expose] public section
 
 /-!
 # The critical mean-one polynomial lower tail

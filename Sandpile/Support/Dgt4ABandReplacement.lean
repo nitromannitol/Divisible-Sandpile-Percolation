@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABandWeights
+module
+
+public import Sandpile.Support.Dgt4ABandLaw
+public import Sandpile.Support.Dgt4ABandWeights
+
+@[expose] public section
 
 /-!
 # The scenery-side increment replacement and contact error of Step 2

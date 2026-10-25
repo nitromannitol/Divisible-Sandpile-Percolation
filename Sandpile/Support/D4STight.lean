@@ -1,6 +1,10 @@
-import Sandpile.Support.Concentration
-import Sandpile.Support.Stationary
-import Sandpile.Support.Dgt4OriginProb
+module
+
+public import Sandpile.Support.Concentration
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.Dgt4OriginProb
+
+@[expose] public section
 
 /-!
 # The uniform second moment of the centred odometer at small scales

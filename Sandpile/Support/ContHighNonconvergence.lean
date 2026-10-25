@@ -1,7 +1,11 @@
-import Sandpile.Support.ContNonconvergence
-import Sandpile.Support.ContDGT4Membrane
-import Sandpile.Support.ExponentialMoments
-import Sandpile.Support.ExplFluctuation
+module
+
+public import Sandpile.Support.ContNonconvergence
+public import Sandpile.Support.ContDGT4Membrane
+public import Sandpile.Support.ExponentialMoments
+public import Sandpile.Support.ExplFluctuation
+
+@[expose] public section
 
 /-!
 # Non-convergence of the fluctuation field in high dimension

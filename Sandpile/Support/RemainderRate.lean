@@ -1,4 +1,8 @@
-import Sandpile.Support.ScaleDeviation
+module
+
+public import Sandpile.Support.ScaleDeviation
+
+@[expose] public section
 
 /-!
 # The third-moment rate in terms of the time and the level

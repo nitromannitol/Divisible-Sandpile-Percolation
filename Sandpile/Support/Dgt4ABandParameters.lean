@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandWeights
+module
+
+public import Sandpile.Support.Dgt4ABandWeights
+
+@[expose] public section
 
 /-!
 # Band parameter choices for Step 1

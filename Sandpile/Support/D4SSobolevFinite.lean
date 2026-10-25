@@ -1,5 +1,9 @@
-import Sandpile.Support.D4SPlancherel
-import LatticeProb.Analysis.Sobolev.Scaling
+module
+
+public import Sandpile.Support.D4SPlancherel
+public import LatticeProb.Analysis.Sobolev.Scaling
+
+@[expose] public section
 
 /-!
 # The `H^s` norm of a test function is finite

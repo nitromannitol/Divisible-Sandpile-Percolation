@@ -1,6 +1,10 @@
-import Sandpile.Support.TwoScaleTail
-import Sandpile.Support.NearKernel
-import Sandpile.Frozen.D4FiniteRangeLowerBound
+module
+
+public import Sandpile.Support.TwoScaleTail
+public import Sandpile.Support.NearKernel
+public import Sandpile.Frozen.D4FiniteRangeLowerBound
+
+@[expose] public section
 
 /-!
 # Step 2: the finite-time truncation of the ball Green field

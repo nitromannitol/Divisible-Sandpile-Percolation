@@ -1,6 +1,10 @@
-import Sandpile.Support.ContGreenFubini
-import Sandpile.Support.ContHeatPotentialCoeff
-import Sandpile.Support.ContBMGreenIdentity
+module
+
+public import Sandpile.Support.ContGreenFubini
+public import Sandpile.Support.ContHeatPotentialCoeff
+public import Sandpile.Support.ContBMGreenIdentity
+
+@[expose] public section
 
 /-!
 # The Finite-Dimensional Clause Reduced to Double Time Convergence

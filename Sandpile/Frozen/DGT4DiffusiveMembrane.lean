@@ -1,14 +1,18 @@
-import Sandpile.Law
-import Sandpile.Walk
-import Sandpile.Continuum.Membrane
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.NormalComparison
-import Sandpile.External.LocalCLT
-import Sandpile.External.LocalCLTProved
-import Sandpile.External.ContinuumBesovTightness
-import Sandpile.External.GaussianLipschitzConcentration
-import Sandpile.Support.ManyLMembrane
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.NormalComparison
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.LocalCLTProved
+public import Sandpile.External.ContinuumBesovTightness
+public import Sandpile.External.GaussianLipschitzConcentration
+public import Sandpile.Support.ManyLMembrane
+
+@[expose] public section
 
 /-! # Diffusive Membrane Limit in Dimension `d ≥ 5`
 

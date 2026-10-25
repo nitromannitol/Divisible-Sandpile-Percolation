@@ -1,5 +1,9 @@
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.MeanAIncrement
+module
+
+public import Sandpile.Support.ContWhiteNoise
+public import Sandpile.Support.MeanAIncrement
+
+@[expose] public section
 
 /-!
 # Absolute moments of the Gaussian heat potential's increments

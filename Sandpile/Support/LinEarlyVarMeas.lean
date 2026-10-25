@@ -1,4 +1,8 @@
-import Sandpile.Support.LinSurvivalGradient
+module
+
+public import Sandpile.Support.LinSurvivalGradient
+
+@[expose] public section
 
 /-!
 # Measurability and integrability of the visit-weighted survival time sum

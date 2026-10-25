@@ -1,6 +1,10 @@
-import Sandpile.Support.StopMeasurable
-import Sandpile.Support.KillLip
-import Sandpile.Support.LimBallBounds
+module
+
+public import Sandpile.Support.StopMeasurable
+public import Sandpile.Support.KillLip
+public import Sandpile.Support.LimBallBounds
+
+@[expose] public section
 
 /-!
 # Lipschitz reward comparisons for Brownian stopping values

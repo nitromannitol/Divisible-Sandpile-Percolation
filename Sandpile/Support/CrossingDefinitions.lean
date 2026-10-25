@@ -1,5 +1,9 @@
-import Sandpile.Basic
-import Mathlib
+module
+
+public import Sandpile.Basic
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Crossing paths and the crossing value of a lattice rectangle

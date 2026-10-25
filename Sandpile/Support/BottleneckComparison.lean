@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteLindeberg
-import Sandpile.Support.ScalarComposition
-import Sandpile.Support.SmoothCutoff
-import Sandpile.Support.ExponentialMoments
+module
+
+public import Sandpile.Support.FiniteLindeberg
+public import Sandpile.Support.ScalarComposition
+public import Sandpile.Support.SmoothCutoff
+public import Sandpile.Support.ExponentialMoments
+
+@[expose] public section
 
 /-!
 # Uniform Gaussian comparison for sublevel events

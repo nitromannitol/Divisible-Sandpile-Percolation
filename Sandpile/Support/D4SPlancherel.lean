@@ -1,4 +1,8 @@
-import Sandpile.Support.D4SobolevEmbed
+module
+
+public import Sandpile.Support.D4SobolevEmbed
+
+@[expose] public section
 
 /-!
 # Plancherel and the Sobolev-to-`L²` Embedding

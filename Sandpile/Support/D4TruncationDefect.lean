@@ -1,4 +1,8 @@
-import Sandpile.Support.D4KernelL2
+module
+
+public import Sandpile.Support.D4KernelL2
+
+@[expose] public section
 
 /-!
 # The truncation defect between the time-truncated and potential kernels

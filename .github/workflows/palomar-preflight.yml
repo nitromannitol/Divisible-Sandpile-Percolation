@@ -1,12 +1,14 @@
 name: Palomar full preflight
 
 on:
+  push:
+    branches: [palomar/preflight-sandpile-20261025]
   workflow_dispatch:
     inputs:
       comparator_config_path:
         description: Repository-relative Comparator configuration
         required: true
-        default: SandpileAudit/Nontriviality/comparator.json
+        default: SandpileAudit/MeanGrowthFour/comparator.json
         type: string
 
 permissions:
@@ -22,4 +24,4 @@ jobs:
       request_id: preflight001
       mode: full
       execution_profile: palomar-standard-v1
-      options: ${{ format('{{"comparator_config_path":"{0}","authorization_relationship":"I am a responsible author or maintainer"}}', inputs.comparator_config_path) }}
+      options: ${{ format('{{"comparator_config_path":"{0}","authorization_relationship":"I am a responsible author or maintainer"}}', inputs.comparator_config_path || 'SandpileAudit/MeanGrowthFour/comparator.json') }}

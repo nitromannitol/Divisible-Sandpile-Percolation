@@ -1,9 +1,13 @@
-import Sandpile.Support.Dgt4ATailKernel
-import Sandpile.Support.Dgt4ATailKernelEq
-import Sandpile.Support.Dgt4AIterateSub
-import Sandpile.Support.Dgt4AIterateAbs
-import Sandpile.Support.TightWeightedMembrane
-import Sandpile.Support.Lipschitz
+module
+
+public import Sandpile.Support.Dgt4ATailKernel
+public import Sandpile.Support.Dgt4ATailKernelEq
+public import Sandpile.Support.Dgt4AIterateSub
+public import Sandpile.Support.Dgt4AIterateAbs
+public import Sandpile.Support.TightWeightedMembrane
+public import Sandpile.Support.Lipschitz
+
+@[expose] public section
 
 /-!
 # The `j`-step Lipschitz bound for the odometer alone

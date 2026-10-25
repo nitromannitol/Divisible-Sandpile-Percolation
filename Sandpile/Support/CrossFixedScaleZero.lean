@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossZeroLimit
-import Sandpile.Support.CrossFixedScaleBall
+module
+
+public import Sandpile.Support.CrossZeroLimit
+public import Sandpile.Support.CrossFixedScaleBall
+
+@[expose] public section
 
 /-!
 # The fixed-scale crossing reduction from the zero level

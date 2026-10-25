@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AIterateSub
+module
+
+public import Sandpile.Support.Dgt4AIterateSub
+
+@[expose] public section
 
 /-!
 # Iterated average of a pointwise bound

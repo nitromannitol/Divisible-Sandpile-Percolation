@@ -1,8 +1,12 @@
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.CascadeRecurrence
-import Sandpile.Support.CascadeScales
-import Sandpile.Support.DoubleExponential
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.CascadeRecurrence
+public import Sandpile.Support.CascadeScales
+public import Sandpile.Support.DoubleExponential
+
+@[expose] public section
 
 /-!
 # Cascade lemma for the annular low-crossing probability

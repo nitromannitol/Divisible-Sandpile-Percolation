@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AL2Sum
+module
+
+public import Sandpile.Support.Dgt4AL2Sum
+
+@[expose] public section
 
 /-!
 # Assembling an `L²` decay bound from a telescoping decomposition

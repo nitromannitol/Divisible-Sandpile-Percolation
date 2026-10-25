@@ -1,5 +1,9 @@
-import Sandpile.Support.D4PointwiseTail
-import Sandpile.Support.D4SubGaussianMoment
+module
+
+public import Sandpile.Support.D4PointwiseTail
+public import Sandpile.Support.D4SubGaussianMoment
+
+@[expose] public section
 
 /-!
 # Second Moment of the Dimension-Four Linearization Error

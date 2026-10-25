@@ -1,5 +1,9 @@
-import Sandpile.Support.D4SmoothGradient
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.D4SmoothGradient
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 # The second moment of a smoothed increment

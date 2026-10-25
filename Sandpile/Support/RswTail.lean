@@ -1,8 +1,12 @@
-import Sandpile.Support.GaussianSquareMean
-import Sandpile.Support.GaussianCrossingUpper
-import Sandpile.Support.RswMeanLower
-import Sandpile.Support.PlaneRectangle
-import Sandpile.External.PlanarRSW
+module
+
+public import Sandpile.Support.GaussianSquareMean
+public import Sandpile.Support.GaussianCrossingUpper
+public import Sandpile.Support.RswMeanLower
+public import Sandpile.Support.PlaneRectangle
+public import Sandpile.External.PlanarRSW
+
+@[expose] public section
 
 /-!
 # RSW rectangle extension: polynomial lower tail

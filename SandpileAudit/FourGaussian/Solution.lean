@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourGaussian.SolutionBasic
-import SandpileAudit.Support.FourGaussianBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourGaussian.SolutionBasic
+public import SandpileAudit.Support.FourGaussianBridge
+
+@[expose] public section
 
 /-!
 # Solution: FourGaussian

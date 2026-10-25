@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplHeatVersion
+module
+
+public import Sandpile.Support.ExplHeatVersion
+
+@[expose] public section
 
 /-!
 # Pointwise spatial kernels in stochastic Fubini for the continuous heat potential

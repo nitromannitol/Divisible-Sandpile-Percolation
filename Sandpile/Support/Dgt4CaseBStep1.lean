@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4OriginProb
+module
+
+public import Sandpile.Support.Dgt4OriginProb
+
+@[expose] public section
 
 /-!
 # Step 1 of case (b): the single residual of the heavy-tailed branch

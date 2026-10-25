@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockGeometry
-import Sandpile.Support.RectangleIntersection
+module
+
+public import Sandpile.Support.BlockGeometry
+public import Sandpile.Support.RectangleIntersection
+
+@[expose] public section
 
 /-!
 # The planar intersection of a crossing star

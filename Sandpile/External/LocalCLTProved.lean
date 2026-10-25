@@ -1,5 +1,9 @@
-import Sandpile.External.LocalCLT
-import Sandpile.External.GaussianFourierProved
+module
+
+public import Sandpile.External.LocalCLT
+public import Sandpile.External.GaussianFourierProved
+
+@[expose] public section
 
 /-! # The Local Central Limit Theorem, Proved
 

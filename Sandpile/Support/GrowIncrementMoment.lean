@@ -1,5 +1,9 @@
-import Sandpile.Support.MeanAGauss
-import Sandpile.Support.MeanAIncrement
+module
+
+public import Sandpile.Support.MeanAGauss
+public import Sandpile.Support.MeanAIncrement
+
+@[expose] public section
 
 /-!
 # A real-valued increment moment bound for the Gaussian potential

@@ -1,5 +1,9 @@
-import Sandpile.Support.LinGaussShift
-import Sandpile.Support.Dgt4AValueMemLp
+module
+
+public import Sandpile.Support.LinGaussShift
+public import Sandpile.Support.Dgt4AValueMemLp
+
+@[expose] public section
 
 /-!
 # Site-independence of the case (a) stationarity input

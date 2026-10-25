@@ -1,6 +1,10 @@
-import Sandpile.Support.BlockSubwalk
-import Sandpile.Support.BlockStarIntersect
-import Sandpile.Support.BlockVerticalWalk
+module
+
+public import Sandpile.Support.BlockSubwalk
+public import Sandpile.Support.BlockStarIntersect
+public import Sandpile.Support.BlockVerticalWalk
+
+@[expose] public section
 
 /-!
 # The local-rectangle-to-lattice graph homomorphism

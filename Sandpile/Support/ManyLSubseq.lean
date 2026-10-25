@@ -1,8 +1,12 @@
-import Sandpile.Support.ManyLReindex
-import Sandpile.Support.ManyLMeasureBridge
-import Sandpile.Support.ContDGT4Membrane
-import Sandpile.Support.TightWeightedMembrane
-import Sandpile.Frozen.WeightedMembraneLimit
+module
+
+public import Sandpile.Support.ManyLReindex
+public import Sandpile.Support.ManyLMeasureBridge
+public import Sandpile.Support.ContDGT4Membrane
+public import Sandpile.Support.TightWeightedMembrane
+public import Sandpile.Frozen.WeightedMembraneLimit
+
+@[expose] public section
 
 /-!
 # Step-3 subsequential convergence for the many-limits theorem

@@ -1,5 +1,9 @@
-import Sandpile.External.HeatKernelBounds
-import LatticeProb.Walk.MaxDisp
+module
+
+public import Sandpile.External.HeatKernelBounds
+public import LatticeProb.Walk.MaxDisp
+
+@[expose] public section
 
 /-!
 # Maximal-displacement estimate, proved

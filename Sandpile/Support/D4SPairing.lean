@@ -1,4 +1,8 @@
-import Sandpile.Support.D4SStep2Second
+module
+
+public import Sandpile.Support.D4SStep2Second
+
+@[expose] public section
 
 /-!
 # The pairing form of Step 2 at a fixed test function

@@ -1,6 +1,10 @@
-import Sandpile.Support.Spectral
-import Sandpile.Support.MembraneStopping
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Support.Spectral
+public import Sandpile.Support.MembraneStopping
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # The event bridge

@@ -1,7 +1,11 @@
-import Sandpile.Support.KillRep
-import Sandpile.Support.ExplKilledValue
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.External.LocalCLT
+module
+
+public import Sandpile.Support.KillRep
+public import Sandpile.Support.ExplKilledValue
+public import Sandpile.Frozen.MeanLocalization
+public import Sandpile.External.LocalCLT
+
+@[expose] public section
 
 /-!
 # Killed optimal-stopping value stability on a cube

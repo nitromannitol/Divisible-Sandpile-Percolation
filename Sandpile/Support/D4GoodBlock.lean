@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockPercolation
-import Sandpile.External.LSSDomination
+module
+
+public import Sandpile.Support.BlockPercolation
+public import Sandpile.External.LSSDomination
+
+@[expose] public section
 
 /-!
 # Good-Block Percolation

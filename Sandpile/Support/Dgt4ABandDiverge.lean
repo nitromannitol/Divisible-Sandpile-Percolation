@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4MeanDiv
-import Sandpile.Support.Dgt4ABandTau
-import Sandpile.Support.Dgt4ABandParameters
+module
+
+public import Sandpile.Support.Dgt4MeanDiv
+public import Sandpile.Support.Dgt4ABandTau
+public import Sandpile.Support.Dgt4ABandParameters
+
+@[expose] public section
 
 /-!
 # Divergence of the Frozen Mean Level

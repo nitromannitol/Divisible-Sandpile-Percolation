@@ -1,5 +1,9 @@
-import Sandpile.Support.ContBMKernel
-import Mathlib.Probability.Distributions.Gaussian.Real
+module
+
+public import Sandpile.Support.ContBMKernel
+public import Mathlib.Probability.Distributions.Gaussian.Real
+
+@[expose] public section
 
 /-!
 # Total mass of the Brownian heat kernel

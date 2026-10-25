@@ -1,7 +1,11 @@
-import Sandpile.Support.ContKolmogorovAssembly
-import Sandpile.Support.ContContinuumMCT
-import Sandpile.Support.ExpMomentRpow
-import Sandpile.External.HeatKernelBoundsProved
+module
+
+public import Sandpile.Support.ContKolmogorovAssembly
+public import Sandpile.Support.ContContinuumMCT
+public import Sandpile.Support.ExpMomentRpow
+public import Sandpile.External.HeatKernelBoundsProved
+
+@[expose] public section
 
 /-!
 # The two clauses of the heat-potential invariance principle

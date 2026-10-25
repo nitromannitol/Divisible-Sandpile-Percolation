@@ -1,5 +1,9 @@
-import LatticeProb.Site
-import LatticeProb.IID
+module
+
+public import LatticeProb.Site
+public import LatticeProb.IID
+
+@[expose] public section
 
 /-! # Divisible Sandpile Basics
 

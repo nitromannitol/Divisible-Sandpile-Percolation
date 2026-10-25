@@ -1,4 +1,8 @@
-import Sandpile.Support.LinJacobianStep1
+module
+
+public import Sandpile.Support.LinJacobianStep1
+
+@[expose] public section
 
 /-!
 # Step 1, assembled from its early and late halves

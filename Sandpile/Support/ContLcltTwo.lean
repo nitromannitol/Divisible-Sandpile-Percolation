@@ -1,4 +1,8 @@
-import Sandpile.Support.ContLcltStep
+module
+
+public import Sandpile.Support.ContLcltStep
+
+@[expose] public section
 
 /-!
 # The local central limit theorem for a double time sum with two weights

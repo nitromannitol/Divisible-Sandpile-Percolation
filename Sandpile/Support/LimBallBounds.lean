@@ -1,4 +1,8 @@
-import Sandpile.Continuum.Stopping
+module
+
+public import Sandpile.Continuum.Stopping
+
+@[expose] public section
 
 /-!
 # A bound on the ball-localized Brownian value from a bound on the reward

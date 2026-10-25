@@ -1,6 +1,10 @@
-import Sandpile.Support.ContSeqCLT
-import LatticeProb.Prob.CramerWold
-import Sandpile.Support.ContWhiteNoise
+module
+
+public import Sandpile.Support.ContSeqCLT
+public import LatticeProb.Prob.CramerWold
+public import Sandpile.Support.ContWhiteNoise
+
+@[expose] public section
 
 /-!
 # The vector Lindeberg-Feller step

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossExploreDecide
-import Sandpile.Support.CrossAnnulusBlocking
+module
+
+public import Sandpile.Support.CrossExploreDecide
+public import Sandpile.Support.CrossAnnulusBlocking
+
+@[expose] public section
 
 /-! # Positive arm of a discovered square
 

@@ -1,5 +1,9 @@
-import Mathlib
-import Sandpile.Support.PlaneRectangle
+module
+
+public import Mathlib
+public import Sandpile.Support.PlaneRectangle
+
+@[expose] public section
 
 /-!
 # Constants for Step 1 of the dimension-four percolation proof

@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Kernel
-import Mathlib
+module
+
+public import Sandpile.Continuum.Kernel
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Parabolic Scaling of the Brownian Kernels

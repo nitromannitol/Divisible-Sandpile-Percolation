@@ -1,7 +1,11 @@
-import LatticeProb.Walk.ExteriorDirichlet
-import LatticeProb.Walk.Range
-import Sandpile.Walk
-import Sandpile.External.GaussianUpperProved
+module
+
+public import LatticeProb.Walk.ExteriorDirichlet
+public import LatticeProb.Walk.Range
+public import Sandpile.Walk
+public import Sandpile.External.GaussianUpperProved
+
+@[expose] public section
 
 /-!
 # The hitting probability of the origin and the exterior Dirichlet problem

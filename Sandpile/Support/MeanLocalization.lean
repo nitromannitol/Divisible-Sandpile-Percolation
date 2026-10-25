@@ -1,6 +1,10 @@
-import Sandpile.Support.Localization
-import Sandpile.External.BPSHProved
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Support.Localization
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # Averaging the localization bound over the scenery

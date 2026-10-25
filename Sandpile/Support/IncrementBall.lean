@@ -1,9 +1,13 @@
-import Sandpile.Support.Barrier
-import Sandpile.Support.Increment
-import Sandpile.Support.Smoothed
-import Sandpile.Support.Concentration
-import Sandpile.Support.SceneryBridge
-import LatticeProb.Prob.HarrisVariants
+module
+
+public import Sandpile.Support.Barrier
+public import Sandpile.Support.Increment
+public import Sandpile.Support.Smoothed
+public import Sandpile.Support.Concentration
+public import Sandpile.Support.SceneryBridge
+public import LatticeProb.Prob.HarrisVariants
+
+@[expose] public section
 
 /-!
 # The increment bound from a finite negative ball

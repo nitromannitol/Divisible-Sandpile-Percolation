@@ -1,6 +1,10 @@
-import Sandpile.Support.D4L2Error
-import Sandpile.Support.MembraneGaussian
-import Sandpile.Support.SecondMomentConvergence
+module
+
+public import Sandpile.Support.D4L2Error
+public import Sandpile.Support.MembraneGaussian
+public import Sandpile.Support.SecondMomentConvergence
+
+@[expose] public section
 
 /-!
 # Gaussian fluctuations of the dimension-four odometer

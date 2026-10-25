@@ -1,6 +1,10 @@
-import Sandpile.Support.ConvexProjection
-import Sandpile.Frozen.CriticalTopplingD4
-import Sandpile.External.VarianceScaleProved
+module
+
+public import Sandpile.Support.ConvexProjection
+public import Sandpile.Frozen.CriticalTopplingD4
+public import Sandpile.External.VarianceScaleProved
+
+@[expose] public section
 
 /-!
 # The logarithmic mean lower bound for integrable scenery in dimension four

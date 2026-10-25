@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFieldTilt
+module
+
+public import Sandpile.Support.CrossFieldTilt
+
+@[expose] public section
 
 /-!
 # Identifying the adaptive tilt with the Cameron--Martin shift

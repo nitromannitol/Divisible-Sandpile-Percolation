@@ -1,4 +1,8 @@
-import Sandpile.Support.ContMeshIntegral
+module
+
+public import Sandpile.Support.ContMeshIntegral
+
+@[expose] public section
 
 /-!
 # Parity-restricted double sums with a varying integrand

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACovSuper
-import Sandpile.Support.ExitGreen
+module
+
+public import Sandpile.Support.Dgt4ACovSuper
+public import Sandpile.Support.ExitGreen
+
+@[expose] public section
 
 /-!
 # Optional stopping for the Green covariance

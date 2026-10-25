@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep3Point
+module
+
+public import Sandpile.Support.Dgt4AStep3Point
+
+@[expose] public section
 
 /-!
 **Step 3 of case (a), from the pointwise comparison to the conditional mean**

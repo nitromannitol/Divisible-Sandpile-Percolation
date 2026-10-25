@@ -1,4 +1,8 @@
-import LatticeProb.Prob.FddTight
+module
+
+public import LatticeProb.Prob.FddTight
+
+@[expose] public section
 
 /-!
 # Finite-net approximations of continuous fields

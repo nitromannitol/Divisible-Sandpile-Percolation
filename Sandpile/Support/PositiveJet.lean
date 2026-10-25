@@ -1,4 +1,8 @@
-import LatticeProb.Analysis.SoftStability
+module
+
+public import LatticeProb.Analysis.SoftStability
+
+@[expose] public section
 
 /-!
 # Positive derivative envelopes for smooth max/min compositions

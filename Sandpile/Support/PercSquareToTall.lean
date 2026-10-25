@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.BlockGeometry
+module
+
+public import Sandpile.Support.BlockVerticalWalk
+public import Sandpile.Support.BlockGeometry
+
+@[expose] public section
 
 /-!
 # Square-to-tall-rectangle crossing translation

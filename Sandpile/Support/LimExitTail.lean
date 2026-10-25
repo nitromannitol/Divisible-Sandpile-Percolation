@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Stopping
-import Mathlib
+module
+
+public import Sandpile.Continuum.Stopping
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Exponential tail of the Euclidean ball exit time

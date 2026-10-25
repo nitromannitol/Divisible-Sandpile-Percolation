@@ -1,6 +1,10 @@
-import Mathlib.Topology.Order.IntermediateValue
-import Mathlib.Topology.Order.Compact
-import Mathlib.Topology.Instances.Real.Lemmas
+module
+
+public import Mathlib.Topology.Order.IntermediateValue
+public import Mathlib.Topology.Order.Compact
+public import Mathlib.Topology.Instances.Real.Lemmas
+
+@[expose] public section
 
 /-!
 # First and last contact times for continuous real functions

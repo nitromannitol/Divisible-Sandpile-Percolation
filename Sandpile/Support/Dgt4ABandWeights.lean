@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandLaw
+module
+
+public import Sandpile.Support.Dgt4ABandLaw
+
+@[expose] public section
 
 /-!
 # Band-mixture weight estimates

@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Law
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # High-dimensional mean growth, frozen

@@ -1,7 +1,11 @@
-import Sandpile.Support.LinStep3Cov
-import Sandpile.Support.LinStep2Core
-import Sandpile.Support.LinGaussShift
-import Sandpile.Support.LinStationary
+module
+
+public import Sandpile.Support.LinStep3Cov
+public import Sandpile.Support.LinStep2Core
+public import Sandpile.Support.LinGaussShift
+public import Sandpile.Support.LinStationary
+
+@[expose] public section
 
 /-!
 # The positive-path-covariance conclusion of the path-survival lemma

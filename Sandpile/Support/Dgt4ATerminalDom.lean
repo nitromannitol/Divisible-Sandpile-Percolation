@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStopCompare
-import Sandpile.Support.Smoothed
+module
+
+public import Sandpile.Support.Dgt4AStopCompare
+public import Sandpile.Support.Smoothed
+
+@[expose] public section
 
 /-!
 **Terminal domination** (`eq:dgt4-gaussian-terminal-domination`, `sandpile.tex:5241-5245`):

@@ -1,5 +1,9 @@
-import Sandpile.Support.TailSquare
-import Sandpile.Frozen.D4PointwiseLinearization
+module
+
+public import Sandpile.Support.TailSquare
+public import Sandpile.Frozen.D4PointwiseLinearization
+
+@[expose] public section
 
 /-!
 # Second-Moment Bound on the Dimension-Four Linearization Error

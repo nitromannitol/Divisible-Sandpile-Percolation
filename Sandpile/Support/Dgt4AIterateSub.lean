@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ADeviationLip
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+
+@[expose] public section
 
 /-!
 The `j`-step triangle inequality for the neighbour average: the difference of the `j`-step

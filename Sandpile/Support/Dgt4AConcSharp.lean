@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4AConcField
-import Sandpile.Support.Dgt4AGaussTailLp
-import Sandpile.Support.Dgt4ATailLipKernel
+module
+
+public import Sandpile.Support.Dgt4AConcField
+public import Sandpile.Support.Dgt4AGaussTailLp
+public import Sandpile.Support.Dgt4ATailLipKernel
+
+@[expose] public section
 
 /-!
 # The sharp `ℓ²` Lipschitz constant of the iterated deviation functional

@@ -1,5 +1,9 @@
-import Sandpile.Support.GaussianLinear
-import Sandpile.Support.SubgaussianMaximum
+module
+
+public import Sandpile.Support.GaussianLinear
+public import Sandpile.Support.SubgaussianMaximum
+
+@[expose] public section
 
 /-!
 # Sub-Gaussian Far-Increment Bounds

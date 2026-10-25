@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Step 2 of case (a): the rate `√(log n) · n^{-a} → 0`

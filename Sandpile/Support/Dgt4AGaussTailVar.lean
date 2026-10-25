@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AGaussTailLp
-import Sandpile.Support.LinGaussBridge
+module
+
+public import Sandpile.Support.Dgt4AGaussTailLp
+public import Sandpile.Support.LinGaussBridge
+
+@[expose] public section
 
 /-!
 The Gaussian half of the `P^j` term of Step 1 of case (a) (`sandpile.tex:5060-5071`).

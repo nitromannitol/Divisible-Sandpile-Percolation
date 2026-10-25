@@ -1,4 +1,8 @@
-import Sandpile.Continuum.WhiteNoise
+module
+
+public import Sandpile.Continuum.WhiteNoise
+
+@[expose] public section
 
 /-!
 # The law of the white noise at square-integrable indices

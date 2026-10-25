@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.Support.D4PotentialKernel
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+public import Sandpile.Support.D4PotentialKernel
+
+@[expose] public section
 
 /-!
 # The four-dimensional discrete membrane scaling limit

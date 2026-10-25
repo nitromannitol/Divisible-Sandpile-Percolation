@@ -1,8 +1,12 @@
-import Sandpile.Support.Iterate
-import Sandpile.Support.Kernel
-import Sandpile.Support.ContGreenFubini
-import Sandpile.Support.CorrelationRow
-import Sandpile.External.HeatKernelBounds
+module
+
+public import Sandpile.Support.Iterate
+public import Sandpile.Support.Kernel
+public import Sandpile.Support.ContGreenFubini
+public import Sandpile.Support.CorrelationRow
+public import Sandpile.External.HeatKernelBounds
+
+@[expose] public section
 
 /-!
 # The pointwise gradient bound for the lattice heat kernel

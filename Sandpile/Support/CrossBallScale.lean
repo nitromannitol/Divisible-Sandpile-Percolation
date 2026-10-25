@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossBall
+module
+
+public import Sandpile.Support.CrossBall
+
+@[expose] public section
 
 /-!
 # White-noise scaling of the ball kernel

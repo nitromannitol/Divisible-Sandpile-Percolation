@@ -1,4 +1,8 @@
-import Sandpile.Support.ContFDFromContinuum
+module
+
+public import Sandpile.Support.ContFDFromContinuum
+
+@[expose] public section
 
 /-!
 # The Continuum Double Time Limit

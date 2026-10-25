@@ -1,5 +1,9 @@
-import Sandpile.Support.FiniteKernelTail
-import LatticeProb.Prob.Blocks
+module
+
+public import Sandpile.Support.FiniteKernelTail
+public import LatticeProb.Prob.Blocks
+
+@[expose] public section
 
 /-!
 # Independence of low-field events reading disjoint blocks of scenery

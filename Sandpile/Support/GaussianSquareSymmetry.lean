@@ -1,6 +1,10 @@
-import Sandpile.Support.KernelSymmetry
-import Sandpile.Support.RectangleTranspose
-import Sandpile.Support.GaussianBottleneck
+module
+
+public import Sandpile.Support.KernelSymmetry
+public import Sandpile.Support.RectangleTranspose
+public import Sandpile.Support.GaussianBottleneck
+
+@[expose] public section
 
 /-!
 # Horizontal-vertical symmetry and integrability of Gaussian far-field crossing values

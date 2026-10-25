@@ -1,5 +1,9 @@
-import Sandpile.Support.LinTestedJacobian
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Support.LinTestedJacobian
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # Stationarity of the mean odometer gradient

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContManyLimits
-import Sandpile.Frozen.DGT4ManyLimits
+module
+
+public import Sandpile.Support.ContManyLimits
+public import Sandpile.Frozen.DGT4ManyLimits
+
+@[expose] public section
 
 /-!
 # Theorem 1.3(iii)(d) from the sharper many-limits theorem

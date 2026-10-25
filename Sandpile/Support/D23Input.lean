@@ -1,4 +1,8 @@
-import Sandpile.Support.D23Range
+module
+
+public import Sandpile.Support.D23Range
+
+@[expose] public section
 
 /-!
 # The block-crossing estimate for dimensions two and three

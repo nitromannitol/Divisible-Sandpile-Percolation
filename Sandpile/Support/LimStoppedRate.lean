@@ -1,5 +1,9 @@
-import Sandpile.Support.LimKernelRate
-import Sandpile.Support.LimOccupationLimit
+module
+
+public import Sandpile.Support.LimKernelRate
+public import Sandpile.Support.LimOccupationLimit
+
+@[expose] public section
 
 /-!
 # A geometric rate for `L²` convergence of the ball-stopped kernel

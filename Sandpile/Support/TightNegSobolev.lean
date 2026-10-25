@@ -1,5 +1,9 @@
-import Sandpile.Continuum.Membrane
-import LatticeProb.Analysis.Sobolev.Basic
+module
+
+public import Sandpile.Continuum.Membrane
+public import LatticeProb.Analysis.Sobolev.Basic
+
+@[expose] public section
 
 /-!
 # Elementary properties of the negative Sobolev norm

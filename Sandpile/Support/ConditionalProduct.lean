@@ -1,5 +1,9 @@
-import LatticeProb.Prob.Splice
-import LatticeProb.Prob.Coordinate
+module
+
+public import LatticeProb.Prob.Splice
+public import LatticeProb.Prob.Coordinate
+
+@[expose] public section
 
 /-!
 # Conditional Expectation of a Coordinate Under a Product σ-Algebra

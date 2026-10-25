@@ -1,6 +1,10 @@
-import Sandpile.Support.LinConvexStep2
-import Sandpile.Support.LinTestedField
-import Sandpile.Support.LinTestedJacobian
+module
+
+public import Sandpile.Support.LinConvexStep2
+public import Sandpile.Support.LinTestedField
+public import Sandpile.Support.LinTestedJacobian
+
+@[expose] public section
 
 /-!
 # Step 2 of `lem:dgt4-linearization-from-survival` for the tested field

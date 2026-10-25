@@ -1,21 +1,25 @@
-import Sandpile.Support.Dgt4ABandLawParameters
-import Sandpile.Support.Dgt4ABandParameters
-import Sandpile.Support.Dgt4ABandLawDensity
-import Sandpile.Support.Dgt4ABandLawLower
-import Sandpile.Support.Dgt4ABandLawIntegrated
-import Sandpile.Support.Dgt4ABandOneStep
-import Sandpile.Support.Dgt4ABandReplacement
-import Sandpile.Support.Dgt4ABandLawTail
-import Sandpile.Support.Dgt4ABandLawMean
-import Sandpile.Support.MeanOvershootJensen
-import Sandpile.Support.Dgt4ABandStep2Refuted
-import Sandpile.Support.Dgt4ABandLawNormalized
-import Sandpile.Support.Dgt4ABandIndependence
-import Sandpile.Support.Dgt4ABandHitting
-import Sandpile.Support.Dgt4ABandTau
-import Sandpile.Support.Dgt4ABandScaled
-import Sandpile.Support.Dgt4ABandInvert
-import Sandpile.Support.Dgt4ABandIndex
+module
+
+public import Sandpile.Support.Dgt4ABandLawParameters
+public import Sandpile.Support.Dgt4ABandParameters
+public import Sandpile.Support.Dgt4ABandLawDensity
+public import Sandpile.Support.Dgt4ABandLawLower
+public import Sandpile.Support.Dgt4ABandLawIntegrated
+public import Sandpile.Support.Dgt4ABandOneStep
+public import Sandpile.Support.Dgt4ABandReplacement
+public import Sandpile.Support.Dgt4ABandLawTail
+public import Sandpile.Support.Dgt4ABandLawMean
+public import Sandpile.Support.MeanOvershootJensen
+public import Sandpile.Support.Dgt4ABandStep2Refuted
+public import Sandpile.Support.Dgt4ABandLawNormalized
+public import Sandpile.Support.Dgt4ABandIndependence
+public import Sandpile.Support.Dgt4ABandHitting
+public import Sandpile.Support.Dgt4ABandTau
+public import Sandpile.Support.Dgt4ABandScaled
+public import Sandpile.Support.Dgt4ABandInvert
+public import Sandpile.Support.Dgt4ABandIndex
+
+@[expose] public section
 
 /-!
 # Vacuity checks for the band construction

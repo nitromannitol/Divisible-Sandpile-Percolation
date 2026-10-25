@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourGaussian.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourGaussian.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `FourGaussian`: Mathlib-only vocabulary to the repository

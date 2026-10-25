@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4AStep3Good
-import Sandpile.Support.Dgt4AConditionVar
-import Sandpile.Support.Dgt4ACorrGap
+module
+
+public import Sandpile.Support.Dgt4AStep3Good
+public import Sandpile.Support.Dgt4AConditionVar
+public import Sandpile.Support.Dgt4ACorrGap
+
+@[expose] public section
 
 /-!
 # The conditioning level of Steps 3 and 4 of case (a)

@@ -1,6 +1,10 @@
-import Sandpile.Support.Lipschitz
-import Sandpile.Support.Stationary
-import LatticeProb.Prob.FiniteMarginal
+module
+
+public import Sandpile.Support.Lipschitz
+public import Sandpile.Support.Stationary
+public import LatticeProb.Prob.FiniteMarginal
+
+@[expose] public section
 
 /-!
 # The Finite-Coordinate Bridge

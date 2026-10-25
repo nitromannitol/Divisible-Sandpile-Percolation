@@ -1,5 +1,9 @@
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.LinPairSum
+module
+
+public import Sandpile.Support.LinIntersect
+public import Sandpile.Support.LinPairSum
+
+@[expose] public section
 
 /-!
 # The product law of two walks, and the early-variance arithmetic

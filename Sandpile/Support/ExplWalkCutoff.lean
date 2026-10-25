@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplDyadic
-import Sandpile.External.MaxDisplacementProved
-import Sandpile.Support.ContCoeffCoarse
+module
+
+public import Sandpile.Support.ExplDyadic
+public import Sandpile.External.MaxDisplacementProved
+public import Sandpile.Support.ContCoeffCoarse
+
+@[expose] public section
 
 /-!
 # The Walk Cutoff Error

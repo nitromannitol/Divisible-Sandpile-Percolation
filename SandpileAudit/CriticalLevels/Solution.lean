@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.CriticalLevels.SolutionBasic
-import SandpileAudit.Support.CriticalLevelsBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.CriticalLevels.SolutionBasic
+public import SandpileAudit.Support.CriticalLevelsBridge
+
+@[expose] public section
 
 /-!
 # Solution: CriticalLevels

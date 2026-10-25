@@ -1,6 +1,10 @@
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.MaxDisplacementProved
-import LatticeProb.Walk.SRWGaussBound
+module
+
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.External.MaxDisplacementProved
+public import LatticeProb.Walk.SRWGaussBound
+
+@[expose] public section
 
 /-!
 # The Gaussian upper bound on the random-walk heat kernel, proved

@@ -1,4 +1,8 @@
-import Sandpile.Support.Membrane
+module
+
+public import Sandpile.Support.Membrane
+
+@[expose] public section
 
 /-!
 # Convexity and Lipschitz dependence of the odometer on the scenery

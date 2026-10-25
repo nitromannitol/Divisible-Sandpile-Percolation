@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianInter
-import Sandpile.Support.LinEarlyVarMeasCov
-import Sandpile.Support.LinEarlyVarCovBound
+module
+
+public import Sandpile.Support.LinJacobianInter
+public import Sandpile.Support.LinEarlyVarMeasCov
+public import Sandpile.Support.LinEarlyVarCovBound
+
+@[expose] public section
 
 /-!
 # Step 1's four intersection-count inputs, in Bochner form

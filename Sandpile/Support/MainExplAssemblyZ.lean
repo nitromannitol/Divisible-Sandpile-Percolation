@@ -1,13 +1,17 @@
-import Sandpile.Support.MainExplStability
-import Sandpile.Support.MainExplBrownCutoff
-import Sandpile.Support.MainExplAnnulus
-import Sandpile.Support.MainExplVersion
-import Sandpile.Support.KillMeshApproximation
-import Sandpile.Support.ExplRewardFamily
-import Sandpile.Support.ExplBallBound
-import Sandpile.Support.ExplBallReward
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Frozen.HeatPotentialInvariance
+module
+
+public import Sandpile.Support.MainExplStability
+public import Sandpile.Support.MainExplBrownCutoff
+public import Sandpile.Support.MainExplAnnulus
+public import Sandpile.Support.MainExplVersion
+public import Sandpile.Support.KillMeshApproximation
+public import Sandpile.Support.ExplRewardFamily
+public import Sandpile.Support.ExplBallBound
+public import Sandpile.Support.ExplBallReward
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.Frozen.HeatPotentialInvariance
+
+@[expose] public section
 
 /-!
 # The parabolic scaling limit at a continuous version of the Gaussian heat potential

@@ -1,6 +1,10 @@
-import Sandpile.Support.D4SmoothedTail
-import Sandpile.Support.CrudeIncrement
-import LatticeProb.Prob.Coordinate
+module
+
+public import Sandpile.Support.D4SmoothedTail
+public import Sandpile.Support.CrudeIncrement
+public import LatticeProb.Prob.Coordinate
+
+@[expose] public section
 
 /-!
 # The logarithmic upper bound on the mean odometer in dimension four

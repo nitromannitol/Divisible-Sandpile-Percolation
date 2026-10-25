@@ -1,6 +1,10 @@
-import Sandpile.Support.LinJacobianEarlyDisplay
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.LinJacobianShift
+module
+
+public import Sandpile.Support.LinJacobianEarlyDisplay
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.LinJacobianShift
+
+@[expose] public section
 
 /-!
 # Passing the vanishing site-sum of variances from the mass field to the i.i.d. field

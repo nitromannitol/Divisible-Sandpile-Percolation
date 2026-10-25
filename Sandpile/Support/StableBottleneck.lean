@@ -1,5 +1,9 @@
-import Sandpile.Support.PositiveJet
-import Sandpile.Support.RectangleBottleneck
+module
+
+public import Sandpile.Support.PositiveJet
+public import Sandpile.Support.RectangleBottleneck
+
+@[expose] public section
 
 /-!
 # Positive derivative envelopes for bottleneck and rectangle crossings

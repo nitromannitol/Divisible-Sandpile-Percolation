@@ -1,6 +1,10 @@
-import Sandpile.Support.D4BlockUnion
-import Sandpile.Support.D4SwapField
-import Sandpile.Frozen.D4BallGreenCrossing
+module
+
+public import Sandpile.Support.D4BlockUnion
+public import Sandpile.Support.D4SwapField
+public import Sandpile.Frozen.D4BallGreenCrossing
+
+@[expose] public section
 
 /-!
 # Step 3 of the dimension-four proof for the ball field

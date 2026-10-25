@@ -1,4 +1,8 @@
-import Sandpile.Support.D4SPlancherel
+module
+
+public import Sandpile.Support.D4SPlancherel
+
+@[expose] public section
 
 /-!
 # The `L²` modulus of continuity on the `H^s` unit ball

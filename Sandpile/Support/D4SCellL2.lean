@@ -1,4 +1,8 @@
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # The `L²` side of the cell-pairing bound

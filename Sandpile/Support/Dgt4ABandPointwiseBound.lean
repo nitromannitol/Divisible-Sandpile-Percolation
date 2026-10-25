@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandArith
-import Sandpile.Support.Dgt4ABandSumBound
+module
+
+public import Sandpile.Support.Dgt4ABandArith
+public import Sandpile.Support.Dgt4ABandSumBound
+
+@[expose] public section
 
 /-!
 # The pointwise profile bound of Step 2

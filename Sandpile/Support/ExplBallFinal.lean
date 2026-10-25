@@ -1,6 +1,10 @@
-import Sandpile.Support.ExplBallResidual
-import Sandpile.Support.ExplBallGaussian
-import Sandpile.Support.ExplBallBound
+module
+
+public import Sandpile.Support.ExplBallResidual
+public import Sandpile.Support.ExplBallGaussian
+public import Sandpile.Support.ExplBallBound
+
+@[expose] public section
 
 /-!
 # Ball localization from its two analytic residuals

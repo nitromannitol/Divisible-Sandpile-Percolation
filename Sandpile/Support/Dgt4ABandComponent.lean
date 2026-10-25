@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandShape
+module
+
+public import Sandpile.Support.Dgt4ABandShape
+
+@[expose] public section
 
 /-!
 # The `k`th Band Component

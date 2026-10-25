@@ -1,4 +1,8 @@
-import Sandpile.Support.ConvexLinear
+module
+
+public import Sandpile.Support.ConvexLinear
+
+@[expose] public section
 
 /-! # Convex Linearization Bound
 

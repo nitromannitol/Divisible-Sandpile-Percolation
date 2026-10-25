@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.Dgt4ACoeffBound
-import Mathlib.Probability.Moments.SubGaussian
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+public import Sandpile.Support.Dgt4ACoeffBound
+public import Mathlib.Probability.Moments.SubGaussian
+
+@[expose] public section
 
 /-!
 # Gaussian tail bound for the centred deviation

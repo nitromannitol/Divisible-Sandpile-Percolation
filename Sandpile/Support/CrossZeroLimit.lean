@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossCompact
-import Sandpile.Support.CrossDuality
+module
+
+public import Sandpile.Support.CrossCompact
+public import Sandpile.Support.CrossDuality
+
+@[expose] public section
 
 /-!
 # Closed superlevel crossings at the limit level zero

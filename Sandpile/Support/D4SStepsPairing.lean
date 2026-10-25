@@ -1,5 +1,9 @@
-import Sandpile.Support.D4SPairing
-import Sandpile.Support.D4SStep3
+module
+
+public import Sandpile.Support.D4SPairing
+public import Sandpile.Support.D4SStep3
+
+@[expose] public section
 
 /-!
 # Steps 2 and 3 of the superdiffusive limit, in pairing form

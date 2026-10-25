@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossFiniteScale
-import Sandpile.Support.CrossScale
-import Sandpile.Support.CrossExtract
+module
+
+public import Sandpile.Support.CrossFiniteScale
+public import Sandpile.Support.CrossScale
+public import Sandpile.Support.CrossExtract
+
+@[expose] public section
 
 /-!
 # Step 1 of finite-scale extraction: the zero-one upgrade

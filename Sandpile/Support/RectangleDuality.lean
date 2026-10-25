@@ -1,6 +1,10 @@
-import Sandpile.Support.RectangleOpenGrid
-import Sandpile.Support.CrossingWitness
-import Sandpile.Support.VerticalStar
+module
+
+public import Sandpile.Support.RectangleOpenGrid
+public import Sandpile.Support.CrossingWitness
+public import Sandpile.Support.VerticalStar
+
+@[expose] public section
 
 /-!
 # Closed star separator and crossing-value duality

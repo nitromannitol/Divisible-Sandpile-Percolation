@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossRectangleWalk
-import Sandpile.Support.CrossZeroLimit
+module
+
+public import Sandpile.Support.CrossRectangleWalk
+public import Sandpile.Support.CrossZeroLimit
+
+@[expose] public section
 
 /-! # Exact planar crossing duality
 

@@ -1,9 +1,13 @@
-import Sandpile.Support.D23HeatCoupling
-import Sandpile.Support.KillValueStability
-import Sandpile.Support.KillMeshApproximation
-import Sandpile.Support.KillAssembly
-import Sandpile.Support.KillRadius
-import Sandpile.Support.ExplRewardFamily
+module
+
+public import Sandpile.Support.D23HeatCoupling
+public import Sandpile.Support.KillValueStability
+public import Sandpile.Support.KillMeshApproximation
+public import Sandpile.Support.KillAssembly
+public import Sandpile.Support.KillRadius
+public import Sandpile.Support.ExplRewardFamily
+
+@[expose] public section
 
 /-!
 # Cube-killed scaling along varying scenery laws

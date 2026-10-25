@@ -1,10 +1,14 @@
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.BlockGeometry
-import Sandpile.Support.BlockSubwalk
-import Sandpile.Support.BlockStarIntersect
-import Sandpile.Support.PercSquareToWide
-import Sandpile.Support.PercAbsHom
-import Sandpile.Support.BlockRouteAdj
+module
+
+public import Sandpile.Support.BlockVerticalWalk
+public import Sandpile.Support.BlockGeometry
+public import Sandpile.Support.BlockSubwalk
+public import Sandpile.Support.BlockStarIntersect
+public import Sandpile.Support.PercSquareToWide
+public import Sandpile.Support.PercAbsHom
+public import Sandpile.Support.BlockRouteAdj
+
+@[expose] public section
 
 /-!
 # Deterministic block-chaining infrastructure

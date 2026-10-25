@@ -1,6 +1,10 @@
-import Sandpile.Support.KillBox
-import Sandpile.Support.KillLip
-import Sandpile.Support.ExplCutoff
+module
+
+public import Sandpile.Support.KillBox
+public import Sandpile.Support.KillLip
+public import Sandpile.Support.ExplCutoff
+
+@[expose] public section
 
 /-!
 # The cutoff is free in the killed problem

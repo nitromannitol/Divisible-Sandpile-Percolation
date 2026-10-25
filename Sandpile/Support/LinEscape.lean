@@ -1,4 +1,8 @@
-import Sandpile.Support.LinCov
+module
+
+public import Sandpile.Support.LinCov
+
+@[expose] public section
 
 /-!
 # Escape probability of the simple random walk

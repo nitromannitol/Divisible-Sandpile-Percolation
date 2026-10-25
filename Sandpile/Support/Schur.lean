@@ -1,4 +1,8 @@
-import Sandpile.External.BerryEsseen
+module
+
+public import Sandpile.External.BerryEsseen
+
+@[expose] public section
 
 /-!
 # The Schur test for a correlation matrix

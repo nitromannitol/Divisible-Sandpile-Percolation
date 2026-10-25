@@ -1,6 +1,10 @@
-import Sandpile.Support.GrowLatticeEnvelope
-import Sandpile.Support.GrowVersionMeasurable
-import Sandpile.Support.ExplFieldEvent
+module
+
+public import Sandpile.Support.GrowLatticeEnvelope
+public import Sandpile.Support.GrowVersionMeasurable
+public import Sandpile.Support.ExplFieldEvent
+
+@[expose] public section
 
 /-!
 # The polynomial growth of the continuous Gaussian heat potential, proved not assumed

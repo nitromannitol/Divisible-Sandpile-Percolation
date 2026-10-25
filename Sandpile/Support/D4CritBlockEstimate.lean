@@ -1,9 +1,13 @@
-import Sandpile.Support.D4CritStep1Mean
-import Sandpile.Support.D4CritStep1Prob
-import Sandpile.Support.D4CritCombine
-import Sandpile.Support.D4CritLSS
-import Sandpile.Support.D4CritLimits
-import Sandpile.Support.D4BlockBallCrossing
+module
+
+public import Sandpile.Support.D4CritStep1Mean
+public import Sandpile.Support.D4CritStep1Prob
+public import Sandpile.Support.D4CritCombine
+public import Sandpile.Support.D4CritLSS
+public import Sandpile.Support.D4CritLimits
+public import Sandpile.Support.D4BlockBallCrossing
+
+@[expose] public section
 
 /-!
 # The dimension-four positive block estimate

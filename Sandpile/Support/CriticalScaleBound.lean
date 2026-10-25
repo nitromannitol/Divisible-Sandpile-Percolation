@@ -1,8 +1,12 @@
-import Sandpile.Support.EventBridge
-import Sandpile.Support.GaussPersist
-import Sandpile.Support.Spectral
-import Sandpile.Support.ScaleRates
-import Sandpile.Support.ThirdMoment
+module
+
+public import Sandpile.Support.EventBridge
+public import Sandpile.Support.GaussPersist
+public import Sandpile.Support.Spectral
+public import Sandpile.Support.ScaleRates
+public import Sandpile.Support.ThirdMoment
+
+@[expose] public section
 
 /-!
 # The two-term bound at a fixed set of geometric scales

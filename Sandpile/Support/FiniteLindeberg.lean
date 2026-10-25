@@ -1,7 +1,11 @@
-import Sandpile.Support.CornerMeasure
-import Sandpile.Support.DirectionalThird
-import LatticeProb.Prob.TaylorComparison
-import Sandpile.Support.StableIntegral
+module
+
+public import Sandpile.Support.CornerMeasure
+public import Sandpile.Support.DirectionalThird
+public import LatticeProb.Prob.TaylorComparison
+public import Sandpile.Support.StableIntegral
+
+@[expose] public section
 
 /-!
 # A finite Lindeberg comparison via matching third moments

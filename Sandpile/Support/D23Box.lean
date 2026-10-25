@@ -1,5 +1,9 @@
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.Support.D23PlaneSite
+module
+
+public import Sandpile.Frozen.MeanLocalization
+public import Sandpile.Support.D23PlaneSite
+
+@[expose] public section
 
 /-!
 # Localization boxes for the two- and three-dimensional percolation argument

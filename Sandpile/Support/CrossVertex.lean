@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossPath
+module
+
+public import Sandpile.Support.CrossPath
+
+@[expose] public section
 
 /-!
 # Admissible-vertex approximation of crossings

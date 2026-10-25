@@ -1,4 +1,8 @@
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # The second intersection moment of two independent random walks

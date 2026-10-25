@@ -1,4 +1,8 @@
-import Sandpile.Support.ContParity
+module
+
+public import Sandpile.Support.ContParity
+
+@[expose] public section
 
 /-!
 # Positivity of the lattice transition kernel

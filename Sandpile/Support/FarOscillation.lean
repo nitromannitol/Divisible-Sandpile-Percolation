@@ -1,6 +1,10 @@
-import Sandpile.Support.FiniteKernelTail
-import Sandpile.Support.FarComparison
-import Sandpile.Support.PlaneRectangle
+module
+
+public import Sandpile.Support.FiniteKernelTail
+public import Sandpile.Support.FarComparison
+public import Sandpile.Support.PlaneRectangle
+
+@[expose] public section
 
 /-!
 # Superpolynomial short-distance oscillation bounds for the far Green field

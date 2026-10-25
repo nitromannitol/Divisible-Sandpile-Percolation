@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanATrunc
+module
+
+public import Sandpile.Support.MeanATrunc
+
+@[expose] public section
 
 /-!
 # Convergence of moments and variance under a uniform exponential moment

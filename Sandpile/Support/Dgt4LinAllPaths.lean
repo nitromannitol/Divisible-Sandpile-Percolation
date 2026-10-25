@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4CaseSelect
-import Sandpile.Support.LinSurvivalInputs
+module
+
+public import Sandpile.Support.Dgt4CaseSelect
+public import Sandpile.Support.LinSurvivalInputs
+
+@[expose] public section
 
 /-!
 # The covariance hypothesis of the linearization, for all pairs of paths

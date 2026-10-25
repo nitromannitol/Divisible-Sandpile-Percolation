@@ -1,9 +1,13 @@
-import Sandpile.Support.ManyLStep3Build
-import Sandpile.Support.Dgt4ABandLawNormalized
-import Sandpile.Support.Dgt4ABandLawDensity
-import Sandpile.Support.Dgt4ABandLawLower
-import Sandpile.Support.Dgt4ABandLawParameters
-import LatticeProb.Walk.SRWPos
+module
+
+public import Sandpile.Support.ManyLStep3Build
+public import Sandpile.Support.Dgt4ABandLawNormalized
+public import Sandpile.Support.Dgt4ABandLawDensity
+public import Sandpile.Support.Dgt4ABandLawLower
+public import Sandpile.Support.Dgt4ABandLawParameters
+public import LatticeProb.Walk.SRWPos
+
+@[expose] public section
 
 /-!
 # The many-limits theorem, assembled

@@ -1,6 +1,10 @@
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.LinIntersect
-import Sandpile.Support.Localization
+module
+
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.LinIntersect
+public import Sandpile.Support.Localization
+
+@[expose] public section
 
 /-!
 # The second intersection moment is proved

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4OriginProb
-import Sandpile.Support.LinJacobianFirstConjunct
-import Sandpile.External.GreenBoundsHighProved
+module
+
+public import Sandpile.Support.Dgt4OriginProb
+public import Sandpile.Support.LinJacobianFirstConjunct
+public import Sandpile.External.GreenBoundsHighProved
+
+@[expose] public section
 
 /-!
 # The origin-frozen concentration estimate

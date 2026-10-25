@@ -1,4 +1,8 @@
-import Sandpile.Support.LimValue
+module
+
+public import Sandpile.Support.LimValue
+
+@[expose] public section
 
 /-!
 # Assembling the limiting odometer crossing theorem

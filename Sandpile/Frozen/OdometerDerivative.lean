@@ -1,5 +1,9 @@
-import Sandpile.External.BPSHProved
-import Sandpile.Support.OdometerPathDerivative
+module
+
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.OdometerPathDerivative
+
+@[expose] public section
 
 /-!
 # The odometer derivative in one scenery coordinate, frozen

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ABandLaw
-import Sandpile.Support.Dgt4ABandWeights
-import LatticeProb.Prob.Karamata
+module
+
+public import Sandpile.Support.Dgt4ABandLaw
+public import Sandpile.Support.Dgt4ABandWeights
+public import LatticeProb.Prob.Karamata
+
+@[expose] public section
 
 /-!
 # The Integrated Band Profile

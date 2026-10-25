@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep2Limit2
-import Sandpile.Support.Dgt4AStep2Floor
+module
+
+public import Sandpile.Support.Dgt4AStep2Limit2
+public import Sandpile.Support.Dgt4AStep2Floor
+
+@[expose] public section
 
 /-!
 # Vanishing of the case (a) Step-2 bound

@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMTimeBound
+module
+
+public import Sandpile.Support.ContBMTimeBound
+
+@[expose] public section
 
 /-!
 # The double time integral of the on-diagonal Brownian heat kernel

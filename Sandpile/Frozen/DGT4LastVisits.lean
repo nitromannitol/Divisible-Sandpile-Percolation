@@ -1,5 +1,9 @@
-import Sandpile.Walk
-import Sandpile.Support.LinLastVisit
+module
+
+public import Sandpile.Walk
+public import Sandpile.Support.LinLastVisit
+
+@[expose] public section
 
 /-!
 # Weighted last-visits lemma

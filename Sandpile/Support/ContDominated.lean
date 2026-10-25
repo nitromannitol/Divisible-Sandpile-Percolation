@@ -1,6 +1,10 @@
-import Sandpile.Support.ContLcltPoint
-import Sandpile.Support.ContRiemann
-import Sandpile.External.HeatKernelBounds
+module
+
+public import Sandpile.Support.ContLcltPoint
+public import Sandpile.Support.ContRiemann
+public import Sandpile.External.HeatKernelBounds
+
+@[expose] public section
 
 /-!
 # Dominated Convergence for the Scaled Double Time Sum

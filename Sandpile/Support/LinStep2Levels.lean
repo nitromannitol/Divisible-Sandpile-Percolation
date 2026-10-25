@@ -1,4 +1,8 @@
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # Antitonicity of the Step 2 levels

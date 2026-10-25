@@ -1,4 +1,8 @@
-import Sandpile.Support.FiniteKernelTail
+module
+
+public import Sandpile.Support.FiniteKernelTail
+
+@[expose] public section
 
 /-!
 # Two-Scale Bernstein Concentration

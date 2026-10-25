@@ -1,7 +1,11 @@
-import Sandpile.Support.KernelPositive
-import Sandpile.Support.ContMeshParity
-import Sandpile.Support.ContBMSpace
-import Sandpile.External.LocalCLT
+module
+
+public import Sandpile.Support.KernelPositive
+public import Sandpile.Support.ContMeshParity
+public import Sandpile.Support.ContBMSpace
+public import Sandpile.External.LocalCLT
+
+@[expose] public section
 
 /-!
 # The local central limit theorem applied to the double time sum

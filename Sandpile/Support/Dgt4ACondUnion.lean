@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ACondMeas
+module
+
+public import Sandpile.Support.Dgt4ACondMeas
+
+@[expose] public section
 
 /-!
 # The union bound of Step 3

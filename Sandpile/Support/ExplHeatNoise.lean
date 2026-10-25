@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplFieldSemigroup
+module
+
+public import Sandpile.Support.ExplFieldSemigroup
+
+@[expose] public section
 
 /-!
 # `L²` bounds for the heat kernel and a single joint heat-noise version

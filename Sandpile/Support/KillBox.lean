@@ -1,6 +1,10 @@
-import Sandpile.Support.KillRep
-import Sandpile.Support.ContLcltPoint
-import Sandpile.Frozen.MeanLocalization
+module
+
+public import Sandpile.Support.KillRep
+public import Sandpile.Support.ContLcltPoint
+public import Sandpile.Frozen.MeanLocalization
+
+@[expose] public section
 
 /-!
 # The killed walk stays within one step of its box

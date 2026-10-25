@@ -1,4 +1,8 @@
-import Sandpile.Walk
+module
+
+public import Sandpile.Walk
+
+@[expose] public section
 
 /-!
 # The dimension-four ball-killed Green estimates, as an external input

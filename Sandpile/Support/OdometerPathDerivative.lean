@@ -1,5 +1,9 @@
-import Sandpile.Support.OdometerJacobian
-import Sandpile.Support.KilledWalk
+module
+
+public import Sandpile.Support.OdometerJacobian
+public import Sandpile.Support.KilledWalk
+
+@[expose] public section
 
 /-!
 # The odometer's coordinate derivative as a bounded path expectation

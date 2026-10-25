@@ -1,6 +1,10 @@
-import Sandpile.Support.ContFDFromContinuum
-import Sandpile.Support.ExponentialMoments
-import Sandpile.Support.ExpMomentRpow
+module
+
+public import Sandpile.Support.ContFDFromContinuum
+public import Sandpile.Support.ExponentialMoments
+public import Sandpile.Support.ExpMomentRpow
+
+@[expose] public section
 
 /-!
 # The finite-dimensional heat-potential limit along a sequence of laws

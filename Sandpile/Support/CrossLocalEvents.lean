@@ -1,7 +1,11 @@
-import Sandpile.Support.CrossZeroLimit
-import Sandpile.Support.CrossCircuit
-import Sandpile.Support.CrossArmIndep
-import Sandpile.Support.CrossArmDecay
+module
+
+public import Sandpile.Support.CrossZeroLimit
+public import Sandpile.Support.CrossCircuit
+public import Sandpile.Support.CrossArmIndep
+public import Sandpile.Support.CrossArmDecay
+
+@[expose] public section
 
 /-!
 # Local measurability of closed superlevel crossing events

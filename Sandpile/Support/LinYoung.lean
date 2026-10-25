@@ -1,4 +1,8 @@
-import Sandpile.Support.LinTestedGreen
+module
+
+public import Sandpile.Support.LinTestedGreen
+
+@[expose] public section
 
 /-! # A discrete Young's inequality for the coefficient replacement
 

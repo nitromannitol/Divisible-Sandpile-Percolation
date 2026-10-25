@@ -1,6 +1,10 @@
-import Sandpile.Support.LinConvexSite
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.Concentration
+module
+
+public import Sandpile.Support.LinConvexSite
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.Concentration
+
+@[expose] public section
 
 /-! # Tested field measurability and convexity
 

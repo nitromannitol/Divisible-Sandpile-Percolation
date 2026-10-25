@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallLocal
+module
+
+public import Sandpile.Support.ExplBallLocal
+
+@[expose] public section
 
 /-!
 # Horizon-freeness and monotonicity of the Brownian optimal-stopping value

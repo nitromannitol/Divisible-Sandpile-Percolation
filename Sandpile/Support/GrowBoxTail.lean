@@ -1,7 +1,11 @@
-import Sandpile.Support.GrowIncrementMoment
-import Sandpile.Support.GrowAnchorMoment
-import Sandpile.Support.MainExplKolmogorovTail
-import Sandpile.Support.GrowAeMoment
+module
+
+public import Sandpile.Support.GrowIncrementMoment
+public import Sandpile.Support.GrowAnchorMoment
+public import Sandpile.Support.MainExplKolmogorovTail
+public import Sandpile.Support.GrowAeMoment
+
+@[expose] public section
 
 /-!
 # A uniform polynomial tail for the potential on a unit box

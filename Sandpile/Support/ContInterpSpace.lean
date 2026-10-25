@@ -1,5 +1,9 @@
-import Sandpile.Support.ContInterpLip
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContInterpLip
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # The interpolated field is Lipschitz in the space variable

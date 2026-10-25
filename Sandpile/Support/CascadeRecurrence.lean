@@ -1,5 +1,9 @@
-import Sandpile.Support.CascadeGeometry
-import Sandpile.Support.PointwiseConc
+module
+
+public import Sandpile.Support.CascadeGeometry
+public import Sandpile.Support.PointwiseConc
+
+@[expose] public section
 
 /-!
 # Recurrence and initial-scale bounds for annular-crossing probabilities

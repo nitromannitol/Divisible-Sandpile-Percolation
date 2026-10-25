@@ -1,9 +1,13 @@
-import Sandpile.Law
-import Sandpile.Continuum.Membrane
-import Sandpile.External.HeatKernelBounds
-import Sandpile.External.MembraneScalingFour
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4STightness
+module
+
+public import Sandpile.Law
+public import Sandpile.Continuum.Membrane
+public import Sandpile.External.HeatKernelBounds
+public import Sandpile.External.MembraneScalingFour
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.D4STightness
+
+@[expose] public section
 
 /-!
 # The superdiffusive membrane limit in dimension four, frozen

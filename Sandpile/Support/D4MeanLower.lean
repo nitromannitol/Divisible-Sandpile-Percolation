@@ -1,6 +1,10 @@
-import Sandpile.Support.BlockIncrement
-import Sandpile.Support.D4BlockTail
-import Mathlib.Data.Nat.Sqrt
+module
+
+public import Sandpile.Support.BlockIncrement
+public import Sandpile.Support.D4BlockTail
+public import Mathlib.Data.Nat.Sqrt
+
+@[expose] public section
 
 /-!
 # Uniform Logarithmic Mean-Odometer Lower Bound in Dimension Four

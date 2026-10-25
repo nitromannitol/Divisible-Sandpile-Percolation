@@ -1,5 +1,9 @@
-import Sandpile.Support.Iterate
-import Sandpile.External.HeatKernelBounds
+module
+
+public import Sandpile.Support.Iterate
+public import Sandpile.External.HeatKernelBounds
+
+@[expose] public section
 
 /-!
 # Small-Power Heat Kernel Bounds

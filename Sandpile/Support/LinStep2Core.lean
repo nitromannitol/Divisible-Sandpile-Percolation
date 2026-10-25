@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep2Assembly
-import Sandpile.Support.LinGaussShift
-import Sandpile.Support.LinStationary
+module
+
+public import Sandpile.Support.LinStep2Assembly
+public import Sandpile.Support.LinGaussShift
+public import Sandpile.Support.LinStationary
+
+@[expose] public section
 
 /-!
 # The uniform smallness of the mean deviation over early times

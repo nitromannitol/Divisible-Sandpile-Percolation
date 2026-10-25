@@ -1,5 +1,9 @@
-import LatticeProb.Gauss.IsonormalSum
-import Sandpile.Support.LinGreenTail
+module
+
+public import LatticeProb.Gauss.IsonormalSum
+public import Sandpile.Support.LinGreenTail
+
+@[expose] public section
 
 /-! # Gaussian Green Field
 

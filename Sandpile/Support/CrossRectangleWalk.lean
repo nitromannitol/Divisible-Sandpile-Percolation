@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossFixBlocking
+module
+
+public import Sandpile.Support.CrossFixBlocking
+
+@[expose] public section
 
 /-!
 # Rectangle-confined walk approximations of connected sets

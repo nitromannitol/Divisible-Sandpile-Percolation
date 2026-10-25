@@ -1,5 +1,9 @@
-import Sandpile.Support.BrownianValueMono.PositiveDim
-import Sandpile.Support.BrownianValueMono.ZeroDimPackaged
+module
+
+public import Sandpile.Support.BrownianValueMono.PositiveDim
+public import Sandpile.Support.BrownianValueMono.ZeroDimPackaged
+
+@[expose] public section
 
 /-!
 # The Brownian value of the Gaussian heat potential increases with the horizon

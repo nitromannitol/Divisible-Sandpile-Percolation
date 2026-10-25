@@ -1,11 +1,15 @@
-import Sandpile.Frozen.D4ExitAverageConcentration
-import Sandpile.Support.Localization
-import Sandpile.Support.StoppedOdometer
-import Sandpile.Support.Stationary
-import Sandpile.Support.ExitAverage
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.ExitPayoffMeas
-import Sandpile.Support.ExitPayoffInt
+module
+
+public import Sandpile.Frozen.D4ExitAverageConcentration
+public import Sandpile.Support.Localization
+public import Sandpile.Support.StoppedOdometer
+public import Sandpile.Support.Stationary
+public import Sandpile.Support.ExitAverage
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.ExitPayoffMeas
+public import Sandpile.Support.ExitPayoffInt
+
+@[expose] public section
 
 /-!
 # Fubini swap for the localized exit-value expectation

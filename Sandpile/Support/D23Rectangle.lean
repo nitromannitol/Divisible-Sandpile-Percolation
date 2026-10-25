@@ -1,5 +1,9 @@
-import Sandpile.Support.D23Mesh
-import Sandpile.Support.BlockVerticalWalk
+module
+
+public import Sandpile.Support.D23Mesh
+public import Sandpile.Support.BlockVerticalWalk
+
+@[expose] public section
 
 /-!
 # Rectangle confinement in the continuum-to-discrete percolation step

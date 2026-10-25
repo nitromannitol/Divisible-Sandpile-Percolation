@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanAValue
+module
+
+public import Sandpile.Support.MeanAValue
+
+@[expose] public section
 
 /-!
 # The mean and variance asymptotic from the rescaled corollary

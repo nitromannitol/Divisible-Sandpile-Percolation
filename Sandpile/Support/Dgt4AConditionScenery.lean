@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4ACondition
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.SceneryBridge
+module
+
+public import Sandpile.Support.Dgt4ACondition
+public import Sandpile.Support.LinGaussBridge
+public import Sandpile.Support.SceneryBridge
+
+@[expose] public section
 
 /-!
 # The conditioning carried to the scenery and to the mass configuration

@@ -1,4 +1,8 @@
-import Sandpile.Support.PercolationEvents
+module
+
+public import Sandpile.Support.PercolationEvents
+
+@[expose] public section
 
 /-!
 # The coordinate plane embedding into `ℤ⁴`

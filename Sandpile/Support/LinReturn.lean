@@ -1,8 +1,12 @@
-import LatticeProb.Walk.Markov
-import LatticeProb.Walk.HitProb
-import Sandpile.Walk
-import Sandpile.Support.StrongMarkov
-import Sandpile.Support.HitProb
+module
+
+public import LatticeProb.Walk.Markov
+public import LatticeProb.Walk.HitProb
+public import Sandpile.Walk
+public import Sandpile.Support.StrongMarkov
+public import Sandpile.Support.HitProb
+
+@[expose] public section
 
 /-!
 # Return probabilities and last-visit indicators of the simple random walk

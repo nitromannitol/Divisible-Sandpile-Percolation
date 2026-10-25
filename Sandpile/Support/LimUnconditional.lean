@@ -1,5 +1,9 @@
-import Sandpile.Support.LimCrossing
-import Sandpile.Support.LimJoint
+module
+
+public import Sandpile.Support.LimCrossing
+public import Sandpile.Support.LimJoint
+
+@[expose] public section
 
 /-!
 # The crossing chain with the finite-scale maximum law discharged

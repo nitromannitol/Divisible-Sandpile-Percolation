@@ -1,5 +1,9 @@
-import Sandpile.Support.ManyLManyLimits
-import Sandpile.Support.ContLogisticLaw
+module
+
+public import Sandpile.Support.ManyLManyLimits
+public import Sandpile.Support.ContLogisticLaw
+
+@[expose] public section
 
 /-! # Naming Step 3's subsequential-convergence input
 

@@ -1,7 +1,11 @@
-import Sandpile.Support.CrossAdaptiveLoss
-import Sandpile.Support.CrossArmIndep
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.CrossAdaptiveLoss
+public import Sandpile.Support.CrossArmIndep
+public import Sandpile.Support.ContWhiteNoise
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # White noise read block by block (Step 3)

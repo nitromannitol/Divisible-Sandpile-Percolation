@@ -1,5 +1,9 @@
-import Sandpile.Support.LimApproxAssembly
-import Sandpile.Support.MainExplBrownianCont
+module
+
+public import Sandpile.Support.LimApproxAssembly
+public import Sandpile.Support.MainExplBrownianCont
+
+@[expose] public section
 
 /-!
 # Vacuity and junk-value checks for the crossing chain

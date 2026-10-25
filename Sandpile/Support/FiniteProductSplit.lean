@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.Integral.Prod
-import Mathlib.Tactic
+module
+
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Integral.Prod
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # One-Coordinate Split of a Finite Product Measure

@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4CaseBProb
-import Sandpile.Support.Localization
-import LatticeProb.Prob.IidSplit
+module
+
+public import Sandpile.Support.Dgt4CaseBProb
+public import Sandpile.Support.Localization
+public import LatticeProb.Prob.IidSplit
+
+@[expose] public section
 
 /-!
 # Fubini for the i.i.d. field split at one site

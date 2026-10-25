@@ -1,4 +1,8 @@
-import Sandpile.Support.LinSurvivalMeas
+module
+
+public import Sandpile.Support.LinSurvivalMeas
+
+@[expose] public section
 
 /-!
 # `eq:dgt4-mean-gradient-approximation` of `lem:dgt4-linearization-from-survival`

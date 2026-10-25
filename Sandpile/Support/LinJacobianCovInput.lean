@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianTestedInputs
-import Sandpile.Support.LinNNPath
+module
+
+public import Sandpile.Support.LinJacobianTestedInputs
+public import Sandpile.Support.LinNNPath
+
+@[expose] public section
 
 /-!
 # The covariance hypothesis of Step 1, from deterministic paths to real intersection counts

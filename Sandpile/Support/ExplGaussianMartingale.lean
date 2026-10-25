@@ -1,7 +1,11 @@
-import Sandpile.Support.ExplHeatDom
-import Sandpile.Support.ExplBrownianDensity
-import Sandpile.Support.ExplBrownianSemigroup
-import Sandpile.Support.ExplOptionalUniform
+module
+
+public import Sandpile.Support.ExplHeatDom
+public import Sandpile.Support.ExplBrownianDensity
+public import Sandpile.Support.ExplBrownianSemigroup
+public import Sandpile.Support.ExplOptionalUniform
+
+@[expose] public section
 
 /-!
 # Backward heat increments along Brownian motion

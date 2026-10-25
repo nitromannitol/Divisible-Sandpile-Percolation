@@ -1,6 +1,10 @@
-import Sandpile.Support.HeatPotentialDefs
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.HeatPotentialDefs
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-!
 # The rescaled linear field as a finite functional of the scenery

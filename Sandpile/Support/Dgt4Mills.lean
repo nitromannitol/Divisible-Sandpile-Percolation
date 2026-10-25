@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4TailChain
-import Sandpile.Support.Dgt4CaseSelect
+module
+
+public import Sandpile.Support.Dgt4TailChain
+public import Sandpile.Support.Dgt4CaseSelect
+
+@[expose] public section
 
 /-!
 # The one-dimensional Gaussian Mills-ratio inputs of case (a)

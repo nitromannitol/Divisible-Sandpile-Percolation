@@ -1,4 +1,8 @@
-import LatticeProb.Gauss.TailMills
+module
+
+public import LatticeProb.Gauss.TailMills
+
+@[expose] public section
 
 /-! # Sharp Mills Asymptotics
 

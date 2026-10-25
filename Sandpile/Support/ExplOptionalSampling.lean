@@ -1,6 +1,10 @@
-import Mathlib
-import LatticeProb.Prob.StoppingDyadic
-import LatticeProb.Prob.BrownianRestartIntegral
+module
+
+public import Mathlib
+public import LatticeProb.Prob.StoppingDyadic
+public import LatticeProb.Prob.BrownianRestartIntegral
+
+@[expose] public section
 
 /-!
 # Bounded optional sampling and an integrable Brownian restart identity

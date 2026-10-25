@@ -1,5 +1,9 @@
-import LatticeProb.Prob.L2JointVersion
-import Sandpile.Support.LimNoiseCoordinates
+module
+
+public import LatticeProb.Prob.L2JointVersion
+public import Sandpile.Support.LimNoiseCoordinates
+
+@[expose] public section
 
 /-!
 # Stochastic Fubini for white noise along Bochner-integrable spatial `L²` families

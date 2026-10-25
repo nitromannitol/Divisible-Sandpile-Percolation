@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallGaussian
+module
+
+public import Sandpile.Support.ExplBallGaussian
+
+@[expose] public section
 
 /-!
 # Reducing ball localization to the per-sample bundle

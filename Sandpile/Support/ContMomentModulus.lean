@@ -1,6 +1,10 @@
-import Sandpile.Support.ContCoeffCoarse
-import Sandpile.Support.ContLinMoment
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Support.ContCoeffCoarse
+public import Sandpile.Support.ContLinMoment
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # The moment hypothesis of the Kolmogorov criterion, uniform in the scale

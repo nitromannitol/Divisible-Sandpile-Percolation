@@ -1,5 +1,9 @@
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.KilledWalk
+module
+
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.KilledWalk
+
+@[expose] public section
 
 /-!
 # Stopped scenery sums and the odometer

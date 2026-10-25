@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConcField
-import Sandpile.Support.Dgt4ADeviationLip
+module
+
+public import Sandpile.Support.Dgt4AConcField
+public import Sandpile.Support.Dgt4ADeviationLip
+
+@[expose] public section
 
 /-!
 # `\ell^2` Lipschitz bound for the centred deviation

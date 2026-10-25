@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ABandIndependence
-import Sandpile.Support.OriginKilled
+module
+
+public import Sandpile.Support.Dgt4ABandIndependence
+public import Sandpile.Support.OriginKilled
+
+@[expose] public section
 
 /-!
 # The increment replacement at the sandpile law

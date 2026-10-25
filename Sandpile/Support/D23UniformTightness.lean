@@ -1,6 +1,10 @@
-import Sandpile.Support.ContKolmogorovAssembly
-import Sandpile.Support.D23UniformMoments
-import Sandpile.External.HeatKernelBoundsProved
+module
+
+public import Sandpile.Support.ContKolmogorovAssembly
+public import Sandpile.Support.D23UniformMoments
+public import Sandpile.External.HeatKernelBoundsProved
+
+@[expose] public section
 
 /-!
 # Uniform compact tightness of the heat potential

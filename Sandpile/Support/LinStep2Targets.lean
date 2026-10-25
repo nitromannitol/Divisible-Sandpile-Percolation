@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Profile
+module
+
+public import Sandpile.Support.LinStep2Profile
+
+@[expose] public section
 
 /-!
 # Targets for the five Step 2 errors

@@ -1,6 +1,10 @@
-import Sandpile.Support.LinTestedStep2
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.LinGreenTail
+module
+
+public import Sandpile.Support.LinTestedStep2
+public import Sandpile.Support.GreenHigh
+public import Sandpile.Support.LinGreenTail
+
+@[expose] public section
 
 /-!
 # The tested Green weight is bounded by the tested Green function

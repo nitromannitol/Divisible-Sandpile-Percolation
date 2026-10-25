@@ -1,9 +1,13 @@
-import Sandpile.Continuum.WhiteNoise
-import Sandpile.External.ContinuumRSW
-import Sandpile.External.PittGaussianFKG
-import Sandpile.External.GaussianLawCovarianceProved
-import Sandpile.Support.LimUnconditional
-import Sandpile.Support.LimScaleZeroOne
+module
+
+public import Sandpile.Continuum.WhiteNoise
+public import Sandpile.External.ContinuumRSW
+public import Sandpile.External.PittGaussianFKG
+public import Sandpile.External.GaussianLawCovarianceProved
+public import Sandpile.Support.LimUnconditional
+public import Sandpile.Support.LimScaleZeroOne
+
+@[expose] public section
 
 /-!
 # Finite-scale extraction from fixed-scale crossings

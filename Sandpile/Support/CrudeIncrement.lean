@@ -1,5 +1,9 @@
-import Sandpile.Frozen.DGT4SmoothedOdometerTail
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Frozen.DGT4SmoothedOdometerTail
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # The crude logarithmic upper bound on the mean odometer

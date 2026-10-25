@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.BrownianScalingLimit.SolutionBasic
-import SandpileAudit.Support.BrownianScalingLimitBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.BrownianScalingLimit.SolutionBasic
+public import SandpileAudit.Support.BrownianScalingLimitBridge
+
+@[expose] public section
 
 /-!
 # Solution: BrownianScalingLimit

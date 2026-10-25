@@ -1,4 +1,8 @@
-import Sandpile.Support.RemainderRate
+module
+
+public import Sandpile.Support.RemainderRate
+
+@[expose] public section
 
 /-!
 # The normalized threshold rate

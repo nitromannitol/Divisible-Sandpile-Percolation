@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteCoord
-import LatticeProb.Prob.LaplaceTransform
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
+module
+
+public import Sandpile.Support.FiniteCoord
+public import LatticeProb.Prob.LaplaceTransform
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+
+@[expose] public section
 
 /-!
 # Exponential Chebyshev bound for the Green average of the scenery

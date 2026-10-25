@@ -1,5 +1,9 @@
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.GreenSceneryTail
+module
+
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.GreenSceneryTail
+
+@[expose] public section
 
 /-!
 # Lower tail of a finite Green average of the scenery

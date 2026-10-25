@@ -1,11 +1,15 @@
-import Sandpile.Support.ContValueMeasurable
-import Sandpile.Support.ContValueClamp
-import Sandpile.Support.MainExplBrownCutoff
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ExplBallBound
-import Sandpile.Support.ExplBallReward
-import Sandpile.Support.ExplBrownianEnvelope
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.ContValueMeasurable
+public import Sandpile.Support.ContValueClamp
+public import Sandpile.Support.MainExplBrownCutoff
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.ExplBallBound
+public import Sandpile.Support.ExplBallReward
+public import Sandpile.Support.ExplBrownianEnvelope
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-! # Cutoff-weighted Brownian value measurability
 

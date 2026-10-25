@@ -1,8 +1,12 @@
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.Support.FiniteCoord
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.ContCoeffL2
-import LatticeProb.Support.ContSums
+module
+
+public import Sandpile.Frozen.WeightedExpConcentration
+public import Sandpile.Support.FiniteCoord
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.ContCoeffL2
+public import LatticeProb.Support.ContSums
+
+@[expose] public section
 
 /-!
 # Moments of a linear functional of an i.i.d. scenery

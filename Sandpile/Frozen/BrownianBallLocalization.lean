@@ -1,7 +1,11 @@
-import Sandpile.Continuum.Stopping
-import Sandpile.External.BrownianExitStep
-import Sandpile.Support.ExplBallExternal
-import Sandpile.Support.ExplBallGrowthZero
+module
+
+public import Sandpile.Continuum.Stopping
+public import Sandpile.External.BrownianExitStep
+public import Sandpile.Support.ExplBallExternal
+public import Sandpile.Support.ExplBallGrowthZero
+
+@[expose] public section
 
 /-!
 # Ball localization of the Brownian value

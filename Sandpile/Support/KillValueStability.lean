@@ -1,6 +1,10 @@
-import Sandpile.Support.KillStability
-import Sandpile.Support.StopValue
-import Sandpile.Support.StoppedOdometer
+module
+
+public import Sandpile.Support.KillStability
+public import Sandpile.Support.StopValue
+public import Sandpile.Support.StoppedOdometer
+
+@[expose] public section
 
 /-!
 # Stability of killed-walk stopping values

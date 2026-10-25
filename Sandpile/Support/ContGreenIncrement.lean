@@ -1,4 +1,8 @@
-import Sandpile.Support.ContPairedGradient
+module
+
+public import Sandpile.Support.ContPairedGradient
+
+@[expose] public section
 
 /-!
 # The `L²` Increment of the Truncated Green Coefficients

@@ -1,5 +1,9 @@
-import Sandpile.Support.LinSurvEarlyVarExpansion
-import Sandpile.Support.LinEarlyVarArith
+module
+
+public import Sandpile.Support.LinSurvEarlyVarExpansion
+public import Sandpile.Support.LinEarlyVarArith
+
+@[expose] public section
 
 /-!
 # The early bound of the derivative-variance expansion

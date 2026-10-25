@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ADeviationAbs
+module
+
+public import Sandpile.Support.Dgt4ADeviationAbs
+
+@[expose] public section
 
 /-!
 # Integrated first-moment bound

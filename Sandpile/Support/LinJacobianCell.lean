@@ -1,5 +1,9 @@
-import Sandpile.Support.LinCellL2
-import Sandpile.Support.LinTested
+module
+
+public import Sandpile.Support.LinCellL2
+public import Sandpile.Support.LinTested
+
+@[expose] public section
 
 /-! # Jacobian Tested-Weight Cell Bound
 

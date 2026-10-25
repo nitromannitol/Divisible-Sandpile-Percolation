@@ -1,6 +1,10 @@
-import Sandpile.Support.ExitValueSwap
-import Sandpile.Support.PayoffSplit
-import Sandpile.Support.D4CritCube
+module
+
+public import Sandpile.Support.ExitValueSwap
+public import Sandpile.Support.PayoffSplit
+public import Sandpile.Support.D4CritCube
+
+@[expose] public section
 
 /-!
 # Step 1a of the dimension-four critical-level percolation proof

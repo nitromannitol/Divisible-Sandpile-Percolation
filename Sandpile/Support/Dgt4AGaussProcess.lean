@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AGaussIndep
+module
+
+public import Sandpile.Support.Dgt4AGaussIndep
+
+@[expose] public section
 
 /-!
 # Families of isonormal images as a Gaussian process

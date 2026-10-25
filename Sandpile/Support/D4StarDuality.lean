@@ -1,5 +1,9 @@
-import Sandpile.Support.BallRectangleDuality
-import Sandpile.Support.RectangleDuality
+module
+
+public import Sandpile.Support.BallRectangleDuality
+public import Sandpile.Support.RectangleDuality
+
+@[expose] public section
 
 /-!
 # The converse planar duality for the dimension-four percolation argument

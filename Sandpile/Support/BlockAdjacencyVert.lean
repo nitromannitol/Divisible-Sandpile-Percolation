@@ -1,5 +1,9 @@
-import Sandpile.Support.BlockAdjacency
-import Sandpile.Support.PercSquareToTall
+module
+
+public import Sandpile.Support.BlockAdjacency
+public import Sandpile.Support.PercSquareToTall
+
+@[expose] public section
 
 /-!
 # Vertical adjacency of good coarse blocks

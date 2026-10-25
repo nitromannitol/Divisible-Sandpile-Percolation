@@ -1,4 +1,8 @@
-import Sandpile.Support.NearBox
+module
+
+public import Sandpile.Support.NearBox
+
+@[expose] public section
 
 /-!
 # Coarse planar boxes and residue-colored separation

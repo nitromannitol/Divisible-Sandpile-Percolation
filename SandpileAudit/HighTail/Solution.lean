@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.HighTail.SolutionBasic
-import SandpileAudit.Support.HighTailBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.HighTail.SolutionBasic
+public import SandpileAudit.Support.HighTailBridge
+
+@[expose] public section
 
 /-!
 # Solution: HighTail

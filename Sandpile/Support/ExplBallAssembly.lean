@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallFarUniform
-import Sandpile.Support.ExplBallStepEnvelope
+module
+
+public import Sandpile.Support.ExplBallFarUniform
+public import Sandpile.Support.ExplBallStepEnvelope
+
+@[expose] public section
 
 /-! # Ball Localization from Growth and the Exit Step
 

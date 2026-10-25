@@ -1,6 +1,10 @@
-import Sandpile.Support.MainExplInterpRegularity
-import Sandpile.Support.MainExplInterp
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.MainExplInterpRegularity
+public import Sandpile.Support.MainExplInterp
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # Uniform bounds for the interpolated odometer over a bounded scale interval

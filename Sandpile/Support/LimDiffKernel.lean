@@ -1,7 +1,11 @@
-import Sandpile.Support.LimStoppedRate
-import Sandpile.Support.LimStoppedModulus
-import Sandpile.Support.LimNoiseMoment
-import Sandpile.Support.ContGreenIncrement
+module
+
+public import Sandpile.Support.LimStoppedRate
+public import Sandpile.Support.LimStoppedModulus
+public import Sandpile.Support.LimNoiseMoment
+public import Sandpile.Support.ContGreenIncrement
+
+@[expose] public section
 
 /-!
 # The two `L²` inputs of the box bound for the difference field

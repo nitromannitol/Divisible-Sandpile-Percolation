@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ADeviationLip
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+
+@[expose] public section
 
 /-!
 # Splitting the centred deviation into an odometer increment minus an excess

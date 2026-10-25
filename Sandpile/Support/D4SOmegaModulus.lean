@@ -1,5 +1,9 @@
-import Sandpile.Support.D4SCellL2
-import Sandpile.Support.D4DefectOmega
+module
+
+public import Sandpile.Support.D4SCellL2
+public import Sandpile.Support.D4DefectOmega
+
+@[expose] public section
 
 /-!
 # `L²` Modulus of Continuity of the Fixed Averaging Density

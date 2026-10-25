@@ -1,12 +1,16 @@
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.Frozen.DifferenceRepresentation
-import Sandpile.External.BPSHProved
-import Sandpile.Support.EventBridge
-import Sandpile.Support.CrudeIncrement
-import Sandpile.Support.PointwiseConc
-import Sandpile.Support.Stopped
-import Sandpile.Support.IncrementBall
-import Sandpile.External.VarianceScale
+module
+
+public import Sandpile.Frozen.WeightedExpConcentration
+public import Sandpile.Frozen.DifferenceRepresentation
+public import Sandpile.External.BPSHProved
+public import Sandpile.Support.EventBridge
+public import Sandpile.Support.CrudeIncrement
+public import Sandpile.Support.PointwiseConc
+public import Sandpile.Support.Stopped
+public import Sandpile.Support.IncrementBall
+public import Sandpile.External.VarianceScale
+
+@[expose] public section
 
 /-!
 # The upper tail of `u_t - V_t` in dimension four

@@ -1,5 +1,9 @@
-import Sandpile.Support.D4Concentration
-import Sandpile.Support.D4MeanLower
+module
+
+public import Sandpile.Support.D4Concentration
+public import Sandpile.Support.D4MeanLower
+
+@[expose] public section
 
 /-!
 # The first-order odometer limit in dimension four

@@ -1,4 +1,8 @@
-import Sandpile.Support.DoubleExponential
+module
+
+public import Sandpile.Support.DoubleExponential
+
+@[expose] public section
 
 /-!
 # Geometrically weighted sums of double-exponential annular probabilities

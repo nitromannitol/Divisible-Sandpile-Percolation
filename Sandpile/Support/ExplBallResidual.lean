@@ -1,4 +1,8 @@
-import Sandpile.Support.ExplBallAssembly
+module
+
+public import Sandpile.Support.ExplBallAssembly
+
+@[expose] public section
 
 /-!
 # The ball-localization lemma from its two residuals, spaces bound first

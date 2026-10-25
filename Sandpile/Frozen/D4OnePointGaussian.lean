@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.External.VarianceScale
-import Sandpile.External.PairedLocalCLTFourProved
-import Sandpile.Support.D4Gaussian
+module
+
+public import Sandpile.Law
+public import Sandpile.External.VarianceScale
+public import Sandpile.External.PairedLocalCLTFourProved
+public import Sandpile.Support.D4Gaussian
+
+@[expose] public section
 
 /-!
 # The one-point Gaussian limit in dimension four

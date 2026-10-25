@@ -1,5 +1,9 @@
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.BlockIncrement
+module
+
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.BlockIncrement
+
+@[expose] public section
 
 /-!
 # Expectation of the odometer increment

@@ -1,4 +1,8 @@
-import Sandpile.Support.PositiveJet
+module
+
+public import Sandpile.Support.PositiveJet
+
+@[expose] public section
 
 /-!
 # Third-derivative envelopes for scalar compositions

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ACovIterate
-import Sandpile.Support.Dgt4AIterateConst
+module
+
+public import Sandpile.Support.Dgt4ACovIterate
+public import Sandpile.Support.Dgt4AIterateConst
+
+@[expose] public section
 
 /-!
 # Comparing a conditional expectation with its unconditional average

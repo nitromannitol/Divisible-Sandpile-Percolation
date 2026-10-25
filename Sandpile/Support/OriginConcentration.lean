@@ -1,8 +1,12 @@
-import Sandpile.Support.OriginKernel
-import Sandpile.Support.OriginProfile
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.OriginKernel
+public import Sandpile.Support.OriginProfile
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # Concentration of the origin-frozen odometer average

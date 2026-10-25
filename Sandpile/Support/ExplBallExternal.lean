@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplBallExitStep
-import Sandpile.Support.BallGrowthExternal
+module
+
+public import Sandpile.Support.ExplBallExitStep
+public import Sandpile.Support.BallGrowthExternal
+
+@[expose] public section
 
 /-!
 # Ball localization from the growth and exit-step external inputs

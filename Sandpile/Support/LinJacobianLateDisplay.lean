@@ -1,4 +1,8 @@
-import Sandpile.Support.LinJacobianStep1Limit
+module
+
+public import Sandpile.Support.LinJacobianStep1Limit
+
+@[expose] public section
 
 /-! # Jacobian Late Display
 

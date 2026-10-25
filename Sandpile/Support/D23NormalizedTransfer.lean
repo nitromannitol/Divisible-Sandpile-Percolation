@@ -1,6 +1,10 @@
-import Sandpile.Support.D23KilledCoupling
-import Sandpile.Support.D23Transfer
-import Sandpile.Support.D23Field
+module
+
+public import Sandpile.Support.D23KilledCoupling
+public import Sandpile.Support.D23Transfer
+public import Sandpile.Support.D23Field
+
+@[expose] public section
 
 /-!
 # Normalization and marginal-law passage for the localized scenery field

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContValueScaling
-import Sandpile.Support.MeanAValue
+module
+
+public import Sandpile.Support.ContValueScaling
+public import Sandpile.Support.MeanAValue
+
+@[expose] public section
 
 /-! # Continuum value transfer lemmas
 

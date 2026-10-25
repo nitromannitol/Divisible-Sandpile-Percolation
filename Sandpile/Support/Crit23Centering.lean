@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Sandpile.Support.Crit23Scale
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.Crit23Scale
+
+@[expose] public section
 
 /-!
 # Centring change of variables for the critical level-set theorem

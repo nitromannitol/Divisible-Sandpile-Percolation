@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.FourSobolev.SolutionBasic
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.FourSobolev.SolutionBasic
+
+@[expose] public section
 
 /-!
 # Bridge for `FourSobolev`: Mathlib-only vocabulary to the repository

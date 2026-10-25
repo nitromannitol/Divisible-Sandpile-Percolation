@@ -1,7 +1,11 @@
-import Sandpile.Support.LimVacuity
-import Sandpile.Support.LimKernelShift
-import Sandpile.Continuum.WhiteNoiseExists
-import Sandpile.Support.LimNoiseModification
+module
+
+public import Sandpile.Support.LimVacuity
+public import Sandpile.Support.LimKernelShift
+public import Sandpile.Continuum.WhiteNoiseExists
+public import Sandpile.Support.LimNoiseModification
+
+@[expose] public section
 
 /-!
 # A white noise with continuous ball fields

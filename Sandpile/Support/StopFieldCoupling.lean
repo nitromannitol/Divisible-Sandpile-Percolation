@@ -1,5 +1,9 @@
-import Sandpile.Support.StopWeakCoupling
-import Sandpile.Support.StopPathSpace
+module
+
+public import Sandpile.Support.StopWeakCoupling
+public import Sandpile.Support.StopPathSpace
+
+@[expose] public section
 
 /-!
 # Random field couplings uniformly close on a compact set

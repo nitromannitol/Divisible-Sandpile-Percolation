@@ -1,5 +1,9 @@
-import Sandpile.Support.LinMeanGradient
-import Sandpile.Support.LinSurvivalGradient
+module
+
+public import Sandpile.Support.LinMeanGradient
+public import Sandpile.Support.LinSurvivalGradient
+
+@[expose] public section
 
 /-! # Mean Gradient Approximation
 

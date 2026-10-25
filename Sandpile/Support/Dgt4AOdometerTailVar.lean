@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AOdometerTailMoment
+module
+
+public import Sandpile.Support.Dgt4AOdometerTailMoment
+
+@[expose] public section
 
 /-!
 # Variance decay of the iterated odometer average

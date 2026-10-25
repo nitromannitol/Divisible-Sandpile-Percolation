@@ -1,5 +1,9 @@
-import Sandpile.Support.D23NormalizedTransfer
-import Sandpile.Support.LimWhiteNoiseInstance
+module
+
+public import Sandpile.Support.D23NormalizedTransfer
+public import Sandpile.Support.LimWhiteNoiseInstance
+
+@[expose] public section
 
 /-!
 # Regularity of the Brownian cube value in its starting point

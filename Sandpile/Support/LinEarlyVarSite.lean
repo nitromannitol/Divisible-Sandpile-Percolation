@@ -1,7 +1,11 @@
-import Sandpile.Support.LinEarlyVarDefs
-import Sandpile.Support.LinEarlyVarCov
-import Sandpile.Support.LinEarlyVarSum
-import Sandpile.Support.LinEarlyVarMeas
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+public import Sandpile.Support.LinEarlyVarCov
+public import Sandpile.Support.LinEarlyVarSum
+public import Sandpile.Support.LinEarlyVarMeas
+
+@[expose] public section
 
 /-! # Early Variance Per-Site Expansion
 

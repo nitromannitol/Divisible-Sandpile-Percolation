@@ -1,7 +1,11 @@
-import LatticeProb.Support.TimeCut
-import Sandpile.Support.ContSmallTime
-import Sandpile.Support.ContLcltTwo
-import Sandpile.Support.ContDominated
+module
+
+public import LatticeProb.Support.TimeCut
+public import Sandpile.Support.ContSmallTime
+public import Sandpile.Support.ContLcltTwo
+public import Sandpile.Support.ContDominated
+
+@[expose] public section
 
 /-!
 # The double time limit of the heat-kernel sum

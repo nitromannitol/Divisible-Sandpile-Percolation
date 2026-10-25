@@ -1,7 +1,11 @@
-import Sandpile.Support.Smoothed
-import Sandpile.Frozen.WeightedExpConcentration
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
+module
+
+public import Sandpile.Support.Smoothed
+public import Sandpile.Frozen.WeightedExpConcentration
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GreenBoundsHighProved
+
+@[expose] public section
 
 /-!
 # Lower tail of the smoothed centred odometer

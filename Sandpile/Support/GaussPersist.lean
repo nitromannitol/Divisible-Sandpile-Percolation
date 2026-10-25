@@ -1,5 +1,9 @@
-import Sandpile.External.BerryEsseen
-import LatticeProb.Prob.GaussOrthant
+module
+
+public import Sandpile.External.BerryEsseen
+public import LatticeProb.Prob.GaussOrthant
+
+@[expose] public section
 
 /-!
 # Explicit Gaussian Persistence Ratio

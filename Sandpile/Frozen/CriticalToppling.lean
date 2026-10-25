@@ -1,7 +1,11 @@
-import Sandpile.Law
-import Sandpile.External.BerryEsseen
-import Sandpile.External.VarianceScale
-import Sandpile.Support.CriticalAssembly
+module
+
+public import Sandpile.Law
+public import Sandpile.External.BerryEsseen
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.CriticalAssembly
+
+@[expose] public section
 
 /-!
 # The critical lower tail of the odometer

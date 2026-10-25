@@ -1,7 +1,11 @@
-import Sandpile.Support.D23Input
-import Sandpile.Support.D23Component
-import Sandpile.Support.D23Scale
-import Sandpile.Support.D4GoodBlock
+module
+
+public import Sandpile.Support.D23Input
+public import Sandpile.Support.D23Component
+public import Sandpile.Support.D23Scale
+public import Sandpile.Support.D4GoodBlock
+
+@[expose] public section
 
 /-!
 # Critical level-set percolation in dimensions two and three

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4FieldRecursion
-import Sandpile.Support.OriginKernel
+module
+
+public import Sandpile.Support.Dgt4FieldRecursion
+public import Sandpile.Support.OriginKernel
+
+@[expose] public section
 
 /-!
 # The averaged-coordinate Lipschitz bound for the centred deviation

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ADeviationAbs
-import Sandpile.Support.Dgt4AAvgIntegral
+module
+
+public import Sandpile.Support.Dgt4ADeviationAbs
+public import Sandpile.Support.Dgt4AAvgIntegral
+
+@[expose] public section
 
 /-!
 # The centred deviation has mean zero

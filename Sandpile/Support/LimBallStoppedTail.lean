@@ -1,4 +1,8 @@
-import Sandpile.Support.LimKernelBounds
+module
+
+public import Sandpile.Support.LimKernelBounds
+
+@[expose] public section
 
 /-!
 # Convergence in probability of the ball-stopped field

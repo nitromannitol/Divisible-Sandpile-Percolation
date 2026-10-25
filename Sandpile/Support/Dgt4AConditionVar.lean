@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConditionField
-import Sandpile.Support.Dgt4GaussTail
+module
+
+public import Sandpile.Support.Dgt4AConditionField
+public import Sandpile.Support.Dgt4GaussTail
+
+@[expose] public section
 
 /-!
 # The standard deviation of the limiting field, in Green-function units

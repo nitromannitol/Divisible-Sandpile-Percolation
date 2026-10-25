@@ -1,5 +1,9 @@
-import Sandpile.Support.ContCell
-import Sandpile.Support.LinSurvivalGradient
+module
+
+public import Sandpile.Support.ContCell
+public import Sandpile.Support.LinSurvivalGradient
+
+@[expose] public section
 
 /-!
 # The scaled lattice pairing of the odometer as a finite mesh sum

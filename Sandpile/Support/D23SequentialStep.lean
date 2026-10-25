@@ -1,15 +1,19 @@
-import Sandpile.Support.D23Compactness
-import Sandpile.Support.D23Transfer
-import Sandpile.Support.D23HeatCoupling
-import Sandpile.Support.D23UniformTightness
-import Sandpile.Support.D23Mesh
-import Sandpile.Frozen.LimitingOdometerCrossing
-import Sandpile.Support.D23NormalizedTransfer
-import Sandpile.Support.ContFDSeq
-import Sandpile.Support.D23CubeValueRegularity
-import Sandpile.Support.LimWhiteNoiseInstance
-import Sandpile.Support.MeanAKolmogorov
-import Sandpile.Support.ContContinuumMCT
+module
+
+public import Sandpile.Support.D23Compactness
+public import Sandpile.Support.D23Transfer
+public import Sandpile.Support.D23HeatCoupling
+public import Sandpile.Support.D23UniformTightness
+public import Sandpile.Support.D23Mesh
+public import Sandpile.Frozen.LimitingOdometerCrossing
+public import Sandpile.Support.D23NormalizedTransfer
+public import Sandpile.Support.ContFDSeq
+public import Sandpile.Support.D23CubeValueRegularity
+public import Sandpile.Support.LimWhiteNoiseInstance
+public import Sandpile.Support.MeanAKolmogorov
+public import Sandpile.Support.ContContinuumMCT
+
+@[expose] public section
 
 /-!
 # The sequential step of the dimension two and three percolation theorem

@@ -1,4 +1,8 @@
-import Sandpile.Support.ContPairedGradient
+module
+
+public import Sandpile.Support.ContPairedGradient
+
+@[expose] public section
 
 /-!
 # The total-variation gradient bound in `R²/n` form

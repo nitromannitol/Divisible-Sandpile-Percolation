@@ -1,5 +1,9 @@
-import Sandpile.External.BerryEsseen
-import Mathlib.Analysis.SpecificLimits.Basic
+module
+
+public import Sandpile.External.BerryEsseen
+public import Mathlib.Analysis.SpecificLimits.Basic
+
+@[expose] public section
 
 /-!
 # Geometric row sums

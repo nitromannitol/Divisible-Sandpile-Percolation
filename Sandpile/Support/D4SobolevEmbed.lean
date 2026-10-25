@@ -1,4 +1,8 @@
-import Sandpile.Support.TightNegSobolev
+module
+
+public import Sandpile.Support.TightNegSobolev
+
+@[expose] public section
 
 /-!
 # The `L²(D) ↪ H^{-s}(D)` Embedding

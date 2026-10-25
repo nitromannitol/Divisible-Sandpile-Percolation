@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep3Product
+module
+
+public import Sandpile.Support.LinStep3Product
+
+@[expose] public section
 
 /-!
 # The weights of Step 2 of the path-survival lemma, integrated along one path

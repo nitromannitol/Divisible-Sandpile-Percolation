@@ -1,9 +1,13 @@
-import Sandpile.Support.ExplBallConditional
-import Sandpile.Support.ExplBallFarUniform
-import Sandpile.Support.ExplBrownianEnvelope
-import Sandpile.Support.ExplBallMoment
-import Sandpile.External.BrownianExitStep
-import Sandpile.Frozen.BrownianValueMonotone
+module
+
+public import Sandpile.Support.ExplBallConditional
+public import Sandpile.Support.ExplBallFarUniform
+public import Sandpile.Support.ExplBrownianEnvelope
+public import Sandpile.Support.ExplBallMoment
+public import Sandpile.External.BrownianExitStep
+public import Sandpile.Frozen.BrownianValueMonotone
+
+@[expose] public section
 
 /-!
 # The strong Markov step at the ball's exit time

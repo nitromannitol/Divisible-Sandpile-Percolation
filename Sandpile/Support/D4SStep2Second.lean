@@ -1,8 +1,12 @@
-import Sandpile.Support.D4SOmegaModulus
-import Sandpile.Support.D4SModulus
-import Sandpile.Support.D4SParity
-import Sandpile.Support.D4SmoothL2
-import Sandpile.Support.D4SNegSobolev
+module
+
+public import Sandpile.Support.D4SOmegaModulus
+public import Sandpile.Support.D4SModulus
+public import Sandpile.Support.D4SParity
+public import Sandpile.Support.D4SmoothL2
+public import Sandpile.Support.D4SNegSobolev
+
+@[expose] public section
 
 /-!
 # The Second Display of Step 2: The Parity-Class Constant

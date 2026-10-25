@@ -1,6 +1,10 @@
-import Sandpile.Support.PointwiseConc
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Concentration
+module
+
+public import Sandpile.Support.PointwiseConc
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Concentration
+
+@[expose] public section
 
 /-!
 # Mass-field concentration and variance bounds for the odometer

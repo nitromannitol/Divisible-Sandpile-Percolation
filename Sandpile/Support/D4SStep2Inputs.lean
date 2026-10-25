@@ -1,6 +1,10 @@
-import Sandpile.Support.D4SmoothL2
-import Sandpile.Support.D4L2Error
-import Sandpile.Support.Smoothed
+module
+
+public import Sandpile.Support.D4SmoothL2
+public import Sandpile.Support.D4L2Error
+public import Sandpile.Support.Smoothed
+
+@[expose] public section
 
 /-!
 # The inputs of Step 2: the centred linearization error and its crude total-variation bound

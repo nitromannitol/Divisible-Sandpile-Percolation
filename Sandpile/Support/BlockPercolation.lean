@@ -1,6 +1,10 @@
-import Mathlib
-import Sandpile.Support.BlockChain
-import Sandpile.Support.BlockVerticalWalk
+module
+
+public import Mathlib
+public import Sandpile.Support.BlockChain
+public import Sandpile.Support.BlockVerticalWalk
+
+@[expose] public section
 
 /-!
 # From good blocks to an infinite fine component

@@ -1,4 +1,8 @@
-import Sandpile.Support.MainExplKolmogorovTail
+module
+
+public import Sandpile.Support.MainExplKolmogorovTail
+
+@[expose] public section
 
 /-!
 # Deterministic growth bounds from almost sure growth

@@ -1,8 +1,12 @@
-import Sandpile.Support.Dgt4AGaussTailVar
-import Sandpile.Support.Dgt4ATelescopeL2
-import Sandpile.Support.Dgt4AOdometerTailVar
-import Sandpile.Support.Dgt4AIterateSub
-import Sandpile.Support.Dgt4ATelescope
+module
+
+public import Sandpile.Support.Dgt4AGaussTailVar
+public import Sandpile.Support.Dgt4ATelescopeL2
+public import Sandpile.Support.Dgt4AOdometerTailVar
+public import Sandpile.Support.Dgt4AIterateSub
+public import Sandpile.Support.Dgt4ATelescope
+
+@[expose] public section
 
 /-!
 # Step 1 of case (a), at a fixed horizon

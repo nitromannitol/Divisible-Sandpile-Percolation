@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplGreenFubini
-import Sandpile.Support.ExplGreenSemigroup
+module
+
+public import Sandpile.Support.ExplGreenFubini
+public import Sandpile.Support.ExplGreenSemigroup
+
+@[expose] public section
 
 /-!
 # Averaging the continuous Gaussian heat potential over a finite measure

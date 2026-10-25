@@ -1,5 +1,9 @@
-import Sandpile.Support.Translation
-import Sandpile.Support.LinFactor
+module
+
+public import Sandpile.Support.Translation
+public import Sandpile.Support.LinFactor
+
+@[expose] public section
 
 /-!
 # Translation invariance of the threshold events

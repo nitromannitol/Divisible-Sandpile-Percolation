@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Walk
-import LatticeProb.Prob.FiniteMarginal
+module
+
+public import Sandpile.Law
+public import Sandpile.Walk
+public import LatticeProb.Prob.FiniteMarginal
+
+@[expose] public section
 
 /-!
 # Step 1 of path survival, the independent case

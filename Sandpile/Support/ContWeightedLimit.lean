@@ -1,5 +1,9 @@
-import Sandpile.Support.ContWeightedCoeff
-import Sandpile.Support.ContSeqCLT
+module
+
+public import Sandpile.Support.ContWeightedCoeff
+public import Sandpile.Support.ContSeqCLT
+
+@[expose] public section
 
 /-!
 # The weighted-membrane limit reduced to one covariance limit

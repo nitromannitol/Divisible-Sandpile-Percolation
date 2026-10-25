@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ABandTauProps
-import Sandpile.Support.Dgt4ABandOneStep
-import Sandpile.Support.Dgt4ABandIntegrated
-import Sandpile.Support.Dgt4ABandSideConditions
+module
+
+public import Sandpile.Support.Dgt4ABandTauProps
+public import Sandpile.Support.Dgt4ABandOneStep
+public import Sandpile.Support.Dgt4ABandIntegrated
+public import Sandpile.Support.Dgt4ABandSideConditions
+
+@[expose] public section
 
 /-!
 # One-step profile increment at the sandpile law

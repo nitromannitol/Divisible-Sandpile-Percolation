@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossUnion
+module
+
+public import Sandpile.Support.CrossUnion
+
+@[expose] public section
 
 /-!
 # Coordinate barriers block crossings

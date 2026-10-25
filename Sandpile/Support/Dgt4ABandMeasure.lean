@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandDensity
+module
+
+public import Sandpile.Support.Dgt4ABandDensity
+
+@[expose] public section
 
 /-!
 # The one-site law as a measure

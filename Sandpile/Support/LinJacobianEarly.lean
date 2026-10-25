@@ -1,5 +1,9 @@
-import Sandpile.Support.LinJacobianTimes
-import Sandpile.Support.LinEarlyVarBound
+module
+
+public import Sandpile.Support.LinJacobianTimes
+public import Sandpile.Support.LinEarlyVarBound
+
+@[expose] public section
 
 /-!
 # The early-time variance bound at the time-restricted Jacobian

@@ -1,5 +1,9 @@
-import Sandpile.Support.KillCutoff
-import Sandpile.Support.ContLcltPoint
+module
+
+public import Sandpile.Support.KillCutoff
+public import Sandpile.Support.ContLcltPoint
+
+@[expose] public section
 
 /-!
 # Cutoff radius and side conditions for the killed problem

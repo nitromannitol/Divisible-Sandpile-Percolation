@@ -1,6 +1,10 @@
-import Sandpile.Support.D4CritBlock
-import Sandpile.Support.D4CritTimeTail
-import Sandpile.Support.D4PlaneEmbed
+module
+
+public import Sandpile.Support.D4CritBlock
+public import Sandpile.Support.D4CritTimeTail
+public import Sandpile.Support.D4PlaneEmbed
+
+@[expose] public section
 
 /-!
 # Combining three block events into a good-block event of the block field

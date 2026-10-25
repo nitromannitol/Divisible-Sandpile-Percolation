@@ -1,5 +1,9 @@
-import Sandpile.Support.ContLinMoment
-import Sandpile.Support.ContHeatPotentialFD
+module
+
+public import Sandpile.Support.ContLinMoment
+public import Sandpile.Support.ContHeatPotentialFD
+
+@[expose] public section
 
 /-!
 # Measurability and integrability of the interpolated field

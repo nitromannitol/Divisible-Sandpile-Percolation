@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep3Mean
+module
+
+public import Sandpile.Support.Dgt4AStep3Mean
+
+@[expose] public section
 
 /-!
 # The mean excess of a concentrated quantity

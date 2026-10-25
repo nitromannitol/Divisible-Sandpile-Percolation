@@ -1,4 +1,8 @@
-import Sandpile.Support.EventBridge
+module
+
+public import Sandpile.Support.EventBridge
+
+@[expose] public section
 
 /-!
 # The third absolute moment of the standardized coefficients

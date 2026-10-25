@@ -1,7 +1,11 @@
-import Sandpile.Support.ContKernelScaling
-import Sandpile.Support.ContScaleMeasure
-import Sandpile.Support.ContWhiteNoise
-import Sandpile.Support.ContBMSquare
+module
+
+public import Sandpile.Support.ContKernelScaling
+public import Sandpile.Support.ContScaleMeasure
+public import Sandpile.Support.ContWhiteNoise
+public import Sandpile.Support.ContBMSquare
+
+@[expose] public section
 
 /-!
 # Brownian scaling and stationarity of the white noise

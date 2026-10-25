@@ -1,10 +1,14 @@
-import Sandpile.Support.Dgt4Deviation
-import Sandpile.Support.Dgt4OriginProb
-import Sandpile.Support.MeanLocalization
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.HitProb
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.OriginProfile
+module
+
+public import Sandpile.Support.Dgt4Deviation
+public import Sandpile.Support.Dgt4OriginProb
+public import Sandpile.Support.MeanLocalization
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.HitProb
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.OriginProfile
+
+@[expose] public section
 
 /-!
 # The probability of hitting a two-point set, and the mean of the odometer killed there

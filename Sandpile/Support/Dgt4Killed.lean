@@ -1,5 +1,9 @@
-import Sandpile.Frozen.DGT4OriginFrozen
-import Sandpile.Support.Dgt4ThresholdChain
+module
+
+public import Sandpile.Frozen.DGT4OriginFrozen
+public import Sandpile.Support.Dgt4ThresholdChain
+
+@[expose] public section
 
 /-!
 # The contact event through the killed odometer

@@ -290,9 +290,9 @@ The certificate of the build and of each node's axiom closure is
   against its challenge and the dependency closure against Mathlib.  See
   [`SandpileAudit/README.md`](SandpileAudit/README.md) and
   [`SandpileAudit/COMPARATOR_RUNS.md`](SandpileAudit/COMPARATOR_RUNS.md).
-- **Pinned toolchain.**  Lean `v4.32.0`, `mathlib` at revision
-  `81a5d257c8e410db227a6665ed08f64fea08e997` and `Lattice-Probability` at commit
-  `9d44b4d4670df393bb86ac5a4e042f215001cddf`, recorded in
+- **Pinned toolchain.**  Lean `v4.35.0-rc2`, `mathlib` at revision
+  `065356127b1dc0016f66b7283ce0ce2c4055aa55` and `Lattice-Probability` at commit
+  `f5e0412c1b144ea3f341d0dd64d66e9defe53b19`, recorded in
   [`lean-toolchain`](lean-toolchain), [`lakefile.lean`](lakefile.lean) and
   [`lake-manifest.json`](lake-manifest.json).
 
@@ -306,7 +306,7 @@ code once comments and blank lines are removed, on top of `mathlib` and the
 
 The project uses [`elan`](https://github.com/leanprover/elan) (the Lean
 toolchain manager) and Lake.  The toolchain is pinned in
-[`lean-toolchain`](lean-toolchain) (`leanprover/lean4:v4.32.0`), so `elan`
+[`lean-toolchain`](lean-toolchain) (`leanprover/lean4:v4.35.0-rc2`), so `elan`
 installs the right Lean version automatically, and the dependencies are pinned
 to commits in [`lakefile.lean`](lakefile.lean) and
 [`lake-manifest.json`](lake-manifest.json); `lake` fetches `Lattice-Probability`
@@ -420,3 +420,11 @@ Comparator configuration to check. It records the dispatched commit and runs wit
 minimum, source-module, Challenge-closure, licensing and metadata requirements before
 dispatch. A passing preflight is advisory; it is separate from submission, editorial
 review and a public registry record.
+
+The selected Palomar preflight checks `SandpileAudit/MeanGrowthFour/comparator.json`
+(Theorem 1.3(ii)(a), first clause). It does not consume the cited-results hypotheses
+of other paper theorems. Module interfaces and existing proof API calls are ported
+to the selected toolchain; mathematical definitions and frozen statements are
+retained. The selected Challenge retains every vocabulary declaration: only blank
+lines and introductory comment wrapping are reduced to meet the source line cap.
+Verification and registration of other comparator configurations are separate.

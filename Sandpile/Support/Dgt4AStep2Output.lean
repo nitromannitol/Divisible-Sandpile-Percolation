@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ABand
-import Sandpile.Support.Dgt4ABandRate
-import Sandpile.Support.Dgt4ABandComp
-import Sandpile.Support.Dgt4ABandSequence
+module
+
+public import Sandpile.Support.Dgt4ABand
+public import Sandpile.Support.Dgt4ABandRate
+public import Sandpile.Support.Dgt4ABandComp
+public import Sandpile.Support.Dgt4ABandSequence
+
+@[expose] public section
 
 /-!
 # The Step-2 output of the many-limits theorem, packaged for Step 3

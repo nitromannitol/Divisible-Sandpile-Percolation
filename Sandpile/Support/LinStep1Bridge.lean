@@ -1,6 +1,10 @@
-import Sandpile.Support.LinStep1Factor
-import Sandpile.Support.LinThresholdNull
-import Sandpile.Support.LinFactor
+module
+
+public import Sandpile.Support.LinStep1Factor
+public import Sandpile.Support.LinThresholdNull
+public import Sandpile.Support.LinFactor
+
+@[expose] public section
 
 /-! # Step 1 Bridge
 

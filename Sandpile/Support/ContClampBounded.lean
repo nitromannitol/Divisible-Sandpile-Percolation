@@ -1,6 +1,10 @@
-import Sandpile.Support.ContValueClamp
-import Sandpile.Support.ExplCutoffError
-import Sandpile.Support.StopMeasurable
+module
+
+public import Sandpile.Support.ContValueClamp
+public import Sandpile.Support.ExplCutoffError
+public import Sandpile.Support.StopMeasurable
+
+@[expose] public section
 
 /-!
 # Boundedness and integrability of the clamped field's stopping payoffs

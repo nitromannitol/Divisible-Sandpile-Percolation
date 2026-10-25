@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AStep2Site
-import Sandpile.Support.Dgt4AMeanIncrement
+module
+
+public import Sandpile.Support.Dgt4AStep2Site
+public import Sandpile.Support.Dgt4AMeanIncrement
+
+@[expose] public section
 
 /-!
 # Step 2 of case (a): the first display

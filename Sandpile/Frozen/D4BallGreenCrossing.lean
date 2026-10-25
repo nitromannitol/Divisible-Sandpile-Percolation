@@ -1,6 +1,10 @@
-import Sandpile.Support.BallCrossingDefinitions
-import Sandpile.Support.D4CrossingAssembly
-import Sandpile.External.BallGreenBoundsProved
+module
+
+public import Sandpile.Support.BallCrossingDefinitions
+public import Sandpile.Support.D4CrossingAssembly
+public import Sandpile.External.BallGreenBoundsProved
+
+@[expose] public section
 
 /-!
 # Uniform ball-killed Green crossing estimate in dimension four

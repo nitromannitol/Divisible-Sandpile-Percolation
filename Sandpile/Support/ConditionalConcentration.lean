@@ -1,7 +1,11 @@
-import LatticeProb.Prob.WeightedConc
-import Sandpile.Support.Norms
-import Sandpile.Support.FiniteCoord
-import LatticeProb.Prob.EfronSteinCountable
+module
+
+public import LatticeProb.Prob.WeightedConc
+public import Sandpile.Support.Norms
+public import Sandpile.Support.FiniteCoord
+public import LatticeProb.Prob.EfronSteinCountable
+
+@[expose] public section
 
 /-!
 # Weighted Concentration and Coordinate Splicing

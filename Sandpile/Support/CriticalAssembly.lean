@@ -1,7 +1,11 @@
-import Sandpile.Support.LogRates
-import Sandpile.Support.ThresholdRate
-import Sandpile.Support.Smoothed
-import Sandpile.External.VarianceScale
+module
+
+public import Sandpile.Support.LogRates
+public import Sandpile.Support.ThresholdRate
+public import Sandpile.Support.Smoothed
+public import Sandpile.External.VarianceScale
+
+@[expose] public section
 
 /-! # Critical toppling bound assembly
 

@@ -1,6 +1,10 @@
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ContLawTransfer
-import Sandpile.Support.ContMeanAsymptotic
+module
+
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.ContLawTransfer
+public import Sandpile.Support.ContMeanAsymptotic
+
+@[expose] public section
 
 /-!
 # Square integrability of the continuum value by transfer of law

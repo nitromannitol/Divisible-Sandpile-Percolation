@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4Thresholds
+module
+
+public import Sandpile.Support.Dgt4Thresholds
+
+@[expose] public section
 
 /-!
 # Contact asymptotics from pointwise contact thresholds

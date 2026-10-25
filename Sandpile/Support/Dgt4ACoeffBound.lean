@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4ADeviationLip
-import Sandpile.Support.LinGaussFactor
+module
+
+public import Sandpile.Support.Dgt4ADeviationLip
+public import Sandpile.Support.LinGaussFactor
+
+@[expose] public section
 
 /-!
 # Coefficient bound for the centered deviation

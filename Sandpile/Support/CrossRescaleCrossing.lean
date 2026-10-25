@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossRescale
+module
+
+public import Sandpile.Support.CrossRescale
+
+@[expose] public section
 
 /-!
 # The rescaled crossing estimate

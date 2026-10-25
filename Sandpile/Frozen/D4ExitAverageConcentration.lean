@@ -1,6 +1,10 @@
-import Sandpile.Support.ExitConcentration
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.BallGreenBoundsProved
+module
+
+public import Sandpile.Support.ExitConcentration
+public import Sandpile.External.BallGreenBounds
+public import Sandpile.External.BallGreenBoundsProved
+
+@[expose] public section
 
 /-!
 # Concentration of the exit-averaged localized value in dimension four

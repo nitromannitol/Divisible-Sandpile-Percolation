@@ -1,6 +1,10 @@
-import Sandpile.Support.Kernel
-import Sandpile.Support.IncrementBall
-import Sandpile.External.GreenBoundsHigh
+module
+
+public import Sandpile.Support.Kernel
+public import Sandpile.Support.IncrementBall
+public import Sandpile.External.GreenBoundsHigh
+
+@[expose] public section
 
 /-!
 # Annular summation of the intersection kernel

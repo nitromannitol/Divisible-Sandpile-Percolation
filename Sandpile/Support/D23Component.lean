@@ -1,7 +1,11 @@
-import Sandpile.Support.D23Field
-import Sandpile.Support.SceneryBridge
-import Sandpile.Support.Barrier
-import Sandpile.Support.Crit23Scale
+module
+
+public import Sandpile.Support.D23Field
+public import Sandpile.Support.SceneryBridge
+public import Sandpile.Support.Barrier
+public import Sandpile.Support.Crit23Scale
+
+@[expose] public section
 
 /-!
 # From localized-field components to odometer components

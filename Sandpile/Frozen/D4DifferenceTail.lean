@@ -1,6 +1,10 @@
-import Sandpile.Walk
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4Difference
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.D4Difference
+
+@[expose] public section
 
 /-!
 # Exponential concentration of the odometer-membrane difference in dimension four

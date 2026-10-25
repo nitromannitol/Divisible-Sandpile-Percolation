@@ -1,7 +1,11 @@
-import Sandpile.Support.ContCovKappa
-import Sandpile.Support.ContHighNonconvergence
-import Sandpile.Continuum.Membrane
-import Sandpile.Law
+module
+
+public import Sandpile.Support.ContCovKappa
+public import Sandpile.Support.ContHighNonconvergence
+public import Sandpile.Continuum.Membrane
+public import Sandpile.Law
+
+@[expose] public section
 
 /-!
 # `thm:dgt4-many-limits` from Subsequential Convergence

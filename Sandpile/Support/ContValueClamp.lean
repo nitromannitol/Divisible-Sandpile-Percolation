@@ -1,7 +1,11 @@
-import Sandpile.Continuum.Kernel
-import Sandpile.Support.ContValueLipschitz
-import Sandpile.Support.ContValueMeasurable
-import Mathlib
+module
+
+public import Sandpile.Continuum.Kernel
+public import Sandpile.Support.ContValueLipschitz
+public import Sandpile.Support.ContValueMeasurable
+public import Mathlib
+
+@[expose] public section
 
 /-!
 # Measurability of the continuum value by radial clamping

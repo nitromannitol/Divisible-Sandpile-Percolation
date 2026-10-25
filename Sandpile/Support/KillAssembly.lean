@@ -1,6 +1,10 @@
-import Sandpile.Support.KillStability
-import Sandpile.Support.ExplValueGap
-import Sandpile.Support.ExplCutoffError
+module
+
+public import Sandpile.Support.KillStability
+public import Sandpile.Support.ExplValueGap
+public import Sandpile.Support.ExplCutoffError
+
+@[expose] public section
 
 /-!
 # Assembling the killed two-term bound

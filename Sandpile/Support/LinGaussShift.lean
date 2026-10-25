@@ -1,6 +1,10 @@
-import Sandpile.Support.LinGaussBridge
-import Sandpile.Support.LinGreenTail
-import Sandpile.Support.LinStationary
+module
+
+public import Sandpile.Support.LinGaussBridge
+public import Sandpile.Support.LinGreenTail
+public import Sandpile.Support.LinStationary
+
+@[expose] public section
 
 /-! # Gaussian Threshold Shift
 

@@ -1,5 +1,9 @@
-import Sandpile.Support.CriticalScales
-import Sandpile.Support.GeomRow
+module
+
+public import Sandpile.Support.CriticalScales
+public import Sandpile.Support.GeomRow
+
+@[expose] public section
 
 /-! # Correlation matrix rows at geometric scales
 

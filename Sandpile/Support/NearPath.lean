@@ -1,5 +1,9 @@
-import Sandpile.Support.ColoredBoxes
-import Sandpile.Support.BoxPathCount
+module
+
+public import Sandpile.Support.ColoredBoxes
+public import Sandpile.Support.BoxPathCount
+
+@[expose] public section
 
 /-!
 # Superpolynomial control of near-field bad-box paths

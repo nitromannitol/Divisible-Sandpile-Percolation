@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4Mills
-import Sandpile.Support.Dgt4MeanDiv
+module
+
+public import Sandpile.Support.Dgt4Mills
+public import Sandpile.Support.Dgt4MeanDiv
+
+@[expose] public section
 
 /-!
 # Case (a) of the contact-threshold asymptotics: the Gaussian branch

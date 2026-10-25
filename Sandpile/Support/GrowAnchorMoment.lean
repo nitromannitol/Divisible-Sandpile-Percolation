@@ -1,5 +1,9 @@
-import Sandpile.Support.MeanAGauss
-import Sandpile.Support.MeanAZeroTime
+module
+
+public import Sandpile.Support.MeanAGauss
+public import Sandpile.Support.MeanAZeroTime
+
+@[expose] public section
 
 /-!
 # A uniform one-point moment bound for the Gaussian heat potential

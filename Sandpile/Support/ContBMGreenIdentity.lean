@@ -1,4 +1,8 @@
-import Sandpile.Support.ContBMGreenApi
+module
+
+public import Sandpile.Support.ContBMGreenApi
+
+@[expose] public section
 
 /-!
 # The continuum Green identity for two base points

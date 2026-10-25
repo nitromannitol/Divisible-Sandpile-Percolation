@@ -1,6 +1,10 @@
-import Sandpile.Support.LinConvexSite
-import Sandpile.Support.LinChooseL
-import Sandpile.Support.LinL2Two
+module
+
+public import Sandpile.Support.LinConvexSite
+public import Sandpile.Support.LinChooseL
+public import Sandpile.Support.LinL2Two
+
+@[expose] public section
 
 /-!
 # Step 2 of the linearization, abstracted from the tested field

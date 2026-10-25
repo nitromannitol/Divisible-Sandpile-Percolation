@@ -1,7 +1,11 @@
-import Sandpile.Support.BlockVerticalWalk
-import Sandpile.Support.PercSquareToWide
-import Sandpile.Support.PercAbsHom
-import Sandpile.Support.BlockSubwalk
+module
+
+public import Sandpile.Support.BlockVerticalWalk
+public import Sandpile.Support.PercSquareToWide
+public import Sandpile.Support.PercAbsHom
+public import Sandpile.Support.BlockSubwalk
+
+@[expose] public section
 
 /-!
 # Adjacency of good coarse blocks

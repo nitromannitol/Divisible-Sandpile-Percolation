@@ -1,7 +1,11 @@
-import Sandpile.Walk
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.External.GreenBoundsHighProved
-import Sandpile.Support.OdometerLocalization
+module
+
+public import Sandpile.Walk
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.External.GreenBoundsHighProved
+public import Sandpile.Support.OdometerLocalization
+
+@[expose] public section
 
 /-!
 # Localization of the odometer by conditional expectation

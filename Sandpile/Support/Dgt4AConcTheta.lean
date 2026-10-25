@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AConcSharp
-import Sandpile.Support.Dgt4AShiftLip
+module
+
+public import Sandpile.Support.Dgt4AConcSharp
+public import Sandpile.Support.Dgt4AShiftLip
+
+@[expose] public section
 
 /-!
 # Lipschitz bound for the conditioned `Θ_n`

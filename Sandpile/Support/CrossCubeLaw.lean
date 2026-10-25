@@ -1,10 +1,14 @@
-import Sandpile.Support.CrossCubeOrth
-import Sandpile.Support.CrossTraceLaw
-import Sandpile.Support.CrossFixedScaleBall
-import Sandpile.Support.CrossLevelLoss
-import Sandpile.Support.CrossTrace
-import Sandpile.Support.CrossFixedScaleBall
-import Sandpile.Support.CrossEntropyPi
+module
+
+public import Sandpile.Support.CrossCubeOrth
+public import Sandpile.Support.CrossTraceLaw
+public import Sandpile.Support.CrossFixedScaleBall
+public import Sandpile.Support.CrossLevelLoss
+public import Sandpile.Support.CrossTrace
+public import Sandpile.Support.CrossFixedScaleBall
+public import Sandpile.Support.CrossEntropyPi
+
+@[expose] public section
 
 /-! # Trace law on revealed unit cubes
 

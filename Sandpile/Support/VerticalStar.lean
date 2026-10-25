@@ -1,5 +1,9 @@
-import Sandpile.Support.StarNN
-import Sandpile.Support.RectangleTranspose
+module
+
+public import Sandpile.Support.StarNN
+public import Sandpile.Support.RectangleTranspose
+
+@[expose] public section
 
 /-!
 # Vertical crossing values from star-graph walks

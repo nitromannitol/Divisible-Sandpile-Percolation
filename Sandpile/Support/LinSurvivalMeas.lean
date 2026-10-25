@@ -1,6 +1,10 @@
-import Sandpile.Support.LinMeanGradient
-import Sandpile.Support.LinStationary
-import LatticeProb.Support.Fubini
+module
+
+public import Sandpile.Support.LinMeanGradient
+public import Sandpile.Support.LinStationary
+public import LatticeProb.Support.Fubini
+
+@[expose] public section
 
 /-!
 # Joint measurability of the survival indicator, and the Fubini exchange it makes possible

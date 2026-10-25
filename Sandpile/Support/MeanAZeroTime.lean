@@ -1,5 +1,9 @@
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.ExplBallLocal
+module
+
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.ExplBallLocal
+
+@[expose] public section
 
 /-! # Vanishing of the field at time zero
 

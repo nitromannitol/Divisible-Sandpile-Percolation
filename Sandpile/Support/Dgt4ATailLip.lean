@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4AIterateLip
-import Sandpile.Support.Dgt4ATailKernel
+module
+
+public import Sandpile.Support.Dgt4AIterateLip
+public import Sandpile.Support.Dgt4ATailKernel
+
+@[expose] public section
 
 /-!
 # The `j`-step Lipschitz bound with the tail kernel

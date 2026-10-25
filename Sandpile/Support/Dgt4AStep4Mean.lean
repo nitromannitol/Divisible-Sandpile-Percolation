@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep4Dom
+module
+
+public import Sandpile.Support.Dgt4AStep4Dom
+
+@[expose] public section
 
 /-!
 # Step 4 of case (a) for the mean increment

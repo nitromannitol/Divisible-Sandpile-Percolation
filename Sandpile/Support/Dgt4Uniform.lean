@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4LinInputs
+module
+
+public import Sandpile.Support.Dgt4LinInputs
+
+@[expose] public section
 
 /-!
 # Uniform-threshold survival inputs and the one-site lower tail

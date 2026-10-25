@@ -1,4 +1,8 @@
-import Sandpile.Support.LinEarlyVarDefs
+module
+
+public import Sandpile.Support.LinEarlyVarDefs
+
+@[expose] public section
 
 /-!
 # Collapse of the site sum of a visit-indicator product

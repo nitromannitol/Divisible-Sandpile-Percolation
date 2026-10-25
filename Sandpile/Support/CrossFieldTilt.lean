@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossCameronMartin
-import Sandpile.Support.CrossLocalEvents
-import Sandpile.Support.CrossBallMemLp
+module
+
+public import Sandpile.Support.CrossCameronMartin
+public import Sandpile.Support.CrossLocalEvents
+public import Sandpile.Support.CrossBallMemLp
+
+@[expose] public section
 
 /-!
 # The Cameron-Martin shift on the crossing event

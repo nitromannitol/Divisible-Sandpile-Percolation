@@ -1,7 +1,11 @@
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.Concentration
-import Mathlib.Analysis.Calculus.Deriv.Add
-import Mathlib.Analysis.Calculus.Deriv.Mul
+module
+
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.Concentration
+public import Mathlib.Analysis.Calculus.Deriv.Add
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+
+@[expose] public section
 
 /-!
 # Coordinate derivatives of the finite-time odometer

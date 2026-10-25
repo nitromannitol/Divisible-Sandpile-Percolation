@@ -1,10 +1,14 @@
-import Sandpile.Support.Dgt4ADeviationScenery
-import Sandpile.Support.GreenHigh
-import Sandpile.Support.TightWeightedMembrane
-import Sandpile.Support.ExitGreen
-import Sandpile.Support.OriginKernel
-import Sandpile.Support.HeightLower
-import Sandpile.Support.Dgt4AIterateMulConst
+module
+
+public import Sandpile.Support.Dgt4ADeviationScenery
+public import Sandpile.Support.GreenHigh
+public import Sandpile.Support.TightWeightedMembrane
+public import Sandpile.Support.ExitGreen
+public import Sandpile.Support.OriginKernel
+public import Sandpile.Support.HeightLower
+public import Sandpile.Support.Dgt4AIterateMulConst
+
+@[expose] public section
 
 /-!
 # The coordinatewise Lipschitz coefficient of the finite-coordinate deviation

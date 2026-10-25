@@ -1,5 +1,9 @@
-import Sandpile.Support.DoubleHeatKernel
-import LatticeProb.Prob.WeightedCLT
+module
+
+public import Sandpile.Support.DoubleHeatKernel
+public import LatticeProb.Prob.WeightedCLT
+
+@[expose] public section
 
 /-!
 # Gaussian limit of the dimension-four membrane

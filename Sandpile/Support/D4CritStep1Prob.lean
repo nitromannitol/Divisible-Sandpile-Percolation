@@ -1,6 +1,10 @@
-import Sandpile.Frozen.D4ExitAverageConcentration
-import Sandpile.Frozen.D4FiniteRangeLowerBound
-import Sandpile.Support.D4CritCube
+module
+
+public import Sandpile.Frozen.D4ExitAverageConcentration
+public import Sandpile.Frozen.D4FiniteRangeLowerBound
+public import Sandpile.Support.D4CritCube
+
+@[expose] public section
 
 /-!
 # Step 1 of the dimension-four proof in probability

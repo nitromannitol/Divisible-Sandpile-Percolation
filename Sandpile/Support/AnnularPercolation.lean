@@ -1,7 +1,11 @@
-import Sandpile.Support.PercolationEvents
-import Sandpile.Support.AnnularSum
-import Sandpile.Frozen.DGT4BlockingToCrossing
-import Sandpile.Frozen.DGT4Cascade
+module
+
+public import Sandpile.Support.PercolationEvents
+public import Sandpile.Support.AnnularSum
+public import Sandpile.Frozen.DGT4BlockingToCrossing
+public import Sandpile.Frozen.DGT4Cascade
+
+@[expose] public section
 
 /-!
 # Exponential bound for failure of the origin to connect to infinity

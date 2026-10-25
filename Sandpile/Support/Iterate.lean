@@ -1,4 +1,8 @@
-import Sandpile.Support.Kernel
+module
+
+public import Sandpile.Support.Kernel
+
+@[expose] public section
 
 /-!
 # The averaging operator, the heat kernel, and their iterates

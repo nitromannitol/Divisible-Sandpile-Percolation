@@ -1,6 +1,10 @@
-import Sandpile.Frozen.MeanLocalization
-import Sandpile.External.HeatKernelBoundsProved
-import Sandpile.Support.D4CriticalAssembly
+module
+
+public import Sandpile.Frozen.MeanLocalization
+public import Sandpile.External.HeatKernelBoundsProved
+public import Sandpile.Support.D4CriticalAssembly
+
+@[expose] public section
 
 /-!
 # Mean-localization bound with uniform constants

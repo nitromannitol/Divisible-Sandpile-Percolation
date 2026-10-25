@@ -1,5 +1,9 @@
-import Sandpile.Support.TailSquare
-import Mathlib.MeasureTheory.Integral.Gamma
+module
+
+public import Sandpile.Support.TailSquare
+public import Mathlib.MeasureTheory.Integral.Gamma
+
+@[expose] public section
 
 /-!
 # Sub-Gaussian Second-Moment Bound

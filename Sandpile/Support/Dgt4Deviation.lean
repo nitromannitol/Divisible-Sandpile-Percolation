@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4Bernstein
-import Sandpile.Support.Dgt4PairKernel
+module
+
+public import Sandpile.Support.Dgt4Bernstein
+public import Sandpile.Support.Dgt4PairKernel
+
+@[expose] public section
 
 /-! # Truncated-Field Deviation Estimates
 

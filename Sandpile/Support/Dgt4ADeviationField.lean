@@ -1,6 +1,10 @@
-import Sandpile.Support.Dgt4AL2Cube
-import Sandpile.Support.Translation
-import Sandpile.Support.Stationary
+module
+
+public import Sandpile.Support.Dgt4AL2Cube
+public import Sandpile.Support.Translation
+public import Sandpile.Support.Stationary
+
+@[expose] public section
 
 /-!
 # The centred increment as a stationary field

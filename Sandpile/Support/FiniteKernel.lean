@@ -1,7 +1,11 @@
-import Sandpile.Support.FiniteRange
-import Sandpile.Support.FiniteLindeberg
-import Sandpile.External.BallGreenBounds
-import LatticeProb.Prob.FiniteMarginal
+module
+
+public import Sandpile.Support.FiniteRange
+public import Sandpile.Support.FiniteLindeberg
+public import Sandpile.External.BallGreenBounds
+public import LatticeProb.Prob.FiniteMarginal
+
+@[expose] public section
 
 /-!
 # Finite-coordinate representations of the cut-off ball Green field

@@ -1,5 +1,9 @@
-import Sandpile.Support.LimNoiseCoordinates
-import Sandpile.Support.ContCell
+module
+
+public import Sandpile.Support.LimNoiseCoordinates
+public import Sandpile.Support.ContCell
+
+@[expose] public section
 
 /-! # Orthonormal cube indicators
 

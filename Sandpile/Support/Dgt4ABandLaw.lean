@@ -1,4 +1,8 @@
-import Sandpile.Support.ManyLStep3
+module
+
+public import Sandpile.Support.ManyLStep3
+
+@[expose] public section
 
 /-!
 # The band parameters and the four Step-1 estimates

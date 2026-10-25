@@ -1,5 +1,9 @@
-import Sandpile.Walk
-import Sandpile.Support.Toppling
+module
+
+public import Sandpile.Walk
+public import Sandpile.Support.Toppling
+
+@[expose] public section
 
 /-!
 # The frozen odometer recursion

@@ -1,6 +1,10 @@
-import Sandpile.Support.KillFieldCoupling
-import Sandpile.Support.MainExplGrowth
-import Sandpile.Support.ContBMSquare
+module
+
+public import Sandpile.Support.KillFieldCoupling
+public import Sandpile.Support.MainExplGrowth
+public import Sandpile.Support.ContBMSquare
+
+@[expose] public section
 
 /-!
 # Field coupling and growth bounds for a continuous version

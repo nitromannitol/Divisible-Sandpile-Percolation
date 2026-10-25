@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4ADeviationAbs
-import Sandpile.Support.Dgt4AFirstMomentAdd
-import Sandpile.Support.Dgt4AFirstMomentExcess
-import Sandpile.Support.Dgt4AMeanZero
+module
+
+public import Sandpile.Support.Dgt4ADeviationAbs
+public import Sandpile.Support.Dgt4AFirstMomentAdd
+public import Sandpile.Support.Dgt4AFirstMomentExcess
+public import Sandpile.Support.Dgt4AMeanZero
+
+@[expose] public section
 
 /-!
 # A first-moment bound for the centred deviation by twice the odometer increment

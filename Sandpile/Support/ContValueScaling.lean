@@ -1,5 +1,9 @@
-import Sandpile.Support.ContBrownianScale
-import Sandpile.Support.ContNoiseScaling
+module
+
+public import Sandpile.Support.ContBrownianScale
+public import Sandpile.Support.ContNoiseScaling
+
+@[expose] public section
 
 /-!
 # Parabolic scaling of the Brownian optimal-stopping value

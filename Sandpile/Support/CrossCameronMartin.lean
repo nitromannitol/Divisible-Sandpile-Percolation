@@ -1,6 +1,10 @@
-import Sandpile.Support.CrossTiltMap
-import Sandpile.Support.CrossCubeBlocks
-import Sandpile.Support.LimNoiseCoordinates
+module
+
+public import Sandpile.Support.CrossTiltMap
+public import Sandpile.Support.CrossCubeBlocks
+public import Sandpile.Support.LimNoiseCoordinates
+
+@[expose] public section
 
 /-!
 # The Cameron--Martin shift of a white noise

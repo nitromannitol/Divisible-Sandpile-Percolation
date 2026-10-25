@@ -1,4 +1,8 @@
-import Sandpile.Support.LinEscape
+module
+
+public import Sandpile.Support.LinEscape
+
+@[expose] public section
 
 /-!
 The return probability of Step 3 of case (a): "Since

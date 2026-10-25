@@ -1,6 +1,10 @@
-import Sandpile.Support.RswSquareHalfScale
-import Sandpile.Support.RswHardStep
-import Sandpile.Support.RectangleMonotonicity
+module
+
+public import Sandpile.Support.RswSquareHalfScale
+public import Sandpile.Support.RswHardStep
+public import Sandpile.Support.RectangleMonotonicity
+
+@[expose] public section
 
 /-!
 # The RSW crossing lower bound for the target rectangle

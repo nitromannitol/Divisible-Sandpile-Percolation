@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.External.GreenBoundsHigh
-import Sandpile.Support.RefinedIncrement
+module
+
+public import Sandpile.Law
+public import Sandpile.External.GreenBoundsHigh
+public import Sandpile.Support.RefinedIncrement
+
+@[expose] public section
 
 /-! # Refined High-Dimensional Height Upper Tail
 

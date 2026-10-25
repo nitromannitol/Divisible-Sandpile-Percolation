@@ -1,5 +1,9 @@
-import Sandpile.Support.BrownianValueMono.GreenZeroDim
-import Sandpile.Support.ExplHorizon
+module
+
+public import Sandpile.Support.BrownianValueMono.GreenZeroDim
+public import Sandpile.Support.ExplHorizon
+
+@[expose] public section
 
 /-!
 # The Gaussian heat potential is affine in time when the space is a point

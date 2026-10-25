@@ -1,5 +1,9 @@
-import Sandpile.Support.LinHarmonicWindow
-import Sandpile.Support.LinNested
+module
+
+public import Sandpile.Support.LinHarmonicWindow
+public import Sandpile.Support.LinNested
+
+@[expose] public section
 
 /-!
 # Step 2 of the path-survival lemma, up to the product over the last visits

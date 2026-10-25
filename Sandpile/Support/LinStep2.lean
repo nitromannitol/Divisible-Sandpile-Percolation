@@ -1,4 +1,8 @@
-import Sandpile.Support.LinProduct
+module
+
+public import Sandpile.Support.LinProduct
+
+@[expose] public section
 
 /-!
 # The integrated exponential comparison and weight asymptotics of Step 2

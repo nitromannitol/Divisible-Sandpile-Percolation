@@ -1,4 +1,8 @@
-import Sandpile.Support.TightSmallPower
+module
+
+public import Sandpile.Support.TightSmallPower
+
+@[expose] public section
 
 /-!
 # Kernel bounds used by the tightness chain

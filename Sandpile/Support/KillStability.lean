@@ -1,5 +1,9 @@
-import Sandpile.Support.KillCutoff
-import Sandpile.External.CubeStoppingStability
+module
+
+public import Sandpile.Support.KillCutoff
+public import Sandpile.External.CubeStoppingStability
+
+@[expose] public section
 
 /-!
 # The stability gap for the killed cube problem

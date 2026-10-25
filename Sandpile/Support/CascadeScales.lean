@@ -1,4 +1,8 @@
-import Sandpile.Support.CascadeGeometry
+module
+
+public import Sandpile.Support.CascadeGeometry
+
+@[expose] public section
 
 /-!
 # Annular cascade levels, shifts, and exponent growth

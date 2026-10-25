@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4AStep4Prob
+module
+
+public import Sandpile.Support.Dgt4AStep4Prob
+
+@[expose] public section
 
 /-!
 # Step 4 of case (a) for the threshold comparison

@@ -1,5 +1,9 @@
-import Sandpile.Support.ExplInterp
-import Sandpile.Support.LinStationary
+module
+
+public import Sandpile.Support.ExplInterp
+public import Sandpile.Support.LinStationary
+
+@[expose] public section
 
 /-!
 # Measurability and mesh-point control of the multilinear interpolation

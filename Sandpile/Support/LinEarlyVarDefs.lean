@@ -1,5 +1,9 @@
-import Sandpile.Support.LinEarlyVar
-import Sandpile.Support.LinSurvivalGradient
+module
+
+public import Sandpile.Support.LinEarlyVar
+public import Sandpile.Support.LinSurvivalGradient
+
+@[expose] public section
 
 /-!
 # Definitions for the expansion of the early derivative variance

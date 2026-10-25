@@ -1,4 +1,8 @@
-import Sandpile.Support.Dgt4ABandHitting
+module
+
+public import Sandpile.Support.Dgt4ABandHitting
+
+@[expose] public section
 
 /-!
 # Scale, profile coordinate and hitting time for Step 2

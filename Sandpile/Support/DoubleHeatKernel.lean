@@ -1,7 +1,11 @@
-import Sandpile.Support.DoubleSum
-import Sandpile.Support.ExponentialHarmonic
-import Sandpile.External.PairedLocalCLTFour
-import Sandpile.External.VarianceScaleProved
+module
+
+public import Sandpile.Support.DoubleSum
+public import Sandpile.Support.ExponentialHarmonic
+public import Sandpile.External.PairedLocalCLTFour
+public import Sandpile.External.VarianceScaleProved
+
+@[expose] public section
 
 /-!
 # The doubled heat-kernel logarithmic coefficient in dimension four

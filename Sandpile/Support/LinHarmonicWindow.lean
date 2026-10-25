@@ -1,5 +1,9 @@
-import Sandpile.Support.LinProduct
-import Sandpile.Support.LinThresholdNull
+module
+
+public import Sandpile.Support.LinProduct
+public import Sandpile.Support.LinThresholdNull
+
+@[expose] public section
 
 /-!
 # The harmonic bookkeeping of Step 2, and the time weight

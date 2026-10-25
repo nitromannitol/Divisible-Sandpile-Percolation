@@ -1,9 +1,13 @@
-import Sandpile.Support.MeanALimit
-import Sandpile.Support.MeanAPosVar
-import Sandpile.Support.MeanAInterp
-import Sandpile.Support.MeanAScale
-import Sandpile.Support.ContValueMemLp
-import Sandpile.Support.ContLawTransfer
+module
+
+public import Sandpile.Support.MeanALimit
+public import Sandpile.Support.MeanAPosVar
+public import Sandpile.Support.MeanAInterp
+public import Sandpile.Support.MeanAScale
+public import Sandpile.Support.ContValueMemLp
+public import Sandpile.Support.ContLawTransfer
+
+@[expose] public section
 
 /-!
 # Assembling `cor:dlt4-mean-asymptotic` from the scaling limit and self-similarity

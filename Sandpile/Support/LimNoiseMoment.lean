@@ -1,4 +1,8 @@
-import Sandpile.Support.MeanAGauss
+module
+
+public import Sandpile.Support.MeanAGauss
+
+@[expose] public section
 
 /-!
 # Absolute moments of a white-noise pairing increment

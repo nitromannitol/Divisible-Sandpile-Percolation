@@ -1,7 +1,11 @@
-import Mathlib
-import Sandpile.MainTheorems
-import SandpileAudit.MeanGrowthFour.SolutionBasic
-import SandpileAudit.Support.MeanGrowthFourBridge
+module
+
+public import Mathlib
+public import Sandpile.MainTheorems
+public import SandpileAudit.MeanGrowthFour.SolutionBasic
+public import SandpileAudit.Support.MeanGrowthFourBridge
+
+@[expose] public section
 
 /-!
 # Solution: MeanGrowthFour

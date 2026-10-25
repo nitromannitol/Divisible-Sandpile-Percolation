@@ -1,5 +1,9 @@
-import Sandpile.Support.D4Mean
-import Sandpile.Support.HeightLower
+module
+
+public import Sandpile.Support.D4Mean
+public import Sandpile.Support.HeightLower
+
+@[expose] public section
 
 /-!
 # The reflection window: nonnegativity, domination, and its mean

@@ -1,5 +1,9 @@
-import Sandpile.Support.CrossingContinuity
-import Sandpile.Support.NearKernel
+module
+
+public import Sandpile.Support.CrossingContinuity
+public import Sandpile.Support.NearKernel
+
+@[expose] public section
 
 /-! # Lipschitz Bounds for Euclidean Linear Fields of Cutoff Green Functions
 

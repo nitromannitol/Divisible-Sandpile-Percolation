@@ -1,15 +1,19 @@
-import Sandpile.Law
-import Sandpile.External.BallGreenBounds
-import Sandpile.External.BallGreenBoundsProved
-import Sandpile.External.PlanarRSW
-import Sandpile.External.LSSDomination
-import Sandpile.External.VarianceScale
-import Sandpile.Support.D4PlaneEmbed
-import Sandpile.Support.D4CritBlockEstimate
-import Sandpile.Support.D4CritRange
-import Sandpile.Support.D4CritScale
-import Sandpile.Support.D4GoodBlock
-import Sandpile.Support.D4OdometerComponent
+module
+
+public import Sandpile.Law
+public import Sandpile.External.BallGreenBounds
+public import Sandpile.External.BallGreenBoundsProved
+public import Sandpile.External.PlanarRSW
+public import Sandpile.External.LSSDomination
+public import Sandpile.External.VarianceScale
+public import Sandpile.Support.D4PlaneEmbed
+public import Sandpile.Support.D4CritBlockEstimate
+public import Sandpile.Support.D4CritRange
+public import Sandpile.Support.D4CritScale
+public import Sandpile.Support.D4GoodBlock
+public import Sandpile.Support.D4OdometerComponent
+
+@[expose] public section
 
 /-!
 # Critical-level percolation in dimension four

@@ -1,5 +1,9 @@
-import Sandpile.Support.Dgt4CaseB
-import LatticeProb.Prob.Karamata
+module
+
+public import Sandpile.Support.Dgt4CaseB
+public import LatticeProb.Prob.Karamata
+
+@[expose] public section
 
 /-! # Case B Threshold Tail Asymptotics
 

@@ -1,4 +1,8 @@
-import Sandpile.Support.CrossEntropy
+module
+
+public import Sandpile.Support.CrossEntropy
+
+@[expose] public section
 
 /-!
 # The finite-dimensional Cameron-Martin entropy bound

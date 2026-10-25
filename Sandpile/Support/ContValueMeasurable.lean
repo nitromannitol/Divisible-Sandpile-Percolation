@@ -1,8 +1,12 @@
-import Sandpile.Support.MeanAValue
-import Sandpile.Support.StopMeasurable
-import Sandpile.Support.StopPathSpace
-import Sandpile.Support.ContValueTransfer
-import Sandpile.Support.ContValueLipschitz
+module
+
+public import Sandpile.Support.MeanAValue
+public import Sandpile.Support.StopMeasurable
+public import Sandpile.Support.StopPathSpace
+public import Sandpile.Support.ContValueTransfer
+public import Sandpile.Support.ContValueLipschitz
+
+@[expose] public section
 
 /-!
 # Measurability of the continuum value in the field's sample point

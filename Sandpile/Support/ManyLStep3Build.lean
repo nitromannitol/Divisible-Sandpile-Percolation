@@ -1,8 +1,12 @@
-import Sandpile.Support.Dgt4ABandStep23
-import Sandpile.Support.Dgt4ATestedLinearizationSequence
-import Sandpile.Support.ManyLStep3Input
-import Sandpile.Support.ManyLSubseq
-import Sandpile.Frozen.WeightedMembraneLimit
+module
+
+public import Sandpile.Support.Dgt4ABandStep23
+public import Sandpile.Support.Dgt4ATestedLinearizationSequence
+public import Sandpile.Support.ManyLStep3Input
+public import Sandpile.Support.ManyLSubseq
+public import Sandpile.Frozen.WeightedMembraneLimit
+
+@[expose] public section
 
 /-! # Composing Step 3: contact thresholds to field limits
 

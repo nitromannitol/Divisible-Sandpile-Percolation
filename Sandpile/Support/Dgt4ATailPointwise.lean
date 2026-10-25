@@ -1,4 +1,8 @@
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
+module
+
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+
+@[expose] public section
 
 /-!
 The pointwise tail bound of the layer-cake reading of the Gaussian concentration of

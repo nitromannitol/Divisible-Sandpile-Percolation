@@ -1,6 +1,10 @@
-import Sandpile.Support.TightWeightedMembrane
-import Sandpile.Support.ContVarianceLimit
-import Sandpile.Frozen.WeightedMembraneLimit
+module
+
+public import Sandpile.Support.TightWeightedMembrane
+public import Sandpile.Support.ContVarianceLimit
+public import Sandpile.Frozen.WeightedMembraneLimit
+
+@[expose] public section
 
 /-!
 # Diffusive odometer limit from the linearization

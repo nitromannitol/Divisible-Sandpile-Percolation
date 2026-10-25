@@ -1,6 +1,10 @@
-import Sandpile.Law
-import Sandpile.Support.Odometer
-import LatticeProb.Walk.Markov
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.Odometer
+public import LatticeProb.Walk.Markov
+
+@[expose] public section
 
 /-!
 # Translation invariance of the i.i.d. mass law

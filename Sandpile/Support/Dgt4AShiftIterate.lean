@@ -1,7 +1,11 @@
-import Sandpile.Support.Dgt4AShiftLip
-import Sandpile.Support.Dgt4AIterateLip
-import Sandpile.Support.Dgt4AIterateMulConst
-import Sandpile.Support.Dgt4AStep2Lip
+module
+
+public import Sandpile.Support.Dgt4AShiftLip
+public import Sandpile.Support.Dgt4AIterateLip
+public import Sandpile.Support.Dgt4AIterateMulConst
+public import Sandpile.Support.Dgt4AStep2Lip
+
+@[expose] public section
 
 /-!
 # The Lipschitz constant of the conditioning after averaging

@@ -1,5 +1,9 @@
-import Sandpile.Support.ContRiemann
-import Sandpile.Support.ContMeshIntegral
+module
+
+public import Sandpile.Support.ContRiemann
+public import Sandpile.Support.ContMeshIntegral
+
+@[expose] public section
 
 /-!
 # The Mesh Point and Riemann-Sum Convergence

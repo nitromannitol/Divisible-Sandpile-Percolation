@@ -1,7 +1,11 @@
-import Sandpile.Support.D23Box
-import Sandpile.Support.LocalizationRecursion
-import Sandpile.Support.OriginKilled
-import Sandpile.Support.D4CritStationary
+module
+
+public import Sandpile.Support.D23Box
+public import Sandpile.Support.LocalizationRecursion
+public import Sandpile.Support.OriginKilled
+public import Sandpile.Support.D4CritStationary
+
+@[expose] public section
 
 /-!
 # The localized odometer field for the dimension-two and dimension-three argument

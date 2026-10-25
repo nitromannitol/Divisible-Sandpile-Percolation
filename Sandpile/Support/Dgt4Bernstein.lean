@@ -1,5 +1,9 @@
-import LatticeProb.Prob.EfronStein
-import LatticeProb.Prob.Bernstein
+module
+
+public import LatticeProb.Prob.EfronStein
+public import LatticeProb.Prob.Bernstein
+
+@[expose] public section
 
 /-! # Bernstein Concentration for Bounded Lipschitz Functions
 

@@ -1,9 +1,13 @@
-import Sandpile.Support.ExplBallFinal
-import Sandpile.Support.ExplBallStepEnvelope
-import Sandpile.Support.ExplBallGaussian
-import Sandpile.Support.ExplBrownianEnvelope
-import Sandpile.Support.ExplBallFarUniform
-import Sandpile.Support.ExplBallBound
+module
+
+public import Sandpile.Support.ExplBallFinal
+public import Sandpile.Support.ExplBallStepEnvelope
+public import Sandpile.Support.ExplBallGaussian
+public import Sandpile.Support.ExplBrownianEnvelope
+public import Sandpile.Support.ExplBallFarUniform
+public import Sandpile.Support.ExplBallBound
+
+@[expose] public section
 
 /-!
 # The conditional exit bound for the ball localization

@@ -1,4 +1,8 @@
-import Sandpile.Support.LinStep2Weights
+module
+
+public import Sandpile.Support.LinStep2Weights
+
+@[expose] public section
 
 /-!
 # Step 2 of `lem:dgt4-path-survival` in uniform-window form

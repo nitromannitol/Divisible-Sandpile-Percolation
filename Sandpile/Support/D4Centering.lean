@@ -1,5 +1,9 @@
-import Sandpile.Law
-import Sandpile.Support.D4PlaneEmbed
+module
+
+public import Sandpile.Law
+public import Sandpile.Support.D4PlaneEmbed
+
+@[expose] public section
 
 /-!
 # The centring change of variables in dimension four

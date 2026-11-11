@@ -128,6 +128,13 @@ This repository formalizes every labelled theorem, lemma, proposition and coroll
 paper: 58 labelled statements, registered as 69 nodes in `Sandpile/Frozen/` because a
 statement in several parts is registered one part per node.
 
+## Corrections to the published version
+
+The formalization follows `paper/sandpile.tex`, a corrected text of the paper: it is
+[arXiv:2609.02829v1](https://arxiv.org/abs/2609.02829v1) with nine corrections.
+[`paper/CHANGES_FROM_ARXIV.md`](paper/CHANGES_FROM_ARXIV.md) lists every change against the
+arXiv version.
+
 ## Standing assumptions and scope
 
 1. **Every theorem is about every law that satisfies its hypotheses.** The statements are for
@@ -172,9 +179,7 @@ statement in several parts is registered one part per node.
    registered: one Lean declaration per theorem, lemma, proposition and corollary, or per part
    of one, and one proposition per cited result. The paper-to-Lean map, node by node, is
    [`CORRESPONDENCE.md`](CORRESPONDENCE.md), with a generated table of every registered
-   statement with its Lean name and paper location. The paper transcribed is
-   `paper/sandpile.tex`, which is arXiv:2609.02829v1 with the corrections listed in
-   [`paper/CHANGES_FROM_ARXIV.md`](paper/CHANGES_FROM_ARXIV.md).
+   statement with its Lean name and paper location.
 
 ## Assumed literature inputs
 

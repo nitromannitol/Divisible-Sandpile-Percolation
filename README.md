@@ -6,12 +6,13 @@ A machine-checked **Lean 4** formalization of the paper
 > *Quantitative explosion and percolation of the divisible sandpile*,
 > [arXiv:2609.02829](https://arxiv.org/abs/2609.02829).
 
-The paper's source, bibliography and figures are included under [`paper/`](paper/). The 12
-main theorems of the paper are proved, in the form in which its introduction states them,
-from results cited from the literature that enter as explicit hypotheses of the theorems that
-use them: 13 of the 16 cited results are hypotheses of main theorems, and 5 of the 12 main
-theorems take none. See [Assumed literature inputs](#assumed-literature-inputs). Every other
-labelled theorem, lemma, proposition and corollary of the paper is formalized as well.
+The paper's source, bibliography and figures are included under [`paper/`](paper/). The
+paper's three main theorems (Theorems 1.1 and 1.2 and the ten parts of Theorem 1.3, 12 Lean
+theorems in all) are proved, in the form in which its introduction states them, from results
+cited from the literature that enter as explicit hypotheses of the theorems that use them:
+13 of the 16 cited results are hypotheses of these theorems, and 5 of the 12 take none. See
+[Assumed literature inputs](#assumed-literature-inputs). Every other labelled theorem, lemma,
+proposition and corollary of the paper is formalized as well.
 
 The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and on
 the shared library [Lattice-Probability](https://github.com/nitromannitol/Lattice-Probability)
@@ -153,7 +154,8 @@ arXiv version.
    [Assumed literature inputs](#assumed-literature-inputs); nothing else is assumed.
 3. **What is not formalized.** The proof-overview, related-work and open-problem subsections,
    the unlabelled remarks (including the nonpercolation remark at low mean, which quotes a
-   Peierls argument of Fey, Meester and Redig rather than proving one), and the figures.
+   Peierls argument of Fey, Meester and Redig rather than proving one), the labelled remark
+   `rem:kernel-concentration`, and the figures.
 4. **Conventions that matter for reading the statements.**
    - Mathlib has no Sobolev space, so every convergence in `H^{−s}_loc` is stated as
      convergence in distribution of each pairing to the matching centred Gaussian together
@@ -341,8 +343,8 @@ lake build
 ```
 
 Lattice-Probability has no prebuilt cache, so the first build compiles it as well as the
-library. `import Sandpile` loads the whole development, and `import Sandpile.MainTheorems`
-loads the main theorems and what they use.
+library. `import Sandpile` loads the main theorems and what they use, and
+`import Sandpile.MainTheorems` loads the main theorems and what they use.
 
 The dependencies are public repositories, pinned to exact commits in
 [`lake-manifest.json`](lake-manifest.json):
@@ -414,7 +416,7 @@ pairs. Both run on pushes to `main` that change Lean files, `tools/`, `paper/`, 
 ## Repository layout
 
 ```text
-Sandpile.lean             the root module, importing the whole library
+Sandpile.lean             the root module, importing the main theorems and what they use
 Sandpile/
   MainTheorems.lean       the main theorems, stated in full
   Frozen/                 the certified statement surface, one frozen statement per file

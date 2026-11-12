@@ -42,7 +42,9 @@ proved, not assumed.
 Modelling.  `Cov` is Mathlib's `covariance`, an integral that would take the
 junk value zero for a field whose product is not integrable; the
 square-integrability hypothesis removes that, exactly as in the paper's lemma.
-The mean-zero hypothesis is stated separately, as the paper does.  The base
+The mean-zero hypothesis is stated separately, as the paper does.  The field is
+jointly measurable in `(ω, y)` (up to a null set of `P ⊗ volume`), as a random field is in
+the cited source.  The base
 `1 + R‖y - y'‖` of the decaying power is at least one, so the real power is not
 a junk value.  Tightness is `TightInNegSobolev`, the paper's own formulation:
 tightness of the `H^{-s}(D)` norms on every bounded domain `D`.
@@ -66,6 +68,8 @@ def Sandpile.External.ContinuumBesovTightness (Ω : Type*) [MeasurableSpace Ω] 
           ∀ φ : Sandpile.Continuum.Space d → ℝ,
             Sandpile.Continuum.IsTestFn Set.univ φ →
               Integrable (fun y => u R ω y * φ y)) →
+      (∀ R : ℝ, 1 ≤ R →
+        AEStronglyMeasurable (fun p : Ω × Sandpile.Continuum.Space d => u R p.1 p.2) (P.prod volume)) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Sandpile.Continuum.Space d,
         MemLp (fun ω => u R ω y) 2 P) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Sandpile.Continuum.Space d, ∫ ω, u R ω y ∂P = 0) →

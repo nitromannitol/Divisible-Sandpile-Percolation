@@ -206,7 +206,7 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `prop-finite-time-concentration-scale` | `cfcdf0b563aba234420a5ef385b83aa6eb8023357245aaf9a9de1f188cf9d9a6` |
 | `ext-heat-kernel-bounds` | `99d8d211a6db06462d471330c671dab2f41d82679944452388ab28c1e5ed9721` |
 | `thm-max-displacement-proved` | `8b7dd3cc8adf6d9354264ae85edc23cd5a0531e9d4d33db11d27aea951046d1c` |
-| `ext-continuum-besov-tightness` | `d72ebd1682975c656e63e982fe9fb0111fa9bf7459d50513a642766ebf01795d` |
+| `ext-continuum-besov-tightness` | `a8ad3690aff8f0523ac2530b309d5a64fe004e773a1bb2fb967de96b45776dce` |
 | `thm-rw` | `47915d0b5cde43453c3d8fa9bb942ac19febcc1e4b53debc0d9edaa29d9e35e0` |
 | `lem-difference-representation` | `be21e961de68572ec46ab54bcb011b9780b76b94df13855954e5fda48edf59ca` |
 | `lem-localization-killing` | `517a9a01ba5700025c8a7d23e2b1b3dd4c6f8469ef54bc90d95e860d109bca44` |

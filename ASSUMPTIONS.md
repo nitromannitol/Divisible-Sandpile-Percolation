@@ -100,6 +100,8 @@ def Sandpile.External.ContinuumBesovTightness (Ω : Type*) [MeasurableSpace Ω] 
           ∀ φ : Sandpile.Continuum.Space d → ℝ,
             Sandpile.Continuum.IsTestFn Set.univ φ →
               Integrable (fun y => u R ω y * φ y)) →
+      (∀ R : ℝ, 1 ≤ R →
+        AEStronglyMeasurable (fun p : Ω × Sandpile.Continuum.Space d => u R p.1 p.2) (P.prod volume)) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Sandpile.Continuum.Space d,
         MemLp (fun ω => u R ω y) 2 P) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Sandpile.Continuum.Space d, ∫ ω, u R ω y ∂P = 0) →

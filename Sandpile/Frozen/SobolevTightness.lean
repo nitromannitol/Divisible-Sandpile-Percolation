@@ -101,7 +101,7 @@ theorem Sandpile.Frozen.sobolev_tightness
     (fun R ω φ => R ^ (β / 2) *
       ∫ y : Sandpile.Continuum.Space d, F R ω (fun i => ⌊R * y i⌋) * φ y)
   refine hBesov d β (K * (1 + Real.sqrt (d : ℝ)) ^ β) hβ0 hβd s hs P
-    (fun R ω y => F R ω (fun i => ⌊R * y i⌋)) ?_ ?_ ?_ ?_
+    (fun R ω y => F R ω (fun i => ⌊R * y i⌋)) ?_ ?_ ?_ ?_ ?_
   · intro R hR ω
     constructor
     · exact (measurable_of_countable (F R ω)).comp
@@ -120,6 +120,19 @@ theorem Sandpile.Frozen.sobolev_tightness
       refine MeasureTheory.integrable_finsetSum s (fun x _ => ?_)
       exact (hφint.const_mul (F R ω x)).indicator
         (Sandpile.Support.measurableSet_cell d R x)
+  · intro R hR
+    have hx : ∀ x : Sandpile.Site d, AEStronglyMeasurable (fun ω => F R ω x) P :=
+      fun x => (hmem R hR x).aestronglyMeasurable
+    have hall : ∀ᵐ ω ∂P, ∀ x : Sandpile.Site d, (hx x).mk _ ω = F R ω x :=
+      ae_all_iff.2 fun x => (hx x).ae_eq_mk.symm
+    have hmk : Measurable fun q : Ω × Sandpile.Site d => (hx q.2).mk _ q.1 :=
+      measurable_from_prod_countable_left fun x => (hx x).stronglyMeasurable_mk.measurable
+    refine ⟨fun p => (hx (fun i => ⌊R * p.2 i⌋)).mk _ p.1, ?_, ?_⟩
+    · exact (hmk.comp (measurable_fst.prodMk ((measurable_pi_lambda _ fun i =>
+        Sandpile.Support.measurable_coord R i).comp measurable_snd))).stronglyMeasurable
+    · filter_upwards [Measure.QuasiMeasurePreserving.ae Measure.quasiMeasurePreserving_fst hall]
+        with p hp
+      exact (hp _).symm
   · intro R hR y
     exact hmem R hR _
   · intro R hR y

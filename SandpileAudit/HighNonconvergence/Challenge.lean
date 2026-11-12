@@ -1091,6 +1091,8 @@ def ContinuumBesovTightness (Ω : Type*) [MeasurableSpace Ω] : Prop :=
           ∀ φ : Continuum.Space d → ℝ,
             Continuum.IsTestFn Set.univ φ →
               Integrable (fun y => u R ω y * φ y)) →
+      (∀ R : ℝ, 1 ≤ R →
+        AEStronglyMeasurable (fun p : Ω × Continuum.Space d => u R p.1 p.2) (P.prod volume)) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Continuum.Space d,
         MemLp (fun ω => u R ω y) 2 P) →
       (∀ R : ℝ, 1 ≤ R → ∀ y : Continuum.Space d, ∫ ω, u R ω y ∂P = 0) →

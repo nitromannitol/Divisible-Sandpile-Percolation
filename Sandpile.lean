@@ -23,6 +23,7 @@ import Sandpile.External.GaussianFourierProved
 import Sandpile.External.GaussianLawCovariance
 import Sandpile.External.GaussianLawCovarianceProved
 import Sandpile.External.GaussianLipschitzConcentration
+import Sandpile.External.GaussianLipschitzConcentrationProved
 import Sandpile.External.GaussianUpperProved
 import Sandpile.External.GreenBoundsHigh
 import Sandpile.External.GreenBoundsHighProved
@@ -41,6 +42,7 @@ import Sandpile.External.PairedLocalCLTFourProved
 import Sandpile.External.Pinsker
 import Sandpile.External.PinskerProved
 import Sandpile.External.PittGaussianFKG
+import Sandpile.External.PittGaussianFKGProved
 import Sandpile.External.PlanarRSW
 import Sandpile.External.RellichKondrachovNegSobolev
 import Sandpile.External.VarianceScale
@@ -530,6 +532,7 @@ import Sandpile.Support.FiniteProductSplit
 import Sandpile.Support.GaussPersist
 import Sandpile.Support.GaussianApproximation
 import Sandpile.Support.GaussianBottleneck
+import Sandpile.Support.GaussianConcentrationInfinite
 import Sandpile.Support.GaussianCrossingUpper
 import Sandpile.Support.GaussianIncrement
 import Sandpile.Support.GaussianIntegrability

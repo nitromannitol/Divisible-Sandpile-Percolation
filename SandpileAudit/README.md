@@ -52,8 +52,8 @@ library theorem carries, restated in the vocabulary.
 
 | Directory | Cited results carried as hypotheses (namespace `External`) |
 | --- | --- |
-| `Nontriviality/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `CubeStoppingStability` |
-| `CriticalLevels/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`, `BallOccupationDensity`, `CubeStoppingStability` |
+| `Nontriviality/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `BallOccupationDensity`, `CubeStoppingStability` |
+| `CriticalLevels/` | `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `BallOccupationDensity`, `CubeStoppingStability` |
 | `MeanGrowthLow/` | `ContinuumStoppingStability`, `ContinuumOptimalStopping` |
 | `BrownianScalingLimit/` | `ContinuumStoppingStability` |
 | `MeanGrowthFour/` | none |
@@ -62,7 +62,7 @@ library theorem carries, restated in the vocabulary.
 | `FourSobolev/` | `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
 | `HighFirstOrder/` | none |
 | `HighTail/` | none |
-| `HighSobolevLimit/` | `GaussianLipschitzConcentration`, `NormalComparison`, `ContinuumBesovTightness` |
+| `HighSobolevLimit/` | `NormalComparison`, `ContinuumBesovTightness` |
 | `HighNonconvergence/` | `ContinuumBesovTightness` |
 
 Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
@@ -70,7 +70,12 @@ Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
 `BallGreenBounds`, are proved unconditionally in the repository
 (`Sandpile/External/*Proved.lean`; see `ASSUMPTIONS.md`) rather than assumed;
 none of the twelve certified statements, and so none of the challenges above,
-carries any of the seven as a hypothesis.
+carries any of the seven as a hypothesis.  Two more, `PittGaussianFKG` and
+`GaussianLipschitzConcentration`, are proved unconditionally in the same way.
+The certified statements of `Nontriviality/`, `CriticalLevels/` and
+`HighSobolevLimit/` still carry them as hypotheses; the theorems of
+`Sandpile/MainTheorems.lean` discharge them, and the challenges above do not
+carry them.
 
 The content of each theorem is summarized in the docstring of its challenge and
 in `Sandpile/MainTheorems.lean`.

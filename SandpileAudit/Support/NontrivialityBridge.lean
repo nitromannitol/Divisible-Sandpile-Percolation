@@ -91,10 +91,6 @@ theorem continuumRSW (h : SandpileAudit.External.ContinuumRSW) :
   exact ⟨ψ, fun Ω _ P _ X hm hc hs ha R hR level =>
     hψ Ω P X hm hc ((isSymmetricField_iff P X).2 hs) ha R hR level⟩
 
-theorem pittGaussianFKG (h : SandpileAudit.External.PittGaussianFKG) :
-    Sandpile.External.PittGaussianFKG :=
-  h
-
 theorem ballOccupationDensity (h : SandpileAudit.External.BallOccupationDensity) :
     Sandpile.External.BallOccupationDensity :=
   fun d hd s hs u Ω _ P _ B hB hc hm =>

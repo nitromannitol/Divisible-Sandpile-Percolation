@@ -24,7 +24,6 @@ theorem critical_level_percolation
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
-    (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (hθ₀ : 0 < θ₀) :
@@ -40,7 +39,7 @@ theorem critical_level_percolation
   exact Sandpile.critical_level_percolation
     (Bridge.planarRSW hRSW)
     (Bridge.lssDomination hLSS) (Bridge.exteriorBoundaryConnected hBoundary)
-    (Bridge.continuumRSW hRSWc) (Bridge.pittGaussianFKG hPitt)
+    (Bridge.continuumRSW hRSWc)
     (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd ν₀ θ₀ K₀ hν₀ hθ₀
 

@@ -10,7 +10,7 @@ The paper's source, bibliography and figures are included under [`paper/`](paper
 paper's three main theorems (Theorems 1.1 and 1.2 and the ten parts of Theorem 1.3, 12 Lean
 theorems in all) are proved, in the form in which its introduction states them, from results
 cited from the literature that enter as explicit hypotheses of the theorems that use them:
-13 of the 16 cited results are hypotheses of these theorems, and 5 of the 12 take none. See
+11 of the 14 cited results are hypotheses of these theorems, and 5 of the 12 take none. See
 [Assumed literature inputs](#assumed-literature-inputs). Every other labelled theorem, lemma,
 proposition and corollary of the paper is formalized as well.
 
@@ -77,7 +77,7 @@ certified ones. The hypotheses listed are the cited results each theorem carries
 family of laws `μ_ρ` of mean `ρ`, with `Var_{μ_ρ} σ(0) ≥ ν₀²` and
 `E_{μ_ρ} e^{θ₀|σ(0)−ρ|} ≤ K₀` for `ρ ∈ [ρ₀, 1)`, there is `ρ₊ ∈ [ρ₀, 1)` such that for every
 `ρ ∈ (ρ₊, 1)` the toppled set contains an infinite component almost surely. Hypotheses:
-`PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG`,
+`PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`,
 `BallOccupationDensity`, `CubeStoppingStability`.
 
 **Theorem 1.2 (critical level percolation, `thm:main-critical-level-percolation`).** There are
@@ -114,7 +114,7 @@ surely. Hypotheses: the same seven as Theorem 1.1.
    `R^{(d−4)/2}(u_{⌊TR²⌋} − E u_{⌊TR²⌋}(0))^{(R)}` converge in `H^{−s}_loc`, `s > (d−4)/2`, to
    `ℋ_{1,T}` for Gaussian scenery and to `ℋ_{1−1/α,T}` for atomless scenery bounded above with
    a regularly varying lower tail of index `α > 2`. Hypotheses:
-   `GaussianLipschitzConcentration`, `NormalComparison`, `ContinuumBesovTightness`.
+   `NormalComparison`, `ContinuumBesovTightness`.
 4. *(d) Non-convergence.* There is a law with mean zero, variance one, a smooth positive
    density and an exponential moment whose rescaled fluctuations are tight in `H^{−s}_loc` but
    have uncountably many distinct subsequential limits, and so do not converge. Hypothesis:
@@ -149,7 +149,7 @@ arXiv version.
    `ρ₊ ∈ [ρ₀, 1)` holds.
 2. **Axioms and incomplete proofs.** The library contains no `sorry`, no `admit`, no
    `native_decide` and no new `axiom`. The axiom report of each main theorem consists of
-   exactly `propext`, `Classical.choice` and `Quot.sound`. The main theorems take 13 cited
+   exactly `propext`, `Classical.choice` and `Quot.sound`. The main theorems take 11 cited
    results as explicit hypotheses, listed under
    [Assumed literature inputs](#assumed-literature-inputs); nothing else is assumed.
 3. **What is not formalized.** The proof-overview, related-work and open-problem subsections,
@@ -186,10 +186,10 @@ arXiv version.
 ## Assumed literature inputs
 
 Results that the paper quotes from the literature are stated in Lean as propositions in
-`Sandpile/External/`. There are 16 such propositions that this repository does not prove, and
+`Sandpile/External/`. There are 14 such propositions that this repository does not prove, and
 every theorem whose proof uses one takes it as an explicit hypothesis, so the statement shows
-exactly which of them it rests on. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 16 with their
-verbatim Lean statements. Thirteen are hypotheses of the main theorems:
+exactly which of them it rests on. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 14 with their
+verbatim Lean statements. Eleven are hypotheses of the main theorems:
 
 | Hypothesis | Content | Source | Used by |
 | --- | --- | --- | --- |
@@ -197,14 +197,12 @@ verbatim Lean statements. Thirteen are hypotheses of the main theorems:
 | `Sandpile.External.ContinuumRSW` (`hRSWc`) | the same crossing comparison for symmetric positively associated continuous planar fields (superlevel sets) | Köhler-Schindler and Tassion, Theorem 1 and Comment 1 | Theorems 1.1, 1.2 |
 | `Sandpile.External.LSSDomination` (`hLSS`) | a planar stationary `k`-dependent site process with one-site density at least `1 − δ` has an infinite component almost surely | Liggett, Schonmann and Stacey (1997), Corollary 1.4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ExteriorBoundaryConnected` (`hBoundary`) | the exterior vertex boundary of a finite `*`-connected subset of `ℤ^d` is `*`-connected | Timár, Theorem 3 | Theorems 1.1, 1.2 |
-| `Sandpile.External.PittGaussianFKG` (`hPitt`) | a centred Gaussian planar field with nonnegative covariances is positively associated | Pitt (1982) | Theorems 1.1, 1.2 |
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
 | `Sandpile.External.ContinuumBesovTightness` (`hBesov`) | tightness criterion in `H^{−s}_loc` for a jointly measurable field, from covariance bounds | Furlan and Mourrat, Theorem 2.30 (`p = q = 2`) | Theorems 1.3(ii)(c), 1.3(iii)(c), 1.3(iii)(d) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
-| `Sandpile.External.GaussianLipschitzConcentration` (`hGaussConc`) | Gaussian concentration for Lipschitz functionals of i.i.d. standard Gaussians | Borell (1975); Tsirelson, Ibragimov and Sudakov (1976) | Theorem 1.3(iii)(c) |
 | `Sandpile.External.NormalComparison` (`hNormal`) | normal comparison: the orthant probability of a centred Gaussian vector with nonnegative correlations against the product of the marginals | Li and Shao, Corollary 2.1 | Theorem 1.3(iii)(c) |
 
 The other three, `MultivariateBerryEsseen`, `RellichKondrachovNegSobolev` and
@@ -212,13 +210,17 @@ The other three, `MultivariateBerryEsseen`, `RellichKondrachovNegSobolev` and
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
 hypothesis.
 
-Ten further results the paper cites without proof are **proved unconditionally in this
+Twelve further results the paper cites without proof are **proved unconditionally in this
 repository** (`Sandpile/External/*Proved.lean`) and so are not carried as a hypothesis by any
 main theorem: the `d ≥ 5` Green-function estimates, the finite-time variance scale, the
 heat-kernel bounds, the discrete optimal-stopping representation of the odometer, the
 determination of a centred Gaussian law by its covariance, Pinsker's inequality, the second
 intersection moment of two independent walks, the local central limit theorem, its paired
-dimension-four form, and the ball-killed Green bounds.
+dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982), and
+Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov).
+The certified statements of Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry Pitt's
+theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration, as hypotheses;
+`Sandpile/MainTheorems.lean` discharges them.
 
 ## Registered statements
 
@@ -234,8 +236,8 @@ proved. Every registered statement is pinned by hash; only the `FROZEN` ones are
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
-Status: **99 registered statements: 83 `PROVED`, proved here, and 16 `FROZEN`, cited results that are assumed.**  The 83 `PROVED` nodes are machine-checked and no proved
-node's axiom closure contains `sorryAx`.  The 16 `FROZEN` nodes are cited results, stated in
+Status: **99 registered statements: 85 `PROVED/SEALED`, proved here, and 14 `FROZEN`, cited results that are assumed.**  The 85 `PROVED/SEALED` nodes are machine-checked and no proved
+node's axiom closure contains `sorryAx`.  The 14 `FROZEN` nodes are cited results, stated in
 `Sandpile/External/` and carried as explicit hypotheses by the theorems
 that use them; they are assumed here, not proved.  Run
 `python3 tools/check_axioms.py` to confirm.  Counts here are generated
@@ -328,9 +330,9 @@ parameter is bound before it. The certificate of the build and of each node's ax
 
 ## Size
 
-The library contains 1,137 Lean files with 197,582 physical lines, on top of mathlib and
+The library contains 1,140 Lean files with 198,103 physical lines, on top of mathlib and
 Lattice-Probability. The count covers `Sandpile.lean` and `Sandpile/`. The comparator sources
-(48 files, 29,381 lines) are counted separately.
+(48 files, 29,419 lines) are counted separately.
 
 ## Building
 

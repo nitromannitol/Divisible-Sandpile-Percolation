@@ -33,7 +33,11 @@ certified statement carries no hypothesis for it.  `LocalCLT` and
 `BallGreenBounds` are each proved unconditionally in this repository
 (`Sandpile.External.localCLT`, `Sandpile.External.ballGreenBounds`), so
 neither is carried as a hypothesis by the certified statement, and this
-challenge carries neither either.  The remaining cited results are restated
+challenge carries neither either.  `PittGaussianFKG` (Pitt's Gaussian FKG
+theorem) is also proved unconditionally in this repository
+(`Sandpile.External.pittGaussianFKG`); the certified statement still carries it
+as a hypothesis, `Sandpile.percolation_below_criticality` discharges it, and this
+challenge does not carry it.  The remaining cited results are restated
 in the vocabulary as the same hypotheses the certified statement carries.
 
 * `External.PlanarRSW`: the planar RSW comparison (Köhler-Schindler and Tassion,
@@ -44,7 +48,6 @@ in the vocabulary as the same hypotheses the certified statement carries.
   (Timár, Theorem 3);
 * `External.ContinuumRSW`: the continuum RSW comparison (Köhler-Schindler and
   Tassion, Theorem 1, continuum form);
-* `External.PittGaussianFKG`: Pitt's Gaussian FKG theorem;
 * `External.BallOccupationDensity`: the Green function of a Euclidean ball as an
   occupation density (Mörters and Peres, Chapter 3);
 * `External.CubeStoppingStability`: stability of cube-killed optimal-stopping
@@ -1196,7 +1199,6 @@ theorem percolation_below_criticality
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
-    (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))

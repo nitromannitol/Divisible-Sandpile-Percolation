@@ -24,7 +24,6 @@ theorem percolation_below_criticality
     (hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
-    (hPitt : External.PittGaussianFKG)
     (hOcc : External.BallOccupationDensity)
     (hCube : External.CubeStoppingStability)
     (d : ℕ) (hd : 2 ≤ d) (μ : ℝ → Measure ℝ) (hprob : ∀ ρ, IsProbabilityMeasure (μ ρ))
@@ -40,7 +39,7 @@ theorem percolation_below_criticality
   exact Sandpile.percolation_below_criticality
     (Bridge.planarRSW hRSW) (Bridge.lssDomination hLSS)
     (Bridge.exteriorBoundaryConnected hBoundary) (Bridge.continuumRSW hRSWc)
-    (Bridge.pittGaussianFKG hPitt) (Bridge.ballOccupationDensity hOcc)
+    (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd μ hprob hmean ρ₀ ν₀ θ₀
     K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 

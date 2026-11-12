@@ -305,15 +305,14 @@ nodes:
     approved: "2026-09-11"
 
   - id: ext-pitt-gaussian-fkg
-    version: 1
-    kind: definition
-    source: sandpile.tex:2104 (Pitt Theorem p. 496 Eq. (1), Gaussian FKG)
-    file: Sandpile/External/PittGaussianFKG.lean
-    export: Sandpile.External.PittGaussianFKG
-    state: FROZEN
-    frozen_sha256: 18bc7b6f05b7825e98bb1d2104ffe0b625c11f75eaf7787e4a726b8cf72de301
-    provider: Sandpile.External.PittGaussianFKG
-    approved: "2026-09-11"
+    version: 2
+    kind: theorem
+    source: sandpile.tex:2104 (Pitt Theorem p. 496 Eq. (1), Gaussian FKG); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/PittGaussianFKGProved.lean
+    export: Sandpile.External.pittGaussianFKG
+    state: SEALED
+    frozen_sha256: d8a48edc39551688cfcb4cd7e6a5edb6147dd200aab20e212c7c826eecfdd14a
+    provider: Sandpile.External.pittGaussianFKG
 
   - id: ext-gaussian-law-covariance
     version: 2
@@ -349,15 +348,14 @@ nodes:
     approved: "2026-09-12"
 
   - id: ext-gaussian-lipschitz-concentration
-    version: 1
-    kind: definition
-    source: sandpile.tex:5300-5305 (Borell 1975 and Tsirelson-Ibragimov-Sudakov 1976, Gaussian concentration for a Lipschitz functional)
-    file: Sandpile/External/GaussianLipschitzConcentration.lean
-    export: Sandpile.External.GaussianLipschitzConcentration
-    state: FROZEN
-    frozen_sha256: 593d6115d7f967f4aa56428a89c0b225ae301a9fe3368fe2db44615a0ff87c20
-    provider: Sandpile.External.GaussianLipschitzConcentration
-    approved: "2026-09-13"
+    version: 2
+    kind: theorem
+    source: sandpile.tex:5300-5305 (Borell 1975 and Tsirelson-Ibragimov-Sudakov 1976, Gaussian concentration for a Lipschitz functional); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/GaussianLipschitzConcentrationProved.lean
+    export: Sandpile.External.gaussianLipschitzConcentration
+    state: SEALED
+    frozen_sha256: afb0ce594d4041e341a41bfc3b12b97c2aa2b67d70b73de9f82f91917022f6ac
+    provider: Sandpile.External.gaussianLipschitzConcentration
 
   - id: ext-membrane-scaling-four
     version: 1

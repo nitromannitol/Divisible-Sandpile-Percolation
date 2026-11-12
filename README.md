@@ -10,7 +10,7 @@ The paper's source, bibliography and figures are included under [`paper/`](paper
 paper's three main theorems (Theorems 1.1 and 1.2 and the ten parts of Theorem 1.3, 12 Lean
 theorems in all) are proved, in the form in which its introduction states them, from results
 cited from the literature that enter as explicit hypotheses of the theorems that use them:
-11 of the 14 cited results are hypotheses of these theorems, and 5 of the 12 take none. See
+10 of the 13 cited results are hypotheses of these theorems, and 5 of the 12 take none. See
 [Assumed literature inputs](#assumed-literature-inputs). Every other labelled theorem, lemma,
 proposition and corollary of the paper is formalized as well.
 
@@ -113,8 +113,8 @@ surely. Hypotheses: the same seven as Theorem 1.1.
 3. *(c) Weighted membrane limits.* The fields
    `R^{(d−4)/2}(u_{⌊TR²⌋} − E u_{⌊TR²⌋}(0))^{(R)}` converge in `H^{−s}_loc`, `s > (d−4)/2`, to
    `ℋ_{1,T}` for Gaussian scenery and to `ℋ_{1−1/α,T}` for atomless scenery bounded above with
-   a regularly varying lower tail of index `α > 2`. Hypotheses:
-   `NormalComparison`, `ContinuumBesovTightness`.
+   a regularly varying lower tail of index `α > 2`. Hypothesis:
+   `ContinuumBesovTightness`.
 4. *(d) Non-convergence.* There is a law with mean zero, variance one, a smooth positive
    density and an exponential moment whose rescaled fluctuations are tight in `H^{−s}_loc` but
    have uncountably many distinct subsequential limits, and so do not converge. Hypothesis:
@@ -186,10 +186,10 @@ arXiv version.
 ## Assumed literature inputs
 
 Results that the paper quotes from the literature are stated in Lean as propositions in
-`Sandpile/External/`. There are 14 such propositions that this repository does not prove, and
+`Sandpile/External/`. There are 13 such propositions that this repository does not prove, and
 every theorem whose proof uses one takes it as an explicit hypothesis, so the statement shows
-exactly which of them it rests on. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 14 with their
-verbatim Lean statements. Eleven are hypotheses of the main theorems:
+exactly which of them it rests on. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 13 with their
+verbatim Lean statements. Ten are hypotheses of the main theorems:
 
 | Hypothesis | Content | Source | Used by |
 | --- | --- | --- | --- |
@@ -203,23 +203,23 @@ verbatim Lean statements. Eleven are hypotheses of the main theorems:
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
 | `Sandpile.External.ContinuumBesovTightness` (`hBesov`) | tightness criterion in `H^{−s}_loc` for a jointly measurable field, from covariance bounds | Furlan and Mourrat, Theorem 2.30 (`p = q = 2`) | Theorems 1.3(ii)(c), 1.3(iii)(c), 1.3(iii)(d) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
-| `Sandpile.External.NormalComparison` (`hNormal`) | normal comparison: the orthant probability of a centred Gaussian vector with nonnegative correlations against the product of the marginals | Li and Shao, Corollary 2.1 | Theorem 1.3(iii)(c) |
 
 The other three, `MultivariateBerryEsseen`, `RellichKondrachovNegSobolev` and
 `BrownianExitStep`, are hypotheses of intermediate statements in `Sandpile/Frozen/` only.
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
 hypothesis.
 
-Twelve further results the paper cites without proof are **proved unconditionally in this
+Thirteen further results the paper cites without proof are **proved unconditionally in this
 repository** (`Sandpile/External/*Proved.lean`) and so are not carried as a hypothesis by any
 main theorem: the `d ≥ 5` Green-function estimates, the finite-time variance scale, the
 heat-kernel bounds, the discrete optimal-stopping representation of the odometer, the
 determination of a centred Gaussian law by its covariance, Pinsker's inequality, the second
 intersection moment of two independent walks, the local central limit theorem, its paired
-dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982), and
-Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov).
-The certified statements of Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry Pitt's
-theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration, as hypotheses;
+dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982),
+Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov), and
+the normal comparison inequality (Li and Shao, Corollary 2.1). The certified statements of
+Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry Pitt's theorem, and that of
+Theorem 1.3(iii)(c) Gaussian concentration and the normal comparison inequality, as hypotheses;
 `Sandpile/MainTheorems.lean` discharges them.
 
 ## Registered statements
@@ -236,8 +236,8 @@ proved. Every registered statement is pinned by hash; only the `FROZEN` ones are
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
-Status: **99 registered statements: 85 `PROVED/SEALED`, proved here, and 14 `FROZEN`, cited results that are assumed.**  The 85 `PROVED/SEALED` nodes are machine-checked and no proved
-node's axiom closure contains `sorryAx`.  The 14 `FROZEN` nodes are cited results, stated in
+Status: **99 registered statements: 86 `PROVED/SEALED`, proved here, and 13 `FROZEN`, cited results that are assumed.**  The 86 `PROVED/SEALED` nodes are machine-checked and no proved
+node's axiom closure contains `sorryAx`.  The 13 `FROZEN` nodes are cited results, stated in
 `Sandpile/External/` and carried as explicit hypotheses by the theorems
 that use them; they are assumed here, not proved.  Run
 `python3 tools/check_axioms.py` to confirm.  Counts here are generated
@@ -330,9 +330,9 @@ parameter is bound before it. The certificate of the build and of each node's ax
 
 ## Size
 
-The library contains 1,140 Lean files with 198,103 physical lines, on top of mathlib and
+The library contains 1,141 Lean files with 198,128 physical lines, on top of mathlib and
 Lattice-Probability. The count covers `Sandpile.lean` and `Sandpile/`. The comparator sources
-(48 files, 29,419 lines) are counted separately.
+(48 files, 29,413 lines) are counted separately.
 
 ## Building
 

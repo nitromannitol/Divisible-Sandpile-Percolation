@@ -49,8 +49,4 @@ theorem continuumBesovTightness (Ω : Type*) [MeasurableSpace Ω]
     Sandpile.External.ContinuumBesovTightness Ω :=
   h
 
-theorem normalComparison (h : SandpileAudit.External.NormalComparison) :
-    Sandpile.External.NormalComparison :=
-  h
-
 end SandpileAudit.Bridge

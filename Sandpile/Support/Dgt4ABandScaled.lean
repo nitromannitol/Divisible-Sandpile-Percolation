@@ -12,10 +12,8 @@ of the error bound and the uniform-convergence step.
 
 The profile `y_{k,n} = z_{k,n}^{-ϑ_k}` depends on the scale as well as on the
 time, and the paper sums its increments from the hitting time `τ_k`, where it is
-`O(1)`, not from zero.  Both must be carried: a single sequence read at every
-scale cannot satisfy the increment hypothesis in the regime of the band
-construction, since the band weights tend to zero while the exponents stay
-bounded, and `Sandpile.Support.no_single_sequence_summed_profile` proves that.
+`O(1)`, not from zero.  Both are carried, since in the regime of the band
+construction the band weights tend to zero while the exponents stay bounded.
 So the summation is stated for a FAMILY `y : ℕ → ℕ → ℝ` of sequences with a
 family of starting indices `s_k = o(R_k^2)`.
 

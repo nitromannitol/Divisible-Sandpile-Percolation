@@ -11,9 +11,7 @@ and continuity in the starting point. Both come from the same source: a Brownian
 at `y` is the motion started at the origin shifted by `y`, so the stopping classes at the two
 starting points correspond and the value differs only by the shift. Continuity is then the
 Lipschitz estimate already proved for the discounted cube reward, and measurability follows from
-an everywhere-continuous, everywhere-measurable version of the driving field. A companion
-example (`not_continuous_brownianValueCube_startingPoint`) shows that continuity genuinely fails
-when the motion is *not* shifted along with the starting point.
+an everywhere-continuous, everywhere-measurable version of the driving field.
 -/
 
 open Set Filter MeasureTheory ProbabilityTheory
@@ -290,77 +288,6 @@ theorem brownianDiscountCube_of_neg {ΩB : Type*} [MeasurableSpace ΩB] {d : ℕ
       exact ⟨fun _ => 0, isBrownianStopping_const B 0, fun ω => by simpa using hT,
         Filter.Eventually.of_forall (fun ω s hs => absurd hs (by simp)), by rw [ha, hint]⟩
   rw [brownianDiscountCube_eq_sSup, hset, csSup_singleton]
-
-/-- **The first statement above is false.**  For the constant motion on a one-point space, `d = 1`,
-`Z t x = t`, `T = L = 1`, the cube value is `1` while the centre `u` is within the cube about the
-frozen position `0`, and `0` as soon as `|u| > 1`: no stopping time may run once the frozen
-position has left the cube, so only `τ = 0` is admissible.  With `B` unrelated to `u`, the cube
-value of an arbitrary motion is discontinuous in the centre. -/
-theorem not_continuous_brownianValueCube_startingPoint :
-    ¬ ∀ (d : ℕ) {ΩB : Type} [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]
-        (B : ℝ≥0 → ΩB → Sandpile.Continuum.Space d) (Z : ℝ → Sandpile.Continuum.Space d → ℝ),
-        (Continuous fun q : ℝ × Sandpile.Continuum.Space d => Z q.1 q.2) → ∀ (T L : ℝ), 0 < T →
-        Continuous fun u : Sandpile.Continuum.Space d =>
-          Sandpile.Continuum.brownianValueCube B PB Z T L u := by
-  intro H
-  let B : ℝ≥0 → Unit → Space 1 := fun _ _ => 0
-  let PB : Measure Unit := Measure.dirac ()
-  let Z : ℝ → Space 1 → ℝ := fun t _ => t
-  have hc : Continuous fun u : Space 1 => brownianValueCube B PB Z 1 1 u :=
-    @H 1 Unit inferInstance PB inferInstance B Z continuous_fst 1 1 one_pos
-  let v : ℝ → Space 1 := fun s => (EuclideanSpace.equiv (Fin 1) ℝ).symm (fun _ => s)
-  have hv : Continuous v :=
-    (EuclideanSpace.equiv (Fin 1) ℝ).symm.continuous.comp (continuous_pi fun _ => continuous_id)
-  have hvs : ∀ s (i : Fin 1), v s i = s := fun _ _ => rfl
-  have hval1 : ∀ s : ℝ, |s| ≤ 1 → brownianValueCube B PB Z 1 1 (v s) = 1 := by
-    intro s hs
-    rw [brownianValueCube_eq, brownianDiscountCube_eq_sSup]
-    have h0 : sSup (cubeStoppingPayoffs B PB Z 1 1 (v s)) = 0 := by
-      refine IsGreatest.csSup_eq ⟨?_, ?_⟩
-      · refine ⟨fun _ => 1, isBrownianStopping_const _ 1, fun _ => by simp, ?_, ?_⟩
-        · exact Filter.Eventually.of_forall fun ω t ht i => by simpa [B, hvs] using hs
-        · simp [PB, Z]
-      · rintro a ⟨τ, -, hτ, -, rfl⟩
-        have h1 := hτ ()
-        simp only [PB, Z, integral_dirac]
-        linarith
-    rw [h0]
-    simp [Z]
-  have hval0 : ∀ s : ℝ, 1 < |s| → brownianValueCube B PB Z 1 1 (v s) = 0 := by
-    intro s hs
-    rw [brownianValueCube_eq, brownianDiscountCube_eq_sSup]
-    have hset : cubeStoppingPayoffs B PB Z 1 1 (v s) = {-1} := by
-      ext a
-      constructor
-      · rintro ⟨τ, -, hτ, hcube, rfl⟩
-        have hτ0 : τ () = 0 := by
-          by_contra hne
-          simp only [PB, ae_dirac_eq, Filter.eventually_pure] at hcube
-          have h1 := hcube 0 (pos_iff_ne_zero.2 hne) 0
-          simp only [B, hvs, PiLp.zero_apply, zero_sub, abs_neg] at h1
-          linarith
-        simp only [PB, Z, integral_dirac, hτ0]
-        simp
-      · intro ha
-        rw [Set.mem_singleton_iff] at ha
-        refine ⟨fun _ => 0, isBrownianStopping_const _ 0, fun _ => by simp,
-          Filter.Eventually.of_forall fun ω t ht => absurd ht (by simp), ?_⟩
-        rw [ha]
-        simp [PB, Z]
-    rw [hset, csSup_singleton]
-    simp [Z]
-  have hg : Continuous fun s : ℝ => brownianValueCube B PB Z 1 1 (v s) := hc.comp hv
-  have h0 : brownianValueCube B PB Z 1 1 (v 0) = 1 := hval1 0 (by simp)
-  have h2 : brownianValueCube B PB Z 1 1 (v 2) = 0 := hval0 2 (by norm_num)
-  obtain ⟨s, hs⟩ := intermediate_value_univ 2 0 hg
-    (show (1 / 2 : ℝ) ∈ Set.Icc (brownianValueCube B PB Z 1 1 (v 2))
-      (brownianValueCube B PB Z 1 1 (v 0)) by rw [h0, h2]; constructor <;> norm_num)
-  have hs' : brownianValueCube B PB Z 1 1 (v s) = 1 / 2 := hs
-  by_cases hs1 : |s| ≤ 1
-  · rw [hval1 s hs1] at hs'
-    norm_num at hs'
-  · rw [hval0 s (not_le.1 hs1)] at hs'
-    norm_num at hs'
 
 /-- **The cube value is continuous in its starting point.**  Here the starting point moves the
 motion together with the cube: the motion started at `u` is the motion started at the origin,

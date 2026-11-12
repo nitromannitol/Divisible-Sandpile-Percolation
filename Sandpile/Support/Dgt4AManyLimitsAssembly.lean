@@ -52,27 +52,12 @@ theorem greenRatioSup_pos {d : ℕ} (hd : 3 ≤ d) : 0 < LatticeProb.greenRatioS
     exact hG
   linarith
 
-/-- **The gap clause of `exists_step1_law_banded` is unsatisfiable in dimension `0`.**
-There `greenRatioSup 0` is a supremum over the empty type, hence `0`, so the quotient
-`θ0 / greenRatioSup 0` is `0` and cannot exceed the positive `P.lam0`.  So
-`exists_step1_law_banded` is FALSE at `d = 0`, and its statement needs a dimension
-hypothesis; `exists_step1_law_banded` below is the statement with one. -/
-theorem not_exists_gap_zero :
-    ¬ ∃ (P : BandParameters) (θ0 : ℝ), P.lam0 < θ0 / LatticeProb.greenRatioSup 0 := by
-  rintro ⟨P, θ0, h⟩
-  have hempty : IsEmpty {z : Site 0 // z ≠ 0} :=
-    ⟨fun z => z.2 (Subsingleton.elim _ _)⟩
-  have h0 : LatticeProb.greenRatioSup 0 = 0 := Real.iSup_of_isEmpty _
-  rw [h0, div_zero] at h
-  exact absurd P.hlam0 (not_lt.mpr h.le)
-
 /-- **Step 1, with every band predicate exposed, in a transient dimension.**  The same
 construction as `exists_step1_law`, additionally returning the three predicates its
 parameters already satisfy, and the gap `lam0 < θ0 / ℓ₀` between the exponential
 moment and the Green ratio.
 
-The dimension hypothesis is needed: at `d = 0` the gap clause is unsatisfiable
-(`not_exists_gap_zero`).  The parameters are taken from `exists_admissible_small` at
+The dimension hypothesis makes the Green ratio positive (`greenRatioSup_pos`).  The parameters are taken from `exists_admissible_small` at
 `max l0 ℓ₀`, so that `ℓ₁ > ℓ₀` and `lam0 < 1/ℓ₀`; the exponential moment is then
 taken at `θ0 = (lam0 ℓ₀ + 1)/2`, which lies below the threshold `1` of the band
 weights and above `lam0 ℓ₀`. -/

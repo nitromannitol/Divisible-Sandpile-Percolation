@@ -126,23 +126,4 @@ theorem whiteNoise_toLp_ae {Ω : Type} [MeasurableSpace Ω] {d : ℕ}
   show W (fun y => (hf.toLp f : Space d → ℝ) y) ω = W f ω
   linarith
 
-
-/-
-Vacuity check: everything past this point in an earlier version of this file
-(`exploration_supplies_orthonormal` and its descendants, down to
-`fixed_scale_crossings_of_exploration_data_red`) built the trace law on `hdata`/`horth`, an
-`Orthonormal ℝ` hypothesis on the BALL KERNELS `ballKernel d 1 (q i)` at finitely many distinct
-points `q i`.  That hypothesis is unsatisfiable for `n ≥ 1` (the ball kernel is a log/Newtonian
-kernel, not of unit `L²` norm, and is not orthogonal to its translates), so those theorems could
-never be instantiated at real exploration data; the deleted material is dead code, not a working
-reduction.  The corrected trace law uses the indicators of the exploration's DISJOINT UNIT CUBES,
-which genuinely are orthonormal in `L²`: see `Sandpile/Support/CrossCubeLaw.lean`
-(`map_whiteNoise_cubeIndicators`, `exploration_supplies_cube_data`), which is what
-`Sandpile/Support/CrossLevelLoss.lean`'s `hloss_ballField_of_shift_laws` and
-`Sandpile/Support/CrossCubeLaw.lean`'s `hloss_ballField_of_cube_data` consume.  The three lemmas
-kept above this note (`map_whiteNoise_orthonormal`, `map_whiteNoise_orthonormal_shift`,
-`whiteNoise_toLp_ae`) are the general facts the cube-indicator route itself uses and are not part
-of the deleted, ball-kernel-specific material.
--/
-
 end Sandpile.Support

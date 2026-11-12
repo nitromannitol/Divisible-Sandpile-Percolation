@@ -17,11 +17,8 @@ is the set revealed after `n` steps.
 Two facts are proved.
 
 * `isIndepStoppingSet_exploreStep`: the revealed set is a stopping set for the independent
-  family, at every step.  The predecessor's refutation is what makes this delicate: a rule that
-  decides whether to reveal a coordinate by LOOKING at that coordinate is not a stopping set and
-  the martingale identity fails for it, so the recursion must read only the revealed cells,
-  which is exactly what the `meas` clause of `IsExplorationRule` asks and what the induction
-  uses.
+  family, at every step.  The recursion reads only the revealed cells, which is exactly what
+  the `meas` clause of `IsExplorationRule` asks and what the induction uses.
 * `exploreStep_stabilises`: after as many steps as there are indices the rule has stopped, so
   `exploreSet` is the set the rule reveals before stopping.
 

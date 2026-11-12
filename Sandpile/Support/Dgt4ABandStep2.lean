@@ -47,7 +47,7 @@ Each is available qualitatively, and one sequence dominating all of them at once
 is what the slow-scale choice consumes.  The paper says exactly this, choosing the
 auxiliary sequence against four named errors at once.
 
-Carrying only the increment at a rate, as the first version did, is not enough:
+Carrying only the increment at a rate is not enough:
 after every reduction the contact estimates leave a term that is the auxiliary
 sequence times the tolerance of ANOTHER estimate, and a qualitative statement has
 no tolerance to bound. -/
@@ -219,11 +219,6 @@ stated qualitatively, as "for every `η > 0`, eventually in `k`".  The slow-scal
 choice needs a single sequence `e k → 0` such that the estimates hold AT LEVEL
 `e k` for large `k`.
 
-This is a genuine strengthening and not a repackaging.  The first version of this
-statement merely asserted that some nonnegative sequence tends to zero, which is
-true of the zero sequence and says nothing about the band at all; it was caught by
-the substantiveness check.
-
 Proof.  Diagonalise: for each `j` take an index beyond which the estimate holds
 with `η = 1/(j+1)`, make those indices strictly increasing, and let `e k` be
 `1/(j+1)` on the `j`-th block. -/
@@ -246,10 +241,7 @@ band errors times its square still vanish, and the scale is then fixed by the
 paper's normalisation `R_k² ω_k = G(0,0) L_k`.
 
 The slow property is stated in the form `exists_slow_weights` actually provides:
-domination by the EXPLICIT error sequence `e`, pointwise in `k`.  The first version
-asked instead that `L_k²f_k → 0` for every `f` tending to zero, which is false for
-`f = 1/L`, and an agent derived `False` from it.  A conclusion that implies `False`
-is worse than an unprovable one, because everything downstream inherits it. -/
+domination by the EXPLICIT error sequence `e`, pointwise in `k`. -/
 theorem exists_bandScale (P : BandParameters) (hd : 5 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (e : ℕ → ℝ) (he0 : ∀ k, 0 ≤ e k) (he : Tendsto e atTop (𝓝 0)) :
@@ -515,9 +507,7 @@ barrier `2TL_k`.
 
 The conclusion is two-sided because the one-step increment needs both ends: the
 lower end is the barrier itself, and the upper end `z ≤ 1/2` is the paper's own
-range, outside which the exponential term is not controlled.  Stating only the
-barrier, as the first version did, leaves the sign of the coordinate free and a
-negative coordinate satisfies it.
+range, outside which the exponential term is not controlled.
 
 Proof.  `forall_le_of_step_offset` with `u i = z_{k,i}^{-θ_k}` and `B _ = 2TL_k`,
 base case `bandProfile_hitting_le`, step case `bandProfile_increment` at the index
@@ -760,9 +750,8 @@ set_option linter.unusedVariables false in
 /-- **(e) The scaled profile.**  On compact time ranges bounded away from zero the
 profile divided by the auxiliary sequence is the time divided by `κ_k`.
 
-Proof.  `scaledProfile_bound_family` at `G00 := green d 0 0`, which is forced: the
-one-step increment is stated with that constant, and at any other the conclusion
-is false.  Its `hys` is `bandTau_profile_bounded`, its `hs` is
+Proof.  `scaledProfile_bound_family` at `G00 := green d 0 0`, the constant the
+one-step increment is stated with.  Its `hys` is `bandTau_profile_bounded`, its `hs` is
 `bandTau_div_scaleSq_tendsto`, and its `hinc` is `bandProfile_increment`, whose
 coordinate hypotheses are exactly `bandProfile_range`. -/
 theorem bandScaledProfile (P : BandParameters) (hd : 5 ≤ d)
@@ -1296,8 +1285,7 @@ private theorem bandStep2_comparison_core (P : BandParameters) (hd : 5 ≤ d)
 
 Proof.  `measure_contact_symmDiff_le` bounds the symmetric difference by the
 below-band term, the level term and the mass above the band.  Its density
-hypothesis is `hdens`, which `BandProfile` does NOT supply; the first version of
-this statement omitted it.  Each of the three terms is of order `ω_k` times a band
+hypothesis is `hdens`, which `BandProfile` does NOT supply.  Each of the three terms is of order `ω_k` times a band
 error, so `R_k²` times the bound is `L_k` times that error by `hRL`, and the
 slow-scale property of `exists_bandScale` is exactly what makes THAT vanish.  The
 lower bounds on the level over the horizon come from `bandProfile_range`. -/

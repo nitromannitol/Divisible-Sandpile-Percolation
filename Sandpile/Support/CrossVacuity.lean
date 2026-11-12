@@ -1,7 +1,7 @@
 import Sandpile.Support.CrossPath
 
 /-!
-# Vacuity of continuum crossing events off continuous sample paths
+# Continuum crossing events off continuous sample paths
 
 The crossing events of `sandpile.tex:2112-2118` are events about a field
 indexed by the plane, and the plane is uncountable.  On the space of ALL
@@ -16,31 +16,17 @@ The consequence, proved below, is that for EVERY probability measure `μ` on
 `Space 2 → ℝ` and every rectangle with `a 0 ≤ b 0` and `a 1 < b 1`,
 `μ (crossingEvent a b level) = 1`, the outer measure of the crossing event
 being computed over measurable supersets, of which the whole space is the only
-one.  A statement that compares crossing probabilities of such a law therefore
-compares the number one with itself.
+one.
 
-The continuum RSW comparison was such a statement until it was restated on the
-field; the statement it had is copied below as
-`oldContinuumRSW`, and `oldContinuumRSW_holds` proves it outright, with the
-identity comparison map.  It carries no information about crossings, and neither does any
-hypothesis of the form `c ≤ μ (crossingEvent …)` or
-`μ (crossingEvent …) ≤ …`.  This is a defect of the transcription, not of the
-paper: the Köhler-Schindler and Tassion comparison is a statement about a
-random continuous field, and the crossing events of a random CONTINUOUS field
-are perfectly good events, since a continuous function is determined by its
-values on a countable dense set.  The repair is to carry the continuity of the
-sample paths into the statement, either by taking the law on the space of
-continuous functions or by keeping the field on its probability space, where
-the crossing event is sandwiched between the countably determined events of
-`sandpile.tex:2112-2118` read along a countable dense set.
-
-Nothing in this file is used to discharge any node of the paper.  It is the
-record of why the continuum crossing vocabulary of
-`Sandpile/Support/ContinuumPlanar.lean` had to be restated before
-`prop:fixed-scale-crossings` could be proved from it; the vocabulary that
-replaced it is the field form of `Sandpile/Support/CrossField.lean`, in which
-the crossing probability is the outer measure of a subset of the probability
-space carrying the field.
+The Köhler-Schindler and Tassion comparison is a statement about a random
+continuous field, and the crossing events of a random CONTINUOUS field are
+genuine events, since a continuous function is determined by its values on a
+countable dense set.  So the crossing vocabulary of
+`Sandpile/Support/CrossField.lean` keeps the field on its probability space,
+with almost surely continuous sample paths, where the crossing event is
+sandwiched between the countably determined events of `sandpile.tex:2112-2118`
+read along a countable dense set.  Nothing in this file is used to discharge
+any node of the paper.
 -/
 
 open MeasureTheory Set
@@ -120,39 +106,5 @@ theorem measure_crossingEvent_eq_one (μ : Measure (Sandpile.Continuum.Space 2 �
       simp [hnot]
     exact (hdet _ g (fun i hi => by simp [hi])).1 (subset_toMeasurable μ E hXcross)
   rw [← measure_toMeasurable E, huniv, measure_univ]
-
-/-- The continuum crossing comparison as it was stated before that
-restatement: a comparison of the crossing probabilities of a law on the space
-of ALL planar functions.  Kept here, and nowhere else, as the statement the
-record below is about. -/
-def oldContinuumRSW : Prop :=
-  ∀ ρ : ℝ, 1 ≤ ρ → ∃ ψ : Set.Icc (0 : ℝ) 1 ≃o Set.Icc (0 : ℝ) 1,
-    ∀ μ : Measure (Sandpile.Continuum.Space 2 → ℝ), ∀ [IsProbabilityMeasure μ],
-      Sandpile.Continuum.IsSymmetricContinuumLaw μ →
-        Sandpile.Continuum.IsAssociatedContinuumLaw μ →
-      ∀ R : ℝ, 1 ≤ R → ∀ level : ℝ,
-        (ψ (Sandpile.probabilityInUnitInterval μ
-          (Sandpile.Continuum.crossingEvent ![0, 0] ![(2 * R), (2 * ρ * R)] level)) : ℝ) ≤
-        μ.real (Sandpile.Continuum.crossingEvent ![0, 0] ![(2 * ρ * R), (2 * R)] level)
-
-/-- The comparison in its old form is a theorem, with the identity comparison
-map: both sides of its inequality are the number one, by
-`measure_crossingEvent_eq_one`.  That form therefore carried none of the content
-of the crossing comparison it was meant to record, which is why the crossing
-vocabulary was restated on fields with continuous sample paths. -/
-theorem oldContinuumRSW_holds : oldContinuumRSW := by
-  intro ρ hρ
-  refine ⟨OrderIso.refl _, fun μ _ _ _ R hR level => ?_⟩
-  have hone : μ (Sandpile.Continuum.crossingEvent ![0, 0] ![2 * ρ * R, 2 * R] level) = 1 := by
-    refine measure_crossingEvent_eq_one μ _ _ ?_ ?_ level
-    · simp only [Matrix.cons_val_zero]
-      nlinarith
-    · simp only [Matrix.cons_val_one, Matrix.cons_val_zero]
-      linarith
-  have hreal : μ.real (Sandpile.Continuum.crossingEvent ![0, 0] ![2 * ρ * R, 2 * R] level) = 1 := by
-    simp [measureReal_def, hone]
-  rw [hreal]
-  exact (Sandpile.probabilityInUnitInterval μ
-    (Sandpile.Continuum.crossingEvent ![0, 0] ![2 * R, 2 * ρ * R] level)).2.2
 
 end Sandpile.Support

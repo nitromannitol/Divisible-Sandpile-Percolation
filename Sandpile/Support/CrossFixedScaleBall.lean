@@ -52,32 +52,10 @@ open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 /-- `prop:fixed-scale-crossings` for the actual field `ballField d W 1`, with `hloss` tied to
 that field rather than to an abstract `X`.
 
-Vacuity check: the hypothesis this theorem
-used to take, quantifying `hloss` over an ARBITRARY field `X` satisfying only
-measurability, a.s.-continuity, `IsSymmetricField` and `IsAssociatedField`, is
-UNSATISFIABLE.  Witness: `Ω := PUnit`, `X := fun _ _ => 0` (the a.s.-zero
-field).  It is measurable, continuous, symmetric (`ε • 0 = 0` for `ε = ±1`) and
-associated (both sides of the FKG inequality are the constant `f 0 * g 0`, an
-equality).  At level `-ε` (`ε > 0`) `{u | -ε ≤ 0} = univ`, so the crossing event
-is the whole rectangle and has probability `1`; at any level `L/R > 0` the
-crossing event is empty, probability `0`.  The old `hloss` therefore demanded
-`1 ≤ ENNReal.ofReal (C * L * R ^ (-α))` for every `R ≥ max 1 θ⁻¹` and every
-`L > 0`, which fails for `R` large since `α > 0`.  No term of the old type can
-exist, so the reduction could never be discharged by any field-specific
-argument, however good: the abstraction over `X` throws away the one fact
-(quantitative control of the field's own covariance) that makes the level-loss
-bound possible at all.
-
-The fix keeps exactly the same paper content (`sandpile.tex:2288-2400`, Steps
-2-3) but ties `hloss` to the ACTUAL field `ballField d W 1` for the white noise
-`W` the conclusion already quantifies over, instead of an abstract `X`; the
-four structural facts (`measurable, continuous, symmetric, associated`) are now
-derived here, from `hW` and `hcontball`, exactly as the old proof derived them
-from `hloss`'s own binders, so nothing about the mathematical content changes,
-only which side of the reduction proves them.  `fixed_scale_crossings_uniform`
-in `CrossFixedScale.lean` has the same defect and is unused by this file from
-here on; it is left in place, unconditionally provable only because its own
-`hloss` hypothesis is equally unsatisfiable, and should not be used elsewhere.
+The level loss `hloss` of Steps 2-3 (`sandpile.tex:2288-2400`) is stated for the field
+`ballField d W 1` of the white noise `W` the conclusion quantifies over.  The four structural
+facts it needs (measurable coordinates, continuous sample paths, symmetry and positive
+association) are derived here from `hW` and `hcontball`.
 -/
 theorem fixed_scale_crossings_ball
     (hRSW : Sandpile.External.ContinuumRSW)

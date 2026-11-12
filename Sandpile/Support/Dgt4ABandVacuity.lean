@@ -8,7 +8,6 @@ import Sandpile.Support.Dgt4ABandReplacement
 import Sandpile.Support.Dgt4ABandLawTail
 import Sandpile.Support.Dgt4ABandLawMean
 import Sandpile.Support.MeanOvershootJensen
-import Sandpile.Support.Dgt4ABandStep2Refuted
 import Sandpile.Support.Dgt4ABandLawNormalized
 import Sandpile.Support.Dgt4ABandIndependence
 import Sandpile.Support.Dgt4ABandHitting
@@ -335,11 +334,10 @@ example :
   exact integral_posPart_neg_ge_band (l1 := 0) (Measure.dirac (-4 : ℝ)) (fun _ => (4 : ℝ)) 0
     0 1 (by norm_num) (by norm_num) hmass hint
 
-/-- **The summed profile is satisfiable once the profile is a family.**  The
-single-sequence reading is refuted by `no_single_sequence_summed_profile` in
-exactly this regime, the band weights tending to zero at a bounded exponent; the
-family reading carries it, with the exact profile `y_{k,n} = nω_k/(G(0,0)κ_k)`,
-and the conclusion it yields is the genuine limit `t/κ`. -/
+/-- **The summed profile is satisfiable as a family.**  In the regime of the band
+construction, the band weights tending to zero at a bounded exponent, the family
+reading carries it, with the exact profile `y_{k,n} = nω_k/(G(0,0)κ_k)`, and the
+conclusion it yields is the genuine limit `t/κ`. -/
 example : ∀ δ T : ℝ, 0 < δ → δ < T →
     Filter.Tendsto (fun k : ℕ => ⨆ t ∈ Set.Icc δ T,
       |(fun (k n : ℕ) => (n : ℝ) * (1 / ((k : ℝ) + 1) / (1 * (3 / 2)))) k

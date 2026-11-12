@@ -14,10 +14,7 @@ replacing `Pw_n(0)` by `E u_n(0)/G(0,0)`.  Both are PROVED, about
 `W_n = avg (originOdometer (scenery d σ) n) 0`, as
 `Sandpile.Support.band_origin_concentration` and
 `Sandpile.Support.band_origin_lower_tail`
-(`Sandpile/Support/Dgt4ABandConcentration.lean`).  An earlier transcription of
-them as a predicate `BandStep2Input` read the FIXED scenery value at the origin
-instead of `W_n`, which makes it false; it has been deleted, and the refutation
-is kept as `Sandpile/Support/Dgt4ABandStep2Refuted.lean`.
+(`Sandpile/Support/Dgt4ABandConcentration.lean`).
 
 (ii) The band profile `eq:dgt4-band-profile`, the density bound
 `eq:dgt4-band-density` and the two isolation estimates give the integrated

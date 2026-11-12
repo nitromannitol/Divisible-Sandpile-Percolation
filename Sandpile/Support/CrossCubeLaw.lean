@@ -249,20 +249,4 @@ theorem fixed_scale_crossings_of_cube_exploration2
             {u : Sandpile.Continuum.Space 2 | L / R ≤ ballField d W 1 u ω}}) atTop := by
   exact Sandpile.Support.fixed_scale_crossings_of_ball hRSW hPitt d hd θ hθ ε hε C α hα hsign
 
-/-
-FINDING (vacuity): an earlier version of this file had a theorem
-`hloss_ballField_of_cube_data_self` here, taking a hypothesis `hsign : P{cross
-at -ε} = P{cross at L/R}` under a SINGLE measure `P`.  For a genuine
-(non-degenerate) random field the crossing probability is strictly decreasing
-in the level, so `hsign` is false for essentially every actual choice of
-`ε, L, R`; the theorem's own proof made this visible by rewriting the goal with
-`hsign` into a bound of the form `x ≤ x + (nonnegative)`, i.e. it never used the
-substantial content of `hloss_ballField_of_cube_data`.  The route that survives
-is the genuine TWO-measure comparison already proved above
-(`hloss_ballField_of_cube_data`, `hloss_ballField_of_shift_laws` in
-`CrossLevelLoss.lean`): a real Cameron-Martin shift changing the measure, not
-an equality of two crossing probabilities under the same one.
--/
-
-
 end Sandpile.Support

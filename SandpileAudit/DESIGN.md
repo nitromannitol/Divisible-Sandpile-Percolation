@@ -48,7 +48,7 @@ source over Mathlib types, and is definitionally equal to its counterpart.
 The solutions use these definitionally, with no rewriting: the `exact` that
 closes each solution, and the bridges of Section 3 that are proved by the
 hypothesis itself (`planarRSW`, `lssDomination`, `exteriorBoundaryConnected`,
-`continuumBesovTightness`, `normalComparison`), are checked by the kernel, which unfolds both sides.
+`continuumBesovTightness`), are checked by the kernel, which unfolds both sides.
 
 ## 2. Recursive copies and structure copies
 

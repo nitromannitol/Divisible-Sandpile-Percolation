@@ -35,14 +35,14 @@ unconditionally in this repository (`Sandpile.External.heatKernelBounds`,
 `Sandpile.External.localCLT`), so none is carried as a hypothesis by the
 certified statement, and this challenge carries none of them either.
 `GaussianLipschitzConcentration` (Gaussian concentration for Lipschitz
-functionals; Borell, Tsirelson, Ibragimov and Sudakov) is also proved
+functionals; Borell, Tsirelson, Ibragimov and Sudakov) and `NormalComparison`
+(the normal comparison inequality; Li and Shao, Corollary 2.1) are also proved
 unconditionally in this repository
-(`Sandpile.External.gaussianLipschitzConcentration`); the certified statement
-still carries it as a hypothesis, `Sandpile.high_sobolev_limit` discharges it,
-and this challenge does not carry it.
+(`Sandpile.External.gaussianLipschitzConcentration`,
+`Sandpile.External.normalComparison`); the certified statement still carries
+both as hypotheses, `Sandpile.high_sobolev_limit` discharges them, and this
+challenge carries neither.
 
-* `External.NormalComparison`: the normal comparison inequality (Li and Shao,
-  Corollary 2.1);
 * `External.ContinuumBesovTightness`: the Besov tightness criterion (Furlan and
   Mourrat, Theorem 2.30).
 
@@ -1188,7 +1188,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(c) (`thm:main-explosion`). -/
 theorem high_sobolev_limit
-    (hNormal : External.NormalComparison)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]

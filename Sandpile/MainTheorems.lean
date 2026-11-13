@@ -12,6 +12,7 @@ import Sandpile.Frozen.HighSobolevLimit
 import Sandpile.Frozen.HighNonconvergence
 import Sandpile.External.PittGaussianFKGProved
 import Sandpile.External.GaussianLipschitzConcentrationProved
+import Sandpile.External.NormalComparisonProved
 
 /-!
 # Main results
@@ -25,18 +26,19 @@ critical growth and scaling theorem (`thm:main-explosion`) as they are registere
 
 Each theorem below restates its certified counterpart in `Sandpile/Frozen/` and is proved by
 `exact` of it, so the statements displayed in this file are the certified ones, except that
-Theorems 1.1, 1.2 and 1.3(iii)(c) omit a hypothesis of their certified counterparts that is
+Theorems 1.1, 1.2 and 1.3(iii)(c) omit hypotheses of their certified counterparts that are
 now proved in this repository (see below).  The hypotheses whose types are named
 `Sandpile.External.*` are results the paper cites without proof; they are assumed, not proved,
 and are listed with their statements in `ASSUMPTIONS.md`.
-Eight cited inputs are also proved in this repository (the files
+Nine cited inputs are also proved in this repository (the files
 `Sandpile/External/*Proved.lean`): the `d ≥ 5` Green estimates, the finite-time variance scale,
 the heat-kernel bounds, Pitt's Gaussian FKG theorem, Gaussian concentration for a Lipschitz
-functional, the optimal-stopping representation, the Gaussian-law-by-covariance fact, and
-Pinsker's inequality.  Of these, the first five appear as explicit hypotheses of theorems below
-at earlier versions; since each is now proved unconditionally, no theorem here carries it as a
-hypothesis any longer.  The certified statements of Theorems 1.1 and 1.2 still carry Pitt's
-theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration; the theorems here supply the
+functional, the normal comparison inequality, the optimal-stopping representation, the
+Gaussian-law-by-covariance fact, and Pinsker's inequality.  Of these, the first six appear as
+explicit hypotheses of theorems below at earlier versions; since each is now proved
+unconditionally, no theorem here carries it as a hypothesis any longer.  The certified
+statements of Theorems 1.1 and 1.2 still carry Pitt's theorem, and that of Theorem 1.3(iii)(c)
+Gaussian concentration and the normal comparison inequality; the theorems here supply the
 proofs.  The optimal-stopping representation is used, and discharged the same way, inside the
 certified proofs of `thm:RW` and two lemmas that feed these theorems; it was never itself a
 hypothesis of a theorem in this file.  The Gaussian-law-by-covariance fact and Pinsker's
@@ -316,7 +318,6 @@ theorem Sandpile.high_tail
 /-- **Theorem 1.3(iii)(c)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_sobolev_limit`. -/
 theorem Sandpile.high_sobolev_limit
-    (hNormal : Sandpile.External.NormalComparison)
     (d : ℕ) (hd : 5 ≤ d)
     (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -345,7 +346,7 @@ theorem Sandpile.high_sobolev_limit
                       Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Sandpile.Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
   exact Sandpile.Frozen.high_sobolev_limit Sandpile.External.gaussianLipschitzConcentration
-    hNormal d hd hBesov ν hmean hvar hvar'
+    Sandpile.External.normalComparison d hd hBesov ν hmean hvar hvar'
 
 /-- **Theorem 1.3(iii)(d)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_nonconvergence`. -/

@@ -37,6 +37,7 @@ import Sandpile.External.LocalCLTProved
 import Sandpile.External.MaxDisplacementProved
 import Sandpile.External.MembraneScalingFour
 import Sandpile.External.NormalComparison
+import Sandpile.External.NormalComparisonProved
 import Sandpile.External.PairedLocalCLTFour
 import Sandpile.External.PairedLocalCLTFourProved
 import Sandpile.External.Pinsker

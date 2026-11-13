@@ -283,15 +283,14 @@ nodes:
     approved: "2026-09-10"
 
   - id: ext-normal-comparison
-    version: 1
-    kind: definition
-    source: sandpile.tex:5536-5543 (LiShao Corollary 2.1 p. 496, normal comparison inequality)
-    file: Sandpile/External/NormalComparison.lean
-    export: Sandpile.External.NormalComparison
-    state: FROZEN
-    frozen_sha256: ce44350b4d4d0fa89376bb9148e2d3a28f9686efab06f50218a7f0a579225108
-    provider: Sandpile.External.NormalComparison
-    approved: "2026-09-10"
+    version: 2
+    kind: theorem
+    source: sandpile.tex:5536-5543 (LiShao Corollary 2.1 p. 496, normal comparison inequality); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/NormalComparisonProved.lean
+    export: Sandpile.External.normalComparison
+    state: SEALED
+    frozen_sha256: 9d182f5931907e3e88e06a53d4e38096c3d40f9a61a59714ff6808759f6f52eb
+    provider: Sandpile.External.normalComparison
 
   - id: ext-continuum-rsw
     version: 2

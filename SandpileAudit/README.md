@@ -62,7 +62,7 @@ library theorem carries, restated in the vocabulary.
 | `FourSobolev/` | `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
 | `HighFirstOrder/` | none |
 | `HighTail/` | none |
-| `HighSobolevLimit/` | `NormalComparison`, `ContinuumBesovTightness` |
+| `HighSobolevLimit/` | `ContinuumBesovTightness` |
 | `HighNonconvergence/` | `ContinuumBesovTightness` |
 
 Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
@@ -70,8 +70,9 @@ Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
 `BallGreenBounds`, are proved unconditionally in the repository
 (`Sandpile/External/*Proved.lean`; see `ASSUMPTIONS.md`) rather than assumed;
 none of the twelve certified statements, and so none of the challenges above,
-carries any of the seven as a hypothesis.  Two more, `PittGaussianFKG` and
-`GaussianLipschitzConcentration`, are proved unconditionally in the same way.
+carries any of the seven as a hypothesis.  Three more, `PittGaussianFKG`,
+`GaussianLipschitzConcentration` and `NormalComparison`, are proved
+unconditionally in the same way.
 The certified statements of `Nontriviality/`, `CriticalLevels/` and
 `HighSobolevLimit/` still carry them as hypotheses; the theorems of
 `Sandpile/MainTheorems.lean` discharge them, and the challenges above do not

@@ -44,7 +44,7 @@ theorem isBrownian_add_const {ΩB : Type*} [MeasurableSpace ΩB] (d : ℕ) (PB :
     exact hB.coord i
   indep := by
     have hg : ∀ i : Fin d, Measurable (fun p : ℝ≥0 → ℝ => fun s : ℝ≥0 => y i + p s) := fun i =>
-      measurable_pi_lambda _ fun s =>
+      Measurable.of_eval fun s =>
         ((measurable_pi_apply s : Measurable fun p : ℝ≥0 → ℝ => p s).const_add (y i))
     have h := hB.indep.comp (fun i : Fin d => fun p : ℝ≥0 → ℝ => fun s : ℝ≥0 => y i + p s) hg
     have heq : (fun (i : Fin d) (ω : ΩB) => fun t : ℝ≥0 => (y + B t ω) i)

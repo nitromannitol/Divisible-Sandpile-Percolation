@@ -386,7 +386,7 @@ private theorem tendstoInDistribution_linear_pick_mass_seq (hd : 1 ≤ d) (θ K 
     rw [hcomp.map_eq] at h
     exact h.symm
   refine ⟨fun n => (hm n).aemeasurable, measurable_id.aemeasurable, ?_⟩
-  rw [MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun]
+  refine (MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun ..).mpr ?_
   intro t
   have hv0 : 0 ≤ v := hv.le
   have hQ0 : 0 ≤ Q := ge_of_tendsto hQ (Eventually.of_forall fun n =>
@@ -424,10 +424,10 @@ private theorem tendstoInDistribution_of_forall_inner_seq
         (fun ω => (inner ℝ (Z ω) t : ℝ)) P Q) :
     TendstoInDistribution X atTop Z P Q := by
   refine ⟨hX, hZ, ?_⟩
-  rw [MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun]
+  refine (MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun ..).mpr ?_
   intro t
   have h1 := (h t).tendsto
-  rw [MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun] at h1
+  replace h1 := (MeasureTheory.ProbabilityMeasure.tendsto_iff_tendsto_charFun ..).mp h1
   have h2 := h1 1
   have hgoal : (fun n : ℕ => charFun ((P n).map (X n)) t)
       = fun n : ℕ => charFun ((P n).map fun ω => (inner ℝ (X n ω) t : ℝ)) 1 := by
@@ -483,7 +483,9 @@ private theorem tendstoInDistribution_of_map_eq_seq {F : Type*} {Ω Ω' : Type*}
   refine ⟨h.forall_aemeasurable, hY, ?_⟩
   have h2 : Q.map Y = μ'.map id := by rw [MeasureTheory.Measure.map_id]; exact hmap
   convert h.tendsto using 2
-  exact Subtype.ext h2
+  congr 1
+  apply ProbabilityMeasure.toMeasure_injective
+  exact h2
 
 /-- **The vector Lindeberg-Feller step along a sequence of laws.** -/
 private theorem tendstoInDistribution_vector_pick_mass_seq (hd : 1 ≤ d) (θ K v : ℝ)
@@ -513,7 +515,7 @@ private theorem tendstoInDistribution_vector_pick_mass_seq (hd : 1 ≤ d) (θ K 
   classical
   have hmeasF : ∀ n : ℕ, AEMeasurable (F n) (Sandpile.centeredMassLaw d (ν n)) := by
     intro n
-    refine Measurable.aemeasurable (measurable_pi_lambda _ fun i => ?_)
+    refine Measurable.aemeasurable (Measurable.of_eval fun i => ?_)
     have hfun : (fun σ : Site d → ℝ => F n σ i)
         = fun σ : Site d → ℝ => ∑ k, a n i k * Sandpile.scenery d σ (e n k) :=
       funext fun σ => hF n σ i
@@ -521,7 +523,7 @@ private theorem tendstoInDistribution_vector_pick_mass_seq (hd : 1 ≤ d) (θ K 
     refine Finset.measurable_sum _ fun k _ => measurable_const.mul ?_
     exact (measurable_pi_apply (e n k)).comp (Sandpile.measurable_scenery d)
   have hmeasZ : AEMeasurable (fun (ω : ΩW) (i : Fin m) => W (g i) ω) PW :=
-    (measurable_pi_lambda _ fun i => hW.meas (g i) (hg i)).aemeasurable
+    (Measurable.of_eval fun i => hW.meas (g i) (hg i)).aemeasurable
   refine tendstoInDistribution_pi_of_forall_dot_seq F
     (fun (ω : ΩW) (i : Fin m) => W (g i) ω) (fun n => Sandpile.centeredMassLaw d (ν n)) PW
     hmeasF hmeasZ ?_

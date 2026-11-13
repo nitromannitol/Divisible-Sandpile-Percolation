@@ -59,7 +59,7 @@ theorem isBrownian_scaled_indep {ΩB : Type*} [MeasurableSpace ΩB] (d : ℕ)
   have hg : ∀ i : Fin d, Measurable
       (fun p : ℝ≥0 → ℝ => fun s : ℝ≥0 => (Real.sqrt (T : ℝ))⁻¹ * (p (T * s) - x i)) := by
     intro i
-    refine measurable_pi_lambda _ fun s => ?_
+    refine Measurable.of_eval fun s => ?_
     have h1 : Measurable (fun p : ℝ≥0 → ℝ => p (T * s)) := measurable_pi_apply (T * s)
     exact (h1.sub_const (x i)).const_mul _
   have h := hB.indep.comp

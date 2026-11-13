@@ -181,7 +181,7 @@ theorem eventually_integral_condReflected_posPart_le
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
   haveI : IsProbabilityMeasure ρ := by
     rw [hρ]
-    exact Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    exact inferInstance
   set S : ℝ := ((fieldVar d v : ℝ≥0) : ℝ) with hSdef
   have hSpos : (0 : ℝ) < S := coe_pos_of_ne_zero (fieldVar_ne_zero hd hv)
   have hSne : S ≠ 0 := ne_of_gt hSpos

@@ -155,7 +155,7 @@ theorem integral_exp_neg_weighted_lower {N : ℕ} (ν : Measure ℝ) [IsProbabil
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl fun i _ => by ring
     _ ≤ ∏ i, ∫ z, Real.exp (-(θ * ℓ i * z)) ∂ν :=
-      Finset.prod_le_prod (fun i _ => (Real.exp_pos _).le) (fun i _ => hi i)
+      Finset.prod_le_prod₀ (fun i _ => (Real.exp_pos _).le) (fun i _ => hi i)
     _ = ∫ ξ : Fin N → ℝ, ∏ i, Real.exp (-(θ * ℓ i * ξ i)) ∂(Measure.pi fun _ => ν) :=
       (integral_fintype_prod_eq_prod (fun i z => Real.exp (-(θ * ℓ i * z)))).symm
     _ = ∫ ξ, Real.exp (-(θ * ∑ i, ℓ i * ξ i)) ∂(Measure.pi fun _ : Fin N => ν) :=

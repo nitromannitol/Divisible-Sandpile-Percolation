@@ -21,7 +21,7 @@ namespace Sandpile
 theorem walkLaw_translate (d : ℕ) (x : Site d) :
     walkLaw d x = (walkLaw d 0).map (fun X : ℕ → Site d => fun k => x + X k) := by
   have hT : Measurable (fun (X : ℕ → Site d) (k : ℕ) => x + X k) :=
-    measurable_pi_lambda _ fun k => by fun_prop
+    Measurable.of_eval fun k => by fun_prop
   rw [walkLaw, walkLaw, Measure.map_map hT (measurable_walkPath (0 : Site d))]
   congr 1
   funext ξ k
@@ -58,7 +58,7 @@ theorem exists_exit_prob_cube :
   set N : ℕ := Aex * r ^ 2 with hN
   set D₀ : Set (Site 4) := {y : Site 4 | ∀ i, |y i| ≤ (r : ℤ)} with hD₀
   have hT : Measurable (fun (X : ℕ → Site 4) (k : ℕ) => z + X k) :=
-    measurable_pi_lambda _ fun k => by fun_prop
+    Measurable.of_eval fun k => by fun_prop
   have hSmeas : MeasurableSet {X : ℕ → Site 4 | ¬ (exitNat D N X ≤ N)} :=
     (measurableSet_exited D N).compl
   have hpre : (fun (X : ℕ → Site 4) (k : ℕ) => z + X k) ⁻¹'

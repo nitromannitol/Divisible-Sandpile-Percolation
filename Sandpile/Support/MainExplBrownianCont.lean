@@ -68,7 +68,7 @@ theorem Sandpile.Continuum.exists_isBrownian_cont (d : ℕ) :
             (fun ω₀ : Ω₀ => fun t : ℝ≥0 => x i + (Real.sqrt d)⁻¹ * C t ω₀) (ω i) := rfl
       rw [h]
       exact iIndepFun_pi fun i =>
-        (measurable_pi_lambda _ fun t => (hCm t).const_mul _ |>.const_add _).aemeasurable
+        (Measurable.of_eval fun t => (hCm t).const_mul _ |>.const_add _).aemeasurable
   · intro y ω
     rw [continuous_induced_rng]
     refine continuous_pi fun i => ?_
@@ -76,5 +76,5 @@ theorem Sandpile.Continuum.exists_isBrownian_cont (d : ℕ) :
   · intro y t
     refine Measurable.stronglyMeasurable ?_
     refine ((EuclideanSpace.equiv (Fin d) ℝ).symm.continuous.measurable).comp ?_
-    exact measurable_pi_lambda _ fun i =>
+    exact Measurable.of_eval fun i =>
       ((hCm t).comp (measurable_pi_apply i)).const_mul _ |>.const_add _

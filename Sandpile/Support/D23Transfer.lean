@@ -30,7 +30,7 @@ theorem measurableSet_blockGood_field {Ω : Type*} [MeasurableSpace Ω]
   have hm (w h : ℕ) (f : planeRectangle w h → Site 2) :
       Measurable (fun ω => crossingValue (planeRectangle w h) (fun v => F ω (f v))) :=
     (measurable_crossingValue (isLatticeRectangle_planeRectangle w h)
-      (planeRectangle_nonempty w h)).comp (measurable_pi_lambda _ (fun v => hF (f v)))
+      (planeRectangle_nonempty w h)).comp (Measurable.of_eval (fun v => hF (f v)))
   exact (measurableSet_le measurable_const (hm _ _ _)).inter
     ((measurableSet_le measurable_const (hm _ _ _)).inter
       ((measurableSet_le measurable_const (hm _ _ _)).inter

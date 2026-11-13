@@ -43,7 +43,7 @@ theorem map_scaleShift (d : ℕ) {c : ℝ} (hc : 0 < c) (x : Space d) :
     simp [sub_eq_add_neg]
   rw [hsplit, ← MeasureTheory.Measure.map_map (by fun_prop) (by fun_prop),
     MeasureTheory.Measure.map_addHaar_smul (volume : Measure (Space d)) hc0,
-    MeasureTheory.Measure.map_smul,
+    MeasureTheory.Measure.map_smul _ (by fun_prop),
     MeasureTheory.map_add_right_eq_self (volume : Measure (Space d)) (-(c • x)),
     finrank_euclideanSpace_fin, abs_of_nonneg (by positivity)]
 

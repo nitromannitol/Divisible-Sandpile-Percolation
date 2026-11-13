@@ -58,7 +58,7 @@ def extendOn (D : Set (Site d)) (ρ : D → ℝ) : Site d → ℝ :=
 function `0` (when `y ∉ D`) or a coordinate projection `ρ ↦ ρ ⟨y, h⟩` (when `y ∈ D`). -/
 theorem measurable_extendOn (D : Set (Site d)) :
     Measurable (extendOn D : (D → ℝ) → Site d → ℝ) := by
-  refine measurable_pi_lambda _ fun y => ?_
+  refine Measurable.of_eval fun y => ?_
   by_cases h : y ∈ D
   · have he : (fun ρ : D → ℝ => extendOn D ρ y) = fun ρ : D → ℝ => ρ ⟨y, h⟩ := by
       funext ρ
@@ -104,7 +104,7 @@ theorem measurable_comap_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t 
     funext ζ
     refine localizedOdometer_congr_on hd D ζ (extendOn D (Set.restrict D ζ)) ?_ t x
     intro y hy
-    simp only [extendOn, dif_pos hy, Set.restrict_apply]
+    simp only [extendOn, dif_pos hy, Set.restrict_apply] <;> rfl
   rw [hfac]
   exact ((measurable_localizedOdometer hd D t x).comp (measurable_extendOn D)).comp
     (Measurable.of_comap_le le_rfl)

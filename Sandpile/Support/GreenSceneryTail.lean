@@ -80,7 +80,7 @@ theorem prod_le_exp_of_sum_le {α : Type*} (s : Finset α) (f g : α → ℝ)
     (hf0 : ∀ a ∈ s, 0 ≤ f a) (hf : ∀ a ∈ s, f a ≤ Real.exp (g a))
     (M : ℝ) (hM : ∑ a ∈ s, g a ≤ M) :
     ∏ a ∈ s, f a ≤ Real.exp M := by
-  calc ∏ a ∈ s, f a ≤ ∏ a ∈ s, Real.exp (g a) := Finset.prod_le_prod hf0 hf
+  calc ∏ a ∈ s, f a ≤ ∏ a ∈ s, Real.exp (g a) := Finset.prod_le_prod₀ hf0 hf
     _ = Real.exp (∑ a ∈ s, g a) := (Real.exp_sum s g).symm
     _ ≤ Real.exp M := Real.exp_le_exp.mpr hM
 

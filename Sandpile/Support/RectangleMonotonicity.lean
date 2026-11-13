@@ -115,7 +115,7 @@ lemma measurableSet_planarCrossingEvent (w h : ℕ) (level : ℝ) :
   apply measurableSet_le measurable_const
   exact (measurable_crossingValue (isLatticeRectangle_planeRectangle w h)
     (planeRectangle_nonempty w h)).comp
-    (measurable_pi_lambda _ (fun z : planeRectangle w h => measurable_pi_apply (z : Site 2)))
+    (Measurable.of_eval (fun z : planeRectangle w h => measurable_pi_apply (z : Site 2)))
 
 /-- `planarCrossingEvent W h level ⊆ planarCrossingEvent w H level` for `w ≤ W`, `h ≤ H`: a
 field crossing the wide short rectangle at `level` also crosses the narrow tall one, by

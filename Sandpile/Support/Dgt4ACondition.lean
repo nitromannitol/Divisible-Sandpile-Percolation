@@ -90,7 +90,7 @@ theorem measurable_condCoord (hd : 5 ≤ d) : Measurable (condCoord d hd) :=
 /-- `residField` is measurable in the configuration, being built coordinatewise from the
 measurable projection and `condCoord`. -/
 theorem measurable_residField (hd : 5 ≤ d) : Measurable (residField d hd) :=
-  measurable_pi_lambda _ fun z =>
+  Measurable.of_eval fun z =>
     (measurable_pi_apply z).sub ((measurable_condCoord hd).mul measurable_const)
 
 /-- Each coordinate of the residual field is the isonormal image of a residual
@@ -163,7 +163,7 @@ theorem gaussLaw_eq_map_prod (hd : 5 ≤ d) :
   rw [map_condCoord hd] at hpair
   have hPhi : Measurable
       (fun p : ℝ × (Site d → ℝ) => fun z => p.2 z + p.1 * (greenUnit d hd : Site d → ℝ) z) := by
-    refine measurable_pi_lambda _ fun z => ?_
+    refine Measurable.of_eval fun z => ?_
     exact ((measurable_pi_apply z).comp measurable_snd).add
       (measurable_fst.mul measurable_const)
   have hpm : Measurable (fun ω : Site d → ℝ => (condCoord d hd ω, residField d hd ω)) :=
@@ -181,7 +181,7 @@ theorem gaussLaw_eq_map_prod (hd : 5 ≤ d) :
 /-- The shift map `(s,r)\mapsto r+se` of the conditioning is measurable. -/
 theorem measurable_shiftPair (hd : 5 ≤ d) : Measurable
     (fun p : ℝ × (Site d → ℝ) => fun z => p.2 z + p.1 * (greenUnit d hd : Site d → ℝ) z) := by
-  refine measurable_pi_lambda _ fun z => ?_
+  refine Measurable.of_eval fun z => ?_
   exact ((measurable_pi_apply z).comp measurable_snd).add (measurable_fst.mul measurable_const)
 
 /-- **The conditioning read on probabilities.**  The probability of an event of the
@@ -209,7 +209,7 @@ theorem integral_gaussLaw_shift (hd : 5 ≤ d) (F : (Site d → ℝ) → ℝ)
   classical
   have hPhi := measurable_shiftPair hd
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
-    Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    inferInstance
   have hmap := gaussLaw_eq_map_prod hd
   have hFm : AEStronglyMeasurable F
       (Measure.map (fun p : ℝ × (Site d → ℝ) =>

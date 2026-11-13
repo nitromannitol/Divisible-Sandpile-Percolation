@@ -25,7 +25,7 @@ theorem integrable_rpow_continuumValue_of_exp {ΩW ΩB : Type*}
     (p : ℝ) (hp : 0 ≤ p) :
     Integrable (fun ω => continuumValue d Z B PB T x ω ^ p) PW := by
   let U := continuumValue d Z B PB T x
-  haveI : IsProbabilityMeasure (PW.map U) := Measure.isProbabilityMeasure_map hmeas
+  haveI : IsProbabilityMeasure (PW.map U) := inferInstance
   have habs : Integrable (fun ω => Real.exp (θ * |U ω|)) PW := by
     refine hexp.congr ?_
     filter_upwards [hnn] with ω hω

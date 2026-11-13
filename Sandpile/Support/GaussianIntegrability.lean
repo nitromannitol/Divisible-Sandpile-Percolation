@@ -93,7 +93,7 @@ lemma integral_exp_dual_stdGaussian (L : H →L[ℝ] ℝ) (a : ℝ) :
     (∫ x, Real.exp (a * L x) ∂stdGaussian H) = Real.exp (a ^ 2 * ‖L‖ ^ 2 / 2) := by
   have hm : (stdGaussian H).map L = gaussianReal 0 (‖L‖ ^ 2).toNNReal := by
     rw [IsGaussian.map_eq_gaussianReal, integral_strongDual_stdGaussian, variance_dual_stdGaussian]
-  have hh := mgf_gaussianReal hm a
+  have hh := mgf_gaussianReal ⟨L.continuous.measurable.aemeasurable, hm⟩ a
   simpa only [mgf, zero_mul, zero_add, Real.toNNReal_of_nonneg (sq_nonneg ‖L‖),
     NNReal.coe_mk, mul_comm (‖L‖ ^ 2) (a ^ 2)] using hh
 

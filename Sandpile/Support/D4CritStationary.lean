@@ -56,7 +56,7 @@ theorem localizedOdometer_translate (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site
 space. -/
 theorem measurable_pathTranslateFun (y : Site d) :
     Measurable (fun (X : ℕ → Site d) (k : ℕ) => y + X k) :=
-  measurable_pi_lambda _ fun k => by fun_prop
+  Measurable.of_eval fun k => by fun_prop
 
 /-- Translating the path space. -/
 def pathTranslate (y : Site d) : (ℕ → Site d) ≃ᵐ (ℕ → Site d) where
@@ -73,7 +73,7 @@ theorem measurePreserving_pathTranslate (x y : Site d) :
     MeasurePreserving (pathTranslate y) (walkLaw d x) (walkLaw d (x + y)) := by
   refine ⟨(pathTranslate y).measurable, ?_⟩
   have hTx : Measurable (fun (X : ℕ → Site d) (k : ℕ) => x + X k) :=
-    measurable_pi_lambda _ fun k => by fun_prop
+    Measurable.of_eval fun k => by fun_prop
   rw [walkLaw_translate d x, Measure.map_map (pathTranslate y).measurable hTx,
     walkLaw_translate d (x + y)]
   congr 1

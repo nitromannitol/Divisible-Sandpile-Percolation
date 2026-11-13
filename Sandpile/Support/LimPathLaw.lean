@@ -48,16 +48,16 @@ theorem map_centredPath_eq {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpac
   have hcoord' : ∀ (t : ℝ≥0) (i : Fin d), Measurable fun ω => B' t ω i :=
     fun t i => (hev i).comp (hm' t)
   have hmT : Measurable (fun ω (i : Fin d) => (fun t : ℝ≥0 => c * (B t ω i - B 0 ω i))) := by
-    refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun t => ?_
+    refine Measurable.of_eval fun i => Measurable.of_eval fun t => ?_
     exact ((hcoord t i).sub (hcoord 0 i)).const_mul c
   have hmT' : Measurable (fun ω (i : Fin d) => (fun t : ℝ≥0 => c * (B' t ω i - B' 0 ω i))) := by
-    refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun t => ?_
+    refine Measurable.of_eval fun i => Measurable.of_eval fun t => ?_
     exact ((hcoord' t i).sub (hcoord' 0 i)).const_mul c
   -- independence of the coordinate paths
   have hindep : iIndepFun (fun (i : Fin d) ω => (fun t : ℝ≥0 => c * (B t ω i - B 0 ω i))) P := by
     have h := (hsp.shift 0).indep
     have h2 := h.comp (fun _ (g : ℝ≥0 → ℝ) => fun t : ℝ≥0 => c * g t)
-      (fun _ => measurable_pi_lambda _ fun t =>
+      (fun _ => Measurable.of_eval fun t =>
         ((measurable_pi_apply t : Measurable fun g : ℝ≥0 → ℝ => g t)).const_mul c)
     refine h2.congr ?_
     intro i
@@ -67,7 +67,7 @@ theorem map_centredPath_eq {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpac
   have hindep' : iIndepFun (fun (i : Fin d) ω => (fun t : ℝ≥0 => c * (B' t ω i - B' 0 ω i))) Q := by
     have h := (hsp'.shift 0).indep
     have h2 := h.comp (fun _ (g : ℝ≥0 → ℝ) => fun t : ℝ≥0 => c * g t)
-      (fun _ => measurable_pi_lambda _ fun t =>
+      (fun _ => Measurable.of_eval fun t =>
         ((measurable_pi_apply t : Measurable fun g : ℝ≥0 → ℝ => g t)).const_mul c)
     refine h2.congr ?_
     intro i
@@ -76,11 +76,11 @@ theorem map_centredPath_eq {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpac
     simp only [Function.comp_apply, PiLp.sub_apply, zero_add]
   have hpi : P.map (fun ω (i : Fin d) => (fun t : ℝ≥0 => c * (B t ω i - B 0 ω i)))
       = Measure.pi (fun i : Fin d => P.map (fun ω (t : ℝ≥0) => c * (B t ω i - B 0 ω i))) :=
-    hindep.map_fun_eq_pi_map (fun i => (measurable_pi_lambda _ fun t =>
+    hindep.map_fun_eq_pi_map (fun i => (Measurable.of_eval fun t =>
       ((hcoord t i).sub (hcoord 0 i)).const_mul c).aemeasurable)
   have hpi' : Q.map (fun ω (i : Fin d) => (fun t : ℝ≥0 => c * (B' t ω i - B' 0 ω i)))
       = Measure.pi (fun i : Fin d => Q.map (fun ω (t : ℝ≥0) => c * (B' t ω i - B' 0 ω i))) :=
-    hindep'.map_fun_eq_pi_map (fun i => (measurable_pi_lambda _ fun t =>
+    hindep'.map_fun_eq_pi_map (fun i => (Measurable.of_eval fun t =>
       ((hcoord' t i).sub (hcoord' 0 i)).const_mul c).aemeasurable)
   -- each coordinate path has the same law
   have hcoordlaw : ∀ i : Fin d, P.map (fun ω (t : ℝ≥0) => c * (B t ω i - B 0 ω i))
@@ -120,9 +120,9 @@ theorem map_centredPath_eq {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpac
     exact (Real.sqrt_pos.2 hdpos).ne'
   have hφ : Measurable fun v : Fin d → (ℝ≥0 → ℝ) => (fun t : ℝ≥0 =>
       ((EuclideanSpace.equiv (Fin d) ℝ).symm (fun i => c⁻¹ * v i t) : Space d)) := by
-    refine measurable_pi_lambda _ fun t => ?_
+    refine Measurable.of_eval fun t => ?_
     refine ((EuclideanSpace.equiv (Fin d) ℝ).symm.continuous).measurable.comp ?_
-    refine measurable_pi_lambda _ fun i => ?_
+    refine Measurable.of_eval fun i => ?_
     exact (((measurable_pi_apply t : Measurable fun g : ℝ≥0 → ℝ => g t)).comp
       ((measurable_pi_apply i : Measurable fun v : Fin d → (ℝ≥0 → ℝ) => v i))).const_mul c⁻¹
   have hsymm : ∀ (v : Fin d → ℝ) (i : Fin d),

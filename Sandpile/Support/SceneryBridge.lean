@@ -43,7 +43,7 @@ theorem map_scenery_centeredMassLaw (d : ℕ) (ν : Measure ℝ) [IsProbabilityM
   set f : ℝ → ℝ := fun z => (z - 1) / (2 * (d : ℝ)) with hf
   have hmg : Measurable g := by fun_prop
   have hmf : Measurable f := by fun_prop
-  haveI : IsProbabilityMeasure (ν.map g) := Measure.isProbabilityMeasure_map hmg.aemeasurable
+  haveI : IsProbabilityMeasure (ν.map g) := inferInstance
   have hsc : (scenery d : (Site d → ℝ) → Site d → ℝ) = fun σ i => f (σ i) := rfl
   unfold centeredMassLaw massLaw LatticeProb.iidLaw
   rw [hsc, Measure.infinitePi_map_pi _ (f := fun _ : Site d => f) (fun _ => hmf)]
@@ -59,7 +59,7 @@ theorem map_scenery_centeredMassLaw (d : ℕ) (ν : Measure ℝ) [IsProbabilityM
 
 /-- The scenery is a measurable map of the mass field. -/
 theorem measurable_scenery (d : ℕ) : Measurable (scenery (d := d)) := by
-  refine measurable_pi_lambda _ fun x => ?_
+  refine Measurable.of_eval fun x => ?_
   exact ((measurable_pi_apply x).sub measurable_const).div_const _
 
 /-- Any event of the scenery has the same probability under the mass law as under

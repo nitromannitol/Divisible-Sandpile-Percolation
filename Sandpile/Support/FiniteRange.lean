@@ -85,7 +85,7 @@ noncomputable def domainExtend (S : Set (Site d)) (η : S → ℝ) (x : Site d) 
 the constant `0`. -/
 theorem measurable_domainExtend (S : Set (Site d)) : Measurable (domainExtend S) := by
   classical
-  refine measurable_pi_lambda _ fun x => ?_
+  refine Measurable.of_eval fun x => ?_
   by_cases hx : x ∈ S
   · simpa [domainExtend, hx] using (measurable_pi_apply (⟨x, hx⟩ : S))
   · simp [domainExtend, hx]

@@ -95,7 +95,7 @@ theorem indepFun_blockPast_increment {Ω : Type*} [MeasurableSpace Ω] {X : ℝ�
   have hmeas_past : Measurable (fun f : (Set.Iic (blockTime T0 n) : Set ℝ≥0) → ℝ =>
       (fun k : Fin (n + 1) => f ⟨blockTime T0 k,
         blockTime_mono T0 (by exact_mod_cast (Nat.lt_succ_iff.mp k.isLt))⟩)) :=
-    measurable_pi_lambda _ (fun _ => measurable_pi_apply _)
+    Measurable.of_eval (fun _ => measurable_pi_apply _)
   have hmeas_fut : Measurable (fun g : ℝ≥0 → ℝ => g T0) := measurable_pi_apply T0
   exact (hshift.comp hmeas_fut hmeas_past).symm
 
@@ -135,7 +135,7 @@ theorem measure_blockEvent_succ_le {Ω : Type*} [MeasurableSpace Ω] {X : ℝ≥
   have hind : IndepFun U V P := indepFun_blockPast_increment hX T0 n
   have hVlaw : HasLaw V (ProbabilityTheory.gaussianReal 0 T0) P :=
     (hX.shift (blockTime T0 n)).hasLaw_eval T0
-  have hUmeas : AEMeasurable U P := aemeasurable_pi_lambda _ (fun k => hX.aemeasurable _)
+  have hUmeas : AEMeasurable U P := AEMeasurable.of_eval (fun k => hX.aemeasurable _)
   have hVmeas : AEMeasurable V P := hVlaw.aemeasurable
   have hprod : P.map (fun ω => (U ω, V ω)) = (P.map U).prod (P.map V) :=
     hind.map_prod_eq_prod_map_map hUmeas hVmeas

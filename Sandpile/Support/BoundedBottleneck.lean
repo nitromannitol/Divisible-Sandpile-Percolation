@@ -61,7 +61,9 @@ noncomputable def walkBottleneck {a b : V} (p : G.Walk a b) (F : V → ℝ) : �
 by `p`. -/
 lemma le_walkBottleneck_iff {a b : V} (p : G.Walk a b) (F : V → ℝ) (c : ℝ) :
     c ≤ walkBottleneck p F ↔ ∀ z ∈ p.support, c ≤ F z := by
-  simp [walkBottleneck, Finset.le_inf'_iff]
+  rw [walkBottleneck]
+  refine (Finset.le_inf'_iff ..).trans ?_
+  simp
 
 /-- The bottleneck value never exceeds `F` at any site the walk visits. -/
 lemma walkBottleneck_le {a b z : V} (p : G.Walk a b) (F : V → ℝ) (hz : z ∈ p.support) :
@@ -117,7 +119,7 @@ walk's support, unwinding `Finset.inf'` as an `sInf` over the corresponding set.
 lemma walkBottleneck_eq_csInf {a b : V} (p : G.Walk a b) (F : V → ℝ) :
     walkBottleneck p F = sInf (F '' {z : V | z ∈ p.support}) := by
   unfold walkBottleneck
-  rw [Finset.inf'_eq_csInf_image]
+  refine (Finset.inf'_eq_csInf_image ..).trans ?_
   congr 2
   ext z
   simp

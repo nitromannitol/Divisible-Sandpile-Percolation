@@ -87,7 +87,7 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
   have Hmeas : Measurable
       (fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) :=
-    measurable_pi_lambda _ (fun z =>
+    Measurable.of_eval (fun z =>
       measurable_finiteKernelField (boxFinset 0 r)
         (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z))
   have hmeasS : MeasurableSet {ζ : Site 4 → ℝ | lvl ≤ crossingValue (planeRectangle (2 * n) (2 * n))

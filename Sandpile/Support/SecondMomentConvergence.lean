@@ -66,12 +66,12 @@ theorem tendsto_second_moment_add_zero {Ω ι : Type*} [MeasurableSpace Ω]
     apply squeeze_zero_norm' _ (by simpa using hFlim.sqrt.mul hGlim.sqrt)
     filter_upwards [hF, hG] with n hnF hnG
     rw [Real.norm_eq_abs]
-    exact LatticeProb.abs_integral_mul_le hnF.1 hnG.1 hnF.integrable_sq hnG.integrable_sq
+    exact LatticeProb.abs_integral_mul_le hnF.aestronglyMeasurable hnG.aestronglyMeasurable hnF.integrable_sq hnG.integrable_sq
   have hsum := (hFlim.add (hcross.const_mul 2)).add hGlim
   have he : (fun n => (∫ ω, F n ω ^ 2 ∂μ) + 2 * (∫ ω, F n ω * G n ω ∂μ) +
       ∫ ω, G n ω ^ 2 ∂μ) =ᶠ[l] (fun n => ∫ ω, (F n ω + G n ω) ^ 2 ∂μ) := by
     filter_upwards [hF, hG] with n hnF hnG
-    exact (integral_sq_add hnF.1 hnG.1 hnF.integrable_sq hnG.integrable_sq).symm
+    exact (integral_sq_add hnF.aestronglyMeasurable hnG.aestronglyMeasurable hnF.integrable_sq hnG.integrable_sq).symm
   simpa using hsum.congr' he
 
 end Sandpile

@@ -87,7 +87,7 @@ lemma kernelLowEvent_inter_le_pow {d : ℕ} {ι : Type*} (μ : Measure ℝ) [IsP
     (LatticeProb.iidLaw d μ) {ζ | ∀ i ∈ s, ζ ∈ kernelLowEvent h (S i) level} ≤ p ^ s.card := by
   rw [kernelLowEvent_inter_eq_prod μ h S A hdisj hA level s]
   calc
-    _ ≤ ∏ _i ∈ s, p := Finset.prod_le_prod (fun _ _ => bot_le) hp
+    _ ≤ ∏ _i ∈ s, p := Finset.prod_le_prod₀ (fun _ _ => bot_le) hp
     _ = _ := Finset.prod_const p
 
 end Sandpile

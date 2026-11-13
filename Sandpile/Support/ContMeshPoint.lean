@@ -36,7 +36,7 @@ theorem meshPoint_apply (R : ℝ) (u : Space d) (i : Fin d) :
 /-- Rounding to the mesh is measurable. -/
 theorem measurable_meshPoint (R : ℝ) : Measurable (meshPoint (d := d) R) := by
   have h1 : Measurable (fun u : Space d => (fun i : Fin d => ((⌊R * u i⌋ : ℤ) : ℝ) / R)) :=
-    measurable_pi_lambda _ fun i =>
+    Measurable.of_eval fun i =>
       (Measurable.of_discrete.comp (measurable_coord R i)).div_const R
   exact (WithLp.measurable_toLp 2 (Fin d → ℝ)).comp h1
 
@@ -88,7 +88,7 @@ theorem measurable_meshPoint_comp (R : ℝ) (G : Space d → ℝ) :
         ∘ (fun (u : Space d) (i : Fin d) => ⌊R * u i⌋) := rfl
   rw [h]
   refine Measurable.of_discrete.comp ?_
-  exact measurable_pi_lambda _ fun i => measurable_coord R i
+  exact Measurable.of_eval fun i => measurable_coord R i
 
 /-- **The double space sums converge to the double space integral.**  The kernel
 is read at the mesh points of the two integration variables; when it is bounded

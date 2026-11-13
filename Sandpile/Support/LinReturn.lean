@@ -34,7 +34,7 @@ def noRetEver (d : ℕ) : Set (ℕ → Site d) := {Y | ∀ r : ℕ, 1 ≤ r → 
 
 /-- The relativization map `relPath n` is measurable. -/
 theorem measurable_relPath (n : ℕ) : Measurable (relPath (d := d) n) :=
-  measurable_pi_lambda _ fun k => (measurable_pi_apply (n + k)).sub (measurable_pi_apply n)
+  Measurable.of_eval fun k => (measurable_pi_apply (n + k)).sub (measurable_pi_apply n)
 
 /-- Relativizing a walk path started at the origin at time `n` gives the walk path started at the
 origin driven by the increments shifted by `n`. -/

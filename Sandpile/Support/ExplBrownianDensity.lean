@@ -97,7 +97,7 @@ theorem brownian_shift_map_heatKernelBM {Ω : Type*} [MeasurableSpace Ω]
     rw [← hp,
       AEMeasurable.map_map_of_aemeasurable
         (MeasurableEquiv.toLp 2 (Fin d → ℝ)).measurable.aemeasurable
-        (aemeasurable_pi_lambda _ fun i => (hl i).aemeasurable)]
+        (AEMeasurable.of_eval fun i => (hl i).aemeasurable)]
     rfl
   have hd' : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
   have hv : Real.toNNReal ((r : ℝ) / d) ≠ 0 := by positivity

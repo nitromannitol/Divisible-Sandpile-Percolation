@@ -36,7 +36,7 @@ theorem Sandpile.Continuum.IsBrownianStopping.aemeasurable {Ω : Type*} [Measura
       (MeasureTheory.IsStoppingTime.measurableSpace_le hτ) le_rfl)
   have hp : @Measurable (NullMeasurableSpace Ω P) (ℝ≥0 → Sandpile.Continuum.Space d)
       inferInstance inferInstance (fun ω => fun t => B t ω) :=
-    measurable_pi_lambda _ fun t => (hm t).nullMeasurable
+    Measurable.of_eval fun t => (hm t).nullMeasurable
   exact (show NullMeasurable τ P from ht.mono hp.comap_le le_rfl).aemeasurable
 
 /-- The stopped position `ω ↦ B (τ ω) ω` is measurable, given that every `B t` is measurable,
@@ -100,7 +100,7 @@ theorem Sandpile.Continuum.IsBrownian.aemeasurable {Ω : Type*} [MeasurableSpace
       rw [← mul_assoc, inv_mul_cancel₀ hsq, one_mul, sub_add_cancel]
     rwa [heq] at h
   exact (WithLp.measurable_toLp 2 (Fin d → ℝ)).comp_aemeasurable
-    (aemeasurable_pi_lambda _ hm)
+    (AEMeasurable.of_eval hm)
 
 
 /-- The stopped payoff `ω ↦ -h(T - τ ω, B (τ ω) ω)` is almost-everywhere measurable under `P`,

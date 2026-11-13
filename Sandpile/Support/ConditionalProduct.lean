@@ -43,7 +43,7 @@ theorem measurable_update_productAlg [DecidableEq ι] (m : MeasurableSpace ℝ)
     Measurable[m, productAlg m] (fun z => Function.update ξ i z) := by
   letI : MeasurableSpace ℝ := m
   change Measurable (fun z => Function.update ξ i z)
-  refine measurable_pi_lambda _ fun j => ?_
+  refine Measurable.of_eval fun j => ?_
   by_cases hj : j = i
   · subst hj
     simp only [Function.update_self]

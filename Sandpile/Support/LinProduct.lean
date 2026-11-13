@@ -86,7 +86,7 @@ theorem abs_prod_sub_prod_le {ι : Type*} [DecidableEq ι] (A : Finset ι) (s t 
   | insert a A ha ih =>
     rw [Finset.prod_insert ha, Finset.prod_insert ha, Finset.sum_insert ha]
     have hP0 : 0 ≤ ∏ i ∈ A, s i := Finset.prod_nonneg fun i _ => hs0 i
-    have hP1 : (∏ i ∈ A, s i) ≤ 1 := Finset.prod_le_one (fun i _ => hs0 i) (fun i _ => hs1 i)
+    have hP1 : (∏ i ∈ A, s i) ≤ 1 := Finset.prod_le_one₀ (fun i _ => hs0 i) (fun i _ => hs1 i)
     have hQ0 : 0 ≤ ∏ i ∈ A, t i := Finset.prod_nonneg fun i _ => ht0 i
     have hid : s a * (∏ i ∈ A, s i) - t a * (∏ i ∈ A, t i)
         = (s a - t a) * (∏ i ∈ A, s i) + t a * ((∏ i ∈ A, s i) - ∏ i ∈ A, t i) := by ring

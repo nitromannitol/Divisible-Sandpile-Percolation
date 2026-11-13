@@ -46,7 +46,7 @@ theorem Sandpile.Continuum.exists_net_close_in_probability
     intro n
     exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n)
       (hnet n)).continuous.measurable
-      |>.comp_aemeasurable (aemeasurable_pi_lambda _ fun k => hg (x n k))
+      |>.comp_aemeasurable (AEMeasurable.of_eval fun k => hg (x n k))
   have hlim : ∀ᵐ ω ∂P, Tendsto (fun n => F n ω) atTop (𝓝 (G ω)) := by
     filter_upwards [hc] with ω hω
     have hr0 : Tendsto r atTop (𝓝 0) := by

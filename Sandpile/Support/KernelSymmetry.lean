@@ -79,7 +79,7 @@ symmetric about `0`. -/
 lemma measurePreserving_iid_gaussian_neg (d : ℕ) (v : ℝ≥0) :
     MeasurePreserving (fun ζ : Site d → ℝ => fun y => -ζ y)
       (LatticeProb.iidLaw d (gaussianReal 0 v)) (LatticeProb.iidLaw d (gaussianReal 0 v)) := by
-  refine ⟨measurable_pi_lambda _ (fun y => (measurable_pi_apply y).neg), ?_⟩
+  refine ⟨Measurable.of_eval (fun y => (measurable_pi_apply y).neg), ?_⟩
   rw [LatticeProb.iidLaw_map_pi d (gaussianReal 0 v)
       (show Measurable (fun x : ℝ => -x) by fun_prop),
     gaussianReal_map_neg, neg_zero]
@@ -110,7 +110,7 @@ lemma integral_finiteKernel_affine_permute_neg {d : ℕ} {V : Type*}
   let f (ζ : Site d → ℝ) := value (fun q => finiteKernelField h ζ (z q))
   have hT := measurePreserving_iid_gaussian_neg_reindex v (affinePermuteSite e x)
   have hf : Measurable f :=
-    hv.comp (measurable_pi_lambda _ (fun q => measurable_finiteKernelField t ht (z q)))
+    hv.comp (Measurable.of_eval (fun q => measurable_finiteKernelField t ht (z q)))
   have he (ζ : Site d → ℝ) : f (T ζ) =
       value (fun q => -finiteKernelField h ζ (affinePermuteSite e x (z q))) := by
     dsimp [f, T]

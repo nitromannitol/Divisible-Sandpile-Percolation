@@ -296,7 +296,7 @@ theorem tendsto_integral_gridPayoff (P : Measure Ω) [IsProbabilityMeasure P]
       (𝓝 (∫ ω, F (LatticeProb.exitTimeTrunc C y s T ω,
         C (LatticeProb.exitTimeTrunc C y s T ω) ω - y) ∂P)) := by
   have hpath : Measurable (fun ω => (fun t => C t ω - y) : Ω → (ℝ≥0 → Space d)) :=
-    measurable_pi_lambda _ fun t => (hmS t).measurable.sub measurable_const
+    Measurable.of_eval fun t => (hmS t).measurable.sub measurable_const
   refine tendsto_integral_of_dominated_convergence (fun _ => M) (fun n => ?_)
     (integrable_const M) (fun n => ?_) ?_
   · exact (((measurable_gridPayoff d s T n hFc.measurable).comp hpath)).aestronglyMeasurable
@@ -349,9 +349,9 @@ theorem integral_gridPayoff_eq (hB : IsBrownian d x B P) (hB' : IsBrownian d x' 
     (∫ ω, gridPayoff d s T n F (fun t => B t ω - x) ∂P)
       = ∫ ω, gridPayoff d s T n F (fun t => B' t ω - x') ∂Q := by
   have hpath : Measurable (fun ω => (fun t => B t ω - x) : Ω → (ℝ≥0 → Space d)) :=
-    measurable_pi_lambda _ fun t => (hm t).sub measurable_const
+    Measurable.of_eval fun t => (hm t).sub measurable_const
   have hpath' : Measurable (fun ω => (fun t => B' t ω - x') : Ω' → (ℝ≥0 → Space d)) :=
-    measurable_pi_lambda _ fun t => (hm' t).sub measurable_const
+    Measurable.of_eval fun t => (hm' t).sub measurable_const
   have hg := measurable_gridPayoff d s T n hF
   rw [← integral_map hpath.aemeasurable hg.aestronglyMeasurable,
     ← integral_map hpath'.aemeasurable hg.aestronglyMeasurable,

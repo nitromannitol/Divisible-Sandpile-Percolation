@@ -47,7 +47,7 @@ theorem tendstoInDistribution_atTop_of_seq {Ω Ω' E : Type*}
       TendstoInDistribution (fun n : ℕ => X (u n)) atTop Z (fun _ => μ) μ') :
     TendstoInDistribution X atTop Z (fun _ => μ) μ' := by
   refine ⟨hX, hZ, ?_⟩
-  rw [Filter.tendsto_iff_seq_tendsto]
+  refine Filter.tendsto_iff_seq_tendsto.mpr ?_
   intro u hu
   exact (h u hu).tendsto
 
@@ -65,7 +65,7 @@ theorem tendstoInDistribution_congr_atTop {Ω Ω' E : Type*}
   refine ⟨hX, h.aemeasurable_limit, ?_⟩
   refine Filter.Tendsto.congr' ?_ h.tendsto
   filter_upwards [hXY] with R hR
-  refine Subtype.ext ?_
+  refine ProbabilityMeasure.toMeasure_injective ?_
   simp only [hR]
 
 /-- The Lindeberg-Feller step, along `R → ∞` in `ℝ`: a family of finite linear
@@ -114,10 +114,10 @@ theorem tendstoInDistribution_linear_pick_mass (hd : 1 ≤ d)
     ⟨Sandpile.measurable_scenery d, Sandpile.map_scenery_centeredMassLaw d ν hd⟩
   refine ⟨fun R => ((hm R).comp hmp.measurable).aemeasurable,
     measurable_id.aemeasurable, ?_⟩
-  convert hclt.tendsto using 2 with R
-  refine Subtype.ext ?_
+  refine Filter.Tendsto.congr (fun R => ?_) hclt.tendsto
+  apply ProbabilityMeasure.toMeasure_injective
   have hmap := Measure.map_map (μ := Sandpile.centeredMassLaw d ν) (hm R) hmp.measurable
   rw [hmp.map_eq] at hmap
-  simpa only [Function.comp_def] using hmap.symm
+  exact hmap
 
 end Sandpile.Support

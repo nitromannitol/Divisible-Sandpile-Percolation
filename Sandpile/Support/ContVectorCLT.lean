@@ -69,7 +69,7 @@ theorem tendstoInDistribution_vector_pick_mass (hd : 1 ≤ d)
   classical
   have hmeasF : ∀ R : ℝ, AEMeasurable (F R) (Sandpile.centeredMassLaw d ν) := by
     intro R
-    refine Measurable.aemeasurable (measurable_pi_lambda _ fun i => ?_)
+    refine Measurable.aemeasurable (Measurable.of_eval fun i => ?_)
     have hfun : (fun σ : Site d → ℝ => F R σ i)
         = fun σ : Site d → ℝ => ∑ k, a R i k * Sandpile.scenery d σ (e R k) :=
       funext fun σ => hF R σ i
@@ -77,7 +77,7 @@ theorem tendstoInDistribution_vector_pick_mass (hd : 1 ≤ d)
     refine Finset.measurable_sum _ fun k _ => measurable_const.mul ?_
     exact (measurable_pi_apply (e R k)).comp (Sandpile.measurable_scenery d)
   have hmeasZ : AEMeasurable (fun (ω : ΩW) (i : Fin m) => W (g i) ω) PW :=
-    (measurable_pi_lambda _ fun i => hW.meas (g i) (hg i)).aemeasurable
+    (Measurable.of_eval fun i => hW.meas (g i) (hg i)).aemeasurable
   refine tendstoInDistribution_pi_atTop_of_forall_dot F
     (fun (ω : ΩW) (i : Fin m) => W (g i) ω) (Sandpile.centeredMassLaw d ν) PW
     hmeasF hmeasZ ?_

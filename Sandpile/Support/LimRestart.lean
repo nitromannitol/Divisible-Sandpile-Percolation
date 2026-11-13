@@ -49,7 +49,7 @@ theorem map_brownian_stopped_state_restart {Ω : Type*} [MeasurableSpace Ω]
   have hrestart := hspace.hasStrongMarkovRestart hm hc
   have hs := measurable_shift_apply hm hc (measurable_of_isStoppingTime ht)
   have hs0 : Measurable fun ω (t : ℝ≥0) => B t ω - B 0 ω :=
-    measurable_pi_lambda _ fun t => (hm t).measurable.sub (hm 0).measurable
+    Measurable.of_eval fun t => (hm t).measurable.sub (hm 0).measurable
   simpa only [Measure.restrict_univ] using hrestart.map_prod ht hs hs0
     (measurable_brownian_stopped_state B hm hc τ ht) MeasurableSet.univ
 
@@ -69,7 +69,7 @@ theorem integral_brownian_after_stopping {Ω : Type*} [MeasurableSpace Ω]
   have hrestart := hspace.hasStrongMarkovRestart hm hc
   have hs := measurable_shift_apply hm hc (measurable_of_isStoppingTime ht)
   have hs0 : Measurable fun ω (t : ℝ≥0) => B t ω - B 0 ω :=
-    measurable_pi_lambda _ fun t => (hm t).measurable.sub (hm 0).measurable
+    Measurable.of_eval fun t => (hm t).measurable.sub (hm 0).measurable
   let G : (ℝ≥0 × Space d) × (ℝ≥0 → Space d) → ℝ :=
     fun p => F (p.1, p.1.2 + p.2 r)
   have hG : Measurable G := hF.comp (measurable_fst.prodMk

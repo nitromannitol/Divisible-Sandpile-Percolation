@@ -36,9 +36,9 @@ theorem setIntegral_transition_of_restart [IsProbabilityMeasure P] {d : ℕ}
   have hm (r : ℝ≥0) : Measurable (B r) := h.adapted.stronglyMeasurable.measurable
   have hs : IsStoppingTime 𝔽 (fun _ : Ω => (s : ℝ≥0∞)) := isStoppingTime_const 𝔽 s
   have hshift : Measurable (fun ω (r : ℝ≥0) => B (s + r) ω - B s ω) :=
-    measurable_pi_lambda _ fun r => (hm (s + r)).sub (hm s)
+    Measurable.of_eval fun r => (hm (s + r)).sub (hm s)
   have hshift0 : Measurable (fun ω (r : ℝ≥0) => B r ω - B 0 ω) :=
-    measurable_pi_lambda _ fun r => (hm r).sub (hm 0)
+    Measurable.of_eval fun r => (hm r).sub (hm 0)
   have hY : Measurable[hs.measurableSpace] (B s) := by
     have hsc : hs.measurableSpace = 𝔽 s := IsStoppingTime.measurableSpace_const 𝔽 s
     rw [hsc]

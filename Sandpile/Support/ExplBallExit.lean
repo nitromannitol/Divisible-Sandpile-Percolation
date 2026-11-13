@@ -1,5 +1,7 @@
 import Sandpile.Continuum.Stopping
-import LatticeProb
+import LatticeProb.Prob.BrownianExit
+import LatticeProb.Prob.BrownianExitTime
+import LatticeProb.Prob.BrownianMarkov
 
 /-!
 # The exit time of a ball and its tail

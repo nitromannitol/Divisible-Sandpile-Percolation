@@ -57,7 +57,7 @@ variable {d : ℕ}
 /-- `walkPath x`, the walk started at `x` as a function of its increment sequence, is measurable:
 each coordinate is a finite sum of measurable coordinate projections. -/
 theorem measurable_walkPath (x : Site d) : Measurable (walkPath x) := by
-  refine measurable_pi_lambda _ fun k => ?_
+  refine Measurable.of_eval fun k => ?_
   unfold walkPath
   fun_prop
 
@@ -152,7 +152,7 @@ theorem integral_prefix_step (hd : 1 ≤ d) (n : ℕ)
   have heval : P.map (fun ξ : ℕ → Site d => ξ n) = stepLaw d :=
     Measure.infinitePi_map_eval _ n
   haveI : IsProbabilityMeasure (P.map fun ξ : ℕ → Site d => (Finset.range n).restrict ξ) :=
-    Measure.isProbabilityMeasure_map hpre.aemeasurable
+    inferInstance
   have hint : Integrable (Function.uncurry Ψ)
       ((P.map fun ξ => (Finset.range n).restrict ξ).prod (stepLaw d)) := by
     refine (integrable_const M).mono' hunc.aestronglyMeasurable (Filter.Eventually.of_forall ?_)

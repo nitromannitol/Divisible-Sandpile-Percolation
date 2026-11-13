@@ -121,7 +121,7 @@ theorem setIntegral_restart_of_integrable [IsProbabilityMeasure P] {d : ℕ}
     ⟨by rw [Measure.map_apply hYm MeasurableSet.univ, Set.preimage_univ]
         exact measure_lt_top _ _⟩
   haveI : IsProbabilityMeasure (Measure.map (fun ω (t : ℝ≥0) => B t ω - B 0 ω) P) :=
-    Measure.isProbabilityMeasure_map hmshift0.aemeasurable
+    inferInstance
   have hG : StronglyMeasurable fun y : α =>
       ∫ z, F (y, z) ∂(Measure.map (fun ω (t : ℝ≥0) => B t ω - B 0 ω) P) :=
     hF.stronglyMeasurable.integral_prod_right'

@@ -66,7 +66,7 @@ the level parameter `y` and the residual `r`. -/
 theorem measurable_condScenery_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun p : ℝ × (Site d → ℝ) =>
       condScenery d hd c p.2 (condLevel d hd v p.1 n)) := by
-  refine measurable_pi_lambda _ fun z => ?_
+  refine Measurable.of_eval fun z => ?_
   show Measurable fun p : ℝ × (Site d → ℝ) =>
     c * (p.2 z + condLevel d hd v p.1 n * (greenUnit d hd : Site d → ℝ) z)
   refine Measurable.const_mul ?_ c
@@ -79,7 +79,7 @@ over the residual. -/
 theorem measurable_condSymmProb (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condSymmProb d hd v n y) := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
-    Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    inferInstance
   have hjoint : StronglyMeasurable (fun p : ℝ × (Site d → ℝ) =>
       (symmDiff (contactSet d n) (thresholdSet d v n)).indicator (fun _ => (1 : ℝ))
         (condScenery d hd (Real.sqrt (v : ℝ)) p.2 (condLevel d hd v p.1 n))) :=
@@ -129,7 +129,7 @@ probability measure `(LatticeProb.gaussLaw (Site d)).map (residField d hd)`. -/
 theorem condSymmProb_le_one (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     condSymmProb d hd v n y ≤ 1 := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
-    Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    inferInstance
   rw [condSymmProb_eq_measure]
   exact ENNReal.toReal_le_of_le_ofReal (by norm_num) (by simpa using prob_le_one)
 
@@ -171,7 +171,7 @@ theorem condSymmProb_eq_of_pos (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) (n : 
       = 1 - (((LatticeProb.gaussLaw (Site d)).map (residField d hd))
           {r | 0 ≤ condReflected d hd (Real.sqrt (v : ℝ)) (condLevel d hd v y n) n r}).toReal := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
-    Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    inferInstance
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
   set cc : ℝ := Real.sqrt (v : ℝ) with hccdef

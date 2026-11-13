@@ -24,7 +24,7 @@ theorem comap_restrict_mono {d : ℕ} {B A : Set (Site d)} (h : B ⊆ A) :
       ≤ MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.restrict A ζ) inferInstance := by
   rintro s ⟨t, ht, rfl⟩
   exact ⟨(fun ρ : A → ℝ => fun i : B => ρ ⟨(i : Site d), h i.2⟩) ⁻¹' t,
-    (measurable_pi_lambda _ fun i => measurable_pi_apply _) ht, rfl⟩
+    (Measurable.of_eval fun i => measurable_pi_apply _) ht, rfl⟩
 
 /-- A cube sits inside a larger cube about a nearby centre. -/
 theorem frCube_subset {x y : Site 4} {L M : ℝ}
@@ -181,7 +181,7 @@ theorem measurableSet_blockGood_comap (Aex : ℕ) (Aloc : ℝ) (R r : ℕ) (ℓ 
     intro Q hQ hN g hg
     exact measurableSet_le measurable_const
       ((measurable_crossingValue hQ hN).comp
-        (measurable_pi_lambda _ fun u => hfield (g u) (hg u)))
+        (Measurable.of_eval fun u => hfield (g u) (hg u)))
   have h1 := hcross (planeRectangle (2 * r) (2 * r))
     (isLatticeRectangle_planeRectangle (2 * r) (2 * r))
     (planeRectangle_nonempty (2 * r) (2 * r)) (fun u => (u : Site 2))

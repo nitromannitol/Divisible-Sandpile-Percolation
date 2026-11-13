@@ -136,12 +136,12 @@ theorem odometer_gaussian_four_mass (hVS : External.VarianceScale)
   constructor
   · refine ⟨fun t => ?_, measurable_id.aemeasurable, ?_⟩
     · simpa only [he, Function.comp_def] using ((hm t).comp hmp.measurable).aemeasurable
-    · convert hclt.tendsto using 2 with t
-      apply Subtype.ext
+    · refine Filter.Tendsto.congr (fun t => ?_) hclt.tendsto
+      apply ProbabilityMeasure.toMeasure_injective
       simp_rw [he]
       have hmap := Measure.map_map (μ := centeredMassLaw 4 ν) (hm t) hmp.measurable
       rw [hmp.map_eq] at hmap
-      simpa only [Function.comp_def] using hmap.symm
+      exact hmap
   · have hev (t : ℕ) : variance (fun σ => odometer σ t 0) (centeredMassLaw 4 ν) =
         variance (fun ζ => odometerOf ζ t 0) (LatticeProb.iidLaw 4 ν) := by
       simp_rw [odometer_eq_odometerOf]

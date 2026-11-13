@@ -104,7 +104,7 @@ theorem meanOdometerOf_binaryProjection_le {d : ℕ} (ν : Measure ℝ) [IsProba
       ∫ ζ, odometerOf ζ t x ∂(LatticeProb.iidLaw d ν) := by
   set f := binaryProjection ν S
   have hfm : Measurable f := measurable_binaryProjection ν hS
-  haveI : IsProbabilityMeasure (ν.map f) := Measure.isProbabilityMeasure_map hfm.aemeasurable
+  haveI : IsProbabilityMeasure (ν.map f) := inferInstance
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     hint.abs.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => by
       rw [Real.norm_eq_abs, abs_of_nonneg (le_max_right z 0)]
@@ -119,7 +119,7 @@ theorem meanOdometerOf_binaryProjection_le {d : ℕ} (ν : Measure ℝ) [IsProba
         ∂(Measure.pi fun _ : Fin (boxFinset x t).card => ν)) =
       ∫ ζ, odometerOf ζ t x ∂(LatticeProb.iidLaw d (ν.map f)) := by
     have hFm : Measurable (fun ξ : Fin (boxFinset x t).card → ℝ => fun i => f (ξ i)) :=
-      measurable_pi_lambda _ fun i => hfm.comp (measurable_pi_apply i)
+      Measurable.of_eval fun i => hfm.comp (measurable_pi_apply i)
     have hmapint := integral_map (μ := Measure.pi fun _ : Fin (boxFinset x t).card => ν)
       (φ := fun ξ : Fin (boxFinset x t).card → ℝ => fun i => f (ξ i))
       (f := boxOdometer t x) hFm.aemeasurable

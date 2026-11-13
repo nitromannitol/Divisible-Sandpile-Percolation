@@ -421,7 +421,7 @@ simplifying the resulting factor `x^0`. -/
 theorem integrableOn_exp_neg_mul_rpow' {b p : ℝ} (hp : 1 ≤ p) (hb : 0 < b) :
     IntegrableOn (fun x : ℝ => Real.exp (-b * x ^ p)) (Set.Ioi 0) := by
   have h := integrableOn_rpow_mul_exp_neg_mul_rpow (s := 0) (p := p) (b := b)
-    (by norm_num) hp hb
+    (by norm_num) (by linarith) hb
   refine h.congr_fun (fun x _ => ?_) measurableSet_Ioi
   simp only [Real.rpow_zero, one_mul]
 

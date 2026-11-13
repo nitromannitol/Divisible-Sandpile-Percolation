@@ -86,7 +86,7 @@ lemma isAssociatedPlanarLaw_finiteKernel (μ : Measure ℝ) [IsProbabilityMeasur
     IsAssociatedPlanarLaw ((LatticeProb.iidLaw 4 μ).map
       (fun ζ : Site 4 → ℝ => fun z : Site 2 => finiteKernelField h ζ (planeTranslate x z))) := by
   apply isAssociatedPlanarLaw_map
-  · exact measurable_pi_lambda _ (fun z => measurable_finiteKernelField t ht (planeTranslate x z))
+  · exact Measurable.of_eval (fun z => measurable_finiteKernelField t ht (planeTranslate x z))
   · intro ζ ξ hζ z
     exact monotone_finiteKernelField t ht hn (planeTranslate x z) hζ
   · intro A B hA hB hAm hBm

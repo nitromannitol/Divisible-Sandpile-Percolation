@@ -34,7 +34,7 @@ theorem measurable_condReflected_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n 
       condReflected d hd c (condLevel d hd v p.1 n) t p.2) := by
   have hcs : Measurable (fun p : ℝ × (Site d → ℝ) =>
       condScenery d hd c p.2 (condLevel d hd v p.1 n)) := by
-    refine measurable_pi_lambda _ fun z => ?_
+    refine Measurable.of_eval fun z => ?_
     show Measurable fun p : ℝ × (Site d → ℝ) =>
       c * (p.2 z + condLevel d hd v p.1 n * (greenUnit d hd : Site d → ℝ) z)
     refine Measurable.const_mul ?_ c
@@ -56,7 +56,7 @@ measurable positive part of `condReflected` over the residual. -/
 theorem measurable_condMeanReflected (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condMeanReflected d hd v n y) := by
   haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
-    Measure.isProbabilityMeasure_map (measurable_residField hd).aemeasurable
+    inferInstance
   have hjoint : StronglyMeasurable (fun p : ℝ × (Site d → ℝ) =>
       max (meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n
         / ((fieldVar d v : ℝ≥0) : ℝ)

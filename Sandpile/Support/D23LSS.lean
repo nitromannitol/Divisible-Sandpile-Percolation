@@ -46,7 +46,7 @@ theorem measurableSet_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) 
       Measurable (fun ζ : Site d → ℝ =>
         crossingValue Q (fun v : Q => d23Field d R t ζ (blockShift R z (v : Site 2)))) :=
     fun Q hQ hN => (measurable_crossingValue hQ hN).comp
-      (measurable_pi_lambda _ fun v => measurable_d23Field hd R t _)
+      (Measurable.of_eval fun v => measurable_d23Field hd R t _)
   have h1 : MeasurableSet {ζ : Site d → ℝ | ℓ ≤ crossingValue (planeRectangle (2 * R) (2 * R))
       (fun v => d23Field d R t ζ (blockShift R z (v : Site 2)))} :=
     measurableSet_le measurable_const
@@ -59,7 +59,7 @@ theorem measurableSet_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) 
     measurableSet_le measurable_const
       ((measurable_crossingValue (isLatticeRectangle_planeRectangle (2 * R) (2 * R))
         (planeRectangle_nonempty (2 * R) (2 * R))).comp
-        (measurable_pi_lambda _ fun v => measurable_d23Field hd R t _))
+        (Measurable.of_eval fun v => measurable_d23Field hd R t _))
   have h3 : MeasurableSet {ζ : Site d → ℝ | ℓ ≤ crossingValue (planeRectangle (4 * R) (2 * R))
       (fun v => d23Field d R t ζ (blockShift R z (v : Site 2)))} :=
     measurableSet_le measurable_const
@@ -72,7 +72,7 @@ theorem measurableSet_blockGood_d23Field (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) 
     measurableSet_le measurable_const
       ((measurable_crossingValue (isLatticeRectangle_planeRectangle (4 * R) (2 * R))
         (planeRectangle_nonempty (4 * R) (2 * R))).comp
-        (measurable_pi_lambda _ fun v => measurable_d23Field hd R t _))
+        (Measurable.of_eval fun v => measurable_d23Field hd R t _))
   exact h1.inter (h2.inter (h3.inter h4))
 
 /-- The Boolean indicator `ζ ↦ decide (BlockGood R (d23Field d R t ζ) ℓ z)` is measurable,
@@ -100,7 +100,7 @@ theorem blockGood_d23Field_law_stationary (ν : Measure ℝ) [IsProbabilityMeasu
   set y : Site d := planeSite ![2 * (R : ℤ) * w 0, 2 * (R : ℤ) * w 1] with hy
   have hmeasG : Measurable (fun (ζ : Site d → ℝ) (z : Site 2) =>
       decide (BlockGood R (d23Field d R t ζ) ℓ z)) :=
-    measurable_pi_lambda _ fun z => measurable_decide_blockGood_d23Field hd R t ℓ z
+    Measurable.of_eval fun z => measurable_decide_blockGood_d23Field hd R t ℓ z
   have hfun : (fun (ζ : Site d → ℝ) (z : Site 2) =>
         decide (BlockGood R (d23Field d R t ζ) ℓ (z + w)))
       = (fun (ζ : Site d → ℝ) (z : Site 2) =>

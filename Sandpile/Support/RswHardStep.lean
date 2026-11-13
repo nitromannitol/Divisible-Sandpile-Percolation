@@ -25,10 +25,7 @@ lemma isProbabilityMeasure_planar_image (μ : Measure ℝ) [IsProbabilityMeasure
     IsProbabilityMeasure ((LatticeProb.iidLaw 4 μ).map
       (fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))) := by
-  exact Measure.isProbabilityMeasure_map
-    (Measurable.aemeasurable (measurable_pi_lambda _ (fun z =>
-    measurable_finiteKernelField (boxFinset 0 r)
-      (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z))))
+  exact inferInstance
 
 /-- The image measure of a crossing event is the iid measure of its
 preimage. -/
@@ -41,7 +38,7 @@ lemma planar_image_event (μ : Measure ℝ) [IsProbabilityMeasure μ]
     LatticeProb.iidLaw 4 μ
       {ζ | level ≤ crossingValue (planeRectangle w h) (fun z =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))} := by
-  rw [Measure.map_apply (measurable_pi_lambda _ (fun z =>
+  rw [Measure.map_apply (Measurable.of_eval (fun z =>
     measurable_finiteKernelField (boxFinset 0 r)
       (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z)))
     (measurableSet_planarCrossingEvent w h level)]

@@ -103,7 +103,8 @@ lemma hasStarTopBottomCrossing_of_crossingValue_le {ϑ : ℝ} (hϑ : 0 ≤ ϑ)
   set q : starGraph.Walk (planeTranslate x (b : Site 2)) (planeTranslate x (a : Site 2)) :=
     ((p.reverse).map g).copy rfl rfl with hq
   have hsupp : q.support = (p.reverse.support).map (⇑g) := by
-    rw [hq, SimpleGraph.Walk.support_copy, SimpleGraph.Walk.support_map]
+    rw [hq]
+    exact (SimpleGraph.Walk.support_copy _ _ _).trans (SimpleGraph.Walk.support_map _ _)
   refine ⟨q.support, q.support_ne_nil, ?_, q.isChain_adj_support, ?_, ?_⟩
   · intro z hz
     rw [hsupp] at hz

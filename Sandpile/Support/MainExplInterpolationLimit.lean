@@ -231,14 +231,14 @@ theorem brownian_scaling_fdd_of_localCLT
       (hZmod q.1 q.2).symm
   have hYm : AEMeasurable (fun ω j => brownianValue (B (x j)) P'
       (fun t y => Z t y ω) T (x j)) P := by
-    apply aemeasurable_pi_lambda
+    apply AEMeasurable.of_eval
     intro j
     exact Support.aemeasurable_brownianValue_of_growth (B (x j)) P' (x j) (hB (x j))
       (fun t => (hBm (x j) t).measurable) (hBc (x j)) P Z T hT hZm
       (hZcont T hT) (hZgrow T hT)
   refine tendstoInDistribution_of_coupling (centeredMassLaw d ν) P _ _ ?_ hYm ?_
   · intro R
-    exact (measurable_pi_lambda _ fun j => measurable_multilinearInterp_apply R _ (x j)
+    exact (Measurable.of_eval fun j => measurable_multilinearInterp_apply R _ (x j)
       (measurable_rescaled_odometer_field T R)).aemeasurable
   · intro ε δ hε hδ
     obtain ⟨R₀, hR₀, hc⟩ := dlt4_interpolated_coupling_of_version hLocalCLT hStab d hd hd3 ν

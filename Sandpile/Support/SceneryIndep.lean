@@ -75,7 +75,7 @@ theorem indep_comap_pi_disjoint (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hW : MeasurePreserving πW (LatticeProb.iidLaw 2 ν)
       (Measure.pi (fun _ : {x // x ∈ W} => ν)) := by
     refine ⟨?_, ?_⟩
-    · exact measurable_pi_lambda _ fun k => measurable_pi_apply k.val
+    · exact Measurable.of_eval fun k => measurable_pi_apply k.val
     · show (LatticeProb.iidLaw 2 ν).map πW = _
       rw [show LatticeProb.iidLaw 2 ν = Measure.infinitePi (fun _ : Site 2 => ν) from rfl]
       rw [Measure.map_infinitePi_infinitePi_of_inj Subtype.val_injective]
@@ -98,7 +98,7 @@ theorem indep_comap_pi_disjoint (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hcU : Measurable
       (fun ρ : {i : {x // x ∈ W} // p i} → ℝ =>
         fun k : {x // x ∈ U} => ρ ⟨⟨k.val, Finset.mem_union_left V k.2⟩, k.2⟩) :=
-    measurable_pi_lambda _
+    Measurable.of_eval
       (fun k : {x // x ∈ U} => measurable_pi_apply _)
   have hcV : Measurable
       (fun ρ : {i : {x // x ∈ W} // ¬p i} → ℝ =>
@@ -109,7 +109,7 @@ theorem indep_comap_pi_disjoint (ν : Measure ℝ) [IsProbabilityMeasure ν]
                 ⟨hU, Finset.mem_coe.2 k.2⟩
               rw [hUV.inter_eq] at h2
               exact h2⟩) :=
-    measurable_pi_lambda _
+    Measurable.of_eval
       (fun k : {x // x ∈ V} => measurable_pi_apply _)
   have hle1 : MeasurableSpace.comap (fun ω : Site 2 → ℝ => fun k : {x // x ∈ U} => ω k.val)
       (inferInstance : MeasurableSpace (({x // x ∈ U} : Type) → ℝ))

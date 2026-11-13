@@ -59,7 +59,7 @@ theorem evariance_centering_lt_top (d : ℕ) (_hd : 1 ≤ d) (μ : Measure ℝ)
     evariance id (μ.map fun s => (s - 1) / (2 * (d : ℝ))) < ⊤ := by
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
   haveI : IsProbabilityMeasure (μ.map fun s : ℝ => (s - 1) / (2 * (d : ℝ))) :=
-    Measure.isProbabilityMeasure_map hf.aemeasurable
+    inferInstance
   refine ProbabilityTheory.evariance_lt_top ?_
   have h1 : Integrable (fun s : ℝ => Real.exp (θ₀ * |s|)) μ := by
     refine (hexp.const_mul (Real.exp θ₀)).mono' (by fun_prop)
@@ -126,7 +126,7 @@ theorem crit23_d23_branch
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
   have hνprob : IsProbabilityMeasure ν := by
     rw [hν]
-    exact Measure.isProbabilityMeasure_map hf.aemeasurable
+    exact inferInstance
   have hid : Integrable id μ := integrable_id_of_shifted_exp_moment μ θ₀ hθ₀ hexpint
   have h1 : ∫ z, z ∂ν = 0 := crit23_integral_centering_eq_zero d hd1 μ hid hmean
   have h2 : ENNReal.ofReal ((ν₀ / (2 * (d : ℝ))) ^ 2) ≤ evariance id ν :=
@@ -199,7 +199,7 @@ theorem crit23_dgt4_branch
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
   have hνprob : IsProbabilityMeasure ν := by
     rw [hν]
-    exact Measure.isProbabilityMeasure_map hf.aemeasurable
+    exact inferInstance
   have hid : Integrable id μ := integrable_id_of_shifted_exp_moment μ θ₀ hθ₀ hexpint
   have h1 : ∫ z, z ∂ν = 0 := crit23_integral_centering_eq_zero d hd1 μ hid hmean
   have h2 : ENNReal.ofReal ((ν₀ / (2 * (d : ℝ))) ^ 2) ≤ evariance id ν :=

@@ -52,7 +52,7 @@ theorem measurableSet_of_upperCylinder [MeasurableSpace Ω] {X : Sandpile.Contin
     (hmeas : ∀ u, Measurable (X u)) {A : Set Ω} (hA : UpperCylinder X A) :
     MeasurableSet A := by
   obtain ⟨k, q, U, hU, _, rfl⟩ := hA
-  exact (measurable_pi_lambda _ fun i => hmeas (q i)) hU
+  exact (Measurable.of_eval fun i => hmeas (q i)) hU
 
 /-- A single level constraint is an upper cylinder. -/
 theorem upperCylinder_le {X : Sandpile.Continuum.Space 2 → Ω → ℝ}
@@ -75,10 +75,10 @@ theorem upperCylinder_pair {X : Sandpile.Continuum.Space 2 → Ω → ℝ} {A B 
   refine ⟨k₁ + k₂, Fin.append q₁ q₂,
     (fun x : Fin (k₁ + k₂) → ℝ => fun i => x (Fin.castAdd k₂ i)) ⁻¹' U,
     (fun x : Fin (k₁ + k₂) → ℝ => fun i => x (Fin.natAdd k₁ i)) ⁻¹' V, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · exact (measurable_pi_lambda _ fun i => measurable_pi_apply _) hU
+  · exact (Measurable.of_eval fun i => measurable_pi_apply _) hU
   · intro x y hxy hx
     exact hUup (fun i => hxy _) hx
-  · exact (measurable_pi_lambda _ fun i => measurable_pi_apply _) hV
+  · exact (Measurable.of_eval fun i => measurable_pi_apply _) hV
   · intro x y hxy hx
     exact hVup (fun i => hxy _) hx
   · ext ω
@@ -105,7 +105,7 @@ theorem fkg_cylinder_same [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMe
       ≤ P.real {ω | (fun i => X (q i) ω) ∈ U ∩ V} := by
   classical
   have hY : Measurable (fun ω => (fun i => X (q i) ω)) :=
-    measurable_pi_lambda _ fun i => hmeas (q i)
+    Measurable.of_eval fun i => hmeas (q i)
   have hmU : MeasurableSet {ω | (fun i => X (q i) ω) ∈ U} := hY hU
   have hmV : MeasurableSet {ω | (fun i => X (q i) ω) ∈ V} := hY hV
   have hmUV : MeasurableSet {ω | (fun i => X (q i) ω) ∈ U ∩ V} := hY (hU.inter hV)

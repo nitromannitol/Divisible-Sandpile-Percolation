@@ -109,7 +109,7 @@ theorem Sandpile.Support.exists_ae_bound_of_memLp_top {X : Type*} [MeasurableSpa
     (μ : Measure X) (f : X → ℝ) (hf : MemLp f ∞ μ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ᵐ x ∂μ, |f x| ≤ M := by
   have h := hf.eLpNorm_lt_top
-  rw [eLpNorm_exponent_top] at h
+  rw [eLpNorm_exponent_top hf.aestronglyMeasurable] at h
   obtain ⟨C, hC⟩ := eLpNormEssSup_lt_top_iff_isBoundedUnder.mp h
   refine ⟨(C : ℝ), C.coe_nonneg, ?_⟩
   filter_upwards [hC] with x hx

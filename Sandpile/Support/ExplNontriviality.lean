@@ -113,7 +113,7 @@ theorem percolation_below_criticality_of_critical_levels
   have hid : Integrable (id : ℝ → ℝ) (μ ρ) :=
     integrable_id_of_exp_moment_at (μ ρ) θ₀ ρ hθ₀ (hexpint ρ hρmem)
   haveI hmprob : IsProbabilityMeasure ((μ ρ).map fun s => s + (1 - ρ)) :=
-    MeasureTheory.Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   have hmmean : ∫ s, s ∂((μ ρ).map fun s => s + (1 - ρ)) = 1 := by
     rw [integral_id_map_add_const (μ ρ) (1 - ρ) hid, hmean ρ hρmem']
     ring
@@ -130,7 +130,7 @@ theorem percolation_below_criticality_of_critical_levels
     (max t₀ 2) ht0
   rw [← massLaw_map_add_const d (μ ρ) (1 - ρ)] at hae
   have hmeas : Measurable fun (σ : Site d → ℝ) (i : Site d) => σ i + (1 - ρ) :=
-    measurable_pi_lambda _ fun i => by
+    Measurable.of_eval fun i => by
       have : Measurable fun σ : Site d → ℝ => σ i := measurable_pi_apply i
       exact this.add_const (1 - ρ)
   have hae' := MeasureTheory.ae_of_ae_map

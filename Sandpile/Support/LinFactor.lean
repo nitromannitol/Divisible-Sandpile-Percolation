@@ -50,7 +50,7 @@ theorem massLaw_iInter_coord (ν : Measure ℝ) [IsProbabilityMeasure ν]
     · intro hσ x hx
       exact hσ ⟨x, hx⟩ (Set.mem_univ _)
   have hmeasres : Measurable (Λ.restrict : (Site d → ℝ) → (Λ → ℝ)) :=
-    measurable_pi_lambda _ fun x => measurable_pi_apply (x : Site d)
+    Measurable.of_eval fun x => measurable_pi_apply (x : Site d)
   have hbox : MeasurableSet (Set.univ.pi fun x : Λ => A (x : Site d)) :=
     MeasurableSet.univ_pi fun x => hA _
   rw [massLaw, hset, ← Measure.map_apply hmeasres hbox,
@@ -79,7 +79,7 @@ theorem centeredMassLaw_threshold_factorization (ν : Measure ℝ) [IsProbabilit
   classical
   set μ : Measure ℝ := ν.map fun z => 1 + 2 * (d : ℝ) * z with hμ
   have hμprob : IsProbabilityMeasure μ := by
-    rw [hμ]; exact Measure.isProbabilityMeasure_map (by fun_prop)
+    rw [hμ]; exact inferInstance
   set A : Site d → Set ℝ := fun x => {t : ℝ | -(green d 0 0 * ((t - 1) / (2 * d))) ≤ b x} with hA
   have hAmeas : ∀ x, MeasurableSet (A x) := by
     intro x

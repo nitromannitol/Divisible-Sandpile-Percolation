@@ -155,16 +155,11 @@ theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
         (SimpleGraph.Walk.map (rectAbsHom r (z + ![(1 : ℤ), (0 : ℤ)]) (2 * r) (2 * r)) C)),
     rfl, rfl, ?_⟩
   intro u hu
-  rw [SimpleGraph.Walk.support_append, SimpleGraph.Walk.support_append,
-    SimpleGraph.Walk.support_copy, SimpleGraph.Walk.support_copy] at hu
-  rw [List.mem_append] at hu
-  rcases hu with hu | hu
-  · exact hA u hu
-  · have hu' := List.mem_of_mem_tail hu
-    rw [List.mem_append] at hu'
-    rcases hu' with hu' | hu'
-    · exact hB u hu'
-    · exact hC u (List.mem_of_mem_tail hu')
+  rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu | hu
+  · exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu' | hu'
+    · exact hB u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu')
+    · exact hC u hu'
 
 /-- For vertically adjacent good blocks at `z` and `z + e₁`, any two left-right crossing walks
 `LR₁`, `LR₂` of the respective squares (with field values at least `ℓ`) have their starts joined
@@ -306,14 +301,9 @@ theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
         (SimpleGraph.Walk.map (rectAbsHom r (z + ![(0 : ℤ), (1 : ℤ)]) (2 * r) (2 * r)) C)),
     rfl, rfl, ?_⟩
   intro u hu
-  rw [SimpleGraph.Walk.support_append, SimpleGraph.Walk.support_append,
-    SimpleGraph.Walk.support_copy, SimpleGraph.Walk.support_copy] at hu
-  rw [List.mem_append] at hu
-  rcases hu with hu | hu
-  · exact hA u hu
-  · have hu' := List.mem_of_mem_tail hu
-    rw [List.mem_append] at hu'
-    rcases hu' with hu' | hu'
-    · exact hB u hu'
-    · exact hC u (List.mem_of_mem_tail hu')
+  rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu | hu
+  · exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu' | hu'
+    · exact hB u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu')
+    · exact hC u hu'
 end Sandpile

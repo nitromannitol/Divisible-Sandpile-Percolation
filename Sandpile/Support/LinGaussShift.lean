@@ -56,7 +56,7 @@ theorem centeredMassLaw_preimage_shiftField_all (ν : Measure ℝ) [IsProbabilit
   set μ : Measure ℝ := ν.map fun z => 1 + 2 * (d : ℝ) * z with hμ
   haveI : IsProbabilityMeasure μ := by
     rw [hμ]
-    exact Measure.isProbabilityMeasure_map (by fun_prop)
+    exact inferInstance
   have hcm : centeredMassLaw d ν = massLaw d μ := by rw [centeredMassLaw, hμ]
   have hinv : ∀ σ : Site d → ℝ, shiftField (-y) (shiftField y σ) = σ := by
     intro σ

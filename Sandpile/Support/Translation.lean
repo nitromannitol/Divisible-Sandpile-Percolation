@@ -24,7 +24,7 @@ def shiftField (y : Site d) (σ : Site d → ℝ) : Site d → ℝ := fun z => �
 
 /-- `shiftField y` is measurable, as a coordinate relabelling of `Site d → ℝ`. -/
 theorem measurable_shiftField (y : Site d) : Measurable (shiftField (d := d) y) :=
-  measurable_pi_lambda _ fun _ => measurable_pi_apply _
+  Measurable.of_eval fun _ => measurable_pi_apply _
 
 /-- The odometer commutes with translation. -/
 theorem odometer_shiftField (σ : Site d → ℝ) (y : Site d) :
@@ -150,7 +150,7 @@ theorem scenery_integrable_and_mean (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ)
     positivity
   set g : ℝ → ℝ := fun z => 1 + 2 * (d : ℝ) * z with hg
   haveI : IsProbabilityMeasure (ν.map g) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   have hcoord : (centeredMassLaw d ν).map (fun σ : Site d → ℝ => σ 0) = ν.map g := by
     unfold centeredMassLaw massLaw LatticeProb.iidLaw
     exact Measure.infinitePi_map_eval _ 0

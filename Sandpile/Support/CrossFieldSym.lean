@@ -50,7 +50,7 @@ when each coordinate `X u` is. -/
 theorem measurable_fieldMap {Ω : Type*} [MeasurableSpace Ω]
     {X : Space 2 → Ω → ℝ} (hX : ∀ u, Measurable (X u)) :
     Measurable (fun ω => (fun u => X u ω) : Ω → (Space 2 → ℝ)) :=
-  measurable_pi_lambda _ hX
+  Measurable.of_eval hX
 
 /-- The pushforward measure `fieldLaw P X`, evaluated at a measurable set `A`, equals the
 `P`-measure of the preimage of `A` under the packaged field map. -/

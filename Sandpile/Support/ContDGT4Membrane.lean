@@ -247,8 +247,7 @@ theorem dgt4_diffusive_membrane_of
     tendsto_eLpNorm_of_tendsto_integral_sq P (fun R σ => O R σ - W R σ)
       (fun R => (hOW R).aestronglyMeasurable) hZint hZlim
   have hmeasure : TendstoInMeasure P (fun R => O R - W R) atTop 0 := by
-    refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num)
-      (fun R => (hOW R).aestronglyMeasurable) aestronglyMeasurable_zero ?_
+    refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num) ?_
     simp only [sub_zero]
     exact heL
   have hWlim := (Sandpile.Frozen.weighted_membrane_limit

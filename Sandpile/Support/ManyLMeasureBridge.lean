@@ -27,8 +27,7 @@ theorem tendstoInMeasure_sub_of_integral_sq {Ω : Type*} [MeasurableSpace Ω]
   have heL : Tendsto (fun R : ℝ => eLpNorm (fun ω => O R ω - W R ω) 2 P) atTop (𝓝 0) :=
     tendsto_eLpNorm_of_tendsto_integral_sq P (fun R ω => O R ω - W R ω)
       (fun R => (hmem R).aestronglyMeasurable) hint hlim
-  refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num)
-    (fun R => (hmem R).aestronglyMeasurable) aestronglyMeasurable_zero ?_
+  refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num) ?_
   simp only [sub_zero]
   exact heL
 

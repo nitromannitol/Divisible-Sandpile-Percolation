@@ -121,7 +121,7 @@ theorem integrable_greenTimeBM_sq {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {t : 
       (volume : Measure (Space d)) :=
 by
   have h := memLp_greenTimeBM hd hd3 ht x
-  exact (memLp_two_iff_integrable_sq h.1).mp h
+  exact (memLp_two_iff_integrable_sq h.aestronglyMeasurable).mp h
 
 /-- The finite-time Brownian Green kernel grows with the horizon, away from the diagonal. -/
 theorem greenTimeBM_mono {d : ℕ} (hd : 1 ≤ d) {t t' : ℝ} (ht : 0 ≤ t) (htt : t ≤ t')

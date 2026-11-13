@@ -121,7 +121,7 @@ theorem measurableSet_blockGood_comap_d23 (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ)
     intro Q hQ hN g hg
     exact measurableSet_le measurable_const
       ((measurable_crossingValue hQ hN).comp
-        (measurable_pi_lambda _ fun u => hfield (g u) (hg u)))
+        (Measurable.of_eval fun u => hfield (g u) (hg u)))
   have h1 := hcross (planeRectangle (2 * R) (2 * R))
     (isLatticeRectangle_planeRectangle (2 * R) (2 * R))
     (planeRectangle_nonempty (2 * R) (2 * R)) (fun u => (u : Site 2))

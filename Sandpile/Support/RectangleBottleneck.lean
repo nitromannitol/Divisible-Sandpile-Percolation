@@ -165,7 +165,8 @@ lemma crossingPath_walk {Q : Finset (Site 2)} {Γ : List Q} (hΓ : IsCrossingPat
   let p := SimpleGraph.Walk.ofSupport (G := rectangleGraph Q) Γ hΓ.1 hΓ.2.2.1
   refine ⟨Γ.head hΓ.1, Γ.getLast hΓ.1, p, ?_, ?_, ?_, ?_⟩
   · exact (SimpleGraph.Walk.isPath_def _).mpr (by
-      simpa only [p, SimpleGraph.Walk.support_ofSupport] using hΓ.2.1)
+      exact (congrArg List.Nodup (SimpleGraph.Walk.support_ofSupport (G := rectangleGraph Q)
+        hΓ.1 hΓ.2.2.1)).mpr hΓ.2.1)
   · exact SimpleGraph.Walk.support_ofSupport _ _
   · apply Finset.mem_filter.mpr
     exact ⟨Finset.mem_univ _, hΓ.2.2.2.1 _ (List.head_mem_head? _)⟩

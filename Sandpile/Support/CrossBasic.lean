@@ -104,7 +104,7 @@ theorem ofReal_half_le_of_add {c : ℝ} (hc : 0 ≤ c) {x : ℝ≥0∞}
   have hsplit : ENNReal.ofReal c = ENNReal.ofReal (c / 2) + ENNReal.ofReal (c / 2) := by
     rw [← ENNReal.ofReal_add (by linarith) (by linarith), hcc]
   rw [hsplit] at h
-  exact (ENNReal.add_le_add_iff_right ENNReal.ofReal_ne_top).mp (by rwa [add_comm x] at h)
+  exact (ENNReal.add_le_add_iff_right ENNReal.ofReal_ne_top).mp h
 
 /-- Subadditivity: the outer measure of `A` is at most that of `A ∩ B` plus that
 of the complement of `B`.  No measurability is needed, which is what lets the

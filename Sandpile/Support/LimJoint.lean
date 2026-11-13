@@ -45,10 +45,10 @@ theorem fieldLaw_maxBallField {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
         (jointFieldLaw d k W s P) := by
   have hf : Measurable (fun ω => fun p : Sandpile.Continuum.Space 2 × Fin k =>
       ballField d W (s p.2 : ℝ) p.1 ω) :=
-    measurable_pi_lambda _ fun p => measurable_ballField hd hW (hs p.2) p.1
+    Measurable.of_eval fun p => measurable_ballField hd hW (hs p.2) p.1
   have hg : Measurable (fun g : Sandpile.Continuum.Space 2 × Fin k → ℝ =>
       fun u : Sandpile.Continuum.Space 2 => ⨆ i : Fin k, g (u, i)) :=
-    measurable_pi_lambda _ fun u => Measurable.iSup fun i => measurable_pi_apply (u, i)
+    Measurable.of_eval fun u => Measurable.iSup fun i => measurable_pi_apply (u, i)
   rw [jointFieldLaw, Measure.map_map hg hf]
   rfl
 

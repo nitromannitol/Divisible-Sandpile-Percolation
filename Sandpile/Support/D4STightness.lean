@@ -221,10 +221,12 @@ theorem d4_superdiffusive_tightness (hHK : External.HeatKernelBounds)
     have hb1 := hM₁ R hR1
     have hb2 : centeredMassLaw 4 ν {σ : Site 4 → ℝ | ENNReal.ofReal 1 < negSobolevNorm 4 s D
         (omegaRep D w (latticePairing R (smoothedError ν α R (scenery 4 σ))))}
-        ≤ ENNReal.ofReal (ε / 4) := le_trans (hmapped _) h2R
+        ≤ ENNReal.ofReal (ε / 4) := le_trans (hmapped {ζ : Site 4 → ℝ | ENNReal.ofReal 1 <
+          negSobolevNorm 4 s D (omegaRep D w (latticePairing R (smoothedError ν α R ζ)))}) h2R
     have hb3 : centeredMassLaw 4 ν {σ : Site 4 → ℝ | ENNReal.ofReal 1 < negSobolevNorm 4 s D
         (omegaRep D w (latticePairing R (windowField ν α R (scenery 4 σ))))}
-        ≤ ENNReal.ofReal (ε / 4) := le_trans (hmapped _) h3R
+        ≤ ENNReal.ofReal (ε / 4) := le_trans (hmapped {ζ : Site 4 → ℝ | ENNReal.ofReal 1 <
+          negSobolevNorm 4 s D (omegaRep D w (latticePairing R (windowField ν α R ζ)))}) h3R
     have hsum : ENNReal.ofReal (ε / 4) + ENNReal.ofReal (ε / 4) + ENNReal.ofReal (ε / 4)
         ≤ ENNReal.ofReal ε := by
       rw [← ENNReal.ofReal_add (by positivity) (by positivity),

@@ -24,9 +24,9 @@ theorem integral_norm_L2_le {Ω : Type*} [MeasurableSpace Ω]
     (P : Measure Ω) [IsProbabilityMeasure P] (F : Lp ℝ 2 P) :
     (∫ ω, ‖F ω‖ ∂P) ≤ ‖F‖ := by
   rw [integral_norm_eq_lintegral_enorm (Lp.aestronglyMeasurable F),
-    ← eLpNorm_one_eq_lintegral_enorm, Lp.norm_def]
+    ← eLpNorm_one_eq_lintegral_enorm (Lp.aestronglyMeasurable F), Lp.norm_def]
   exact ENNReal.toReal_mono (Lp.eLpNorm_ne_top F)
-    (eLpNorm_le_eLpNorm_of_exponent_le (by norm_num) (Lp.aestronglyMeasurable F))
+    (eLpNorm_le_eLpNorm_of_exponent_le (by norm_num))
 
 /-- A joint version of an integrable L2 family is integrable on the product. -/
 theorem integrable_joint_L2_version {U Ω : Type*} [MeasurableSpace U] [MeasurableSpace Ω]

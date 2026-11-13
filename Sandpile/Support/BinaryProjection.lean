@@ -137,7 +137,7 @@ theorem binaryProjection_law_properties (ν : Measure ℝ) [IsProbabilityMeasure
   have hfm : Measurable f := measurable_binaryProjection ν measurableSet_Iic
   have hfi : Integrable f ν := integrable_binaryProjection ν measurableSet_Iic
   set ρ := ν.map f
-  haveI hρ : IsProbabilityMeasure ρ := Measure.isProbabilityMeasure_map hfm.aemeasurable
+  haveI hρ : IsProbabilityMeasure ρ := inferInstance
   have hρmean : (∫ z, z ∂ρ) = 0 := by
     change (∫ z, z ∂(ν.map f)) = 0
     rw [integral_map hfm.aemeasurable (by fun_prop)]

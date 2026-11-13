@@ -30,7 +30,7 @@ one such input coordinate, or is the constant `0`. -/
 theorem Sandpile.Support.measurable_erasePrefix_tail (n : ℕ) :
     @Measurable (ℕ → ℝ) (ℕ → ℝ)
       (⨆ i, ⨆ (_ : n ≤ i), coordinateSigma i) inferInstance (erasePrefix n) := by
-  refine @measurable_pi_lambda _ _ _
+  refine @Measurable.of_eval _ _ _
     (⨆ i, ⨆ (_ : n ≤ i), coordinateSigma i) _ _ (fun i => ?_)
   by_cases hi : i < n
   · simpa only [erasePrefix, if_pos hi] using

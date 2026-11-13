@@ -100,7 +100,7 @@ theorem multivariateGaussian_map_neg {m : ℕ} {S : Matrix (Fin m) (Fin m) ℝ} 
     simp
   haveI : IsProbabilityMeasure
       ((multivariateGaussian (0 : EuclideanSpace ℝ (Fin m)) S).map (fun y => -y)) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   refine Measure.ext_of_charFun ?_
   funext t
   rw [hneg, charFun_map_smul, charFun_multivariateGaussian hS,

@@ -5,10 +5,10 @@ open Lake DSL
 package «divisible_sandpile» where
 
 require «lattice-probability» from git
-  "https://github.com/nitromannitol/Lattice-Probability.git" @ "260a90ab503aa32a5f0d37fd71e27f60983054ca"
+  "https://github.com/nitromannitol/Lattice-Probability.git" @ "d36783565c4de41cce5cf079ddd5ace3efe6a8ff"
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4" @ "81a5d257c8e410db227a6665ed08f64fea08e997"
+  "https://github.com/leanprover-community/mathlib4.git" @ "065356127b1dc0016f66b7283ce0ce2c4055aa55"
 
 /-- The comparator audit surface (`SandpileAudit/*/Challenge.lean`,
 `SandpileAudit/*/SolutionBasic.lean`, `SandpileAudit/*/Solution.lean` and

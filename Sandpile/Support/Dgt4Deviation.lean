@@ -181,7 +181,7 @@ theorem measure_trunc_le_of_mean (hd : 5 ≤ d)
     · subst hj; simp
     · simp [Function.update_of_ne hj]
   have hFm : Measurable F :=
-    hGm.comp (measurable_pi_lambda _ fun i => (measurable_clampAt _ _).comp (measurable_pi_apply i))
+    hGm.comp (Measurable.of_eval fun i => (measurable_clampAt _ _).comp (measurable_pi_apply i))
   have hFlip : ∀ (ξ : Fin sB.card → ℝ) (i : Fin sB.card) (v : ℝ),
       |F ξ - F (Function.update ξ i v)| ≤ ℓ (e i) * |ξ i - v| := by
     intro ξ i v

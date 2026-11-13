@@ -56,7 +56,7 @@ a.e.-measurable coordinate map `ω ↦ (fun i => |X i ω|)`. -/
 lemma aemeasurable_finiteMaximum_abs {X : I → Ω → ℝ} (hX : ∀ i, AEMeasurable (X i) μ) :
     AEMeasurable (fun ω => finiteMaximum (fun i => |X i ω|)) μ := by
   exact lipschitzWith_finiteMaximum.continuous.measurable.comp_aemeasurable
-    (aemeasurable_pi_lambda _ (fun i => (hX i).abs))
+    (AEMeasurable.of_eval (fun i => (hX i).abs))
 
 /-- `ω ↦ finiteMaximum (fun i => |X i ω|)` is integrable when each `X i` is, by domination with
 the integrable sum `∑ i, |X i ω|` via `finiteMaximum_abs_le_sum`. -/

@@ -27,8 +27,7 @@ theorem tendstoInMeasure_zero_of_tendsto_integral_sq {Ω : Type*} [MeasurableSpa
   have heL : Tendsto (fun R : ℝ => eLpNorm (Z R) 2 P) atTop (𝓝 0) :=
     Sandpile.Support.tendsto_eLpNorm_of_tendsto_integral_sq P Z
       (fun R => (hmem R).aestronglyMeasurable) hZint hZlim
-  refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num)
-    (fun R => (hmem R).aestronglyMeasurable) aestronglyMeasurable_zero ?_
+  refine MeasureTheory.tendstoInMeasure_of_tendsto_eLpNorm (p := 2) (by norm_num) ?_
   simp only [sub_zero]
   exact heL
 

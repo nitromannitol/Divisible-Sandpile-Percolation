@@ -87,7 +87,7 @@ theorem Sandpile.Continuum.aemeasurable_continuousMap_mkD
     intro n
     exact (Sandpile.Continuum.lipschitz_net_continuousMap (x n) (r n)
       (hnet n)).continuous.measurable
-      |>.comp_aemeasurable (aemeasurable_pi_lambda _ fun k => hf (x n k))
+      |>.comp_aemeasurable (AEMeasurable.of_eval fun k => hf (x n k))
   refine aemeasurable_of_tendsto_metrizable_ae atTop hF ?_
   filter_upwards [hc] with ω hω
   have h := Sandpile.Continuum.tendsto_net_continuousMap (ContinuousMap.mkD (f ω) 0)

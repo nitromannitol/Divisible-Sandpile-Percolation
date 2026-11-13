@@ -216,7 +216,7 @@ theorem exists_uniform_mgf_rescaled (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
   have hpickm : AEMeasurable
       (fun ζ : Sandpile.Site d → ℝ => fun i => ζ (Sandpile.boxEnum 0 t i))
       (LatticeProb.iidLaw d ν) :=
-    (measurable_pi_lambda _ fun i =>
+    (Measurable.of_eval fun i =>
       measurable_pi_apply (Sandpile.boxEnum (0 : Sandpile.Site d) t i)).aemeasurable
   have hIm : Integrable (fun ξ => G (F ξ)) (Measure.pi fun _ : Fin N => ν) := by
     simpa [hG, hmean, hc] using hI

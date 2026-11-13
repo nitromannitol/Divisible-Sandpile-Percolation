@@ -101,7 +101,7 @@ theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d �
         pathOdometerDerivative ζ n z (fun j => X (j + 1))) (walkLaw d x) := by
       apply Integrable.of_bound
         ((measurable_pathOdometerDerivative ζ n z).comp
-          (measurable_pi_lambda _ fun j => measurable_pi_apply (j + 1))).aestronglyMeasurable
+          (Measurable.of_eval fun j => measurable_pi_apply (j + 1))).aestronglyMeasurable
         (n : ℝ)
       exact Eventually.of_forall fun X => hbound _
     rw [integral_congr_ae (show (fun X => pathOdometerDerivative ζ (n + 1) z X) =ᵐ[walkLaw d x]

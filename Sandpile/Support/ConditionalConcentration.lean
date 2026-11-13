@@ -226,7 +226,7 @@ lemma coordAlg_eq_restriction : LatticeProb.coordAlg S =
   apply le_antisymm
   · have hm : Measurable[m] (fun ω : V → ℝ => fun y : S => ω y) := Measurable.of_comap_le le_rfl
     have ht : @Measurable (V → ℝ) (V → ℝ) m MeasurableSpace.pi (LatticeProb.truncate S) := by
-      refine @measurable_pi_lambda (V → ℝ) V (fun _ => ℝ) m (fun _ => Real.measurableSpace) _ ?_
+      refine @Measurable.of_eval (V → ℝ) V (fun _ => ℝ) m (fun _ => Real.measurableSpace) _ ?_
       intro i
       by_cases hi : i ∈ S
       · simpa only [LatticeProb.truncate, LatticeProb.comb, hi, if_pos, Function.comp_def] using
@@ -237,7 +237,7 @@ lemma coordAlg_eq_restriction : LatticeProb.coordAlg S =
     exact ht.comap_le
   · have hm : @Measurable (V → ℝ) (S → ℝ) (LatticeProb.coordAlg S) MeasurableSpace.pi
         (fun ω : V → ℝ => fun y : S => ω y) := by
-      refine @measurable_pi_lambda (V → ℝ) S (fun _ => ℝ) (LatticeProb.coordAlg S)
+      refine @Measurable.of_eval (V → ℝ) S (fun _ => ℝ) (LatticeProb.coordAlg S)
         (fun _ => Real.measurableSpace) _ ?_
       intro y
       exact Measurable.of_comap_le (LatticeProb.comap_eval_le_coordAlg y.property)

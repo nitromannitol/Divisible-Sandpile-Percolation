@@ -37,7 +37,8 @@ noncomputable def blockLen (d : ℕ) (s : ℝ) : ℝ≥0 := ⟨4 * d * s ^ 2, by
 
 /-- The block length is strictly positive whenever the dimension and the radius are. -/
 theorem blockLen_pos {d : ℕ} (hd : 0 < d) {s : ℝ} (hs : 0 < s) : 0 < blockLen d s := by
-  rw [blockLen, ← NNReal.coe_lt_coe]
+  rw [blockLen]
+  refine NNReal.coe_lt_coe.mp ?_
   have hd0 : (0 : ℝ) < d := by exact_mod_cast hd
   show (0 : ℝ) < 4 * d * s ^ 2
   positivity

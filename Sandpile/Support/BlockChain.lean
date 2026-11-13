@@ -118,16 +118,11 @@ theorem block_tb_connect {r : ℕ} (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site 2)
         (SimpleGraph.Walk.map (rectAbsHom r z (2 * r) (2 * r)) C)),
     ?_⟩
   intro u hu
-  rw [SimpleGraph.Walk.support_append, SimpleGraph.Walk.support_append,
-    SimpleGraph.Walk.support_copy, SimpleGraph.Walk.support_copy] at hu
-  rw [List.mem_append] at hu
-  rcases hu with hu | hu
-  · exact hA u hu
-  · have hu' := List.mem_of_mem_tail hu
-    rw [List.mem_append] at hu'
-    rcases hu' with hu' | hu'
-    · exact hB u hu'
-    · exact hC u (List.mem_of_mem_tail hu')
+  rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu | hu
+  · exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu' | hu'
+    · exact hB u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu')
+    · exact hC u hu'
 
 /-- Within one good block, the start of a bottom-top crossing walk and the
 start of a left-right crossing walk of the block's square are joined by a
@@ -171,11 +166,13 @@ theorem block_tb_lr_connect {r : ℕ} (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site
       (SimpleGraph.Walk.map (rectAbsHom r z (2 * r) (2 * r)) B),
     ?_⟩
   intro u hu
-  rw [SimpleGraph.Walk.support_append, SimpleGraph.Walk.support_copy] at hu
-  rw [List.mem_append] at hu
-  rcases hu with hu | hu
-  · exact hA u hu
-  · exact hB u (List.mem_of_mem_tail hu)
+  rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu | hu
+  · first
+    | exact hA u hu
+    | exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · first
+    | exact hB u hu
+    | exact hB u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
 
 /-- One routing step: for adjacent good blocks, a bottom-top crossing witness
 of the first block extends, through the level superlevel set, to a bottom-top

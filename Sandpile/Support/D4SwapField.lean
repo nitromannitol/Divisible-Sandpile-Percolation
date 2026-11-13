@@ -156,7 +156,7 @@ lemma measure_star_crossing_swap_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
   set P := permuteSite (Equiv.swap (0 : Fin 4) 1) with hP
   set T := fun η : Site 4 → ℝ => fun w : Site 4 => η (P w) with hT
   have hmp : MeasureTheory.MeasurePreserving T (LatticeProb.iidLaw 4 ν) (LatticeProb.iidLaw 4 ν) :=
-    ⟨measurable_pi_lambda _ (fun w => measurable_pi_apply (P w)),
+    ⟨Measurable.of_eval (fun w => measurable_pi_apply (P w)),
       iidLaw_map_permuteSite ν (Equiv.swap (0 : Fin 4) 1)⟩
   have hsub : {ζ : Site 4 → ℝ | HasStarTopBottomCrossing ϑ r x
       {y | ballGreenField R ζ (swapPlaneAbout x y) ≤ level}}

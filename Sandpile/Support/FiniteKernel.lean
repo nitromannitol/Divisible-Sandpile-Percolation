@@ -113,7 +113,7 @@ exactly that product pushed forward along the evaluation coordinates. -/
 lemma measurePreserving_finite_restrict {d : ℕ} (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (s : Finset (Site d)) :
     MeasurePreserving s.restrict (LatticeProb.iidLaw d μ) (Measure.pi (fun _ : s => μ)) :=
-  ⟨measurable_pi_lambda _ (fun i => measurable_pi_apply (i : Site d)),
+  ⟨Measurable.of_eval (fun i => measurable_pi_apply (i : Site d)),
     LatticeProb.iidLaw_map_restrict d μ s⟩
 
 /-- The probability that a measurable function `value` of the kernel field family stays

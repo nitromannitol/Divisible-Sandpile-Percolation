@@ -103,7 +103,7 @@ lemma isSymmetricPlanarLaw_cutField (μ : Measure ℝ) [IsProbabilityMeasure μ]
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))) := by
   let h := External.BallGreen.cutField r L φ
   let H (ζ : Site 4 → ℝ) (z : Site 2) := finiteKernelField h ζ (planeTranslate x z)
-  have hH : Measurable H := measurable_pi_lambda _ (fun z =>
+  have hH : Measurable H := Measurable.of_eval (fun z =>
     measurable_finiteKernelField (boxFinset 0 r)
       (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z))
   refine ⟨?_, ?_, ?_⟩
@@ -111,7 +111,7 @@ lemma isSymmetricPlanarLaw_cutField (μ : Measure ℝ) [IsProbabilityMeasure μ]
     apply measurePreserving_map_factor
       (measurePreserving_iid_reindex μ (Equiv.addRight (planeTranslate 0 v))) H hH
       (planarFieldShift v)
-      (measurable_pi_lambda _ (fun z => measurable_pi_apply (z + v)))
+      (Measurable.of_eval (fun z => measurable_pi_apply (z + v)))
     intro ζ
     funext z
     change finiteKernelField h ζ (planeTranslate x (z + v)) =
@@ -119,7 +119,7 @@ lemma isSymmetricPlanarLaw_cutField (μ : Measure ℝ) [IsProbabilityMeasure μ]
     rw [finiteKernelField_translate, planeTranslate_add]
   · apply measurePreserving_map_factor
       (measurePreserving_iid_reindex μ (affinePermuteSite (Equiv.swap (0 : Fin 4) 1) x)) H hH
-      planarFieldTranspose (measurable_pi_lambda _ (fun z => measurable_pi_apply ![z 1, z 0]))
+      planarFieldTranspose (Measurable.of_eval (fun z => measurable_pi_apply ![z 1, z 0]))
     intro ζ
     funext z
     change finiteKernelField h ζ (planeTranslate x ![z 1, z 0]) =
@@ -129,7 +129,7 @@ lemma isSymmetricPlanarLaw_cutField (μ : Measure ℝ) [IsProbabilityMeasure μ]
       affinePermuteSite_swap_plane, permuteSite_swap_plane]
   · apply measurePreserving_map_factor
       (measurePreserving_iid_reindex μ (affineAddSite (reflectSite (0 : Fin 4)) x)) H hH
-      planarFieldReflect (measurable_pi_lambda _ (fun z => measurable_pi_apply ![-z 0, z 1]))
+      planarFieldReflect (Measurable.of_eval (fun z => measurable_pi_apply ![-z 0, z 1]))
     intro ζ
     funext z
     change finiteKernelField h ζ (planeTranslate x ![-z 0, z 1]) =

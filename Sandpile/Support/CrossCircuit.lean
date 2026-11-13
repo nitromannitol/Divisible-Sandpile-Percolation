@@ -32,7 +32,7 @@ theorem fkg_prod_const_le {Ω : Type} [MeasurableSpace Ω] {P : Measure Ω} [IsP
     c ^ s.card ≤ P.real (⋂ i ∈ s, A i) := by
   have hprod : c ^ s.card ≤ ∏ i ∈ s, P.real (A i) := by
     have h1 : ∏ i ∈ s, c ≤ ∏ i ∈ s, P.real (A i) :=
-      Finset.prod_le_prod (fun i _ => hc) (fun i _ => hcA i)
+      Finset.prod_le_prod₀ (fun i _ => hc) (fun i _ => hcA i)
     rwa [Finset.prod_const] at h1
   exact le_trans hprod (Sandpile.Support.fkg_prod_le hmeas hass A hA s)
 

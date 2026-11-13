@@ -181,7 +181,7 @@ theorem massLaw_critical_level_percolation_four (ν₀ θ₀ K₀ : ℝ) (hθ₀
   set ν : Measure ℝ := μ.map fun s : ℝ => (s - 1) / 8 with hν
   have hνprob : IsProbabilityMeasure ν := by
     rw [hν]
-    exact MeasureTheory.Measure.isProbabilityMeasure_map hf.aemeasurable
+    exact inferInstance
   have hid : Integrable id μ := integrable_id_of_shifted_exp_moment μ θ₀ hθ₀ hexpint
   have h1 : ∫ z, z ∂ν = 0 := integral_centering_eq_zero μ hid hmean
   have h2 : ENNReal.ofReal ((ν₀ / 8) ^ 2) ≤ evariance id ν :=

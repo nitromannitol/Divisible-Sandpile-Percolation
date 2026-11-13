@@ -45,8 +45,8 @@ theorem integrable_stopped_martingale_eq_of_continuous {Ω : Type*}
     Eventually.of_forall fun ω => (hMc ω).tendsto (τ ω) |>.comp (LatticeProb.tendsto_dyUp (τ ω))
   have hI : Integrable (fun ω => M (τ ω) ω) P := hUI.integrable_of_ae_tendsto ht
   have hLp := tendsto_Lp_finite_of_tendsto_ae (p := (1 : ℝ≥0∞)) le_rfl ENNReal.one_ne_top
-    hUI.1 (memLp_one_iff_integrable.mpr hI) hUI.2.1 ht
-  have hlim := tendsto_integral_of_L1' _ hI.aestronglyMeasurable
+    (fun n => (hUI.memLp n).aestronglyMeasurable) (memLp_one_iff_integrable.mpr hI) hUI.1 ht
+  have hlim := tendsto_integral_of_L1' _
     (Eventually.of_forall fun n => memLp_one_iff_integrable.mp (hUI.memLp n)) hLp
   have hσI (n : ℕ) : (∫ ω, M (σ n ω) ω ∂P) = ∫ ω, M (T + 1) ω ∂P := by
     rw [integral_congr_ae (he n), integral_condExp (hσst n).measurableSpace_le]

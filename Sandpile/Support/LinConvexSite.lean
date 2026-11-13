@@ -111,13 +111,13 @@ theorem convex_linear_bound_local
     have : (S.equivFin.symm a) = (S.equivFin.symm c) := Subtype.ext hac
     exact S.equivFin.symm.injective this
   set T : (V → ℝ) → (Fin k → ℝ) := fun ω j => ω (e j) with hT
-  have hTmeas : Measurable T := measurable_pi_lambda _ fun j => measurable_pi_apply (e j)
+  have hTmeas : Measurable T := Measurable.of_eval fun j => measurable_pi_apply (e j)
   have hTmap : P.map T = Measure.pi (fun _ : Fin k => ν) :=
     LatticeProb.infinitePi_map_comp ν e heinj
   set sp : (Fin k → ℝ) → (V → ℝ) :=
     fun x v => if h : v ∈ S then x (S.equivFin ⟨v, h⟩) else 0 with hsp
   have hspmeas : Measurable sp := by
-    refine measurable_pi_lambda _ fun v => ?_
+    refine Measurable.of_eval fun v => ?_
     by_cases hv : v ∈ S
     · simp only [hsp, hv, dif_pos]
       exact measurable_pi_apply _
@@ -313,7 +313,7 @@ theorem integral_sq_linear_le_site {V : Type*} [DecidableEq V]
     have : (S.equivFin.symm a) = (S.equivFin.symm c') := Subtype.ext hac
     exact S.equivFin.symm.injective this
   set T : (V → ℝ) → (Fin k → ℝ) := fun ω j => ω (e j) with hT
-  have hTmeas : Measurable T := measurable_pi_lambda _ fun j => measurable_pi_apply (e j)
+  have hTmeas : Measurable T := Measurable.of_eval fun j => measurable_pi_apply (e j)
   have hTmap : P.map T = Measure.pi (fun _ : Fin k => ν) :=
     LatticeProb.infinitePi_map_comp ν e heinj
   have hsumS : ∀ f : V → ℝ, ∑ j : Fin k, f (e j) = ∑ v ∈ S, f v := by
@@ -343,7 +343,7 @@ theorem measurable_rightDeriv_update {V : Type*} [DecidableEq V]
   have hupd : ∀ c : ℝ, Measurable (fun ω : V → ℝ => F (Function.update ω v (ω v + c))) := by
     intro c
     refine hFm.comp ?_
-    refine measurable_pi_lambda _ fun w => ?_
+    refine Measurable.of_eval fun w => ?_
     by_cases hw : w = v
     · subst hw
       simp only [Function.update_self]
@@ -544,7 +544,7 @@ theorem integral_sq_linear_eq_site {V : Type*} [DecidableEq V]
     have : (S.equivFin.symm x) = (S.equivFin.symm y) := Subtype.ext hxy
     exact S.equivFin.symm.injective this
   set T : (V → ℝ) → (Fin k → ℝ) := fun ω j => ω (e j) with hT
-  have hTmeas : Measurable T := measurable_pi_lambda _ fun j => measurable_pi_apply (e j)
+  have hTmeas : Measurable T := Measurable.of_eval fun j => measurable_pi_apply (e j)
   have hTmap : P.map T = Measure.pi (fun _ : Fin k => ν) :=
     LatticeProb.infinitePi_map_comp ν e heinj
   have hsumS : ∀ f : V → ℝ, ∑ j : Fin k, f (e j) = ∑ v ∈ S, f v := by

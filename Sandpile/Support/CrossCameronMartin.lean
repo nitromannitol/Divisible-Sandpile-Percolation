@@ -111,13 +111,13 @@ theorem whiteNoise_tilted_map_shift (hW : IsWhiteNoise d W P) {k : Space d → �
   set Z : T → Ω → ℝ := cmResidual W k g with hZdef
   have hvne : v ≠ 0 := ne_of_gt hv
   have hZmeas : Measurable fun ω => fun t : T => Z t ω :=
-    measurable_pi_lambda _ fun t => measurable_cmResidual hW hk g hg t
+    Measurable.of_eval fun t => measurable_cmResidual hW hk g hg t
   have hWkmeas : Measurable (W k) := hW.meas _ hk
   set Φ : Ω → ℝ × (T → ℝ) := fun ω => (W k ω, fun t : T => Z t ω) with hΦdef
   have hΦmeas : Measurable Φ := hWkmeas.prodMk hZmeas
   set Ψ : ℝ × (T → ℝ) → (T → ℝ) := fun p => fun t : T => p.2 t + (c t / v) * p.1 with hΨdef
   have hΨmeas : Measurable Ψ :=
-    measurable_pi_lambda _ fun t =>
+    Measurable.of_eval fun t =>
       ((measurable_pi_apply t).comp measurable_snd).add (measurable_const.mul measurable_fst)
   have hΨΦ : (Ψ ∘ Φ) = fun ω => fun t : T => W (g t) ω := by
     funext ω t
@@ -150,9 +150,9 @@ theorem whiteNoise_tilted_map_shift (hW : IsWhiteNoise d W P) {k : Space d → �
   have hstep : (P.map Φ).tilted q = (P.map Φ).map (Prod.map (fun y : ℝ => y + a * v) id) := by
     rw [hprod]
     haveI : IsProbabilityMeasure (P.map (W k)) :=
-      Measure.isProbabilityMeasure_map hWkmeas.aemeasurable
+      inferInstance
     haveI : IsProbabilityMeasure (P.map fun ω => fun t : T => Z t ω) :=
-      Measure.isProbabilityMeasure_map hZmeas.aemeasurable
+      inferInstance
     rw [hqdef, tilted_prod_left (g := fun y : ℝ => a * y - a ^ 2 * v / 2) _ _ (by fun_prop),
       htiltk, ← Measure.map_id (μ := P.map fun ω => fun t : T => Z t ω),
       Measure.map_prod_map _ _ (by fun_prop) measurable_id, Measure.map_id]

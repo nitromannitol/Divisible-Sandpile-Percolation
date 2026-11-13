@@ -33,7 +33,7 @@ omit [NeZero d] in
 /-- The survival factor `pathSurvivalOf ζ n j X` is at most one, being a product of indicators. -/
 theorem pathSurvivalOf_le_one (ζ : Site d → ℝ) (n j : ℕ) (X : ℕ → Site d) :
     pathSurvivalOf ζ n j X ≤ 1 :=
-  Finset.prod_le_one (fun i _ => by positivity) fun i _ => by split_ifs <;> norm_num
+  Finset.prod_le_one₀ (fun i _ => by positivity) fun i _ => by split_ifs <;> norm_num
 
 omit [NeZero d] in
 /-- The survival factor `pathSurvivalOf ζ n j` is a measurable function of the path `X`. -/

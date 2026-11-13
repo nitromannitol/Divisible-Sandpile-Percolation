@@ -36,9 +36,14 @@ theorem hasGaussianLaw_gaussIso_pair (f g : lp (fun _ : ι => ℝ) 2) :
   have hvec : HasGaussianLaw (fun ω => (WithLp.toLp 2
       (fun i => ⇑(LatticeProb.gaussIso (![f, g] i)) ω) : EuclideanSpace ℝ (Fin 2)))
       (LatticeProb.gaussLaw ι) := by
-    constructor
-    rw [map_gaussIso_vector (fun i => ![f, g] i)]
-    infer_instance
+    refine ⟨?_, ?_⟩
+    ·
+      first
+      | fun_prop
+      | exact (PiLp.continuous_toLp 2 _).measurable.comp_aemeasurable
+          (AEMeasurable.of_eval fun i => (Lp.aestronglyMeasurable _).aemeasurable)
+    · rw [map_gaussIso_vector (fun i => ![f, g] i)]
+      infer_instance
   have hL : HasGaussianLaw
       ((((EuclideanSpace.proj (0 : Fin 2)).prod (EuclideanSpace.proj (1 : Fin 2)) :
           EuclideanSpace ℝ (Fin 2) →L[ℝ] ℝ × ℝ)) ∘
@@ -80,9 +85,14 @@ theorem hasGaussianLaw_gaussIso_pi {m : ℕ} (gs : Fin m → lp (fun _ : ι => �
   have hvec : HasGaussianLaw (fun ω => (WithLp.toLp 2
       (fun i => ⇑(LatticeProb.gaussIso (gs i)) ω) : EuclideanSpace ℝ (Fin m)))
       (LatticeProb.gaussLaw ι) := by
-    constructor
-    rw [map_gaussIso_vector gs]
-    infer_instance
+    refine ⟨?_, ?_⟩
+    ·
+      first
+      | fun_prop
+      | exact (PiLp.continuous_toLp 2 _).measurable.comp_aemeasurable
+          (AEMeasurable.of_eval fun i => (Lp.aestronglyMeasurable _).aemeasurable)
+    · rw [map_gaussIso_vector gs]
+      infer_instance
   exact HasGaussianLaw.map_of_measurable
     ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin m => ℝ)).toContinuousLinearMap) hvec
     (by fun_prop)

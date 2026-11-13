@@ -145,7 +145,7 @@ theorem measurableSet_blockGood_frBlockField (Aex : ℕ) (Aloc : ℝ) (R r : ℕ
       Measurable (fun ζ : Site 4 → ℝ =>
         crossingValue Q (fun v : Q => frBlockField Aex Aloc R ζ (blockShift r z (v : Site 2)))) :=
     fun Q hQ hN => (measurable_crossingValue hQ hN).comp
-      (measurable_pi_lambda _ fun v => measurable_frBlockField Aex Aloc R _)
+      (Measurable.of_eval fun v => measurable_frBlockField Aex Aloc R _)
   have h1 : MeasurableSet {ζ : Site 4 → ℝ | ℓ ≤ crossingValue (planeRectangle (2 * r) (2 * r))
       (fun v => frBlockField Aex Aloc R ζ (blockShift r z (v : Site 2)))} :=
     measurableSet_le measurable_const
@@ -158,7 +158,7 @@ theorem measurableSet_blockGood_frBlockField (Aex : ℕ) (Aloc : ℝ) (R r : ℕ
     measurableSet_le measurable_const
       ((measurable_crossingValue (isLatticeRectangle_planeRectangle (2 * r) (2 * r))
         (planeRectangle_nonempty (2 * r) (2 * r))).comp
-        (measurable_pi_lambda _ fun v => measurable_frBlockField Aex Aloc R _))
+        (Measurable.of_eval fun v => measurable_frBlockField Aex Aloc R _))
   have h3 : MeasurableSet {ζ : Site 4 → ℝ | ℓ ≤ crossingValue (planeRectangle (4 * r) (2 * r))
       (fun v => frBlockField Aex Aloc R ζ (blockShift r z (v : Site 2)))} :=
     measurableSet_le measurable_const
@@ -171,7 +171,7 @@ theorem measurableSet_blockGood_frBlockField (Aex : ℕ) (Aloc : ℝ) (R r : ℕ
     measurableSet_le measurable_const
       ((measurable_crossingValue (isLatticeRectangle_planeRectangle (4 * r) (2 * r))
         (planeRectangle_nonempty (4 * r) (2 * r))).comp
-        (measurable_pi_lambda _ fun v => measurable_frBlockField Aex Aloc R _))
+        (Measurable.of_eval fun v => measurable_frBlockField Aex Aloc R _))
   exact h1.inter (h2.inter (h3.inter h4))
 
 /-- The Boolean indicator `ζ ↦ decide (BlockGood r (frBlockField Aex Aloc R ζ) ℓ z)` is
@@ -199,7 +199,7 @@ theorem blockGood_law_stationary (ν : Measure ℝ) [IsProbabilityMeasure ν]
   set y : Site 4 := planeEmbed ![2 * (r : ℤ) * w 0, 2 * (r : ℤ) * w 1] with hy
   have hmeasG : Measurable (fun (ζ : Site 4 → ℝ) (z : Site 2) =>
       decide (BlockGood r (frBlockField Aex Aloc R ζ) ℓ z)) :=
-    measurable_pi_lambda _ fun z => measurable_decide_blockGood Aex Aloc R r ℓ z
+    Measurable.of_eval fun z => measurable_decide_blockGood Aex Aloc R r ℓ z
   have hfun : (fun (ζ : Site 4 → ℝ) (z : Site 2) =>
         decide (BlockGood r (frBlockField Aex Aloc R ζ) ℓ (z + w)))
       = (fun (ζ : Site 4 → ℝ) (z : Site 2) =>

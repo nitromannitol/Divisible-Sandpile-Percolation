@@ -49,7 +49,7 @@ lemma exists_gaussian_square_crossing_ge_half_scale (hBall : External.BallGreenB
       isLatticeRectangle_planeRectangle _ _
     have hN : (planeRectangle s s).Nonempty := ⟨0, by
       simp only [mem_planeRectangle]; norm_num⟩
-    exact (measurable_crossingValue hQ hN).comp (measurable_pi_lambda _ (fun z =>
+    exact (measurable_crossingValue hQ hN).comp (Measurable.of_eval (fun z =>
       measurable_finiteKernelField (boxFinset 0 r)
         (fun _ hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) (planeTranslate x z)))
   have hmeas : MeasurableSet {ζ | Lsq ζ < -(b * Real.log r)} :=

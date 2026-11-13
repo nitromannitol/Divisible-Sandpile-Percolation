@@ -51,7 +51,7 @@ theorem map_odometer_centered_eq (d : ℕ) (ν : Measure ℝ) [IsProbabilityMeas
     (Sandpile.centeredMassLaw d ν).map (fun σ => Sandpile.odometer σ t y)
       = (Sandpile.centeredMassLaw d ν).map (fun σ => Sandpile.odometer σ t 0) := by
   have : IsProbabilityMeasure (ν.map fun z => 1 + 2 * (d : ℝ) * z) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   exact map_odometer_eq d (ν.map fun z => 1 + 2 * (d : ℝ) * z) t y
 
 /-- **The mean identity from the law identity.** -/

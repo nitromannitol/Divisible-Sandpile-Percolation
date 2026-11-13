@@ -100,7 +100,7 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution
       P.map Prod.fst = μ i ∧ P.map Prod.snd = ν ∧
       P {p | ε < dist (X i p.1) (Y p.2)} ≤ ENNReal.ofReal δ := by
   classical
-  haveI : IsProbabilityMeasure (ν.map Y) := Measure.isProbabilityMeasure_map hY.aemeasurable
+  haveI : IsProbabilityMeasure (ν.map Y) := inferInstance
   obtain ⟨A, hAm, hAb, hAd, hAn, hAu, hAp⟩ :=
     Sandpile.Continuum.exists_continuity_partition (ν.map Y) ε hε
   have hsum : ∑' n, (ν.map Y) (A n) = 1 := by

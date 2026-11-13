@@ -311,7 +311,7 @@ theorem increment_ball_step (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeas
         = ∏ _z ∈ boxFinset (0 : Site d) R, (q / 2) := by
           rw [Finset.prod_const]
       _ ≤ ∏ z ∈ boxFinset (0 : Site d) R, ∏ b : Bool, P.real (A (z, b)) :=
-          Finset.prod_le_prod (fun z _ => by positivity) hz
+          Finset.prod_le_prod₀ (fun z _ => by positivity) hz
   have hPE : (q / 2) ^ (boxFinset (0 : Site d) R).card ≤ P.real E := by
     refine le_trans hprodlow ?_
     rw [hE]

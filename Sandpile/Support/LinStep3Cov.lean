@@ -303,7 +303,7 @@ theorem abs_cov_survival_le [NeZero d]
   have hqprod0 : (0 : ℝ) ≤ ∏ x ∈ (Finset.range (j + 1)).image Y, (1 - q x) :=
     Finset.prod_nonneg fun x _ => by linarith [hq1 x]
   have hqprod1 : ∏ x ∈ (Finset.range (j + 1)).image Y, (1 - q x) ≤ 1 :=
-    Finset.prod_le_one (fun x _ => by linarith [hq1 x]) (fun x _ => by linarith [hq0 x])
+    Finset.prod_le_one₀ (fun x _ => by linarith [hq1 x]) (fun x _ => by linarith [hq0 x])
   rw [integral_survival_mul_eq_measureReal ν n i j X Y,
     integral_survival_eq_measureReal ν n i X, integral_survival_eq_measureReal ν n j Y]
   have hmul := abs_mul_sub_mul_le

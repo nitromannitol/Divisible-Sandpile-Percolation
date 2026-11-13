@@ -117,10 +117,10 @@ theorem whiteNoise_tilted_closedCrossEvent (hd : d = 2 ∨ d = 3)
   have hg : ∀ u, MemLp (g u) 2 (volume : Measure (Space d)) :=
     fun u => memLp_ballKernel hd one_pos u
   have hfieldmeas : Measurable fun ω => fun u : Space 2 => ballField d W 1 u ω :=
-    measurable_pi_lambda _ fun u => hW.meas _ (hg u)
+    Measurable.of_eval fun u => hW.meas _ (hg u)
   have hshiftmeas : Measurable fun ω => fun u : Space 2 =>
       ballField d W 1 u ω + a * ∫ y : Space d, g u y * k y :=
-    measurable_pi_lambda _ fun u => (hW.meas _ (hg u)).add_const _
+    Measurable.of_eval fun u => (hW.meas _ (hg u)).add_const _
   have hB := measurableSet_evalCrossEvent aa bb i l
   have hfeq : (fun ω => fun u : Space 2 => ballField d W 1 u ω)
       = fun ω => fun t : Space 2 => W (g t) ω := rfl

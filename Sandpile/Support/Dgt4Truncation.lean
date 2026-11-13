@@ -308,7 +308,7 @@ theorem measurable_avg_localizedOdometer (hd : 1 ≤ d) (D : Set (Sandpile.Site 
 /-- The truncation is measurable. -/
 theorem measurable_truncScenery (c : Sandpile.Site d → ℝ) (t : ℝ) :
     Measurable (fun ζ : Sandpile.Site d → ℝ => truncScenery c t ζ) := by
-  refine measurable_pi_lambda _ fun z => ?_
+  refine Measurable.of_eval fun z => ?_
   by_cases h : c z = 0
   · simpa only [truncScenery, if_pos h] using measurable_pi_apply z
   · simpa only [truncScenery, if_neg h] using (measurable_pi_apply z).max measurable_const

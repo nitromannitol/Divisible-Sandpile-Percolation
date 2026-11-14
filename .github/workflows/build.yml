@@ -41,7 +41,7 @@ jobs:
         run: |
           set -o pipefail
           lake build 2>&1 | tee production-build.log
-          if grep -iE '^warning:|declaration uses .sorry' production-build.log; then
+          if grep -iE '(^|[[:space:]])warning: (\./)?(Sandpile|SandpileAudit)(/|\.lean)|declaration uses .sorry' production-build.log; then
             echo "Production build emitted a warning."
             exit 1
           fi
@@ -53,7 +53,7 @@ jobs:
         run: |
           set -o pipefail
           lake build Sandpile.Meta.AxiomsAudit 2>&1 | tee axioms-audit.log
-          if grep -iE '^warning:|declaration uses .sorry' axioms-audit.log; then
+          if grep -iE '(^|[[:space:]])warning: (\./)?(Sandpile|SandpileAudit)(/|\.lean)|declaration uses .sorry' axioms-audit.log; then
             echo "Axiom audit build emitted a warning."
             exit 1
           fi

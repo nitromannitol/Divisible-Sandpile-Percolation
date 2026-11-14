@@ -106,7 +106,7 @@ theorem d23CritBox_disjoint_of_dist (hd2 : 2 ≤ d) (R : ℕ) (hR : 1 ≤ R) (k 
 /-- The good block at a coarse site reads only the scenery in its block box. -/
 theorem measurableSet_blockGood_comap_d23 (hd : 1 ≤ d) (R t : ℕ) (ℓ : ℝ) (z : Site 2) :
     MeasurableSet[MeasurableSpace.comap
-        (fun ζ : Site d → ℝ => Set.domRestrict (d23CritBox (d := d) R z) ζ) inferInstance]
+        (fun ζ : Site d → ℝ => Set.restrict (d23CritBox (d := d) R z) ζ) inferInstance]
       {ζ : Site d → ℝ | BlockGood R (d23Field d R t ζ) ℓ z} := by
   set m := MeasurableSpace.comap
     (fun ζ : Site d → ℝ => Set.domRestrict (d23CritBox (d := d) R z) ζ) inferInstance with hm

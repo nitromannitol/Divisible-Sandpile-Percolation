@@ -96,7 +96,7 @@ theorem localizedOdometer_congr_on (hd : 1 ≤ d) (D : Set (Site d)) (ζ ξ : Si
 /-- The localized odometer is measurable for the scenery inside its own box. -/
 theorem measurable_comap_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t : ℕ)
     (x : Site d) :
-    Measurable[MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.restrict D ζ) inferInstance]
+    Measurable[MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.domRestrict D ζ) inferInstance]
       (fun ζ : Site d → ℝ => localizedOdometer D ζ t x) := by
   have hfac : (fun ζ : Site d → ℝ => localizedOdometer D ζ t x)
       = (fun ρ : D → ℝ => localizedOdometer D (extendOn D ρ) t x)
@@ -113,7 +113,7 @@ theorem measurable_comap_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t 
 /-- The good block at a coarse site reads the field only through its own box. -/
 theorem measurable_comap_d23Field (hd : 1 ≤ d) (R t : ℕ) (u : Site 2) :
     Measurable[MeasurableSpace.comap
-      (fun ζ : Site d → ℝ => Set.restrict (d23Box R (planeSite (d := d) u)) ζ) inferInstance]
+      (fun ζ : Site d → ℝ => Set.domRestrict (d23Box R (planeSite (d := d) u)) ζ) inferInstance]
       (fun ζ : Site d → ℝ => d23Field d R t ζ u) :=
   measurable_comap_localizedOdometer hd _ t _
 

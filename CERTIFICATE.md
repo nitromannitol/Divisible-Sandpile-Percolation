@@ -176,7 +176,7 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `thm-brownian-exists` | `ba9bd7d94a0501c44bd82fbd01d94ec3102745aa0af0a305fc47cac6e425444d` |
 | `cor-dgt4-mean-lower` | `b7756ddb707afbb1dc5926335a83e4ea0ef44f5f4324d3ca5c8563d9fafc20f7` |
 | `cor-d4-logarithmic-mean-lower` | `3dae46004d466d2f8fefaea88fb7950de866afd27a6accca99cd68a6ab92a834` |
-| `lem-d4-finite-range-lower-bound` | `d6a26344dae4829fd46b16f8e29123f5e8fa941fbd639e4262cb18f67b642f2a` |
+| `lem-d4-finite-range-lower-bound` | `21763e35f36fa7fa681583b1a8ecab30f1e8880ec0cceca7bdecaad1770d8eb7` |
 | `thm-main-explosion-ii-a` | `19edf234fa88c8459c512f0d84eb8d301675e27c08e68e77e066005c255a48b2` |
 | `thm-main-explosion-ii-a-first-order` | `bec76c39b1175ba6af9dd089c20b21f33e479c9a42e99eb0f3c89d18cb6bea50` |
 | `lem-d4-soft-bottleneck` | `a7b5de486dc5cb9a0dd337ffa08e541270d99588857e68694628b862ce3a4f0b` |

@@ -151,15 +151,15 @@ nodes:
     approved: "2026-09-08"
 
   - id: lem-d4-finite-range-lower-bound
-    version: 2
+    version: 3
     kind: theorem
     source: sandpile.tex:3950-3958 (label lem-d4-finite-range-lower-bound)
     file: Sandpile/Frozen/D4FiniteRangeLowerBound.lean
     export: Sandpile.Frozen.d4_finite_range_lower_bound
     state: PROVED
-    frozen_sha256: d6a26344dae4829fd46b16f8e29123f5e8fa941fbd639e4262cb18f67b642f2a
+    frozen_sha256: 21763e35f36fa7fa681583b1a8ecab30f1e8880ec0cceca7bdecaad1770d8eb7
     provider: Sandpile.Frozen.d4_finite_range_lower_bound
-    approved: "2026-09-08"
+    approved: "2026-11-13"
 
   - id: thm-main-explosion-ii-a
     version: 3

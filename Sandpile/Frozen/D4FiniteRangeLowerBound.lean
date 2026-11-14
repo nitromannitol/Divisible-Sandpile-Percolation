@@ -89,7 +89,7 @@ theorem Sandpile.Frozen.d4_finite_range_lower_bound
       (∀ᶠ r : ℕ in atTop, ∀ z : Sandpile.Site 4,
         Measurable[MeasurableSpace.comap
             (fun ζ : Sandpile.Site 4 → ℝ =>
-              Set.restrict (Sandpile.frCube z ((Aloc + 3) * r)) ζ) inferInstance]
+              Set.domRestrict (Sandpile.frCube z ((Aloc + 3) * r)) ζ) inferInstance]
           (fun ζ : Sandpile.Site 4 → ℝ =>
             Sandpile.frGreenFieldTime r (Aex * r ^ 2) ζ z +
               Sandpile.frExitValue Aex Aloc r ζ z))

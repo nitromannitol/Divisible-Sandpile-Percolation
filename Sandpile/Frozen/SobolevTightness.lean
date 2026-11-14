@@ -105,7 +105,7 @@ theorem Sandpile.Frozen.sobolev_tightness
   · intro R hR ω
     constructor
     · exact (measurable_of_countable (F R ω)).comp
-        (measurable_pi_lambda _ fun i => Sandpile.Support.measurable_coord R i)
+        (Measurable.of_eval fun i => Sandpile.Support.measurable_coord R i)
     · intro φ hφ
       obtain ⟨_, L, _, _, _, hsupp, hφint⟩ :=
         Sandpile.Support.exists_bound_of_isTestFn hφ
@@ -128,7 +128,7 @@ theorem Sandpile.Frozen.sobolev_tightness
     have hmk : Measurable fun q : Ω × Sandpile.Site d => (hx q.2).mk _ q.1 :=
       measurable_from_prod_countable_left fun x => (hx x).stronglyMeasurable_mk.measurable
     refine ⟨fun p => (hx (fun i => ⌊R * p.2 i⌋)).mk _ p.1, ?_, ?_⟩
-    · exact (hmk.comp (measurable_fst.prodMk ((measurable_pi_lambda _ fun i =>
+    · exact (hmk.comp (measurable_fst.prodMk ((Measurable.of_eval fun i =>
         Sandpile.Support.measurable_coord R i).comp measurable_snd))).stronglyMeasurable
     · filter_upwards [Measure.QuasiMeasurePreserving.ae Measure.quasiMeasurePreserving_fst hall]
         with p hp

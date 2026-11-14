@@ -62,4 +62,4 @@ theorem Sandpile.Continuum.exists_isBrownian (d : ℕ) :
           (fun ω₀ : Ω₀ => fun t : ℝ≥0 => x i + (Real.sqrt d)⁻¹ * C t ω₀) (ω i) := rfl
     rw [h]
     exact iIndepFun_pi fun i =>
-      (measurable_pi_lambda _ fun t => (hCm t).const_mul _ |>.const_add _).aemeasurable
+      (Measurable.of_eval fun t => (hCm t).const_mul _ |>.const_add _).aemeasurable

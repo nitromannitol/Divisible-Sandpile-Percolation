@@ -2350,7 +2350,6 @@ theorem discreteGaussianIntegral_eq_heatKernelBM {d : ℕ} (hd : 1 ≤ d)
             Real.exp (-(d : ℝ) *
               (∑ i : Fin d, (((x i - y i : ℤ) : ℝ) ^ 2)) / (2 * (n : ℝ))) : ℝ) : ℂ) := by
               convert congrArg (fun q : ℂ => (2 * Real.pi)⁻¹ ^ d * q) hJ using 1
-              simp [Pi.sub_apply]
     _ = (2 * Real.pi)⁻¹ ^ d *
           (((Real.pi / ((n : ℝ) / (2 * (d : ℝ)))) ^ ((d : ℝ) / 2) *
             Real.exp (-‖WithLp.toLp 2

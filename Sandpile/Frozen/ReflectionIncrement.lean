@@ -53,7 +53,7 @@ theorem Sandpile.Frozen.reflection_increment
 := by
   haveI := hprob
   haveI : IsProbabilityMeasure (ν.map fun z => 1 + 2 * (d : ℝ) * z) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   set μ : Measure ℝ := ν.map (fun z => 1 + 2 * (d : ℝ) * z) with hμ
   have hPeq : Sandpile.centeredMassLaw d ν = Sandpile.massLaw d μ := rfl
   obtain ⟨hζint, hζmean⟩ := Sandpile.scenery_integrable_and_mean d hd ν hintν hmean

@@ -1273,7 +1273,9 @@ theorem aux_ballgreen_clause4_holds : annulusUnitShiftBound := by
           have : (16 : ℝ) ≤ (R : ℝ) := by exact_mod_cast hRbig
           linarith
         have hbad := hxB.2.2
-        simp at hbad
+        have h0 : LatticeProb.supNorm (0 : Fin 4 → ℤ) = 0 :=
+          Nat.eq_zero_of_le_zero (Finset.sup_le fun i _ => by simp)
+        rw [h0, Nat.cast_zero] at hbad
         linarith
       have hh := LatticeProb.Network.harmonic_killedGreenReal hconn Cfin hCzero hq hxC hx0
       rw [LatticeProb.Network.netLaplacian_unitCond]

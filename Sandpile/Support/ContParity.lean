@@ -106,9 +106,9 @@ theorem sum_filter_sameParity_eq (n : ℕ) (x : Site d) (s : Finset (Site d))
   rw [Finset.sum_filter, ← Finset.sum_add_distrib, Finset.sum_div]
   refine Finset.sum_congr rfl fun y _ => ?_
   by_cases h : SameParity n x y
-  · simp only [h, if_true, parSign]
+  · simp only [h, ite_true, parSign]
     ring
-  · simp only [h, if_false, parSign]
+  · simp only [h, ite_false, parSign]
     ring
 
 /-! ### The parity class of the time pairs

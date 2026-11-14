@@ -65,8 +65,8 @@ theorem abs_stoppingSup_sub_le_of_reward (hd : 1 ≤ d) (n : ℕ) (x : Site d)
       Integrable (fun X => G (τ X) X) (walkLaw d x))
     (hFG : ∀ k : ℕ, k ≤ n → ∀ X : ℕ → Site d, |F k X - G k X| ≤ E) :
     |stoppingSup n x F - stoppingSup n x G| ≤ E := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   refine abs_stoppingSup_sub_le n x F G E hbddF hbddG ?_
   intro τ hτ hτn
   rw [← integral_sub (hF τ hτ hτn) (hG τ hτ hτn)]
@@ -325,8 +325,8 @@ theorem bddAbove_walkPayoffs_of_bound (hd : 1 ≤ d) (x : Site d) (n : ℕ)
       Integrable (fun X => F (τ X) X) (walkLaw d x)) :
     BddAbove {a : ℝ | ∃ τ : (ℕ → Site d) → ℕ, IsWalkStopping τ ∧ (∀ X, τ X ≤ n) ∧
       a = ∫ X, F (τ X) X ∂(walkLaw d x)} := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   refine ⟨M, ?_⟩
   rintro a ⟨τ, hτ, hτn, rfl⟩
   calc ∫ X, F (τ X) X ∂(walkLaw d x) ≤ ∫ _X : ℕ → Site d, M ∂(walkLaw d x) := by

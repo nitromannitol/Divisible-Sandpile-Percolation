@@ -106,7 +106,7 @@ theorem exists_centered_law (P : BandParameters) (m : ℕ → ℕ) (hm : ∀ k, 
   have hint2 : Integrable (fun z : ℝ => z ^ 2) (P.law m mu vn) :=
     integrable_sq_bandLaw hw0pos.le (fun k => (P.weight_pos k).le) hθpos hl0 hl1 P.level_pos hm
       P.level_tendsto hvne hwexp
-  haveI : IsProbabilityMeasure (P.law m mu vn) :=
+  have : IsProbabilityMeasure (P.law m mu vn) :=
     isProbabilityMeasure_bandLaw hw0pos.le (fun k => (P.weight_pos k).le) hθpos hl0 hl1
       P.level_pos hm P.level_tendsto hvne P.summable_weight (by ring)
   have hmem : MemLp (id : ℝ → ℝ) 2 (P.law m mu vn) :=

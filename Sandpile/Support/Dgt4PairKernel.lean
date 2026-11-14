@@ -33,17 +33,17 @@ theorem killedHeat_mono {V : Type*} {G : SimpleGraph V} [G.LocallyFinite]
       intro x y
       rw [LatticeProb.Network.killedHeat_zero, LatticeProb.Network.killedHeat_zero]
       by_cases hx : x ∈ C
-      · rw [if_pos hx, if_pos (h hx)]
-      · rw [if_neg hx]
+      · rw [ite_eq_left hx, ite_eq_left (h hx)]
+      · rw [ite_eq_right hx]
         split_ifs <;> norm_num
   | succ k ih =>
       intro x y
       rw [LatticeProb.Network.killedHeat_succ, LatticeProb.Network.killedHeat_succ]
       by_cases hx : x ∈ C
-      · rw [if_pos hx, if_pos (h hx)]
+      · rw [ite_eq_left hx, ite_eq_left (h hx)]
         exact div_le_div_of_nonneg_right (Finset.sum_le_sum fun z _ => ih z y)
           (Nat.cast_nonneg _)
-      · rw [if_neg hx]
+      · rw [ite_eq_right hx]
         split_ifs with hx'
         · exact div_nonneg
             (Finset.sum_nonneg fun z _ => LatticeProb.Network.killedHeat_nonneg _ k z y)
@@ -75,10 +75,10 @@ theorem localGreenTime_succ (D : Set (Site d)) (n : ℕ) (x z : Site d) (hx : x 
       = (if x = z then 1 else 0) + avg (fun y => localGreenTime D n y z) x := by
   classical
   rw [localGreenTime, Finset.sum_range_succ']
-  simp only [LatticeProb.Graph.Zd.killedHeat_succ_walkOp, if_pos hx]
+  simp only [LatticeProb.Graph.Zd.killedHeat_succ_walkOp, ite_eq_left hx]
   have hzero : LatticeProb.Graph.killedHeat (LatticeProb.lattice d) D 0 x z
       = if x = z then 1 else 0 := by
-    rw [LatticeProb.Network.killedHeat_zero, if_pos hx]
+    rw [LatticeProb.Network.killedHeat_zero, ite_eq_left hx]
     split_ifs <;> rfl
   rw [hzero, add_comm]
   congr 1
@@ -158,12 +158,12 @@ theorem abs_avg_localizedOdometer_update_le (hd : 1 ≤ d) {D : Set (Site d)}
           (fun hmem => (hD hmem) rfl) k x
       have : avg (fun x => localGreenTime D n x (0 : Site d)) 0 = 0 := by
         simp [hzero, avg, LatticeProb.walkOp, LatticeProb.nbrSum]
-      rw [this, originInfluence, if_pos rfl]
+      rw [this, originInfluence, ite_eq_left rfl]
     · have hle : ∀ x : Site d, localGreenTime D n x z ≤ originGreenTime n x z := by
         intro x
         exact Finset.sum_le_sum fun k _ => killedHeat_mono hD k x z
       refine le_trans (avg_mono_le hle 0) ?_
-      rw [originInfluence, if_neg hz]
+      rw [originInfluence, ite_eq_right hz]
       exact avg_originGreenTime_le_hitProb hd n z
   exact h.trans (mul_le_mul_of_nonneg_right hmono (abs_nonneg _))
 

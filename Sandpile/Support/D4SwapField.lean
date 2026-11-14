@@ -170,8 +170,8 @@ lemma measure_star_crossing_swap_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
       have hk := ballGreenField_swapPlaneAbout R ζ x y
       have hcomm : P x + y - x = y + (P x - x) := by abel
       rw [hcomm] at hk
-      simp only [Set.mem_setOf_eq, hk, hT, hP]
-    simp only [Set.mem_setOf_eq] at hζ
+      simp only [Set.mem_ofPred_eq, hk, hT, hP]
+    simp only [Set.mem_ofPred_eq] at hζ
     rw [hset] at hζ
     have := hasStarTopBottomCrossing_add ϑ r x (P x - x)
       {w | ballGreenField R (T ζ) w ≤ level} hζ

@@ -27,7 +27,7 @@ open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 theorem continuous_ciSup_fin {X : Type*} [TopologicalSpace X] {k : ℕ} (hk : 0 < k)
     (F : Fin k → X → ℝ) (hF : ∀ i, Continuous (F i)) :
     Continuous fun u => ⨆ i : Fin k, F i u := by
-  haveI : Nonempty (Fin k) := ⟨⟨0, hk⟩⟩
+  have : Nonempty (Fin k) := ⟨⟨0, hk⟩⟩
   have h := Continuous.finset_sup'_apply (s := (Finset.univ : Finset (Fin k)))
     (f := F) Finset.univ_nonempty (fun i _ => hF i)
   simpa only [Finset.sup'_univ_eq_ciSup] using h

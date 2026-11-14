@@ -53,10 +53,10 @@ theorem mean_growth_le_three_of
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L) := by
   obtain ⟨ΩW, mW, PW, hPW, W, hW⟩ := Sandpile.Continuum.exists_isWhiteNoise d
   obtain ⟨ΩB, mB, PB, hPB, B, hB⟩ := Sandpile.Continuum.exists_isBrownian d
-  letI := mW
-  letI := hPW
-  letI := mB
-  letI := hPB
+  let := mW
+  let := hPW
+  let := mB
+  let := hPB
   obtain ⟨Z, hPos, hRatio⟩ := h ΩW PW W hW ΩB PB B hB
   exact exists_growth_limit_of_ratio ((4 - (d : ℝ)) / 4) _ hPos _ hRatio
 

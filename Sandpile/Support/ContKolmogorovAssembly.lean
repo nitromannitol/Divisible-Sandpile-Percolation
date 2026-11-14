@@ -260,7 +260,7 @@ theorem exists_pi_moment_modulus
   refine ⟨M₀ * (1 + (d : ℝ)) ^ (p * min (1 - (d : ℝ) / 4) ((1 - θ) / 4)),
     by positivity, ?_⟩
   intro ν hν hmean hint R hR u hu v hv
-  haveI := hν
+  have := hν
   obtain ⟨⟨hu0, huT⟩, _⟩ := (mem_box_iff T L u).mp hu
   obtain ⟨⟨hv0, hvT⟩, _⟩ := (mem_box_iff T L v).mp hv
   have hmain := hmod ν hν hmean hint R hR (ofPi u).1 (ofPi v).1 (ofPi u).2 (ofPi v).2
@@ -327,7 +327,7 @@ theorem exists_pi_one_point_moment
   obtain ⟨M, hM, hone⟩ := exists_one_point_moment_linInterp hHK hd hd3 p hp T hT
   refine ⟨M, hM, ?_⟩
   intro ν hν hmean hint R hR
-  haveI := hν
+  have := hν
   have h0 : (ofPi (boxLo d L)).1 = (0:ℝ) := rfl
   have := hone ν hν hmean hint R hR (ofPi (boxLo d L)).1 (ofPi (boxLo d L)).2
     (by rw [h0]) (by rw [h0]; exact hT)

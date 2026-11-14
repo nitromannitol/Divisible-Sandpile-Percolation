@@ -55,13 +55,13 @@ theorem exitReward_eq_sum (D : Set (Site d)) (ζ : Site d → ℝ) (t : ℕ) (X 
   · rw [exitReward_of_le ζ hc]
     symm
     rw [Finset.sum_eq_single (exitNat D t X)
-      (fun m _ hm => if_neg (fun hcc => hm hcc.symm))
+      (fun m _ hm => ite_eq_right (fun hcc => hm hcc.symm))
       (fun hmem => absurd (Finset.mem_range.mpr (by omega)) hmem)]
-    exact if_pos rfl
+    exact ite_eq_left rfl
   · rw [exitReward_of_not_le ζ hc]
     refine (Finset.sum_eq_zero fun m hm => ?_).symm
     have := Finset.mem_range.mp hm
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
 
 /-- The reward at the exit is jointly measurable in the scenery and the path, via the
 finite-sum decomposition `exitReward_eq_sum`. -/
@@ -93,7 +93,7 @@ the scenery law with the walk law. -/
 theorem ae_prod_boxDist (hd : 1 ≤ d) (μ : Measure (Site d → ℝ)) [IsProbabilityMeasure μ]
     (x : Site d) :
     ∀ᵐ p ∂(μ.prod (walkLaw d x)), ∀ n : ℕ, boxDist x (p.2 n) ≤ n := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   rw [MeasureTheory.ae_iff]
   have hset : {p : (Site d → ℝ) × (ℕ → Site d) | ¬ ∀ n : ℕ, boxDist x (p.2 n) ≤ n}
       = (Set.univ : Set (Site d → ℝ)) ×ˢ
@@ -125,7 +125,7 @@ theorem integrable_prod_exitReward (hd : 1 ≤ d) (P : Measure (Site d → ℝ))
     (D : Set (Site d)) (t : ℕ) (x : Site d) :
     Integrable (fun p : (Site d → ℝ) × (ℕ → Site d) => exitReward D p.1 t p.2)
       (P.prod (walkLaw d x)) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hH : Integrable (fun ζ : Site d → ℝ => ∑ z ∈ boxFinset x t, odometerOf ζ t z) P :=
     integrable_finsetSum _ fun z _ => integrable_odometerOf_of_stationary hstat hpos t z
   refine Integrable.mono' (integrable_comp_fst hH)
@@ -164,7 +164,7 @@ theorem integral_integral_exitReward (hd : 1 ≤ d) (P : Measure (Site d → ℝ
     (∫ ζ, (∫ X, exitReward D ζ t X ∂(walkLaw d x)) ∂P)
       = ((walkLaw d x) {X : ℕ → Site d | exitNat D t X ≤ t}).toReal *
         ∫ ζ, odometerOf ζ t 0 ∂P := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   rw [integral_integral_swap (integrable_prod_exitReward hd P hstat hpos D t x),
     integral_congr_ae (Filter.Eventually.of_forall fun X =>
       integral_exitReward_scenery hstat D t X),
@@ -204,7 +204,7 @@ theorem mean_localization_bound_of_stationary (hd : 1 ≤ d) (P : Measure (Site 
       (∫ ζ, odometerOf ζ t 0 ∂P) - ∫ ζ, localizedOdometer D ζ t x ∂P
         ≤ ((walkLaw d x) {X : ℕ → Site d | exitNat D t X ≤ t}).toReal *
             ∫ ζ, odometerOf ζ t 0 ∂P := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hsite : (∫ ζ, odometerOf ζ t x ∂P) = ∫ ζ, odometerOf ζ t 0 ∂P :=
     integral_odometerOf_eq_of_stationary hstat t x
   have hLint := integrable_localizedOdometer_of_stationary hd hstat hpos D t x

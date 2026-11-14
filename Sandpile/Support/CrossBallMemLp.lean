@@ -55,10 +55,10 @@ theorem measurable_centredKernel (d : ℕ) (s : ℝ) :
     continuous_norm.measurable
   unfold centredKernel
   by_cases hd2 : d = 2
-  · simp only [if_pos hd2]
+  · simp only [ite_eq_left hd2]
     exact Measurable.ite (measurableSet_lt hnorm measurable_const)
       ((Real.measurable_log.comp (measurable_const.div hnorm)).const_mul _) measurable_const
-  · simp only [if_neg hd2]
+  · simp only [ite_eq_right hd2]
     exact Measurable.ite (measurableSet_lt hnorm measurable_const)
       (((measurable_const.div hnorm).sub measurable_const).const_mul _) measurable_const
 /-- In dimension two the square of the ball kernel is dominated by `C/‖y‖`. -/
@@ -73,13 +73,13 @@ theorem centredKernel_two_sq_le {s : ℝ} (hs : 0 < s) (y : Sandpile.Continuum.S
   · rcases eq_or_lt_of_le hr0 with hzero | hpos
     · have hk : centredKernel 2 s y = 0 := by
         unfold centredKernel
-        rw [if_pos hlt, if_pos rfl, ← hzero]
+        rw [ite_eq_left hlt, ite_eq_left rfl, ← hzero]
         simp
       rw [hk]
       simpa using mul_nonneg hC hrp
     · have hk : centredKernel 2 s y = (1 / (2 * Real.pi)) * Real.log (s / ‖y‖) := by
         unfold centredKernel
-        rw [if_pos hlt, if_pos rfl]
+        rw [ite_eq_left hlt, ite_eq_left rfl]
       have hq : (1 : ℝ) ≤ s / ‖y‖ := (one_le_div hpos).mpr hlt.le
       have hqnn : (0 : ℝ) ≤ s / ‖y‖ := le_trans zero_le_one hq
       have hlognn : 0 ≤ Real.log (s / ‖y‖) := Real.log_nonneg hq
@@ -101,7 +101,7 @@ theorem centredKernel_two_sq_le {s : ℝ} (hs : 0 < s) (y : Sandpile.Continuum.S
         _ = 4 * s / (2 * Real.pi) ^ 2 * ‖y‖⁻¹ := by field_simp
   · have hk : centredKernel 2 s y = 0 := by
       unfold centredKernel
-      rw [if_neg hlt]
+      rw [ite_eq_right hlt]
     rw [hk]
     simpa using mul_nonneg hC hrp
 
@@ -120,7 +120,7 @@ theorem centredKernel_three_sq_le {s : ℝ} (hs : 0 < s) {y : Sandpile.Continuum
   by_cases hlt : ‖y‖ < s
   · have hk : centredKernel 3 s y = (1 / (4 * Real.pi)) * (1 / ‖y‖ - 1 / s) := by
       unfold centredKernel
-      rw [if_pos hlt]
+      rw [ite_eq_left hlt]
       norm_num
     have hinv : 1 / s ≤ 1 / ‖y‖ := one_div_le_one_div_of_le hpos hlt.le
     have hspos : (0 : ℝ) < 1 / s := by positivity
@@ -135,7 +135,7 @@ theorem centredKernel_three_sq_le {s : ℝ} (hs : 0 < s) {y : Sandpile.Continuum
       _ = (1 / (4 * Real.pi)) ^ 2 * (‖y‖ ^ 2)⁻¹ := by rw [h1]
   · have hk : centredKernel 3 s y = 0 := by
       unfold centredKernel
-      rw [if_neg hlt]
+      rw [ite_eq_right hlt]
     rw [hk]
     simpa using hCnn
 

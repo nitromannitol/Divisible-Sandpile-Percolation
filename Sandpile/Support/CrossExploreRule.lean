@@ -202,7 +202,7 @@ theorem subset_doneSq_of_pickIdx_none {d : ℕ} {a b : Fin 2 → ℝ} {A : Finse
   by_contra hc
   obtain ⟨z, hzT, hz⟩ := Finset.not_subset.mp hc
   have hne : (T \ doneSq d a b A).Nonempty := ⟨z, Finset.mem_sdiff.mpr ⟨hzT, hz⟩⟩
-  rw [pickIdx, dif_pos hne] at h
+  rw [pickIdx, dite_eq_left hne] at h
   set z₀ := hne.choose with hz₀
   have hz₀mem : z₀ ∈ T \ doneSq d a b A := hne.choose_spec
   have hz₀T : z₀ ∈ rectSq a b := hT (Finset.mem_sdiff.mp hz₀mem).1
@@ -211,7 +211,7 @@ theorem subset_doneSq_of_pickIdx_none {d : ℕ} {a b : Fin 2 → ℝ} {A : Finse
     exact (Finset.mem_sdiff.mp hz₀mem).2 (mem_doneSq.mpr ⟨hz₀T, hsub⟩)
   obtain ⟨i, hi, hiA⟩ := Finset.not_subset.mp hz₀nd
   have hne2 : (blockIdx d a b z₀ \ A).Nonempty := ⟨i, Finset.mem_sdiff.mpr ⟨hi, hiA⟩⟩
-  rw [dif_pos hne2] at h
+  rw [dite_eq_left hne2] at h
   exact absurd h (by simp)
 
 /-- The exploration rule: reveal the next cell of the first discovered square that is not yet
@@ -275,7 +275,7 @@ theorem measurableSet_stepOK (hm : BlockMeasurable d a b G bf) {A : Finset (cell
   · have hrw : {ω | stepOK a b lev bf ω p p'}
         = ⋂ q : ℚ, {ω | 0 ≤ q → q ≤ 1 → lev ≤ bf (segPt p p' (q : ℝ)) ω} := by
       ext ω
-      simp only [stepOK, Set.mem_setOf_eq, Set.mem_iInter]
+      simp only [stepOK, Set.mem_ofPred_eq, Set.mem_iInter]
       exact ⟨fun h q => h.2.2 q, fun h => ⟨hgeom.1, hgeom.2, fun q => h q⟩⟩
     rw [hrw]
     refine MeasurableSet.iInter fun q => ?_
@@ -291,14 +291,14 @@ theorem measurableSet_stepOK (hm : BlockMeasurable d a b G bf) {A : Finset (cell
     · have hset : {ω | 0 ≤ q → q ≤ 1 → lev ≤ bf (segPt p p' (q : ℝ)) ω}
           = (Set.univ : Set Ω) := by
         ext ω
-        simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+        simp only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]
         intro h1 h2
         exact absurd ⟨h1, h2⟩ hq
       rw [hset]
       exact @MeasurableSet.univ Ω (indepAlg G _)
   · have hrw : {ω | stepOK a b lev bf ω p p'} = (∅ : Set Ω) := by
       ext ω
-      simp only [stepOK, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [stepOK, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       exact fun h => hgeom ⟨h.1, h.2.1⟩
     rw [hrw]
     exact @MeasurableSet.empty Ω (indepAlg G _)
@@ -320,7 +320,7 @@ theorem measurableSet_reachedPt (hm : BlockMeasurable d a b G bf) {A : Finset (c
               (v (Fin.last k) : Space 2) = p) ∧
             (∀ j : Fin k, stepOK a b lev bf ω (v j.castSucc : Space 2) (v j.succ : Space 2))} := by
     ext ω
-    simp only [reachedPt, Set.mem_setOf_eq, Set.mem_iUnion]
+    simp only [reachedPt, Set.mem_ofPred_eq, Set.mem_iUnion]
     constructor
     · rintro ⟨k, v, h0, hr, hD, hs, hlast⟩
       exact ⟨k, v, ⟨h0, hr, hD, hlast⟩, hs⟩
@@ -337,7 +337,7 @@ theorem measurableSet_reachedPt (hm : BlockMeasurable d a b G bf) {A : Finset (c
         (∀ j : Fin k, stepOK a b lev bf ω (v j.castSucc : Space 2) (v j.succ : Space 2))}
         = ⋂ j : Fin k, {ω | stepOK a b lev bf ω (v j.castSucc : Space 2) (v j.succ : Space 2)} := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_iInter]
+      simp only [Set.mem_ofPred_eq, Set.mem_iInter]
       exact ⟨fun h j => h.2 j, fun h => ⟨hcond, fun j => h j⟩⟩
     rw [hset]
     exact MeasurableSet.iInter fun j => measurableSet_stepOK hm (hcond.2.2.1 j.castSucc)
@@ -347,7 +347,7 @@ theorem measurableSet_reachedPt (hm : BlockMeasurable d a b G bf) {A : Finset (c
         (∀ j : Fin k, stepOK a b lev bf ω (v j.castSucc : Space 2) (v j.succ : Space 2))}
         = (∅ : Set Ω) := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       exact fun h => hcond h.1
     rw [hset]
     exact @MeasurableSet.empty Ω (indepAlg G _)
@@ -365,7 +365,7 @@ theorem measurableSet_mem_reachSq (hm : BlockMeasurable d a b G bf)
   · by_cases hside : z 0 = ⌊a 0⌋
     · have hset : {ω | z ∈ reachSq a b lev bf (doneSq d a b A) ω} = (Set.univ : Set Ω) := by
         ext ω
-        simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true, mem_reachSq]
+        simp only [Set.mem_ofPred_eq, Set.mem_univ, iff_true, mem_reachSq]
         exact ⟨hz, Or.inl hside⟩
       rw [hset]
       exact @MeasurableSet.univ Ω (indepAlg G _)
@@ -373,7 +373,7 @@ theorem measurableSet_mem_reachSq (hm : BlockMeasurable d a b G bf)
           = ⋃ p : ↥(sampPts a b), {ω | reachedPt a b lev bf (doneSq d a b A) ω (p : Space 2) ∧
               sqAdj (sqOf (p : Space 2)) z} := by
         ext ω
-        simp only [Set.mem_setOf_eq, Set.mem_iUnion, mem_reachSq]
+        simp only [Set.mem_ofPred_eq, Set.mem_iUnion, mem_reachSq]
         constructor
         · rintro ⟨-, h | ⟨p, hp⟩⟩
           · exact absurd h hside
@@ -396,7 +396,7 @@ theorem measurableSet_mem_reachSq (hm : BlockMeasurable d a b G bf)
         exact @MeasurableSet.empty Ω (indepAlg G _)
   · have hset : {ω | z ∈ reachSq a b lev bf (doneSq d a b A) ω} = (∅ : Set Ω) := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, mem_reachSq]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, mem_reachSq]
       exact fun h => hz h.1
     rw [hset]
     exact @MeasurableSet.empty Ω (indepAlg G _)
@@ -415,7 +415,7 @@ theorem measurableSet_reachSq_eq (hm : BlockMeasurable d a b G bf)
         = (⋂ z ∈ T, {ω | z ∈ reachSq a b lev bf (doneSq d a b A) ω}) ∩
           (⋂ z ∈ rectSq a b, ⋂ _ : z ∉ T, {ω | z ∈ reachSq a b lev bf (doneSq d a b A) ω}ᶜ) := by
       ext ω
-      simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.mem_compl_iff]
+      simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_compl_iff]
       constructor
       · rintro rfl
         exact ⟨fun z hz => hz, fun z _ hz => hz⟩
@@ -432,7 +432,7 @@ theorem measurableSet_reachSq_eq (hm : BlockMeasurable d a b G bf)
       exact (measurableSet_mem_reachSq hm z).compl
   · have hset : {ω | reachSq a b lev bf (doneSq d a b A) ω = T} = (∅ : Set Ω) := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       rintro rfl
       exact hT reachSq_subset
     rw [hset]
@@ -450,7 +450,7 @@ theorem isExplorationRule_exploreNext (hm : BlockMeasurable d a b G bf) :
       = ⋃ T ∈ ((rectSq a b).powerset.filter (fun T => pickIdx d a b A T = some i)),
           {ω | reachSq a b lev bf (doneSq d a b A) ω = T} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Finset.mem_filter,
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Finset.mem_filter,
       Finset.mem_powerset, exists_prop]
     constructor
     · intro h

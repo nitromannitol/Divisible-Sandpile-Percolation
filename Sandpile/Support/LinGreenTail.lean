@@ -31,7 +31,7 @@ theorem green_shift (x z : Site d) : green d x z = green d 0 (z - x) := by
 distance. -/
 theorem mem_greenFieldBox_iff {n : ℕ} {z : Site d} :
     z ∈ greenFieldBox d n ↔ boxDist 0 z ≤ n := by
-  simp only [greenFieldBox, Set.mem_setOf_eq, boxDist, Finset.sup_le_iff, Finset.mem_univ,
+  simp only [greenFieldBox, Set.mem_ofPred_eq, boxDist, Finset.sup_le_iff, Finset.mem_univ,
     forall_const]
   constructor
   · intro hz i

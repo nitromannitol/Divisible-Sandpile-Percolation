@@ -97,7 +97,7 @@ theorem dgt4_tested_linearization_sequence [NeZero d] (hd : 5 ≤ d)
     let ext : ℝ → ℝ := fun R => if R ∈ Set.range Rseq then εfun (index R) else 1
     have hext : ∀ k, ext (Rseq k) = εfun k := by
       intro k
-      simp only [ext, Set.mem_range_self, if_true, hindex]
+      simp only [ext, Set.mem_range_self, ite_true, hindex]
     refine ⟨ext, ?_, ?_, ?_⟩
     · intro R
       dsimp [ext]
@@ -123,7 +123,7 @@ theorem dgt4_tested_linearization_sequence [NeZero d] (hd : 5 ≤ d)
       · have hone := abs_cov_survival_le_one ν ⌊R ^ 2 * T⌋₊ i j X Y
         change |_ - _ * _| ≤ _ at hone
         refine hone.trans ?_
-        rw [show ext R = 1 from if_neg hR]
+        rw [show ext R = 1 from ite_eq_right hR]
         exact le_add_of_nonneg_left (mul_nonneg (div_nonneg (le_max_right C 0) hden) hsum)
   have h := tendsto_l2_frozen_pairing hd hGreen hInter ν hmean hsqν φ hφtest T hT
     qext (max C 0) hsurv' hcov' hRtop
@@ -149,7 +149,7 @@ theorem dgt4_tested_linearization_of_thresholds_sequence
               (1 - (j : ℝ) / ((Rseq k) ^ 2 * T)) ^ κ *
                 (avg^[j] (scenery d σ)) x) φ) ^ 2
           ∂(centeredMassLaw d ν)) atTop (𝓝 0) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hsq : Integrable (fun z : ℝ => z ^ 2) ν :=
     ((evariance_lt_top_iff_memLp aestronglyMeasurable_id).mp hvar').integrable_sq
   obtain ⟨hsurv, C, hcov⟩ := dgt4_path_survival_sequence_indep d hd ν hvar'

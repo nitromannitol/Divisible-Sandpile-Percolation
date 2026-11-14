@@ -145,7 +145,7 @@ theorem exists_pointwise_linearization_four (hVS : Sandpile.External.VarianceSca
           ∫ η, odometerOf η (t - n) 0 ∂P|} ∪
           {ζ | lam / 2 < |reflectionSum ζ n t x - Y n|} := by
       intro ζ hζ
-      simp only [Set.mem_setOf_eq, Set.mem_union] at hζ ⊢
+      simp only [Set.mem_ofPred_eq, Set.mem_union] at hζ ⊢
       by_contra h
       push Not at h
       have hdec := diffField_centered_decomp (by norm_num) ν hint hmean hpos ζ n t hnt.le x

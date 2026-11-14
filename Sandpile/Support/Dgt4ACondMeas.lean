@@ -46,7 +46,7 @@ theorem aemeasurable_infiniteGreenField_condScenery (hd : 5 ≤ d) (c s : ℝ) (
   have hex : ∃ M : ℝ,
       Tendsto (fun m => infiniteGreenFieldPartial m (condScenery d hd c r s) x) atTop (𝓝 M) :=
     ⟨_, htend⟩
-  rw [infiniteGreenField, dif_pos hex]
+  rw [infiniteGreenField, dite_eq_left hex]
   exact Classical.choose_spec hex
 
 end Sandpile

@@ -31,9 +31,9 @@ theorem measure_gt_le_add3 {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
   have hsub : {ω | M < N ω} ⊆
       {ω | M₁ < N₁ ω} ∪ ({ω | M₂ < N₂ ω} ∪ {ω | M₃ < N₃ ω}) := by
     intro ω hω
-    simp only [Set.mem_setOf_eq] at hω
+    simp only [Set.mem_ofPred_eq] at hω
     by_contra hc
-    simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_lt] at hc
+    simp only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_lt] at hc
     have hsum : N ω ≤ M₁ + M₂ + M₃ :=
       le_trans (h ω) (add_le_add (add_le_add hc.1 hc.2.1) hc.2.2)
     exact absurd hω (not_lt.mpr (le_trans hsum hM))
@@ -59,7 +59,7 @@ theorem d4_superdiffusive_tightness (hHK : External.HeatKernelBounds)
         (fun x => odometer σ ⌊R ^ α⌋₊ x - meanOdometer (centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))}
         ≤ ENNReal.ofReal ε := by
   classical
-  haveI := hprob
+  have := hprob
   obtain ⟨Lw, hLw0, hLw⟩ := exists_radius_of_isDomain hD
   obtain ⟨-, htight1⟩ := d4_superdiffusive_step1 hHK hMembrane ν hprob hmean hvar hvar'
     D hD w hw s hs hα
@@ -99,7 +99,7 @@ theorem d4_superdiffusive_tightness (hHK : External.HeatKernelBounds)
             meanOdometer (centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))} :=
       by
         intro σ hσ
-        simp only [Set.mem_setOf_eq] at hσ ⊢
+        simp only [Set.mem_ofPred_eq] at hσ ⊢
         exact lt_of_le_of_lt (le_max_left _ _) hσ
     have hset : {σ : Site 4 → ℝ | ENNReal.ofReal Ms < negSobolevNorm 4 s D
           (omegaRep D w (latticePairing R (fun x => odometer σ ⌊R ^ α⌋₊ x -
@@ -108,7 +108,7 @@ theorem d4_superdiffusive_tightness (hHK : External.HeatKernelBounds)
           (omegaRep D w (latticePairing R (fun x => odometerOf ζ ⌊R ^ α⌋₊ x -
             ∫ η, odometerOf η ⌊R ^ α⌋₊ 0 ∂(LatticeProb.iidLaw 4 ν))))} := by
       ext σ
-      simp only [Set.mem_setOf_eq, Set.mem_preimage]
+      simp only [Set.mem_ofPred_eq, Set.mem_preimage]
       rw [hmn]
       have hfun : (fun x : Site 4 => odometer σ ⌊R ^ α⌋₊ x -
           ∫ η, odometerOf η ⌊R ^ α⌋₊ 0 ∂(LatticeProb.iidLaw 4 ν))

@@ -44,7 +44,7 @@ theorem integral_sq_le_two_div {Ω : Type*} [MeasurableSpace Ω] (μ : Measure �
         · exact measureReal_sq_lt_le μ X c htail t ht
         · push Not at ht
           have hz : {ω | t < X ω ^ 2} = Set.univ := by
-            ext ω; simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+            ext ω; simp only [mem_ofPred_eq, Set.mem_univ, iff_true]
             nlinarith [sq_nonneg (X ω)]
           rw [hz, probReal_univ]
           have h1 : 1 ≤ Real.exp (-c * t) := Real.one_le_exp (by nlinarith)

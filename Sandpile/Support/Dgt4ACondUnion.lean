@@ -27,7 +27,7 @@ theorem setOf_exists_eq_biUnion (hd : 5 ≤ d) (c s a : ℝ) (m : ℕ) :
       = ⋃ z ∈ (boxFinset (0 : Site d) m).erase 0,
         {r : Site d → ℝ | infiniteGreenField (condScenery d hd c r s) z + a ≤ 0} := by
   ext r
-  simp only [Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]
+  simp only [mem_ofPred_eq, Set.mem_iUnion, exists_prop]
 
 /-- **The union bound of Step 3** (`sandpile.tex:5175-5178`). -/
 theorem measure_exists_nonpos_le (hd : 5 ≤ d) (μ : Measure (Site d → ℝ)) (c s a : ℝ) (m : ℕ) :

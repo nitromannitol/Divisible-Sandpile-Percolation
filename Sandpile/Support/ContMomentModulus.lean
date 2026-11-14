@@ -92,7 +92,7 @@ theorem exists_moment_modulus_linInterp
   have hp0 : (0:ℝ) < p := by linarith
   refine ⟨(C₉ * C₁₀) ^ p, Real.rpow_pos_of_pos (by positivity) p, ?_⟩
   intro ν hν hmean hint R hR r r' w w' hr hr' hrT hr'T hws
-  haveI := hν
+  have := hν
   have hνint : Integrable (fun z : ℝ => z) ν :=
     LatticeProb.integrable_abs_of_rpow ν (by linarith) (fun z => z)
       measurable_id.aestronglyMeasurable hint
@@ -355,7 +355,7 @@ theorem exists_moment_linInterp_le (hd : 1 ≤ d) (p : ℝ) (hp : 2 ≤ p) :
   obtain ⟨C, hC, hmom⟩ := exists_moment_linear_pi p hp
   refine ⟨C, hC, ?_⟩
   intro ν hν hint R r w s hps
-  haveI := hν
+  have := hν
   have hrep : ∀ σ : Site d → ℝ,
       linInterp d R (Sandpile.scenery d σ) r w
         = ∑ i : Fin s.card,
@@ -484,7 +484,7 @@ theorem exists_one_point_moment_linInterp
   have hp0 : (0:ℝ) < p := by linarith
   refine ⟨(C₉ * Cγ) ^ p, Real.rpow_pos_of_pos (by positivity) p, ?_⟩
   intro ν hν hmean hint R hR r w hr hrT
-  haveI := hν
+  have := hν
   have hνint : Integrable (fun z : ℝ => z) ν :=
     LatticeProb.integrable_abs_of_rpow ν (by linarith) (fun z => z)
       measurable_id.aestronglyMeasurable hint

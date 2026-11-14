@@ -38,7 +38,7 @@ pointwise below one whose odometer already clears the bound `c` clears it as wel
 theorem isLowerSet_odometerOf_le (t : ℕ) (z : Site d) (c : ℝ) :
     IsLowerSet {ζ : Site d → ℝ | odometerOf ζ t z ≤ c} := by
   intro a b hle ha
-  simp only [Set.mem_setOf_eq] at ha ⊢
+  simp only [Set.mem_ofPred_eq] at ha ⊢
   exact le_trans (odometerOf_mono t z fun w => hle w) ha
 
 /-- The coordinate sublevel event `{ζ | ζ z ≤ c}` is a lower set, since a pointwise-smaller
@@ -46,7 +46,7 @@ scenery has a pointwise-smaller value at `z`. -/
 theorem isLowerSet_coord_le (z : Site d) (c : ℝ) :
     IsLowerSet {ζ : Site d → ℝ | ζ z ≤ c} := by
   intro a b hle ha
-  simp only [Set.mem_setOf_eq] at ha ⊢
+  simp only [Set.mem_ofPred_eq] at ha ⊢
   exact le_trans (hle z) ha
 
 /-- The sublevel event `{ζ | odometerOf ζ t z ≤ c}` is measurable, as the preimage of
@@ -236,7 +236,7 @@ theorem half_le_measure_odometerOf_le (ν : Measure ℝ) [IsProbabilityMeasure �
   have hcompl : {ζ : Site d → ℝ | odometerOf ζ t z ≤ c}ᶜ
       ⊆ {ζ : Site d → ℝ | c ≤ odometerOf ζ t z} := by
     intro ζ hζ
-    simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_le] at hζ
+    simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_le] at hζ
     exact le_of_lt hζ
   have hmono : P.real {ζ : Site d → ℝ | odometerOf ζ t z ≤ c}ᶜ ≤ 1 / 2 :=
     le_trans (measureReal_mono hcompl (measure_ne_top _ _)) hge
@@ -278,7 +278,7 @@ theorem increment_ball_step (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeas
     intro p
     rw [hA]
     by_cases hb : p.2
-    · simp only [hb, if_true]
+    · simp only [hb, ite_true]
       exact isLowerSet_odometerOf_le t p.1 c
     · simp only [hb]
       exact isLowerSet_coord_le p.1 (-a)
@@ -286,7 +286,7 @@ theorem increment_ball_step (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeas
     intro p
     rw [hA]
     by_cases hb : p.2
-    · simp only [hb, if_true]
+    · simp only [hb, ite_true]
       exact measurableSet_odometerOf_le t p.1 c
     · simp only [hb]
       exact measurableSet_coord_le p.1 (-a)
@@ -348,7 +348,7 @@ theorem increment_ball_step (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeas
     have hpar := odometerOf_le_parabola hd ζ a ha.le R t hζneg hbnd
     have havgle := avg_odometerOf_le_half hd ζ a ha.le R hR1 t (hpar t le_rfl)
     have hz0 : ζ 0 ≤ -a := hζneg 0 (by rw [boxDist_self]; omega)
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     have hkey : a / 2 ≤ -(ζ 0) - avg (odometerOf ζ t) 0 := by linarith
     exact le_trans hkey (le_max_right _ _)
   have hrefint := integrable_reflected (d := d) ν hint hpos t
@@ -599,7 +599,7 @@ theorem eq_dirac_of_ae_eq_zero (ν : Measure ℝ) [IsProbabilityMeasure ν]
     refine le_antisymm ?_ zero_le
     have hsub : s ⊆ {z : ℝ | z ≠ 0} := by
       intro x hx
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       rintro rfl
       exact h0 hx
     exact le_trans (measure_mono hsub) (le_of_eq hc)
@@ -671,7 +671,7 @@ theorem exists_mean_lower_uniform (hd1 : 1 ≤ d) (hd2 : (0 : ℝ) < (d : ℝ) /
     max (2 * ⌈1 / δ⌉₊ + 3)
       (⌈(2 * ((4 / ((d : ℝ) / 2)) ^ (1 / ((d : ℝ) / 2))) / δ) ^ 4⌉₊ + 1),
     fun ν hprob hintν hmean htail t ht => ?_⟩
-  haveI := hprob
+  have := hprob
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     Integrable.mono' hintν.abs (measurable_id.max measurable_const).aestronglyMeasurable
       (Filter.Eventually.of_forall fun z => by

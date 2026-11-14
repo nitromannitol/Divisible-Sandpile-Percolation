@@ -88,7 +88,7 @@ theorem centeredMassLaw_threshold_factorization (ν : Measure ℝ) [IsProbabilit
       {σ : Site d → ℝ | J σ y ≤ b x} = {σ : Site d → ℝ | σ y ∈ A x} := by
     intro y x
     ext σ
-    simp only [Set.mem_setOf_eq, hJ σ y, hA, scenery]
+    simp only [Set.mem_ofPred_eq, hJ σ y, hA, scenery]
   have hall : {σ : Site d → ℝ | ∀ x ∈ Λ, J σ x ≤ b x}
       = {σ : Site d → ℝ | ∀ x ∈ Λ, σ x ∈ A x} := by
     ext σ
@@ -101,7 +101,7 @@ theorem centeredMassLaw_threshold_factorization (ν : Measure ℝ) [IsProbabilit
       have := hσ x hx
       rw [hJ σ x]
       simpa [hA, scenery] using this
-  haveI := hμprob
+  have := hμprob
   have hcm : centeredMassLaw d ν = massLaw d μ := by rw [centeredMassLaw, hμ]
   rw [hcm, hall, massLaw_iInter_coord (d := d) μ Λ A hAmeas]
   refine Finset.prod_congr rfl fun x _ => ?_

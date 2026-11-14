@@ -96,10 +96,10 @@ theorem prod_rpow_lastVisitIndicator (j : ℕ) (X : ℕ → Site d) (f : ℕ →
   rw [lastVisitTimes, Finset.prod_filter]
   refine Finset.prod_congr rfl fun r hr => ?_
   by_cases h : r ∈ lastVisitTimes j X
-  · rw [lastVisitIndicator_eq_one_of_mem X h, Real.rpow_one, if_pos]
+  · rw [lastVisitIndicator_eq_one_of_mem X h, Real.rpow_one, ite_eq_left]
     rw [lastVisitTimes, Finset.mem_filter] at h
     exact h.2
-  · rw [lastVisitIndicator_eq_zero_of_notMem X hr h, Real.rpow_zero, if_neg]
+  · rw [lastVisitIndicator_eq_zero_of_notMem X hr h, Real.rpow_zero, ite_eq_right]
     intro hc
     exact h (by rw [lastVisitTimes, Finset.mem_filter]; exact ⟨hr, hc⟩)
 
@@ -176,7 +176,7 @@ theorem abs_survival_sub_prod_le
       setOf_forall_le_eq_iInter j (fun r σ => J σ (X r) ≤ b r)
     rw [h1, iInter_lastVisit_eq j X b hb J]
     ext σ
-    simp only [Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [Set.mem_iInter, Set.mem_ofPred_eq]
     exact (hQ (fun r => J σ (X r) ≤ b r)).symm
   have hprodeq : ∏ i : Fin m,
       (centeredMassLaw d ν).real {σ : Site d → ℝ | J σ 0 ≤ b (ts i)}

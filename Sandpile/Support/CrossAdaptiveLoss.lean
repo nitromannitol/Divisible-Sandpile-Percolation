@@ -43,7 +43,7 @@ theorem tilted_cm_level_loss (hPin : Sandpile.External.Pinsker)
     exact integral_nonneg fun ω => by positivity
   have hexpint : Integrable (fun ω => Real.exp (cmLogDensity a ξ S ω)) P :=
     integrable_exp_cmLogDensity hGle hGindep hS ξ hξm a hfi hf1
-  haveI : IsProbabilityMeasure (P.tilted (cmLogDensity a ξ S)) :=
+  have : IsProbabilityMeasure (P.tilted (cmLogDensity a ξ S)) :=
     isProbabilityMeasure_tilted hexpint
   have hEmeas : MeasurableSet E := measurableSet_of_indepBlockDecides hGle hE
   have hkl := klDiv_tilted_cm_le hGle hGindep hS ξ hξm hξi hξ0 a hfi hf1 N hN
@@ -82,9 +82,9 @@ theorem tilted_cm_measure_le (hPin : Sandpile.External.Pinsker)
   classical
   have hexpint : Integrable (fun ω => Real.exp (cmLogDensity a ξ S ω)) P :=
     integrable_exp_cmLogDensity hGle hGindep hS ξ hξm a hfi hf1
-  haveI : IsProbabilityMeasure (P.tilted (cmLogDensity a ξ S)) :=
+  have : IsProbabilityMeasure (P.tilted (cmLogDensity a ξ S)) :=
     isProbabilityMeasure_tilted hexpint
-  haveI : IsProbabilityMeasure
+  have : IsProbabilityMeasure
       (P.tilted (cmLogDensity a ξ (fun _ : Ω => (Finset.univ : Finset ι)))) :=
     isProbabilityMeasure_tilted
       (integrable_exp_cmLogDensity hGle hGindep (isIndepStoppingSet_univ G) ξ hξm a hfi hf1)

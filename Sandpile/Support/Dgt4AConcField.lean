@@ -96,8 +96,8 @@ theorem abs_deviation_sub_le_of_hasSum_sq (hd : 5 ≤ d) (ξ η : Site d → ℝ
     |(infiniteGreenField ξ x - odometerOf ξ n x)
         - (infiniteGreenField η x - odometerOf η n x)|
       ≤ ‖greenLp d hd (0 : Site d)‖ * Real.sqrt M := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   obtain ⟨hη, hfield⟩ := exists_tendsto_infiniteGreenField_sub hd ξ η M h hξ
   refine abs_infiniteGreenField_sub_odometer_gap_le (by omega) ξ η hξ hη n x _ ?_
   intro τ hτ hτn

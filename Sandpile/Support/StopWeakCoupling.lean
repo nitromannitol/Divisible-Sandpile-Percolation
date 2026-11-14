@@ -100,7 +100,7 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution
       P.map Prod.fst = μ i ∧ P.map Prod.snd = ν ∧
       P {p | ε < dist (X i p.1) (Y p.2)} ≤ ENNReal.ofReal δ := by
   classical
-  haveI : IsProbabilityMeasure (ν.map Y) := inferInstance
+  have : IsProbabilityMeasure (ν.map Y) := inferInstance
   obtain ⟨A, hAm, hAb, hAd, hAn, hAu, hAp⟩ :=
     Sandpile.Continuum.exists_continuity_partition (ν.map Y) ε hε
   have hsum : ∑' n, (ν.map Y) (A n) = 1 := by
@@ -182,7 +182,6 @@ theorem Sandpile.Continuum.exists_coupling_close_of_tendstoInDistribution_ae
   have he : {p : Ω i × Ω' | ε < dist (X i p.1) (Y p.2)} =ᵐ[P]
       {p | ε < dist (X' i p.1) (Y' p.2)} := by
     filter_upwards [hxp, hyp] with p hp hq
-    change (ε < dist (X i p.1) (Y p.2)) = (ε < dist (X' i p.1) (Y' p.2))
     rw [hp, hq]
   rw [measure_congr he]
   exact hbad

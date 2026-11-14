@@ -58,7 +58,7 @@ theorem dgt4_path_survival_sequence_indep
                 (∑ r ∈ Finset.range (i + 1), ∑ h ∈ Finset.range (j + 1),
                   Set.indicator {p : ℕ × ℕ | X p.1 = Y p.2} (fun _ => (1 : ℝ)) (r, h)) +
                 εfun k := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   let l : Filter ℝ := Filter.map Rseq atTop
   have hl : l ≤ atTop := hRtop
   have hscale : Tendsto Rseq atTop l := tendsto_map

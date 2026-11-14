@@ -29,7 +29,7 @@ theorem integrable_prod_gaussLaw_shift (hd : 5 ≤ d) (F : (Site d → ℝ) → 
         F (fun z => p.2 z + p.1 * (greenUnit d hd : Site d → ℝ) z))
       ((gaussianReal 0 1).prod ((LatticeProb.gaussLaw (Site d)).map (residField d hd))) := by
   have hPhi := measurable_shiftPair hd
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   have hmap := gaussLaw_eq_map_prod hd
   have hFm : AEStronglyMeasurable F

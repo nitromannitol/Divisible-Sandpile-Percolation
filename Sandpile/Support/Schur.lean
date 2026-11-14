@@ -40,8 +40,8 @@ theorem offEntry_symm {m : ℕ} {S : Matrix (Fin m) (Fin m) ℝ}
     (hsymm : ∀ j k, S j k = S k j) (j k : Fin m) : offEntry S j k = offEntry S k j := by
   unfold offEntry
   by_cases h : j = k
-  · rw [if_pos h, if_pos h.symm]
-  · rw [if_neg h, if_neg (fun hc => h hc.symm), hsymm j k]
+  · rw [ite_eq_left h, ite_eq_left h.symm]
+  · rw [ite_eq_right h, ite_eq_right (fun hc => h hc.symm), hsymm j k]
 
 /-- Zeroing out the `j`-th term of a sum over `f` subtracts that term: `∑ k, (if j = k then 0
 else f k) = (∑ k, f k) - f j`. -/
@@ -78,7 +78,7 @@ theorem abs_quadForm_sub_le {m : ℕ} (S : Matrix (Fin m) (Fin m) ℝ)
     intro j k
     by_cases hk : j = k
     · simp [hk, offEntry]
-    · rw [if_neg hk, offEntry, if_neg hk, abs_mul, abs_mul, mul_assoc]
+    · rw [ite_eq_right hk, offEntry, ite_eq_right hk, abs_mul, abs_mul, mul_assoc]
       refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
       nlinarith [sq_nonneg (|v j| - |v k|), sq_abs (v j), sq_abs (v k)]
   have hb : |∑ j, ∑ k, (if j = k then (0 : ℝ) else S j k * v j * v k)|

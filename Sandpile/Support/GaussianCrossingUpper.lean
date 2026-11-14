@@ -23,7 +23,7 @@ lemma subgaussian_centered_upper_tail {Ω : Type*} [MeasurableSpace Ω]
     μ {x | m + t ≤ f x} ≤ ENNReal.ofReal (Real.exp (-t ^ 2 / (2 * c))) := by
   have he : {x | m + t ≤ f x} = {x | t ≤ f x - m} := by
     ext x
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     constructor <;> intro hh <;> linarith
   rw [he]
   have hh := hf.measure_ge_le ht

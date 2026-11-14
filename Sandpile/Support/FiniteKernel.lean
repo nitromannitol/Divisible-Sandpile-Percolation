@@ -135,7 +135,7 @@ lemma finiteKernelField_sublevel_measure {d : ℕ} {V : Type*} [Fintype V]
       s.restrict ⁻¹'
         {x | value (linearField (fun v (i : s) => h ((i : Site d) - z v)) x) ≤ level} := by
     ext ζ
-    simp only [mem_preimage, mem_setOf_eq, finiteKernelField_eq_linearField h z s hs]
+    simp only [mem_preimage, mem_ofPred_eq, finiteKernelField_eq_linearField h z s hs]
   change ENNReal.toReal _ = ENNReal.toReal _
   rw [he]
   exact congrArg ENNReal.toReal hh

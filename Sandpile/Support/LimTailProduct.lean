@@ -33,7 +33,7 @@ theorem Sandpile.Support.measurable_erasePrefix_tail (n : ℕ) :
   refine @Measurable.of_eval _ _ _
     (⨆ i, ⨆ (_ : n ≤ i), coordinateSigma i) _ _ (fun i => ?_)
   by_cases hi : i < n
-  · simpa only [erasePrefix, if_pos hi] using
+  · simpa only [erasePrefix, ite_eq_left hi] using
       (measurable_const : @Measurable (ℕ → ℝ) ℝ
         (⨆ j, ⨆ (_ : n ≤ j), coordinateSigma j) inferInstance (fun _ => (0 : ℝ)))
   · have hm : @Measurable (ℕ → ℝ) ℝ (coordinateSigma i) inferInstance (fun x => x i) :=
@@ -41,7 +41,7 @@ theorem Sandpile.Support.measurable_erasePrefix_tail (n : ℕ) :
     have hle : coordinateSigma i ≤ ⨆ j, ⨆ (_ : n ≤ j), coordinateSigma j := by
       exact (le_iSup (fun (_ : n ≤ i) => coordinateSigma i) (Nat.le_of_not_gt hi)).trans
         (le_iSup (fun j => ⨆ (_ : n ≤ j), coordinateSigma j) i)
-    simpa only [erasePrefix, if_neg hi] using hm.mono hle le_rfl
+    simpa only [erasePrefix, ite_eq_right hi] using hm.mono hle le_rfl
 
 
 /-- A measurable set `E` invariant under changing finitely many of the initial

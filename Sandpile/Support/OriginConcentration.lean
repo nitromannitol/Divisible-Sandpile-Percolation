@@ -258,7 +258,7 @@ theorem exists_avg_originOdometer_lower_tail (hGH : Sandpile.External.GreenBound
   have he : {ζ : Site d → ℝ | r ≤ X ζ} = {ζ | avg (originOdometer ζ n) 0 -
       ∫ η, avg (originOdometer η n) 0 ∂LatticeProb.iidLaw d ν ≤ -r} := by
     ext ζ
-    simp only [X, Set.mem_setOf_eq]
+    simp only [X, Set.mem_ofPred_eq]
     constructor <;> intro h <;> linarith
   rw [he] at hch
   apply measure_le_ofReal

@@ -70,7 +70,7 @@ theorem Sandpile.Continuum.heat_field_coupling :
                   Sandpile.Continuum.gaussianPotential d (variance id ν) W q.1 q.2 p.2|}
             ≤ ENNReal.ofReal δ := by
   intro d _hd ν _ ΩW _ PW _ W _hW T _hT hcont hfdd htight K hK hKT ε δ hε hδ
-  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  let : CompactSpace K := isCompact_iff_compactSpace.mp hK
   let f : ℝ → (Sandpile.Site d → ℝ) → K → ℝ := fun R σ q =>
     Sandpile.Frozen.HeatPotentialInvariance.linInterp d R (Sandpile.scenery d σ) q.1.1 q.1.2
   let g : ΩW → K → ℝ := fun ω q =>
@@ -110,7 +110,7 @@ theorem Sandpile.Continuum.heat_field_coupling :
         Sandpile.Continuum.gaussianPotential d (variance id ν) W q.1 q.2 p.2|} =
       {p | ∃ q : K, ε < |f R p.1 q - g p.2 q|} := by
     ext p
-    simp only [mem_setOf_eq, Subtype.exists, f, g]
+    simp only [mem_ofPred_eq, Subtype.exists, f, g]
     constructor <;> rintro ⟨q, hq, hv⟩ <;> exact ⟨q, hq, hv⟩
   rw [he]
   exact hbad

@@ -430,14 +430,14 @@ private theorem bandStep2_range_pos (P : BandParameters) (hd : 5 ≤ d)
     have h : (if 0 < bandCoordSeq P d ν k i then bandCoordSeq P d ν k i ^ (-(P.theta k))
         else 2 * T * L k + 1) ≤ 2 * T * L k := key
     by_cases hp : 0 < bandCoordSeq P d ν k i
-    · rw [if_pos hp] at h
+    · rw [ite_eq_left hp] at h
       exact ⟨hp, hhalf i hτi, h⟩
-    · rw [if_neg hp] at h
+    · rw [ite_eq_right hp] at h
       linarith
   case h0 =>
     show (if 0 < bandCoordSeq P d ν k τ then bandCoordSeq P d ν k τ ^ (-(P.theta k))
         else 2 * T * L k + 1) ≤ 2 * T * L k
-    rw [if_pos (by linarith : 0 < bandCoordSeq P d ν k τ)]
+    rw [ite_eq_left (by linarith : 0 < bandCoordSeq P d ν k τ)]
     calc _ ≤ 16 := hτy
       _ ≤ 2 * T * L k := by nlinarith [mul_pos hT hLpk]
   case hstep =>
@@ -448,9 +448,9 @@ private theorem bandStep2_range_pos (P : BandParameters) (hd : 5 ≤ d)
       have h : (if 0 < bandCoordSeq P d ν k j then bandCoordSeq P d ν k j ^ (-(P.theta k))
           else 2 * T * L k + 1) ≤ 2 * T * L k := hIH j hj hjm
       by_cases hp : 0 < bandCoordSeq P d ν k j
-      · rw [if_pos hp] at h
+      · rw [ite_eq_left hp] at h
         exact ⟨hp, h⟩
-      · rw [if_neg hp] at h
+      · rw [ite_eq_right hp] at h
         linarith
     -- on `[τ, m]` the coordinate is in the range of the increment
     have hzj : ∀ j, τ ≤ j → j ≤ m → bandCoordSeq P d ν k j ∈ Icc (0 : ℝ) (1 / 2) ∧
@@ -497,7 +497,7 @@ private theorem bandStep2_range_pos (P : BandParameters) (hd : 5 ≤ d)
         hLe (abs_le.mp (hmk m ⟨hz0, hz1⟩)).2
     show (if 0 < bandCoordSeq P d ν k (m + 1) then bandCoordSeq P d ν k (m + 1) ^ (-(P.theta k))
         else 2 * T * L k + 1) ≤ 2 * T * L k
-    rw [if_pos hpos1]
+    rw [ite_eq_left hpos1]
     exact hy1
 
 set_option linter.unusedVariables false in
@@ -820,7 +820,7 @@ private theorem bandStep2_threshold_measure (ν : Measure ℝ) [IsProbabilityMea
   have hz : {z : ℝ | meanOdometer (centeredMassLaw d ν) m < -(green d 0 0 * z)}
       = {z : ℝ | -z > meanOdometer (centeredMassLaw d ν) m / green d 0 0} := by
     ext z
-    simp only [Set.mem_setOf_eq, gt_iff_lt]
+    simp only [mem_ofPred_eq, gt_iff_lt]
     rw [div_lt_iff₀ hG]
     constructor <;> intro h <;> linarith
   have hmz : MeasurableSet {z : ℝ | meanOdometer (centeredMassLaw d ν) m < -(green d 0 0 * z)} := by
@@ -1186,7 +1186,7 @@ private theorem bandStep2_comparison_core (P : BandParameters) (hd : 5 ≤ d)
       = {σ : Site d → ℝ | -(scenery d σ 0) > meanOdometer (centeredMassLaw d ν) m / green d 0 0}
       := by
     ext σ
-    simp only [Set.mem_setOf_eq, gt_iff_lt]
+    simp only [mem_ofPred_eq, gt_iff_lt]
     rw [div_lt_iff₀ hG]
     constructor <;> intro h <;> linarith
   rw [hset]

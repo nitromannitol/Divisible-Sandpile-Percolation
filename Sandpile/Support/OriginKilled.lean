@@ -196,7 +196,7 @@ theorem ae_ne_of_update_invariant {ι : Type*} [DecidableEq ι]
   have he : (fun q : (ι → ℝ) × ℝ => Function.update q.1 i q.2) ⁻¹'
       {ξ | ξ i = F ξ} = {q : (ι → ℝ) × ℝ | q.2 = F q.1} := by
     ext q
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, Function.update_self, hupdate]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, Function.update_self, hupdate]
   rw [he, Measure.prod_apply (s := {q : (ι → ℝ) × ℝ | q.2 = F q.1}) (by
     exact measurableSet_eq_fun measurable_snd (hF.comp measurable_fst))]
   have hf (ξ : ι → ℝ) : ν {z : ℝ | z = F ξ} = 0 := hatom (F ξ)

@@ -90,7 +90,7 @@ theorem exists_reflected_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
           {ζ : Site d → ℝ | h ≤ -(ζ 0) - avg (odometerOf ζ t) 0} ≤
         C * Real.exp (-(c * ((h + ∫ η, odometerOf η t 0 ∂(LatticeProb.iidLaw d ν)) / 2))) := by
   classical
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   obtain ⟨c₀, C₀, hc₀, hC₀, hsm⟩ :=
     Sandpile.Frozen.dgt4_smoothed_odometer_tail d hd ν hprob hmean hvar hvar' θ₀ K₀ hθ₀
@@ -194,7 +194,7 @@ theorem exists_crude_increment (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
           - ∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν)
         ≤ C * Real.exp (-(c * ∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν))) := by
   classical
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hint : Integrable id ν := integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
@@ -248,7 +248,7 @@ theorem exists_crude_increment (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
       have hset : {ζ : Site d → ℝ | h ≤ f ζ}
           = {ζ : Site d → ℝ | h ≤ -(ζ 0) - avg (odometerOf ζ t) 0} := by
         ext ζ
-        simp only [Set.mem_setOf_eq, hf, le_max_iff]
+        simp only [Set.mem_ofPred_eq, hf, le_max_iff]
         constructor
         · rintro (hc | hc)
           · linarith
@@ -286,7 +286,7 @@ theorem exists_crude_log_upper (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
     (hexp : ∫ z, Real.exp (θ₀ * |z|) ∂ν ≤ K₀) :
     ∃ C : ℝ, 0 < C ∧ ∀ t : ℕ,
       (∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν)) ≤ C * Real.log ((t : ℝ) + 2) := by
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hint : Integrable id ν := integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=

@@ -43,7 +43,7 @@ theorem heat_field_coupling_seq_of_fdd
       P.map Prod.fst = Sandpile.centeredMassLaw d (ν n) ∧ P.map Prod.snd = PW ∧
       P {p | ∃ q ∈ K, ε < |Sandpile.Frozen.HeatPotentialInvariance.linInterp d (R n)
           (Sandpile.scenery d p.1) q.1 q.2 - Z p.2 q.1 q.2|} ≤ ENNReal.ofReal δ := by
-  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  let : CompactSpace K := isCompact_iff_compactSpace.mp hK
   let f : ℕ → (Sandpile.Site d → ℝ) → K → ℝ := fun n σ q =>
     Sandpile.Frozen.HeatPotentialInvariance.linInterp d (R n) (Sandpile.scenery d σ) q.1.1 q.1.2
   let g : ΩW → K → ℝ := fun ω q =>
@@ -82,7 +82,7 @@ theorem heat_field_coupling_seq_of_fdd
         Z p.2 q.1 q.2|} =
       {p | ∃ q : K, ε < |f n p.1 q - g p.2 q|} := by
     ext p
-    simp only [mem_setOf_eq, Subtype.exists, f, g]
+    simp only [mem_ofPred_eq, Subtype.exists, f, g]
     constructor <;> rintro ⟨q, hq, hv⟩ <;> exact ⟨q, hq, hv⟩
   rw [he]
   exact hbad

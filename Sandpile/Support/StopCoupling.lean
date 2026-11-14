@@ -38,7 +38,8 @@ theorem Sandpile.Continuum.exists_coupling_of_equal_finite_mass
     exact ⟨0, by simp, by simp, by simp⟩
   let π : Measure (Ω × Ω') := (μ univ)⁻¹ • μ.prod ν
   have hfst : π.map Prod.fst = μ := by
-    simp only [π, Measure.map_smul _ measurable_fst.aemeasurable, Measure.map_fst_prod, smul_smul, ← hm,
+    simp only [π, Measure.map_smul _ measurable_fst.aemeasurable, Measure.map_fst_prod, smul_smul,
+        ← hm,
       ENNReal.inv_mul_cancel hμ (measure_ne_top μ univ), one_smul]
   have hsnd : π.map Prod.snd = ν := by
     simp only [π, Measure.map_smul _ measurable_snd.aemeasurable, Measure.map_snd_prod, smul_smul,
@@ -98,7 +99,7 @@ theorem Sandpile.Continuum.exists_coupling_matching_finite_measures
   classical
   choose π hπf hπs hπm using fun i =>
     Sandpile.Continuum.exists_coupling_of_equal_finite_mass (μs i) (νs i) (hm i)
-  haveI : ∀ i, IsFiniteMeasure (π i) := fun i => ⟨by rw [hπm i]; exact measure_lt_top _ _⟩
+  have : ∀ i, IsFiniteMeasure (π i) := fun i => ⟨by rw [hπm i]; exact measure_lt_top _ _⟩
   have hf : (∑ i, π i).map Prod.fst = ∑ i, μs i := by
     simp only [← Measure.mapₗ_apply_of_measurable measurable_fst, map_sum]
     congr 1
@@ -201,8 +202,8 @@ theorem Sandpile.Continuum.exists_coupling_matching_cells
     simpa only [Measure.restrict_apply_univ] using min_le_right (μ (A i)) (ν (B i))
   choose μs hμs hμm using hma
   choose νs hνs hνm using hmb
-  haveI : ∀ i, IsFiniteMeasure (μs i) := fun i => isFiniteMeasure_of_le (μ.restrict (A i)) (hμs i)
-  haveI : ∀ i, IsFiniteMeasure (νs i) := fun i => isFiniteMeasure_of_le (ν.restrict (B i)) (hνs i)
+  have : ∀ i, IsFiniteMeasure (μs i) := fun i => isFiniteMeasure_of_le (μ.restrict (A i)) (hμs i)
+  have : ∀ i, IsFiniteMeasure (νs i) := fun i => isFiniteMeasure_of_le (ν.restrict (B i)) (hνs i)
   have hμle : ∑ i, μs i ≤ μ :=
     (Finset.sum_le_sum fun i _ => hμs i).trans
       (Sandpile.Continuum.sum_restrict_le_of_disjoint μ N A hA hdA)

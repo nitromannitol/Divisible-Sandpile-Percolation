@@ -38,7 +38,7 @@ theorem integral_posPart_neg_ge (ν : Measure ℝ) [IsFiniteMeasure ν] (w s : �
     s * (ν {z : ℝ | w + s < -z}).toReal ≤ ∫ z, max (-z - w) 0 ∂ν := by
   have hset : {z : ℝ | w + s < -z} = Iio (-(w + s)) := by
     ext z
-    simp only [mem_setOf_eq, mem_Iio]
+    simp only [mem_ofPred_eq, mem_Iio]
     constructor <;> intro h <;> linarith
   have hmeas : MeasurableSet {z : ℝ | w + s < -z} := by
     rw [hset]; exact measurableSet_Iio

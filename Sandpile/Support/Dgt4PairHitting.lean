@@ -39,7 +39,7 @@ theorem measurableSet_hitSetBy (A : Set (Site d)) (k : ℕ) :
   have h : hitSetBy A k
       = ⋃ j ∈ Finset.range (k + 1), (fun X : ℕ → Site d => X j) ⁻¹' A := by
     ext X
-    simp only [hitSetBy, Set.mem_setOf_eq, Set.mem_iUnion, Finset.mem_range, Set.mem_preimage,
+    simp only [hitSetBy, mem_ofPred_eq, Set.mem_iUnion, Finset.mem_range, Set.mem_preimage,
       exists_prop]
     exact ⟨fun ⟨j, hj, h⟩ => ⟨j, by omega, h⟩, fun ⟨j, hj, h⟩ => ⟨j, by omega, h⟩⟩
   rw [h]
@@ -51,7 +51,7 @@ preimage of `hitSetBy A (k + 1)` under `sitePath x` is all of the sample space. 
 theorem preimage_hitSetBy_succ_of_mem (A : Set (Site d)) {x : Site d} (hx : x ∈ A) (k : ℕ) :
     LatticeProb.sitePath x ⁻¹' hitSetBy A (k + 1) = Set.univ := by
   ext ξ
-  simp only [Set.mem_preimage, Set.mem_univ, iff_true, hitSetBy, Set.mem_setOf_eq]
+  simp only [Set.mem_preimage, Set.mem_univ, iff_true, hitSetBy, mem_ofPred_eq]
   exact ⟨0, by omega, by rw [LatticeProb.sitePath_zero]; exact hx⟩
 
 /-- If `x` does not lie in `A`, hitting `A` by time `k + 1` from `x` is the same event as
@@ -61,7 +61,7 @@ theorem preimage_hitSetBy_succ_of_notMem (A : Set (Site d)) {x : Site d} (hx : x
       = {ξ : ℕ → Site d |
           LatticeProb.sitePath (x + ξ 0) (LatticeProb.tailNat ξ) ∈ hitSetBy A k} := by
   ext ξ
-  simp only [Set.mem_preimage, Set.mem_setOf_eq, hitSetBy]
+  simp only [Set.mem_preimage, mem_ofPred_eq, hitSetBy]
   have hkey : ∀ m : ℕ, LatticeProb.sitePath x ξ (m + 1)
       = LatticeProb.sitePath (x + ξ 0) (LatticeProb.tailNat ξ) m := by
     intro m
@@ -97,7 +97,7 @@ theorem walkLaw_hitSetBy_le (hd : 1 ≤ d) [NeZero d] (A : Set (Site d)) (ψ : S
         exact ENNReal.one_le_ofReal.mpr (hψA x hx)
       · have hpre : LatticeProb.sitePath x ⁻¹' hitSetBy A 0 = ∅ := by
           ext ξ
-          simp only [Set.mem_preimage, hitSetBy, Set.mem_setOf_eq, Set.mem_empty_iff_false,
+          simp only [Set.mem_preimage, hitSetBy, mem_ofPred_eq, Set.mem_empty_iff_false,
             iff_false, not_exists]
           rintro j ⟨hj, h⟩
           rw [Nat.le_zero] at hj
@@ -198,7 +198,7 @@ theorem walkOp_pairPotential (hd : 3 ≤ d) (z : Site d) {x : Site d} (hx0 : x �
   rw [LatticeProb.walkOp_div_const]
   congr 1
   show Sandpile.avg (fun y => green d y 0 + green d y z) x = green d x 0 + green d x z
-  rw [Sandpile.avg_add, avg_green hd x 0, avg_green hd x z, if_neg hx0, if_neg hxz]
+  rw [Sandpile.avg_add, avg_green hd x 0, avg_green hd x z, ite_eq_right hx0, ite_eq_right hxz]
   ring
 
 /-- The neighbour average of `pairPotential d z` at the origin falls short of one by at least
@@ -216,7 +216,7 @@ theorem one_sub_avg_pairPotential_origin (hd : 3 ≤ d) (z : Site d) :
     rw [LatticeProb.walkOp_div_const]
     congr 1
     show Sandpile.avg (fun y => green d y 0 + green d y z) 0 = _
-    rw [Sandpile.avg_add, avg_green hd 0 0, avg_green hd 0 z, if_pos rfl]
+    rw [Sandpile.avg_add, avg_green hd 0 0, avg_green hd 0 z, ite_eq_left rfl]
   rw [hval, le_sub_iff_add_le, ← add_div, div_le_one hpos]
   split_ifs with h <;> linarith
 
@@ -240,7 +240,7 @@ theorem pairPotential_hyps (hd : 3 ≤ d) (z : Site d) :
     · rw [h]; exact le_of_eq (pairPotential_origin hd z).symm
     · rw [h]; exact le_of_eq (pairPotential_site hd z).symm
   · intro x hx
-    simp only [Set.mem_setOf_eq, not_or] at hx
+    simp only [mem_ofPred_eq, not_or] at hx
     exact walkOp_pairPotential hd z hx.1 hx.2
 
 /-- **`lem:localization-killing` at a two-point killing set, pointwise.** The mean at `x` of the
@@ -250,7 +250,7 @@ theorem mean_pairOdometer_ge (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMea
     (hpos : Integrable (fun y : ℝ => max y 0) ν) (n : ℕ) (z x : Site d) :
     (1 - pairPotential d z x) * (∫ ζ, odometerOf ζ n 0 ∂(LatticeProb.iidLaw d ν))
       ≤ ∫ ζ, pairOdometer z ζ n x ∂(LatticeProb.iidLaw d ν) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hd1 : (1 : ℕ) ≤ d := by omega
   have hd3 : (3 : ℕ) ≤ d := by omega
   have hU : 0 ≤ ∫ ζ, odometerOf ζ n 0 ∂(LatticeProb.iidLaw d ν) :=
@@ -262,7 +262,7 @@ theorem mean_pairOdometer_ge (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMea
       intro X hX
       obtain ⟨j, hj, hjD⟩ := exitNat_le_iff.mp hX
       refine ⟨j, hj, ?_⟩
-      simp only [Set.mem_setOf_eq, not_and_or, not_not] at hjD
+      simp only [mem_ofPred_eq, not_and_or, not_not] at hjD
       exact hjD
     have hq : ((walkLaw d x)
         {X : ℕ → Site d | exitNat {w : Site d | w ≠ 0 ∧ w ≠ z} n X ≤ n}).toReal
@@ -282,7 +282,7 @@ theorem mean_pairOdometer_ge (hd : 5 ≤ d) (ν : Measure ℝ) [IsProbabilityMea
     have h0 : ∫ ζ, pairOdometer z ζ n x ∂(LatticeProb.iidLaw d ν) = 0 := by
       simp only [localizedOdometer_of_notMem _ _ n hx, integral_zero]
     have hone : pairPotential d z x = 1 := by
-      simp only [Set.mem_setOf_eq, not_and_or, not_not] at hx
+      simp only [mem_ofPred_eq, not_and_or, not_not] at hx
       rcases hx with h | h
       · rw [h]; exact pairPotential_origin hd3 z
       · rw [h]; exact pairPotential_site hd3 z

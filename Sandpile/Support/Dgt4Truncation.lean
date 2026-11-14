@@ -63,8 +63,8 @@ theorem le_truncScenery (c : Sandpile.Site d → ℝ) (t : ℝ) (ζ : Sandpile.S
     (z : Sandpile.Site d) : ζ z ≤ truncScenery c t ζ z := by
   rw [truncScenery]
   by_cases h : c z = 0
-  · rw [if_pos h]
-  · rw [if_neg h]
+  · rw [ite_eq_left h]
+  · rw [ite_eq_right h]
     exact le_max_left _ _
 
 /-- Hence the neighbour average of the truncated field dominates that of the field, and in
@@ -101,8 +101,8 @@ theorem avg_originOdometer_trunc_eq (hd : 1 ≤ d) (n : ℕ) (c : Sandpile.Site 
     have hle : -(c z * ζ z) ≤ t := not_lt.mp (h z hmem)
     rw [truncScenery]
     by_cases hc0 : c z = 0
-    · rw [if_pos hc0]
-    · rw [if_neg hc0]
+    · rw [ite_eq_left hc0]
+    · rw [ite_eq_right hc0]
       have hcpos : 0 < c z := lt_of_le_of_ne (hc z) (Ne.symm hc0)
       have : -(t / c z) ≤ ζ z := by
         rw [← neg_div, div_le_iff₀ hcpos]
@@ -255,8 +255,8 @@ theorem avg_pairOdometer_trunc_eq (hd : 1 ≤ d) (n : ℕ) (c : Sandpile.Site d 
       have hle : -(c w * ζ w) ≤ t := not_lt.mp (h w hmem hwz)
       rw [truncScenery]
       by_cases hc0 : c w = 0
-      · rw [if_pos hc0]
-      · rw [if_neg hc0]
+      · rw [ite_eq_left hc0]
+      · rw [ite_eq_right hc0]
         have hcpos : 0 < c w := lt_of_le_of_ne (hc w) (Ne.symm hc0)
         have hge : -(t / c w) ≤ ζ w := by
           rw [← neg_div, div_le_iff₀ hcpos]
@@ -310,8 +310,8 @@ theorem measurable_truncScenery (c : Sandpile.Site d → ℝ) (t : ℝ) :
     Measurable (fun ζ : Sandpile.Site d → ℝ => truncScenery c t ζ) := by
   refine Measurable.of_eval fun z => ?_
   by_cases h : c z = 0
-  · simpa only [truncScenery, if_pos h] using measurable_pi_apply z
-  · simpa only [truncScenery, if_neg h] using (measurable_pi_apply z).max measurable_const
+  · simpa only [truncScenery, ite_eq_left h] using measurable_pi_apply z
+  · simpa only [truncScenery, ite_eq_right h] using (measurable_pi_apply z).max measurable_const
 
 /-- Truncation commutes with an update of one coordinate. -/
 theorem truncScenery_update (c : Sandpile.Site d → ℝ) (t : ℝ) (ζ : Sandpile.Site d → ℝ)

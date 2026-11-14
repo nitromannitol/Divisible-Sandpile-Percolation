@@ -86,7 +86,7 @@ theorem noRet_antitone : Antitone (noRet d) := by
 /-- The intersection over all `m` of `noRet d m` is `noRetEver d`. -/
 theorem iInter_noRet : (⋂ m : ℕ, noRet d m) = noRetEver d := by
   ext Y
-  simp only [Set.mem_iInter, noRet, noRetEver, Set.mem_setOf_eq]
+  simp only [Set.mem_iInter, noRet, noRetEver, Set.mem_ofPred_eq]
   exact ⟨fun h r hr1 => h r r hr1 le_rfl, fun h _ r hr1 _ => h r hr1⟩
 
 /-- The walk law `walkLaw d x` is a probability measure. -/
@@ -155,7 +155,7 @@ a path by its own value at the origin without changing which coordinates avoid i
 theorem preimage_relPath_zero_noRet (m : ℕ) :
     relPath (d := d) 0 ⁻¹' noRet d m = noRet d m := by
   ext X
-  simp only [Set.mem_preimage, noRet, Set.mem_setOf_eq, relPath, Nat.zero_add, sub_self]
+  simp only [Set.mem_preimage, noRet, Set.mem_ofPred_eq, relPath, Nat.zero_add, sub_self]
   exact ⟨fun h r hr1 hr2 => sub_ne_zero.mp (h r hr1 hr2),
     fun h r hr1 hr2 => sub_ne_zero.mpr (h r hr1 hr2)⟩
 
@@ -164,7 +164,7 @@ argument as `preimage_relPath_zero_noRet`. -/
 theorem preimage_relPath_zero_noRetEver :
     relPath (d := d) 0 ⁻¹' noRetEver d = noRetEver d := by
   ext X
-  simp only [Set.mem_preimage, noRetEver, Set.mem_setOf_eq, relPath, Nat.zero_add, sub_self]
+  simp only [Set.mem_preimage, noRetEver, Set.mem_ofPred_eq, relPath, Nat.zero_add, sub_self]
   exact ⟨fun h r hr1 => sub_ne_zero.mp (h r hr1), fun h r hr1 => sub_ne_zero.mpr (h r hr1)⟩
 
 /-- Never returning to the origin implies avoiding it for the first `m` steps, so `survInd i X`

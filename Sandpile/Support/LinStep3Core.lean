@@ -51,7 +51,7 @@ theorem fact_on_finset (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hset : {σ : Site d → ℝ | ∀ k : Fin m, J σ (e k) ≤ lev (e k)}
       = ⋂ x ∈ S, {σ : Site d → ℝ | J σ x ≤ lev x} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     constructor
     · intro hh x hx
       obtain ⟨k, hk⟩ := hsurj x hx

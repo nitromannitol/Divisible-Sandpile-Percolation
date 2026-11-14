@@ -85,7 +85,7 @@ theorem measurePreserving_pathTranslate (x y : Site d) :
 theorem frCube_translate (x y : Site 4) (L : ℝ) :
     {w : Site 4 | y + w ∈ frCube (x + y) L} = frCube x L := by
   ext w
-  simp only [frCube, Set.mem_setOf_eq, Pi.add_apply]
+  simp only [frCube, Set.mem_ofPred_eq, Pi.add_apply]
   constructor
   · intro h i
     have hi := h i
@@ -104,7 +104,7 @@ theorem frCube_translate (x y : Site 4) (L : ℝ) :
 theorem frCube_translate' (x y : Site 4) (L : ℝ) :
     {w : Site 4 | w + y ∈ frCube (x + y) L} = frCube x L := by
   ext w
-  simp only [frCube, Set.mem_setOf_eq, Pi.add_apply]
+  simp only [frCube, Set.mem_ofPred_eq, Pi.add_apply]
   constructor
   · intro h i
     have hi := h i
@@ -133,7 +133,7 @@ theorem frGreenFieldTime_shiftField (r N : ℕ) (ζ : Site 4 → ℝ) (y x : Sit
 theorem frExitValue_shiftField (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (ζ : Site 4 → ℝ)
     (y x : Site 4) :
     frExitValue Aex Aloc r (shiftField y ζ) x = frExitValue Aex Aloc r ζ (x + y) := by
-  haveI : NeZero (4 : ℕ) := ⟨by norm_num⟩
+  have : NeZero (4 : ℕ) := ⟨by norm_num⟩
   have hmp := measurePreserving_pathTranslate (d := 4) x y
   have hemb : MeasurableEmbedding (pathTranslate (d := 4) y) :=
     (pathTranslate (d := 4) y).measurableEmbedding
@@ -149,7 +149,7 @@ theorem frExitValue_shiftField (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (ζ : Site 4 �
         exitTime (frCube x (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)} := hmem
     have hmem2 : pathTranslate (d := 4) y X ∈ {X : ℕ → Site 4 |
         exitTime (frCube (x + y) (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)} := by
-      simpa only [Set.mem_setOf_eq, hexit] using hmem
+      simpa only [Set.mem_ofPred_eq, hexit] using hmem
     have e1 : Set.indicator {X : ℕ → Site 4 |
           exitTime (frCube x (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)}
         (fun X : ℕ → Site 4 => localizedOdometer
@@ -185,7 +185,7 @@ theorem frExitValue_shiftField (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (ζ : Site 4 �
         exitTime (frCube x (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)} := hmem
     have hmem2 : pathTranslate (d := 4) y X ∉ {X : ℕ → Site 4 |
         exitTime (frCube (x + y) (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)} := by
-      simpa only [Set.mem_setOf_eq, hexit] using hmem
+      simpa only [Set.mem_ofPred_eq, hexit] using hmem
     have e1 : Set.indicator {X : ℕ → Site 4 |
           exitTime (frCube x (r : ℝ)) X ≤ ((Aex * r ^ 2 : ℕ) : ℕ∞)}
         (fun X : ℕ → Site 4 => localizedOdometer

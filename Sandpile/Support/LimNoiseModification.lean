@@ -52,7 +52,7 @@ theorem Sandpile.Support.ae_eq_null_fiber_update {Ω I : Type*} [MeasurableSpace
     W i =ᵐ[P] (fun ω => if V ω = c i then A i ω else W i ω) := by
   have hne : ∀ᵐ ω ∂P, ¬ V ω = c i := ae_iff.mpr (by simpa only [not_not] using hnull i)
   filter_upwards [hne] with ω hω
-  simp only [if_neg hω]
+  simp only [ite_eq_right hω]
 
 /-- The null-fiber update is measurable, being an `if`/`then`/`else` of measurable
 functions on the measurable set `{V = c i}`. -/

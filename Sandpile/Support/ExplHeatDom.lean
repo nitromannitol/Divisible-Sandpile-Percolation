@@ -95,7 +95,7 @@ theorem gaussianPotential_heat_semigroup_common {Ω : Type*} [MeasurableSpace Ω
       ∀ᵐ y ∂μ n, ∀ t ∈ Set.Icc 0 ((n : ℝ) + 1), ‖Z t y ω‖ ≤ D y := by
     apply ae_all_iff.mpr
     intro n
-    letI := hμ n
+    let := hμ n
     exact gaussianPotential_integrable_space_time_envelope hd hd3 hW ν2 Z hmod hc (μ n)
       (by positivity)
   apply gaussianPotential_heat_semigroup_common_of_local_envelopes hd hd3 hW ν2 Z hmod hc

@@ -60,10 +60,10 @@ theorem sum_geom_below_le {m : ℕ} {r : ℝ} (h0 : 0 ≤ r) (h : r ≤ 1 / 2) (
   have hzero : ∀ k ∈ Finset.range m, k ∉ Finset.range J →
       (if k < J then r ^ (J - k) else 0) = 0 := by
     intro k _ hk
-    rw [if_neg (by simpa using hk)]
+    rw [ite_eq_right (by simpa using hk)]
   rw [← Finset.sum_subset hsub hzero]
   refine le_trans (le_of_eq ?_) (geom_down_le h0 h J)
-  exact Finset.sum_congr rfl fun k hk => by rw [if_pos (Finset.mem_range.mp hk)]
+  exact Finset.sum_congr rfl fun k hk => by rw [ite_eq_left (Finset.mem_range.mp hk)]
 
 /-- The upper half of an off-diagonal geometric row. -/
 theorem sum_geom_above_le {m : ℕ} {r : ℝ} (h0 : 0 ≤ r) (h : r ≤ 1 / 2) (J : ℕ) :
@@ -79,13 +79,13 @@ theorem sum_geom_above_le {m : ℕ} {r : ℝ} (h0 : 0 ≤ r) (h : r ≤ 1 / 2) (
     have : ¬ (J < k) := by
       by_contra hc
       exact hk2 (Finset.mem_Ico.mpr ⟨by omega, hkm⟩)
-    rw [if_neg this]
+    rw [ite_eq_right this]
   rw [← Finset.sum_subset hsub hzero]
   have heq : ∑ k ∈ Finset.Ico (J + 1) m, (if J < k then r ^ (k - J) else 0)
       = ∑ i ∈ Finset.range (m - (J + 1)), r ^ (i + 1) := by
     rw [Finset.sum_Ico_eq_sum_range]
     refine Finset.sum_congr rfl fun i hi => ?_
-    rw [if_pos (by omega)]
+    rw [ite_eq_left (by omega)]
     congr 1
     omega
   rw [heq]
@@ -102,12 +102,14 @@ theorem sum_geom_offdiag_le {m : ℕ} {r : ℝ} (h0 : 0 ≤ r) (h : r ≤ 1 / 2)
           + (if (j : ℕ) < (k : ℕ) then r ^ ((k : ℕ) - (j : ℕ)) else 0) := by
     intro k
     rcases lt_trichotomy (k : ℕ) (j : ℕ) with hlt | heq | hgt
-    · rw [if_neg (fun hc => by rw [hc] at hlt; omega), if_pos hlt, if_neg (by omega),
+    · rw [ite_eq_right (fun hc => by rw [hc] at hlt; omega), ite_eq_left hlt,
+        ite_eq_right (by omega),
         max_eq_right hlt.le, min_eq_left hlt.le]
       simp
-    · rw [if_pos (Fin.ext heq.symm), if_neg (by omega), if_neg (by omega)]
+    · rw [ite_eq_left (Fin.ext heq.symm), ite_eq_right (by omega), ite_eq_right (by omega)]
       norm_num
-    · rw [if_neg (fun hc => by rw [hc] at hgt; omega), if_neg (by omega), if_pos hgt,
+    · rw [ite_eq_right (fun hc => by rw [hc] at hgt; omega), ite_eq_right (by omega),
+        ite_eq_left hgt,
         max_eq_left hgt.le, min_eq_right hgt.le]
       simp
   refine le_trans (Finset.sum_le_sum fun k _ => hstep k) ?_

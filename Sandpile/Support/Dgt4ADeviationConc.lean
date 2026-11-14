@@ -71,7 +71,7 @@ theorem measure_abs_centeredDeviation_ge_le_of_conc
         = {ζ : Site d → ℝ | centeredDeviation d ζ n + s
           ≤ ∫ η, centeredDeviation d η n ∂(LatticeProb.gaussLaw (Site d))} := by
       ext ζ
-      simp only [Set.mem_setOf_eq]
+      simp only [mem_ofPred_eq]
       constructor <;> intro hh <;> linarith
     rw [hset] at h
     exact h

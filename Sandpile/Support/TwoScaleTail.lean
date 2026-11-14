@@ -43,10 +43,10 @@ theorem weighted_tail_of_two_norm_bounds (θ K : ℝ) (hθ : 0 < θ) :
   obtain ⟨c₀, C, hc₀, hC, htail⟩ := weighted_exp_conc_tail θ K hθ
   refine ⟨c₀, C, hc₀, hC, ?_⟩
   intro N ν hν hexp hK F hFm ℓ hℓ hLip V A _hV _hA hsum hmax s hs
-  haveI := hν
+  have := hν
   classical
   by_cases hne : ∃ i, ℓ i ≠ 0
-  · haveI : Nonempty (Fin N) := ⟨hne.choose⟩
+  · have : Nonempty (Fin N) := ⟨hne.choose⟩
     have hInf : lInfNorm ℓ ≤ A := ciSup_le fun i => hmax i
     have hInf0 : 0 < lInfNorm ℓ := lInfNorm_pos ℓ hℓ hne
     have hTwo0 : 0 < lTwoNorm ℓ ^ 2 := sq_pos_of_pos (lTwoNorm_pos ℓ hℓ hne)
@@ -96,7 +96,7 @@ lemma exists_finite_kernel_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
   obtain ⟨c, C, hc, hC, htail⟩ := weighted_tail_of_two_norm_bounds θ K hθ
   refine ⟨c, C, hc, hC, ?_⟩
   intro d μ hμ hexp hK hmean a s hs V A hV hA hsum hmax t ht
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   let coeff (i : Fin s.card) := a (siteEnum s i)
   have hsum' : (∑ i, coeff i ^ 2) ≤ V := by
     change (∑ i, a (siteEnum s i) ^ 2) ≤ V
@@ -114,7 +114,7 @@ lemma exists_finite_kernel_two_scale_tail (θ K : ℝ) (hθ : 0 < θ) :
       (fun ζ : Site d → ℝ => fun i => ζ (siteEnum s i)) ⁻¹'
         {x : Fin s.card → ℝ | t < |∑ i, coeff i * x i|} := by
     ext ζ
-    simp only [mem_preimage, mem_setOf_eq, he]
+    simp only [mem_preimage, mem_ofPred_eq, he]
   rw [hevent, hp]
   have hh := htail s.card μ hμ hexp hK (fun x => ∑ i, coeff i * x i) (by fun_prop)
     (fun i => |coeff i|) (fun i => abs_nonneg _) (fun x i y => by

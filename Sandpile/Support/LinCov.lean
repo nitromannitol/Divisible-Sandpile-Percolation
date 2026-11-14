@@ -223,12 +223,14 @@ theorem abs_cov_survInd_le [NeZero d] (i k : ℕ) :
       (walkLaw d 0) :=
     integrable_of_bdd ((measurable_visitInd 0 k).mul (measurable_survInd k)) (C := 1) fun X => by
       rw [abs_mul, abs_of_nonneg (visitInd_nonneg 0 k X), abs_of_nonneg (survInd_nonneg k X)]
-      exact mul_le_one₀ (visitInd_le_one 0 k X) (survInd_nonneg k X) (survInd_le_one k X)
+      exact (mul_le_of_le_one_left (survInd_nonneg k X) (visitInd_le_one 0 k X)).trans
+          (survInd_le_one k X)
   have hint2 : Integrable (fun X => survInd (d := d) 0 X * survInd (d := d) k X)
       (walkLaw d 0) :=
     integrable_of_bdd ((measurable_survInd 0).mul (measurable_survInd k)) (C := 1) fun X => by
       rw [abs_mul, abs_of_nonneg (survInd_nonneg 0 X), abs_of_nonneg (survInd_nonneg k X)]
-      exact mul_le_one₀ (survInd_le_one 0 X) (survInd_nonneg k X) (survInd_le_one k X)
+      exact (mul_le_of_le_one_left (survInd_nonneg k X) (survInd_le_one 0 X)).trans
+          (survInd_le_one k X)
   have hdiff : (∫ X, visitInd (d := d) 0 k X * survInd (d := d) k X ∂(walkLaw d 0))
       - (∫ X, survInd (d := d) 0 X * survInd (d := d) k X ∂(walkLaw d 0))
       ≤ retProb d k - escProb d := by

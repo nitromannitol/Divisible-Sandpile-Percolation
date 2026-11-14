@@ -273,8 +273,8 @@ theorem exists_lattice_walk_of_chain {v : ℕ → Site 2} {m : ℕ}
       refine ⟨p.append q, fun j hj => ?_⟩
       rw [SimpleGraph.Walk.getVert_append]
       by_cases hjn : j < p.length
-      · rw [if_pos hjn]; exact hp j (by omega)
-      · rw [if_neg hjn]
+      · rw [ite_eq_left hjn]; exact hp j (by omega)
+      · rw [ite_eq_right hjn]
         have hjl : j - p.length ≤ q.length := by
           rw [SimpleGraph.Walk.length_append] at hj
           omega

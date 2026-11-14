@@ -74,7 +74,7 @@ theorem exists_integral_centeredValue_sq_le_decay
   have hdR : (5 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hdpos : (0 : ℝ) < (d : ℝ) := by linarith
   set ν : Measure ℝ := gaussianReal 0 v with hν
-  haveI : IsProbabilityMeasure ν := by rw [hν]; infer_instance
+  have : IsProbabilityMeasure ν := by rw [hν]; infer_instance
   set μ : Measure (Site d → ℝ) := LatticeProb.iidLaw d ν with hμ
   -- moments of the Gaussian one-site law
   have hintid : Integrable (id : ℝ → ℝ) ν :=

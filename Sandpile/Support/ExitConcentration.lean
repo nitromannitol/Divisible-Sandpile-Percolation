@@ -32,10 +32,10 @@ theorem weighted_tail_of_norm_bounds (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) 
   obtain ⟨c₀, C, hc₀, hC, htail⟩ := weighted_exp_conc_tail θ K hθ
   refine ⟨c₀ / B, C, div_pos hc₀ hB, hC, ?_⟩
   intro N ν hν hexp hK F hFm ℓ hℓ hLip hsum H hH hmax s hs
-  haveI := hν
+  have := hν
   classical
   by_cases hne : ∃ i, ℓ i ≠ 0
-  · haveI : Nonempty (Fin N) := ⟨hne.choose⟩
+  · have : Nonempty (Fin N) := ⟨hne.choose⟩
     have hInf : lInfNorm ℓ ≤ B / H := ciSup_le fun i => hmax i
     have hInf0 : 0 < lInfNorm ℓ := lInfNorm_pos ℓ hℓ hne
     have hTwo0 : 0 < lTwoNorm ℓ ^ 2 := sq_pos_of_pos (lTwoNorm_pos ℓ hℓ hne)
@@ -129,7 +129,7 @@ theorem exists_cube_exit_concentration (hBallGreen : External.BallGreenBounds)
   obtain ⟨c, C, hc, hC, htail⟩ := weighted_tail_of_norm_bounds θ K B hθ hB
   refine ⟨c, C, hc, hC, ?_⟩
   intro ν hν hexp hK r hr N E x a ha
-  haveI := hν
+  have := hν
   classical
   set D : Set (Site 4) := {w | ∀ i, |(w i : ℝ) - (x i : ℝ)| ≤ r}
   set S := boxFinset x (N + r ^ 2)
@@ -166,7 +166,7 @@ theorem exists_cube_exit_concentration (hBallGreen : External.BallGreenBounds)
       (fun ζ : Site 4 → ℝ => fun i => ζ (siteEnum S i)) ⁻¹'
         {ξ | a < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin S.card => ν)|} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, hm, F, S,
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, hm, F, S,
       boxExitAverage_pick (d := 4) (by norm_num)]
   have hme : MeasurableSet
       {ξ : Fin S.card → ℝ | a < |F ξ - ∫ η, F η ∂(Measure.pi fun _ : Fin S.card => ν)|} :=

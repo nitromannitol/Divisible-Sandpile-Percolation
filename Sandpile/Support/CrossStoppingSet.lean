@@ -126,7 +126,7 @@ theorem measurableSet_notMem_stoppingSet [Fintype ι] {G : ι → MeasurableSpac
   classical
   have hset : {ω | i ∉ S ω} = ⋃ A : {A : Finset ι // i ∉ A}, {ω | S ω = (A : Finset ι)} := by
     ext ω
-    simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+    simp only [Set.mem_iUnion, Set.mem_ofPred_eq]
     exact ⟨fun h => ⟨⟨S ω, h⟩, rfl⟩, by rintro ⟨⟨A, hA⟩, rfl⟩; exact hA⟩
   rw [hset]
   refine MeasurableSet.iUnion fun A => ?_
@@ -230,7 +230,7 @@ theorem indicator_partition_sum [Fintype ι] [DecidableEq ι] (S : Ω → Finset
   · intro A _ hA
     have hnot : ω ∉ E ∩ {ω | S ω = A} := by
       rintro ⟨-, h2⟩
-      exact hA (Set.mem_setOf_eq ▸ h2).symm
+      exact hA (Set.mem_ofPred_eq ▸ h2).symm
     simp [hnot]
   · intro h
     exact absurd (Finset.mem_univ (S ω)) h
@@ -353,7 +353,7 @@ theorem klDiv_tilted_self [IsProbabilityMeasure P] (F : Ω → ℝ) (hFint : Int
     (hexpint : Integrable (fun ω => Real.exp (F ω)) P)
     (hexp1 : ∫ ω, Real.exp (F ω) ∂P = 1) :
     InformationTheory.klDiv P (P.tilted F) = ENNReal.ofReal (-(∫ ω, F ω ∂P)) := by
-  haveI : IsProbabilityMeasure (P.tilted F) := isProbabilityMeasure_tilted hexpint
+  have : IsProbabilityMeasure (P.tilted F) := isProbabilityMeasure_tilted hexpint
   have hrefl : P ≪ P := Measure.AbsolutelyContinuous.refl P
   have hac : P ≪ P.tilted F := absolutelyContinuous_tilted hexpint
   have hllrself : Integrable (llr P P) P := by
@@ -464,7 +464,7 @@ theorem measurableSet_of_indepBlockDecides [Fintype ι] {G : ι → MeasurableSp
   classical
   have hcover : E = ⋃ A : Finset ι, (E ∩ {ω | S ω = A}) := by
     ext ω
-    simp only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq]
+    simp only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_ofPred_eq]
     exact ⟨fun h => ⟨S ω, h, rfl⟩, fun ⟨_, h, _⟩ => h⟩
   rw [hcover]
   exact MeasurableSet.iUnion fun A => indepAlg_le hGle _ _ (hE A)

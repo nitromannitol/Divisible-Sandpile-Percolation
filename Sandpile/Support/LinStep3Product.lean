@@ -36,12 +36,12 @@ theorem prod_union_sep (AX AY : Finset ι) (p q : ι → ℝ) :
   rw [Finset.prod_mul_distrib]
   have h1 : ∏ x ∈ AX ∪ AY, (if x ∈ AX then 1 - p x else 1) = ∏ x ∈ AX, (1 - p x) := by
     rw [← Finset.prod_subset (Finset.subset_union_left (s₁ := AX) (s₂ := AY))
-      (fun x _ hx => if_neg hx)]
-    exact Finset.prod_congr rfl fun x hx => if_pos hx
+      (fun x _ hx => ite_eq_right hx)]
+    exact Finset.prod_congr rfl fun x hx => ite_eq_left hx
   have h2 : ∏ x ∈ AX ∪ AY, (if x ∈ AY then 1 - q x else 1) = ∏ x ∈ AY, (1 - q x) := by
     rw [← Finset.prod_subset (Finset.subset_union_right (s₁ := AX) (s₂ := AY))
-      (fun x _ hx => if_neg hx)]
-    exact Finset.prod_congr rfl fun x hx => if_pos hx
+      (fun x _ hx => ite_eq_right hx)]
+    exact Finset.prod_congr rfl fun x hx => ite_eq_left hx
   rw [h1, h2]
 
 /-- **The estimate of Step 3** (`sandpile.tex:5590-5601`).  The joint factorization and the
@@ -94,7 +94,8 @@ theorem abs_prod_joint_sub_prod_sep_le (AX AY : Finset ι) (p q : ι → ℝ)
       · linarith [hq0 x]
       · norm_num
   have ht0 : ∀ x, 0 ≤ t x := fun x => mul_nonneg (hfx x).1 (hfy x).1
-  have ht1 : ∀ x, t x ≤ 1 := fun x => mul_le_one₀ (hfx x).2 (hfy x).1 (hfy x).2
+  have ht1 : ∀ x, t x ≤ 1 := fun x =>
+      (mul_le_of_le_one_left (hfy x).1 (hfx x).2).trans (hfy x).2
   refine le_trans (abs_prod_sub_prod_le (AX ∪ AY) s t hs0 hs1 ht0 ht1) ?_
   have hsum : ∑ x ∈ AX ∪ AY, |s x - t x| = ∑ x ∈ AX ∩ AY, |s x - t x| := by
     refine (Finset.sum_subset Finset.inter_subset_union ?_).symm
@@ -111,7 +112,7 @@ theorem abs_prod_joint_sub_prod_sep_le (AX AY : Finset ι) (p q : ι → ℝ)
   rw [hsum]
   refine Finset.sum_le_sum fun x hx => ?_
   obtain ⟨hX, hY⟩ := Finset.mem_inter.mp hx
-  simp only [hs, ht, if_pos hX, if_pos hY]
+  simp only [hs, ht, ite_eq_left hX, ite_eq_left hY]
   have h := one_sub_max_sub_mul_le (p x) (q x) (hp0 x) (hp1 x) (hq0 x) (hq1 x)
   rw [abs_of_nonneg h.1]
   exact h.2
@@ -129,7 +130,7 @@ theorem card_inter_image_le_pairs (i j : ℕ) (X Y : ℕ → ι) :
         = if X r = Y h then (1 : ℝ) else 0 := by
     intro r h
     rw [Set.indicator_apply]
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
   have hsum : ∑ r ∈ Finset.range (i + 1), ∑ h ∈ Finset.range (j + 1),
       Set.indicator {p : ℕ × ℕ | X p.1 = Y p.2} (fun _ => (1 : ℝ)) (r, h)
       = (((Finset.range (i + 1) ×ˢ Finset.range (j + 1)).filter

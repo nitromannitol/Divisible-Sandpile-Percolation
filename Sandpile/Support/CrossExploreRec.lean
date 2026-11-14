@@ -82,7 +82,7 @@ theorem measurableSet_next_none [Fintype ι] {G : ι → MeasurableSpace Ω}
   classical
   have hcompl : {ω : Ω | next A ω = none} = (⋃ i : ι, {ω : Ω | next A ω = some i})ᶜ := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, not_exists]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, Set.mem_iUnion, not_exists]
     constructor
     · intro hn i hi
       rw [hn] at hi
@@ -110,7 +110,7 @@ theorem isIndepStoppingSet_exploreStep [Fintype ι] [DecidableEq ι] {G : ι →
         exact @MeasurableSet.univ Ω (indepAlg G (↑A : Set ι))
       · have : {ω : Ω | exploreStep next 0 ω = A} = (∅ : Set Ω) := by
           ext ω
-          simp only [exploreStep_zero, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+          simp only [exploreStep_zero, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
           exact fun hc => hA hc.symm
         rw [this]
         exact @MeasurableSet.empty Ω (indepAlg G (↑A : Set ι))
@@ -121,7 +121,7 @@ theorem isIndepStoppingSet_exploreStep [Fintype ι] [DecidableEq ι] {G : ι →
             ∪ ⋃ i ∈ A, ({ω : Ω | exploreStep next n ω = A.erase i}
               ∩ {ω : Ω | next (A.erase i) ω = some i}) := by
         ext ω
-        simp only [Set.mem_setOf_eq, Set.mem_union, Set.mem_inter_iff, Set.mem_iUnion,
+        simp only [Set.mem_ofPred_eq, Set.mem_union, Set.mem_inter_iff, Set.mem_iUnion,
           exists_prop]
         constructor
         · intro hA
@@ -209,7 +209,7 @@ theorem indepBlockDecides_of_local {G : ι → MeasurableSpace Ω} {S : Ω → F
   intro A
   have hrw : E ∩ {ω | S ω = A} = F A ∩ {ω | S ω = A} := by
     ext ω
-    simp only [Set.mem_inter_iff, Set.mem_setOf_eq]
+    simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨hE, hSA⟩
       exact ⟨(hEF A ω hSA).mp hE, hSA⟩

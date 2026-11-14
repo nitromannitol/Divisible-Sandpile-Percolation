@@ -92,10 +92,10 @@ theorem tsum_indicator_mul_indicator (X Y : ℕ → Site d) (i j : ℕ) :
   classical
   rw [tsum_eq_single (X i)]
   · by_cases h : X i = Y j
-    · rw [if_pos h, if_pos rfl, if_pos h.symm, one_mul]
-    · rw [if_neg h, if_pos rfl, if_neg (fun hh => h hh.symm), mul_zero]
+    · rw [ite_eq_left h, ite_eq_left rfl, ite_eq_left h.symm, one_mul]
+    · rw [ite_eq_right h, ite_eq_left rfl, ite_eq_right (fun hh => h hh.symm), mul_zero]
   · intro z hz
-    rw [if_neg (fun h => hz h.symm), zero_mul]
+    rw [ite_eq_right (fun h => hz h.symm), zero_mul]
 
 /-- `covSurvival` is the scenery covariance of the two survival indicators. -/
 theorem covSurvival_eq_covariance (μ : Measure (Site d → ℝ)) (n i j : ℕ)

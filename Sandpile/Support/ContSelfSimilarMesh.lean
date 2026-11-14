@@ -57,7 +57,7 @@ theorem rescaledOdometer_sub_interp_tendstoInMeasure
             multilinearInterp R
             (fun y => R ^ (-(2 - (d : ℝ) / 2)) * Sandpile.odometer σ ⌊T * R ^ 2⌋₊ y) z'|} := by
       intro σ hσ
-      simp only [Set.mem_setOf_eq] at hσ
+      simp only [Set.mem_ofPred_eq] at hσ
       refine ⟨meshPoint R x, hm, x, Metric.mem_closedBall_self (by norm_num), hd, ?_⟩
       rw [rescaledOdometer_eq_multilinearInterp d R T (by linarith) x σ,
         sub_zero, Real.norm_eq_abs] at hσ

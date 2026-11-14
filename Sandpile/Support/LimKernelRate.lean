@@ -56,18 +56,18 @@ theorem centredKernel_nonneg_pos {d : ℕ} {s : ℝ} {y : Space d} (hy : y ≠ 0
   have hpos : (0 : ℝ) < ‖y‖ := norm_pos_iff.mpr hy
   unfold centredKernel
   by_cases hlt : ‖y‖ < s
-  · rw [if_pos hlt]
+  · rw [ite_eq_left hlt]
     by_cases hd2 : d = 2
-    · rw [if_pos hd2]
+    · rw [ite_eq_left hd2]
       have h1 : (1 : ℝ) ≤ s / ‖y‖ := (one_le_div hpos).mpr hlt.le
       have : 0 ≤ Real.log (s / ‖y‖) := Real.log_nonneg h1
       positivity
-    · rw [if_neg hd2]
+    · rw [ite_eq_right hd2]
       have hs : (0 : ℝ) < s := lt_of_le_of_lt (norm_nonneg y) hlt
       have h1 : 1 / s ≤ 1 / ‖y‖ := one_div_le_one_div_of_le hpos hlt.le
       have : 0 ≤ 1 / ‖y‖ - 1 / s := by linarith
       positivity
-  · rw [if_neg hlt]
+  · rw [ite_eq_right hlt]
 
 /-- In dimension two the `5/2` power of the kernel is dominated by `C/‖y‖`. -/
 theorem centredKernel_two_rpow_le {s : ℝ} (hs : 0 < s) (y : Space 2) :
@@ -82,13 +82,13 @@ theorem centredKernel_two_rpow_le {s : ℝ} (hs : 0 < s) (y : Space 2) :
   · rcases eq_or_lt_of_le hr0 with hzero | hpos
     · have hk : centredKernel 2 s y = 0 := by
         unfold centredKernel
-        rw [if_pos hlt, if_pos rfl, ← hzero]
+        rw [ite_eq_left hlt, ite_eq_left rfl, ← hzero]
         simp
       rw [hk, Real.zero_rpow (by norm_num), norm_zero]
       positivity
     · have hk : centredKernel 2 s y = (1 / (2 * Real.pi)) * Real.log (s / ‖y‖) := by
         unfold centredKernel
-        rw [if_pos hlt, if_pos rfl]
+        rw [ite_eq_left hlt, ite_eq_left rfl]
       have h1 : (1 : ℝ) ≤ s / ‖y‖ := (one_le_div hpos).mpr hlt.le
       have hlog0 : 0 ≤ Real.log (s / ‖y‖) := Real.log_nonneg h1
       have hmain := log_rpow_le h1
@@ -103,7 +103,7 @@ theorem centredKernel_two_rpow_le {s : ℝ} (hs : 0 < s) (y : Space 2) :
             field_simp
   · have hk : centredKernel 2 s y = 0 := by
       unfold centredKernel
-      rw [if_neg hlt]
+      rw [ite_eq_right hlt]
     rw [hk, Real.zero_rpow (by norm_num), norm_zero]
     positivity
 
@@ -118,7 +118,7 @@ theorem centredKernel_three_rpow_le {s : ℝ} (hs : 0 < s) {y : Space 3} (hy : y
   by_cases hlt : ‖y‖ < s
   · have hk : centredKernel 3 s y = (1 / (4 * Real.pi)) * (1 / ‖y‖ - 1 / s) := by
       unfold centredKernel
-      rw [if_pos hlt]
+      rw [ite_eq_left hlt]
       norm_num
     have h1 : 1 / s ≤ 1 / ‖y‖ := one_div_le_one_div_of_le hpos hlt.le
     have hb0 : (0 : ℝ) ≤ 1 / ‖y‖ - 1 / s := by linarith
@@ -134,7 +134,7 @@ theorem centredKernel_three_rpow_le {s : ℝ} (hs : 0 < s) {y : Space 3} (hy : y
           norm_num
   · have hk : centredKernel 3 s y = 0 := by
       unfold centredKernel
-      rw [if_neg hlt]
+      rw [ite_eq_right hlt]
     rw [hk, Real.zero_rpow (by norm_num), norm_zero]
     exact hC
 

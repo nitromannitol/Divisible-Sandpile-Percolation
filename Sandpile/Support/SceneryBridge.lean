@@ -43,7 +43,7 @@ theorem map_scenery_centeredMassLaw (d : ℕ) (ν : Measure ℝ) [IsProbabilityM
   set f : ℝ → ℝ := fun z => (z - 1) / (2 * (d : ℝ)) with hf
   have hmg : Measurable g := by fun_prop
   have hmf : Measurable f := by fun_prop
-  haveI : IsProbabilityMeasure (ν.map g) := inferInstance
+  have : IsProbabilityMeasure (ν.map g) := inferInstance
   have hsc : (scenery d : (Site d → ℝ) → Site d → ℝ) = fun σ i => f (σ i) := rfl
   unfold centeredMassLaw massLaw LatticeProb.iidLaw
   rw [hsc, Measure.infinitePi_map_pi _ (f := fun _ : Site d => f) (fun _ => hmf)]

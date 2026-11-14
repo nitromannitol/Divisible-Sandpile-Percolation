@@ -30,8 +30,8 @@ theorem prod_ite_nonneg {d : ℕ} (t : Fin d → ℝ) (ht : ∀ i, 0 ≤ t i) (h
     (ε : Fin d → Bool) : 0 ≤ ∏ i : Fin d, if ε i then t i else 1 - t i := by
   refine Finset.prod_nonneg fun i _ => ?_
   by_cases h : ε i
-  · rw [if_pos h]; exact ht i
-  · rw [if_neg h]; linarith [ht1 i]
+  · rw [ite_eq_left h]; exact ht i
+  · rw [ite_eq_right h]; linarith [ht1 i]
 
 /-- A convex combination is bounded by the largest of the values combined. -/
 theorem abs_sum_weight_mul_le {ι : Type*} [Fintype ι] (lam v : ι → ℝ)

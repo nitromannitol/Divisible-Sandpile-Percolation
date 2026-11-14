@@ -40,7 +40,7 @@ theorem centeredMassLaw_preimage_shiftField (ν : Measure ℝ) [IsProbabilityMea
     (y : Site d) (S : Set (Site d → ℝ)) (hS : MeasurableSet S) :
     (centeredMassLaw d ν) (shiftField y ⁻¹' S) = (centeredMassLaw d ν) S := by
   set μ : Measure ℝ := ν.map fun z => 1 + 2 * (d : ℝ) * z with hμ
-  haveI : IsProbabilityMeasure μ := by
+  have : IsProbabilityMeasure μ := by
     rw [hμ]; exact inferInstance
   have hcm : centeredMassLaw d ν = massLaw d μ := by rw [centeredMassLaw, hμ]
   rw [hcm, ← Measure.map_apply (measurable_shiftField y) hS, massLaw_map_shiftField d μ y]
@@ -60,11 +60,11 @@ theorem measure_threshold_symmDiff_shift (ν : Measure ℝ) [IsProbabilityMeasur
   have hodo : shiftField y ⁻¹' {σ : Site d → ℝ | odometer σ m 0 = 0}
       = {σ : Site d → ℝ | odometer σ m y = 0} := by
     ext σ
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, odometer_shiftField σ y m 0, zero_add]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, odometer_shiftField σ y m 0, zero_add]
   have hthr : shiftField y ⁻¹' {σ : Site d → ℝ | b < J σ 0}
       = {σ : Site d → ℝ | b < J σ y} := by
     ext σ
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, hJ]
     constructor
     · intro h
       simpa [shiftField, scenery, zero_add] using h

@@ -120,12 +120,12 @@ lemma grid_star_crossing_of_no_open_lr {m n : ℕ} (O : Set (primalGrid m n))
       (gridBadGraph Oᶜ).Reachable a b := by
   classical
   have hCleft (j : Fin (n + 1)) : gridLeftColor O (0, j) = 1 := by
-    simp only [gridLeftColor, if_pos (gridLeftReachable_seed O j (hleft j))]
+    simp only [gridLeftColor, ite_eq_left (gridLeftReachable_seed O j (hleft j))]
   have hCright (j : Fin (n + 1)) : gridLeftColor O (Fin.last m, j) = 0 := by
     have hn : ¬gridLeftReachable O (Fin.last m, j) := by
       rintro ⟨a, b, ha, hb, hab⟩
       exact hno ⟨a, b, ha, congrArg Prod.fst hb, hab⟩
-    simp only [gridLeftColor, if_neg hn]
+    simp only [gridLeftColor, ite_eq_right hn]
   apply grid_star_connection_of_mixed_edges (fun i j => gridLeftColor O (i, j)) hCleft hCright
   · intro i j hh
     exact grid_closed_endpoint_of_color_change O (grid_horizontal_adj i j) hh

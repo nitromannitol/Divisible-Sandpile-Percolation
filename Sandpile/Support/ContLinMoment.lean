@@ -45,7 +45,7 @@ theorem exists_moment_linear_pi (p : ℝ) (hp : 2 ≤ p) :
   have hp0 : (0:ℝ) < p := by linarith
   refine ⟨2 * C₀, by positivity, ?_⟩
   intro N ν hν hint c
-  haveI := hν
+  have := hν
   have hS0 : (0:ℝ) ≤ ∑ i, c i ^ 2 := Finset.sum_nonneg fun i _ => sq_nonneg _
   have hSnn : (0:ℝ) ≤ Real.sqrt (∑ i, c i ^ 2) := Real.sqrt_nonneg _
   have hm0 : (0:ℝ) ≤ Sandpile.resampleMoment ν p := LatticeProb.pairMoment_nonneg ν p
@@ -162,7 +162,7 @@ theorem exists_moment_linInterp_sub_le (hd : 1 ≤ d) (p : ℝ) (hp : 2 ≤ p) :
   obtain ⟨C, hC, hmom⟩ := exists_moment_linear_pi p hp
   refine ⟨C, hC, ?_⟩
   intro ν hν hint R r r' w w' s hps hqs
-  haveI := hν
+  have := hν
   have hrep : ∀ σ : Site d → ℝ,
       linInterp d R (Sandpile.scenery d σ) r w - linInterp d R (Sandpile.scenery d σ) r' w'
         = ∑ i : Fin s.card,

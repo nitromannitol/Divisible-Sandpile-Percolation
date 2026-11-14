@@ -78,7 +78,7 @@ measurable indicator of the symmetric difference, precomposed with the condition
 over the residual. -/
 theorem measurable_condSymmProb (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condSymmProb d hd v n y) := by
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   have hjoint : StronglyMeasurable (fun p : ℝ × (Site d → ℝ) =>
       (symmDiff (contactSet d n) (thresholdSet d v n)).indicator (fun _ => (1 : ℝ))
@@ -128,7 +128,7 @@ theorem condSymmProb_nonneg (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
 probability measure `(LatticeProb.gaussLaw (Site d)).map (residField d hd)`. -/
 theorem condSymmProb_le_one (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) (y : ℝ) :
     condSymmProb d hd v n y ≤ 1 := by
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   rw [condSymmProb_eq_measure]
   exact ENNReal.toReal_le_of_le_ofReal (by norm_num) (by simpa using prob_le_one)
@@ -145,7 +145,7 @@ theorem condSymmProb_eq_of_neg (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) (n : 
   set A : ℝ := meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n with hAdef
   rw [condSymmProb_eq_measure]
   refine congrArg ENNReal.toReal (measure_congr ?_)
-  rw [Filter.eventuallyEq_set]
+  rw [eventuallyEqSet_iff]
   filter_upwards [ae_infiniteGreenField_condLevel hd hv y n] with r hlev
   have hthr : condScenery d hd cc r (condLevel d hd v y n) ∉ thresholdSet d v n := by
     intro hmem
@@ -170,7 +170,7 @@ theorem condSymmProb_eq_of_pos (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) (n : 
     condSymmProb d hd v n y
       = 1 - (((LatticeProb.gaussLaw (Site d)).map (residField d hd))
           {r | 0 ≤ condReflected d hd (Real.sqrt (v : ℝ)) (condLevel d hd v y n) n r}).toReal := by
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
@@ -185,7 +185,7 @@ theorem condSymmProb_eq_of_pos (hd : 5 ≤ d) (v : ℝ≥0) (hv : v ≠ 0) (n : 
       (symmDiff (contactSet d n) (thresholdSet d v n)))
       = ρ {r : Site d → ℝ | 0 ≤ condReflected d hd cc (condLevel d hd v y n) n r}ᶜ := by
     refine measure_congr ?_
-    rw [Filter.eventuallyEq_set]
+    rw [eventuallyEqSet_iff]
     filter_upwards [ae_infiniteGreenField_condLevel hd hv y n] with r hlev
     have hthr : condScenery d hd cc r (condLevel d hd v y n) ∈ thresholdSet d v n := by
       show A < -infiniteGreenField (condScenery d hd cc r (condLevel d hd v y n)) 0
@@ -215,11 +215,11 @@ theorem tendsto_condSymmProb (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
   have hatt := tendsto_meanOdometer_gaussian_atTop hGH hd v hv
   have hcontact := tendsto_measure_condReflected_nonneg hGH hd v hv hsq hy
   rcases hy.lt_or_gt with hneg | hpos
-  · rw [if_neg (by linarith)] at hcontact
+  · rw [ite_eq_right (by linarith)] at hcontact
     refine hcontact.congr' ?_
     filter_upwards [hatt.eventually_gt_atTop 0] with n ha
     exact (condSymmProb_eq_of_neg hd v hv n ha hneg).symm
-  · rw [if_pos hpos] at hcontact
+  · rw [ite_eq_left hpos] at hcontact
     have h := (tendsto_const_nhds (x := (1 : ℝ)) (f := atTop (α := ℕ))).sub hcontact
     rw [sub_self] at h
     refine h.congr' ?_
@@ -302,7 +302,7 @@ theorem measure_symmDiff_scenery (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
   have hcon : {σ : Site d → ℝ | odometer σ (n + 1) 0 = 0}
       = Sandpile.scenery d ⁻¹' (contactSet d n) := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, contactSet]
+    simp only [mem_ofPred_eq, Set.mem_preimage, contactSet]
     rw [odometerOf_eq_odometer]
   have hthr : {σ : Site d → ℝ | meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n
         < -infiniteGreenField (scenery d σ) 0}

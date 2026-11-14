@@ -125,7 +125,7 @@ theorem eventually_condMeanReflected_le (hGH : Sandpile.External.GreenBoundsHigh
     ∀ᶠ n : ℕ in atTop, ∀ y : ℝ, condMeanReflected d hd v n y ≤ 2 * |y| + 1 := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set S : ℝ := ((fieldVar d v : ℝ≥0) : ℝ) with hSdef

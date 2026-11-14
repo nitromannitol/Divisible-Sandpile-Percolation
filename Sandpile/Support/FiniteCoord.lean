@@ -96,9 +96,9 @@ theorem measurable_siteExtend (s : Finset (Site d)) : Measurable (siteExtend s) 
   classical
   refine Measurable.of_eval fun z => ?_
   by_cases hz : z ∈ s
-  · simp only [siteExtend, hz, dif_pos]
+  · simp only [siteExtend, hz, dite_eq_left]
     exact measurable_pi_apply _
-  · simp only [siteExtend, hz, dif_neg, not_false_eq_true]
+  · simp only [siteExtend, hz, dite_eq_right, not_false_eq_true]
     exact measurable_const
 
 /-- The odometer at `x` after `t` steps, read as a function of the coordinates

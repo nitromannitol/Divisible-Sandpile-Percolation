@@ -179,7 +179,7 @@ theorem integrable_posPart_bandLaw (hw0 : 0 ≤ w0) (hw : ∀ k, 0 ≤ w k)
     (hsum : Summable w) (htot : w0 + ∑' k, w k = 1)
     (hwa : Summable fun k => w k * a k) (c : ℝ) :
     Integrable (fun z : ℝ => max (-z - c) 0) (bandLaw w0 mu v l1 a w θ m) := by
-  haveI : IsProbabilityMeasure (bandLaw w0 mu v l1 a w θ m) :=
+  have : IsProbabilityMeasure (bandLaw w0 mu v l1 a w θ m) :=
     isProbabilityMeasure_bandLaw hw0 hw hθ hl0 hl1 ha hm hatop hv hsum htot
   have h0 := integrable_upperExcess_bandLaw (mu := mu) (v := v) hw0 hw hθ hl0 hl1 ha hm hatop hv
     hwa (c := 0) le_rfl
@@ -204,7 +204,7 @@ theorem integrableOn_lowerTail_bandLaw (hw0 : 0 ≤ w0) (hw : ∀ k, 0 ≤ w k)
     (hsum : Summable w) (htot : w0 + ∑' k, w k = 1)
     (hwa : Summable fun k => w k * a k) (t : ℝ) :
     IntegrableOn (LatticeProb.lowerTail (bandLaw w0 mu v l1 a w θ m)) (Ioi t) := by
-  haveI : IsProbabilityMeasure (bandLaw w0 mu v l1 a w θ m) :=
+  have : IsProbabilityMeasure (bandLaw w0 mu v l1 a w θ m) :=
     isProbabilityMeasure_bandLaw hw0 hw hθ hl0 hl1 ha hm hatop hv hsum htot
   exact integrableOn_lowerTail_of_integrable
     (integrable_posPart_bandLaw hw0 hw hθ hl0 hl1 ha hm hatop hv hsum htot hwa t)
@@ -221,7 +221,7 @@ theorem bandIntegratedProfile_law (P : BandParameters) (hA : P.A⁻¹ ≤ P.l1)
   have hwtot : (1 - ∑' k, P.weight k) + ∑' k, P.weight k = 1 := by ring
   have hwa : Summable fun k => P.weight k * P.level k := by
     simpa only [mul_comm] using P.summable_level_weight
-  haveI : IsProbabilityMeasure (P.law m mu v) :=
+  have : IsProbabilityMeasure (P.law m mu v) :=
     isProbabilityMeasure_bandLaw hw0 (fun k => (P.weight_pos k).le)
       (fun k => lt_of_lt_of_le one_pos (P.htheta k).1) hl0 hl1 P.level_pos hm P.level_tendsto
       hv P.summable_weight hwtot

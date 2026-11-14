@@ -43,12 +43,12 @@ theorem mean_le_of_tail_and_variance {Ω : Type*} [MeasurableSpace Ω] (P : Meas
     ProbabilityTheory.meas_ge_le_variance_div_sq hmem hs
   have hsubset : {ω | X ω ≤ M} ⊆ {ω | s ≤ |X ω - m|} := by
     intro ω hω
-    simp only [Set.mem_setOf_eq] at hω ⊢
+    simp only [Set.mem_ofPred_eq] at hω ⊢
     rw [abs_sub_comm, abs_of_nonneg (by linarith)]
     linarith
   have hmeas : MeasurableSet {ω | M < X ω} := measurableSet_lt measurable_const hmX
   have hcompl : {ω | M < X ω}ᶜ = {ω | X ω ≤ M} := by
-    ext ω; simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt]
+    ext ω; simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_lt]
   have h2 : ENNReal.ofReal (1 / 2) + ENNReal.ofReal (1 / 2) = 1 := by
     rw [← ENNReal.ofReal_add (by norm_num) (by norm_num)]
     norm_num
@@ -204,7 +204,7 @@ theorem exists_uniform_mean_rescaled_of_tightness (d : ℕ) (hd : 1 ≤ d) (hd3 
   refine exists_uniform_mean_rescaled_of_tail d hd hd3 ν hsq M (fun R hR => ?_)
   refine le_trans (measure_mono ?_) (hM R hR)
   intro σ hσ
-  simp only [Set.mem_setOf_eq] at hσ ⊢
+  simp only [Set.mem_ofPred_eq] at hσ ⊢
   refine ⟨0, Set.mem_singleton 0, ?_⟩
   rw [← rescaledOdometer_zero_eq_multilinearInterp d R 1
     (ne_of_gt (lt_of_lt_of_le zero_lt_one hR)) σ]
@@ -231,7 +231,7 @@ theorem exists_uniform_exp_moment_rescaled_mass (d : ℕ) (hd : 1 ≤ d) (hd3 : 
   obtain ⟨θ, A, hθ, hA, hmain⟩ := exists_uniform_mgf_rescaled_mass d hd hd3 θ₀ K₀ hθ₀
   refine ⟨θ, A, hθ, ?_⟩
   intro ν hprob hint hexp K hK R hR
-  haveI := hprob
+  have := hprob
   set c : ℝ := ∫ σ, Sandpile.Continuum.rescaledOdometer d R 1 0 σ
     ∂(Sandpile.centeredMassLaw d ν) with hc
   obtain ⟨hI, hB⟩ := hmain ν hprob hint hexp R hR

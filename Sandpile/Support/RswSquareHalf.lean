@@ -60,7 +60,7 @@ lemma exists_gaussian_square_crossing_ge_half (hBall : External.BallGreenBounds)
   have hmeas : MeasurableSet {ζ | Lsq ζ < -(b * Real.log r)} :=
     measurableSet_lt hf measurable_const
   have hAc : {ζ | -(b * Real.log r) ≤ Lsq ζ} = {ζ | Lsq ζ < -(b * Real.log r)}ᶜ := by
-    ext ζ; simp only [Set.mem_setOf_eq, Set.mem_compl_iff]
+    ext ζ; simp only [Set.mem_ofPred_eq, Set.mem_compl_iff]
     constructor
     · intro h h'
       exact absurd h' (by
@@ -71,7 +71,7 @@ lemma exists_gaussian_square_crossing_ge_half (hBall : External.BallGreenBounds)
       exact not_lt.mp h
   have hsub : {ζ | Lsq ζ < -(b * Real.log r)} ⊆ {ζ | Lsq ζ ≤ -(b * Real.log r)} := by
     intro ζ hζ
-    simp only [Set.mem_setOf_eq] at hζ ⊢
+    simp only [Set.mem_ofPred_eq] at hζ ⊢
     exact hζ.le
   have hreal : μ.real {ζ | Lsq ζ ≤ -(b * Real.log r)} ≤ (r : ℝ) ^ (-(c * b ^ 2)) := by
     have hA' := hA

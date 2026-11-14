@@ -29,7 +29,7 @@ theorem measurableSet_crossApprox_local {Ω : Type*} [MeasurableSpace Ω]
   classical
   apply MeasurableSet.iUnion
   intro ch
-  simp only [pathEvent, setOf_forall]
+  simp only [pathEvent, ofPred_forall]
   refine MeasurableSet.iInter fun j => MeasurableSet.iInter fun q =>
     MeasurableSet.iInter fun hj => MeasurableSet.iInter fun hq0 =>
       MeasurableSet.iInter fun hq1 => ?_
@@ -69,7 +69,7 @@ theorem measurableSet_closedCrossEvent_comap {Ω : Type*} [MeasurableSpace Ω]
     (S : Set (Space 2)) (hS : rectSet a b ⊆ S) :
     MeasurableSet[MeasurableSpace.comap (fun ω (x : S) => X x ω) inferInstance]
       (closedCrossEvent X a b i l) := by
-  letI : MeasurableSpace Ω :=
+  let : MeasurableSpace Ω :=
     MeasurableSpace.comap (fun ω (x : S) => X x ω) inferInstance
   apply measurableSet_closedCrossEvent_local
   intro x hx
@@ -126,7 +126,6 @@ theorem four_closedCrossEvent_ae_eq {Ω : Type*} [MeasurableSpace Ω]
     (a j) (b j) (dir j) (hab j) (lev j) hc
   filter_upwards [he] with ω hω
   apply propext
-  change (ω ∈ ⋂ j, closedCrossEvent X (a j) (b j) (dir j) (lev j)) ↔ _
   simp only [mem_iInter]
   exact forall_congr' fun j => iff_of_eq (hω j)
 

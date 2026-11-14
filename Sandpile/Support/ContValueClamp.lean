@@ -64,10 +64,10 @@ theorem abs_clampField_le {d : ℕ} (h : ℝ → Space d → ℝ) (C k : ℝ)
     {n : ℝ} (hn : 0 < n) (t : ℝ) (y : Space d) :
     |clampField d n h t y| ≤ C * (1 + n) ^ k := by
   by_cases hy : ‖y‖ ≤ n
-  · simp only [clampField, if_pos hy]
+  · simp only [clampField, ite_eq_left hy]
     exact (hbound t y).trans (mul_le_mul_of_nonneg_left
       (Real.rpow_le_rpow (by positivity) (by linarith) hk) hC)
-  · simp only [clampField, if_neg hy]
+  · simp only [clampField, ite_eq_right hy]
     have hnorm : ‖(n / ‖y‖) • y‖ = n := by
       have hpos : 0 < ‖y‖ := by
         have : n < ‖y‖ := not_le.mp hy
@@ -104,16 +104,16 @@ noncomputable def clampPoint (d : ℕ) (n : ℝ) (y : Space d) : Space d :=
 theorem norm_clampPoint_le (d : ℕ) {n : ℝ} (hn : 0 < n) (y : Space d) :
     ‖clampPoint d n y‖ ≤ n := by
   by_cases hy : ‖y‖ ≤ n
-  · simpa [clampPoint, if_pos hy] using hy
+  · simpa [clampPoint, ite_eq_left hy] using hy
   · have hpos : 0 < ‖y‖ := lt_of_lt_of_le hn (le_of_lt (lt_of_not_ge hy))
-    simp only [clampPoint, if_neg hy]
+    simp only [clampPoint, ite_eq_right hy]
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (div_pos hn hpos)]
     exact le_of_eq (div_mul_cancel₀ n (ne_of_gt hpos))
 
 /-- The clamp is the identity on the ball. -/
 theorem clampPoint_eq_self (d : ℕ) {n : ℝ} {y : Space d} (hy : ‖y‖ ≤ n) :
     clampPoint d n y = y := by
-  simp only [clampPoint, if_pos hy]
+  simp only [clampPoint, ite_eq_left hy]
 
 /-- The clamp of a time to `[0,T]`. -/
 noncomputable def clampTime (T t : ℝ) : ℝ := max 0 (min t T)
@@ -201,7 +201,7 @@ theorem aemeasurable_clamp_value {ΩW ΩB : Type*} [MeasurableSpace ΩW]
       (clampFunctional d T n hn hT.le
         (ContinuousMap.mkD (fun p : Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) n =>
           Z p.1.1 p.1.2 ω) 0)) T x) PW := by
-  haveI : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) n) :=
+  have : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) n) :=
     isCompact_iff_compactSpace.mp (isCompact_Icc.prod (isCompact_closedBall 0 n))
   exact (measurable_of_lipschitzWith
       (lipschitzWith_clamp_value d b PB T n hT hn x hbdd hint)).comp_aemeasurable
@@ -241,7 +241,7 @@ theorem clampField_tendsto {d : ℕ} (h : ℝ → Space d → ℝ)
   have hev : (fun n : ℕ => (if ‖y‖ ≤ (n:ℝ) then y else ((n:ℝ)/‖y‖) • y))
       =ᶠ[atTop] fun _ : ℕ => y := by
     filter_upwards [eventually_ge_atTop ⌈‖y‖⌉₊] with n hn
-    rw [if_pos]
+    rw [ite_eq_left]
     have : (⌈‖y‖⌉₊ : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
     exact (Nat.le_ceil ‖y‖).trans this
   have hproj : Tendsto (fun n : ℕ => (if ‖y‖ ≤ (n:ℝ) then y else ((n:ℝ)/‖y‖) • y))

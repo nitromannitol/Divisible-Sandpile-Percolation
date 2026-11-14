@@ -69,7 +69,7 @@ theorem exists_log_mean_lower_four (hVS : Sandpile.External.VarianceScale)
   have hK : 2048 ≤ K := le_max_left _ _
   refine ⟨α * θ * cQ / 24, by positivity, K ^ 2, ?_⟩
   intro ν hprob hmean hvar hexp hνK t ht
-  haveI := hprob
+  have := hprob
   have hint := integrable_id_of_exp_moment ν θ₀ hθ₀ hexp
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     Integrable.mono' hint.abs (measurable_id.max measurable_const).aestronglyMeasurable

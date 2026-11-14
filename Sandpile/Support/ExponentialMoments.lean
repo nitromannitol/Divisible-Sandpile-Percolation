@@ -65,7 +65,7 @@ lemma exists_uniform_matching_gaussian_inputs (θ K : ℝ) (hθ : 0 < θ) :
   have hL : 0 < L := lt_of_lt_of_le (by positivity : 0 < 2 * Real.exp (2 * K)) (le_max_right _ _)
   refine ⟨2 * L / θ, by positivity, (48 / θ ^ 3) * L, by positivity, ?_⟩
   intro μ hμ hexp hK hmean v hsecond κ hκ
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   refine ⟨matchingThirdMoments_gaussian_of_exp hθ hκ hexp hK hmean v hsecond, ?_, ?_⟩
   · exact small_ball_of_exp hθ hL hexp (hK.trans (le_max_left _ _))
   · have hv : (v : ℝ) ≤ (4 / θ ^ 2) * K := by

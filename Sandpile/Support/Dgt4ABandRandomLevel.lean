@@ -36,7 +36,7 @@ def expWeightBelow (lam c z : ℝ) : ℝ :=
 /-- `{z | -z ≤ c}` is the half-line `Ici (-c)`. -/
 theorem setOf_neg_le_eq_Ici (c : ℝ) : {z : ℝ | -z ≤ c} = Ici (-c) := by
   ext z
-  simp only [mem_setOf_eq, mem_Ici]
+  simp only [mem_ofPred_eq, mem_Ici]
   constructor <;> intro h <;> linarith
 
 /-- `{z | -z ≤ c}` is measurable, being the half-line `Ici (-c)` by
@@ -87,7 +87,7 @@ theorem measure_lt_le_expWeight (ν : Measure ℝ) [IsFiniteMeasure ν] {lam : �
   have hmeas : MeasurableSet {z : ℝ | w < -z ∧ -z ≤ c} := by
     have hrw : {z : ℝ | w < -z ∧ -z ≤ c} = Ico (-c) (-w) := by
       ext z
-      simp only [mem_setOf_eq, mem_Ico]
+      simp only [mem_ofPred_eq, mem_Ico]
       constructor
       · rintro ⟨h1, h2⟩; constructor <;> linarith
       · rintro ⟨h1, h2⟩; constructor <;> linarith
@@ -285,7 +285,7 @@ theorem abs_integral_posPart_sub_split (P : BandParameters) (ν : Measure ℝ) [
     · have hbz : max (-z - b) 0 = 0 := max_eq_right (by linarith)
       have hmem : z ∈ {z : ℝ | -z ≤ c} := hz
       have hnotmem : z ∉ {z : ℝ | -(z) > c} := by
-        simp only [Set.mem_setOf_eq, gt_iff_lt, not_lt]
+        simp only [mem_ofPred_eq, gt_iff_lt, not_lt]
         exact hz
       rw [hbz, sub_zero, abs_of_nonneg (le_max_right _ _), Set.indicator_of_mem hmem,
         Set.indicator_of_notMem hnotmem, mul_one, mul_zero, add_zero]

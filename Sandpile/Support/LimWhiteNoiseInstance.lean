@@ -40,24 +40,24 @@ theorem ballKernel_pos_iff {d : ℕ} {s : ℝ} (hs : 0 < s)
   generalize ‖(planePoint (d := d) u) - z‖ = r at hr0 ⊢
   have hpi : (0 : ℝ) < Real.pi := Real.pi_pos
   by_cases hrs : r < s
-  · rw [if_pos hrs]
+  · rw [ite_eq_left hrs]
     by_cases hr : r = 0
     · subst hr
       by_cases hd2 : d = 2
-      · rw [if_pos hd2, div_zero, Real.log_zero, mul_zero]
+      · rw [ite_eq_left hd2, div_zero, Real.log_zero, mul_zero]
         exact ⟨fun h => absurd h (lt_irrefl _), fun h => absurd h.1 (lt_irrefl _)⟩
-      · rw [if_neg hd2, div_zero, zero_sub]
+      · rw [ite_eq_right hd2, div_zero, zero_sub]
         have h2 : (1 / (4 * Real.pi)) * (-(1 / s)) < 0 :=
           mul_neg_of_pos_of_neg (by positivity) (neg_neg_of_pos (by positivity))
         exact ⟨fun h => absurd h (not_lt.mpr h2.le), fun h => absurd h.1 (lt_irrefl _)⟩
     · have hrpos : 0 < r := lt_of_le_of_ne hr0 (Ne.symm hr)
       refine ⟨fun _ => ⟨hrpos, hrs⟩, fun _ => ?_⟩
       by_cases hd2 : d = 2
-      · rw [if_pos hd2]
+      · rw [ite_eq_left hd2]
         exact mul_pos (by positivity) (Real.log_pos ((one_lt_div hrpos).mpr hrs))
-      · rw [if_neg hd2]
+      · rw [ite_eq_right hd2]
         exact mul_pos (by positivity) (sub_pos.mpr (one_div_lt_one_div_of_lt hrpos hrs))
-  · rw [if_neg hrs]
+  · rw [ite_eq_right hrs]
     exact ⟨fun h => absurd h (lt_irrefl _), fun h => absurd h.2 hrs⟩
 
 /-- If the punctured ball of radius `s` about `c` lies inside the punctured ball of radius
@@ -301,11 +301,11 @@ theorem exists_whiteNoise_continuous_ballField (d : ℕ) (hd : d = 2 ∨ d = 3) 
   have hpos : ∀ f, (h : ∃ p : ℝ × Space 2, 0 < p.1 ∧ ballKernel d p.1 p.2 = f) →
       W' f = Y h.choose.1 h.choose.2 := fun f h => by
     funext ω
-    rw [hW'def, dif_pos h]
+    rw [hW'def, dite_eq_left h]
   have hneg : ∀ f, ¬ (∃ p : ℝ × Space 2, 0 < p.1 ∧ ballKernel d p.1 p.2 = f) →
       W' f = W f := fun f h => by
     funext ω
-    rw [hW'def, dif_neg h]
+    rw [hW'def, dite_eq_right h]
   have hkey : ∀ (f : Space d → ℝ) (p : ℝ × Space 2), 0 < p.1 →
       ballKernel d p.1 p.2 = f → W f =ᵐ[PW] Y p.1 p.2 := by
     rintro f ⟨s0, u0⟩ hs0 hk

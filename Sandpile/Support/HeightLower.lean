@@ -620,7 +620,7 @@ theorem tendsto_ratio_ae (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure
       refine ne_top_of_le_ne_top ?_ (ENNReal.tsum_le_tsum hbound)
       rw [← ENNReal.ofReal_tsum_of_nonneg hgnn hgsum]
       exact ENNReal.ofReal_ne_top
-    have h0 := MeasureTheory.measure_setOf_frequently_eq_zero (μ := P)
+    have h0 := measure_setOfPred_frequently_eq_zero (μ := P)
       (p := fun k σ => ε * M (n k) ≤ |odometer σ (n k) x - M (n k)|) hsum
     have hae : ∀ᵐ σ ∂P, ∀ᶠ k in atTop,
         ¬ (ε * M (n k) ≤ |odometer σ (n k) x - M (n k)|) := by
@@ -629,7 +629,7 @@ theorem tendsto_ratio_ae (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure
           = {σ : Site d → ℝ |
             ∃ᶠ k in atTop, ε * M (n k) ≤ |odometer σ (n k) x - M (n k)|} := by
         ext σ
-        simp only [Set.mem_setOf_eq, Filter.not_eventually, not_not]
+        simp only [Set.mem_ofPred_eq, Filter.not_eventually, not_not]
       rw [ae_iff, h1]
       exact h0
     filter_upwards [hae] with σ hσ

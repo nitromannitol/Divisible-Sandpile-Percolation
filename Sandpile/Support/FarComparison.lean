@@ -178,7 +178,7 @@ lemma exists_gaussian_far_comparison (hBall : External.BallGreenBounds)
   have hmpos : (0 : ℝ) < m := by exact_mod_cast (by omega : 0 < m)
   refine ⟨4 * C * (m : ℝ) ^ 6 / η ^ 3, by positivity, r₀, ?_⟩
   intro μ hμ hexp hK hmean v hsecond r hr Q hQ hlo hhi φ hφ z level
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   obtain ⟨hr2, hL, hcond⟩ := hr₀ r hr
   obtain ⟨herr, hβ, hκ⟩ := hcond Q.card hlo hhi
   have hcard : 2 ≤ Q.card := hr2.trans hlo

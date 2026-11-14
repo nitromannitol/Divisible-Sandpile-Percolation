@@ -118,7 +118,7 @@ theorem ballKernel_eq_sum_kernelPiece (d : ℕ) (u : Space 2) (y : Space d) :
       by_contra hge
       refine hne ?_
       unfold ballKernel
-      rw [if_neg hge]
+      rw [ite_eq_right hge]
     exact hx₀mem (mem_nearSites_of_norm_lt_one u hlt)
 
 /-- Restates `ballKernel_eq_sum_kernelPiece` with the trivial scalar weight `1` on each term,
@@ -159,7 +159,7 @@ theorem measurable_blockField {ι : Type} (hd : d = 2 ∨ d = 3) (z : ι → San
     Measurable[indepAlg (fun i => noiseBlockAlg W (cell d 1 (z i))) (↑A : Set ι)]
       (blockField d W u) := by
   classical
-  letI : MeasurableSpace Ω := indepAlg (fun i => noiseBlockAlg W (cell d 1 (z i))) (↑A : Set ι)
+  let : MeasurableSpace Ω := indepAlg (fun i => noiseBlockAlg W (cell d 1 (z i))) (↑A : Set ι)
   refine Finset.measurable_sum _ fun x hx => ?_
   obtain ⟨i, hiA, hzi⟩ := hsub x hx
   subst hzi

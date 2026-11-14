@@ -213,7 +213,7 @@ theorem exists_refined_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
         C * Real.exp (-(c * (u + (∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν)))
           ^ min γ ((d : ℝ) / 2))) := by
   classical
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hdR : (5 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hint : Integrable id ν := integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
@@ -292,8 +292,8 @@ theorem exists_refined_tail (_hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
     by_contra hcon
     rw [Set.mem_union, not_or] at hcon
     obtain ⟨h1, h2⟩ := hcon
-    rw [hA₁, Set.mem_setOf_eq, not_le] at h1
-    rw [hA₂, Set.mem_setOf_eq, not_le] at h2
+    rw [hA₁, Set.mem_ofPred_eq, not_le] at h1
+    rw [hA₂, Set.mem_ofPred_eq, not_le] at h2
     have hiter := odometerOf_iterate_lower ζ mh n
     rw [htn, sum_avg_iterate_eq_tsum_greenTime (mh + 1) ζ] at hiter
     have hsc : (avg^[mh + 1] (odometerOf ζ n)) 0
@@ -467,7 +467,7 @@ theorem exists_refined_increment (hGH : Sandpile.External.GreenBoundsHigh) (hd :
         ≤ C * Real.exp (-(c * (∫ ζ, odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν))
             ^ min γ ((d : ℝ) / 2))) := by
   classical
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hdR : (5 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
   have hint : Integrable id ν := integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
@@ -530,7 +530,7 @@ theorem exists_refined_increment (hGH : Sandpile.External.GreenBoundsHigh) (hd :
       have hset : {ζ : Site d → ℝ | u ≤ f ζ}
           = {ζ : Site d → ℝ | u ≤ -(ζ 0) - avg (odometerOf ζ t) 0} := by
         ext ζ
-        simp only [Set.mem_setOf_eq, hf, le_max_iff]
+        simp only [Set.mem_ofPred_eq, hf, le_max_iff]
         constructor
         · rintro (hc | hc)
           · linarith

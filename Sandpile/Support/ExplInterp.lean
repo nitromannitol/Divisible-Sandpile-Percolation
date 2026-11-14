@@ -87,9 +87,9 @@ theorem multilinearInterp_weight_nonneg (R : ℝ) (z : Space d) (ε : Fin d → 
     0 ≤ ∏ i : Fin d, if ε i then Int.fract (R * z i) else 1 - Int.fract (R * z i) := by
   refine Finset.prod_nonneg fun i _ => ?_
   by_cases h : ε i = true
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     exact Int.fract_nonneg _
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     have := (Int.fract_lt_one (R * z i)).le
     linarith
 

@@ -84,7 +84,7 @@ theorem exists_block_estimate
   obtain ⟨R₁, hR₁⟩ := eventually_atTop.mp hcond
   refine ⟨max R₁ 1, le_max_right _ _, ?_⟩
   intro ν hν hmean hvar hexpint hexp r hr z
-  haveI := hν
+  have := hν
   have hr1 : 1 ≤ r := le_trans (le_max_right _ _) hr
   have hRge : R₁ ≤ 2 * r := by
     have : R₁ ≤ r := le_trans (le_max_left _ _) hr

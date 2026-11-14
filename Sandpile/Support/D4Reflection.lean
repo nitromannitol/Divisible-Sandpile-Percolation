@@ -274,8 +274,8 @@ theorem measure_reflectionSum_markov (ν : Measure ℝ) [IsProbabilityMeasure ν
     linarith
   · have hsub : A ⊆ {ζ : Site d → ℝ | u ≤ reflectionSum ζ n t x} := by
       intro ζ hζ
-      simp only [hA, Set.mem_setOf_eq] at hζ
-      simp only [Set.mem_setOf_eq]
+      simp only [hA, Set.mem_ofPred_eq] at hζ
+      simp only [Set.mem_ofPred_eq]
       rcases lt_or_ge (reflectionSum ζ n t x) EY with hle | hgt
       · exfalso
         have h1 : |reflectionSum ζ n t x - EY| = EY - reflectionSum ζ n t x := by
@@ -321,7 +321,7 @@ theorem measure_reflectionSum_tail_four (hVS : Sandpile.External.VarianceScale)
   obtain ⟨A₀, c, C, hA₀, hc, hC, hdt⟩ := exists_difference_tail_four hVS θ₀ K₀ hθ₀
   refine ⟨A₀, c, C, hA₀, hc, hC, ?_⟩
   intro ν hprob hmean hexpint hexp n t hnt ht x u hu2 hulog
-  haveI := hprob
+  have := hprob
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   set EY : ℝ := ∫ η, reflectionSum η n t x ∂P with hEY
   have hEY0 : 0 ≤ EY := integral_nonneg fun ζ => reflectionSum_nonneg ζ n t x
@@ -332,7 +332,7 @@ theorem measure_reflectionSum_tail_four (hVS : Sandpile.External.VarianceScale)
       ⊆ {ζ : Site 4 → ℝ | A₀ * Real.log ((t : ℝ) + 2) + v <
         odometerOf ζ t x - membrane ζ t x} := by
     intro ζ hζ
-    simp only [Set.mem_setOf_eq] at hζ ⊢
+    simp only [Set.mem_ofPred_eq] at hζ ⊢
     have hYnn : 0 ≤ reflectionSum ζ n t x := reflectionSum_nonneg ζ n t x
     have hhalf : u / 2 < reflectionSum ζ n t x := by
       rcases lt_or_ge (reflectionSum ζ n t x) EY with hle | hgt

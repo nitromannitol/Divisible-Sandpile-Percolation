@@ -97,7 +97,7 @@ lemma exists_annular_probability_step (_hGH : External.GreenBoundsHigh)
           ENNReal.ofReal (C * (R : ℝ) ^ d * Real.exp (-(c *
             min (a ^ 2 * (R : ℝ) ^ ((d : ℝ) - 4)) (a * (R : ℝ) ^ ((d : ℝ) - 2))))) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨c, C₀, hc, hC₀, hdec⟩ := Frozen.dgt4_level_shift_decoupling d hd θ K hθ
   let N : ℝ := ((259 ^ d) ^ 2 : ℕ)
   have hN : 0 < N := by dsimp [N]; positivity
@@ -107,7 +107,7 @@ lemma exists_annular_probability_step (_hGH : External.GreenBoundsHigh)
   have hNC₀ : N * C₀ ≤ C := by dsimp [C]; nlinarith
   refine ⟨c, C, hc, hC, ?_⟩
   intro ν hν hmean hvp hvf hexp hK t R hR s a ha hs
-  haveI := hν
+  have := hν
   let m := Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t
   let q := annularProbability (d := d) ν t m R (s - 2 * a)
   let e := Real.exp (-(c * min (a ^ 2 * (R : ℝ) ^ ((d : ℝ) - 4))
@@ -175,7 +175,7 @@ lemma exists_annular_probability_initial (hGH : External.GreenBoundsHigh)
   obtain ⟨c, C, hc, hC, hconc⟩ := exists_odometerOf_conc hGH hd θ K hθ
   refine ⟨c / 16, (5 : ℝ) ^ d * C, by positivity, by positivity, ?_⟩
   intro ν hν hexp hK t hm
-  haveI := hν
+  have := hν
   let m := Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t
   have hm' : 1 ≤ m := hm
   have hm0 : 0 ≤ m / 4 := by linarith

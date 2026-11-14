@@ -25,7 +25,7 @@ theorem BandParameters.exists_recurrent
         ∃ kl : ℕ → ℕ, StrictMono kl ∧
           Tendsto (fun n => 1 + 1 / P.theta (kl n)) atTop (𝓝 κ)) := by
   let I := Set.Icc (1 : ℝ) 2
-  haveI : Nonempty I := ⟨⟨1, by norm_num [I]⟩⟩
+  have : Nonempty I := ⟨⟨1, by norm_num [I]⟩⟩
   obtain ⟨v, hv⟩ := TopologicalSpace.exists_dense_seq I
   let u : ℕ → I := fun n => v (Nat.unpair n).1
   let P : BandParameters := ⟨A, c0, l1, lam0, fun n => (u n : ℝ),

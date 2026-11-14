@@ -105,7 +105,7 @@ theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_coefficients {Ω ι 
     (f : Lp ℝ 2 (volume : Measure (Space d)))
     (hb : ∀ i, b.repr f i ≠ 0 → AEStronglyMeasurable[m] (W (fun y => b i y)) P) :
     AEStronglyMeasurable[m] (W (fun y => f y)) P := by
-  letI : MeasurableSpace Ω := mΩ
+  let : MeasurableSpace Ω := mΩ
   let F := Sandpile.Support.whiteNoiseL2 hW
   let WF : Lp ℝ 2 (volume : Measure (Space d)) → Ω → ℝ := fun g => F g
   have hc := isClosed_aestronglyMeasurable (F := ℝ) (p := 2) (μ := P) hm

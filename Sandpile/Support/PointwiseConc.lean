@@ -114,7 +114,7 @@ theorem exists_odometerOf_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
   have hM0 : (0 : ℝ) < M := lt_of_lt_of_le one_pos hM
   refine ⟨c₀ / M, max C₀ 1, div_pos hc₀ hM0, lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩
   intro ν hprob hexpint hexp x t s hs
-  haveI := hprob
+  have := hprob
   rcases hs.eq_or_lt with hs0 | hspos
   · -- `s = 0`: the bound is at least one and a probability is at most one
     subst hs0
@@ -131,7 +131,7 @@ theorem exists_odometerOf_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
     have hempty : {ζ : Site d → ℝ | s ≤ |odometerOf ζ 0 x -
         ∫ η, odometerOf η 0 (0 : Site d) ∂(LatticeProb.iidLaw d ν)|} = ∅ := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_le, hI]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le, hI]
       show |(0 : ℝ) - 0| < s
       simpa using hspos
     rw [hempty]
@@ -161,7 +161,7 @@ theorem exists_odometerOf_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
       refine lt_of_lt_of_le (pow_pos (by linarith : (0:ℝ) < ℓ i₀) 2) ?_
       exact Finset.single_le_sum (f := fun i : Fin N => ℓ i ^ 2)
         (fun i _ => sq_nonneg _) (Finset.mem_univ i₀)
-    haveI : Nonempty (Fin N) := ⟨i₀⟩
+    have : Nonempty (Fin N) := ⟨i₀⟩
     have hInfLe : lInfNorm ℓ ≤ M := ciSup_le fun i => hMinf t x _
     have hInfPos : 0 < lInfNorm ℓ := lt_of_lt_of_le (by linarith) (le_lInfNorm ℓ i₀)
     -- the concentration bound in the box coordinates
@@ -185,7 +185,7 @@ theorem exists_odometerOf_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5
           {ξ | s ≤ |boxOdometer t x ξ -
             ∫ η, boxOdometer t x η ∂(Measure.pi fun _ : Fin N => ν)|} := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_preimage, hmean, boxOdometer_pick t x ζ]
+      simp only [Set.mem_ofPred_eq, Set.mem_preimage, hmean, boxOdometer_pick t x ζ]
     -- the exponent comparison
     have hmin : (c₀ / M) * min (s ^ 2) s
         ≤ c₀ * min (s ^ 2 / lTwoNorm ℓ ^ 2) (s / lInfNorm ℓ) := by

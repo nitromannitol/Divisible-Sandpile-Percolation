@@ -82,8 +82,8 @@ theorem walkLaw_real_displacement_le (hd : 1 ≤ d) {C₀ c₀ : ℝ} (hC₀ : 0
     (walkLaw d x).real {X : ℕ → Site d |
         r ≤ ‖External.Lclt.scaledSite R (X (τ X)) - External.Lclt.scaledSite R x‖}
       ≤ C₀ * Real.exp (-(c₀ * (r * R) ^ 2 / (4 * (m : ℝ)))) := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hrR0 : (0 : ℝ) ≤ r * R := by linarith
   set N : ℕ := ⌊r * R⌋₊ with hNdef
   have hNle : (N : ℝ) ≤ r * R := Nat.floor_le hrR0
@@ -168,10 +168,10 @@ theorem exists_walk_annulus_reach_bound (d : ℕ) (hd : 1 ≤ d) :
         ≤ ‖External.Lclt.scaledSite R (X (τ X)) - External.Lclt.scaledSite R x‖ :=
       norm_sub_norm_le _ _
     have hXle : 2 ^ j * A ≤ ‖External.Lclt.scaledSite R (X (τ X))‖ := hX
-    simp only [Set.mem_setOf_eq, hrdef]
+    simp only [Set.mem_ofPred_eq, hrdef]
     linarith
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hmono : (walkLaw d x).real {X : ℕ → Site d |
         2 ^ j * A ≤ ‖External.Lclt.scaledSite R (X (τ X))‖}
       ≤ (walkLaw d x).real {X : ℕ → Site d |
@@ -226,8 +226,8 @@ theorem exists_walk_cutoff_radius (hd : 1 ≤ d) (p : ℕ) {K C c T ε : ℝ} (h
   obtain ⟨A₀, hA₀1, hA₀⟩ := Continuum.exists_cutoff_radius p hK hC hc hT hε
   refine ⟨A₀, hA₀1, ?_⟩
   intro A hA x R n τ F hmeas hconf hV hq hint
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hA0 : (0 : ℝ) < A := lt_of_lt_of_le one_pos (le_trans hA₀1 hA)
   have hM : ∀ j : ℕ, (0 : ℝ) ≤ K * (2 ^ (j + 1) * A) ^ p := by
     intro j
@@ -419,8 +419,8 @@ theorem integrable_cutoff_error_of_bound (hd : 1 ≤ d) (x : Site d) (R A M : �
     Integrable (fun X : ℕ → Site d =>
       (1 - Continuum.cutoff A (External.Lclt.scaledSite R (X (τ X)))) * |F (τ X) X|)
       (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   refine Integrable.mono' (integrable_const M)
     (measurable_cutoff_stopped R A hτ hτm F hF).aestronglyMeasurable ?_
   filter_upwards [hb] with X hX

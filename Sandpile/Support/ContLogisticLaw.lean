@@ -458,7 +458,7 @@ combining the vanishing mean (`integral_id_logisticMeasure`) with the
 second-moment formula for variance. -/
 theorem variance_logisticMeasure {a : ℝ} (ha : 0 < a) :
     variance (id : ℝ → ℝ) (logisticMeasure a) = logisticSecondMoment a := by
-  haveI := isProbabilityMeasure_logisticMeasure ha
+  have := isProbabilityMeasure_logisticMeasure ha
   rw [ProbabilityTheory.variance_eq_sub (memLp_id_logisticMeasure ha)]
   have h1 : ∫ z, ((id : ℝ → ℝ) ^ 2) z ∂(logisticMeasure a) = logisticSecondMoment a := by
     show ∫ z : ℝ, z ^ 2 ∂(logisticMeasure a) = logisticSecondMoment a

@@ -122,7 +122,7 @@ theorem crossingEvent_negate (a b : Fin 2 → ℝ) (level : ℝ) :
       {u : Sandpile.Continuum.Space 2 | level ≤ -X u} = {u | X u ≤ -level} := by
     intro X
     ext u
-    simp only [Set.mem_setOf_eq]
+    simp only [mem_ofPred_eq]
     constructor
     · intro h; linarith
     · intro h; linarith

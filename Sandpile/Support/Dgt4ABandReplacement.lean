@@ -40,7 +40,7 @@ namespace Sandpile.Support
 /-- The threshold event at the level `c` is the lower tail of the law. -/
 theorem thresholdSet_eq_Iio (c : ℝ) : {z : ℝ | -(z) > c} = Iio (-c) := by
   ext z
-  simp only [mem_setOf_eq, mem_Iio, gt_iff_lt]
+  simp only [mem_ofPred_eq, mem_Iio, gt_iff_lt]
   constructor <;> intro h <;> linarith
 
 /-- The threshold event `{-z > c}` is measurable, being the preimage `thresholdSet_eq_Iio`
@@ -55,7 +55,7 @@ theorem symmDiff_thresholdSet (s t : ℝ) :
     symmDiff {z : ℝ | -(z) > s} {z : ℝ | -(z) > t}
       = {z : ℝ | min s t < -(z) ∧ -(z) ≤ max s t} := by
   ext z
-  simp only [Set.mem_symmDiff, mem_setOf_eq, gt_iff_lt, not_lt]
+  simp only [Set.mem_symmDiff, mem_ofPred_eq, gt_iff_lt, not_lt]
   rcases le_total s t with h | h
   · rw [min_eq_left h, max_eq_right h]
     constructor
@@ -336,7 +336,7 @@ theorem measure_symmDiff_threshold_split (P : BandParameters) (ν : Measure ℝ)
     have : {z : ℝ | w < -(z) ∧ -(z) ≤ P.l1 * P.level k}
         = Ico (-(P.l1 * P.level k)) (-w) := by
       ext z
-      simp only [mem_setOf_eq, mem_Ico]
+      simp only [mem_ofPred_eq, mem_Ico]
       constructor
       · rintro ⟨h1, h2⟩; constructor <;> linarith
       · rintro ⟨h1, h2⟩; constructor <;> linarith

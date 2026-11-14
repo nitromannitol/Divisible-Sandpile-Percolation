@@ -102,7 +102,7 @@ theorem convex_linear_bound_local
         + convexLinearConst * Sandpile.truncatedGap ν L * ∑ v ∈ S, b v ^ 2 := by
   classical
   set P : Measure (V → ℝ) := Measure.infinitePi (fun _ : V => ν) with hP
-  haveI : IsProbabilityMeasure P := by rw [hP]; infer_instance
+  have : IsProbabilityMeasure P := by rw [hP]; infer_instance
   set k := S.card with hk
   set e : Fin k → V := fun j => ((S.equivFin.symm j : S) : V) with he
   have hein : ∀ j, e j ∈ S := fun j => (S.equivFin.symm j).2
@@ -119,18 +119,18 @@ theorem convex_linear_bound_local
   have hspmeas : Measurable sp := by
     refine Measurable.of_eval fun v => ?_
     by_cases hv : v ∈ S
-    · simp only [hsp, hv, dif_pos]
+    · simp only [hsp, hv, dite_eq_left]
       exact measurable_pi_apply _
-    · simp only [hsp, hv, dif_neg, not_false_iff]
+    · simp only [hsp, hv, dite_eq_right, not_false_iff]
       exact measurable_const
   have hspe : ∀ (x : Fin k → ℝ) (j : Fin k), sp x (e j) = x j := by
     intro x j
-    simp only [hsp, hein j, dif_pos]
+    simp only [hsp, hein j, dite_eq_left]
     congr 1
     exact S.equivFin.apply_symm_apply j
   have hspT : ∀ (ω : V → ℝ) (v : V), v ∈ S → sp (T ω) v = ω v := by
     intro ω v hv
-    simp only [hsp, hv, dif_pos, hT]
+    simp only [hsp, hv, dite_eq_left, hT]
     congr 1
     exact congrArg Subtype.val (S.equivFin.symm_apply_apply ⟨v, hv⟩)
   have hspupd : ∀ (x : Fin k → ℝ) (j : Fin k) (y : ℝ),
@@ -147,8 +147,8 @@ theorem convex_linear_bound_local
           apply hv
           have := congrArg (fun m => ((S.equivFin.symm m : S) : V)) hEq
           simpa [he] using this
-        simp only [hsp, hvS, dif_pos, Function.update_of_ne hne]
-      · simp only [hsp, hvS, dif_neg, not_false_iff]
+        simp only [hsp, hvS, dite_eq_left, Function.update_of_ne hne]
+      · simp only [hsp, hvS, dite_eq_right, not_false_iff]
   set G : (Fin k → ℝ) → ℝ := fun x => F (sp x) with hG
   have hGm : Measurable G := hFm.comp hspmeas
   have hGT : ∀ ω : V → ℝ, G (T ω) = F ω := fun ω => hloc _ _ fun v hv => hspT ω v hv
@@ -181,7 +181,7 @@ theorem convex_linear_bound_local
     have hset : MeasurableSet {x : Fin k → ℝ | ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j)} := by
       have : {x : Fin k → ℝ | ∀ j : Fin k, 0 ≤ D' j x ∧ D' j x ≤ b (e j)}
           = ⋂ j : Fin k, ({x | 0 ≤ D' j x} ∩ {x | D' j x ≤ b (e j)}) := by
-        ext x; simp [Set.mem_iInter, Set.mem_setOf_eq, forall_and]
+        ext x; simp [Set.mem_iInter, forall_and]
       rw [this]
       exact MeasurableSet.iInter fun j =>
         (measurableSet_le measurable_const (hD'm j)).inter
@@ -290,7 +290,7 @@ theorem tendsto_truncatedGap (ν : Measure ℝ) [IsProbabilityMeasure ν]
       (Filter.Eventually.of_forall fun p => by
         refine tendsto_const_nhds.congr' ?_
         filter_upwards [eventually_gt_atTop |p.1 - p.2|] with L hL
-        rw [if_neg (not_lt.2 hL.le)])
+        rw [ite_eq_right (not_lt.2 hL.le)])
     simpa using h
   exact (Filter.Tendsto.congr (fun L => (hrepr L).symm) key)
 

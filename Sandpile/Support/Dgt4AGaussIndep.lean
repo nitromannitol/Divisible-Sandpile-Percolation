@@ -37,11 +37,7 @@ theorem hasGaussianLaw_gaussIso_pair (f g : lp (fun _ : ι => ℝ) 2) :
       (fun i => ⇑(LatticeProb.gaussIso (![f, g] i)) ω) : EuclideanSpace ℝ (Fin 2)))
       (LatticeProb.gaussLaw ι) := by
     refine ⟨?_, ?_⟩
-    ·
-      first
-      | fun_prop
-      | exact (PiLp.continuous_toLp 2 _).measurable.comp_aemeasurable
-          (AEMeasurable.of_eval fun i => (Lp.aestronglyMeasurable _).aemeasurable)
+    · fun_prop
     · rw [map_gaussIso_vector (fun i => ![f, g] i)]
       infer_instance
   have hL : HasGaussianLaw
@@ -86,11 +82,7 @@ theorem hasGaussianLaw_gaussIso_pi {m : ℕ} (gs : Fin m → lp (fun _ : ι => �
       (fun i => ⇑(LatticeProb.gaussIso (gs i)) ω) : EuclideanSpace ℝ (Fin m)))
       (LatticeProb.gaussLaw ι) := by
     refine ⟨?_, ?_⟩
-    ·
-      first
-      | fun_prop
-      | exact (PiLp.continuous_toLp 2 _).measurable.comp_aemeasurable
-          (AEMeasurable.of_eval fun i => (Lp.aestronglyMeasurable _).aemeasurable)
+    · fun_prop
     · rw [map_gaussIso_vector gs]
       infer_instance
   exact HasGaussianLaw.map_of_measurable

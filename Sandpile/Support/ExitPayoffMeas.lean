@@ -46,8 +46,8 @@ theorem measurable_uncurry_exit_payoff (hd : 1 ≤ d) (D : Set (Site d)) (N : �
       if q.2 ∈ D then 0 else localizedOdometer (E q.2) q.1 m q.2 := by
     refine measurable_from_prod_countable_left fun w => ?_
     by_cases hw' : w ∈ D
-    · simp only [hw', if_pos]
+    · simp only [hw', ite_eq_left]
       exact measurable_const
-    · simp only [hw', if_neg, not_false_iff]
+    · simp only [hw', ite_eq_right, not_false_iff]
       exact measurable_localizedOdometer hd (E w) m w
   exact hcount.comp (measurable_fst.prodMk hw)

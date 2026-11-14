@@ -52,8 +52,8 @@ theorem stronglyMeasurable_toLp_of_uncurry {U X : Type*}
     (f : U → X → ℝ) (hf : ∀ u, MemLp (f u) 2 μ)
     (hm : Measurable (Function.uncurry f)) :
     StronglyMeasurable (fun u => (hf u).toLp (f u)) := by
-  letI : MeasurableSpace (Lp ℝ 2 μ) := borel (Lp ℝ 2 μ)
-  letI : BorelSpace (Lp ℝ 2 μ) := ⟨rfl⟩
+  let : MeasurableSpace (Lp ℝ 2 μ) := borel (Lp ℝ 2 μ)
+  let : BorelSpace (Lp ℝ 2 μ) := ⟨rfl⟩
   apply Measurable.stronglyMeasurable
   apply measurable_of_measurable_dist
   intro v
@@ -108,7 +108,7 @@ via the joint measurability from `measurable_uncurry_greenTimeBM`. -/
 theorem stronglyMeasurable_greenTimeBM_toLp {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     StronglyMeasurable (fun p : ℝ≥0 × Space d =>
       (memLp_greenTimeBM hd hd3 p.1.property p.2).toLp (greenTimeBM d p.1 p.2)) := by
-  letI : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
+  let : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
   exact stronglyMeasurable_toLp_of_uncurry (volume : Measure (Space d))
     (fun p : ℝ≥0 × Space d => greenTimeBM d p.1 p.2)
     (fun p : ℝ≥0 × Space d => memLp_greenTimeBM hd hd3 p.1.property p.2)
@@ -122,7 +122,7 @@ theorem norm_greenTimeBM_toLp_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3)
     {t T : ℝ} (ht : 0 ≤ t) (htT : t ≤ T) (x : Space d) :
     ‖(memLp_greenTimeBM hd hd3 ht x).toLp (greenTimeBM d t x)‖ ≤
       ‖(memLp_greenTimeBM hd hd3 (ht.trans htT) 0).toLp (greenTimeBM d T 0)‖ := by
-  letI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+  let : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have he (s : ℝ) (hs : 0 ≤ s) (z : Space d) :
       ‖(memLp_greenTimeBM hd hd3 hs z).toLp (greenTimeBM d s z)‖ ^ 2 =
         ∫ y, greenTimeBM d s z y * greenTimeBM d s z y := by

@@ -175,7 +175,7 @@ theorem indicator_path_eq_mul (j : ℕ) (z : Site d) (g : (ℕ → Site d) → �
     Set.indicator {Y : ℕ → Site d | Y j = z} g X = (if X j = z then (1 : ℝ) else 0) * g X := by
   classical
   rw [Set.indicator_apply]
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   split <;> simp
 
 /-- The survival probability, as a function of the path, is measurable. -/

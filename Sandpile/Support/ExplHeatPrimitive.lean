@@ -37,10 +37,10 @@ theorem integrable_positive_heat_time_space {d : ℕ} (hd : 1 ≤ d)
   apply (integrable_prod_iff hm.aestronglyMeasurable).mpr
   constructor
   · filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
-    simpa only [if_pos hs.1] using integrable_heatKernelBM_space hd hs.1 x
+    simpa only [ite_eq_left hs.1] using integrable_heatKernelBM_space hd hs.1 x
   · apply (integrable_const (1 : ℝ)).congr
     filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
-    simp only [if_pos hs.1, Real.norm_eq_abs,
+    simp only [ite_eq_left hs.1, Real.norm_eq_abs,
       abs_of_nonneg (heatKernelBM_nonneg d hs.1.le x _), integral_heatKernelBM_eq_one hd hs.1 x]
 /-- The time primitive of a joint heat-noise version is white noise applied to the Green kernel. -/
 theorem whiteNoise_heat_primitive_eq {Ω : Type*} [MeasurableSpace Ω]
@@ -72,7 +72,7 @@ theorem whiteNoise_heat_primitive_eq {Ω : Type*} [MeasurableSpace Ω]
         = ∫ s in Set.Ioo 0 T, heatKernelBM d s x y := by
           apply integral_congr_ae
           filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
-          exact if_pos hs.1
+          exact ite_eq_left hs.1
       _ = greenTimeBM d T x y := by
           rw [greenTimeBM, intervalIntegral.integral_of_le hT, integral_Ioc_eq_integral_Ioo]
   have hidx := whiteNoise_index_congr hW (Lp.memLp _) (hrep.trans (Eventually.of_forall he))
@@ -96,7 +96,7 @@ theorem gaussianPotential_time_envelope {Ω : Type*} [MeasurableSpace Ω]
   let D (ω : Ω) := Real.sqrt ν2 * ∫ s in Set.Ioo 0 T, ‖Y (s, x) ω‖
   refine ⟨hmain.1.integral_norm_prod_right.const_mul (Real.sqrt ν2), ?_⟩
   let E := Set.Icc (0 : ℝ) T
-  letI : Nonempty E := ⟨⟨0, le_rfl, hT.le⟩⟩
+  let : Nonempty E := ⟨⟨0, le_rfl, hT.le⟩⟩
   have hbound (t : E) : ∀ᵐ ω ∂P, ‖Z t x ω‖ ≤ D ω := by
     filter_upwards [hmod t t.property.1 x,
       (whiteNoise_heat_primitive_eq hd hd3 hW Y hY hv t t.property.1 x).2,

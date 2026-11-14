@@ -113,7 +113,8 @@ theorem measurable_cutWeight_pair (T κ : ℝ) :
 theorem abs_cutWeight_mul_le {T κ : ℝ} (hκ : 0 ≤ κ) (r r' : ℝ) :
     |cutWeight T κ r * cutWeight T κ r'| ≤ 1 := by
   rw [abs_of_nonneg (mul_nonneg (cutWeight_nonneg T κ r) (cutWeight_nonneg T κ r'))]
-  exact mul_le_one₀ (cutWeight_le_one hκ r) (cutWeight_nonneg T κ r') (cutWeight_le_one hκ r')
+  exact (mul_le_of_le_one_left (cutWeight_nonneg T κ r') (cutWeight_le_one hκ r)).trans
+      (cutWeight_le_one hκ r')
 
 /-- The two weights agree under the double time integral over the open square. -/
 theorem setIntegral_cutWeight_congr {T κ : ℝ} (hT : 0 < T) (F : ℝ → ℝ) :
@@ -236,7 +237,7 @@ theorem integrableOn_weight_kernelPair (hd : 1 ≤ d) {T κ r : ℝ} (hT : 0 < T
     (hKm : Measurable (fun p : ℝ × Space d => kernelPair d φ p.1 p.2)) (x : Space d) :
     IntegrableOn (fun r' : ℝ => (1 - r / T) ^ κ * (1 - r' / T) ^ κ *
       kernelPair d φ (r + r') x) (Set.Ioo (0:ℝ) T) := by
-  haveI : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [MeasureTheory.Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -254,7 +255,7 @@ theorem integrableOn_weight_kernelPair (hd : 1 ≤ d) {T κ r : ℝ} (hT : 0 < T
   have h4 := weight_nonneg (T := T) (κ := κ) hT hr
   have h5 := weight_nonneg (T := T) (κ := κ) hT hr'
   have h6 := abs_nonneg (kernelPair d φ (r + r') x)
-  have hww : (1 - r / T) ^ κ * (1 - r' / T) ^ κ ≤ 1 := mul_le_one₀ h1 h5 h2
+  have hww : (1 - r / T) ^ κ * (1 - r' / T) ^ κ ≤ 1 := (mul_le_of_le_one_left h5 h1).trans h2
   have hfin := mul_le_mul hww h3 h6 zero_le_one
   rw [one_mul] at hfin
   exact hfin
@@ -267,7 +268,7 @@ theorem abs_inner_time_le (hd : 1 ≤ d) {T κ r : ℝ} (hT : 0 < T) (hκ : 0 �
     |∫ r' in Set.Ioo (0:ℝ) T, (1 - r / T) ^ κ * (1 - r' / T) ^ κ *
         kernelPair d φ (r + r') x| ≤ T * C := by
   have hC0 : (0:ℝ) ≤ C := le_trans (abs_nonneg (φ x)) (hC x)
-  haveI : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [MeasureTheory.Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -290,7 +291,7 @@ theorem abs_inner_time_le (hd : 1 ≤ d) {T κ r : ℝ} (hT : 0 < T) (hκ : 0 �
         have h4 := weight_nonneg (T := T) (κ := κ) hT hr
         have h5 := weight_nonneg (T := T) (κ := κ) hT hr'
         have h6 := abs_nonneg (kernelPair d φ (r + r') x)
-        have hww : (1 - r / T) ^ κ * (1 - r' / T) ^ κ ≤ 1 := mul_le_one₀ h1 h5 h2
+        have hww : (1 - r / T) ^ κ * (1 - r' / T) ^ κ ≤ 1 := (mul_le_of_le_one_left h5 h1).trans h2
         have hfin := mul_le_mul hww h3 h6 zero_le_one
         rw [one_mul] at hfin
         exact hfin
@@ -305,7 +306,7 @@ theorem integrableOn_inner_time (hd : 1 ≤ d) {T κ : ℝ} (hT : 0 < T) (hκ : 
     (hKm : Measurable (fun p : ℝ × Space d => kernelPair d φ p.1 p.2)) (x : Space d) :
     IntegrableOn (fun r : ℝ => ∫ r' in Set.Ioo (0:ℝ) T,
       (1 - r / T) ^ κ * (1 - r' / T) ^ κ * kernelPair d φ (r + r') x) (Set.Ioo (0:ℝ) T) := by
-  haveI : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [MeasureTheory.Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -323,7 +324,7 @@ theorem abs_timeDouble_le (hd : 1 ≤ d) {T κ : ℝ} (hT : 0 < T) (hκ : 0 ≤ 
     (φ : Space d → ℝ) (hφ : Integrable φ) (C : ℝ) (hC : ∀ z, |φ z| ≤ C) (x : Space d) :
     |timeDouble d φ κ T x| ≤ T * (T * C) := by
   have hC0 : (0:ℝ) ≤ C := le_trans (abs_nonneg (φ x)) (hC x)
-  haveI : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure ((volume : Measure ℝ).restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [MeasureTheory.Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top

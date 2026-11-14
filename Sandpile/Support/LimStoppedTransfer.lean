@@ -249,7 +249,7 @@ theorem gridPayoff_eq {T : ℝ≥0} (hT : T ≠ 0) (s : ℝ) (n : ℕ) (F : ℝ�
   rw [gridPayoff, Finset.sum_eq_single_of_mem _ hmem]
   · simp [gridStop]
   · intro j _ hj
-    refine if_neg fun hcon => ?_
+    refine ite_eq_right fun hcon => ?_
     exact hj (gridTime_injOn T hT n hcon).symm
 
 end Payoff

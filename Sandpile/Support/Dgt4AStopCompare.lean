@@ -124,7 +124,7 @@ theorem abs_dpValue_add_hit_le (hd : 1 ≤ d) {W : Site d → ℝ} {F : ℕ → 
       rw [LatticeProb.srwHitBy_zero]
       by_cases hx : x = 0
       · subst hx
-        rw [if_pos rfl, one_mul]
+        rw [ite_eq_left rfl, one_mul]
         have hle : F m 0 ≤ W 0 := dpValue_le_payoff hF0 hFs m 0
         rw [hW0] at hle
         rcases le_total θ 0 with hθ | hθ
@@ -133,7 +133,7 @@ theorem abs_dpValue_add_hit_le (hd : 1 ≤ d) {W : Site d → ℝ} {F : ℕ → 
         · have hc : c = θ := by rw [hcdef]; exact max_eq_left hθ
           rw [hc, abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]
           linarith
-      · rw [if_neg hx, zero_mul, add_zero]
+      · rw [ite_eq_right hx, zero_mul, add_zero]
   | succ j ih =>
       intro hjk m x hx
       have hj1 : j ≤ k + 1 := by omega

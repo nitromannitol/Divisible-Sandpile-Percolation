@@ -61,7 +61,7 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
   set μ' : Measure (Site 2 → ℝ) := (LatticeProb.iidLaw 4 (gaussianReal 0 v)).map
       (fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)) with hμ'
-  haveI : IsProbabilityMeasure μ' := isProbabilityMeasure_planar_image (gaussianReal 0 v) r L φ x
+  have : IsProbabilityMeasure μ' := isProbabilityMeasure_planar_image (gaussianReal 0 v) r L φ x
   set lvl : ℝ := -(a / 4 * Real.log r) with hlvl
   have hρ1 : 1 ≤ ρ := Nat.ceil_pos.mpr (by positivity)
   -- square half bound at square scale 2n, field scale r
@@ -119,7 +119,7 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
           finiteKernelField (External.BallGreen.cutField r L φ) ζ
             (planeTranslate x z))} := by
     intro ζ hζ
-    simp only [Set.mem_setOf_eq] at hζ ⊢
+    simp only [Set.mem_ofPred_eq] at hζ ⊢
     exact hζ.trans (crossingValue_width_height_mono (le_refl _) hρn
       (fun z => finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z)))
   have hmono : LatticeProb.iidLaw 4 (gaussianReal 0 v)
@@ -186,7 +186,7 @@ lemma exists_gaussian_rectangle_crossing_lower (hRSW : External.PlanarRSW)
   have hsubHT : planarCrossingEvent (2 * ρ * n) (2 * n) lvl ⊆
       planarCrossingEvent ⌊ϑ * r⌋₊ r lvl := by
     intro F hF
-    simp only [planarCrossingEvent, Set.mem_setOf_eq] at hF ⊢
+    simp only [planarCrossingEvent, Set.mem_ofPred_eq] at hF ⊢
     exact hF.trans (crossingValue_width_height_mono hwid h2n F)
   have hhardT : μ'.real (planarCrossingEvent (2 * ρ * n) (2 * n) lvl) ≤
       μ'.real (planarCrossingEvent ⌊ϑ * r⌋₊ r lvl) := by

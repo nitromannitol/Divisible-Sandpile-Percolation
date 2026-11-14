@@ -78,7 +78,7 @@ theorem measure_odometer_le_pi (ν : Measure ℝ) [IsProbabilityMeasure ν] (hd 
     {ξ | ∀ j, ∑ i, stdCoeff d ν s ns i j * ξ i ≤ h / membraneSd d ν (ns j)} with hB
   have hAB : A = (fun ζ : Site d → ℝ => fun i : Fin s.card => ζ (siteEnum s i)) ⁻¹' B := by
     ext ζ
-    simp only [hA, hB, Set.mem_setOf_eq, Set.mem_preimage]
+    simp only [hA, hB, Set.mem_ofPred_eq, Set.mem_preimage]
     constructor
     · intro hζ j
       have hM : 0 < membraneSd d ν (ns j) := membraneSd_pos ν hvar (hns j)

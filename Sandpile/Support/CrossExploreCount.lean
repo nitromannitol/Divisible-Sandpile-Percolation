@@ -136,13 +136,13 @@ theorem card_blockSites_le (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).ca
   rw [blockSites, Pi.card_Icc]
   calc ∏ i : Fin d, (Finset.Icc (blockLo d z i) (blockHi d z i)).card
       ≤ ∏ _i : Fin d, 5 := by
-        refine Finset.prod_le_prod' ?_
+        refine Finset.prod_le_prod ?_
         intro i _
         rw [Int.card_Icc, blockLo, blockHi]
         by_cases hi : (i : ℕ) < 2
-        · rw [dif_pos hi, dif_pos hi]
+        · rw [dite_eq_left hi, dite_eq_left hi]
           omega
-        · rw [dif_neg hi, dif_neg hi]
+        · rw [dite_eq_right hi, dite_eq_right hi]
           omega
     _ = 5 ^ d := by simp
 
@@ -177,7 +177,7 @@ theorem measurableSet_mem_finalReach (hGle : ∀ i, G i ≤ (inferInstance : Mea
           ({ω | exploreSet (exploreNext d a b lev bf) ω = A} ∩
             {ω | z ∈ reachSq a b lev bf (doneSq d a b A) ω}) := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_inter_iff]
     constructor
     · intro h
       exact ⟨exploreSet (exploreNext d a b lev bf) ω, rfl, h⟩
@@ -238,8 +238,8 @@ theorem card_exploreSet_le (hrule : IsExplorationRule G (exploreNext d a b lev b
           = if z ∈ finalReach d a b lev bf ω then (1 : ℝ) else 0 := by
       intro z _
       by_cases hz : z ∈ finalReach d a b lev bf ω
-      · rw [Set.indicator_of_mem (by exact hz), if_pos hz]; rfl
-      · rw [Set.indicator_of_notMem (by exact hz), if_neg hz]
+      · rw [Set.indicator_of_mem (by exact hz), ite_eq_left hz]; rfl
+      · rw [Set.indicator_of_notMem (by exact hz), ite_eq_right hz]
     rw [Finset.sum_congr rfl hstep, Finset.sum_ite_mem, Finset.inter_eq_right.mpr hsub,
       Finset.sum_const, nsmul_eq_mul, mul_one]
   rw [hind]

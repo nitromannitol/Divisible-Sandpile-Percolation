@@ -86,11 +86,11 @@ theorem greenSupRate_geom_le (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (hq : 1 
     have hsqrt : ((q : ℝ) ^ ((1 : ℝ) / 2)) = Real.sqrt (q : ℝ) :=
       (Real.sqrt_eq_rpow (q : ℝ)).symm
     have hleft : greenSupRate 1 (N * q ^ j) = Real.sqrt (N : ℝ) * Real.sqrt (q : ℝ) ^ j := by
-      rw [greenSupRate, if_pos rfl]
+      rw [greenSupRate, ite_eq_left rfl]
       push_cast
       rw [Real.sqrt_mul hN0.le, sqrt_pow_nat hq0.le j]
     have hright : greenSupRate 1 N = Real.sqrt (N : ℝ) := by
-      rw [greenSupRate, if_pos rfl]
+      rw [greenSupRate, ite_eq_left rfl]
     rw [hleft, hright, hsqrt]
     have h1 : (0 : ℝ) ≤ Real.sqrt (N : ℝ) * Real.sqrt (q : ℝ) ^ j := by positivity
     linarith

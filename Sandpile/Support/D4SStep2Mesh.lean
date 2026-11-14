@@ -35,16 +35,16 @@ theorem sameParity_parityBase (x : Site 4) :
   classical
   unfold parityBase
   by_cases h : Sandpile.External.SameParity x (0 : Site 4)
-  · rw [if_pos h]; exact h
-  · rw [if_neg h]; exact sameParity_add_unit_of_not h (0 : Fin 4)
+  · rw [ite_eq_left h]; exact h
+  · rw [ite_eq_right h]; exact sameParity_add_unit_of_not h (0 : Fin 4)
 
 /-- Every coordinate of `parityBase x` is `0` or `1`, hence has absolute value at most `1`. -/
 theorem abs_parityBase_le (x : Site 4) (i : Fin 4) : |(parityBase x i : ℤ)| ≤ 1 := by
   classical
   unfold parityBase
   by_cases h : Sandpile.External.SameParity x (0 : Site 4)
-  · rw [if_pos h]; simp
-  · rw [if_neg h]
+  · rw [ite_eq_left h]; simp
+  · rw [ite_eq_right h]
     have : ((0 : Site 4) + unit (0 : Fin 4)) i = (if i = 0 then (1:ℤ) else 0) := by
       simp [unit, Pi.single_apply]
     rw [this]

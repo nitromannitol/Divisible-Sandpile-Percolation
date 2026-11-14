@@ -126,7 +126,7 @@ theorem level_upper_bound {w : ℝ≥0} (hw : 0 < (w : ℝ)) {a q : ℝ} (ha : 0
     (hlow : q ≤ ((gaussianReal 0 w).real (Set.Ioi a))) :
     a / Real.sqrt (w : ℝ) ≤ Real.sqrt (2 * Real.log (1 / q)) := by
   have hsub : Set.Ioi a ⊆ {x : ℝ | a ≤ x} :=
-    fun x hx => Set.mem_setOf.mpr (le_of_lt (Set.mem_Ioi.mp hx))
+    fun x hx => Set.mem_ofPred.mpr (le_of_lt (Set.mem_Ioi.mp hx))
   have hmono : ((gaussianReal 0 w).real (Set.Ioi a))
       ≤ ((gaussianReal 0 w).real {x : ℝ | a ≤ x}) :=
     measureReal_mono hsub (measure_ne_top _ _)

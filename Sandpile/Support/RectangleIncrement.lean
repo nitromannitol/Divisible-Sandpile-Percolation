@@ -42,7 +42,7 @@ lemma abs_sub_le_edgeOscillation {V : Type*} [Fintype V] [Nonempty V]
     |F v - F w| ≤ edgeOscillation G F := by
   classical
   have hh := le_finiteMaximum (fun p : V × V => if G.Adj p.1 p.2 then |F p.1 - F p.2| else 0) (v, w)
-  simpa only [hvw, if_true, edgeOscillation] using hh
+  simpa only [hvw, ite_true, edgeOscillation] using hh
 
 /-- If every adjacent pair `v, w` satisfies `|F v - F w| ≤ a` for some `a ≥ 0`, then
 `edgeOscillation G F ≤ a`, since `a` bounds every term of the defining maximum. -/

@@ -42,7 +42,7 @@ lemma measurableSet_sublevelWitnessEvent {V Ω : Type*} [MeasurableSpace Ω]
   have he : sublevelWitnessEvent Q W F s =
       ⋃ T ∈ {T : Set V | T ⊆ Q}, {ω | W T ∧ ∀ y ∈ T, F ω y ≤ -s} := by
     ext ω
-    simp only [sublevelWitnessEvent, Set.mem_setOf_eq, Set.mem_iUnion]
+    simp only [sublevelWitnessEvent, Set.mem_ofPred_eq, Set.mem_iUnion]
     constructor <;> rintro ⟨T, hT, hW, hval⟩ <;> exact ⟨T, hT, hW, hval⟩
   rw [he]
   refine MeasurableSet.biUnion hQ.finite_subsets.countable (fun T hT => ?_)
@@ -50,11 +50,11 @@ lemma measurableSet_sublevelWitnessEvent {V Ω : Type*} [MeasurableSpace Ω]
   · simp only [hW, true_and]
     have heT : {ω | ∀ y ∈ T, F ω y ≤ -s} = ⋂ y ∈ T, {ω | F ω y ≤ -s} := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_iInter]
+      simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     rw [heT]
     exact MeasurableSet.biInter (hQ.subset hT).countable (fun y _ =>
       measurableSet_le (hF y) measurable_const)
-  · simp only [hW, false_and, Set.setOf_false, MeasurableSet.empty]
+  · simp only [hW, false_and, Set.ofPred_false, MeasurableSet.empty]
 
 /-- If `F` and `G` differ by at most `a` in absolute value on `Q` at the point `ω`, then `ω`
 lying in the level-`s` sublevel event of `F` puts it in the level-`(s - a)` sublevel event of
@@ -179,7 +179,7 @@ lemma odometer_sublevel_decoupling (_hGH : External.GreenBoundsHigh)
   obtain ⟨c, hc, htail⟩ := Frozen.dgt4_localization d hd θ K hθ
   refine ⟨c, hc, ?_⟩
   intro ν hν hmean hvp hvf hexp hK K₁ K₂ r a hr ha hdisj t m W₁ W₂ s p hp hC₁ hC₂
-  haveI := hν
+  have := hν
   let F := fun (ω : Site d → ℝ) y => odometerOf ω t y - m
   let S := fun (J : Finset (Site d)) => Frozen.DGT4Localization.thickening J r
   let G := fun (J : Finset (Site d)) (ω : Site d → ℝ) (y : Site d) =>

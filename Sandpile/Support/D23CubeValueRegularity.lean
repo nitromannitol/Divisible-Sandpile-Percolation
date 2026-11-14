@@ -80,7 +80,7 @@ theorem cubeStoppingPayoffs_add_const {ΩB : Type*} [MeasurableSpace ΩB] {d : �
     cubeStoppingPayoffs (fun t ω => u + B t ω) P h T L u =
       cubeStoppingPayoffs B P (fun t y => h t (u + y)) T L 0 := by
   ext a
-  simp only [cubeStoppingPayoffs, Set.mem_setOf_eq, isBrownianStopping_add_const,
+  simp only [cubeStoppingPayoffs, mem_ofPred_eq, isBrownianStopping_add_const,
     PiLp.add_apply, add_sub_cancel_left, PiLp.zero_apply, sub_zero]
 
 /-- The cube value of the shifted motion, about the starting point `u`, equals `h T u` plus the
@@ -101,7 +101,7 @@ theorem isCompact_cube (d : ℕ) (c : Space d) (L : ℝ) :
       (EuclideanSpace.equiv (Fin d) ℝ) ⁻¹'
         Set.pi Set.univ (fun i => Set.Icc (c i - L) (c i + L)) := by
     ext y
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies,
+    simp only [mem_ofPred_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies,
       Set.mem_Icc, abs_le]
     refine forall_congr' fun i => ?_
     rw [show (EuclideanSpace.equiv (Fin d) ℝ) y i = y i from rfl]
@@ -151,7 +151,7 @@ theorem continuous_brownianDiscountCube_shift
       simpa only [Real.norm_eq_abs] using hN (s, y) ⟨hs, hy⟩)
     (fun s hs y hy => by
       have h := hvε u hu (s, y) ⟨hs, hy⟩
-      simpa only [Set.mem_setOf_eq, Real.dist_eq] using h.le)
+      simpa only [mem_ofPred_eq, Real.dist_eq] using h.le)
   rw [Real.dist_eq]
   exact lt_of_le_of_lt hlip (half_lt_self hε)
 
@@ -171,7 +171,7 @@ theorem measurable_brownianDiscountCube_sample
   classical
   let K : Set (ℝ × Space d) := Set.Icc 0 T ×ˢ {y : Space d | ∀ i, |y i - u i| ≤ L}
   have hKc : IsCompact K := isCompact_strip_cube d u T L
-  haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc
+  have : CompactSpace K := isCompact_iff_compactSpace.1 hKc
   let r : ΩW → C(K, ℝ) := fun ω => ⟨fun q => Z ω q.1.1 q.1.2, (hZ ω).comp continuous_subtype_val⟩
   let D : ΩW → ℝ := fun ω => brownianDiscountCube B PB (Z ω) T L u
   have hr : ∀ ω (q : K), r ω q = Z ω q.1.1 q.1.2 := fun _ _ => rfl
@@ -212,9 +212,9 @@ theorem measurable_brownianDiscountCube_sample
     exact Measurable.iSup fun n => ((hZm _ _).sub_const _).norm
   obtain ⟨t, hts, htc, hdense⟩ :=
     (TopologicalSpace.IsSeparable.of_separableSpace (Set.range r)).exists_countable_dense_subset
-  haveI : Countable t := htc.to_subtype
+  have : Countable t := htc.to_subtype
   obtain ⟨ω₀⟩ := hΩ
-  haveI : Nonempty t := by
+  have : Nonempty t := by
     obtain ⟨g, hg, -⟩ := Metric.mem_closure_iff.1 (hdense ⟨ω₀, rfl⟩) 1 one_pos
     exact ⟨⟨g, hg⟩⟩
   choose ω' hω' using fun g : t => hts g.2
@@ -250,7 +250,7 @@ theorem cubeStoppingPayoffs_of_dim_zero {ΩB : Type*} [MeasurableSpace ΩB] {d :
     cubeStoppingPayoffs B P h T L c = cubeStoppingPayoffs B P h T L' c := by
   subst hd
   ext a
-  simp only [cubeStoppingPayoffs, Set.mem_setOf_eq, IsEmpty.forall_iff, implies_true]
+  simp only [cubeStoppingPayoffs, mem_ofPred_eq, IsEmpty.forall_iff, implies_true]
 
 /-- A cube of negative half-width is empty, so only `τ = 0` is admissible and the discount is
 `-h(T, x)` for a motion started at `x`. -/

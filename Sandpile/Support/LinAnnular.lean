@@ -67,7 +67,7 @@ theorem sum_range_cube_le (K : ℕ) :
 theorem boxDist_le_latticeNorm (hd : 1 ≤ d) (u : Site d) :
     ((boxDist (0 : Site d) u : ℕ) : ℝ) ≤ Sandpile.External.latticeNorm u := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hne : (Finset.univ : Finset (Fin d)).Nonempty := Finset.univ_nonempty
   obtain ⟨i, -, hi⟩ := Finset.exists_mem_eq_sup (Finset.univ : Finset (Fin d)) hne
     (fun i => ((0 : Site d) i - u i).natAbs)

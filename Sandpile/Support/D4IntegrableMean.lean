@@ -32,7 +32,7 @@ theorem exists_log_mean_lower_integrable_four (ν : Measure ℝ) [IsProbabilityM
   set f := binaryProjection ν (Set.Iic (-a))
   set ρ := ν.map f
   obtain ⟨hρ, hmρ, hvρ, hiρ⟩ := binaryProjection_law_properties ν hint hmean a ha hpa
-  haveI : IsProbabilityMeasure ρ := hρ
+  have : IsProbabilityMeasure ρ := hρ
   obtain ⟨r, hr0, hrpos, hrvar⟩ := ENNReal.lt_iff_exists_real_btwn.mp hvρ
   have hr : 0 < r := ENNReal.ofReal_pos.mp hrpos
   have hvr : ENNReal.ofReal ((Real.sqrt r) ^ 2) ≤ evariance id ρ := by

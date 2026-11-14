@@ -81,7 +81,7 @@ of `odometerJacobian`'s own recursion. -/
 theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d → ℝ) :
     ∀ n : ℕ, ∀ x z : Site d,
       (∫ X, pathOdometerDerivative ζ n z X ∂walkLaw d x) = odometerJacobian ζ n x z := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   intro n
   induction n with
   | zero => intro x z; simp [pathOdometerDerivative, odometerJacobian]
@@ -110,10 +110,10 @@ theorem integral_pathOdometerDerivative {d : ℕ} (hd : 1 ≤ d) (ζ : Site d �
       filter_upwards [ae_walkLaw_zero x] with X hX
       simp only [pathOdometerDerivative, hX])]
     by_cases ha : 0 < odometerOf ζ (n + 1) x
-    · simp only [if_pos ha, odometerJacobian]
+    · simp only [ite_eq_left ha, odometerJacobian]
       rw [integral_add (integrable_const _) hint, integral_const, hshift]
       simp
-    · simp only [if_neg ha, integral_zero, odometerJacobian]
+    · simp only [ite_eq_right ha, integral_zero, odometerJacobian]
 
 /-- **The pathwise derivative unrolled as an explicit sum.** `pathOdometerDerivative ζ n z X`
 equals the sum over visit times `j < n` of the indicator that `X j = z`, weighted by the
@@ -139,7 +139,7 @@ theorem pathOdometerDerivative_eq_sum {d : ℕ} (ζ : Site d → ℝ) :
               (if 0 < odometerOf ζ (n - i) (X (i + 1)) then 1 else 0) else 0) := by
       rw [Finset.prod_range_succ']
       simp only [Nat.add_sub_add_right, Nat.sub_zero]
-      by_cases ha : 0 < odometerOf ζ (n + 1) (X 0) <;> simp only [ha, if_true, if_false,
+      by_cases ha : 0 < odometerOf ζ (n + 1) (X 0) <;> simp only [ha, ite_true, ite_false,
         mul_one, mul_zero]
     rw [Finset.sum_range_succ']
     simp only [hstep]

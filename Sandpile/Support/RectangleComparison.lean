@@ -84,7 +84,7 @@ lemma exists_gaussian_rectangle_comparison_constants (θ K : ℝ) (hθ : 0 < θ)
   refine ⟨B, hB, G * D, mul_pos hG hD, ?_⟩
   intro Q hQ hcard I _ _ μ hμ hexp hK hmean v hsecond W a q ha hq hW hoverlap
     level error herr hβ hκ
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   let l := Real.log Q.card
   let β := B * l ^ 2 / error
   have hl : Real.log 2 ≤ l := Real.log_le_log (by norm_num) (by exact_mod_cast hcard)
@@ -146,7 +146,7 @@ lemma exists_gaussian_far_rectangle_comparison_constants
   have hBpos : 0 < B := zero_lt_one.trans_le hB
   refine ⟨B, hB, C * H, mul_pos hC hH, 6 * B ^ 2 * H, by positivity, ?_⟩
   intro Q hQ hcard r L hr hL φ hφ z μ hμ hexp hK hmean v hsecond level error herr hβ hκ
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   let h := External.BallGreen.cutField r L φ
   obtain ⟨s, hs⟩ := exists_finiteKernelField_coordinates (boxFinset 0 r)
     (fun u hu => cutField_eq_zero_of_notMem_boxFinset r L φ hu) z

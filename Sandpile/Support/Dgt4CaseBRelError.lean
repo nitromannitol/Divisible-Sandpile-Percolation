@@ -39,8 +39,8 @@ theorem thrInd_eq_indicator (w : ℝ) :
     simp only [mem_Iio]
     constructor <;> intro h <;> linarith
   by_cases h : w < -z
-  · rw [if_pos h, if_pos (hiff.mp h)]
-  · rw [if_neg h, if_neg fun hc => h (hiff.mpr hc)]
+  · rw [ite_eq_left h, ite_eq_left (hiff.mp h)]
+  · rw [ite_eq_right h, ite_eq_right fun hc => h (hiff.mpr hc)]
 
 /-- The mean of a threshold indicator is the lower tail at that level. -/
 theorem integral_thrInd (ν : Measure ℝ) [IsProbabilityMeasure ν] (w : ℝ) :
@@ -139,7 +139,7 @@ theorem measure_symmDiff_threshold_toReal (ν : Measure ℝ) [IsProbabilityMeasu
     rw [Set.indicator_apply]
     by_cases h1 : Sandpile.avg (Sandpile.originOdometer ζ n) 0 < -ζ 0 <;>
       by_cases h2 : a < -ζ 0 <;>
-      simp [Set.mem_symmDiff, Set.mem_setOf_eq, h1, h2]
+      simp [Set.mem_symmDiff, h1, h2]
   have hmeas : ((LatticeProb.iidLaw d ν) (symmDiff
         {ζ : Sandpile.Site d → ℝ | Sandpile.avg (Sandpile.originOdometer ζ n) 0 < -ζ 0}
         {ζ : Sandpile.Site d → ℝ | a < -ζ 0})).toReal
@@ -217,7 +217,7 @@ theorem thresholdRelativeError_linear_of_small
           Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) n / Sandpile.green d 0 0 <
             -ζ 0} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, div_lt_iff₀ hG]
+    simp only [mem_ofPred_eq, Set.mem_preimage, div_lt_iff₀ hG]
     constructor <;> intro h <;> nlinarith
   have hSset : {σ : Sandpile.Site d → ℝ |
         Sandpile.avg (Sandpile.Frozen.DGT4OriginFrozen.killedOdometer

@@ -45,7 +45,7 @@ lemma boundedBottleneckValue_abs_sub_le {V : Type*} [Fintype V] [DecidableEq V]
     exact (abs_min_sub_min_le_max _ _ _ _).trans (max_le (ha x) (ha y))
   | succ n ih =>
     intro x y h
-    letI : Nonempty (walkMidpoints G n x y) := by
+    let : Nonempty (walkMidpoints G n x y) := by
       obtain ⟨z, hz⟩ := walkMidpoints_nonempty G h
       exact ⟨⟨z, hz⟩⟩
     apply abs_finiteMaximum_sub_le
@@ -62,8 +62,8 @@ lemma crossingValue_abs_sub_le {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
     |crossingValue Q F - crossingValue Q H| ≤ a := by
   classical
   obtain ⟨hl, hr⟩ := rectangle_boundaries_nonempty hQ hN
-  letI : Nonempty (rectangleLeft Q) := ⟨⟨hl.choose, hl.choose_spec⟩⟩
-  letI : Nonempty (rectangleRight Q) := ⟨⟨hr.choose, hr.choose_spec⟩⟩
+  let : Nonempty (rectangleLeft Q) := ⟨⟨hl.choose, hl.choose_spec⟩⟩
+  let : Nonempty (rectangleRight Q) := ⟨⟨hr.choose, hr.choose_spec⟩⟩
   have hn : Q.card ≤ 2 ^ Q.card := Nat.le_of_lt (Nat.lt_two_pow_self)
   rw [crossingValue_eq_bounded_max hQ hn F, crossingValue_eq_bounded_max hQ hn H]
   apply abs_finiteMaximum_sub_le

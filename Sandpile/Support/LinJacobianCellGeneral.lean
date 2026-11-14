@@ -99,7 +99,7 @@ theorem tsum_sq_testedWeight_le' {R : ℝ} (hR : 0 < R) (L : ℝ) {φ : Space d 
   have hfin : ∑ x ∈ Sandpile.Support.supportBox d R L, (testedWeight d R L φ x) ^ 2
       = ∑ x ∈ Sandpile.Support.supportBox d R L,
           (R ^ (((d : ℝ) - 4) / 2) * Sandpile.Support.cellMass R φ x) ^ 2 :=
-    Finset.sum_congr rfl fun x hx => by rw [testedWeight, if_pos hx]
+    Finset.sum_congr rfl fun x hx => by rw [testedWeight, ite_eq_left hx]
   rw [hfin]
   refine (sum_sq_scaled_cellMass_le' hR hint hint2 _).trans (le_of_eq ?_)
   congr 1

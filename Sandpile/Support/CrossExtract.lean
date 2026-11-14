@@ -46,7 +46,7 @@ theorem le_ciSup_fin (F : ℕ → ℝ) {n : ℕ} (i : Fin n) :
 /-- The supremum over a longer prefix is larger. -/
 theorem ciSup_fin_prefix_mono (F : ℕ → ℝ) {n m : ℕ} (hn : 0 < n) (h : n ≤ m) :
     (⨆ i : Fin n, F (i : ℕ)) ≤ ⨆ i : Fin m, F (i : ℕ) := by
-  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  have : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   refine ciSup_le fun i => ?_
   exact le_ciSup (f := fun j : Fin m => F (j : ℕ))
     (Set.Finite.bddAbove (Set.finite_range _))

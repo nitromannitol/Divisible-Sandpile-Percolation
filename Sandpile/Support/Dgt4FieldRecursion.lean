@@ -29,7 +29,7 @@ theorem tendsto_infiniteGreenFieldPartial {ζ : Site d → ℝ} {y : Site d}
     (h : ∃ L : ℝ, Tendsto (fun n => infiniteGreenFieldPartial n ζ y) atTop (𝓝 L)) :
     Tendsto (fun n => infiniteGreenFieldPartial n ζ y) atTop
       (𝓝 (infiniteGreenField ζ y)) := by
-  rw [infiniteGreenField, dif_pos h]
+  rw [infiniteGreenField, dite_eq_left h]
   exact Classical.choose_spec h
 
 /-- **The recursion for a partial sum.**  `PV_n(x)=V_n(x)-\zeta(x)` when the box contains
@@ -61,12 +61,12 @@ theorem avg_infiniteGreenFieldPartial (hd : 3 ≤ d) (n : ℕ) (ζ : Site d → 
       Finset.sum_eq_single (⟨x, hx⟩ : greenFieldBox d n) ?_ ?_]
     · simp
     · intro b _ hb
-      rw [if_neg (fun h => hb (Subtype.ext h.symm)), zero_mul]
+      rw [ite_eq_right (fun h => hb (Subtype.ext h.symm)), zero_mul]
     · intro h
       exact absurd (Finset.mem_univ _) h
   · rw [Set.indicator_of_notMem hx]
     refine Finset.sum_eq_zero fun b _ => ?_
-    rw [if_neg (fun h : x = (b : Site d) => hx (by rw [h]; exact b.2)), zero_mul]
+    rw [ite_eq_right (fun h : x = (b : Site d) => hx (by rw [h]; exact b.2)), zero_mul]
 
 /-- **`V_\infty-PV_\infty=\zeta`** (`sandpile.tex:5037`), at every scenery whose Green field
 converges at every site. -/
@@ -151,8 +151,8 @@ box of radius `n` up to time `n`, and the field has a smallest value on that fin
 theorem bddBelow_stoppedField (hd : 1 ≤ d) (ζ : Site d → ℝ) (x : Site d) (n : ℕ) :
     BddBelow {b : ℝ | ∃ τ : (ℕ → Site d) → ℕ, IsWalkStopping τ ∧ (∀ X, τ X ≤ n) ∧
       b = ∫ X, infiniteGreenField ζ (X (τ X)) ∂(walkLaw d x)} := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hne : (boxFinset x n).Nonempty := ⟨x, mem_boxFinset_iff.mpr (by simp [boxDist])⟩
   refine ⟨(boxFinset x n).inf' hne fun y => infiniteGreenField ζ y, ?_⟩
   rintro b ⟨τ, hτ, hτn, rfl⟩
@@ -307,8 +307,8 @@ theorem abs_infiniteGreenField_sub_odometer_update_le (hd : 3 ≤ d) (ζ : Site 
             - odometerOf (Function.update ζ z v) n x)|
       ≤ green d x z * |ζ z - v| := by
   have hd1 : (1 : ℕ) ≤ d := by omega
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   set c : ℝ := green d x z * |ζ z - v| with hc
   have hcnn : 0 ≤ c := mul_nonneg (green_nonneg _ _) (abs_nonneg _)
   have hconv' : ∀ y : Site d, ∃ L : ℝ,

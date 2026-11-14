@@ -91,14 +91,14 @@ lemma sublevel_measure_comparison_of_cutoff {Ω : Type*} [MeasurableSpace Ω]
     calc
       _ = ∫ x, {y | value y ≤ -shift - error}.indicator (fun _ => (1 : ℝ)) x ∂μ := by simp [hlo]
       _ ≤ _ := integral_mono ((integrable_const (1 : ℝ)).indicator hlo) hμphi (fun x => by
-        simpa only [Set.indicator_apply, mem_setOf_eq]
+        simpa only [Set.indicator_apply, mem_ofPred_eq]
           using (shiftedCutoff_indicator_bounds hw (happrox x)).1)
   have hupper : (∫ x, shiftedCutoff shift width (smooth x) ∂ν) ≤
       ν.real {x | value x ≤ width - shift + error} := by
     calc
       _ ≤ ∫ x, {y | value y ≤ width - shift + error}.indicator (fun _ => (1 : ℝ)) x ∂ν :=
         integral_mono hνphi ((integrable_const (1 : ℝ)).indicator hhi) (fun x => by
-          simpa only [Set.indicator_apply, mem_setOf_eq]
+          simpa only [Set.indicator_apply, mem_ofPred_eq]
             using (shiftedCutoff_indicator_bounds hw (happrox x)).2)
       _ = _ := by simp [hhi]
   have hd := (neg_le_abs ((∫ x, shiftedCutoff shift width (smooth x) ∂ν) -
@@ -138,7 +138,7 @@ lemma exists_gaussian_sublevel_comparison_constant (θ K : ℝ) (hθ : 0 < θ) :
   refine ⟨C, by dsimp [C]; positivity, ?_⟩
   intro V I _ _ _ _ A β n f value hA hvalue μ hμ hexp hK hmean v hsecond
     W a Q ha hQ hW hoverlap hκ level error herr happrox
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   obtain ⟨hm, hμsmall, hνsmall⟩ := hinputs μ hμ hexp hK hmean v hsecond _ hκ
   obtain ⟨hc1, hc2, hc3⟩ := hcut (-level - error) error herr
   have hcompare := hA.scalar_expectation_comparison μ (gaussianReal 0 v)

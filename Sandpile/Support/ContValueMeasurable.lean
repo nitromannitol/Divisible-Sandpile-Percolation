@@ -74,7 +74,7 @@ theorem aemeasurable_field_box {ΩW : Type*} [MeasurableSpace ΩW]
       Z p.1.1 p.1.2 ω)) :
     AEMeasurable (fun ω => ContinuousMap.mkD
       (fun p : Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L => Z p.1.1 p.1.2 ω) 0) PW := by
-  haveI : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
+  have : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
     isCompact_iff_compactSpace.mp (isCompact_Icc.prod (isCompact_closedBall 0 L))
   exact Sandpile.Continuum.aemeasurable_continuousMap_mkD
     (E := ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L))
@@ -99,9 +99,9 @@ theorem measurable_value_functional_ball {ΩB : Type*} [MeasurableSpace ΩB]
       brownianValue B PB
         (fun t z => if h : (t, z) ∈ Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L
           then v ⟨(t, z), h⟩ else 0) T x) := by
-  haveI : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
+  have : CompactSpace ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
     isCompact_iff_compactSpace.mp (isCompact_Icc.prod (isCompact_closedBall 0 L))
-  haveI : Nonempty ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
+  have : Nonempty ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L) :=
     ⟨⟨((0:ℝ), (0:Space d)), Set.mem_prod.mpr
       ⟨Set.mem_Icc.mpr ⟨le_refl 0, hT.le⟩, Metric.mem_closedBall_self hL⟩⟩⟩
   have hlip : LipschitzWith 2
@@ -117,11 +117,11 @@ theorem measurable_value_functional_ball {ΩB : Type*} [MeasurableSpace ΩB]
             then w ⟨(t, z), h⟩ else 0) s y| ≤ dist v w := by
       intro s hs y
       by_cases h : (s, y) ∈ Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L
-      · simp only [dif_pos h]
+      · simp only [dite_eq_left h]
         rw [← Real.dist_eq]
         exact ContinuousMap.dist_le_iff_of_nonempty.mp le_rfl
           (⟨(s, y), h⟩ : ↥(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) L))
-      · simp only [dif_neg h, sub_zero, abs_zero]
+      · simp only [dite_eq_right h, sub_zero, abs_zero]
         exact dist_nonneg
     have h := Sandpile.Support.abs_brownianValue_sub_le_of_field d B PB _ _ T (dist v w)
       (le_of_lt hT) x (hbdd _) (hbdd _)

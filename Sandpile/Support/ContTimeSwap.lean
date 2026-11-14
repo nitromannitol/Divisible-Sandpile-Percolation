@@ -107,7 +107,7 @@ theorem integral_swap_generic {T : ℝ} (K : ℝ → Space d → ℝ)
       = ∫ r' in Set.Ioo (0:ℝ) T, ∫ v : Space d, K r' v * φ v := by
   classical
   set ν : Measure ℝ := volume.restrict (Set.Ioo (0:ℝ) T) with hν
-  haveI : IsFiniteMeasure ν := by
+  have : IsFiniteMeasure ν := by
     constructor
     rw [hν, Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -174,7 +174,7 @@ theorem integrable_const_mul_heatKernelBM_time (hd : 1 ≤ d) {T r : ℝ} (hr : 
   have hpi := Real.pi_pos
   set B : ℝ := (4 * Real.pi * r / (2 * (d : ℝ))) ^ (-(d : ℝ) / 2) with hB
   have hB0 : (0:ℝ) ≤ B := by rw [hB]; positivity
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -203,7 +203,7 @@ theorem abs_time_integral_le (hd : 1 ≤ d) {T r : ℝ} (hr : 0 < r) (hT : 0 ≤
   set B : ℝ := (4 * Real.pi * r / (2 * (d : ℝ))) ^ (-(d : ℝ) / 2) with hB
   have hB0 : (0:ℝ) ≤ B := by rw [hB]; positivity
   have hWb0 : (0:ℝ) ≤ Wb := le_trans (abs_nonneg (f r 0)) (hWb r 0)
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -304,7 +304,7 @@ theorem integral_swap_time (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
   classical
   have hWb0 : (0:ℝ) ≤ Wb := le_trans (abs_nonneg (w 0 0)) (hWb 0 0)
   have hC0 : (0:ℝ) ≤ C := le_trans (abs_nonneg (φ 0)) (hC 0)
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top

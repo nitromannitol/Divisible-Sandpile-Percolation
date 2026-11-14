@@ -31,7 +31,7 @@ theorem walkLaw_translate (d : ℕ) (x : Site d) :
 theorem shift_eaCube (z : Site 4) (r : ℕ) :
     {y : Site 4 | z + y ∈ eaCube z (r : ℝ)} = {y : Site 4 | ∀ i, |y i| ≤ (r : ℤ)} := by
   ext y
-  simp only [Sandpile.eaCube, Set.mem_setOf_eq, Pi.add_apply]
+  simp only [Sandpile.eaCube, Set.mem_ofPred_eq, Pi.add_apply]
   constructor
   · intro h i
     have hi := h i
@@ -65,7 +65,7 @@ theorem exists_exit_prob_cube :
         {X : ℕ → Site 4 | ¬ (exitNat D N X ≤ N)}
       = {X : ℕ → Site 4 | exitTime D₀ X > (N : ℕ∞)} := by
     ext X
-    simp only [Set.mem_preimage, Set.mem_setOf_eq]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq]
     rw [← exitTime_le_iff, ← exitTime_translate D z X, hD, shift_eaCube z r]
     exact not_le
   rw [walkLaw_translate 4 z, Measure.map_apply hT hSmeas, hpre]

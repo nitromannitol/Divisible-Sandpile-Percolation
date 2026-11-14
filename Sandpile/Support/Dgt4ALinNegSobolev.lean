@@ -216,7 +216,7 @@ theorem tendsto_negSobolevNorm_zero_of_tight
         (⋃ i : Fin N, {ω | ENNReal.ofReal (ε / 2) < ENNReal.ofReal |F R ω (ψ i)|}) := by
     intro ω hω
     by_contra hcon
-    simp only [Set.mem_union, Set.mem_iUnion, Set.mem_setOf_eq, not_or, not_exists] at hcon
+    simp only [Set.mem_union, Set.mem_iUnion, Set.mem_ofPred_eq, not_or, not_exists] at hcon
     obtain ⟨hcon1, hcon2⟩ := hcon
     have hle1 : Sandpile.Continuum.negSobolevNorm d s₀ D (F R ω) ≤ M1 := not_lt.mp hcon1
     have hcon2' : ∀ i : Fin N, |F R ω (ψ i)| ≤ ε / 2 := by
@@ -503,7 +503,7 @@ theorem tendsto_negSobolevNorm_zero_of_linearization [NeZero d] (hd : 5 ≤ d)
           (fun φ => O R σ φ - W R σ φ)}
         = {σ | M < Sandpile.Continuum.negSobolevNorm d s₀ D' (diffField R σ)} := by
       ext σ
-      rw [Set.mem_setOf_eq, Set.mem_setOf_eq,
+      rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq,
         negSobolevNorm_congr (fun φ hφ => hdiff' R σ φ
           (⟨hφ.1, hφ.2.1, Set.subset_univ _⟩ : Sandpile.Continuum.IsTestFn Set.univ φ))]
     rw [← heq]

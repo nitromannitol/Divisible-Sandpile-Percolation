@@ -232,7 +232,7 @@ theorem measure_trunc_le_of_mean (hd : 5 ≤ d)
   have hBnull : (LatticeProb.iidLaw d ν) Bsetᶜ = 0 := by
     have hsubs : Bsetᶜ ⊆ ⋃ z ∈ sB, {ζ : Sandpile.Site d → ℝ | hi < ζ z} := by
       intro ζ hζ
-      simp only [hBdef, Set.mem_compl_iff, Set.mem_setOf_eq, not_forall] at hζ
+      simp only [hBdef, Set.mem_compl_iff, mem_ofPred_eq, not_forall] at hζ
       obtain ⟨z, hz, hlt⟩ := hζ
       exact Set.mem_biUnion hz (by simpa using lt_of_not_ge hlt)
     have hle : (LatticeProb.iidLaw d ν) Bsetᶜ ≤ 0 := by
@@ -257,7 +257,7 @@ theorem measure_trunc_le_of_mean (hd : 5 ≤ d)
         exact le_antisymm (by rw [← hc0]; exact hℓc _) (hℓ0 _)
       · left
         rw [clampAt_eq_max _ _ _ (hζ _ (Sandpile.siteEnum_mem sB i)), truncScenery,
-          if_neg hc0, hlodef]
+          ite_eq_right hc0, hlodef]
     have hsum := LatticeProb.abs_sub_le_sum_lip G (fun i => ℓ (e i)) hGlip
       (fun i => clampAt (lo i) hi (ζ (e i))) (fun i => truncScenery c t ζ (e i))
     have hzero : ∑ i : Fin sB.card, ℓ (e i) *

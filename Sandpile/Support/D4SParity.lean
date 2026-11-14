@@ -48,8 +48,8 @@ theorem parityChar_add_meshStep {R : ℝ} (hR : 0 < R) (i₀ : Fin d) (z : Space
       rfl
     rw [hadd, mul_add]
     by_cases hi : i = i₀
-    · rw [if_pos hi, if_pos hi, mul_inv_cancel₀ (ne_of_gt hR), Int.floor_add_one]
-    · rw [if_neg hi, if_neg hi, mul_zero, add_zero, add_zero]
+    · rw [ite_eq_left hi, ite_eq_left hi, mul_inv_cancel₀ (ne_of_gt hR), Int.floor_add_one]
+    · rw [ite_eq_right hi, ite_eq_right hi, mul_zero, add_zero, add_zero]
   have hsum : ∑ i : Fin d, ⌊R * ((z + meshStep d R i₀) i)⌋ = (∑ i : Fin d, ⌊R * z i⌋) + 1 := by
     simp_rw [hcoord]
     rw [Finset.sum_add_distrib]
@@ -59,9 +59,9 @@ theorem parityChar_add_meshStep {R : ℝ} (hR : 0 < R) (i₀ : Fin d) (z : Space
   simp only [Pi.zero_apply, sub_zero]
   rw [hsum]
   by_cases hev : Even (∑ i : Fin d, ⌊R * z i⌋)
-  · rw [if_pos hev, if_neg (by simpa [Int.even_add_one] using hev)]
+  · rw [ite_eq_left hev, ite_eq_right (by simpa [Int.even_add_one] using hev)]
     norm_num
-  · rw [if_neg hev, if_pos (by simpa [Int.even_add_one] using hev)]
+  · rw [ite_eq_right hev, ite_eq_left (by simpa [Int.even_add_one] using hev)]
     norm_num
 
 /-- The parity indicator of the mesh is measurable and bounded by one. -/

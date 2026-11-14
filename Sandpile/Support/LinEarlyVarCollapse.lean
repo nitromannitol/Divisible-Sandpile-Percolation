@@ -29,17 +29,17 @@ theorem tsum_site_collapse (t : Finset ℕ) (X Y : ℕ → Site d) (c : ℕ → 
     intro z hz
     rw [Function.mem_support] at hz
     by_contra h
-    exact hz (by rw [if_neg (fun hh => h hh.symm), zero_mul, zero_mul])
+    exact hz (by rw [ite_eq_right (fun hh => h hh.symm), zero_mul, zero_mul])
   rw [Summable.tsum_finsetSum (fun i _ => summable_sum (fun j _ => hsum i j))]
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [Summable.tsum_finsetSum (fun j _ => hsum i j)]
   refine Finset.sum_congr rfl fun j hj => ?_
   rw [tsum_eq_single (X i)]
-  · rw [if_pos rfl, one_mul]
+  · rw [ite_eq_left rfl, one_mul]
     by_cases h : X i = Y j
-    · rw [if_pos h, if_pos h.symm]
-    · rw [if_neg h, if_neg (fun hh => h hh.symm)]
+    · rw [ite_eq_left h, ite_eq_left h.symm]
+    · rw [ite_eq_right h, ite_eq_right (fun hh => h hh.symm)]
   · intro z hz
-    rw [if_neg (fun h => hz h.symm), zero_mul, zero_mul]
+    rw [ite_eq_right (fun h => hz h.symm), zero_mul, zero_mul]
 
 end Sandpile

@@ -97,7 +97,7 @@ branch. -/
 theorem centredKernel_eq_zero_of_le {d : ℕ} {s : ℝ} {y : Space d} (hy : s ≤ ‖y‖) :
     centredKernel d s y = 0 := by
   unfold centredKernel
-  rw [if_neg (not_lt.mpr hy)]
+  rw [ite_eq_right (not_lt.mpr hy)]
 
 /-- `centredKernel d s` is integrable for `d ∈ {2,3}` and `s > 0`: it is in `L²`
 by `memLp_centredKernel`, supported on the finite-measure ball of radius `s` by

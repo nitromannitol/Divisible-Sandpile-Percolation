@@ -55,8 +55,8 @@ lemma pinnedFunctional_pick (S : Set (Site d)) [DecidablePred (· ∈ S)] (T : F
   apply hF
   intro z hz
   by_cases hS : z ∈ S
-  · simp only [LatticeProb.comb, hS, if_pos]
-  · simp only [LatticeProb.comb, hS, if_neg, not_false_iff]
+  · simp only [LatticeProb.comb, hS, ite_eq_left]
+  · simp only [LatticeProb.comb, hS, ite_eq_right, not_false_iff]
     exact siteExtend_siteEnum T η hz
 
 /-- Updating the off-`S` argument of `LatticeProb.comb` at a point `v ∉ S` commutes with the
@@ -101,7 +101,7 @@ lemma abs_pinnedFunctional_update_le (S : Set (Site d)) (T : Finset (Site d))
     have hval : LatticeProb.comb S ω (siteExtend T ξ) (siteEnum T i) = ξ i := by
       rw [LatticeProb.comb_apply_of_notMem hi]
       simp [siteExtend, siteEnum]
-    simpa only [offWeight, hi, if_neg, not_false_iff, hval] using
+    simpa only [offWeight, hi, ite_eq_right, not_false_iff, hval] using
       hLip (LatticeProb.comb S ω (siteExtend T ξ)) (siteEnum T i) a
 
 /-- **Conditional concentration for finite-coordinate scenery functionals.** For an i.i.d. law
@@ -131,7 +131,7 @@ lemma conditional_finite_concentration (θ K : ℝ) (hθ : 0 < θ) :
   obtain ⟨c, hc, htail⟩ := weighted_exp_conc_tail_norms θ K hθ
   refine ⟨c, hc, ?_⟩
   intro ν hν hexp hK T S F hFm hFi hFloc w hw hLip A B hA hB a ha
-  haveI := hν
+  have := hν
   apply measure_deviation_condExp_le S ν hFm hFi
   intro ω
   let G := pinnedFunctional S T F ω
@@ -163,7 +163,7 @@ lemma conditional_finite_concentration (θ K : ℝ) (hθ : 0 < θ) :
       (fun η : Site d → ℝ => fun i => η (siteEnum T i)) ⁻¹'
         {ξ | a < |G ξ - ∫ ξ, G ξ ∂(Measure.pi fun _ : Fin T.card => ν)|} := by
     ext η
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, G, pinnedFunctional_pick S T hFloc, hm]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, G, pinnedFunctional_pick S T hFloc, hm]
   rw [he]
   have hp := (LatticeProb.measurePreserving_pick _ ν (siteEnum T)
     (siteEnum_injective T)).measure_preimage hE.nullMeasurableSet

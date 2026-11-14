@@ -242,9 +242,9 @@ theorem exists_continuous_version (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
         have := Nat.le_ceil t; linarith⟩
       have h := hYmod ⌈t⌉₊ (t, WithLp.ofLp x) hmem
       filter_upwards [h] with ω hω
-      simp only [if_pos ht]
+      simp only [ite_eq_left ht]
       simpa using hω
-    · exact Filter.Eventually.of_forall fun ω => by simp only [if_neg ht]
+    · exact Filter.Eventually.of_forall fun ω => by simp only [ite_eq_right ht]
   · intro T hT
     set N : ℕ := ⌈T⌉₊ with hN
     have hagree : ∀ᵐ ω ∂PW, ∀ m : ℕ, m ≤ N →
@@ -255,7 +255,7 @@ theorem exists_continuous_version (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
       by_cases hm : m ≤ N
       · set S : Set (ℝ × (Fin d → ℝ)) :=
           Set.Icc (0 : ℝ) ((m : ℝ) + 1) ×ˢ (Set.univ : Set (Fin d → ℝ)) with hS
-        haveI : Nonempty ↥S := ⟨⟨(0, 0), ⟨⟨le_rfl, by positivity⟩, Set.mem_univ _⟩⟩⟩
+        have : Nonempty ↥S := ⟨⟨(0, 0), ⟨⟨le_rfl, by positivity⟩, Set.mem_univ _⟩⟩⟩
         have hmodS : ∀ z : ↥S, (fun ω => Y m (z : ℝ × (Fin d → ℝ)) ω)
             =ᵐ[PW] fun ω => Y N (z : ℝ × (Fin d → ℝ)) ω := by
           intro z
@@ -284,5 +284,5 @@ theorem exists_continuous_version (hd : 1 ≤ d) (hd3 : d ≤ 3) {ν2 : ℝ} (h�
     have hp0 : 0 ≤ p.1 := hp.1.1
     have hpT : p.1 ≤ T := hp.1.2
     have hceil : ⌈p.1⌉₊ ≤ N := Nat.ceil_le_ceil hpT
-    simp only [if_pos hp0]
+    simp only [ite_eq_left hp0]
     exact hω ⌈p.1⌉₊ hceil (p.1, WithLp.ofLp p.2) ⟨hp0, by have := Nat.le_ceil p.1; linarith⟩

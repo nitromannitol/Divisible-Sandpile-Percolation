@@ -23,7 +23,7 @@ theorem Sandpile.Support.integrable_ballKernel {d : ℕ}
     Integrable (ballKernel d s u) (volume : Measure (Space d)) := by
   let K : Set (Space d) := Metric.ball (planePoint u) s
   have hK : MeasurableSet K := measurableSet_ball
-  letI : IsFiniteMeasure ((volume : Measure (Space d)).restrict K) :=
+  let : IsFiniteMeasure ((volume : Measure (Space d)).restrict K) :=
     ⟨by simpa only [Measure.restrict_apply_univ] using
       (show (volume : Measure (Space d)) (Metric.ball (planePoint u) s) < ⊤
         from measure_ball_lt_top)⟩
@@ -36,7 +36,7 @@ theorem Sandpile.Support.integrable_ballKernel {d : ℕ}
     · rw [Set.indicator_of_notMem hy]
       symm
       change (if ‖planePoint u - y‖ < s then _ else 0) = 0
-      apply if_neg
+      apply ite_eq_right
       simpa only [K, Metric.mem_ball, dist_eq_norm, norm_sub_rev] using hy
   rw [← hsame]
   exact (integrable_indicator_iff hK).mpr hf
@@ -128,7 +128,7 @@ theorem Sandpile.Support.integral_abs_ballKernel_eq_scale_sq {d : ℕ}
   rw [h]
   rcases hd with rfl | rfl
   · simp
-  · simp only [show ¬ (3 : ℕ) = 2 by decide, if_false, abs_of_pos (one_div_pos.mpr hs)]
+  · simp only [show ¬ (3 : ℕ) = 2 by decide, ite_false, abs_of_pos (one_div_pos.mpr hs)]
     field_simp
 
 /-- **Pairing the ball Green kernel with an essentially bounded function is uniformly bounded

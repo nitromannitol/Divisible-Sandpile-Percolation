@@ -31,7 +31,7 @@ theorem window_sq_pointwise (c : ℝ) (hc : 0 < c) (L : ℝ) (hL : 0 ≤ L) (S X
       + (8 / c ^ 2) * (Real.exp (c * max 0 (X - L)) - 1) := by
   have hc2 : (0 : ℝ) < c ^ 2 := by positivity
   by_cases h : L < X
-  · rw [if_pos h, mul_one]
+  · rw [ite_eq_left h, mul_one]
     set Y : ℝ := max 0 (X - L) with hYdef
     have hY : (0 : ℝ) ≤ Y := le_max_left _ _
     have hYX : X = Y + L := by
@@ -59,7 +59,7 @@ theorem window_sq_pointwise (c : ℝ) (hc : 0 < c) (L : ℝ) (hL : 0 ≤ L) (S X
         rw [hYX]; nlinarith [sq_nonneg (Y - L)]
       have hLS : (0 : ℝ) ≤ L * S := mul_nonneg hL hS
       linarith [hSX2, hX2, hkey, hLS]
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     have hXL : X ≤ L := not_lt.mp h
     have hmax : max 0 (X - L) = 0 := max_eq_left (by linarith)
     rw [hmax]
@@ -85,7 +85,7 @@ theorem window_second_moment_le {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
       + (8 / c ^ 2) * (Real.exp (c * max 0 (X ω - L)) - 1) := by
     intro ω
     have h := window_sq_pointwise c hc L hL (S ω) (X ω) (hS ω) (hSX ω)
-    simpa [hIdef, Set.indicator_apply, Set.mem_setOf_eq] using h
+    simpa [hIdef, Set.indicator_apply, Set.mem_ofPred_eq] using h
   have hLS : Integrable (fun ω => L * S ω) μ := hSi.const_mul L
   have hII : Integrable (fun ω => (8 / c ^ 2 + 2 * L ^ 2) * I ω) μ := hIi.const_mul _
   have hEE : Integrable

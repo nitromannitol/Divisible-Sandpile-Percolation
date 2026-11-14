@@ -98,7 +98,7 @@ theorem crossing_preimage_cube_trace
   have hset : {u : Space 2 | L / R ≤ ballField d W 1 u ω} =
       {u : Space 2 | L / R ≤ ballField d W 1 u ω'} := by
     ext u
-    simp only [Set.mem_setOf_eq]
+    simp only [mem_ofPred_eq]
     rw [hfun u]
   change Crosses ![-(θ*R),0] ![θ*R,2*R] 0 {u | L/R ≤ ballField d W 1 u ω} ↔
     Crosses ![-(θ*R),0] ![θ*R,2*R] 0 {u | L/R ≤ ballField d W 1 u ω'}

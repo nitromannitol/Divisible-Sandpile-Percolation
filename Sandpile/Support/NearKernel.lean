@@ -153,7 +153,7 @@ lemma nearKernel_coefficients (hBall : External.BallGreenBounds) :
 matching the real coordinate bound `|u i| ≤ r` against the integer bound `(u i).natAbs ≤ r`. -/
 lemma ballCube_zero_eq_box (r : ℕ) : ballCube 0 (r : ℝ) = External.BallGreen.box r := by
   ext u
-  simp only [ballCube, External.BallGreen.box, mem_setOf_eq, Pi.zero_apply, Int.cast_zero,
+  simp only [ballCube, External.BallGreen.box, mem_ofPred_eq, Pi.zero_apply, Int.cast_zero,
     sub_zero]
   constructor
   · intro h i

@@ -33,9 +33,9 @@ theorem exit_value_mean_lower
         ¬ (exitNat (eaCube z (r : ℝ)) (Aex * r ^ 2) X ≤ Aex * r ^ 2)} ≤ ENNReal.ofReal p) :
     (1 - p) * m ≤ ∫ ζ, eaExitValue Aex Aloc r ζ z ∂(LatticeProb.iidLaw 4 ν) := by
   classical
-  haveI := hν
-  haveI : NeZero (4 : ℕ) := ⟨by norm_num⟩
-  haveI : IsProbabilityMeasure (walkLaw 4 z) := walkLaw_isProbabilityMeasure 4 z
+  have := hν
+  have : NeZero (4 : ℕ) := ⟨by norm_num⟩
+  have : IsProbabilityMeasure (walkLaw 4 z) := walkLaw_isProbabilityMeasure 4 z
   set P := LatticeProb.iidLaw 4 ν with hP
   set D : Set (Site 4) := eaCube z (r : ℝ) with hD
   set N : ℕ := Aex * r ^ 2 with hN
@@ -59,14 +59,14 @@ theorem exit_value_mean_lower
     intro X
     by_cases hX : X ∈ A
     · rw [Set.indicator_of_mem hX]
-    · rw [Set.indicator_of_notMem hX, if_pos]
+    · rw [Set.indicator_of_notMem hX, ite_eq_left]
       by_contra hc
       exact hX (notMem_stopBeforeExit_iff D N X |>.mp hc)
   have hint : Integrable (fun X : ℕ → Site 4 => if X (τ X) ∈ D then 0 else f (X (τ X)))
       (walkLaw 4 z) := integrable_exitAverage_payoff (by norm_num) D N f z
   have hge : ∀ X ∈ A, m ≤ (if X (τ X) ∈ D then 0 else f (X (τ X))) := by
     intro X hX
-    rw [if_neg ((notMem_stopBeforeExit_iff D N X).mpr hX)]
+    rw [ite_eq_right ((notMem_stopBeforeExit_iff D N X).mpr hX)]
     exact hloc _
   have hsplit := Sandpile.Support.PayoffSplit.payoff_split (walkLaw 4 z)
     (fun X : ℕ → Site 4 => if X (τ X) ∈ D then 0 else f (X (τ X))) m A hAmeas hm hge

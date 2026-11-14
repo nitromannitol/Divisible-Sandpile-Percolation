@@ -54,12 +54,12 @@ theorem continuousVersionGrowth :
   have henv := exists_ae_linear_envelope hd hd3 hν2 hT PW W hW Y hYmeas hYmod hYcont
   set strip : Set (ℝ × Space d) :=
     Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Space d)) with hstripdef
-  haveI hne : Nonempty ↥strip := ⟨⟨(0, 0), ⟨⟨le_rfl, hT.le⟩, Set.mem_univ _⟩⟩⟩
+  have hne : Nonempty ↥strip := ⟨⟨(0, 0), ⟨⟨le_rfl, hT.le⟩, Set.mem_univ _⟩⟩⟩
   set F : ↥strip → ΩW → ℝ := fun e ω => Z e.1.1 e.1.2 ω with hFdef
   set G : ↥strip → ΩW → ℝ := fun e ω => Y (e.1.1, fun i => e.1.2 i) ω with hGdef
   have hF : ∀ᵐ ω ∂PW, Continuous fun e : ↥strip => F e ω := by
     filter_upwards [hZcont T hT] with ω hω
-    exact hω.restrict
+    exact hω.domRestrict
   have hG : ∀ᵐ ω ∂PW, Continuous fun e : ↥strip => G e ω := by
     refine Filter.Eventually.of_forall fun ω => ?_
     refine (hYcont ω).comp (continuous_subtype_val.fst.prodMk ?_)

@@ -327,7 +327,7 @@ theorem exists_continuous_extension_bdd {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ 
     ∃ (q' : ℝ → ℝ) (Q : ℝ), Continuous q' ∧ 0 ≤ Q ∧ (∀ r, |q' r| ≤ Q) ∧
       (∀ r ∈ Set.Icc (0:ℝ) T, q' r = q r) := by
   obtain ⟨Q, hQ0, hQ⟩ := exists_bound_of_continuousOn_Icc hT q hq
-  refine ⟨Set.IccExtend hT ((Set.Icc (0:ℝ) T).restrict q), Q, hq.restrict.Icc_extend', hQ0,
+  refine ⟨Set.IccExtend hT ((Set.Icc (0:ℝ) T).domRestrict q), Q, hq.domRestrict.Icc_extend', hQ0,
     ?_, ?_⟩
   · intro r
     show |q ((Set.projIcc (0:ℝ) T hT r : Set.Icc (0:ℝ) T) : ℝ)| ≤ Q

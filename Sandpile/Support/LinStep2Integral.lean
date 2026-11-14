@@ -39,7 +39,7 @@ theorem measurableSet_survivalSet (n j : ℕ) (X : ℕ → Site d) :
   have hset : {σ : Site d → ℝ | ∀ r ≤ j, 0 < odometer σ (n - r) (X r)}
       = ⋂ r : ℕ, ⋂ _ : r ≤ j, {σ : Site d → ℝ | 0 < odometer σ (n - r) (X r)} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
   rw [hset]
   exact MeasurableSet.iInter fun r => MeasurableSet.iInter fun _ =>
     measurableSet_lt measurable_const (measurable_odometer (n - r) (X r))

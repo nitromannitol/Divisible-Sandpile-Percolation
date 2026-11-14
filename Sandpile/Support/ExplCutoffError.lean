@@ -46,7 +46,7 @@ theorem cutoff_compl_mul_abs_le_indicator (A M : ℝ) (hA : 0 < A) (hM : 0 ≤ M
     have habs : 0 ≤ |v| := abs_nonneg v
     nlinarith
   · have hmem : y ∉ {z : Space d | A ≤ ‖z‖} := by
-      simp only [Set.mem_setOf_eq, not_le]
+      simp only [Set.mem_ofPred_eq, not_le]
       exact hy
     rw [Set.indicator_of_notMem hmem]
     have hone : cutoff A y = 1 := cutoff_eq_one_of_norm_le A hA y hy.le
@@ -72,7 +72,7 @@ theorem integral_cutoff_le_measure (B : ℝ≥0 → ΩB → Space d) (P : Measur
     rcases le_or_gt A ‖B (τ ω) ω‖ with hy | hy
     · have hmem : ω ∈ {ω | A - ρ ≤ ‖B (τ ω) ω - x‖} := by
         have hnorm : ‖B (τ ω) ω‖ - ‖x‖ ≤ ‖B (τ ω) ω - x‖ := norm_sub_norm_le _ _
-        simp only [Set.mem_setOf_eq]
+        simp only [Set.mem_ofPred_eq]
         linarith
       rw [Set.indicator_of_mem hmem]
       have h0 : 0 ≤ cutoff A (B (τ ω) ω) := cutoff_nonneg A _
@@ -196,8 +196,8 @@ theorem integral_cutoff_le_measure_walk (hd : 1 ≤ d) (x : Site d)
         (Sandpile.External.Lclt.scaledSite R (X (τ X)))) * |F (τ X) X| ∂(walkLaw d x))
       ≤ M * (walkLaw d x).real
         {X : ℕ → Site d | A ≤ ‖Sandpile.External.Lclt.scaledSite R (X (τ X))‖} := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hpt : ∀ X : ℕ → Site d,
       (1 - Sandpile.Continuum.cutoff A
         (Sandpile.External.Lclt.scaledSite R (X (τ X)))) * |F (τ X) X|
@@ -218,7 +218,7 @@ theorem integral_cutoff_le_measure_walk (hd : 1 ≤ d) (x : Site d)
       nlinarith
     · have hmem : X ∉ {X : ℕ → Site d |
           A ≤ ‖Sandpile.External.Lclt.scaledSite R (X (τ X))‖} := by
-        simp only [Set.mem_setOf_eq, not_le]
+        simp only [Set.mem_ofPred_eq, not_le]
         exact hy
       rw [Set.indicator_of_notMem hmem,
         Sandpile.Continuum.cutoff_eq_one_of_norm_le A hA _ hy.le]

@@ -149,7 +149,7 @@ theorem scenery_integrable_and_mean (d : ℕ) (hd : 1 ≤ d) (ν : Measure ℝ)
     have : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
     positivity
   set g : ℝ → ℝ := fun z => 1 + 2 * (d : ℝ) * z with hg
-  haveI : IsProbabilityMeasure (ν.map g) :=
+  have : IsProbabilityMeasure (ν.map g) :=
     inferInstance
   have hcoord : (centeredMassLaw d ν).map (fun σ : Site d → ℝ => σ 0) = ν.map g := by
     unfold centeredMassLaw massLaw LatticeProb.iidLaw

@@ -20,8 +20,8 @@ open scoped Classical
 
 /-- Reading a smaller block of coordinates is measurable for the larger block. -/
 theorem comap_restrict_mono {d : ℕ} {B A : Set (Site d)} (h : B ⊆ A) :
-    MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.restrict B ζ) inferInstance
-      ≤ MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.restrict A ζ) inferInstance := by
+    MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.domRestrict B ζ) inferInstance
+      ≤ MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.domRestrict A ζ) inferInstance := by
   rintro s ⟨t, ht, rfl⟩
   exact ⟨(fun ρ : A → ℝ => fun i : B => ρ ⟨(i : Site d), h i.2⟩) ⁻¹' t,
     (Measurable.of_eval fun i => measurable_pi_apply _) ht, rfl⟩
@@ -162,14 +162,14 @@ theorem critBox_disjoint_of_dist (Aloc : ℝ) (r : ℕ) (hr : 1 ≤ r)
 theorem measurableSet_blockGood_comap (Aex : ℕ) (Aloc : ℝ) (R r : ℕ) (ℓ : ℝ) (z : Site 2)
     (hmeas : ∀ x : Site 4,
       Measurable[MeasurableSpace.comap
-        (fun ζ : Site 4 → ℝ => Set.restrict (frCube x ((Aloc + 3) * R)) ζ) inferInstance]
+        (fun ζ : Site 4 → ℝ => Set.domRestrict (frCube x ((Aloc + 3) * R)) ζ) inferInstance]
         (fun ζ : Site 4 → ℝ =>
           frGreenFieldTime R (Aex * R ^ 2) ζ x + frExitValue Aex Aloc R ζ x)) :
     MeasurableSet[MeasurableSpace.comap
-        (fun ζ : Site 4 → ℝ => Set.restrict (critBox Aloc R r z) ζ) inferInstance]
+        (fun ζ : Site 4 → ℝ => Set.domRestrict (critBox Aloc R r z) ζ) inferInstance]
       {ζ : Site 4 → ℝ | BlockGood r (frBlockField Aex Aloc R ζ) ℓ z} := by
   set m := MeasurableSpace.comap
-    (fun ζ : Site 4 → ℝ => Set.restrict (critBox Aloc R r z) ζ) inferInstance with hm
+    (fun ζ : Site 4 → ℝ => Set.domRestrict (critBox Aloc R r z) ζ) inferInstance with hm
   have hfield : ∀ v : Site 2, v ∈ planeRectangle (4 * r) (4 * r) →
       Measurable[m] (fun ζ : Site 4 → ℝ => frBlockField Aex Aloc R ζ (blockShift r z v)) :=
     fun v hv => (hmeas (planeEmbed (blockShift r z v))).mono
@@ -210,7 +210,7 @@ theorem indep_blockGood_of_dist (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (Aex : ℕ) (Aloc : ℝ) (r : ℕ) (hr : 1 ≤ r) (ℓ k : ℝ) (hk : 4 * Aloc + 20 ≤ k)
     (hmeas : ∀ x : Site 4,
       Measurable[MeasurableSpace.comap
-        (fun ζ : Site 4 → ℝ => Set.restrict (frCube x ((Aloc + 3) * ((2 * r : ℕ) : ℝ))) ζ)
+        (fun ζ : Site 4 → ℝ => Set.domRestrict (frCube x ((Aloc + 3) * ((2 * r : ℕ) : ℝ))) ζ)
         inferInstance]
         (fun ζ : Site 4 → ℝ =>
           frGreenFieldTime (2 * r) (Aex * (2 * r) ^ 2) ζ x

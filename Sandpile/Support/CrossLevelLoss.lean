@@ -44,8 +44,8 @@ theorem level_loss_of_entropy (hPin : Sandpile.External.Pinsker)
     (E : Set T) (hE : MeasurableSet E) (δ : ℝ) (hδ : 0 ≤ δ)
     (hent : InformationTheory.klDiv (P₀.map tr) (P₁.map tr) ≤ ENNReal.ofReal δ) :
     P₁.real (tr ⁻¹' E) - P₀.real (tr ⁻¹' E) ≤ Real.sqrt (δ / 2) := by
-  haveI h0 : IsProbabilityMeasure (P₀.map tr) := inferInstance
-  haveI h1 : IsProbabilityMeasure (P₁.map tr) := inferInstance
+  have h0 : IsProbabilityMeasure (P₀.map tr) := inferInstance
+  have h1 : IsProbabilityMeasure (P₁.map tr) := inferInstance
   have hP := hPin T (P₀.map tr) (P₁.map tr) E hE δ hδ hent
   have e0 : (P₀.map tr).real E = P₀.real (tr ⁻¹' E) := by
     simp [measureReal_def, Measure.map_apply htr hE]

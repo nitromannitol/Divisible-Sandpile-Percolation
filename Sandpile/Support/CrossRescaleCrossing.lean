@@ -52,8 +52,8 @@ theorem measure_crossing_ballField_scale
             ≤ ballField d W (s : ℝ) u ω}} := by
   have hσ : (0 : ℝ) < (if d = 2 then (s : ℝ) else Real.sqrt (s : ℝ)) := by
     by_cases h : d = 2
-    · rw [if_pos h]; exact hs
-    · rw [if_neg h]; exact Real.sqrt_pos.mpr hs
+    · rw [ite_eq_left h]; exact hs
+    · rw [ite_eq_right h]; exact Real.sqrt_pos.mpr hs
   have hinv : (0 : ℝ) < (s : ℝ)⁻¹ := inv_pos.mpr hs
   have hd0 : (s : ℝ)⁻¹ * p 0 < (s : ℝ)⁻¹ * q 0 := mul_lt_mul_of_pos_left h0 hinv
   have hd1 : (s : ℝ)⁻¹ * p 1 < (s : ℝ)⁻¹ * q 1 := mul_lt_mul_of_pos_left h1 hinv

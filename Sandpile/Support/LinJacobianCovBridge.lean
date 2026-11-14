@@ -48,6 +48,6 @@ theorem sum_indicator_pair_eq (i j : ℕ) (X Y : ℕ → Site d) :
   classical
   refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun h _ => ?_
   rw [Set.indicator_apply]
-  simp [Set.mem_setOf_eq]
+  simp
 
 end Sandpile

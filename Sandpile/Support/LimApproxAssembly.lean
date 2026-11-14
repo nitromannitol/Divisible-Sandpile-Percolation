@@ -291,7 +291,7 @@ theorem eventually_measure_bad_rect_le (hOcc : Sandpile.External.BallOccupationD
   have hbad' : ω ∈ {ω | ∀ u ∈ rectSet a b,
       |ballStoppedField d Z PB B s T u ω - ballField d W s u ω| ≤ c}ᶜ := hbad
   show ω ∈ {ω | ∃ u' ∈ Set.Icc a b, c < |Xbox u' ω|}
-  simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_forall] at hbad'
+  simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_forall] at hbad'
   obtain ⟨u, hu, hgt⟩ := hbad'
   refine ⟨WithLp.ofLp u, ?_, ?_⟩
   · exact (rectSet_toLp_iff (a := a) (b := b) (WithLp.ofLp u)).mp hu
@@ -350,11 +350,11 @@ theorem ballStoppedApproximation_of_occupation
         |ballStoppedField d Z PB B ((s ij.1 : ℚ) : ℝ) T u ω
           - ballField d W ((s ij.1 : ℚ) : ℝ) u ω| ≤ c}ᶜ := by
     intro ω hω
-    simp only [Set.mem_compl_iff, Set.mem_setOf_eq] at hω
+    simp only [Set.mem_compl_iff, Set.mem_ofPred_eq] at hω
     push Not at hω
     obtain ⟨i, u, ⟨j, hj⟩, hgt⟩ := hω
     refine Set.mem_iUnion.mpr ⟨(i, j), ?_⟩
-    simp only [Set.mem_compl_iff, Set.mem_setOf_eq]
+    simp only [Set.mem_compl_iff, Set.mem_ofPred_eq]
     push Not
     exact ⟨u, hj, hgt⟩
   refine le_trans (measure_mono hsub) ?_

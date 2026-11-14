@@ -136,7 +136,7 @@ theorem block_component_infinite {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (
   obtain ⟨zs, hzs⟩ := hC₀.nonempty
   obtain ⟨hzsC, hzsR⟩ := (Set.mem_inter_iff _ _ _).mp hzs
   -- membership in componentIn unfolds to reachability plus set membership
-  simp only [componentIn, Set.mem_setOf_eq] at hzsC
+  simp only [componentIn, Set.mem_ofPred_eq] at hzsC
   obtain ⟨hxzs, hyzs, hreachzs⟩ := hzsC
   -- seed walk for zs
   have hgoods : BlockGood r F ℓ zs := hyzs
@@ -153,7 +153,7 @@ theorem block_component_infinite {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (
         blockShift r z (c : Site 2) ∈ componentIn {u : Site 2 | ℓ ≤ F u} ws := by
     intro z hz
     obtain ⟨hzC, hzR⟩ := (Set.mem_inter_iff _ _ _).mp hz
-    simp only [componentIn, Set.mem_setOf_eq] at hzC
+    simp only [componentIn, Set.mem_ofPred_eq] at hzC
     obtain ⟨hxz, hyz, hreachz⟩ := hzC
     -- coarse walk from zs to z inside the good-block set
     obtain ⟨Q1, hQ1⟩ :=
@@ -186,14 +186,14 @@ theorem block_component_infinite {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (
       blockShift r z (c z hz : Site 2) else 0 with hΦdef
   have hΦ : ∀ z (hz : z ∈ (componentIn {z : Site 2 | BlockGood r F ℓ z} z₀ ∩
       {z : Site 2 | z 0 % 3 = k.1 ∧ z 1 % 3 = k.2})),
-      Φ z = blockShift r z (c z hz : Site 2) := fun z hz => dif_pos hz
+      Φ z = blockShift r z (c z hz : Site 2) := fun z hz => dite_eq_left hz
   have hinj : Set.InjOn Φ (componentIn {z : Site 2 | BlockGood r F ℓ z} z₀ ∩
       {z : Site 2 | z 0 % 3 = k.1 ∧ z 1 % 3 = k.2}) := by
     intro a ha b hb heq
     rw [hΦ a ha, hΦ b hb] at heq
     obtain ⟨_, hzR⟩ := (Set.mem_inter_iff _ _ _).mp ha
     obtain ⟨_, hzR'⟩ := (Set.mem_inter_iff _ _ _).mp hb
-    simp only [Set.mem_setOf_eq] at hzR hzR'
+    simp only [Set.mem_ofPred_eq] at hzR hzR'
     exact blockShift_injective_residue hr a b (c a ha) (c b hb)
       (hzR.1.trans hzR'.1.symm) (hzR.2.trans hzR'.2.symm) heq
   -- the image is an infinite subset of the fine component of ws

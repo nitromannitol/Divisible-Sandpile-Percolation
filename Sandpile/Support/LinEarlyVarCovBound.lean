@@ -26,8 +26,8 @@ theorem abs_covSurvival_le_one (μ : Measure (Site d → ℝ)) [IsProbabilityMea
     fun k Z σ => Set.indicator_nonneg (fun _ _ => zero_le_one) Z
   have hb : ∀ σ : Site d → ℝ, |survivalInd σ n i X * survivalInd σ n j Y| ≤ 1 := fun σ => by
     rw [abs_mul]
-    exact mul_le_one₀ (abs_survivalInd_le_one σ n i X) (abs_nonneg _)
-      (abs_survivalInd_le_one σ n j Y)
+    exact (mul_le_of_le_one_left (abs_nonneg _) (abs_survivalInd_le_one σ n i X)).trans
+        (abs_survivalInd_le_one σ n j Y)
   have hprod : |∫ σ, survivalInd σ n i X * survivalInd σ n j Y ∂μ| ≤ 1 :=
     abs_integral_le_of_bound_simple μ (fun σ => survivalInd σ n i X * survivalInd σ n j Y)
       ((measurable_survivalInd_scenery n i X).mul
@@ -45,7 +45,7 @@ theorem abs_covSurvival_le_one (μ : Measure (Site d → ℝ)) [IsProbabilityMea
   have hp := abs_le.mp hprod
   have h7 : |(∫ σ, survivalInd σ n i X ∂μ) * (∫ σ, survivalInd σ n j Y ∂μ)| ≤ 1 := by
     rw [abs_mul]
-    exact mul_le_one₀ hmi (abs_nonneg _) hmj
+    exact (mul_le_of_le_one_left (abs_nonneg _) hmi).trans hmj
   have h7' := abs_le.mp h7
   simp only [Pi.mul_apply]
   have hA0 : 0 ≤ ∫ σ, survivalInd σ n i X * survivalInd σ n j Y ∂μ :=

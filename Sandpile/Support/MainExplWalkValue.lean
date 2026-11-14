@@ -27,8 +27,8 @@ for every reward that reads the walk through its position at the stopping time. 
 theorem bddAbove_walk_stopped_value (hd : 1 ≤ d) (x : Site d) (n : ℕ) (F : ℕ → Site d → ℝ) :
     BddAbove {a : ℝ | ∃ τ : (ℕ → Site d) → ℕ, IsWalkStopping τ ∧ (∀ X, τ X ≤ n) ∧
       a = ∫ X, F (τ X) (X (τ X)) ∂(walkLaw d x)} := by
-  letI : NeZero d := ⟨by omega⟩
-  letI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  let : NeZero d := ⟨by omega⟩
+  let : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   let M : ℝ := ∑ j ∈ Finset.range (n + 1), ∑ z ∈ boxFinset x n, |F j z|
   refine ⟨M, ?_⟩
   rintro a ⟨τ, hτ, ht, rfl⟩

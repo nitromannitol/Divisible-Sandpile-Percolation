@@ -48,7 +48,7 @@ lemma near_boxes_same_color_joint_bound (μ : Measure ℝ) [IsProbabilityMeasure
       {ζ | ∀ a : T, ∀ _ha : a ∈ (Finset.univ : Finset T),
         ζ ∈ kernelLowEvent (nearKernel r L φ) (S a) level} := by
     ext ζ
-    simp only [mem_setOf_eq, Finset.mem_univ, forall_const, Subtype.forall, S]
+    simp only [mem_ofPred_eq, Finset.mem_univ, forall_const, Subtype.forall, S]
   rw [he]
   simpa only [Finset.card_univ, Fintype.card_coe] using hh
 
@@ -109,7 +109,7 @@ lemma exists_near_many_boxes_bound (hBall : External.BallGreenBounds)
   obtain ⟨α, b, C, hα, hα1, hb, hC, r₀, hr₀, hbox⟩ := exists_near_bad_box_bound hBall θ K η hθ hη
   refine ⟨α, b, C, hα, hα1, hb, hC, r₀, hr₀, ?_⟩
   intro μ hμ hexp hK hmean r hr φ hφ x m T hsize
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   have hr2 : 2 ≤ r := hr₀.trans hr
   have hrpos : (0 : ℝ) < r := by exact_mod_cast (by omega : 0 < r)
   have hpow : 1 ≤ (r : ℝ) ^ α := Real.one_le_rpow (by exact_mod_cast (by omega : 1 ≤ r)) hα.le

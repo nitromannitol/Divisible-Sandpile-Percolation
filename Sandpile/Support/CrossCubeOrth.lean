@@ -26,9 +26,9 @@ theorem orthonormal_cubeIndicators {d n : ℕ} (c : Fin n → Set (Space d))
     (by rw [hvol i]; exact ENNReal.one_ne_top) (by rw [hvol j]; exact ENNReal.one_ne_top)]
   by_cases hij : i = j
   · subst hij
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     simp [Measure.real, hvol i]
-  · rw [if_neg hij]
+  · rw [ite_eq_right hij]
     simp [Measure.real, Set.disjoint_iff_inter_eq_empty.mp (hdisj i j hij)]
 
 end Sandpile.Support

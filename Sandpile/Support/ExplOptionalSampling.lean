@@ -117,10 +117,10 @@ theorem setIntegral_restart_of_integrable [IsProbabilityMeasure P] {d : ℕ}
   have hYm : Measurable Y := hY.mono hτ.measurableSpace_le le_rfl
   have hW : Measurable fun ω => (Y ω, fun t : ℝ≥0 => B (τ ω + t) ω - B (τ ω) ω) :=
     hYm.prodMk hmshift
-  haveI : IsFiniteMeasure (Measure.map Y (P.restrict E)) :=
+  have : IsFiniteMeasure (Measure.map Y (P.restrict E)) :=
     ⟨by rw [Measure.map_apply hYm MeasurableSet.univ, Set.preimage_univ]
         exact measure_lt_top _ _⟩
-  haveI : IsProbabilityMeasure (Measure.map (fun ω (t : ℝ≥0) => B t ω - B 0 ω) P) :=
+  have : IsProbabilityMeasure (Measure.map (fun ω (t : ℝ≥0) => B t ω - B 0 ω) P) :=
     inferInstance
   have hG : StronglyMeasurable fun y : α =>
       ∫ z, F (y, z) ∂(Measure.map (fun ω (t : ℝ≥0) => B t ω - B 0 ω) P) :=

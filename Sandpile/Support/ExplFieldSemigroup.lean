@@ -67,7 +67,7 @@ theorem gaussianPotential_heat_semigroup {Ω : Type*} [MeasurableSpace Ω]
     ∀ᵐ ω ∂P, Integrable (fun y => heatKernelBM d r x y * Z s y ω) volume ∧
       (∫ y, heatKernelBM d r x y * Z s y ω) = Z (r + s) x ω - Z r x ω := by
   let μ : Measure (Space d) := volume.withDensity (fun y => ENNReal.ofReal (heatKernelBM d r x y))
-  haveI : IsProbabilityMeasure μ := isProbabilityMeasure_heatKernelBM hd hr x
+  have : IsProbabilityMeasure μ := isProbabilityMeasure_heatKernelBM hd hr x
   have hmain := gaussianPotential_family_integral_comm_pointwise hd hd3 hW ν2 Z hmod hc μ
     (fun y => ((⟨s, hs⟩ : ℝ≥0), y)) (by fun_prop) ⟨s, hs⟩ (fun _ => le_rfl)
   have hrs : 0 ≤ r + s := add_nonneg hr.le hs

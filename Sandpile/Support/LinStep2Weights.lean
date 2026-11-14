@@ -51,8 +51,8 @@ theorem sum_lastVisit_sq_le (n j : ℕ) (hj : j < n) (X : ℕ → Site d) (pi : 
     intro r hr
     have hI : (((if r ∈ lastVisitTimes j X then 1 else 0 : ℕ)) : ℝ) ≤ 1 := by
       by_cases h : r ∈ lastVisitTimes j X
-      · rw [if_pos h]; norm_num
-      · rw [if_neg h]; norm_num
+      · rw [ite_eq_left h]; norm_num
+      · rw [ite_eq_right h]; norm_num
     have hI0 : 0 ≤ (((if r ∈ lastVisitTimes j X then 1 else 0 : ℕ)) : ℝ) := by positivity
     have hsq : pi r ^ 2 ≤ (2 * Gk) ^ 2 * (((n - r : ℕ) : ℝ) ^ 2)⁻¹ := by
       have hnr : (0 : ℝ) < ((n - r : ℕ) : ℝ) := by

@@ -68,12 +68,12 @@ measurable: by `mem_componentIn_iff_walk` it is a countable union, over the walk
 lemma measurableSet_mem_componentIn {d : ℕ} {Ω : Type*} [MeasurableSpace Ω]
     (O : Ω → Set (Site d)) (hO : ∀ x, MeasurableSet {ω | x ∈ O ω}) (x y : Site d) :
     MeasurableSet {ω | y ∈ LatticeProb.componentIn (O ω) x} := by
-  letI : Countable ((lattice d).Walk x y) :=
+  let : Countable ((lattice d).Walk x y) :=
     Function.Injective.countable SimpleGraph.Walk.support_injective
   have he : {ω | y ∈ LatticeProb.componentIn (O ω) x} =
       ⋃ p : (lattice d).Walk x y, ⋂ z ∈ p.support, {ω | z ∈ O ω} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, mem_componentIn_iff_walk]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, mem_componentIn_iff_walk]
   rw [he]
   exact MeasurableSet.iUnion (fun p => MeasurableSet.iInter (fun z =>
     MeasurableSet.iInter (fun _ => hO z)))
@@ -88,7 +88,7 @@ lemma measurableSet_infinite_componentIn {d : ℕ} {Ω : Type*} [MeasurableSpace
       ⋂ R : ℕ, ⋃ y : Site d, {ω | R < boxDist x y} ∩
         {ω | y ∈ LatticeProb.componentIn (O ω) x} := by
     ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_inter_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_iInter, Set.mem_inter_iff]
     rw [infinite_iff_unbounded_boxDist _ x]
     constructor <;> intro h R <;> obtain ⟨y, hy, hyR⟩ := h R <;> exact ⟨y, hyR, hy⟩
   rw [he]
@@ -103,7 +103,7 @@ lemma measurableSet_hasInfiniteComponent {d : ℕ} {Ω : Type*} [MeasurableSpace
   have he : {ω | HasInfiniteComponent (O ω)} =
       ⋃ x : Site d, {ω | x ∈ O ω} ∩ {ω | (LatticeProb.componentIn (O ω) x).Infinite} := by
     ext ω
-    simp only [HasInfiniteComponent, LatticeProb.HasInfiniteComponent, Set.mem_setOf_eq,
+    simp only [HasInfiniteComponent, LatticeProb.HasInfiniteComponent, Set.mem_ofPred_eq,
       Set.mem_iUnion, Set.mem_inter_iff]
   rw [he]
   exact MeasurableSet.iUnion (fun x => (hO x).inter (measurableSet_infinite_componentIn O hO x))

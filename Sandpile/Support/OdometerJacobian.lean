@@ -119,7 +119,7 @@ theorem hasDerivAt_odometerOf {d : ℕ} (ζ : Site d → ℝ)
         (if x = z then 1 else 0) (ζ z) := by
       by_cases hx : x = z
       · subst x; simpa using hasDerivAt_id' (ζ z)
-      · simpa only [Function.update_of_ne hx, if_neg hx] using hasDerivAt_const (ζ z) (ζ x)
+      · simpa only [Function.update_of_ne hx, ite_eq_right hx] using hasDerivAt_const (ζ z) (ζ x)
     have havg : HasDerivAt (fun h => avg (odometerOf (Function.update ζ z h) n) x)
         (avg (fun y => odometerJacobian ζ n y z) x) (ζ z) := by
       unfold avg LatticeProb.walkOp
@@ -133,13 +133,13 @@ theorem hasDerivAt_odometerOf {d : ℕ} (ζ : Site d → ℝ)
         change ¬ 0 < max 0 (ζ x + avg (odometerOf ζ n) x)
         rw [max_eq_left hn.le]
         exact lt_irrefl _
-      simp only [odometerJacobian, if_neg hact]
+      simp only [odometerJacobian, ite_eq_right hact]
       apply (hasDerivAt_const (ζ z) (0 : ℝ)).congr_of_eventuallyEq
       filter_upwards [hf.continuousAt (gt_mem_nhds hfn)] with h hh
       exact max_eq_left hh.le
     · have hfp : 0 < f (ζ z) := by simpa only [hfv] using hp
       have hact : 0 < odometerOf ζ (n + 1) x := hp.trans_le (le_max_right _ _)
-      simp only [odometerJacobian, if_pos hact]
+      simp only [odometerJacobian, ite_eq_left hact]
       apply hf.congr_of_eventuallyEq
       filter_upwards [hf.continuousAt (lt_mem_nhds hfp)] with h hh
       exact max_eq_right hh.le

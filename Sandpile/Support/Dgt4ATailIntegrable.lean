@@ -35,7 +35,7 @@ theorem integrableOn_measureReal_sq_lt {Ω : Type*} [MeasurableSpace Ω] (μ : M
   · exact measureReal_sq_lt_le μ X c htail t ht
   · push Not at ht
     have hz : {ω | t < X ω ^ 2} = Set.univ := by
-      ext ω; simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      ext ω; simp only [mem_ofPred_eq, Set.mem_univ, iff_true]
       nlinarith [sq_nonneg (X ω)]
     rw [hz, probReal_univ]
     have : 1 ≤ 2 * Real.exp (-c * t) := by

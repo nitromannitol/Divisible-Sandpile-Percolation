@@ -39,9 +39,9 @@ theorem pathEvent_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P : Measu
         l ≤ Z (segPt (v j) (v (j + 1)) (q : ℝ)) ω} := by
     intro Z
     ext ω
-    simp only [pathEvent, Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [pathEvent, mem_ofPred_eq, Set.mem_iInter]
   rw [hrw X, hrw Y]
-  refine Filter.EventuallyEq.countable_iInter fun j => Filter.EventuallyEq.countable_iInter
+  refine Filter.EventuallyEqSet.countable_iInter fun j => Filter.EventuallyEqSet.countable_iInter
     fun q => ?_
   filter_upwards [h (segPt (v j) (v (j + 1)) (q : ℝ))] with ω hω
   simp only [eq_iff_iff]
@@ -55,7 +55,7 @@ theorem crossApprox_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P : Mea
     (X Y : Space 2 → Ω → ℝ) (h : ∀ u, X u =ᵐ[P] Y u) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     crossApprox X a b i l =ᵐ[P] crossApprox Y a b i l := by
   unfold crossApprox
-  exact Filter.EventuallyEq.countable_iUnion fun ch =>
+  exact Filter.EventuallyEqSet.countable_iUnion fun ch =>
     pathEvent_ae_eq_of_field_ae P X Y h l _ _
 
 /-- Two fields that agree almost surely at every point have almost surely the same crossings:
@@ -64,7 +64,7 @@ theorem closedCrossEvent_ae_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω] (P 
     (X Y : Space 2 → Ω → ℝ) (h : ∀ u, X u =ᵐ[P] Y u) (a b : Fin 2 → ℝ) (i : Fin 2) (l : ℝ) :
     closedCrossEvent X a b i l =ᵐ[P] closedCrossEvent Y a b i l := by
   unfold closedCrossEvent
-  exact Filter.EventuallyEq.countable_iInter fun n =>
+  exact Filter.EventuallyEqSet.countable_iInter fun n =>
     crossApprox_ae_eq_of_field_ae P X Y h a b i _
 
 /-- The two events have the same measure under every measure absolutely continuous with respect
@@ -81,7 +81,7 @@ theorem measure_closedCrossEvent_eq_of_field_ae {Ω : Type*} [MeasurableSpace Ω
 theorem ballKernel_eq_zero_of_one_le {d : ℕ} (u : Space 2) {z : Space d}
     (hz : 1 ≤ ‖(planePoint (d := d) u) - z‖) : ballKernel d 1 u z = 0 := by
   unfold ballKernel
-  rw [if_neg (not_lt.mpr hz)]
+  rw [ite_eq_right (not_lt.mpr hz)]
 
 /-- **The shift raises the field by the full mass of the kernel.**  If the region `U` contains
 the unit ball about `u`, the unit kernel at `u` pairs with the indicator of `U` to its full
@@ -124,7 +124,7 @@ unaffected. -/
 theorem centredKernel_eq_zero_of_one_le {d : ℕ} {y : Space d} (hy : 1 ≤ ‖y‖) :
     centredKernel d 1 y = 0 := by
   unfold centredKernel
-  rw [if_neg (not_lt.mpr hy)]
+  rw [ite_eq_right (not_lt.mpr hy)]
 
 /-- Inside the punctured unit ball the centred kernel is strictly positive: in dimension `2` it
 is `log(1/‖y‖)/(2π)`, and in dimension `3` it is `(1/‖y‖ - 1)/(4π)`, both positive since
@@ -136,13 +136,13 @@ theorem centredKernel_pos_of_lt_one {d : ℕ} {y : Space d} (hy : y ≠ 0) (h1 :
     rw [lt_div_iff₀ hpos]
     linarith
   unfold centredKernel
-  rw [if_pos h1]
+  rw [ite_eq_left h1]
   by_cases hd2 : d = 2
-  · rw [if_pos hd2]
+  · rw [ite_eq_left hd2]
     have hlog : 0 < Real.log (1 / ‖y‖) := Real.log_pos hinv
     have hpi : (0 : ℝ) < 1 / (2 * Real.pi) := by positivity
     exact mul_pos hpi hlog
-  · rw [if_neg hd2]
+  · rw [ite_eq_right hd2]
     have hpi : (0 : ℝ) < 1 / (4 * Real.pi) := by positivity
     have hgap : 0 < 1 / ‖y‖ - 1 / (1 : ℝ) := by
       rw [div_one]

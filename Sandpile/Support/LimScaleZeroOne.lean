@@ -124,7 +124,7 @@ obtained from `scaleCrossingAS_of_bounded_basis` by supplying a bounded Hilbert 
 `L²` on `Space d`. -/
 theorem Sandpile.Support.scaleCrossingAS {d : ℕ} (hd : d = 2 ∨ d = 3) :
     ScaleCrossingAS d := by
-  letI : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
+  let : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
   obtain ⟨w, b, hb⟩ := Sandpile.Support.exists_bounded_hilbertBasis
     (volume : Measure (Space d))
   exact Sandpile.Support.scaleCrossingAS_of_bounded_basis hd w b hb

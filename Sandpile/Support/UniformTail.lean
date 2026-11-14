@@ -85,7 +85,7 @@ theorem exists_uniform_left_tail (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (
   refine ⟨μ / 2, min 1 (μ / (4 * S)), by positivity,
     lt_min one_pos (by positivity), min_le_left _ _, ?_⟩
   intro ν hprob hmean hvar hexpint hexp
-  haveI := hprob
+  have := hprob
   -- the second and fourth moments
   have hsqint : Integrable (fun z : ℝ => z ^ 2) ν := by
     refine Integrable.mono' (hexpint.const_mul (4 / θ₀ ^ 2))
@@ -312,7 +312,7 @@ theorem exists_uniform_left_tail (ν₀ θ₀ K₀ : ℝ) (hν₀ : 0 < ν₀) (
   -- the event sits inside the half-line
   have hsub : {z : ℝ | μ / 2 < max (-z) 0} ⊆ Set.Iic (-(μ / 2)) := by
     intro z hz
-    simp only [Set.mem_setOf_eq] at hz
+    simp only [Set.mem_ofPred_eq] at hz
     simp only [Set.mem_Iic]
     rcases max_cases (-z) 0 with ⟨he, -⟩ | ⟨he, -⟩
     · rw [he] at hz; linarith

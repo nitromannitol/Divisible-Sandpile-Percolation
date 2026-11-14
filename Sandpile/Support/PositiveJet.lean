@@ -396,7 +396,8 @@ lemma Bounds.sum_softThree {β : ℝ} {n : ℕ}
     dsimp [D]
     simp only [Finset.sum_add_distrib]
     have h := add_le_add ((hA i).sum_two x) (Bounds.sum_softTwo hA x)
-    convert h using 1 <;> first | rfl | (push_cast; ring)
+    convert h using 1
+    first | rfl | (push_cast; ring)
   have h1 (i : I) : 0 ≤ ∑ j, (A i).one j x :=
     Finset.sum_nonneg (fun j _ => ((hA i).stable_one j).nonneg x)
   have h2 (i : I) : 0 ≤ ∑ j, ∑ k, (A i).two j k x :=

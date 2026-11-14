@@ -54,7 +54,7 @@ theorem centeredMassLaw_preimage_shiftField_all (ν : Measure ℝ) [IsProbabilit
     (centeredMassLaw d ν) (shiftField y ⁻¹' S) = (centeredMassLaw d ν) S := by
   classical
   set μ : Measure ℝ := ν.map fun z => 1 + 2 * (d : ℝ) * z with hμ
-  haveI : IsProbabilityMeasure μ := by
+  have : IsProbabilityMeasure μ := by
     rw [hμ]
     exact inferInstance
   have hcm : centeredMassLaw d ν = massLaw d μ := by rw [centeredMassLaw, hμ]
@@ -141,10 +141,10 @@ theorem infiniteGreenField_shift_of_mem (y : Site d) (zeta : Site d → ℝ)
       Tendsto (fun n => infiniteGreenFieldPartial n (fun z => zeta (z + y)) 0) atTop (𝓝 M) :=
     ⟨L, hB⟩
   have hA : infiniteGreenField zeta y = L := by
-    rw [infiniteGreenField, dif_pos hexA]
+    rw [infiniteGreenField, dite_eq_left hexA]
     exact tendsto_nhds_unique (Classical.choose_spec hexA) hL
   have hBv : infiniteGreenField (fun z => zeta (z + y)) 0 = L := by
-    rw [infiniteGreenField, dif_pos hexB]
+    rw [infiniteGreenField, dite_eq_left hexB]
     exact tendsto_nhds_unique (Classical.choose_spec hexB) hB
   rw [hA, hBv]
 
@@ -200,7 +200,7 @@ symmetric differences with a fixed first component. -/
 theorem symmDiff_ae_congr_right {alpha : Type*} [MeasurableSpace alpha] (mu : Measure alpha)
     (A C B : Set alpha) (h : C =ᵐ[mu] B) :
     (symmDiff A C : Set alpha) =ᵐ[mu] (symmDiff A B : Set alpha) := by
-  rw [Filter.eventuallyEq_set] at h ⊢
+  rw [eventuallyEqSet_iff] at h ⊢
   filter_upwards [h] with x hx
   simp only [Set.mem_symmDiff, hx]
 
@@ -241,7 +241,7 @@ theorem measure_threshold_symmDiff_shift_gauss (hd : 5 ≤ d) (v : ℝ≥0)
   have hodo : shiftField y ⁻¹' {σ : Site d → ℝ | odometer σ m 0 = 0}
       = {σ : Site d → ℝ | odometer σ m y = 0} := by
     ext σ
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, odometer_shiftField σ y m 0, zero_add]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, odometer_shiftField σ y m 0, zero_add]
   have hpre : shiftField y ⁻¹'
       (symmDiff {σ : Site d → ℝ | odometer σ m 0 = 0} {σ : Site d → ℝ | b < J σ 0})
       = symmDiff {σ : Site d → ℝ | odometer σ m y = 0}
@@ -249,9 +249,9 @@ theorem measure_threshold_symmDiff_shift_gauss (hd : 5 ≤ d) (v : ℝ≥0)
     rw [Set.preimage_symmDiff, hodo]
   have hCB : (shiftField y ⁻¹' {σ : Site d → ℝ | b < J σ 0})
       =ᵐ[centeredMassLaw d (gaussianReal 0 v)] {σ : Site d → ℝ | b < J σ y} := by
-    rw [Filter.eventuallyEq_set]
+    rw [eventuallyEqSet_iff]
     filter_upwards [hae] with σ hσ
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, hJ, hσ]
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq, hJ, hσ]
   calc (centeredMassLaw d (gaussianReal 0 v))
         (symmDiff {σ : Site d → ℝ | odometer σ m y = 0} {σ : Site d → ℝ | b < J σ y})
       = (centeredMassLaw d (gaussianReal 0 v))

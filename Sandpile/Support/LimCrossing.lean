@@ -63,7 +63,7 @@ theorem limiting_odometer_crossing_of_inputs
     finite_scale_extraction_of_inputs hRSWc hPitt hGauss hd hZ hLaw a b hab dir (ε / 2)
       (by linarith)
   obtain ⟨T, hT, happ⟩ := hApp k s hs N a b c (ε / 2) hc (by linarith)
-  haveI : NeZero k := ⟨by omega⟩
+  have : NeZero k := ⟨by omega⟩
   have hdpos : (2 : ℝ) ≤ (d : ℝ) := by
     rcases hd with rfl | rfl <;> norm_num
   refine ⟨T, 5 * (d : ℝ) * c, hT, by nlinarith, ?_⟩

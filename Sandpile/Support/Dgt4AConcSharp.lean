@@ -31,7 +31,7 @@ noncomputable def patch (S : Finset (Site d)) (ζ ζ' : Site d → ℝ) : Site d
 /-- Patching with the empty set changes nothing: `patch ∅ ζ ζ' = ζ`. -/
 theorem patch_empty (ζ ζ' : Site d → ℝ) : patch ∅ ζ ζ' = ζ := by
   funext z
-  rw [patch, if_neg (Finset.notMem_empty z)]
+  rw [patch, ite_eq_right (Finset.notMem_empty z)]
 
 /-- Patching a set with one more element inserted is the same as patching the smaller set
 and then updating the value at the new element to `ζ' a`. -/
@@ -40,18 +40,18 @@ theorem patch_insert {S : Finset (Site d)} {a : Site d} (ha : a ∉ S) (ζ ζ' :
   funext z
   by_cases hz : z = a
   · subst hz
-    rw [Function.update_self, patch, if_pos (Finset.mem_insert_self z S)]
+    rw [Function.update_self, patch, ite_eq_left (Finset.mem_insert_self z S)]
   · rw [Function.update_of_ne hz, patch, patch]
     by_cases hzS : z ∈ S
-    · rw [if_pos (Finset.mem_insert_of_mem hzS), if_pos hzS]
-    · rw [if_neg (fun hmem => (Finset.mem_insert.mp hmem).elim hz (fun hh => hzS hh)),
-        if_neg hzS]
+    · rw [ite_eq_left (Finset.mem_insert_of_mem hzS), ite_eq_left hzS]
+    · rw [ite_eq_right (fun hmem => (Finset.mem_insert.mp hmem).elim hz (fun hh => hzS hh)),
+        ite_eq_right hzS]
 
 /-- At a site outside the patched set `S`, `patch S ζ ζ'` still takes the original value
 `ζ z`. -/
 theorem patch_apply_of_notMem {S : Finset (Site d)} {z : Site d} (hz : z ∉ S)
     (ζ ζ' : Site d → ℝ) : patch S ζ ζ' z = ζ z := by
-  rw [patch, if_neg hz]
+  rw [patch, ite_eq_right hz]
 
 /-- The difference to a patch is supported on the patched set. -/
 theorem hasSum_sq_sub_patch (S : Finset (Site d)) (ζ ζ' : Site d → ℝ) :
@@ -63,7 +63,7 @@ theorem hasSum_sq_sub_patch (S : Finset (Site d)) (ζ ζ' : Site d → ℝ) :
   have hs : HasSum (fun z => (ζ z - patch S ζ ζ' z) ^ 2)
       (∑ z ∈ S, (ζ z - patch S ζ ζ' z) ^ 2) := hasSum_sum_of_ne_finset_zero hzero
   have heq : ∑ z ∈ S, (ζ z - patch S ζ ζ' z) ^ 2 = ∑ z ∈ S, (ζ z - ζ' z) ^ 2 :=
-    Finset.sum_congr rfl fun z hz => by rw [patch, if_pos hz]
+    Finset.sum_congr rfl fun z hz => by rw [patch, ite_eq_left hz]
   rwa [heq] at hs
 
 /-- The difference from a patch to the target is supported off the patched set. -/
@@ -74,16 +74,16 @@ theorem hasSum_sq_patch_sub (S : Finset (Site d)) (ζ ζ' : Site d → ℝ) (M :
       (∑ z ∈ S, (ζ z - ζ' z) ^ 2) := by
     have hs : HasSum (fun z : Site d => if z ∈ S then (ζ z - ζ' z) ^ 2 else 0)
         (∑ z ∈ S, if z ∈ S then (ζ z - ζ' z) ^ 2 else 0) :=
-      hasSum_sum_of_ne_finset_zero (fun z hz => if_neg hz)
+      hasSum_sum_of_ne_finset_zero (fun z hz => ite_eq_right hz)
     have heq : (∑ z ∈ S, if z ∈ S then (ζ z - ζ' z) ^ 2 else 0)
         = ∑ z ∈ S, (ζ z - ζ' z) ^ 2 :=
-      Finset.sum_congr rfl fun z hz => if_pos hz
+      Finset.sum_congr rfl fun z hz => ite_eq_left hz
     rwa [heq] at hs
   refine (h.sub h1).congr_fun fun z => ?_
   by_cases hz : z ∈ S
-  · rw [if_pos hz, patch, if_pos hz]
+  · rw [ite_eq_left hz, patch, ite_eq_left hz]
     ring
-  · rw [if_neg hz, patch, if_neg hz]
+  · rw [ite_eq_right hz, patch, ite_eq_right hz]
     ring
 
 /-- **The tail-kernel bound against a finitely supported difference**

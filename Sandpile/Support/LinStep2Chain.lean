@@ -30,7 +30,7 @@ theorem measureReal_threshold_le_eq (ν : Measure ℝ) [IsProbabilityMeasure ν]
       = 1 - (centeredMassLaw d ν).real {σ : Site d → ℝ | c < J σ 0} := by
   have hcompl : {σ : Site d → ℝ | J σ 0 ≤ c} = {σ : Site d → ℝ | c < J σ 0}ᶜ := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, not_lt]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, not_lt]
   have h1 : (centeredMassLaw d ν) {σ : Site d → ℝ | c < J σ 0}ᶜ
       = 1 - (centeredMassLaw d ν) {σ : Site d → ℝ | c < J σ 0} := by
     rw [measure_compl₀ hnull (measure_ne_top _ _), measure_univ]

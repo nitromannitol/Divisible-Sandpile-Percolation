@@ -179,7 +179,7 @@ theorem eventually_integral_condReflected_posPart_le
         ≤ Real.exp (-(2 * |y|)) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set S : ℝ := ((fieldVar d v : ℝ≥0) : ℝ) with hSdef
@@ -277,7 +277,7 @@ theorem eventually_integral_condReflected_posPart_le
     have hset : {r | (∫ r', W r' ∂ρ) + τ ≤ W r}
         = {r | (∫ r', Th r' ∂ρ) + τ / kap ≤ Th r} := by
       ext r
-      simp only [Set.mem_setOf_eq]
+      simp only [mem_ofPred_eq]
       constructor
       · intro h
         rw [hWmean] at h

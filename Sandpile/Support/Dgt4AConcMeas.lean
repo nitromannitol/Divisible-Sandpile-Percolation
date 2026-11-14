@@ -37,7 +37,7 @@ theorem measurableSet_greenConvAt (x : Site d) : MeasurableSet (greenConvAt d x)
 theorem infiniteGreenField_of_notMem {ζ : Site d → ℝ} {x : Site d}
     (h : ζ ∉ greenConvAt d x) : infiniteGreenField ζ x = 0 := by
   rw [infiniteGreenField]
-  exact dif_neg h
+  exact dite_eq_right h
 
 /-- **The Green field is measurable in the scenery.** -/
 theorem measurable_infiniteGreenField (x : Site d) :

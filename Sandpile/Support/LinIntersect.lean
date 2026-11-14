@@ -51,8 +51,8 @@ theorem interCount_eq_tsum_localTime (X Y : ℕ → Site d) :
         = (if X p.1 = Y p.2 then (1 : ℝ≥0∞) else 0) := by
     intro p
     by_cases h : X p.1 = Y p.2
-    · rw [Set.indicator_of_mem (by simpa using h), if_pos h]
-    · rw [Set.indicator_of_notMem (by simpa using h), if_neg h]
+    · rw [Set.indicator_of_mem (by simpa using h), ite_eq_left h]
+    · rw [Set.indicator_of_notMem (by simpa using h), ite_eq_right h]
   have hmul : ∀ z : Site d, localTime z X * localTime z Y
       = ∑' i : ℕ, ∑' j : ℕ,
           ((if X i = z then (1 : ℝ≥0∞) else 0) * (if Y j = z then (1 : ℝ≥0∞) else 0)) := by
@@ -66,10 +66,10 @@ theorem interCount_eq_tsum_localTime (X Y : ℕ → Site d) :
     intro i j
     rw [tsum_eq_single (X i) (by
       intro z hz
-      rw [if_neg (fun h => hz h.symm), zero_mul])]
+      rw [ite_eq_right (fun h => hz h.symm), zero_mul])]
     by_cases h : X i = Y j
-    · rw [if_pos h, if_pos rfl, if_pos h.symm, one_mul]
-    · rw [if_neg h, if_pos rfl, if_neg (fun hh => h hh.symm), mul_zero]
+    · rw [ite_eq_left h, ite_eq_left rfl, ite_eq_left h.symm, one_mul]
+    · rw [ite_eq_right h, ite_eq_left rfl, ite_eq_right (fun hh => h hh.symm), mul_zero]
   calc Sandpile.External.interCount X Y
       = ∑' p : ℕ × ℕ, (if X p.1 = Y p.2 then (1 : ℝ≥0∞) else 0) := by
         rw [Sandpile.External.interCount]
@@ -101,8 +101,8 @@ theorem indicator_path_eq (i : ℕ) (z : Site d) :
   classical
   funext X
   by_cases h : X i = z
-  · rw [if_pos h, Set.indicator_of_mem (by simpa using h)]
-  · rw [if_neg h, Set.indicator_of_notMem (by simpa using h)]
+  · rw [ite_eq_left h, Set.indicator_of_mem (by simpa using h)]
+  · rw [ite_eq_right h, Set.indicator_of_notMem (by simpa using h)]
 
 /-- The local time at a site is a measurable function of the path. -/
 theorem measurable_localTime (z : Site d) :

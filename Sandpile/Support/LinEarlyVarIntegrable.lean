@@ -72,7 +72,7 @@ theorem integrable_integral_covSurvival (μ : Measure (Site d → ℝ)) [IsProba
         have h6 : |(if p.1 i = z then (1 : ℝ) else 0)| ≤ 1 := by split <;> norm_num
         have h7 : |(if p.2 j = z then (1 : ℝ) else 0)| ≤ 1 := by split <;> norm_num
         have h8 : |(if p.1 i = z then (1 : ℝ) else 0)| * |(if p.2 j = z then (1 : ℝ) else 0)| ≤ 1 :=
-          mul_le_one₀ h6 (abs_nonneg _) h7
+          (mul_le_of_le_one_left (abs_nonneg _) h6).trans h7
         nlinarith [h3, h5, h8, abs_nonneg (covSurvival μ n i j p.1 p.2)]
     refine le_trans hstep ?_
     rw [Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul]
@@ -147,7 +147,7 @@ theorem summable_integral_norm_covSurvival (μ : Measure (Site d → ℝ))
           by_contra h
           exact hz (by
             refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
-            rw [if_neg (fun hh => h (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul])
+            rw [ite_eq_right (fun hh => h (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul])
       rw [hcol] at hle
       have h1' : ∀ i ∈ t, (∑ j ∈ t, (if p.1 i = p.2 j then (1 : ℝ) else 0)) ≤ (t.card : ℝ) := by
         intro i hi

@@ -78,7 +78,7 @@ theorem infiniteGreenField_shift_eq_site (hd : 5 ≤ d) (c : ℝ) (x : Site d) {
       ((tendsto_greenPartialSum_greenUnit_site hd x).const_mul (c * s))
   have hex : ∃ M : ℝ, Tendsto (fun n : ℕ => infiniteGreenFieldPartial n
       (fun z => c * (r z + s * (greenUnit d hd : Site d → ℝ) z)) x) atTop (𝓝 M) := ⟨_, htend⟩
-  rw [infiniteGreenField, dif_pos hex]
+  rw [infiniteGreenField, dite_eq_left hex]
   exact tendsto_nhds_unique (Classical.choose_spec hex) htend
 
 /-- The residual limit at a general site exists almost surely. -/

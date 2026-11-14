@@ -39,7 +39,7 @@ namespace Sandpile
 theorem criticalScale_d23 (d : ℕ) (hd : d = 2 ∨ d = 3) (t : ℕ) :
     criticalScale d t = (t : ℝ) ^ ((4 - (d : ℝ)) / 4) := by
   unfold criticalScale
-  rw [if_pos (by omega : d ≤ 3)]
+  rw [ite_eq_left (by omega : d ≤ 3)]
 
 /-- The critical scale in dimension four is `log t`. -/
 theorem criticalScale_four (t : ℕ) : criticalScale 4 t = Real.log t := by
@@ -50,7 +50,7 @@ theorem criticalScale_four (t : ℕ) : criticalScale 4 t = Real.log t := by
 theorem criticalScale_dgt4 (d : ℕ) (hd : 5 ≤ d) (t : ℕ) :
     criticalScale d t = (Real.log t) ^ ((2 : ℝ) / d) := by
   unfold criticalScale
-  rw [if_neg (by omega : ¬ d ≤ 3), if_neg (by omega : ¬ d = 4)]
+  rw [ite_eq_right (by omega : ¬ d ≤ 3), ite_eq_right (by omega : ¬ d = 4)]
 
 /-- The variance of the centred law is finite when the exponential moment is. -/
 theorem evariance_centering_lt_top (d : ℕ) (_hd : 1 ≤ d) (μ : Measure ℝ)
@@ -58,7 +58,7 @@ theorem evariance_centering_lt_top (d : ℕ) (_hd : 1 ≤ d) (μ : Measure ℝ)
     (hexp : Integrable (fun s => Real.exp (θ₀ * |s - 1|)) μ) :
     evariance id (μ.map fun s => (s - 1) / (2 * (d : ℝ))) < ⊤ := by
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
-  haveI : IsProbabilityMeasure (μ.map fun s : ℝ => (s - 1) / (2 * (d : ℝ))) :=
+  have : IsProbabilityMeasure (μ.map fun s : ℝ => (s - 1) / (2 * (d : ℝ))) :=
     inferInstance
   refine ProbabilityTheory.evariance_lt_top ?_
   have h1 : Integrable (fun s : ℝ => Real.exp (θ₀ * |s|)) μ := by
@@ -121,7 +121,7 @@ theorem crit23_d23_branch
       (2 * (d : ℝ) * θ₀) K₀ (by positivity) (by positivity)
   refine ⟨c, hc, t₀, ?_⟩
   intro μ hμ hmean hvar hexpint hexp t ht
-  letI := hμ
+  let := hμ
   set ν : Measure ℝ := μ.map fun s : ℝ => (s - 1) / (2 * (d : ℝ)) with hν
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
   have hνprob : IsProbabilityMeasure ν := by
@@ -194,7 +194,7 @@ theorem crit23_dgt4_branch
     hmain (ν₀ / (2 * (d : ℝ))) (by positivity)
   refine ⟨c, hc, t₀, ?_⟩
   intro μ hμ hmean hvar hexpint hexp t ht
-  letI := hμ
+  let := hμ
   set ν : Measure ℝ := μ.map fun s : ℝ => (s - 1) / (2 * (d : ℝ)) with hν
   have hf : Measurable fun s : ℝ => (s - 1) / (2 * (d : ℝ)) := by fun_prop
   have hνprob : IsProbabilityMeasure ν := by

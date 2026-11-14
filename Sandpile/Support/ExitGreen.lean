@@ -38,9 +38,9 @@ theorem stopped_poisson_telescope (f : Site d → ℝ) (t : ℕ) (X : ℕ → Si
   congr 1
   refine Finset.sum_congr rfl fun n _ => ?_
   by_cases hn : n < N
-  · simp only [if_pos hn, one_mul, a, sceneryPartialSum, Finset.sum_range_succ]
+  · simp only [ite_eq_left hn, one_mul, a, sceneryPartialSum, Finset.sum_range_succ]
     ring
-  · rw [if_neg hn, if_neg hn, zero_mul]
+  · rw [ite_eq_right hn, ite_eq_right hn, zero_mul]
 
 /-- The stopped Poisson identity follows by integrating the stopped martingale
 differences of a deterministic field. -/
@@ -48,7 +48,7 @@ theorem integral_stopped_poisson (hd : 1 ≤ d) (x : Site d) (f : Site d → ℝ
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     (∫ X, sceneryPartialSum (fun y => f y - avg f y) (τ X) X + f (X (τ X)) ∂walkLaw d x)
       = f x := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   set P := Measure.infinitePi (fun _ : ℕ => stepLaw d)
   have hpay : Integrable (fun X => sceneryPartialSum (fun y => f y - avg f y) (τ X) X +
       f (X (τ X))) (walkLaw d x) :=
@@ -168,7 +168,7 @@ theorem killedKernel_eq_graph (D : Set (Site d)) (n : ℕ) (x y : Site d) :
   | succ n ih =>
     rw [LatticeProb.Graph.Zd.killedHeat_succ_walkOp]
     by_cases hx : x ∈ D
-    · simp only [killedKernel, Set.indicator_of_mem hx, if_pos hx,
+    · simp only [killedKernel, Set.indicator_of_mem hx, ite_eq_left hx,
         LatticeProb.walkOp, LatticeProb.nbrSum, ih]
     · simp [killedKernel, hx]
 
@@ -210,7 +210,7 @@ kernel over `C`: pairing the past-in-`univ` weight against the indicator of `C` 
 theorem measure_walk_mem_finset (hd : 1 ≤ d) (x : Site d) (n : ℕ) (C : Finset (Site d)) :
     (walkLaw d x).real {X : ℕ → Site d | X n ∈ C} = ∑ y ∈ C, heatKernel d n x y := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hp := integral_pastIn_mul hd Set.univ n x (fun y => if y ∈ C then 1 else 0) 1
     (fun y => by split_ifs <;> norm_num)
   have hl : (fun X : ℕ → Site d => pastIn Set.univ n X * (if X n ∈ C then 1 else 0)) =
@@ -226,15 +226,15 @@ theorem measure_walk_mem_finset (hd : 1 ≤ d) (x : Site d) (n : ℕ) (C : Finse
     funext y
     simp only [killedKernel_univ]
     split_ifs <;> simp
-  rw [he, tsum_eq_sum (s := C) (fun y hy => if_neg hy)]
-  exact Finset.sum_congr rfl fun y hy => if_pos hy
+  rw [he, tsum_eq_sum (s := C) (fun y hy => ite_eq_right hy)]
+  exact Finset.sum_congr rfl fun y hy => ite_eq_left hy
 
 /-- In a transient dimension a walk exits every finite set almost surely.
 Finite sums of one-time transition probabilities tend to zero. -/
 theorem ae_exitTime_ne_top_of_finite (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Finite)
     (x : Site d) : ∀ᵐ X ∂walkLaw d x, exitTime D X ≠ ⊤ := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hlim : Tendsto (fun n : ℕ => (walkLaw d x).real {X : ℕ → Site d | X n ∈ D})
       atTop (𝓝 0) := by
     have he : ∀ n : ℕ, (walkLaw d x).real {X : ℕ → Site d | X n ∈ D} =
@@ -252,7 +252,7 @@ theorem ae_exitTime_ne_top_of_finite (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.F
     by_contra hnot
     have hex : exitTime D X ≤ (n : ℕ∞) := sInf_le ⟨n, rfl, hnot⟩
     rw [hX] at hex
-    exact (ENat.coe_ne_top n) (top_le_iff.mp hex)
+    exact (ENat.natCast_ne_top n) (top_le_iff.mp hex)
   have hz : (walkLaw d x).real {X : ℕ → Site d | exitTime D X = ⊤} = 0 :=
     le_antisymm (ge_of_tendsto hlim (Eventually.of_forall hle)) (measureReal_nonneg)
   rw [ae_iff]
@@ -265,14 +265,14 @@ theorem stoppedExit_eq_toNat {D : Set (Site d)} {N : ℕ} {X : ℕ → Site d}
     (hX : exitTime D X ≤ (N : ℕ∞)) :
     stopBeforeExit D N (fun _ => N) X = (exitTime D X).toNat := by
   have h := exitTime_le_iff.mp hX
-  rw [stopBeforeExit, min_eq_right h, exitTime_eq_exitNat h, ENat.toNat_coe]
+  rw [stopBeforeExit, min_eq_right h, exitTime_eq_exitNat h, ENat.toNat_natCast]
 
 /-- The path-space first-passage decomposition of the Green function. -/
 theorem integral_green_at_exit (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Finite)
     (x y : Site d) :
     (∫ X, green d (X (exitTime D X).toNat) y ∂walkLaw d x) =
       green d x y - killedGreen D x y := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   set F : ℕ → (ℕ → Site d) → ℝ :=
     fun N X => green d (X (stopBeforeExit D N (fun _ => N) X)) y
   have hFm : ∀ N, AEStronglyMeasurable (F N) (walkLaw d x) := by
@@ -316,7 +316,7 @@ integrable: it is measurable (`measurable_exit_site`) and dominated by the diago
 `green d 0 0` (`green_le_diagonal`). -/
 theorem integrable_green_at_exit (hd : 3 ≤ d) (D : Set (Site d)) (x y : Site d) :
     Integrable (fun X : ℕ → Site d => green d (X (exitTime D X).toNat) y) (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   refine (integrable_const (green d 0 0)).mono'
     ((measurable_of_countable (fun w => green d w y)).comp
       (measurable_exit_site D)).aestronglyMeasurable ?_
@@ -331,7 +331,7 @@ theorem exitTime_toNat_notMem {D : Set (Site d)} {X : ℕ → Site d}
   obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.mp hX
   have hk' : exitTime D X ≤ (k : ℕ∞) := by rw [← hk]
   have hn := exitTime_le_iff.mp hk'
-  rw [exitTime_eq_exitNat hn, ENat.toNat_coe]
+  rw [exitTime_eq_exitNat hn, ENat.toNat_natCast]
   exact notMem_exitNat hn
 
 /-- Reversibility transfers an exit average to a walk started at its target. -/
@@ -349,7 +349,7 @@ exits outside `D` (`exitTime_toNat_notMem`). -/
 theorem integral_green_at_exit_le_of_outside (hd : 3 ≤ d) (D : Set (Site d)) (hD : D.Finite)
     (x y : Site d) (M : ℝ) (hout : ∀ w ∉ D, green d w x ≤ M) :
     (∫ X, green d (X (exitTime D X).toNat) y ∂walkLaw d x) ≤ M := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   rw [integral_green_at_exit_symm hd D hD x y]
   have h := integral_mono_ae (integrable_green_at_exit hd D y x) (integrable_const M) ?_
   · simpa using h
@@ -364,7 +364,7 @@ theorem finite_real_cube (x : Site d) (r : ℕ) :
   have he : {y : Site d | ∀ i, |(y i : ℝ) - (x i : ℝ)| ≤ r} =
       (boxFinset x r : Set (Site d)) := by
     ext y
-    simp only [Finset.mem_coe, mem_boxFinset_iff, Set.mem_setOf_eq]
+    simp only [Finset.mem_coe, mem_boxFinset_iff, Set.mem_ofPred_eq]
     exact (boxDist_le_iff_real_coords x y r).symm
   rw [he]
   exact Finset.finite_toSet _

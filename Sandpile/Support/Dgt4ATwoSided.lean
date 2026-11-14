@@ -31,8 +31,8 @@ theorem measure_abs_sub_mean_ge_le_two_mul {Ω : Type*} [MeasurableSpace Ω]
   have hsub : {ω | t ≤ |f ω - ∫ η, f η ∂μ|}
       ⊆ {ω | (∫ η, f η ∂μ) + t ≤ f ω} ∪ {ω | f ω + t ≤ ∫ η, f η ∂μ} := by
     intro ω hω
-    rw [Set.mem_setOf_eq] at hω
-    rw [Set.mem_union, Set.mem_setOf_eq, Set.mem_setOf_eq]
+    rw [mem_ofPred_eq] at hω
+    rw [Set.mem_union, mem_ofPred_eq, mem_ofPred_eq]
     rcases abs_cases (f ω - ∫ η, f η ∂μ) with ⟨h, _⟩ | ⟨h, _⟩
     · left; linarith
     · right; linarith

@@ -69,7 +69,7 @@ theorem cell_eq_pi (d : ℕ) {R : ℝ} (hR : 0 < R) (x : Sandpile.Site d) :
     {y : Fin d → ℝ | ∀ i, ⌊R * y i⌋ = x i}
       = Set.pi Set.univ (fun i => Set.Ico ((x i : ℝ) / R) (((x i : ℝ) + 1) / R)) := by
   ext y
-  simp only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, forall_const, Set.mem_Ico]
+  simp only [Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ, forall_const, Set.mem_Ico]
   refine forall_congr' fun i => ?_
   rw [Int.floor_eq_iff]
   constructor

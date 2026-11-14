@@ -35,11 +35,11 @@ theorem mean_localization_uniform (d : ℕ) (hd : 1 ≤ d) (T : ℝ) (hT : 0 < T
                   ∂(LatticeProb.iidLaw d ν)) ≤
               C * Real.exp (-(c * A ^ 2 / T)) *
                 ∫ ζ, Sandpile.odometerOf ζ t 0 ∂(LatticeProb.iidLaw d ν) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨-, -, C₀, c₀, hC₀, hc₀, hbnd⟩ := Sandpile.External.heatKernelBounds d hd
   refine ⟨C₀, c₀, hC₀, hc₀, ?_⟩
   intro ν hprob hpos
-  haveI := hprob
+  have := hprob
   intro A hA R hR t htR x
   have hAR1 : (1 : ℝ) ≤ A * R := by nlinarith
   have hfloor : 1 ≤ ⌊A * R⌋ := by

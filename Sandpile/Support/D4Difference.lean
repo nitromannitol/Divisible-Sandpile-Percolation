@@ -177,7 +177,7 @@ theorem exists_membrane_tail_four (hVS : Sandpile.External.VarianceScale)
   refine ⟨c₀ / M, max C₀ 1, div_pos hc₀ hM0,
     lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩
   intro ν hprob hmean hexpint hexp m y L s hL hlogL hs
-  haveI := hprob
+  have := hprob
   have hint : Integrable id ν := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   rcases hs.eq_or_lt with hs0 | hspos
   · subst hs0
@@ -191,7 +191,7 @@ theorem exists_membrane_tail_four (hVS : Sandpile.External.VarianceScale)
   rcases Nat.eq_zero_or_pos m with rfl | hm
   · have hempty : {ζ : Site 4 → ℝ | s ≤ |membrane ζ 0 y|} = ∅ := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_le]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le]
       rw [membrane_zero]
       simpa using hspos
     rw [hempty]
@@ -220,7 +220,7 @@ theorem exists_membrane_tail_four (hVS : Sandpile.External.VarianceScale)
       refine lt_of_lt_of_le (pow_pos (by linarith : (0:ℝ) < ℓ i₀) 2) ?_
       exact Finset.single_le_sum (f := fun i : Fin N => ℓ i ^ 2)
         (fun i _ => sq_nonneg _) (Finset.mem_univ i₀)
-    haveI : Nonempty (Fin N) := ⟨i₀⟩
+    have : Nonempty (Fin N) := ⟨i₀⟩
     have hInfLe : lInfNorm ℓ ≤ M := ciSup_le fun i => hMinf m y _
     have hInfPos : 0 < lInfNorm ℓ := lt_of_lt_of_le (by linarith) (le_lInfNorm ℓ i₀)
     have hmean0 : (∫ ξ, boxMembrane m y ξ ∂(Measure.pi fun _ : Fin N => ν)) = 0 :=
@@ -237,7 +237,7 @@ theorem exists_membrane_tail_four (hVS : Sandpile.External.VarianceScale)
         = (fun ζ : Site 4 → ℝ => fun i => ζ (boxEnum y m i)) ⁻¹'
           {ξ | s ≤ |boxMembrane m y ξ - 0|} := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_preimage, sub_zero, boxMembrane_pick m y ζ]
+      simp only [Set.mem_ofPred_eq, Set.mem_preimage, sub_zero, boxMembrane_pick m y ζ]
     have hmin : (c₀ / M) * min (s ^ 2 / L) s
         ≤ c₀ * min (s ^ 2 / lTwoNorm ℓ ^ 2) (s / lInfNorm ℓ) := by
       rw [mul_min_of_nonneg _ _ (div_pos hc₀ hM0).le, mul_min_of_nonneg _ _ hc₀.le]
@@ -268,7 +268,7 @@ theorem stoppingSup_neg_membrane_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d →
     {lam : ℝ}
     (hlam : ∀ m : ℕ, m ≤ t → ∀ z ∈ boxFinset x t, -(membrane ζ m z) ≤ lam) :
     stoppingSup t x (fun k X => -(membrane ζ (t - k) (X k))) ≤ lam := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   show sSup {a : ℝ | ∃ τ : (ℕ → Site d) → ℕ, IsWalkStopping τ ∧ (∀ X, τ X ≤ t) ∧
       a = ∫ X, -(membrane ζ (t - τ X) (X (τ X))) ∂(walkLaw d x)} ≤ lam
   refine csSup_le ⟨_, stoppingSup_mem t x (fun k X => -(membrane ζ (t - k) (X k)))⟩ ?_
@@ -305,7 +305,7 @@ theorem measure_difference_gt_le (ν : Measure ℝ) [IsProbabilityMeasure ν] (h
         {ζ : Site d → ℝ | lam ≤ |membrane ζ m z|} := by
     intro ζ hζ
     by_contra hcon
-    simp only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_le] at hcon
+    simp only [Set.mem_iUnion, Set.mem_ofPred_eq, not_exists, not_le] at hcon
     have hlam : ∀ m : ℕ, m ≤ t → ∀ z ∈ boxFinset x t, -(membrane ζ m z) ≤ lam := by
       intro m hm z hz
       have h := hcon m (Finset.mem_range.mpr (by omega)) z hz
@@ -336,7 +336,7 @@ theorem exists_difference_tail_four (hVS : Sandpile.External.VarianceScale)
   obtain ⟨c₀, C₀, hc₀, hC₀, htail⟩ := exists_membrane_tail_four hVS θ₀ K₀ hθ₀
   refine ⟨max 1 (7 / c₀), c₀, 16 * C₀, le_max_left _ _, hc₀, by positivity, ?_⟩
   intro ν hprob hmean hexpint hexp t ht x v hv
-  haveI := hprob
+  have := hprob
   set A₀ : ℝ := max 1 (7 / c₀) with hA₀def
   have hA₀ : (1 : ℝ) ≤ A₀ := le_max_left _ _
   have hA₀c : (7 : ℝ) ≤ c₀ * A₀ := by
@@ -470,7 +470,7 @@ theorem exists_difference_exp_moment_four (hVS : Sandpile.External.VarianceScale
   obtain ⟨A₀, c₁, C₁, hA₀, hc₁, hC₁, hdt⟩ := exists_difference_tail_four hVS θ₀ K₀ hθ₀
   refine ⟨A₀, c₁ / 2, C₁, by linarith, by linarith, hC₁, ?_⟩
   intro ν hprob hmean hexpint hexp t ht x
-  haveI := hprob
+  have := hprob
   set c : ℝ := c₁ / 2 with hcdef
   have hc : 0 < c := by rw [hcdef]; linarith
   set T : ℝ := (t : ℝ) + 2 with hTdef
@@ -501,7 +501,7 @@ theorem exists_difference_exp_moment_four (hVS : Sandpile.External.VarianceScale
         = {ζ : Site 4 → ℝ |
             A₀ * Real.log T + s < odometerOf ζ t x - membrane ζ t x} := by
       ext ζ
-      simp only [Set.mem_setOf_eq, hWdef, lt_max_iff]
+      simp only [Set.mem_ofPred_eq, hWdef, lt_max_iff]
       constructor
       · rintro (h | h)
         · exact absurd h (not_lt.mpr hs0.le)

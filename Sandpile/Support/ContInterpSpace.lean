@@ -55,9 +55,9 @@ theorem prod_ite_erase_nonneg {d : ℕ} {t : Fin d → ℝ} (ht0 : ∀ i, 0 ≤ 
     0 ≤ ∏ i ∈ Finset.univ.erase j, (if c i then t i else 1 - t i) := by
   refine Finset.prod_nonneg fun i _ => ?_
   by_cases h : c i
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     exact ht0 i
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     linarith [ht1 i]
 
 /-- The time interpolation at one corner is a convex combination of two mesh
@@ -139,14 +139,14 @@ theorem linInterp_eq_interp1_slice (d : ℕ) (R : ℝ) (ζ : Site d → ℝ) (r 
     by_cases h : i = j
     · subst h
       simp [hcj]
-    · rw [if_neg h]
+    · rw [ite_eq_right h]
   have h2 : (fun i => b i + if (Function.update c j true) i then (1:ℤ) else 0)
       = (fun i => if i = j then (b j : ℤ) + 1 else b i + (if c i then 1 else 0)) := by
     funext i
     by_cases h : i = j
     · subst h
       simp
-    · rw [if_neg h, Function.update_of_ne h]
+    · rw [ite_eq_right h, Function.update_of_ne h]
   rw [h1, h2]
   ring
 
@@ -166,8 +166,8 @@ theorem sliceInterp_congr (d : ℕ) (R : ℝ) (ζ : Site d → ℝ) (a : ℕ) (s
       = (fun i => if i = j then n else b' i + (if c i then (1:ℤ) else 0)) := by
     funext i
     by_cases h : i = j
-    · rw [if_pos h, if_pos h]
-    · rw [if_neg h, if_neg h, hbs i h]
+    · rw [ite_eq_left h, ite_eq_left h]
+    · rw [ite_eq_right h, ite_eq_right h, hbs i h]
   rw [hw, hz]
 
 /-- **The interpolated field is Lipschitz in one space coordinate**, with
@@ -225,7 +225,7 @@ theorem hybridPoint_zero {d : ℕ} (w w' : Sandpile.Continuum.Space d) :
 theorem hybridPoint_dim {d : ℕ} (w w' : Sandpile.Continuum.Space d) :
     hybridPoint w w' d = w' := by
   ext i
-  rw [hybridPoint_apply, if_pos i.isLt]
+  rw [hybridPoint_apply, ite_eq_left i.isLt]
 
 /-- Consecutive interpolating points differ in one coordinate only. -/
 theorem hybridPoint_agree {d : ℕ} (w w' : Sandpile.Continuum.Space d) {m : ℕ} (hm : m < d)
@@ -236,8 +236,8 @@ theorem hybridPoint_agree {d : ℕ} (w w' : Sandpile.Continuum.Space d) {m : ℕ
     exact hi (Fin.ext h)
   rw [hybridPoint_apply, hybridPoint_apply]
   by_cases hlt : (i : ℕ) < m
-  · rw [if_pos hlt, if_pos (by omega)]
-  · rw [if_neg hlt, if_neg (by omega)]
+  · rw [ite_eq_left hlt, ite_eq_left (by omega)]
+  · rw [ite_eq_right hlt, ite_eq_right (by omega)]
 
 /-- The bound along the chain of interpolating points, by induction on the number
 of coordinates already changed. -/
@@ -463,7 +463,7 @@ theorem abs_sliceInterp_succ_sub (d : ℕ) (R : ℝ) (ζ : Site d → ℝ) (K : 
           by_cases h : i = j
           · subst h
             simp
-          · rw [if_neg h, Function.update_of_ne h, if_neg h]
+          · rw [ite_eq_right h, Function.update_of_ne h, ite_eq_right h]
         rw [hupd]
         exact abs_cellValue_sub_le d R ζ K a hs0 hs1
           (hK a (fun i => if i = j then n else b i + (if c i then (1:ℤ) else 0)) j)

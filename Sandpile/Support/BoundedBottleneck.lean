@@ -265,14 +265,15 @@ lemma smoothBoundedBottleneck_bound [DecidableEq V] {β : ℝ} (hβ : β ≠ 0) 
       (smoothBottleneckBound_coordinate β a) (smoothBottleneckBound_coordinate β b)
   | succ n ih =>
     intro a b h
-    letI : Nonempty (walkMidpoints G n a b) := by
+    let : Nonempty (walkMidpoints G n a b) := by
       obtain ⟨c, hc⟩ := walkMidpoints_nonempty G h
       exact ⟨⟨c, hc⟩⟩
     have hm (c : walkMidpoints G n a b) := SmoothBottleneckBound.softMinimum_pair hβ
       (ih a c ((mem_walkMidpoints G n a b c).mp c.property).1)
       (ih c b ((mem_walkMidpoints G n a b c).mp c.property).2)
     have hh := SmoothBottleneckBound.softMaximum hβ hm
-    convert hh using 1 <;> congr 1
+    convert hh using 1
+    congr 1
 
 /-- `boundedBottleneckValue` is exactly the bottleneck-value optimum among walks of length at
 most `2^n`: every such walk's `walkBottleneck` is bounded above by it, and some such walk attains
@@ -294,7 +295,7 @@ lemma boundedBottleneckValue_spec [DecidableEq V] :
       exact ⟨p, hp, walkBottleneck_of_length_le_one p F (by simpa using hp)⟩
   | succ n ih =>
     intro a b h F
-    letI : Nonempty (walkMidpoints G n a b) := by
+    let : Nonempty (walkMidpoints G n a b) := by
       obtain ⟨c, hc⟩ := walkMidpoints_nonempty G h
       exact ⟨⟨c, hc⟩⟩
     let fmid (c : walkMidpoints G n a b) :=
@@ -366,7 +367,7 @@ lemma smoothBoundedBottleneck_error {β : ℝ} (hβ : 0 < β) :
   induction n with
   | zero =>
     intro a b h F
-    letI : Nonempty V := ⟨a⟩
+    let : Nonempty V := ⟨a⟩
     have hN : 0 ≤ Real.log (Fintype.card V) := Real.log_nonneg (by exact_mod_cast Fintype.card_pos)
     have hh := abs_softMinimum_pair_sub_min hβ (F a) (F b) (F a) (F b)
       (e := 0) (by simp) (by simp)
@@ -376,7 +377,7 @@ lemma smoothBoundedBottleneck_error {β : ℝ} (hβ : 0 < β) :
   | succ n ih =>
     intro a b h F
     classical
-    letI : Nonempty (walkMidpoints G n a b) := by
+    let : Nonempty (walkMidpoints G n a b) := by
       obtain ⟨c, hc⟩ := walkMidpoints_nonempty G h
       exact ⟨⟨c, hc⟩⟩
     let fmid (c : walkMidpoints G n a b) :=

@@ -55,7 +55,7 @@ theorem weighted_exp_conc_tail_two (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) :
     positivity
   refine ⟨min (1 / (4 * C₀)) (θ₀ / 4), lt_min (by positivity) (by positivity), ?_⟩
   intro N ν hprob hexp hK' F hFm ℓ hℓ hne hLip r hr
-  haveI := hprob
+  have := hprob
   have hKle : ∫ z, Real.exp (θ₀ * |z|) ∂ν ≤ K := le_trans hK' (le_max_left _ _)
   have hL0 : 0 < lInfNorm ℓ := lInfNorm_pos ℓ hℓ hne
   have hL2 : 0 < lTwoNorm ℓ := lTwoNorm_pos ℓ hℓ hne
@@ -179,9 +179,9 @@ lemma weighted_exp_conc_tail_norms (θ K : ℝ) (hθ : 0 < θ) :
   obtain ⟨c, hc, htail⟩ := weighted_exp_conc_tail_two θ K hθ
   refine ⟨c, hc, ?_⟩
   intro N ν hν hexp hK F hFm ℓ hℓ hLip A B hA hB a ha
-  haveI := hν
+  have := hν
   by_cases hne : ∃ i, ℓ i ≠ 0
-  · haveI : Nonempty (Fin N) := ⟨hne.choose⟩
+  · have : Nonempty (Fin N) := ⟨hne.choose⟩
     have hInf0 : 0 < lInfNorm ℓ := lInfNorm_pos ℓ hℓ hne
     have hTwo0 : 0 < lTwoNorm ℓ ^ 2 := sq_pos_of_pos (lTwoNorm_pos ℓ hℓ hne)
     have hTwo : lTwoNorm ℓ ^ 2 ≤ A := by rwa [lTwoNorm_sq]
@@ -229,9 +229,10 @@ lemma coordAlg_eq_restriction : LatticeProb.coordAlg S =
       refine @Measurable.of_eval (V → ℝ) V (fun _ => ℝ) m (fun _ => Real.measurableSpace) _ ?_
       intro i
       by_cases hi : i ∈ S
-      · simpa only [LatticeProb.truncate, LatticeProb.comb, hi, if_pos, Function.comp_def] using
+      · simpa only [LatticeProb.truncate, LatticeProb.comb, hi, ite_eq_left,
+          Function.comp_def] using
           (measurable_pi_apply (⟨i, hi⟩ : S)).comp hm
-      · simpa only [LatticeProb.truncate, LatticeProb.comb, hi, if_neg, not_false_iff,
+      · simpa only [LatticeProb.truncate, LatticeProb.comb, hi, ite_eq_right, not_false_iff,
           Pi.zero_apply] using
           (measurable_const : Measurable[m] (fun _ : V → ℝ => (0 : ℝ)))
     exact ht.comap_le

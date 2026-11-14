@@ -63,7 +63,7 @@ theorem manyLStep3Input_of_thresholds (d : ℕ) (hd : 5 ≤ d)
   classical
   obtain ⟨R, hRmono, hRtop, hκ⟩ := hthr
   have hd1 : 1 ≤ d := by omega
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hLp : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp aestronglyMeasurable_id).mp hvar'
   have hsq : Integrable (fun z : ℝ => z ^ 2) ν := hLp.integrable_sq

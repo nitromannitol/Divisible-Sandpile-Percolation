@@ -48,8 +48,8 @@ theorem localizedExitAverage_expectation_swap_aux (hd : 1 ≤ d) (D : Set (Site 
               (X (stopBeforeExit D N (fun _ => N) X)) ∂(LatticeProb.iidLaw d ν))
         ∂(walkLaw d x) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   show ∫ ζ : Site d → ℝ, ∫ X : ℕ → Site d,
       (if X (stopBeforeExit D N (fun _ => N) X) ∈ D then 0
         else localizedOdometer (E (X (stopBeforeExit D N (fun _ => N) X))) ζ m
@@ -61,8 +61,8 @@ theorem localizedExitAverage_expectation_swap_aux (hd : 1 ≤ d) (D : Set (Site 
         (X (stopBeforeExit D N (fun _ => N) X))) hint]
   refine integral_congr_ae (ae_of_all _ fun X => ?_)
   by_cases hmem : X (stopBeforeExit D N (fun _ => N) X) ∈ D
-  · simp only [if_pos hmem, integral_zero]
-  · simp only [if_neg hmem]
+  · simp only [ite_eq_left hmem, integral_zero]
+  · simp only [ite_eq_right hmem]
 
 /-- Fubini swap for the exit-value expectation: the ζ-average of the walk
 exit average equals the walk average of the ζ-average of the payoff. -/

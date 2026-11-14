@@ -35,7 +35,7 @@ and that indicator's mass on `(0,T)` is the volume of the smaller set
 theorem integral_one_sub_cutoff_le {T δ : ℝ} (hδ : 0 < δ) :
     ∫ r in Set.Ioo (0:ℝ) T, (1 - cutoffFn δ r) ≤ 2 * δ := by
   classical
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -138,7 +138,7 @@ theorem abs_time_pairing_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) {r : ℝ} (h
   classical
   have hWb0 : (0:ℝ) ≤ Wb := le_trans (abs_nonneg (w 0 0)) (hWb 0 0)
   have hC0 : (0:ℝ) ≤ C := le_trans (abs_nonneg (φ 0)) (hC 0)
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -168,7 +168,7 @@ theorem integrable_time_pairing (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) (w : ℝ
     Integrable (fun r : ℝ =>
         ∫ r' in Set.Ioo (0:ℝ) T, w r r' * ∫ v : Space d, heatKernelBM d (r + r') u v * φ v)
       (volume.restrict (Set.Ioo (0:ℝ) T)) := by
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -194,7 +194,7 @@ theorem integrableOn_weight_mul_heatKernelBM (hd : 1 ≤ d) {T r : ℝ} (hr : 0 
   have hWb0 : (0:ℝ) ≤ Wb := le_trans (abs_nonneg (f 0)) (hWb 0)
   set B : ℝ := (4 * Real.pi * r / (2 * (d : ℝ))) ^ (-(d : ℝ) / 2) with hB
   have hB0 : (0:ℝ) ≤ B := by rw [hB]; positivity
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -314,7 +314,7 @@ theorem abs_time_pairing_sub_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T) {r : ℝ
         integral_swap_time_inner hd hr (fun r' => |w₁ r' - w₂ r'|) hdiff (2 * Wb)
           hdiffbd (fun z => |φ z|) hφ.abs u
     _ ≤ ∫ r' in Set.Ioo (0:ℝ) T, |w₁ r' - w₂ r'| * C := by
-        haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+        have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
           constructor
           rw [Measure.restrict_apply_univ]
           exact measure_Ioo_lt_top
@@ -434,7 +434,7 @@ theorem abs_space_pairing_le (hd : 1 ≤ d) {T : ℝ} (hT : 0 ≤ T)
     |∫ v : Space d, (∫ r in Set.Ioo (0:ℝ) T, ∫ r' in Set.Ioo (0:ℝ) T,
         w r r' * heatKernelBM d (r + r') u v) * φ v| ≤ T * (T * (Wb * C)) := by
   classical
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -546,7 +546,7 @@ theorem abs_cut_weight_diff_le {δ Q : ℝ} (q' : ℝ → ℝ) (hQ0 : 0 ≤ Q) (
 theorem integral_cut_majorant_eq {T δ : ℝ} (hT : 0 ≤ T) (a : ℝ) :
     ∫ r' in Set.Ioo (0:ℝ) T, (a + (1 - cutoffFn δ r'))
       = T * a + ∫ r' in Set.Ioo (0:ℝ) T, (1 - cutoffFn δ r') := by
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -567,7 +567,7 @@ integrable on the interval `(0, T)`, by domination by the constant `M` on that
 finite-measure interval. -/
 theorem integrableOn_Ioo_of_bdd {T : ℝ} (f : ℝ → ℝ) (hf : Continuous f) (M : ℝ)
     (hM : ∀ r, |f r| ≤ M) : IntegrableOn f (Set.Ioo (0:ℝ) T) := by
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -597,7 +597,7 @@ theorem integral2_cut_diff_le {T δ Q C : ℝ} (hT : 0 ≤ T) (hδ : 0 < δ) (hQ
         |(q' r * cutoffFn δ r) * (q' r' * cutoffFn δ r') - q' r * q' r'| * C)
       ≤ 4 * δ * T * (Q * Q * C) := by
   classical
-  haveI : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Ioo (0:ℝ) T)) := by
     constructor
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top

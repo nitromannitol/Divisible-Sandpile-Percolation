@@ -56,7 +56,7 @@ theorem odometer_stopped_telescope_le (ζ : Site d → ℝ) (t : ℕ) (X : ℕ �
   rw [ha]
   gcongr with n hn
   by_cases hnN : n < N
-  · rw [if_pos hnN, if_pos hnN, one_mul]
+  · rw [ite_eq_left hnN, ite_eq_left hnN, one_mul]
     have hnt : n < t := Finset.mem_range.mp hn
     have he : t - n = (t - n - 1) + 1 := by omega
     have he' : t - (n + 1) = t - n - 1 := by omega
@@ -66,7 +66,7 @@ theorem odometer_stopped_telescope_le (ζ : Site d → ℝ) (t : ℕ) (X : ℕ �
     rw [hsp, he', he, odometerOf]
     simp only [Nat.add_sub_cancel]
     linarith [le_max_right 0 (ζ (X n) + avg (odometerOf ζ (t - n - 1)) (X n))]
-  · rw [if_neg hnN, if_neg hnN, zero_mul]
+  · rw [ite_eq_right hnN, ite_eq_right hnN, zero_mul]
 
 /-- The stopped value `X ↦ F (τ X) (X (τ X))` is measurable, for a stopping time `τ` bounded by
 `t`, since such a functional of the path depends only on its first `t + 1` positions. -/
@@ -84,7 +84,7 @@ to time `t`. -/
 theorem integrable_stopped_value (hd : 1 ≤ d) (x : Site d) (t : ℕ) (F : ℕ → Site d → ℝ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun X : ℕ → Site d => F (τ X) (X (τ X))) (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   refine (integrable_const (∑ j ∈ Finset.range (t + 1), ∑ z ∈ boxFinset x t, |F j z|)).mono'
     (measurable_stopped_value t F hτ hτt).aestronglyMeasurable ?_
   filter_upwards [ae_boxDist_walk hd x] with X hX
@@ -105,7 +105,7 @@ theorem integral_stopped_odometer_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d �
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     (∫ X, sceneryPartialSum ζ (τ X) X + odometerOf ζ (t - τ X) (X (τ X)) ∂walkLaw d x) ≤
       odometerOf ζ t x := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   set P := Measure.infinitePi (fun _ : ℕ => stepLaw d)
   have hpay : Integrable (fun X => sceneryPartialSum ζ (τ X) X +
       odometerOf ζ (t - τ X) (X (τ X))) (walkLaw d x) :=
@@ -164,12 +164,12 @@ theorem localizedExitPayoff_eq_indicator (D : Set (Site d)) (N : ℕ)
   by_cases hx : exitNat D N X ≤ N
   · have ht : stopBeforeExit D N (fun _ => N) X = exitNat D N X := min_eq_right hx
     have he : exitTime D X ≤ (N : ℕ∞) := exitTime_le_iff.mpr hx
-    rw [localizedExitPayoff, ht, if_neg (notMem_exitNat hx),
+    rw [localizedExitPayoff, ht, ite_eq_right (notMem_exitNat hx),
       Set.indicator_of_mem (show X ∈ {X : ℕ → Site d | exitTime D X ≤ (N : ℕ∞)} from he),
-      exitTime_eq_exitNat hx, ENat.toNat_coe]
+      exitTime_eq_exitNat hx, ENat.toNat_natCast]
   · have ht : stopBeforeExit D N (fun _ => N) X = N := min_eq_left (le_of_not_ge hx)
     have he : ¬exitTime D X ≤ (N : ℕ∞) := fun h => hx (exitTime_le_iff.mp h)
-    rw [localizedExitPayoff, ht, if_pos (mem_of_lt_exitNat (lt_of_not_ge hx) (le_refl N)),
+    rw [localizedExitPayoff, ht, ite_eq_left (mem_of_lt_exitNat (lt_of_not_ge hx) (le_refl N)),
       Set.indicator_of_notMem (show X ∉ {X : ℕ → Site d | exitTime D X ≤ (N : ℕ∞)} from he)]
 
 /-- `localizedExitPayoff D N E m ζ` is integrable under the walk law started at `x`, being the

@@ -237,12 +237,12 @@ theorem abs_cov_survival_le [NeZero d]
     rw [hcompl, jointLevel]
     by_cases h1 : x ∈ (Finset.range (i + 1)).image X
     · by_cases h2 : x ∈ (Finset.range (j + 1)).image Y
-      · rw [if_pos h1, if_pos h2, if_pos h1, if_pos h2]
+      · rw [ite_eq_left h1, ite_eq_left h2, ite_eq_left h1, ite_eq_left h2]
         have hmax := antitone_min_eq_max (fun t : ℝ => P.real {σ : Site d → ℝ | t < J σ 0})
           hanti (b (lastTimeOf i X x)) (b (lastTimeOf j Y x))
         rw [hmax]
-      · rw [if_pos h1, if_neg h2, if_pos h1, if_neg h2]
-    · rw [if_neg h1, if_neg h1]
+      · rw [ite_eq_left h1, ite_eq_right h2, ite_eq_left h1, ite_eq_right h2]
+    · rw [ite_eq_right h1, ite_eq_right h1]
   have hprodJ : ∏ x ∈ (Finset.range (i + 1)).image X ∪ (Finset.range (j + 1)).image Y,
       P.real {σ : Site d → ℝ | J σ 0 ≤ jointLevel i j X Y b x}
       = ∏ x ∈ (Finset.range (i + 1)).image X ∪ (Finset.range (j + 1)).image Y,
@@ -361,7 +361,7 @@ theorem exists_tendsto_zero_of_eventually {l : Filter ℝ}
       hev (1 / ((k : ℝ) + 1)) (by positivity)] with R hR hF
     have hkc : k ≤ ⌈R⌉₊ := by
       exact_mod_cast hR.trans (Nat.le_ceil R)
-    rw [dif_pos ⟨k, hkc, hF⟩]
+    rw [dite_eq_left ⟨k, hkc, hF⟩]
     have hNk : k ≤ N R := Nat.le_findGreatest hkc hF
     have hNkR : (k : ℝ) ≤ (N R : ℝ) := by exact_mod_cast hNk
     have hle : 1 / ((N R : ℝ) + 1) ≤ 1 / ((k : ℝ) + 1) :=

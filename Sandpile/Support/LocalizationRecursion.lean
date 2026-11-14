@@ -61,8 +61,8 @@ theorem localizedOdometer_succ (hd : 1 ≤ d) (D : Set (Site d)) (ζ : Site d �
       = LatticeProb.Graph.Zd.zdKilledOdometer D ζ n := by
     funext y
     by_cases hy : y ∈ D
-    · rw [if_pos hy, localizedOdometer_eq_zdKilled hd D ζ n y]
-    · rw [if_neg hy, LatticeProb.Graph.Zd.zdKilledOdometer_of_notMem D ζ hy]
+    · rw [ite_eq_left hy, localizedOdometer_eq_zdKilled hd D ζ n y]
+    · rw [ite_eq_right hy, LatticeProb.Graph.Zd.zdKilledOdometer_of_notMem D ζ hy]
   rw [localizedOdometer_eq_zdKilled hd D ζ (n + 1) x, hfun, Sandpile.avg]
   exact LatticeProb.Graph.Zd.zdKilledOdometer_succ_of_mem D ζ hx n
 

@@ -291,14 +291,14 @@ theorem killedPair_zero (D : Set (Site d)) (f : Site d → ℝ) (x : Site d) :
     have hz : killedKernel D 0 x y = 0 := by
       show Set.indicator D (fun z => if z = y then (1 : ℝ) else 0) x = 0
       by_cases hx : x ∈ D
-      · rw [Set.indicator_of_mem hx, if_neg (fun hc => hy hc.symm)]
+      · rw [Set.indicator_of_mem hx, ite_eq_right (fun hc => hy hc.symm)]
       · rw [Set.indicator_of_notMem hx]
     simp [hz]
   rw [killedPair, tsum_eq_single x hsingle]
   by_cases hx : x ∈ D
   · have hdiag : killedKernel D 0 x x = 1 := by
       show Set.indicator D (fun z => if z = x then (1 : ℝ) else 0) x = 1
-      rw [Set.indicator_of_mem hx, if_pos rfl]
+      rw [Set.indicator_of_mem hx, ite_eq_left rfl]
     rw [hdiag, one_mul, Set.indicator_of_mem hx]
   · have hdiag : killedKernel D 0 x x = 0 := by
       show Set.indicator D (fun z => if z = x then (1 : ℝ) else 0) x = 0

@@ -52,7 +52,7 @@ theorem tsum_heatKernel (hd : 1 ≤ d) : ∀ (k : ℕ) (x : Site d),
         show (if x = y then (1 : ℝ) else 0) = _
         by_cases h : x = y
         · simp [h]
-        · rw [if_neg h, if_neg (fun hc : y = x => h hc.symm)]
+        · rw [ite_eq_right h, ite_eq_right (fun hc : y = x => h hc.symm)]
       rw [tsum_congr hcongr, tsum_ite_eq]
   | succ n ih =>
       intro x
@@ -99,7 +99,7 @@ theorem tsum_heatKernel_mul_heatKernel : ∀ (a b : ℕ) (x y : Site d),
         show (if x = z then (1 : ℝ) else 0) * heatKernel d b z y = _
         by_cases h : x = z
         · simp [h]
-        · rw [if_neg h, if_neg (fun hc : z = x => h hc.symm), zero_mul]
+        · rw [ite_eq_right h, ite_eq_right (fun hc : z = x => h hc.symm), zero_mul]
       rw [tsum_congr hcongr, tsum_ite_eq]
       simp
   | succ n ih =>
@@ -151,7 +151,7 @@ theorem avg_iterate (m : ℕ) (f : Site d → ℝ) (x : Site d) :
         show (if x = z then (1 : ℝ) else 0) * f z = _
         by_cases h : x = z
         · simp [h]
-        · rw [if_neg h, if_neg (fun hc : z = x => h hc.symm), zero_mul]
+        · rw [ite_eq_right h, ite_eq_right (fun hc : z = x => h hc.symm), zero_mul]
       rw [Function.iterate_zero_apply, tsum_congr hcongr, tsum_ite_eq]
   | succ n ih =>
       have hrec : (avg^[n + 1] f) x = avg (avg^[n] f) x := by

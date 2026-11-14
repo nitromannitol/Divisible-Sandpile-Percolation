@@ -51,7 +51,7 @@ theorem exists_pick_moment_bound_uniform {p : ℝ} (hp : 2 ≤ p) :
   obtain ⟨C₀, hC₀, hsq⟩ := exists_lp_square_pi hp
   refine ⟨C₀ ^ (p / 2), Real.rpow_pos_of_pos hC₀ _, ?_⟩
   intro k ν hν hmom N e he G hG ℓ hℓ hLip
-  haveI := hν
+  have := hν
   set P : Measure (Site k → ℝ) := LatticeProb.iidLaw k ν with hP
   set Q : Measure (Fin N → ℝ) := Measure.pi fun _ : Fin N => ν with hQ
   have hm : ∫ η, G (fun i => η (e i)) ∂P = ∫ η, G η ∂Q :=
@@ -298,7 +298,7 @@ theorem memLp_two_odometerOf (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hsq' : Integrable (fun z => z ^ 2) ν) (t : ℕ) (x : Site d) :
     MemLp (fun ζ : Site d → ℝ => odometerOf ζ t x) 2 (LatticeProb.iidLaw d ν) := by
   have hsq := integrable_abs_rpow_two ν hsq'
-  haveI : ∀ _i : Fin (boxFinset x t).card, IsProbabilityMeasure ((fun _ => ν) _i) :=
+  have : ∀ _i : Fin (boxFinset x t).card, IsProbabilityMeasure ((fun _ => ν) _i) :=
     fun _ => ‹IsProbabilityMeasure ν›
   have hint := integrable_rpow_of_lip_fam (fun _ : Fin (boxFinset x t).card => ν)
     (p := 2) (by norm_num) (fun _ => hsq) (boxOdometer t x) (measurable_boxOdometer t x)

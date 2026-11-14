@@ -75,7 +75,7 @@ theorem gaussianPotential_integrable_space_time_envelope {Ω : Type*} [Measurabl
   have hDm : Measurable (Function.uncurry D) :=
     measurable_const.mul hF.norm.integral_prod_left.measurable
   let E := Set.Icc (0 : ℝ) T
-  letI : Nonempty E := ⟨⟨0, le_rfl, hT.le⟩⟩
+  let : Nonempty E := ⟨⟨0, le_rfl, hT.le⟩⟩
   let ZK (q : E × Space d) (ω : Ω) := Z q.1 q.2 ω
   have hKm (q : E × Space d) : AEMeasurable (ZK q) P := by
     have hh : Measurable (gaussianPotential d ν2 W q.1 q.2) :=

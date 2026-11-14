@@ -108,8 +108,8 @@ theorem measure_chain_ballField_scale_ge
           ((if d = 2 then (s : ℝ) else Real.sqrt (s : ℝ)) * (lam - ε))) := by
   have hσ : (0 : ℝ) < (if d = 2 then (s : ℝ) else Real.sqrt (s : ℝ)) := by
     by_cases hdd : d = 2
-    · rw [if_pos hdd]; exact hs
-    · rw [if_neg hdd]; exact Real.sqrt_pos.mpr hs
+    · rw [ite_eq_left hdd]; exact hs
+    · rw [ite_eq_right hdd]; exact Real.sqrt_pos.mpr hs
   have hinv : (0 : ℝ) < (s : ℝ)⁻¹ := inv_pos.mpr hs
   have hd0 : (s : ℝ)⁻¹ * p 0 < (s : ℝ)⁻¹ * q 0 := mul_lt_mul_of_pos_left h0 hinv
   have hd1 : (s : ℝ)⁻¹ * p 1 < (s : ℝ)⁻¹ * q 1 := mul_lt_mul_of_pos_left h1 hinv

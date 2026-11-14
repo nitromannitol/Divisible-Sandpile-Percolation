@@ -66,7 +66,7 @@ theorem exists_sum_testedGreenWeight_sq_le [NeZero d] (hd : 5 ≤ d)
           (testedWeightCut d R L φ) (n R) v = 0 := by
       intro v
       refine Finset.sum_eq_zero fun x _ => ?_
-      simp only [testedWeightCut, if_neg hR, zero_mul]
+      simp only [testedWeightCut, ite_eq_right hR, zero_mul]
     have : ∑ v ∈ testedSites (Sandpile.Support.supportBox d R L) (n R),
         testedGreenWeight (Sandpile.Support.supportBox d R L)
           (testedWeightCut d R L φ) (n R) v ^ 2 = 0 := by

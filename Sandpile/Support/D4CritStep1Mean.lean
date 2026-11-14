@@ -48,7 +48,7 @@ theorem exists_step1_mean (_hVarScale : Sandpile.External.VarianceScale)
   obtain ⟨Aex, hAex1, hAexSmall⟩ := exists_exit_horizon Ce hCe
   refine ⟨c₀, c₀ / 16, Aloc, Aex, hc₀, rfl, hAloc1, hAex1, max 2 t₁, le_max_left _ _, ?_⟩
   intro ν hν hmean hvar hexpint hexp R hR x
-  haveI := hν
+  have := hν
   have hR2 : 2 ≤ R := le_trans (le_max_left _ _) hR
   have hRt₁ : t₁ ≤ R ^ 2 := by
     have h1 : t₁ ≤ R := le_trans (le_max_right _ _) hR

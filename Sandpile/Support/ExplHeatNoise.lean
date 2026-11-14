@@ -74,8 +74,8 @@ theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
   have hf (q : ℝ × Space d) :
       MemLp (fun y => if 0 < q.1 then heatKernelBM d q.1 q.2 y else 0) 2 volume := by
     by_cases h : 0 < q.1
-    · simpa only [if_pos h] using memLp_heatKernelBM hd h q.2
-    · simp only [if_neg h]
+    · simpa only [ite_eq_left h] using memLp_heatKernelBM hd h q.2
+    · simp only [ite_eq_right h]
       exact MemLp.zero'
   have hm : Measurable (fun q : (ℝ × Space d) × Space d =>
       if 0 < q.1.1 then heatKernelBM d q.1.1 q.1.2 q.2 else 0) := by
@@ -83,12 +83,12 @@ theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
     · unfold heatKernelBM
       fun_prop
     · exact measurable_const
-  letI : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
+  let : Fact ((2 : ℝ≥0∞) ≠ ⊤) := ⟨by norm_num⟩
   have hS := stronglyMeasurable_toLp_of_uncurry volume
     (fun q : ℝ × Space d => fun y => if 0 < q.1 then heatKernelBM d q.1 q.2 y else 0) hf hm
   refine ⟨hf, hS, ?_⟩
   intro μ hμ T
-  letI := hμ
+  let := hμ
   rcases le_or_gt T 0 with hT | hT
   · simp only [Set.Ioo_eq_empty (not_lt.mpr hT), Measure.restrict_empty, Measure.zero_prod,
       integrable_zero_measure]
@@ -111,7 +111,7 @@ theorem positiveHeatKernel_family {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) :
       (memLp_heatKernelBM hd hq q.2).toLp (heatKernelBM d q.1 q.2) := by
     apply Lp.ext
     filter_upwards [(hf q).coeFn_toLp, (memLp_heatKernelBM hd hq q.2).coeFn_toLp] with y h1 h2
-    rw [h1, h2, if_pos hq]
+    rw [h1, h2, ite_eq_left hq]
   rw [he]
   exact hbound q.1 hq q.2
 /-- A single joint heat-noise version, integrable over bounded positive times and any finite
@@ -128,7 +128,7 @@ theorem exists_joint_integrable_heat_noise {Ω : Type*} [MeasurableSpace Ω]
     (fun q : ℝ × Space d => fun y => if 0 < q.1 then heatKernelBM d q.1 q.2 y else 0) hf hS
   refine ⟨Y, hY, hv, ?_⟩
   intro μ hμ T
-  letI := hμ
+  let := hμ
   exact (whiteNoise_integral_comm_of_version hW ((volume.restrict (Set.Ioo 0 T)).prod μ)
     _ hf (hI μ hμ T) Y hY hv).1
 end Sandpile.Support

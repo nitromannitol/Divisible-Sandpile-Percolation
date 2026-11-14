@@ -37,7 +37,7 @@ lemma self_mem_d23Box (R : ℕ) (x : Site d) : x ∈ d23Box R x := by
 lemma d23Box_translate (R : ℕ) (x y : Site d) :
     {w : Site d | w + y ∈ d23Box R (x + y)} = d23Box R x := by
   ext w
-  simp only [Set.mem_setOf_eq, mem_d23Box, Pi.add_apply]
+  simp only [Set.mem_ofPred_eq, mem_d23Box, Pi.add_apply]
   constructor
   · intro h i
     have hi := h i

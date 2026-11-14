@@ -61,7 +61,7 @@ theorem hasInfiniteComponent_criticalScale_of_plane (hd2 : 2 ≤ d) (hd3 : d ≤
       {x : Site d | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} := by
   have hscale : Sandpile.criticalScale d t = (t : ℝ) ^ ((4 - (d : ℝ)) / 4) := by
     unfold Sandpile.criticalScale
-    rw [if_pos hd3]
+    rw [ite_eq_left hd3]
   rw [hscale]
   exact hasInfiniteComponent_planeSite hd2 h
 

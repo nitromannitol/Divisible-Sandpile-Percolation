@@ -208,7 +208,7 @@ theorem integral_gaussLaw_shift (hd : 5 ≤ d) (F : (Site d → ℝ) → ℝ)
           ∂((LatticeProb.gaussLaw (Site d)).map (residField d hd))) ∂(gaussianReal 0 1) := by
   classical
   have hPhi := measurable_shiftPair hd
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   have hmap := gaussLaw_eq_map_prod hd
   have hFm : AEStronglyMeasurable F

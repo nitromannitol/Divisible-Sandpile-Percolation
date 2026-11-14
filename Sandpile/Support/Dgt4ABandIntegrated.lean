@@ -36,7 +36,7 @@ open LatticeProb
 /-- The set the band profile is stated on is the lower tail of the law. -/
 theorem setOf_neg_gt_eq_Iio (c : ℝ) : {z : ℝ | -(z) > c} = Iio (-c) := by
   ext z
-  simp only [mem_setOf_eq, mem_Iio, gt_iff_lt]
+  simp only [mem_ofPred_eq, mem_Iio, gt_iff_lt]
   constructor <;> intro h <;> linarith
 
 /-- The band profile reads the lower tail of the law. -/

@@ -47,7 +47,7 @@ theorem integral_heatKernelBM_mul_greenTimeBM {d : ℕ} (hd : 1 ≤ d) {r s : �
     (∫ y : Space d, heatKernelBM d r x y * greenTimeBM d s z y) =
       ∫ u in Set.Ioo (0 : ℝ) s, heatKernelBM d (r + u) x z := by
   let μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) s)
-  haveI : IsFiniteMeasure μ := by
+  have : IsFiniteMeasure μ := by
     refine ⟨?_⟩
     rw [Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top
@@ -114,7 +114,7 @@ theorem integral_heatKernelBM_mul_greenTimeBM_ae_eq_sub {d : ℕ} (hd : 1 ≤ d)
     (hr : 0 < r) (hs : 0 ≤ s) (x : Space d) :
     (fun z => ∫ y : Space d, heatKernelBM d r x y * greenTimeBM d s z y) =ᵐ[volume]
       fun z => greenTimeBM d (r + s) x z - greenTimeBM d r x z := by
-  letI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+  let : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
   have hne : ∀ᵐ z : Space d, z ≠ x := by rw [ae_iff]; simp
   filter_upwards [hne] with z hz
   exact integral_heatKernelBM_mul_greenTimeBM_eq_sub hd hr hs hz.symm

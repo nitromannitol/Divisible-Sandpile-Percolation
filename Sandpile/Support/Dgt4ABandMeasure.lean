@@ -128,7 +128,7 @@ theorem bandLaw_Iic (hw0 : 0 ≤ w0) (hw : ∀ k, 0 ≤ w k) (hθ : ∀ k, 0 ≤
 /-- The set `{z | t < -z}` of the band estimates is a half-line. -/
 lemma neg_gt_setOf (t : ℝ) : {z : ℝ | t < -z} = Iio (-t) := by
   ext z
-  simp only [mem_setOf_eq, mem_Iio]
+  simp only [mem_ofPred_eq, mem_Iio]
   constructor <;> intro h <;> linarith
 
 /-- A half-open and a closed half-line carry the same mass. -/

@@ -32,7 +32,7 @@ theorem visit_mul_eq_indicator (j : ℕ) (z : Site d) (g : (ℕ → Site d) → 
       = Set.indicator {Y : ℕ → Site d | Y j = z} g X := by
   classical
   rw [Set.indicator_apply]
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   split <;> simp
 
 /-- **`eq:dgt4-mean-gradient-approximation`** (`sandpile.tex:5675-5690`): the mean gradient of

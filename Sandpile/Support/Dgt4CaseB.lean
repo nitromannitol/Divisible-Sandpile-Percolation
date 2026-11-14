@@ -28,7 +28,7 @@ theorem centeredMassLaw_threshold_linear (d : ℕ) (ν : Measure ℝ) [IsProbabi
       = ν (Set.Iio (-(b / G))) := by
   have hz : {z : ℝ | b < -(G * z)} = Set.Iio (-(b / G)) := by
     ext z
-    simp only [Set.mem_setOf_eq, Set.mem_Iio, ← neg_div, lt_div_iff₀ hG]
+    simp only [Set.mem_ofPred_eq, Set.mem_Iio, ← neg_div, lt_div_iff₀ hG]
     constructor <;> intro h <;> nlinarith [mul_comm z G]
   have hmeas : MeasurableSet {ζ : Sandpile.Site d → ℝ | b < -(G * ζ 0)} := by
     have hm : Measurable fun ζ : Sandpile.Site d → ℝ => -(G * ζ 0) := by fun_prop

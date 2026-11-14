@@ -33,9 +33,9 @@ noncomputable def sgnIso (a : ℝ) : ℝ ≃ₗᵢ[ℝ] ℝ :=
 /-- The isometry `sgnIso a` acts as multiplication by `a`, when `a` is `1` or `-1`. -/
 theorem sgnIso_apply {a : ℝ} (h : a = 1 ∨ a = -1) (x : ℝ) : sgnIso a x = a * x := by
   rcases h with rfl | rfl
-  · rw [sgnIso, if_neg (by norm_num)]
+  · rw [sgnIso, ite_eq_right (by norm_num)]
     simp
-  · rw [sgnIso, if_pos rfl]
+  · rw [sgnIso, ite_eq_left rfl]
     simp
 
 /-- The permutation of the coordinates of `ℝ^d` induced by a plane symmetry: its
@@ -68,11 +68,11 @@ theorem liftPerm_coe_lt (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) (k : Fin 2)
     ((liftPerm d hd T ⟨(k : ℕ), by omega⟩ : Fin d) : ℕ) = ((T.perm k : Fin 2) : ℕ) := by
   unfold liftPerm
   by_cases h : T.perm 0 = 0
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     fin_cases k
     · simpa using congrArg (fun j : Fin 2 => (j : ℕ)) h.symm
     · simpa using congrArg (fun j : Fin 2 => (j : ℕ)) (perm_fin_two_of_zero T h).symm
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     obtain ⟨h0, h1⟩ := perm_fin_two_of_ne T h
     fin_cases k
     · rw [show ((⟨(0 : ℕ), by omega⟩ : Fin d)) = (⟨0, by omega⟩ : Fin d) from rfl,
@@ -87,8 +87,8 @@ theorem liftPerm_of_ge (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry) {i : Fin d}
     (hi : ¬ ((i : ℕ) < 2)) : liftPerm d hd T i = i := by
   unfold liftPerm
   by_cases h : T.perm 0 = 0
-  · rw [if_pos h]; rfl
-  · rw [if_neg h]
+  · rw [ite_eq_left h]; rfl
+  · rw [ite_eq_right h]
     refine Equiv.swap_apply_of_ne_of_ne ?_ ?_
     · intro hc; rw [hc] at hi; exact hi (by norm_num)
     · intro hc; rw [hc] at hi; exact hi (by norm_num)
@@ -103,9 +103,9 @@ theorem liftSign_eq_one_or (d : ℕ) (T : PlaneSymmetry) (i : Fin d) :
     liftSign d T i = 1 ∨ liftSign d T i = -1 := by
   unfold liftSign
   by_cases h : (i : ℕ) < 2
-  · rw [dif_pos h]
+  · rw [dite_eq_left h]
     exact T.sign_eq _
-  · rw [dif_neg h]
+  · rw [dite_eq_right h]
     exact Or.inl rfl
 
 /-- The linear part of the lift of a plane symmetry to `ℝ^d`: it permutes the two
@@ -146,19 +146,19 @@ theorem liftSym_planePoint (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
         rw [hp]; exact (T.perm ⟨(i : ℕ), h⟩).isLt
       show (if h' : ((liftPerm d hd T i : Fin d) : ℕ) < 2 then
         u ⟨((liftPerm d hd T i : Fin d) : ℕ), h'⟩ else 0) = _
-      rw [dif_pos hlt]
+      rw [dite_eq_left hlt]
       have hfin : (⟨((liftPerm d hd T i : Fin d) : ℕ), hlt⟩ : Fin 2) = T.perm ⟨(i : ℕ), h⟩ :=
         Fin.ext hp
       rw [hfin]
     have hshift : (planePoint (d := d) (WithLp.toLp 2 T.shift)) i = T.shift ⟨(i : ℕ), h⟩ := by
       show (if h' : (i : ℕ) < 2 then (WithLp.toLp 2 T.shift) ⟨(i : ℕ), h'⟩ else 0) = _
-      rw [dif_pos h]
+      rw [dite_eq_left h]
     have hsign : liftSign d T i = T.sign ⟨(i : ℕ), h⟩ := by
       unfold liftSign
-      rw [dif_pos h]
+      rw [dite_eq_left h]
     have hrhs : (planePoint (d := d) (T.toFun u)) i = T.toFun u ⟨(i : ℕ), h⟩ := by
       show (if h' : (i : ℕ) < 2 then (T.toFun u) ⟨(i : ℕ), h'⟩ else 0) = _
-      rw [dif_pos h]
+      rw [dite_eq_left h]
     rw [hplane, hshift, hsign, hrhs, PlaneSymmetry.toFun_apply]
   · have hplane : (planePoint (d := d) u) (liftPerm d hd T i) = 0 := by
       have hge : ¬ ((liftPerm d hd T i : Fin d) : ℕ) < 2 := by
@@ -166,13 +166,13 @@ theorem liftSym_planePoint (d : ℕ) (hd : 2 ≤ d) (T : PlaneSymmetry)
         exact h
       show (if h' : ((liftPerm d hd T i : Fin d) : ℕ) < 2 then
         u ⟨((liftPerm d hd T i : Fin d) : ℕ), h'⟩ else 0) = 0
-      rw [dif_neg hge]
+      rw [dite_eq_right hge]
     have hshift : (planePoint (d := d) (WithLp.toLp 2 T.shift)) i = 0 := by
       show (if h' : (i : ℕ) < 2 then (WithLp.toLp 2 T.shift) ⟨(i : ℕ), h'⟩ else 0) = 0
-      rw [dif_neg h]
+      rw [dite_eq_right h]
     have hrhs : (planePoint (d := d) (T.toFun u)) i = 0 := by
       show (if h' : (i : ℕ) < 2 then (T.toFun u) ⟨(i : ℕ), h'⟩ else 0) = 0
-      rw [dif_neg h]
+      rw [dite_eq_right h]
     rw [hplane, hshift, hrhs, mul_zero, add_zero]
 
 /-- `liftSym` is an isometry of `ℝ^d`: its linear part `liftLinear` is, and the translation

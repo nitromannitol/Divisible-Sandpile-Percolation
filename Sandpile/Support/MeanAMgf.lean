@@ -25,7 +25,7 @@ variable {d : ℕ}
 supremum norm of the updated tuple exactly `m`. -/
 theorem lInfNorm_update_eq {N : ℕ} (ℓ : Fin N → ℝ) (i₀ : Fin N) (m : ℝ)
     (hle : ∀ i, ℓ i ≤ m) : Sandpile.lInfNorm (Function.update ℓ i₀ m) = m := by
-  haveI : Nonempty (Fin N) := ⟨i₀⟩
+  have : Nonempty (Fin N) := ⟨i₀⟩
   refine le_antisymm ?_ ?_
   · refine ciSup_le fun i => ?_
     by_cases h : i = i₀
@@ -64,7 +64,7 @@ theorem exists_mgf_of_square_sum (θ₀ K₀ : ℝ) (hθ₀ : 0 < θ₀) (M : �
   have hsq : Real.sqrt M ^ 2 = M := Real.sq_sqrt hM0.le
   refine ⟨Real.exp (|C (θ₀ / 2)| * (θ₀ ^ 2 / 2)), Real.exp_pos _, ?_⟩
   intro N i₀ ν hprob hint hexp F hF ℓ hℓ hsum hlip
-  haveI := hprob
+  have := hprob
   -- each weight is at most √M
   have hle : ∀ i, ℓ i ≤ Real.sqrt M := by
     intro i
@@ -153,7 +153,7 @@ theorem exists_uniform_mgf_rescaled (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3)
   have hs0 : (0 : ℝ) < Real.sqrt M := Real.sqrt_pos.2 hM0
   refine ⟨θ₀ / (2 * Real.sqrt M), A, by positivity, hA, ?_⟩
   intro ν hprob hint hexp R hR
-  haveI := hprob
+  have := hprob
   have hR0 : (0 : ℝ) < R := lt_of_lt_of_le zero_lt_one hR
   set t : ℕ := ⌊R ^ 2⌋₊ with ht
   set a : ℝ := R ^ (-(2 - (d : ℝ) / 2)) with ha
@@ -307,7 +307,7 @@ theorem exists_uniform_mgf_rescaled_mass (d : ℕ) (hd : 1 ≤ d) (hd3 : d ≤ 3
   obtain ⟨θ, A, hθ, hA, hmain⟩ := exists_uniform_mgf_rescaled d hd hd3 θ₀ K₀ hθ₀
   refine ⟨θ, A, hθ, hA, ?_⟩
   intro ν hprob hint hexp R hR
-  haveI := hprob
+  have := hprob
   set a : ℝ := R ^ (-(2 - (d : ℝ) / 2)) with ha
   have hmean : (∫ τ, a * Sandpile.odometer τ ⌊R ^ 2⌋₊ 0 ∂(Sandpile.centeredMassLaw d ν))
       = ∫ η, a * Sandpile.odometerOf η ⌊R ^ 2⌋₊ 0 ∂(LatticeProb.iidLaw d ν) :=

@@ -62,8 +62,9 @@ theorem scaling_factor {d : ℕ} (hd : d = 2 ∨ d = 3) {a : ℝ} (ha : 0 < a) :
     a ^ d * (if d = 2 then (1 : ℝ) else 1 / a) ^ 2
       = (if d = 2 then a else Real.sqrt a) ^ 2 := by
   rcases hd with rfl | rfl
-  · rw [if_pos rfl, if_pos rfl, one_pow, mul_one]
-  · rw [if_neg (by norm_num), if_neg (by norm_num), Real.sq_sqrt ha.le, one_div, inv_pow,
+  · rw [ite_eq_left rfl, ite_eq_left rfl, one_pow, mul_one]
+  · rw [ite_eq_right (by norm_num), ite_eq_right (by norm_num), Real.sq_sqrt ha.le, one_div,
+      inv_pow,
       show a ^ 3 = a * a ^ 2 from by ring, mul_assoc,
       mul_inv_cancel₀ (pow_ne_zero 2 (ne_of_gt ha)), mul_one]
 

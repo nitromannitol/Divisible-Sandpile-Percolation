@@ -115,7 +115,7 @@ theorem ballRestartResidual_of_condExp (d : ℕ) (h : BallCondExpResidual d) :
         {b : ΩB | (ballExitTime (B u) u A T b : WithTop ℝ≥0) ≤ (τ b : WithTop ℝ≥0)} \
           {b : ΩB | (ballExitTime (B u) u A T b : WithTop ℝ≥0) = (τ b : WithTop ℝ≥0)} := by
       ext b
-      simp only [Set.mem_setOf_eq, Set.mem_sdiff, WithTop.coe_le_coe, WithTop.coe_eq_coe]
+      simp only [Set.mem_ofPred_eq, Set.mem_sdiff, WithTop.coe_le_coe, WithTop.coe_eq_coe]
       exact lt_iff_le_and_ne
     rw [he]; exact h1.diff h2'
   obtain ⟨hg, hle⟩ := hω u hu τ hτ hbound

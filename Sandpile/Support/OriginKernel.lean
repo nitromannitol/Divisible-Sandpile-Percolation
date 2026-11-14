@@ -47,7 +47,7 @@ equals the neighbor average of the previous step's kernel. -/
 theorem originHeat_succ (k : ℕ) (x z : Site d) :
     originHeat (k + 1) x z = if x = 0 then 0 else avg (fun y => originHeat k y z) x := by
   rw [originHeat, LatticeProb.Graph.Zd.killedHeat_succ_walkOp]
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   by_cases hx : x = 0 <;> simp [hx, avg]
 
 /-- The two-argument averaging operator `avg` commutes: averaging over the first site then
@@ -103,7 +103,7 @@ theorem avg_originHeat_eq_firstHit (hd : 1 ≤ d) : ∀ k : ℕ, ∀ z : Site d,
       simp only [originHeat_zero_target, LatticeProb.srwFirstHit_succ_origin]
       simp [avg, LatticeProb.walkOp, LatticeProb.nbrSum]
     · have he (x : Site d) : originHeat (k + 1) x z = avg (fun y => originHeat k x y) z := by
-        rw [originHeat_symm hd, originHeat_succ, if_neg hz]
+        rw [originHeat_symm hd, originHeat_succ, ite_eq_right hz]
         congr 1
         funext y
         exact originHeat_symm hd k y x
@@ -129,10 +129,10 @@ theorem originGreenTime_succ (n : ℕ) (x z : Site d) (hx : x ≠ 0) :
       (if x = z then 1 else 0) + avg (fun y => originGreenTime n y z) x := by
   classical
   rw [originGreenTime, Finset.sum_range_succ']
-  simp only [originHeat_succ, if_neg hx]
+  simp only [originHeat_succ, ite_eq_right hx]
   have hzero : originHeat 0 x z = if x = z then 1 else 0 := by
     rw [originHeat, LatticeProb.Network.killedHeat_zero,
-      if_pos (show x ∈ {x : Site d | x ≠ 0} from hx)]
+      ite_eq_left (show x ∈ {x : Site d | x ≠ 0} from hx)]
     split_ifs <;> rfl
   rw [hzero, add_comm]
   congr 1
@@ -243,7 +243,7 @@ theorem abs_avg_originOdometer_update_le (hd : 1 ≤ d) (ζ : Site d → ℝ) (z
         avg (fun x => originGreenTime n x z) 0 * |ζ z - v| :=
       LatticeProb.walkOp_mul_const _ _ _
     rw [hav] at h
-    rw [originInfluence, if_neg hz]
+    rw [originInfluence, ite_eq_right hz]
     exact h.trans
       (mul_le_mul_of_nonneg_right (avg_originGreenTime_le_hitProb hd n z) (abs_nonneg _))
 

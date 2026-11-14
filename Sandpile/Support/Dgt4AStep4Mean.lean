@@ -55,7 +55,7 @@ theorem measurable_condReflected_pair (hd : 5 ≤ d) (c : ℝ) (v : ℝ≥0) (n 
 measurable positive part of `condReflected` over the residual. -/
 theorem measurable_condMeanReflected (hd : 5 ≤ d) (v : ℝ≥0) (n : ℕ) :
     Measurable (fun y : ℝ => condMeanReflected d hd v n y) := by
-  haveI : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
+  have : IsProbabilityMeasure ((LatticeProb.gaussLaw (Site d)).map (residField d hd)) :=
     inferInstance
   have hjoint : StronglyMeasurable (fun p : ℝ × (Site d → ℝ) =>
       max (meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n

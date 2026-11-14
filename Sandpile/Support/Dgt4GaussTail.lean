@@ -114,7 +114,7 @@ theorem infiniteFieldGaussianTail_of_map (hd : 5 ≤ d) (v w : ℝ≥0)
       t < -infiniteGreenField (scenery d σ) (0 : Site d)}
       = F ⁻¹' (Set.Iio (-t)) := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_Iio, hF, lt_neg]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_Iio, hF, lt_neg]
   have hval : (centeredMassLaw d (gaussianReal 0 v)) (F ⁻¹' (Set.Iio (-t)))
       = gaussianReal 0 w (Set.Iio (-t)) := by
     rw [← Measure.map_apply_of_aemeasurable hAm measurableSet_Iio, hmapF]

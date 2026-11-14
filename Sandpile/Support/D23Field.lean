@@ -62,12 +62,12 @@ theorem measurable_extendOn (D : Set (Site d)) :
   by_cases h : y ∈ D
   · have he : (fun ρ : D → ℝ => extendOn D ρ y) = fun ρ : D → ℝ => ρ ⟨y, h⟩ := by
       funext ρ
-      simp only [extendOn, dif_pos h]
+      simp only [extendOn, dite_eq_left h]
     rw [he]
     exact measurable_pi_apply _
   · have he : (fun ρ : D → ℝ => extendOn D ρ y) = fun _ : D → ℝ => (0 : ℝ) := by
       funext ρ
-      simp only [extendOn, dif_neg h]
+      simp only [extendOn, dite_eq_right h]
     rw [he]
     exact measurable_const
 
@@ -96,15 +96,16 @@ theorem localizedOdometer_congr_on (hd : 1 ≤ d) (D : Set (Site d)) (ζ ξ : Si
 /-- The localized odometer is measurable for the scenery inside its own box. -/
 theorem measurable_comap_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t : ℕ)
     (x : Site d) :
-    Measurable[MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.restrict D ζ) inferInstance]
+    Measurable[MeasurableSpace.comap (fun ζ : Site d → ℝ => Set.domRestrict D ζ) inferInstance]
       (fun ζ : Site d → ℝ => localizedOdometer D ζ t x) := by
   have hfac : (fun ζ : Site d → ℝ => localizedOdometer D ζ t x)
       = (fun ρ : D → ℝ => localizedOdometer D (extendOn D ρ) t x)
-        ∘ (fun ζ : Site d → ℝ => Set.restrict D ζ) := by
+        ∘ (fun ζ : Site d → ℝ => Set.domRestrict D ζ) := by
     funext ζ
-    refine localizedOdometer_congr_on hd D ζ (extendOn D (Set.restrict D ζ)) ?_ t x
+    refine localizedOdometer_congr_on hd D ζ (extendOn D (Set.domRestrict D ζ)) ?_ t x
     intro y hy
-    simp only [extendOn, dif_pos hy, Set.restrict_apply] <;> rfl
+    simp only [extendOn, dite_eq_left hy]
+    rfl
   rw [hfac]
   exact ((measurable_localizedOdometer hd D t x).comp (measurable_extendOn D)).comp
     (Measurable.of_comap_le le_rfl)
@@ -112,7 +113,7 @@ theorem measurable_comap_localizedOdometer (hd : 1 ≤ d) (D : Set (Site d)) (t 
 /-- The good block at a coarse site reads the field only through its own box. -/
 theorem measurable_comap_d23Field (hd : 1 ≤ d) (R t : ℕ) (u : Site 2) :
     Measurable[MeasurableSpace.comap
-      (fun ζ : Site d → ℝ => Set.restrict (d23Box R (planeSite (d := d) u)) ζ) inferInstance]
+      (fun ζ : Site d → ℝ => Set.domRestrict (d23Box R (planeSite (d := d) u)) ζ) inferInstance]
       (fun ζ : Site d → ℝ => d23Field d R t ζ u) :=
   measurable_comap_localizedOdometer hd _ t _
 

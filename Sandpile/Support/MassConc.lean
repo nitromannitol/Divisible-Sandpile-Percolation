@@ -39,7 +39,7 @@ theorem exists_odometer_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
             ENNReal.ofReal (C * Real.exp (-(c * min (s ^ 2) s))) := by
   obtain ⟨c, C, hc, hC, hconc⟩ := exists_odometerOf_conc hGH hd θ₀ K₀ hθ₀
   refine ⟨c, C, hc, hC, fun ν hprob hexpint hexp x t s hs => ?_⟩
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hmeas : MeasurableSet {ζ : Site d → ℝ | s ≤ |odometerOf ζ t x -
       ∫ η, odometerOf η t 0 ∂(LatticeProb.iidLaw d ν)|} :=
@@ -48,7 +48,7 @@ theorem exists_odometer_conc (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
       = scenery d ⁻¹' {ζ : Site d → ℝ | s ≤ |odometerOf ζ t x -
           ∫ η, odometerOf η t 0 ∂(LatticeProb.iidLaw d ν)|} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, meanOdometer_eq d ν hd1 t,
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, meanOdometer_eq d ν hd1 t,
       congrFun (odometer_eq_odometerOf σ t) x]
   rw [hpre, centeredMassLaw_scenery_preimage d ν hd1 hmeas]
   exact hconc ν hprob hexpint hexp x t s hs

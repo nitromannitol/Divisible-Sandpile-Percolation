@@ -52,7 +52,7 @@ theorem gaussian_far_rectangle_lower_tail
         finiteKernelField (External.BallGreen.cutField r L φ) ξ (planeTranslate x w))
         ∂LatticeProb.iidLaw 4 (gaussianReal 0 v)) - (a / 2) * Real.log r} := by
     intro ζ hζ
-    simp only [Set.mem_setOf_eq] at hζ ⊢
+    simp only [mem_ofPred_eq] at hζ ⊢
     linarith
   have hmono := measure_mono (μ := LatticeProb.iidLaw 4 (gaussianReal 0 v)) hsub
   have hcard : 2 ≤ (planeRectangle ⌊ϑ * r⌋₊ r).card := by

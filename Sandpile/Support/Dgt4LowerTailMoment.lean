@@ -109,7 +109,7 @@ theorem integrable_abs_rpow_of_lowerTail (ν : Measure ℝ) [IsProbabilityMeasur
         measure_mono_null (Set.Ioi_subset_Ioi (le_trans hRM htR.le)) hM
       have hsub : {a : ℝ | t < |a|} ⊆ Iio (-t) ∪ Ioi t := by
         intro a ha
-        simp only [Set.mem_setOf_eq] at ha
+        simp only [mem_ofPred_eq] at ha
         rcases le_total a 0 with h | h
         · left
           have hta : t < -a := by rwa [abs_of_nonpos h] at ha
@@ -394,14 +394,14 @@ theorem measure_inter_card_le_one_le {Omega iota : Type*} [MeasurableSpace Omega
     have hchar : {ω | s.filter (fun i => Q i ω) = B}
         = ⋂ i ∈ (s : Set iota), (if i ∈ B then {ω | Q i ω} else {ω | Q i ω}ᶜ) := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_iInter₂, Finset.mem_coe]
+      simp only [mem_ofPred_eq, Set.mem_iInter₂, Finset.mem_coe]
       constructor
       · intro hω i hi
         by_cases hiB : i ∈ B
-        · rw [if_pos hiB]
+        · rw [ite_eq_left hiB]
           have hmem : i ∈ s.filter (fun j => Q j ω) := by rw [hω]; exact hiB
           exact (Finset.mem_filter.mp hmem).2
-        · rw [if_neg hiB]
+        · rw [ite_eq_right hiB]
           intro hQi
           exact hiB (by rw [← hω]; exact Finset.mem_filter.mpr ⟨hi, hQi⟩)
       · intro hω
@@ -411,18 +411,18 @@ theorem measure_inter_card_le_one_le {Omega iota : Type*} [MeasurableSpace Omega
         · rintro ⟨hi, hQi⟩
           by_contra hiB
           have hc := hω i hi
-          rw [if_neg hiB] at hc
+          rw [ite_eq_right hiB] at hc
           exact hc hQi
         · intro hiB
           have hi := hBs hiB
           have hc := hω i hi
-          rw [if_pos hiB] at hc
+          rw [ite_eq_left hiB] at hc
           exact ⟨hi, hc⟩
     rw [hchar]
     refine MeasurableSet.biInter s.countable_toSet fun i _ => ?_
     by_cases hiB : i ∈ B
-    · rw [if_pos hiB]; exact hQ i
-    · rw [if_neg hiB]; exact (hQ i).compl
+    · rw [ite_eq_left hiB]; exact hQ i
+    · rw [ite_eq_right hiB]; exact (hQ i).compl
   have hsub : G ∩ {ω | (s.filter fun i => Q i ω).card ≤ 1}
       ⊆ ⋃ B ∈ T, (G ∩ {ω | s.filter (fun i => Q i ω) = B}) := by
     intro ω hω

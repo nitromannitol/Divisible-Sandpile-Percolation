@@ -52,7 +52,7 @@ theorem measureReal_le_eq_one_sub {alpha : Type*} [MeasurableSpace alpha]
     mu.real {z : alpha | f z ≤ b} = 1 - mu.real {z : alpha | b < f z} := by
   have hcompl : {z : alpha | f z ≤ b} = {z : alpha | b < f z}ᶜ := by
     ext z
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, not_lt]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, not_lt]
   rw [hcompl, measureReal_def, measure_compl₀ h (measure_ne_top _ _), measure_univ,
     ENNReal.toReal_sub_of_le (prob_le_one) (by norm_num), ENNReal.toReal_one]
   rfl
@@ -66,7 +66,7 @@ theorem nullMeasurableSet_threshold_indep (ν : Measure ℝ) [IsProbabilityMeasu
   have hset : {σ : Site d → ℝ | b < J σ x}
       = {σ : Site d → ℝ | b < -(green d 0 0 * scenery d σ x)} := by
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   rw [hset]
   refine MeasurableSet.nullMeasurableSet (measurableSet_lt measurable_const ?_)
   exact (((measurable_pi_apply x).comp (measurable_scenery d)).const_mul (green d 0 0)).neg
@@ -180,7 +180,7 @@ theorem eventually_gauss_path_factorization_tails
   have hev : {σ : Site d → ℝ | c i < J σ 0}
       = {σ : Site d → ℝ | c i < -infiniteGreenField (scenery d σ) 0} := by
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   have hi : (gaussianReal 0 (((v : ℝ) * greenSqSum d).toNNReal)).real (Set.Ioi (c i))
       ≤ K / R ^ 2 := by
     rw [← measureReal_threshold_gt_gauss hd v (c i), ← hev]

@@ -72,8 +72,8 @@ theorem odometerJacobian_shiftField (ζ : Site d → ℝ) (y : Site d) :
               + avg (fun u => odometerJacobian ζ m u (w + y)) (z + y) else 0
       rw [hact, hnb]
       by_cases h : z = w
-      · rw [if_pos h, if_pos (heq.1 h)]
-      · rw [if_neg h, if_neg (fun hc => h (heq.2 hc))]
+      · rw [ite_eq_left h, ite_eq_left (heq.1 h)]
+      · rw [ite_eq_right h, ite_eq_right (fun hc => h (heq.2 hc))]
 
 /-- **Stationarity of the mean gradient** (`sandpile.tex:5818-5822`):
 `E[∂_{ζ(z)}u_n(x)] = c_n(z - x)` with `c_n(w) = E[∂_{ζ(w)}u_n(0)]`. -/

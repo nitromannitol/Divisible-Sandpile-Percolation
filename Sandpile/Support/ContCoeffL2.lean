@@ -77,7 +77,7 @@ theorem abs_sliceInterp_succ_sub_of_le (d : ℕ) (R : ℝ) (ζ : Site d → ℝ)
           by_cases h : i = j
           · subst h
             simp
-          · rw [if_neg h, Function.update_of_ne h, if_neg h]
+          · rw [ite_eq_right h, Function.update_of_ne h, ite_eq_right h]
         rw [hupd]
         exact abs_cellValue_sub_le d R ζ K a hs0 hs1
           (hK a (by omega) (fun i => if i = j then n else b i + (if c i then (1:ℤ) else 0)) j)

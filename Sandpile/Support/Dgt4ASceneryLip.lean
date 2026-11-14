@@ -85,9 +85,9 @@ theorem abs_sceneryDeviation_update_le (hd : 5 ≤ d) (ζ : Site d → ℝ) (z :
     exact (abs_add_le _ _).trans (add_le_add (habs _ _) le_rfl)
   refine htri.trans ?_
   by_cases hz : (0 : Site d) = z
-  · rw [if_pos hz] at e0 e2
+  · rw [ite_eq_left hz] at e0 e2
     nlinarith [e0, e1, e2, hc]
-  · rw [if_neg hz] at e0 e2
+  · rw [ite_eq_right hz] at e0 e2
     nlinarith [e0, e1, e2, hc]
 
 

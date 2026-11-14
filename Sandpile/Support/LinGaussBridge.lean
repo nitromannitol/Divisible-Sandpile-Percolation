@@ -71,7 +71,7 @@ theorem aemeasurable_infiniteGreenField_iid (hd : 5 ≤ d) (v : ℝ≥0) (x : Si
   refine aemeasurable_of_tendsto_metrizable_ae'
     (fun n => (measurable_infiniteGreenFieldPartial n x).aemeasurable) ?_
   filter_upwards [ae_mem_greenFieldConv_iid hd v x] with ζ hζ
-  rw [infiniteGreenField, dif_pos hζ]
+  rw [infiniteGreenField, dite_eq_left hζ]
   exact Classical.choose_spec hζ
 
 /-- **The finite-dimensional laws of the Gaussian Green field under the i.i.d.

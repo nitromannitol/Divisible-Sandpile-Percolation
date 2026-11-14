@@ -22,6 +22,7 @@ namespace Sandpile
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [FiniteDimensional ℝ H]
   [MeasurableSpace H] [BorelSpace H]
 
+omit [BorelSpace H] in
 /-- **A uniform bound transports to the centered Gaussian integrals.** If `|f x - g x| ≤ e`
 everywhere, the two Gaussian integrals of `f` and `g` differ by at most `e`. -/
 lemma integral_sub_abs_le_of_uniform {f g : H → ℝ} (hf : Integrable f (stdGaussian H))

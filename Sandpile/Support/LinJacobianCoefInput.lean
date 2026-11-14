@@ -61,7 +61,7 @@ theorem odometerJacobian_eq_zero_of_lt (ζ : Site d → ℝ) :
         simp
       show (if 0 < odometerOf ζ (n + 1) x then
         (if x = z then (1 : ℝ) else 0) + avg (fun y => odometerJacobian ζ n y z) x else 0) = 0
-      rw [havg, if_neg hxz]
+      rw [havg, ite_eq_right hxz]
       simp
 
 /-- The odometer Jacobian lies between `0` and the number of relaxation steps. -/

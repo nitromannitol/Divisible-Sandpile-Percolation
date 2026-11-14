@@ -293,7 +293,7 @@ theorem d23_sequential_of_crossing (d : ℕ) (hd : d = 2 ∨ d = 3)
     d hd 4 a b hab dir (δ / 4) (by positivity)
   refine ⟨ν₀ * H / 2, T, by positivity, hT, ?_⟩
   intro Rs laws v hRs hprob hmean hevar hexp hK hv1 hv0 hv2 hvar hbad
-  haveI : ∀ n, IsProbabilityMeasure (laws n) := hprob
+  have : ∀ n, IsProbabilityMeasure (laws n) := hprob
   have hRs' : Tendsto Rs atTop atTop :=
     tendsto_atTop_mono (fun n => (Nat.le_succ n).trans (hRs n)) tendsto_id
   have hRsR : Tendsto (fun n => (Rs n : ℝ)) atTop atTop :=

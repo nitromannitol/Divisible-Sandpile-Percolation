@@ -32,7 +32,7 @@ theorem integrable_abs_rpow_sceneryDeviation (hd : 5 ≤ d) (ν : Measure ℝ)
     (hmom : Integrable (fun z : ℝ => |z| ^ p) ν) (n : ℕ) :
     Integrable (fun ζ : Site d → ℝ => |sceneryDeviation d ζ n| ^ p)
       (LatticeProb.iidLaw d ν) := by
-  haveI : ∀ _i : Fin (boxFinset (0 : Site d) (n + 1)).card,
+  have : ∀ _i : Fin (boxFinset (0 : Site d) (n + 1)).card,
       IsProbabilityMeasure ((fun _ => ν) _i) := fun _ => ‹IsProbabilityMeasure ν›
   have hint := integrable_rpow_of_lip_fam
     (fun _ : Fin (boxFinset (0 : Site d) (n + 1)).card => ν) hp (fun _ => hmom)

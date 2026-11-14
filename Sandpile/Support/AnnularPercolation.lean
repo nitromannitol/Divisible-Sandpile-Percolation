@@ -40,7 +40,7 @@ lemma measurableSet_odometerOriginConnectEvent {d : ℕ} (t : ℕ) (s : ℝ) :
         ⋂ x ∈ Frozen.DGT4BlockingToCrossing.boxAt (0 : Site d) 1,
           {ω | s < odometerOf ω t x} := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.subset_def]
+      simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.subset_def]
     rw [he]
     exact MeasurableSet.iInter (fun x => MeasurableSet.iInter (fun _ => hO x))
   exact hsub.inter (measurableSet_infinite_componentIn
@@ -189,7 +189,7 @@ lemma exists_odometer_origin_connection (hBoundary : External.ExteriorBoundaryCo
   have hC : 0 < C := by dsimp [C]; positivity
   refine ⟨b, C, M, hb, hC, le_max_left _ _, ?_⟩
   intro ν hν hmean hvar hvarfin hexp hK t hm
-  letI := hν
+  let := hν
   let m := ∫ ω, odometerOf ω t (0 : Site d) ∂(LatticeProb.iidLaw d ν)
   have hm1 : 1 ≤ m := (le_max_left _ _).trans hm
   have hm0 : 0 ≤ m := le_trans zero_le_one hm1

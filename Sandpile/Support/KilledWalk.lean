@@ -45,8 +45,8 @@ theorem pastIn_congr (D : Set (Site d)) (k : ℕ) {X Y : ℕ → Site d}
     · intro hX i hi; rw [← h i hi]; exact hX i hi
     · intro hY i hi; rw [h i hi]; exact hY i hi
   by_cases hX : ∀ i ≤ k, X i ∈ D
-  · rw [if_pos hX, if_pos (hiff.mp hX)]
-  · rw [if_neg hX, if_neg (fun hc => hX (hiff.mpr hc))]
+  · rw [ite_eq_left hX, ite_eq_left (hiff.mp hX)]
+  · rw [ite_eq_right hX, ite_eq_right (fun hc => hX (hiff.mpr hc))]
 
 /-- `pastIn D k` is measurable, since `pastIn_congr` shows it depends only on the finitely
 many coordinates `0, ..., k`. -/
@@ -61,7 +61,7 @@ theorem pastIn_succ (D : Set (Site d)) (k : ℕ) (X : ℕ → Site d) (f : Site 
   classical
   unfold pastIn
   by_cases hk : ∀ i ≤ k, X i ∈ D
-  · rw [if_pos hk]
+  · rw [ite_eq_left hk]
     by_cases hnew : X (k + 1) ∈ D
     · have hall : ∀ i ≤ k + 1, X i ∈ D := by
         intro i hi
@@ -69,18 +69,18 @@ theorem pastIn_succ (D : Set (Site d)) (k : ℕ) (X : ℕ → Site d) (f : Site 
         · exact hk i (by omega)
         · have : i = k + 1 := by omega
           rw [this]; exact hnew
-      rw [if_pos hall, Set.indicator_of_mem hnew]
+      rw [ite_eq_left hall, Set.indicator_of_mem hnew]
     · have hnot : ¬ ∀ i ≤ k + 1, X i ∈ D := fun hc => hnew (hc (k + 1) le_rfl)
-      rw [if_neg hnot, Set.indicator_of_notMem hnew]
+      rw [ite_eq_right hnot, Set.indicator_of_notMem hnew]
       ring
   · have hnot : ¬ ∀ i ≤ k + 1, X i ∈ D := fun hc => hk fun i hi => hc i (by omega)
-    rw [if_neg hnot, if_neg hk]
+    rw [ite_eq_right hnot, ite_eq_right hk]
     ring
 
 /-- One step of the walk averages the field. -/
 theorem integral_eval_one (hd : 1 ≤ d) (z : Site d) (g : Site d → ℝ) {Mg : ℝ}
     (hg : ∀ y, |g y| ≤ Mg) : (∫ Y, g (Y 1) ∂(walkLaw d z)) = avg g z := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hmble : Measurable fun Y : ℕ → Site d => g (Y 1) :=
     Measurable.fun_comp (Measurable.of_discrete (f := g)) (measurable_pi_apply 1)
   rw [integral_walkLaw z hmble.aestronglyMeasurable]
@@ -96,8 +96,8 @@ on the event that the walk has stayed in `D` through time `k`. -/
 theorem integral_pastIn_mul (hd : 1 ≤ d) (D : Set (Site d)) :
     ∀ (k : ℕ) (x : Site d) (f : Site d → ℝ) (Mf : ℝ), (∀ y, |f y| ≤ Mf) →
       (∫ X, pastIn D k X * f (X k) ∂(walkLaw d x)) = killedPair D k f x := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   intro k
   induction k with
   | zero =>
@@ -110,9 +110,9 @@ theorem integral_pastIn_mul (hd : 1 ≤ d) (D : Set (Site d)) :
         intro X hX
         unfold pastIn
         by_cases hx : x ∈ D
-        · rw [if_pos (by intro i hi; rw [show i = 0 by omega, hX]; exact hx), one_mul, hX,
+        · rw [ite_eq_left (by intro i hi; rw [show i = 0 by omega, hX]; exact hx), one_mul, hX,
             Set.indicator_of_mem hx]
-        · rw [if_neg (fun hc => hx (by have h0 := hc 0 le_rfl; rwa [hX] at h0)), zero_mul,
+        · rw [ite_eq_right (fun hc => hx (by have h0 := hc 0 le_rfl; rwa [hX] at h0)), zero_mul,
             Set.indicator_of_notMem hx]
       rw [integral_walkLaw x hmble.aestronglyMeasurable,
         integral_congr_ae (Filter.Eventually.of_forall fun ξ =>
@@ -198,8 +198,8 @@ theorem integral_pastIn_sum (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ) (x : Sit
     (∫ X, ∑ j ∈ Finset.range N, pastIn D j X * ζ (X j) ∂(walkLaw d x))
       = killedGreenPair D N ζ x := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   set s : Finset (Site d) := boxFinset x N with hsdef
   obtain ⟨M, hM⟩ := exists_bound_trunc s ζ
   have hmble : ∀ j : ℕ, Measurable fun X : ℕ → Site d => pastIn D j X * trunc s ζ (X j) :=
@@ -243,9 +243,9 @@ theorem integral_stoppedScenery_killed (hd : 1 ≤ d) (D : Set (Site d)) (N : �
   refine Finset.sum_congr rfl fun j _ => ?_
   unfold pastIn
   by_cases hj : ∀ i ≤ j, X i ∈ D
-  · rw [Set.indicator_of_mem (show j ∈ {j : ℕ | ∀ i ≤ j, X i ∈ D} from hj), if_pos hj,
+  · rw [Set.indicator_of_mem (show j ∈ {j : ℕ | ∀ i ≤ j, X i ∈ D} from hj), ite_eq_left hj,
       one_mul]
-  · rw [Set.indicator_of_notMem (show j ∉ {j : ℕ | ∀ i ≤ j, X i ∈ D} from hj), if_neg hj,
+  · rw [Set.indicator_of_notMem (show j ∉ {j : ℕ | ∀ i ≤ j, X i ∈ D} from hj), ite_eq_right hj,
       zero_mul]
 
 end Sandpile

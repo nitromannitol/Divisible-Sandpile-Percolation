@@ -122,7 +122,7 @@ theorem measure_contact_symmDiff_le
   have hset : {σ : Site d → ℝ | odometer σ (n + 1) 0 = 0}
       =ᵐ[centeredMassLaw d ν]
       {σ : Site d → ℝ | -(scenery d σ 0) > avg (originOdometer (scenery d σ) n) 0} :=
-    Filter.eventuallyEq_set.mpr (hcontact.mono fun σ hσ => hσ)
+    eventuallyEqSet_iff.mpr (hcontact.mono fun σ hσ => hσ)
   have hmeas : (centeredMassLaw d ν) (symmDiff
         {σ : Site d → ℝ | odometer σ (n + 1) 0 = 0}
         {σ : Site d → ℝ | -(scenery d σ 0) > b})

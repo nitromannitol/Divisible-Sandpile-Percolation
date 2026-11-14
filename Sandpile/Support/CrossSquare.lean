@@ -100,18 +100,18 @@ theorem nearSites_subset_blockSites {d : ℕ} {u : Space 2} {z : Sandpile.Site 2
   have hh : x i ≤ ⌊(planePoint (d := d) u) i⌋ + 1 := hhi i
   by_cases hi : (i : ℕ) < 2
   · have hpp : (planePoint (d := d) u) i = u ⟨(i : ℕ), hi⟩ := by
-      rw [planePoint_apply]; exact dif_pos hi
+      rw [planePoint_apply]; exact dite_eq_left hi
     have hfl : ⌊(planePoint (d := d) u) i⌋ = sqOf u ⟨(i : ℕ), hi⟩ := by
       rw [hpp, sqOf_apply]
     have hadj := h ⟨(i : ℕ), hi⟩
     rw [abs_le] at hadj
-    rw [blockLo, blockHi, dif_pos hi, dif_pos hi]
+    rw [blockLo, blockHi, dite_eq_left hi, dite_eq_left hi]
     rw [hfl] at hl hh
     constructor <;> omega
   · have hpp : (planePoint (d := d) u) i = 0 := by
-      rw [planePoint_apply]; exact dif_neg hi
+      rw [planePoint_apply]; exact dite_eq_right hi
     have hfl : ⌊(planePoint (d := d) u) i⌋ = 0 := by rw [hpp]; simp
-    rw [blockLo, blockHi, dif_neg hi, dif_neg hi]
+    rw [blockLo, blockHi, dite_eq_right hi, dite_eq_right hi]
     rw [hfl] at hl hh
     constructor <;> omega
 
@@ -189,8 +189,8 @@ theorem blockSites_nonempty (d : ℕ) (z : Sandpile.Site 2) : (blockSites d z).N
   refine ⟨le_rfl, ?_⟩
   rw [blockLo, blockHi]
   by_cases hi : (i : ℕ) < 2
-  · rw [dif_pos hi, dif_pos hi]; omega
-  · rw [dif_neg hi, dif_neg hi]; omega
+  · rw [dite_eq_left hi, dite_eq_left hi]; omega
+  · rw [dite_eq_right hi, dite_eq_right hi]; omega
 
 /-- `allSites d a b` is nonempty for a genuine rectangle, combining `rectSq_nonempty` and
 `blockSites_nonempty`. -/

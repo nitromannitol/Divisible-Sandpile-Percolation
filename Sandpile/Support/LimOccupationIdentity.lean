@@ -93,7 +93,7 @@ theorem integral_mul_greenTimeBM {d : ℕ} (hd : 1 ≤ d) {t : ℝ} (ht : 0 ≤ 
     (∫ y, φ y * greenTimeBM d t z y) = ∫ r in Set.Ioo (0 : ℝ) t, transAvg d φ r z := by
   have hM0 : 0 ≤ M := le_trans (abs_nonneg (φ z)) (hM z)
   set μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) t) with hμ
-  haveI : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
+  have : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
   set F : ℝ × Space d → ℝ := fun p => φ p.2 * heatKernelBM d p.1 z p.2 with hF
   have hmF : Measurable F :=
     (hφ.comp measurable_snd).mul (by unfold heatKernelBM; fun_prop)
@@ -175,7 +175,7 @@ theorem integral_mul_greenTimeBM_motion [MeasurableSpace ΩB] {d : ℕ} (hd : 1 
       = ∫ b, (∫ r in (0 : ℝ)..T, φ (X r.toNNReal b)) ∂PB := by
   have hM0 : 0 ≤ M := le_trans (abs_nonneg (φ x)) (hM x)
   set μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) T) with hμ
-  haveI : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
+  have : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
   have hstep : ∀ r ∈ Set.Ioo (0 : ℝ) T,
       transAvg d φ r x = ∫ b, φ (X r.toNNReal b) ∂PB := by
     intro r hr
@@ -271,7 +271,7 @@ theorem integral_mul_expectedGreen [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d
   have hM0 : 0 ≤ M := le_trans (abs_nonneg (φ x)) (hM x)
   have hτ0 : ∀ b, (0 : ℝ) ≤ (τ b : ℝ) := fun b => (τ b).property
   set μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) T) with hμ
-  haveI : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
+  have : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
   have hXj : StronglyMeasurable (Function.uncurry X) :=
     stronglyMeasurable_uncurry_of_continuous_of_stronglyMeasurable hXc hXm
   have hstate : Measurable (fun b => X (τ b) b) :=
@@ -284,7 +284,7 @@ theorem integral_mul_expectedGreen [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d
       (measurable_const.sub (hτm.comp measurable_snd).coe_nnreal_real)
   have hSslice : ∀ b : ΩB, ∀ r : ℝ, ((r, b) ∈ S ↔ r ∈ Set.Ioo (0 : ℝ) (T - (τ b : ℝ))) := by
     intro b r
-    simp only [hS, Set.mem_setOf_eq, Set.mem_Ioo]
+    simp only [hS, Set.mem_ofPred_eq, Set.mem_Ioo]
   -- the two integrands
   set G : ℝ × ΩB → ℝ :=
     S.indicator (fun p => transAvg d φ p.1 (X (τ p.2) p.2)) with hG
@@ -409,9 +409,9 @@ theorem integral_mul_expectedGreen [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d
       intro p
       rw [hF, Real.norm_eq_abs, abs_mul]
       by_cases h : r < T - ((p.1.1 : ℝ≥0) : ℝ)
-      · rw [if_pos h, abs_one, one_mul]
+      · rw [ite_eq_left h, abs_one, one_mul]
         exact hM _
-      · rw [if_neg h, abs_zero, zero_mul]
+      · rw [ite_eq_right h, abs_zero, zero_mul]
         exact hM0
     have hmain := integral_brownian_after_stopping hX hXm hXc τ hstop r.toNNReal F hFm M hFb
     have hGval : ∀ b : ΩB, G (r, b)
@@ -423,17 +423,17 @@ theorem integral_mul_expectedGreen [MeasurableSpace ΩB] {d : ℕ} (hd : 1 ≤ d
         rw [← integral_const_mul]
       rw [hinner]
       by_cases hc : r < T - (τ b : ℝ)
-      · rw [if_pos hc, one_mul, hG, Set.indicator_of_mem ((hSslice b r).mpr ⟨hr.1, hc⟩)]
+      · rw [ite_eq_left hc, one_mul, hG, Set.indicator_of_mem ((hSslice b r).mpr ⟨hr.1, hc⟩)]
         exact transAvg_eq_integral hd hX hr.1 (X (τ b) b) φ hφ hM
-      · rw [if_neg hc, zero_mul, hG,
+      · rw [ite_eq_right hc, zero_mul, hG,
           Set.indicator_of_notMem (fun h => hc ((hSslice b r).mp h).2)]
     have hHval : ∀ b : ΩB, H (r, b) = F ((τ b, X (τ b) b), X (τ b + r.toNNReal) b) := by
       intro b
       by_cases hc : r < T - (τ b : ℝ)
       · rw [hH, Set.indicator_of_mem ((hSslice b r).mpr ⟨hr.1, hc⟩), hF]
-        simp only [if_pos hc, one_mul]
+        simp only [ite_eq_left hc, one_mul]
       · rw [hH, Set.indicator_of_notMem (fun h => hc ((hSslice b r).mp h).2), hF]
-        simp only [if_neg hc, zero_mul]
+        simp only [ite_eq_right hc, zero_mul]
     calc (∫ b, G (r, b) ∂PB)
         = ∫ b, (∫ η, F ((τ b, X (τ b) b), X (τ b) b + (X r.toNNReal η - X 0 η)) ∂PB) ∂PB :=
           integral_congr_ae (Eventually.of_forall hGval)

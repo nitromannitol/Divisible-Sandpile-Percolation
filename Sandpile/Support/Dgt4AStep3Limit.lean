@@ -100,7 +100,7 @@ theorem tendsto_meanOdometer_mul_integral_condTerminal_condLevel
       meanOdometer_nonneg _ n
     by_cases h1 : 1 ≤ meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n
     · rw [hsseq]
-      simp only [h1, if_true]
+      simp only [h1, ite_true]
       have hkey : |condLevel d hd v y n| * (Real.sqrt (v : ℝ) * ‖greenLp d hd (0 : Site d)‖)
           = |meanOdometer (centeredMassLaw d (gaussianReal 0 v)) n
             + ((fieldVar d v : ℝ≥0) : ℝ) * y
@@ -124,7 +124,7 @@ theorem tendsto_meanOdometer_mul_integral_condTerminal_condLevel
       rw [abs_of_nonneg hann] at habs2
       linarith
     · rw [hsseq]
-      simp only [h1, if_false, abs_zero, zero_mul]
+      simp only [h1, ite_false, abs_zero, zero_mul]
       have : (0 : ℝ) ≤ ((fieldVar d v : ℝ≥0) : ℝ) * |y| := mul_nonneg hS (abs_nonneg y)
       linarith
   have hmain := tendsto_meanOdometer_mul_integral_condTerminal hGH hd v hv hsq
@@ -133,7 +133,7 @@ theorem tendsto_meanOdometer_mul_integral_condTerminal_condLevel
   refine hmain.congr' ?_
   filter_upwards [hatt.eventually_ge_atTop 1] with n hn
   rw [hsseq]
-  simp only [hn, if_true]
+  simp only [hn, ite_true]
 
 /-- The good set of Step 3: off the exceptional set, with a convergent Green field and at the
 conditioned level. -/
@@ -214,7 +214,7 @@ theorem tendsto_integral_condReflected_posPart
       atTop (𝓝 (max y 0 / green d 0 0)) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set cc : ℝ := Real.sqrt (v : ℝ) with hcc
@@ -347,7 +347,7 @@ theorem tendsto_measure_condReflected_pos
       atTop (𝓝 (if 0 < y then 1 else 0)) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set cc : ℝ := Real.sqrt (v : ℝ) with hcc
@@ -417,12 +417,12 @@ theorem tendsto_measure_condReflected_pos
         rw [hLimval.2 hneg]
         exact hneg
       filter_upwards [hmu.eventually_lt_const hL] with n hn
-      rw [if_neg (by linarith), if_neg (by linarith)]
+      rw [ite_eq_right (by linarith), ite_eq_right (by linarith)]
     · have hL : (0 : ℝ) < Lim := by
         rw [hLimval.1 hpos]
         positivity
       filter_upwards [hmu.eventually_const_lt hL] with n hn
-      rw [if_pos hn, if_pos hpos]
+      rw [ite_eq_left hn, ite_eq_left hpos]
   refine tendsto_of_forall_pos_eventually_le ?_
   intro ε hε
   have hmuabs : Tendsto (fun n : ℕ => |mu n|) atTop (𝓝 |Lim|) := hmu.abs
@@ -457,7 +457,7 @@ theorem tendsto_measure_condReflected_pos
   have hset : {r | 0 < X n r}
       = {r | 0 < condReflected d hd cc (condLevel d hd v y n) n r} := by
     ext r
-    simp only [Set.mem_setOf_eq, hXdef]
+    simp only [mem_ofPred_eq, hXdef]
     constructor
     · intro h
       by_contra hcon

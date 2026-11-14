@@ -122,7 +122,7 @@ theorem tendsto_errors_massLaw (hHK : External.HeatKernelBounds) (hVS : External
       have hx : ¬ (ENNReal.ofReal (ε / 3) < ENNReal.ofReal
         |omegaRep D w (latticePairing R (windowField ν α R (scenery 4 σ))) φ|) := hc.2
       exact (ENNReal.ofReal_le_ofReal_iff (by positivity)).mp (not_lt.mp hx)
-    rw [Set.mem_setOf_eq, hadd R (scenery 4 σ)] at hσ
+    rw [Set.mem_ofPred_eq, hadd R (scenery 4 σ)] at hσ
     have := abs_add_le (omegaRep D w (latticePairing R (smoothedError ν α R (scenery 4 σ))) φ)
       (omegaRep D w (latticePairing R (windowField ν α R (scenery 4 σ))) φ)
     linarith
@@ -174,7 +174,7 @@ theorem tendstoInMeasure_of_tendsto_abs {Ω : Type*} [MeasurableSpace Ω] (P : M
   · have hempty : ∀ R : ℝ, {ω | ε ≤ edist (Y R ω) 0} = (∅ : Set Ω) := by
       intro R
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_le, htop]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le, htop]
       rw [edist_dist]
       exact ENNReal.ofReal_lt_top
     simp only [hempty, measure_empty]
@@ -183,7 +183,7 @@ theorem tendstoInMeasure_of_tendsto_abs {Ω : Type*} [MeasurableSpace Ω] (P : M
     have hset : ∀ R : ℝ, {ω | ε ≤ edist (Y R ω) 0} = {ω | ε.toReal ≤ |Y R ω|} := by
       intro R
       ext ω
-      rw [Set.mem_setOf_eq, Set.mem_setOf_eq, edist_dist, Real.dist_eq, sub_zero,
+      rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq, edist_dist, Real.dist_eq, sub_zero,
         ENNReal.le_ofReal_iff_toReal_le htop (abs_nonneg _)]
     simp only [hset]
     exact h ε.toReal hr
@@ -209,7 +209,7 @@ theorem d4_superdiffusive_first_clause (hHK : External.HeatKernelBounds)
       (gaussianReal 0 (Real.toNNReal
         (omegaMembraneCov4 D w (variance id ν) φ φ))) := by
   classical
-  haveI := hprob
+  have := hprob
   obtain ⟨hstep1, -⟩ := d4_superdiffusive_step1 hHK hMembrane ν hprob hmean hvar hvar'
     D hD w hw s hs hα
   have hX := hstep1 φ hφ
@@ -292,7 +292,7 @@ theorem d4_superdiffusive_first_clause (hHK : External.HeatKernelBounds)
           (fun x => smoothedError ν α R (scenery 4 σ) x
             + windowField ν α R (scenery 4 σ) x)) φ := by
         rw [hYerr]; simp only []; rw [hsplit]; ring
-      rw [Set.mem_setOf_eq, Set.mem_setOf_eq, hY]
+      rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq, hY]
     refine Tendsto.congr' ?_ (tendsto_errors_massLaw hHK hVS ν hmean hvar hvar' θ hθ hexp
       hintν hpos hD hw hα hφ hr)
     filter_upwards [hcong] with R hR

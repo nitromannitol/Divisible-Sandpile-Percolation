@@ -132,7 +132,7 @@ theorem lastTimeOf_spec [DecidableEq α] (i : ℕ) (X : ℕ → α) (r : ℕ) (h
   have hmem : r ∈ (Finset.range (i + 1)).filter (fun s => X s = X r) :=
     Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega : r < i + 1), rfl⟩
   have hne : ((Finset.range (i + 1)).filter (fun s => X s = X r)).Nonempty := ⟨r, hmem⟩
-  rw [lastTimeOf, dif_pos hne]
+  rw [lastTimeOf, dite_eq_left hne]
   refine ⟨Finset.le_max' _ r hmem, ?_⟩
   have hm := Finset.max'_mem _ hne
   rw [Finset.mem_filter] at hm
@@ -166,7 +166,7 @@ theorem iInter_single_eq_image {β : Type*} [DecidableEq α] (i : ℕ) (X : ℕ 
           {w : β | J w x ≤ b (lastTimeOf i X x)} := by
   classical
   ext w
-  simp only [Set.mem_iInter, Set.mem_setOf_eq, Finset.mem_range, Finset.mem_image]
+  simp only [Set.mem_iInter, Set.mem_ofPred_eq, Finset.mem_range, Finset.mem_image]
   constructor
   · rintro h x ⟨r, hr, rfl⟩
     have hri : r ≤ i := by omega
@@ -188,7 +188,7 @@ theorem iInter_joint_eq_image {β : Type*} [DecidableEq α] (i j : ℕ) (X Y : �
           {w : β | J w x ≤ jointLevel i j X Y b x} := by
   classical
   ext w
-  simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]
+  simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨hX, hY⟩ x hx
     have hXle : x ∈ (Finset.range (i + 1)).image X → J w x ≤ b (lastTimeOf i X x) := by
@@ -218,7 +218,7 @@ theorem iInter_joint_eq_image {β : Type*} [DecidableEq α] (i j : ℕ) (X Y : �
       have hspec := lastTimeOf_spec i X r hri
       have hle := h (X r) (Finset.mem_union_left _ hxX)
       have hjl : jointLevel i j X Y b (X r) ≤ b (lastTimeOf i X (X r)) := by
-        rw [jointLevel, if_pos hxX]
+        rw [jointLevel, ite_eq_left hxX]
         split_ifs with h2
         · exact min_le_left _ _
         · exact le_rfl
@@ -233,9 +233,9 @@ theorem iInter_joint_eq_image {β : Type*} [DecidableEq α] (i j : ℕ) (X Y : �
       have hjl : jointLevel i j X Y b (Y s) ≤ b (lastTimeOf j Y (Y s)) := by
         rw [jointLevel]
         by_cases h1 : Y s ∈ (Finset.range (i + 1)).image X
-        · rw [if_pos h1, if_pos hxY]
+        · rw [ite_eq_left h1, ite_eq_left hxY]
           exact min_le_right _ _
-        · rw [if_neg h1]
+        · rw [ite_eq_right h1]
       exact le_trans (le_trans hle hjl) (hb hspec.1)
 
 /-- The threshold probability is antitone in the level. -/

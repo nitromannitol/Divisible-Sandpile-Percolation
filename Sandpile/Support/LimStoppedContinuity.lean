@@ -147,9 +147,9 @@ theorem continuous_planePoint (d : ℕ) : Continuous (planePoint (d := d)) := by
   refine (EuclideanSpace.equiv (Fin d) ℝ).symm.continuous.comp ?_
   refine continuous_pi fun i => ?_
   by_cases h : (i : ℕ) < 2
-  · simp only [dif_pos h]
+  · simp only [dite_eq_left h]
     exact (EuclideanSpace.proj (⟨(i : ℕ), h⟩ : Fin 2)).continuous
-  · simp only [dif_neg h]
+  · simp only [dite_eq_right h]
     exact continuous_const
 
 /-- The reward is continuous in the plane point as well. -/

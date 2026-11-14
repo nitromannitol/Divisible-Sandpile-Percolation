@@ -48,12 +48,12 @@ theorem clause1_of_transfers {ΩW ΩB : Type*} [MeasurableSpace ΩW] [Measurable
       AEMeasurable.mk (fun ω => continuumValue d Z B PB T x ω) (hmeas T h x)
     else fun _ => 0, ?_, ?_⟩
   · intro T hT x
-    simp only [dif_pos hT]
+    simp only [dite_eq_left hT]
     exact ⟨AEMeasurable.measurable_mk _,
       (AEMeasurable.ae_eq_mk (f := fun ω => continuumValue d Z B PB T x ω)
         (hmeas T hT x)).symm⟩
   · intro T hT x
-    simp only [dif_pos hT, dif_pos (by norm_num : (0:ℝ) < 1)]
+    simp only [dite_eq_left hT, dite_eq_left (by norm_num : (0:ℝ) < 1)]
     have h1 : (fun ω => continuumValue d Z B PB T x ω)
         =ᵐ[PW] fun ω => AEMeasurable.mk (fun ω => continuumValue d Z B PB T x ω)
           (hmeas T hT x) ω :=

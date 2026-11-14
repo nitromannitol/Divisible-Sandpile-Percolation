@@ -110,7 +110,7 @@ theorem isBrownianStopping_min {B : ℝ≥0 → Ω → Space d} {τ σ : Ω → 
   intro t
   convert! (hτ t).union (hσ t) using 1
   ext ω
-  simp only [Set.mem_setOf_eq, Set.mem_union]
+  simp only [Set.mem_ofPred_eq, Set.mem_union]
   change ((min (τ ω) (σ ω) : ℝ≥0) : ℝ≥0∞) ≤ (t : ℝ≥0∞) ↔
     (τ ω : ℝ≥0∞) ≤ (t : ℝ≥0∞) ∨ (σ ω : ℝ≥0∞) ≤ (t : ℝ≥0∞)
   rw [ENNReal.coe_min]
@@ -121,7 +121,7 @@ time for a motion with continuous paths. -/
 theorem isBrownianStopping_exitTimeTrunc {B : ℝ≥0 → Ω → Space d}
     (hcont : ∀ ω, Continuous fun s => B s ω) (u : Space d) (A : ℝ) (Tn : ℝ≥0) :
     IsBrownianStopping B (LatticeProb.exitTimeTrunc B u A Tn) := by
-  letI : MeasurableSpace Ω := MeasurableSpace.comap (fun ω => fun t => B t ω) inferInstance
+  let : MeasurableSpace Ω := MeasurableSpace.comap (fun ω => fun t => B t ω) inferInstance
   have hp : Measurable (fun ω => fun t => B t ω) := measurable_iff_comap_le.mpr le_rfl
   have hm : ∀ t, StronglyMeasurable (B t) :=
     fun t => ((measurable_pi_apply t).comp hp).stronglyMeasurable

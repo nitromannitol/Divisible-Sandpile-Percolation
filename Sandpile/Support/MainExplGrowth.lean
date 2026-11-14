@@ -99,7 +99,7 @@ theorem measurableSet_exists_strip_lt {Ω : Type*} [MeasurableSpace Ω]
       have hle : nhdsWithin q E ≤ nhdsWithin q
           (Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) :=
         nhdsWithin_mono q hEsub
-      haveI hne : (nhdsWithin q E).NeBot :=
+      have hne : (nhdsWithin q E).NeBot :=
         mem_closure_iff_nhdsWithin_neBot.mp (hEdense hq)
       have h1 : ∀ᶠ v in nhdsWithin q E, 0 < |Z v.1 v.2 ω| - L v := hev.filter_mono hle
       have h2 : ∀ᶠ v in nhdsWithin q E, v ∈ E := self_mem_nhdsWithin
@@ -157,7 +157,7 @@ theorem exists_deterministic_growth {Ω : Type*} [MeasurableSpace Ω]
   have hnull : P (⋂ n, Ev n) = 0 := by
     refine measure_mono_null ?_ (ae_iff.mp hgrow)
     intro ω hω
-    simp only [Set.mem_iInter, hEv, Set.mem_setOf_eq] at hω
+    simp only [Set.mem_iInter, hEv, mem_ofPred_eq] at hω
     intro hgood
     obtain ⟨C, k, hCk⟩ := hgood
     obtain ⟨n, hn⟩ := exists_nat_gt (max C (max k 1))
@@ -229,22 +229,22 @@ theorem exists_deterministic_growth_ae {Ω : Type*} [MeasurableSpace Ω]
       (Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) := by
     intro ω
     by_cases hω : ω ∈ N₀
-    · simpa only [hZ', hω, if_pos] using (continuousOn_const :
+    · simpa only [hZ', hω, ite_eq_left] using (continuousOn_const :
         ContinuousOn (fun _ : ℝ × Sandpile.Continuum.Space d => (0 : ℝ)) _)
     · have hc : ContinuousOn (fun q : ℝ × Sandpile.Continuum.Space d => Z q.1 q.2 ω)
           (Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) :=
         not_not.mp (fun h => hω (hsubN h))
-      simpa only [hZ', hω, if_neg, not_false_iff] using hc
+      simpa only [hZ', hω, ite_eq_right, not_false_iff] using hc
   have hgrow' : ∀ᵐ ω ∂P, ∃ C k : ℝ,
       ∀ q ∈ Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d)),
         |Z' q.1 q.2 ω| ≤ C * (1 + ‖q.2‖) ^ k := by
     filter_upwards [hgrow] with ω hω
     by_cases hN : ω ∈ N₀
     · refine ⟨0, 0, fun q _ => ?_⟩
-      simp only [hZ', hN, if_pos, abs_zero, zero_mul, le_refl]
+      simp only [hZ', hN, ite_eq_left, abs_zero, zero_mul, le_refl]
     · obtain ⟨C, k, hCk⟩ := hω
       refine ⟨C, k, fun q hq => ?_⟩
-      simpa only [hZ', hN, if_neg, not_false_iff] using hCk q hq
+      simpa only [hZ', hN, ite_eq_right, not_false_iff] using hCk q hq
   obtain ⟨m, hEm, hE⟩ := exists_deterministic_growth P Z' T hT hmeas' hcont' hgrow' δ hδ
   refine ⟨m, {ω | ∃ q ∈ Set.Icc (0 : ℝ) T ×ˢ
       (Set.univ : Set (Sandpile.Continuum.Space d)),
@@ -260,7 +260,7 @@ theorem exists_deterministic_growth_ae {Ω : Type*} [MeasurableSpace Ω]
     have h3 : ¬ ((m : ℝ) * (1 + ‖y‖) ^ m < |Z' s y ω|) :=
       fun h => h2 ⟨(s, y), ⟨hs, Set.mem_univ y⟩, h⟩
     have h4 : Z' s y ω = Z s y ω := by
-      simp only [hZ', h1, if_neg, not_false_iff]
+      simp only [hZ', h1, ite_eq_right, not_false_iff]
     rw [← h4]
     exact not_lt.mp h3
 

@@ -145,11 +145,11 @@ theorem tendsto_step2_pairing_four (hHK : External.HeatKernelBounds) (hVS : Exte
     · filter_upwards [eventually_ge_atTop (1:ℝ)] with R hR1 ζ
       have hC₀ : ∀ x : Site 4, Sandpile.External.SameParity x 0 →
           smoothedError ν α R ζ (parityBase x) = smoothedError ν α R ζ 0 := by
-        intro x hx; rw [parityBase, if_pos hx]
+        intro x hx; rw [parityBase, ite_eq_left hx]
       have hC₁ : ∀ x : Site 4, ¬ Sandpile.External.SameParity x 0 →
           smoothedError ν α R ζ (parityBase x) =
             smoothedError ν α R ζ ((0 : Site 4) + unit (0 : Fin 4)) := by
-        intro x hx; rw [parityBase, if_neg hx]
+        intro x hx; rw [parityBase, ite_eq_right hx]
       have hb := hK2b R hR1 (fun x => smoothedError ν α R ζ (parityBase x))
         (smoothedError ν α R ζ 0)
         (smoothedError ν α R ζ ((0 : Site 4) + unit (0 : Fin 4))) hC₀ hC₁
@@ -199,7 +199,7 @@ theorem tendsto_step3_pairing_four (hVS : Sandpile.External.VarianceScale)
       {ζ | ENNReal.ofReal ε < ENNReal.ofReal
         |omegaRep D w (latticePairing R (windowField ν α R ζ)) φ|}) atTop (𝓝 0) := by
   classical
-  haveI := hprob
+  have := hprob
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   obtain ⟨A₀, Cx, hA₀, hCx, hwin⟩ :=
     exists_window_second_moment_four hVS ν hprob hmean hvar hvar' θ hθ hexp hintν hpos

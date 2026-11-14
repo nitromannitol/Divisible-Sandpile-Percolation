@@ -52,7 +52,7 @@ theorem euclidean_gaussDensity_mean_eq_map {d : ℕ} (z : Space d)
       (Measure.pi fun i : Fin d => gaussianReal (z i) v).map
         (MeasurableEquiv.toLp 2 (Fin d → ℝ)) := by
   classical
-  haveI (i : Fin d) :
+  have (i : Fin d) :
       IsProbabilityMeasure ((volume : Measure ℝ).withDensity (gaussianPDF (z i) v)) := by
     rw [← gaussianReal_of_var_ne_zero (z i) hv]
     infer_instance

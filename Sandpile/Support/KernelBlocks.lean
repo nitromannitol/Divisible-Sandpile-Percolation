@@ -25,7 +25,7 @@ then equals the finite sum `∑ y ∈ A, h (y - z) * ζ y`, which depends only o
 to `A`. -/
 lemma measurable_finiteKernelField_restrict {d : ℕ} (h : Site d → ℝ) (z : Site d)
     (A : Finset (Site d)) (hA : ∀ y ∉ A, h (y - z) = 0) :
-    Measurable[MeasurableSpace.comap (Set.restrict (A : Set (Site d))) inferInstance]
+    Measurable[MeasurableSpace.comap (domRestrict (A : Set (Site d))) inferInstance]
       (fun ζ : Site d → ℝ => finiteKernelField h ζ z) := by
   have he (ζ : Site d → ℝ) : finiteKernelField h ζ z = ∑ y ∈ A, h (y - z) * ζ y := by
     rw [finiteKernelField_eq_tsum_translated]
@@ -47,11 +47,11 @@ def kernelLowEvent {d : ℕ} (h : Site d → ℝ) (S : Finset (Site d)) (level :
 over `S` of the measurable sets `measurable_finiteKernelField_restrict` produces. -/
 lemma measurableSet_kernelLowEvent_restrict {d : ℕ} (h : Site d → ℝ)
     (S A : Finset (Site d)) (hA : ∀ z ∈ S, ∀ y ∉ A, h (y - z) = 0) (level : ℝ) :
-    MeasurableSet[MeasurableSpace.comap (Set.restrict (A : Set (Site d))) inferInstance]
+    MeasurableSet[MeasurableSpace.comap (domRestrict (A : Set (Site d))) inferInstance]
       (kernelLowEvent h S level) := by
   have he : kernelLowEvent h S level = ⋃ z ∈ S, {ζ | finiteKernelField h ζ z ≤ level} := by
     ext ζ
-    simp only [kernelLowEvent, mem_setOf_eq, mem_iUnion, exists_prop]
+    simp only [kernelLowEvent, mem_ofPred_eq, mem_iUnion, exists_prop]
   rw [he]
   exact MeasurableSet.biUnion S.countable_toSet (fun z hz =>
     measurableSet_le (measurable_finiteKernelField_restrict h z A (hA z hz)) measurable_const)
@@ -71,7 +71,7 @@ lemma kernelLowEvent_inter_eq_prod {d : ℕ} {ι : Type*} (μ : Measure ℝ) [Is
   have he : {ζ | ∀ i ∈ s, ζ ∈ kernelLowEvent h (S i) level}
     = ⋂ i ∈ s, kernelLowEvent h (S i) level := by
     ext ζ
-    simp only [mem_setOf_eq, mem_iInter]
+    simp only [mem_ofPred_eq, mem_iInter]
   rw [he]
   exact hi.meas_biInter
     (fun i _ => measurableSet_kernelLowEvent_restrict h (S i) (A i) (hA i) level)

@@ -167,7 +167,7 @@ finite. -/
 example :
     ConvexOn ℝ (Set.univ : Set ℝ) (meanOvershoot (volume.restrict (Set.Icc (0 : ℝ) 1))) ∧
       Antitone (meanOvershoot (volume.restrict (Set.Icc (0 : ℝ) 1))) := by
-  haveI : IsFiniteMeasure (volume.restrict (Set.Icc (0 : ℝ) 1)) := by
+  have : IsFiniteMeasure (volume.restrict (Set.Icc (0 : ℝ) 1)) := by
     refine ⟨?_⟩
     rw [Measure.restrict_apply_univ, Real.volume_Icc]
     exact ENNReal.ofReal_lt_top
@@ -325,7 +325,7 @@ example :
   have hint : Integrable (fun z : ℝ => max (-z - 0) 0) (Measure.dirac (-4 : ℝ)) :=
     integrable_dirac (by simp)
   have hmem : (-4 : ℝ) ∈ {z : ℝ | (4 : ℝ) - (1 - 0) * 4 / 4 < -z} := by
-    simp only [Set.mem_setOf_eq]
+    simp only [mem_ofPred_eq]
     norm_num
   have hmass : (1 : ℝ) ≤
       ((Measure.dirac (-4 : ℝ)) {z : ℝ | (4 : ℝ) - (1 - 0) * 4 / 4 < -z}).toReal := by

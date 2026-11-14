@@ -70,7 +70,7 @@ theorem ballExcessStep_of_conditional (B : ℝ≥0 → ΩB → Space d) (P : Mea
           (B (min (τ ω) (ballExitTime B u A T ω)) ω) - h (T - (τ ω : ℝ)) (B (τ ω) ω) = 0 := by
     intro ω hω
     have hle : τ ω ≤ ballExitTime B u A T ω := by
-      simpa [Set.mem_setOf_eq, not_lt] using hω
+      simpa [Set.mem_ofPred_eq, not_lt] using hω
     rw [min_eq_left hle]
     ring
   have hEq := setIntegral_eq_integral_of_forall_compl_eq_zero (μ := P) hzero

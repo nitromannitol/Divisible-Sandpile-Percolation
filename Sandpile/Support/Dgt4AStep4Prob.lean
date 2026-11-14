@@ -63,7 +63,7 @@ theorem tendsto_measure_condReflected_nonneg_neg
       atTop (𝓝 0) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set cc : ℝ := Real.sqrt (v : ℝ) with hcc
@@ -121,7 +121,7 @@ theorem tendsto_measure_condReflected_nonneg_neg
   have hset : {r | 0 ≤ X n r}
       = {r | 0 ≤ condReflected d hd cc (condLevel d hd v y n) n r} := by
     ext r
-    simp only [Set.mem_setOf_eq, hXdef]
+    simp only [mem_ofPred_eq, hXdef]
     constructor
     · intro h
       by_contra hcon
@@ -142,15 +142,15 @@ theorem tendsto_measure_condReflected_nonneg
       atTop (𝓝 (if 0 < y then 1 else 0)) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   rcases hy.lt_or_gt with hneg | hpos
-  · rw [if_neg (by linarith)]
+  · rw [ite_eq_right (by linarith)]
     exact tendsto_measure_condReflected_nonneg_neg hGH hd v hv hsq hneg
-  · rw [if_pos hpos]
+  · rw [ite_eq_left hpos]
     have hstrict := tendsto_measure_condReflected_pos hGH hd v hv hsq hy
-    rw [if_pos hpos] at hstrict
+    rw [ite_eq_left hpos] at hstrict
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le hstrict
       (tendsto_const_nhds : Tendsto (fun _ : ℕ => (1 : ℝ)) atTop (𝓝 1)) (fun n => ?_)
       (fun n => ?_)
@@ -175,7 +175,7 @@ theorem eventually_measure_condReflected_nonneg_le
         ≤ Real.exp (-(2 * |y|)) := by
   set ρ : Measure (Site d → ℝ) :=
     (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ := by
+  have : IsProbabilityMeasure ρ := by
     rw [hρ]
     exact inferInstance
   set S : ℝ := ((fieldVar d v : ℝ≥0) : ℝ) with hSdef
@@ -290,7 +290,7 @@ theorem eventually_measure_condReflected_nonneg_le
     have hset : {r | (∫ r', W r' ∂ρ) + b / 2 ≤ W r}
         = {r | (∫ r', Th r' ∂ρ) + (b / 2) / kap ≤ Th r} := by
       ext r
-      simp only [Set.mem_setOf_eq]
+      simp only [mem_ofPred_eq]
       constructor
       · intro h
         rw [hWmean] at h

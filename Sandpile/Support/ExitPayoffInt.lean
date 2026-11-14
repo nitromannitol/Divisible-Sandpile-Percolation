@@ -37,8 +37,8 @@ theorem integrable_uncurry_exit_payoff (hd : 1 ≤ d) (D : Set (Site d)) (N : �
         (p.2 (stopBeforeExit D N (fun _ => N) p.2)))
       ((LatticeProb.iidLaw d ν).prod (walkLaw d x)) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   have hmeas : AEStronglyMeasurable (fun p : (Site d → ℝ) × (ℕ → Site d) =>
       if p.2 (stopBeforeExit D N (fun _ => N) p.2) ∈ D then 0
       else localizedOdometer (E (p.2 (stopBeforeExit D N (fun _ => N) p.2))) p.1 m
@@ -85,7 +85,7 @@ theorem integrable_uncurry_exit_payoff (hd : 1 ≤ d) (D : Set (Site d)) (N : �
         ≤ ∑ z ∈ boxFinset x N, odometerOf ζ m z := by
     intro ζ X hX
     by_cases hmem : X (stopBeforeExit D N (fun _ => N) X) ∈ D
-    · simp only [if_pos hmem, norm_zero]
+    · simp only [ite_eq_left hmem, norm_zero]
       exact Finset.sum_nonneg fun z _ => odometerOf_nonneg ζ m z
     · have hw := hX (stopBeforeExit D N (fun _ => N) X)
       have hle := stopBeforeExit_le (D := D) (t := N) (τ := fun x => N) (by simp) X
@@ -94,7 +94,7 @@ theorem integrable_uncurry_exit_payoff (hd : 1 ≤ d) (D : Set (Site d)) (N : �
       have hbound := localizedOdometer_le_full hd
         (E (X (stopBeforeExit D N (fun _ => N) X))) ζ m
         (X (stopBeforeExit D N (fun _ => N) X))
-      rw [if_neg hmem, Real.norm_eq_abs,
+      rw [ite_eq_right hmem, Real.norm_eq_abs,
         abs_of_nonneg (localizedOdometer_nonneg hd
           (E (X (stopBeforeExit D N (fun _ => N) X))) ζ m _)]
       exact le_trans hbound

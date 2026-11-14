@@ -247,8 +247,8 @@ theorem measure_crossApprox_ballField_scale
   have hsne : (s : ℝ) ≠ 0 := ne_of_gt hs
   have hσ : (0 : ℝ) < (if d = 2 then (s : ℝ) else Real.sqrt (s : ℝ)) := by
     by_cases h : d = 2
-    · rw [if_pos h]; exact hs
-    · rw [if_neg h]; exact Real.sqrt_pos.mpr hs
+    · rw [ite_eq_left h]; exact hs
+    · rw [ite_eq_right h]; exact Real.sqrt_pos.mpr hs
   have hinv : (0 : ℝ) < ((s⁻¹ : ℚ) : ℝ) := by rw [Rat.cast_inv]; exact inv_pos.mpr hs
   have hchain := crossApprox_smul (ballField d W (s : ℝ)) (a := p) (b := q) i l hinv
   have hfield : (fun (w : Sandpile.Continuum.Space 2) (ω : Ω) =>

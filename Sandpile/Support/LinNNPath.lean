@@ -33,9 +33,9 @@ theorem stepLaw_notUnit_eq_zero :
   have hmem : ∀ i : Fin d, ((0 : Site d) + unit i) ∉ S ∧ ((0 : Site d) - unit i) ∉ S := by
     intro i
     refine ⟨?_, ?_⟩
-    · simp only [hS, Set.mem_setOf_eq, not_not, zero_add]
+    · simp only [hS, Set.mem_ofPred_eq, not_not, zero_add]
       exact ⟨i, Or.inl rfl⟩
-    · simp only [hS, Set.mem_setOf_eq, not_not, zero_sub]
+    · simp only [hS, Set.mem_ofPred_eq, not_not, zero_sub]
       exact ⟨i, Or.inr rfl⟩
   simp only [stepLaw, LatticeProb.instructionLaw, Measure.smul_apply, Measure.coe_finsetSum,
     Finset.sum_apply, Measure.coe_add, Pi.add_apply, Measure.dirac_apply]
@@ -50,7 +50,7 @@ theorem ae_step_mem_units (hd : 1 ≤ d) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d),
       ∀ r : ℕ, ∃ i : Fin d, ξ r = unit i ∨ ξ r = -unit i := by
   classical
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   rw [ae_all_iff]
   intro r
   rw [ae_iff]
@@ -80,7 +80,7 @@ theorem measurableSet_allNN :
           ({X : ℕ → Site d | X (r + 1) = X r + unit i} ∪
             {X : ℕ → Site d | X (r + 1) = X r - unit i}) := by
     ext X
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion, Set.mem_union]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion, Set.mem_union]
   have hadd : ∀ (i : Fin d) (r : ℕ), Measurable fun X : ℕ → Site d => X r + unit i := by
     intro i r
     have hcomp : (fun X : ℕ → Site d => X r + unit i)

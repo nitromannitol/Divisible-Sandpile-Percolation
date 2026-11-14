@@ -107,7 +107,7 @@ theorem exists_step1_law_banded (hd : 3 ≤ d) (l0 : ℝ) (hl0 : 0 < l0)
     isProbabilityMeasure_bandLaw (by linarith) (fun k => (P.weight_pos k).le) hθpos
       hl1pos P.hl1.2 P.level_pos (fun k => Nat.succ_pos k) P.level_tendsto hv
       P.summable_weight (by ring)
-  haveI := hprob
+  have := hprob
   obtain ⟨f, hfpos, hfsm, hfeq⟩ : ∃ f : ℝ → ℝ, (∀ z : ℝ, 0 < f z) ∧ ContDiff ℝ (⊤ : ℕ∞) f ∧
       P.law (fun k => k + 1) mu v
         = (volume : Measure ℝ).withDensity fun z => ENNReal.ofReal (f z) :=
@@ -191,7 +191,7 @@ theorem dgt4_many_limits_assembled (d : ℕ) (hd : 5 ≤ d)
     ⟨c, C, θ0, hc, hC, hθ0, hexp, hgap, htail⟩, hprof, hbp, hbd, hlow, hsub⟩ :=
     exists_step1_law_banded (d := d) hd3 (LatticeProb.greenRatioSup d)
       (greenRatioSup_pos hd3) (LatticeProb.greenRatioSup_lt_one hd3)
-  haveI := hprob
+  have := hprob
   obtain ⟨R, hRmono, hRtop, hR⟩ :=
     exists_uniformContactThresholdsAlong P hd (P.law m mu v) hatom hint hmean hsq hnd hθ0
       hexp hgap hprof hbp hbd hlow hsub
@@ -201,7 +201,7 @@ theorem dgt4_many_limits_assembled (d : ℕ) (hd : 5 ≤ d)
   have hvar0 : 0 < evariance (id : ℝ → ℝ) (P.law m mu v) := by
     rw [← ofReal_variance hLp, hvar]
     simp
-  haveI : NullSingletonClass (P.law m mu v) := ⟨fun z => hatom z⟩
+  have : NullSingletonClass (P.law m mu v) := ⟨fun z => hatom z⟩
   have hvarpos : 0 < variance (id : ℝ → ℝ) (P.law m mu v) := by rw [hvar]; norm_num
   refine ⟨P.law m mu v, hprob, hmean, hvar, hdens, ⟨c, C, θ0, hc, hC, hθ0, hexp, htail⟩,
     manyLStep3Input_of_thresholds d hd hGreen hInter hHeat hLocalCLT hBesov (P.law m mu v)

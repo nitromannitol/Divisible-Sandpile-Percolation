@@ -69,7 +69,7 @@ theorem exists_log_tail_law (P : BandParameters)
   have hw0 : (0 : ℝ) ≤ 1 - ∑' k, P.weight k := by linarith
   have hwtot : (1 - ∑' k, P.weight k) + ∑' k, P.weight k = 1 := by ring
   have hθpos : ∀ k, 0 < P.theta k := fun k => lt_of_lt_of_le one_pos (P.htheta k).1
-  haveI : IsProbabilityMeasure ν :=
+  have : IsProbabilityMeasure ν :=
     isProbabilityMeasure_bandLaw hw0 (fun k => (P.weight_pos k).le) hθpos hl0 hl1
       P.level_pos hm P.level_tendsto hv P.summable_weight hwtot
   -- the exponential moment at rate one half

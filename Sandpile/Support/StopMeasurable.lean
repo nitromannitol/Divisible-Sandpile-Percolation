@@ -69,15 +69,15 @@ theorem Sandpile.Continuum.aemeasurable_stopped_position {Ω : Type*} [Measurabl
   have hcC : ∀ ω, Continuous fun t => C t ω := by
     intro ω
     by_cases hω : ω ∈ S
-    · simpa only [C, Set.piecewise, if_pos hω] using (show Continuous (fun t => B t ω) from hω)
-    · simpa only [C, Set.piecewise, if_neg hω] using
+    · simpa only [C, Set.piecewise, ite_eq_left hω] using (show Continuous (fun t => B t ω) from hω)
+    · simpa only [C, Set.piecewise, ite_eq_right hω] using
         (continuous_const : Continuous fun _ : ℝ≥0 => (0 : Sandpile.Continuum.Space d))
   have hY : NullMeasurable (fun ω => C (τ ω) ω) P :=
     (measurable_uncurry_of_continuous_of_measurable hcC hmC).comp
       (hτ.nullMeasurable.measurable'.prodMk measurable_id)
   refine hY.aemeasurable.congr ?_
   filter_upwards [hc] with ω hω
-  exact if_pos hω
+  exact ite_eq_left hω
 
 
 /-- Each time-slice `B t` of a Brownian motion `IsBrownian d x B P` is almost-everywhere
@@ -157,7 +157,7 @@ theorem Sandpile.Continuum.aemeasurable_stopped_payoff_of_continuousOn
     ⟨⟨sub_nonneg.mpr (hbound ω), sub_le_self _ (τ ω).coe_nonneg⟩, Set.mem_univ _⟩
   have heq : (fun ω => -H (T - (τ ω : ℝ), Y ω)) = fun ω => -h (T - τ ω) (Y ω) := by
     funext ω
-    simp only [H, Set.piecewise, if_pos (hmem ω)]
+    simp only [H, Set.piecewise, ite_eq_left (hmem ω)]
   exact heq ▸ (hm.comp_aemeasurable hp).neg
 
 

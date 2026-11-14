@@ -238,8 +238,8 @@ lemma rectangle_smooth_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLattice
         ((n + 1 : ℝ) * (Real.log Q.card + Real.log 2) + 2 * Real.log Q.card) / β := by
   classical
   obtain ⟨hleft, hright⟩ := rectangle_boundaries_nonempty hQ hN
-  letI : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
-  letI : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
+  let : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
+  let : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
   let P := rectangleLeft Q × rectangleRight Q
   let f (p : P) := smoothBoundedBottleneck (rectangleGraph Q) β n p.1 p.2
     (rectangle_boundedReach hQ hn p.1 p.2)

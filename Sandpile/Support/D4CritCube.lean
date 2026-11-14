@@ -19,7 +19,7 @@ namespace Sandpile
 /-- The real-radius sup box and the floor-radius sup box are the same set. -/
 theorem eaCube_eq_supBox (x : Site 4) (L : ℝ) : eaCube x L = supBox x L := by
   ext y
-  simp only [Sandpile.eaCube, Sandpile.supBox, Set.mem_setOf_eq]
+  simp only [Sandpile.eaCube, Sandpile.supBox, Set.mem_ofPred_eq]
   constructor
   · intro h i
     have hi := h i

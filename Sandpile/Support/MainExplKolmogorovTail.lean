@@ -47,7 +47,7 @@ theorem measurableSet_exists_lt_abs {k : ℕ} {a b : Fin k → ℝ} (hab : a ≤
       have hev : ∀ᶠ v in nhdsWithin u (Set.Icc a b), L < |X v ω| :=
         hcw.eventually (eventually_gt_nhds hlt)
       have hle : nhdsWithin u E ≤ nhdsWithin u (Set.Icc a b) := nhdsWithin_mono u hEsub
-      haveI hne : (nhdsWithin u E).NeBot := mem_closure_iff_nhdsWithin_neBot.mp (hEdense hu)
+      have hne : (nhdsWithin u E).NeBot := mem_closure_iff_nhdsWithin_neBot.mp (hEdense hu)
       have h1 : ∀ᶠ v in nhdsWithin u E, L < |X v ω| := hev.filter_mono hle
       have h2 : ∀ᶠ v in nhdsWithin u E, v ∈ E := self_mem_nhdsWithin
       obtain ⟨v, hv⟩ := (h1.and h2).exists
@@ -97,7 +97,7 @@ theorem kolmogorov_polynomial_tail (k : ℕ) (a b : Fin k → ℝ) (hab : a ≤ 
   have hc0 : 0 < c := Real.rpow_pos_of_pos hα0 _
   have hcp : c ^ p = α := by
     rw [hcdef, ← Real.rpow_mul hα0.le, one_div, inv_mul_cancel₀ hp.ne', Real.rpow_one]
-  haveI hPc : IsProbabilityMeasure (P[|E]) := cond_isProbabilityMeasure h0
+  have hPc : IsProbabilityMeasure (P[|E]) := cond_isProbabilityMeasure h0
   have hcondle : P[|E] ≤ (P E)⁻¹ • P := by
     refine Measure.le_iff'.2 fun s => ?_
     show ((P E)⁻¹ • P.restrict E) s ≤ ((P E)⁻¹ • P) s

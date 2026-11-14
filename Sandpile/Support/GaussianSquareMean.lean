@@ -47,7 +47,7 @@ lemma exists_gaussian_square_mean_lower_bound (hBall : External.BallGreenBounds)
   obtain ⟨C, hC, hinc⟩ := exists_gaussian_rectangle_increment_bound hBall V
   refine ⟨C, hC, ?_⟩
   intro r L s hr hL hs hcard φ hφ x v hv
-  letI : Nonempty (planeRectangle s s) := (planeRectangle_nonempty s s).to_subtype
+  let : Nonempty (planeRectangle s s) := (planeRectangle_nonempty s s).to_subtype
   have hN : 2 ≤ (planeRectangle s s).card := by
     rw [card_planeRectangle]
     nlinarith

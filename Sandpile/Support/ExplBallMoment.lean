@@ -66,7 +66,7 @@ theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
     · have hn : (0 : ℝ) < (n : ℝ) := by exact_mod_cast h
       have hsub : {ω | (n : ℝ) ≤ R ω} ⊆ {ω | (n : ℝ) / 2 < R ω} := by
         intro ω hω
-        simp only [Set.mem_setOf_eq] at hω ⊢
+        simp only [Set.mem_ofPred_eq] at hω ⊢
         have : (n : ℝ) / 2 < (n : ℝ) := by linarith
         linarith
       have hhalf : 0 < (n : ℝ) / 2 := by linarith
@@ -118,7 +118,7 @@ theorem exists_uniform_pathRadius_moment (d : ℕ) (T : ℝ≥0) (p : ℕ) :
     intro m n hmn
     rw [Function.onFun, Set.disjoint_left]
     intro ω h1 h3
-    simp only [S, Set.mem_setOf_eq] at h1 h3
+    simp only [S, Set.mem_ofPred_eq] at h1 h3
     have hmn1 : m ≤ n := by
       have : (m : ℝ) < (n : ℝ) + 1 := by linarith [h1.1, h3.2]
       have : m < n + 1 := by exact_mod_cast this

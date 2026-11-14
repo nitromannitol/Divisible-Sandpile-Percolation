@@ -130,7 +130,8 @@ theorem integral_centered_mul [NeZero d] (i i' : ℕ) :
   have hii' : Integrable (fun X : ℕ → Site d => survInd i X * survInd i' X) (walkLaw d 0) :=
     integrable_of_bdd ((measurable_survInd i).mul (measurable_survInd i')) (C := 1) fun X => by
       rw [abs_mul, abs_of_nonneg (survInd_nonneg i X), abs_of_nonneg (survInd_nonneg i' X)]
-      exact mul_le_one₀ (survInd_le_one i X) (survInd_nonneg i' X) (survInd_le_one i' X)
+      exact (mul_le_of_le_one_left (survInd_nonneg i' X) (survInd_le_one i X)).trans
+          (survInd_le_one i' X)
   have hpt : ∀ X : ℕ → Site d,
       (survInd i X - escProb d) * (survInd i' X - escProb d)
         = survInd i X * survInd i' X - escProb d * survInd i X - escProb d * survInd i' X

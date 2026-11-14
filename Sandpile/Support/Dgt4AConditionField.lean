@@ -145,7 +145,7 @@ theorem infiniteGreenField_shift_eq (hd : 5 ≤ d) (c : ℝ) {r : Site d → ℝ
   have hex : ∃ L : ℝ, Tendsto (fun n : ℕ => infiniteGreenFieldPartial n
       (fun z => c * (r z + s * (greenUnit d hd : Site d → ℝ) z)) (0 : Site d)) atTop (𝓝 L) :=
     ⟨_, htend⟩
-  rw [infiniteGreenField, dif_pos hex]
+  rw [infiniteGreenField, dite_eq_left hex]
   have huniq := tendsto_nhds_unique (Classical.choose_spec hex) htend
   rw [huniq]
   ring

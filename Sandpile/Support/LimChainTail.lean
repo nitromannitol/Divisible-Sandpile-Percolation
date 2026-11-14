@@ -43,7 +43,6 @@ theorem Sandpile.Support.crossApprox_ae_eq {Ω : Type*} [MeasurableSpace Ω]
     ae_all_iff.mpr fun ch => Sandpile.Support.pathEvent_ae_eq heq l _ _
   filter_upwards [h] with ω hω
   apply propext
-  change (ω ∈ crossApprox X a b i l) ↔ (ω ∈ crossApprox Y a b i l)
   simp only [crossApprox, Set.mem_iUnion]
   exact exists_congr fun ch => iff_of_eq (hω ch)
 
@@ -135,7 +134,7 @@ theorem Sandpile.Support.exists_scaleChainIntersection_representative {Ω : Type
   let E : Set Ω := ⋂ n : ℕ, ⋃ s : {s : ℚ // 0 < s},
     ⋃ _ : (s : ℝ) < ((n : ℝ)+1)⁻¹, F n s
   refine ⟨E, ?_, ?_⟩
-  · letI : MeasurableSpace Ω := m
+  · let : MeasurableSpace Ω := m
     exact MeasurableSet.iInter fun n =>
       MeasurableSet.iUnion fun s => MeasurableSet.iUnion fun _ => hFm n s
   · have hall : ∀ᵐ ω ∂P, ∀ (n : ℕ) (s : {s : ℚ // 0 < s}),
@@ -144,7 +143,6 @@ theorem Sandpile.Support.exists_scaleChainIntersection_representative {Ω : Type
       ae_all_iff.mpr fun n => ae_all_iff.mpr fun s => hFe n s
     filter_upwards [hall] with ω hω
     apply propext
-    change (ω ∈ E) ↔ (ω ∈ ⋂ n, scaleChainEvent d W a b i n)
     simp only [E, Set.mem_iInter, Set.mem_iUnion, scaleChainEvent]
     apply forall_congr'
     intro n
@@ -172,7 +170,7 @@ theorem Sandpile.Support.exists_common_tail_representative {Ω : Type*}
   apply MeasurableSpace.measurableSet_iInf.mpr
   intro n
   rw [← Filter.limsup_nat_add F n]
-  letI : MeasurableSpace Ω := m n
+  let : MeasurableSpace Ω := m n
   exact MeasurableSet.measurableSet_limsup fun k =>
     (hm (Nat.le_add_left n k)) _ (hFm (k + n))
 

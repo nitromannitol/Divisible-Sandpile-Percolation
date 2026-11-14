@@ -160,7 +160,7 @@ lemma walkRay_horizontal {a b v : Site 2} (p : (lattice 2).Walk a b)
       (fun he => hv (he ▸ hx)) (fun he => hv (he ▸ hy)))
   rw [walkEdgeSum_add, walkEdgeSum_coboundary] at he
   have hh : walkRay p v + walkRay p (v - unit (0 : Fin 2)) = 0 := by
-    simpa only [columnBelow, ha, hb, false_and, if_false, zero_add, walkRay] using he
+    simpa only [columnBelow, ha, hb, false_and, ite_false, zero_add, walkRay] using he
   have hc := congrArg (fun z => z + walkRay p (v - unit (0 : Fin 2))) hh
   simpa only [add_assoc, CharTwo.add_self_eq_zero, add_zero, zero_add] using hc
 
@@ -231,7 +231,7 @@ lemma walkRay_above {a b v : Site 2} (p : (lattice 2).Walk a b)
     (fun x y => leftOfCut v x + leftOfCut v y) p
     (fun x hx y hy _ => edgeRay_above (habove x hx) (habove y hy))
   rw [walkEdgeSum_coboundary] at he
-  simpa only [walkRay, leftOfCut, ha, not_le.mpr hb, if_true, if_false, add_zero] using he
+  simpa only [walkRay, leftOfCut, ha, not_le.mpr hb, ite_true, ite_false, add_zero] using he
 
 /-- If `v` avoids the support of `p` and both endpoints avoid `v`'s column, the ray parity at `v`
 agrees with the ray parity at any of the three other corners `u` of the unit cell with `v` as one

@@ -45,7 +45,7 @@ theorem exists_membrane_negative_tail_four (hVS : Sandpile.External.VarianceScal
   refine ⟨α, 4 * g, δ, by dsimp [α]; positivity,
     by dsimp [g]; positivity, by dsimp [δ]; positivity, ?_⟩
   intro ν hprob hmean hvar hexp hK θ hθ hθδ m hlarge
-  haveI := hprob
+  have := hprob
   have hint := integrable_id_of_exp_moment ν θ₀ hθ₀ hexp
   have htail' : q ≤ ν.real (Set.Iic (-a)) := by
     have h := htail ν hprob hmean hvar hexp hK
@@ -115,7 +115,7 @@ theorem exists_membrane_negative_tail_four (hVS : Sandpile.External.VarianceScal
       (fun ζ : Site 4 → ℝ => fun i => ζ (boxEnum 0 m i)) ⁻¹'
         {ξ : Fin N → ℝ | α * θ / 2 * Q < -(∑ i, ℓ i * ξ i)} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, membrane_eq_sum_boxEnum m 0 ζ]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, membrane_eq_sum_boxEnum m 0 ζ]
     rfl
   calc Real.exp (-((4 * g) * θ ^ 2 * Q)) / 16
       ≤ μ.real {ξ : Fin N → ℝ | α * θ / 2 * Q < -(∑ i, ℓ i * ξ i)} := hprob'

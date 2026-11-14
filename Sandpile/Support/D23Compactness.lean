@@ -46,7 +46,7 @@ theorem exists_subseq_variance_of_exp_bound (laws : ℕ → Measure ℝ)
     (integral_nonneg fun z => (Real.exp_pos (θ₀ * |z|)).le).trans (hexp 0)
   have hupper (n : ℕ) : evariance id (laws n) ≤
       ENNReal.ofReal ((4 / θ₀ ^ 2) * K₀) := by
-    letI := hprob n
+    let := hprob n
     exact evariance_le_of_exp_moment hθ₀ (hmean n) (hint n) (hexp n)
   have hlo (n : ℕ) : ν₀ ^ 2 ≤ variance id (laws n) := by
     have hfin : evariance id (laws n) ≠ ⊤ :=
@@ -91,7 +91,7 @@ theorem d23BlockCrossing_of_convergent_variance
     (fun n => hint (φ n)) (fun n => hexp (φ n)) hvlo
     ((sq_pos_of_pos hν₀).trans_le hvlo) hvhi hv
   intro n
-  letI := hprob (φ n)
+  let := hprob (φ n)
   simpa only [measure_bad_block_d23_eq_origin d hd] using hbad (φ n)
 
 end Sandpile

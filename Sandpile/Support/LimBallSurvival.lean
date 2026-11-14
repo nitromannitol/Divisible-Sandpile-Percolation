@@ -130,7 +130,7 @@ theorem Sandpile.Support.ae_ball_exitTime_lt_top {Ω : Type*} [MeasurableSpace �
       {ω | (T : ℝ≥0∞) < LatticeProb.exitTime B u A ω} := by
     intro ω hω
     have he : LatticeProb.exitTime B u A ω = ⊤ := by
-      simpa only [Set.mem_setOf_eq, lt_top_iff_ne_top, not_not] using hω
-    simpa only [Set.mem_setOf_eq, he] using ENNReal.coe_lt_top (r := T)
+      simpa only [mem_ofPred_eq, lt_top_iff_ne_top, not_not] using hω
+    simpa only [mem_ofPred_eq, he] using ENNReal.coe_lt_top (r := T)
   exact (measure_mono hsub).trans (by simpa using hle)
 

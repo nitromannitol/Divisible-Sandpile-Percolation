@@ -78,7 +78,7 @@ theorem Sandpile.Continuum.heat_field_coupling_of_version
                   (Sandpile.scenery d p.1) q.1 q.2 - Z q.1 q.2 p.2|}
           ≤ ENNReal.ofReal δ := by
   classical
-  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  let : CompactSpace K := isCompact_iff_compactSpace.mp hK
   set f : ℝ → (Sandpile.Site d → ℝ) → K → ℝ := fun R σ q =>
     Sandpile.Frozen.HeatPotentialInvariance.linInterp d R (Sandpile.scenery d σ) q.1.1 q.1.2
     with hfdef
@@ -130,7 +130,7 @@ theorem Sandpile.Continuum.heat_field_coupling_of_version
         (Sandpile.scenery d p.1) q.1 q.2 - Z q.1 q.2 p.2|} =
       {p | ∃ q : K, ε < |f R p.1 q - g p.2 q|} := by
     ext p
-    simp only [mem_setOf_eq, Subtype.exists, hfdef, hgdef]
+    simp only [mem_ofPred_eq, Subtype.exists, hfdef, hgdef]
     constructor <;> rintro ⟨q, hq, hv⟩ <;> exact ⟨q, hq, hv⟩
   rw [he]
   exact hbad
@@ -176,7 +176,6 @@ theorem nullMeasurableSet_exists_strip_lt {Ω : Type*} [MeasurableSpace Ω]
       measurableSet_lt measurable_const (hmeas q (hEsub hq)).measurable_mk.abs
     refine NullMeasurableSet.congr hset.nullMeasurableSet ?_
     filter_upwards [(hmeas q (hEsub hq)).ae_eq_mk] with ω hω
-    change (L q < |(hmeas q (hEsub hq)).mk (Z q.1 q.2) ω|) = (L q < |Z q.1 q.2 ω|)
     rw [hω]
   refine NullMeasurableSet.congr (NullMeasurableSet.biUnion hEc hlev) ?_
   filter_upwards [hcont] with ω hω
@@ -199,7 +198,7 @@ theorem nullMeasurableSet_exists_strip_lt {Ω : Type*} [MeasurableSpace Ω]
       have hle : nhdsWithin q E ≤ nhdsWithin q
           (Set.Icc (0 : ℝ) T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) :=
         nhdsWithin_mono q hEsub
-      haveI hne : (nhdsWithin q E).NeBot :=
+      have hne : (nhdsWithin q E).NeBot :=
         mem_closure_iff_nhdsWithin_neBot.mp (hEdense hq)
       have h1 : ∀ᶠ v in nhdsWithin q E, 0 < |Z v.1 v.2 ω| - L v := hev.filter_mono hle
       have h2 : ∀ᶠ v in nhdsWithin q E, v ∈ E := self_mem_nhdsWithin
@@ -251,7 +250,7 @@ theorem exists_deterministic_growth_of_version {Ω : Type*} [MeasurableSpace Ω]
   have hnull : P (⋂ n, Ev n) = 0 := by
     refine measure_mono_null ?_ (ae_iff.mp hgrow)
     intro ω hω
-    simp only [Set.mem_iInter, hEv, Set.mem_setOf_eq] at hω
+    simp only [Set.mem_iInter, hEv, mem_ofPred_eq] at hω
     intro hgood
     obtain ⟨C, k, hCk⟩ := hgood
     obtain ⟨n, hn⟩ := exists_nat_gt (max C (max k 1))

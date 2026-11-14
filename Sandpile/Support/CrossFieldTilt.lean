@@ -64,7 +64,7 @@ theorem closedCrossEvent_congr_rect {Ω : Type*} [MeasurableSpace Ω]
       exact ch.2.1 (Set.mem_biUnion (Finset.mem_range.mpr hj)
         ⟨(q : ℝ), ⟨by exact_mod_cast hq0, by exact_mod_cast hq1⟩, rfl⟩)
     ext ω
-    simp only [pathEvent, Set.mem_setOf_eq]
+    simp only [pathEvent, mem_ofPred_eq]
     constructor
     · intro hh j q hj hq0 hq1
       have := hh j q hj hq0 hq1
@@ -83,7 +83,7 @@ theorem closedCrossEvent_add_const {Ω : Type*} [MeasurableSpace Ω]
       pathEvent (fun u ω => X u ω + m) l' n v = pathEvent X (l' - m) n v := by
     intro l' n v
     ext ω
-    simp only [pathEvent, Set.mem_setOf_eq]
+    simp only [pathEvent, mem_ofPred_eq]
     constructor
     · intro hh j q hj hq0 hq1
       have := hh j q hj hq0 hq1

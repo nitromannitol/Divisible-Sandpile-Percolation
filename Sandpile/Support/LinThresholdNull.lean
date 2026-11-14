@@ -83,7 +83,7 @@ theorem nullMeasurableSet_threshold_of (hd : 5 ≤ d) (v : ℝ≥0)
   have hset : {σ : Site d → ℝ | b < J σ x}
       = {σ : Site d → ℝ | b < -infiniteGreenField (scenery d σ) x} := by
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   rw [hset]
   exact nullMeasurableSet_threshold_gauss hd v x b
 
@@ -95,7 +95,7 @@ theorem symmDiff_survival_threshold (t : ℕ) (x : Site d) (b : ℝ)
       = symmDiff {σ : Site d → ℝ | odometer σ t x = 0} {σ : Site d → ℝ | b < J σ x} := by
   have h1 : {σ : Site d → ℝ | 0 < odometer σ t x} = {σ : Site d → ℝ | odometer σ t x = 0}ᶜ := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff]
     constructor
     · intro h hc
       rw [hc] at h
@@ -104,7 +104,7 @@ theorem symmDiff_survival_threshold (t : ℕ) (x : Site d) (b : ℝ)
       exact lt_of_le_of_ne (odometer_nonneg σ t x) (Ne.symm h)
   have h2 : {σ : Site d → ℝ | J σ x ≤ b} = {σ : Site d → ℝ | b < J σ x}ᶜ := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, not_lt]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, not_lt]
   rw [h1, h2, compl_symmDiff_compl]
 
 end Sandpile

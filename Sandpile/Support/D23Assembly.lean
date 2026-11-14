@@ -49,7 +49,7 @@ theorem d23_critical_level_percolation_of_block_crossing
   refine ⟨c / (2 * (4 * Tm) ^ ((4 - (d : ℝ)) / 4)), by positivity,
     ⌈4 * Tm * ((R₀ : ℝ) + 1) ^ 2⌉₊, ?_⟩
   intro ν hν hmean hvar hexpint hexp t ht
-  haveI := hν
+  have := hν
   have hR₀R : (1 : ℝ) ≤ (R₀ : ℝ) := by exact_mod_cast hR₀
   have htceil : 4 * Tm * ((R₀ : ℝ) + 1) ^ 2 ≤ (t : ℝ) :=
     le_trans (Nat.le_ceil _) (by exact_mod_cast ht)

@@ -37,7 +37,7 @@ theorem Sandpile.Continuum.exists_isBrownian_cont (d : ℕ) :
       (∀ (y : Sandpile.Continuum.Space d) (ω : Ω), Continuous fun s => B y s ω) ∧
       (∀ (y : Sandpile.Continuum.Space d) (t : ℝ≥0), StronglyMeasurable (B y t)) := by
   obtain ⟨Ω₀, mΩ₀, P₀, C, hCm, hC, hCcont⟩ := LatticeProb.exists_isBrownianReal_cont
-  haveI : IsProbabilityMeasure P₀ := hC.isGaussianProcess.isProbabilityMeasure
+  have : IsProbabilityMeasure P₀ := hC.isGaussianProcess.isProbabilityMeasure
   refine ⟨Fin d → Ω₀, inferInstance, MeasureTheory.Measure.pi fun _ => P₀, inferInstance,
     fun x => LatticeProb.dimBrownian d C x, fun x => ?_, ?_, ?_⟩
   · refine ⟨?_, ?_, ?_⟩

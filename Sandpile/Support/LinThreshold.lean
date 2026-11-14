@@ -130,11 +130,11 @@ theorem iInter_lastVisit_eq {α β : Type*} [DecidableEq α] (j : ℕ) (X : ℕ 
       = ⋂ r ∈ lastVisitTimes j X, {w : β | J w (X r) ≤ b r} := by
   apply Set.Subset.antisymm
   · intro w hw
-    simp only [Set.mem_iInter, Set.mem_setOf_eq] at hw ⊢
+    simp only [Set.mem_iInter, Set.mem_ofPred_eq] at hw ⊢
     intro r hr
     exact hw r (Finset.mem_filter.mp hr).1
   · intro w hw
-    simp only [Set.mem_iInter, Set.mem_setOf_eq] at hw ⊢
+    simp only [Set.mem_iInter, Set.mem_ofPred_eq] at hw ⊢
     intro r hr
     have hrj : r ≤ j := by
       have := Finset.mem_range.mp hr
@@ -172,7 +172,7 @@ theorem abs_measureReal_iInter_sub_le {alpha iota : Type*} [MeasurableSpace alph
 theorem setOf_forall_le_eq_iInter {alpha : Type*} (j : ℕ) (P : ℕ → alpha → Prop) :
     {w : alpha | ∀ r ≤ j, P r w} = ⋂ r ∈ Finset.range (j + 1), {w : alpha | P r w} := by
   ext w
-  simp only [Set.mem_setOf_eq, Set.mem_iInter, Finset.mem_range]
+  simp only [Set.mem_ofPred_eq, Set.mem_iInter, Finset.mem_range]
   constructor
   · intro h r hr
     exact h r (by omega)

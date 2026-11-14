@@ -32,7 +32,7 @@ theorem tendstoInMeasure_zero_of_second_moment {Ω ι : Type*} [MeasurableSpace 
   filter_upwards [hi] with n hn
   have hset : {ω | ε ≤ ‖F n ω - 0‖} = {ω | ε ^ 2 ≤ F n ω ^ 2} := by
     ext ω
-    simp only [Set.mem_setOf_eq, sub_zero, Real.norm_eq_abs]
+    simp only [Set.mem_ofPred_eq, sub_zero, Real.norm_eq_abs]
     exact (sq_le_sq₀ hε.le (abs_nonneg _)).symm.trans (by rw [sq_abs])
   rw [hset, le_div_iff₀ (sq_pos_of_pos hε), mul_comm]
   exact mul_meas_ge_le_integral_of_nonneg (Eventually.of_forall fun ω => sq_nonneg _) hn _
@@ -66,12 +66,14 @@ theorem tendsto_second_moment_add_zero {Ω ι : Type*} [MeasurableSpace Ω]
     apply squeeze_zero_norm' _ (by simpa using hFlim.sqrt.mul hGlim.sqrt)
     filter_upwards [hF, hG] with n hnF hnG
     rw [Real.norm_eq_abs]
-    exact LatticeProb.abs_integral_mul_le hnF.aestronglyMeasurable hnG.aestronglyMeasurable hnF.integrable_sq hnG.integrable_sq
+    exact LatticeProb.abs_integral_mul_le hnF.aestronglyMeasurable hnG.aestronglyMeasurable
+        hnF.integrable_sq hnG.integrable_sq
   have hsum := (hFlim.add (hcross.const_mul 2)).add hGlim
   have he : (fun n => (∫ ω, F n ω ^ 2 ∂μ) + 2 * (∫ ω, F n ω * G n ω ∂μ) +
       ∫ ω, G n ω ^ 2 ∂μ) =ᶠ[l] (fun n => ∫ ω, (F n ω + G n ω) ^ 2 ∂μ) := by
     filter_upwards [hF, hG] with n hnF hnG
-    exact (integral_sq_add hnF.aestronglyMeasurable hnG.aestronglyMeasurable hnF.integrable_sq hnG.integrable_sq).symm
+    exact (integral_sq_add hnF.aestronglyMeasurable hnG.aestronglyMeasurable hnF.integrable_sq
+        hnG.integrable_sq).symm
   simpa using hsum.congr' he
 
 end Sandpile

@@ -46,7 +46,7 @@ theorem sqNorm_add_unit (x : Site d) (i : Fin d) :
       · exact absurd rfl h2
     · have : (x + unit i) j = x j := by
         simp [unit, Pi.single_eq_of_ne h]
-      rw [this, if_neg h, add_zero]
+      rw [this, ite_eq_right h, add_zero]
   rw [sqNorm, sqNorm, Finset.sum_congr rfl fun j _ => hterm j, Finset.sum_add_distrib,
     Finset.sum_ite_eq' Finset.univ i (fun _ => 2 * ((x i : ℤ) : ℝ) + 1)]
   simp
@@ -70,7 +70,7 @@ theorem sqNorm_sub_unit (x : Site d) (i : Fin d) :
       · exact absurd rfl h2
     · have : (x - unit i) j = x j := by
         simp [unit, Pi.single_eq_of_ne h]
-      rw [this, if_neg h, add_zero]
+      rw [this, ite_eq_right h, add_zero]
   rw [sqNorm, sqNorm, Finset.sum_congr rfl fun j _ => hterm j, Finset.sum_add_distrib,
     Finset.sum_ite_eq' Finset.univ i (fun _ => -(2 * ((x i : ℤ) : ℝ)) + 1)]
   simp
@@ -101,7 +101,7 @@ theorem sq_boxDist_le_sqNorm (x : Site d) :
       simp [boxDist]
     rw [this]
     simp [sqNorm]
-  · haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
+  · have : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
     obtain ⟨i, -, hi⟩ := Finset.exists_mem_eq_sup (Finset.univ : Finset (Fin d))
       Finset.univ_nonempty (fun i : Fin d => ((0 : Site d) i - x i).natAbs)
     have hb : boxDist (0 : Site d) x = (x i).natAbs := by

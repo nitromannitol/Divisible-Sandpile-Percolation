@@ -227,14 +227,14 @@ theorem sum_range_pairs (f : ℕ → ℝ) (k : ℕ) :
   rcases Nat.even_or_odd k with hk | hk
   · have hmod : k % 2 = 0 := Nat.even_iff.mp hk
     have hk2 : k = 2 * (k / 2) := by omega
-    rw [if_neg (by omega : ¬ k % 2 = 1), add_zero]
+    rw [ite_eq_right (by omega : ¬ k % 2 = 1), add_zero]
     calc ∑ b ∈ Finset.range k, f b
         = ∑ b ∈ Finset.range (2 * (k / 2)), f b := by rw [← hk2]
       _ = ∑ j ∈ Finset.range (k / 2), (f (2 * j) + f (2 * j + 1)) := sum_range_two_mul f (k / 2)
   · have hmod : k % 2 = 1 := Nat.odd_iff.mp hk
     have hk2 : k = 2 * (k / 2) + 1 := by omega
     have hlast : 2 * (k / 2) = k - 1 := by omega
-    rw [if_pos hmod]
+    rw [ite_eq_left hmod]
     calc ∑ b ∈ Finset.range k, f b
         = ∑ b ∈ Finset.range (2 * (k / 2) + 1), f b := by rw [← hk2]
       _ = (∑ b ∈ Finset.range (2 * (k / 2)), f b) + f (2 * (k / 2)) := Finset.sum_range_succ _ _

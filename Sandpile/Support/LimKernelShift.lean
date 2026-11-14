@@ -45,14 +45,14 @@ theorem centredKernel_eq_radialProfile {d : ℕ} {s : ℝ} {y : Space d} (hy : y
   have hpos : (0 : ℝ) < ‖y‖ := norm_pos_iff.mpr hy
   unfold centredKernel radialProfile
   by_cases hlt : ‖y‖ < s
-  · rw [if_pos hlt, min_eq_left hlt.le]
-  · rw [if_neg hlt, min_eq_right (not_lt.mp hlt)]
+  · rw [ite_eq_left hlt, min_eq_left hlt.le]
+  · rw [ite_eq_right hlt, min_eq_right (not_lt.mp hlt)]
     by_cases hd2 : d = 2
-    · rw [if_pos hd2]
+    · rw [ite_eq_left hd2]
       rcases eq_or_ne s 0 with rfl | hs0
       · norm_num
       · rw [div_self hs0, Real.log_one, mul_zero]
-    · rw [if_neg hd2]
+    · rw [ite_eq_right hd2]
       ring
 
 /-- `|log b - log a| ≤ |a - b| / min a b`, from `log x ≤ x - 1` applied to the ratio of
@@ -103,7 +103,7 @@ theorem abs_radialProfile_sub_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s a b : ℝ}
   have hmin : 0 < min a b := lt_min ha hb
   rcases hd with rfl | rfl
   · unfold radialProfile profileLipConst
-    rw [if_pos rfl, if_pos rfl, if_pos rfl]
+    rw [ite_eq_left rfl, ite_eq_left rfl, ite_eq_left rfl]
     have hc : (0 : ℝ) < 1 / (2 * Real.pi) := by positivity
     have hkey : |Real.log (s / a) - Real.log (s / b)| ≤ |a - b| / min a b ^ (2 - 1) := by
       rcases eq_or_ne s 0 with rfl | hs0
@@ -121,7 +121,7 @@ theorem abs_radialProfile_sub_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s a b : ℝ}
           mul_le_mul_of_nonneg_left hkey hc.le
       _ = 1 / (2 * Real.pi) * |a - b| / min a b ^ (2 - 1) := by ring
   · unfold radialProfile profileLipConst
-    rw [if_neg (by norm_num), if_neg (by norm_num), if_neg (by norm_num)]
+    rw [ite_eq_right (by norm_num), ite_eq_right (by norm_num), ite_eq_right (by norm_num)]
     have hc : (0 : ℝ) < 1 / (4 * Real.pi) := by positivity
     have hkey : |(1 / a - 1 / s) - (1 / b - 1 / s)| ≤ |a - b| / min a b ^ (3 - 1) := by
       have hsub : (1 / a - 1 / s) - (1 / b - 1 / s) = 1 / a - 1 / b := by ring
@@ -270,7 +270,7 @@ theorem setIntegral_le_split {α : Type*} [MeasurableSpace α] {μ : Measure α}
           field_simp
         nlinarith [mul_pos (inv_pos.mpr hMpos) hKpos]
       linarith
-  haveI : IsFiniteMeasure (μ.restrict A) := by
+  have : IsFiniteMeasure (μ.restrict A) := by
     refine ⟨?_⟩
     rw [Measure.restrict_apply_univ]
     exact lt_of_le_of_ne le_top hAfin
@@ -313,7 +313,7 @@ theorem ae_centredKernel_nonneg {d : ℕ} (hd : d = 2 ∨ d = 3) (s : ℝ) (w : 
   have hae : ∀ᵐ y : Space d ∂(volume : Measure (Space d)), y - w ≠ 0 := by
     rw [ae_iff]
     refine measure_mono_null (fun y hy => ?_) hnull
-    simp only [Set.mem_setOf_eq, not_not, sub_eq_zero] at hy
+    simp only [Set.mem_ofPred_eq, not_not, sub_eq_zero] at hy
     simp [hy]
   filter_upwards [hae] with y hy
   exact centredKernel_nonneg_pos hy
@@ -325,7 +325,7 @@ theorem integral_abs_centredKernel_shift_le {d : ℕ} (hd : d = 2 ∨ d = 3) {s 
       ≤ kernelShiftL1Const d s * ‖w‖ := by
   have hd1 : 1 ≤ d := by rcases hd with rfl | rfl <;> norm_num
   have hd2 : 2 ≤ d := by rcases hd with rfl | rfl <;> norm_num
-  haveI : Nontrivial (Space d) := by
+  have : Nontrivial (Space d) := by
     rcases hd with rfl | rfl <;> infer_instance
   rcases eq_or_lt_of_le (norm_nonneg w) with hw0 | hw0
   · have hwz : w = 0 := norm_eq_zero.mp hw0.symm

@@ -71,7 +71,7 @@ theorem measure_not_blockGood_block_le (ν : Measure ℝ) [IsProbabilityMeasure 
       exact not_lt.mp (hc2' v hv)
     · intro v hv
       exact not_lt.mp (hc3' v hv)
-    · simpa only [hA1, Set.mem_setOf_eq, not_not] using hc1
+    · simpa only [hA1, Set.mem_ofPred_eq, not_not] using hc1
   refine (measure_mono hsub).trans ?_
   refine (measure_union_le _ _).trans ?_
   refine add_le_add h1 ((measure_union_le _ _).trans (add_le_add ?_ ?_))

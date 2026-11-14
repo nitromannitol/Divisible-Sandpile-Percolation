@@ -27,7 +27,7 @@ theorem sq_setIntegral_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (A
   set m : ℝ := ∫ z, f z ∂ν with hm
   set S : ℝ := ∫ z, f z ^ 2 ∂ν with hS
   set V : ℝ := μ.real A with hV
-  haveI : IsFiniteMeasure ν := ⟨by
+  have : IsFiniteMeasure ν := ⟨by
     rw [hν, Measure.restrict_apply_univ]; exact lt_top_iff_ne_top.mpr hA⟩
   have hVint : ∫ _z, (1 : ℝ) ∂ν = V := by
     rw [integral_const, smul_eq_mul, mul_one, hν, hV, measureReal_def,

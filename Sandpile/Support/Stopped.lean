@@ -132,7 +132,7 @@ theorem integral_increment_zero (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ
         (membrane ζ (t - n - 1) (walkPath x ξ (n + 1))
           - avg (membrane ζ (t - n - 1)) (walkPath x ξ n))
       ∂(Measure.infinitePi fun _ : ℕ => stepLaw d) = 0 := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   set P : Measure (ℕ → Site d) := Measure.infinitePi fun _ : ℕ => stepLaw d with hP
   set V := membrane ζ (t - n - 1) with hVdef
   set s := boxFinset x (n + 2) with hsdef
@@ -214,7 +214,7 @@ theorem integral_stopped_membrane (hd : 1 ≤ d) (x : Site d) (ζ : Site d → �
     ∫ ξ, (sceneryPartialSum ζ (τ (walkPath x ξ)) (walkPath x ξ)
         + membrane ζ (t - τ (walkPath x ξ)) (walkPath x ξ (τ (walkPath x ξ))))
       ∂(Measure.infinitePi fun _ : ℕ => stepLaw d) = membrane ζ t x := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hpt : ∀ ξ : ℕ → Site d,
       sceneryPartialSum ζ (τ (walkPath x ξ)) (walkPath x ξ)
           + membrane ζ (t - τ (walkPath x ξ)) (walkPath x ξ (τ (walkPath x ξ)))
@@ -392,7 +392,7 @@ theorem integrable_stoppedScenery (hd : 1 ≤ d) (x : Site d) (ζ : Site d → �
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun ξ => sceneryPartialSum ζ (τ (walkPath x ξ)) (walkPath x ξ))
       (Measure.infinitePi fun _ : ℕ => stepLaw d) := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hm : Measurable ((fun X : ℕ → Site d => sceneryPartialSum ζ (τ X) X) ∘ walkPath x) :=
     (measurable_stoppedScenery t ζ hτ hτt).comp (measurable_walkPath x)
   refine (integrable_const (t * sceneryBound x t ζ)).mono' hm.aestronglyMeasurable ?_
@@ -406,7 +406,7 @@ theorem integrable_stoppedMembrane (hd : 1 ≤ d) (x : Site d) (ζ : Site d → 
     Integrable
       (fun ξ => membrane ζ (t - τ (walkPath x ξ)) (walkPath x ξ (τ (walkPath x ξ))))
       (Measure.infinitePi fun _ : ℕ => stepLaw d) := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hm : Measurable
       ((fun X : ℕ → Site d => membrane ζ (t - τ X) (X (τ X))) ∘ walkPath x) :=
     (measurable_stoppedMembrane t ζ hτ hτt).comp (measurable_walkPath x)
@@ -452,7 +452,7 @@ supremum defining the odometer is not a junk value. -/
 theorem abs_integral_stoppedScenery_le (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     |∫ X, sceneryPartialSum ζ (τ X) X ∂(walkLaw d x)| ≤ t * sceneryBound x t ζ := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   rw [integral_walkLaw x (measurable_stoppedScenery t ζ hτ hτt).aestronglyMeasurable]
   have h := norm_integral_le_of_norm_le_const
     (μ := Measure.infinitePi fun _ : ℕ => stepLaw d)

@@ -20,7 +20,7 @@ theorem measureReal_sq_lt_le {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
     μ.real {ω | t < X ω ^ 2} ≤ 2 * Real.exp (-c * t) := by
   have hset : {ω | t < X ω ^ 2} = {ω | Real.sqrt t < |X ω|} := by
     ext ω
-    rw [Set.mem_setOf_eq, Set.mem_setOf_eq, ← Real.sqrt_lt_sqrt_iff ht, Real.sqrt_sq_eq_abs]
+    rw [mem_ofPred_eq, mem_ofPred_eq, ← Real.sqrt_lt_sqrt_iff ht, Real.sqrt_sq_eq_abs]
   rw [hset]
   have hsub : {ω | Real.sqrt t < |X ω|} ⊆ {ω | Real.sqrt t ≤ |X ω|} :=
     fun ω h => by simpa using le_of_lt h

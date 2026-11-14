@@ -120,7 +120,7 @@ theorem indepFun_prefix_step (hd : 1 ≤ d) (n : ℕ) :
     IndepFun (fun ξ : ℕ → Site d => (Finset.range n).restrict ξ)
       (fun ξ : ℕ → Site d => ξ n)
       (Measure.infinitePi fun _ : ℕ => stepLaw d) := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hcoord : iIndepFun (fun (i : ℕ) (ξ : ℕ → Site d) => ξ i)
       (Measure.infinitePi fun _ : ℕ => stepLaw d) :=
     iIndepFun_infinitePi (X := fun (_ : ℕ) (ω : Site d) => ω) fun _ => measurable_id
@@ -140,7 +140,7 @@ theorem integral_prefix_step (hd : 1 ≤ d) (n : ℕ)
         ∂(Measure.infinitePi fun _ : ℕ => stepLaw d)
       = ∫ ξ, (∫ e, Ψ ((Finset.range n).restrict ξ) e ∂(stepLaw d))
         ∂(Measure.infinitePi fun _ : ℕ => stepLaw d) := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   set P : Measure (ℕ → Site d) := Measure.infinitePi fun _ : ℕ => stepLaw d with hP
   have hpre : Measurable fun ξ : ℕ → Site d => (Finset.range n).restrict ξ :=
     Finset.measurable_restrict _
@@ -151,7 +151,7 @@ theorem integral_prefix_step (hd : 1 ≤ d) (n : ℕ)
     (indepFun_prefix_step hd n).map_prod_eq_prod_map_map hpre.aemeasurable hev.aemeasurable
   have heval : P.map (fun ξ : ℕ → Site d => ξ n) = stepLaw d :=
     Measure.infinitePi_map_eval _ n
-  haveI : IsProbabilityMeasure (P.map fun ξ : ℕ → Site d => (Finset.range n).restrict ξ) :=
+  have : IsProbabilityMeasure (P.map fun ξ : ℕ → Site d => (Finset.range n).restrict ξ) :=
     inferInstance
   have hint : Integrable (Function.uncurry Ψ)
       ((P.map fun ξ => (Finset.range n).restrict ξ).prod (stepLaw d)) := by
@@ -195,7 +195,7 @@ theorem walk_one_step (hd : 1 ≤ d) (x : Site d) (n : ℕ)
         ∂(Measure.infinitePi fun _ : ℕ => stepLaw d)
       = ∫ ξ, G ((Finset.range n).restrict ξ) * avg f (walkPath x ξ n)
         ∂(Measure.infinitePi fun _ : ℕ => stepLaw d) := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   have hsucc : ∀ ξ : ℕ → Site d,
       walkPath x ξ (n + 1) = prefixPos x n ((Finset.range n).restrict ξ) + ξ n := by
     intro ξ
@@ -297,12 +297,12 @@ theorem stepLaw_stepSet_compl (d : ℕ) : stepLaw d (stepSet d)ᶜ = 0 := by
 /-- Almost every increment sequence takes its values in the step set. -/
 theorem ae_mem_stepSet (hd : 1 ≤ d) :
     ∀ᵐ ξ ∂(Measure.infinitePi fun _ : ℕ => stepLaw d), ∀ j : ℕ, ξ j ∈ stepSet d := by
-  haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
+  have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd
   rw [ae_iff]
   have hcover : {ξ : ℕ → Site d | ¬ ∀ j : ℕ, ξ j ∈ stepSet d}
       ⊆ ⋃ j : ℕ, {ξ : ℕ → Site d | ξ j ∈ (stepSet d)ᶜ} := by
     intro ξ hξ
-    simp only [Set.mem_setOf_eq, not_forall] at hξ
+    simp only [Set.mem_ofPred_eq, not_forall] at hξ
     obtain ⟨j, hj⟩ := hξ
     exact Set.mem_iUnion.mpr ⟨j, hj⟩
   refine measure_mono_null hcover (measure_iUnion_null fun j => ?_)

@@ -70,19 +70,19 @@ lemma rectangleOpenGridMap_edge {w h : ℕ} (A : Set (planeRectangle w h))
       (gridSite (q : primalGrid (w + 1) h)) := hpq
   by_cases hp : (p : primalGrid (w + 1) h).1 = 0
   · by_cases hq : (q : primalGrid (w + 1) h).1 = 0
-    · simpa only [rectangleOpenGridMap, dif_pos hp, dif_pos hq] using
+    · simpa only [rectangleOpenGridMap, dite_eq_left hp, dite_eq_left hq] using
         (SimpleGraph.Reachable.refl
           (G := boundaryGraph (rectangleOpenGraph A) (rectangleOpenBoundary A)) (.inl false))
-    · simp only [rectangleOpenGridMap, dif_pos hp, dif_neg hq]
+    · simp only [rectangleOpenGridMap, dite_eq_left hp, dite_eq_right hq]
       apply SimpleGraph.Adj.reachable
       change gridRectanglePoint w h q ∈ rectangleLeft (planeRectangle w h)
       exact gridRectanglePoint_mem_left q (grid_adj_column_le_one_of_zero hp hpq')
   · by_cases hq : (q : primalGrid (w + 1) h).1 = 0
-    · simp only [rectangleOpenGridMap, dif_neg hp, dif_pos hq]
+    · simp only [rectangleOpenGridMap, dite_eq_right hp, dite_eq_left hq]
       apply SimpleGraph.Adj.reachable
       change gridRectanglePoint w h p ∈ rectangleLeft (planeRectangle w h)
       exact gridRectanglePoint_mem_left p (grid_adj_column_le_one_of_zero hq hpq'.symm)
-    · simp only [rectangleOpenGridMap, dif_neg hp, dif_neg hq]
+    · simp only [rectangleOpenGridMap, dite_eq_right hp, dite_eq_right hq]
       apply SimpleGraph.Adj.reachable
       change (rectangleGraph (planeRectangle w h)).Adj
         (gridRectanglePoint w h p) (gridRectanglePoint w h q)
@@ -105,7 +105,7 @@ lemma rectangle_open_crossing_of_extended_grid_crossing {w h : ℕ} (A : Set (pl
   obtain ⟨a, b, ha, hb, hab⟩ := hc
   let G := boundaryGraph (rectangleOpenGraph A) (rectangleOpenBoundary A)
   have hstart : G.Reachable (.inl false) (rectangleOpenGridMap A a) := by
-    simp only [rectangleOpenGridMap, dif_pos ha]
+    simp only [rectangleOpenGridMap, dite_eq_left ha]
     exact SimpleGraph.Reachable.refl _
   have hreach : G.Reachable (.inl false) (rectangleOpenGridMap A b) :=
     reachable_preserves_predicate (gridOpenGraph (rectangleExtendedOpen A))
@@ -117,7 +117,7 @@ lemma rectangle_open_crossing_of_extended_grid_crossing {w h : ℕ} (A : Set (pl
     simp only [Fin.val_last, Fin.val_zero] at hh
     omega
   have hend : G.Adj (rectangleOpenGridMap A b) (.inl true) := by
-    simp only [rectangleOpenGridMap, dif_neg hb0]
+    simp only [rectangleOpenGridMap, dite_eq_right hb0]
     change gridRectanglePoint w h b ∈ rectangleRight (planeRectangle w h)
     exact gridRectanglePoint_mem_right (w := w) (h := h) (b : primalGrid (w + 1) h) hb
   obtain ⟨a', ha', b', hb', hr⟩ :=

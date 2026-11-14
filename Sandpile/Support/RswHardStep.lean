@@ -82,7 +82,7 @@ lemma rsw_hard_rectangle_lower (hRSW : External.PlanarRSW)
     exact h2'
   refine ⟨((ψ half : Set.Icc (0 : ℝ) 1) : ℝ), hpos, ?_⟩
   intro r L hr φ hφ x b heasy
-  haveI : IsProbabilityMeasure ((LatticeProb.iidLaw 4 μ).map
+  have : IsProbabilityMeasure ((LatticeProb.iidLaw 4 μ).map
       (fun ζ : Site 4 → ℝ => fun z : Site 2 =>
         finiteKernelField (External.BallGreen.cutField r L φ) ζ (planeTranslate x z))) :=
     isProbabilityMeasure_planar_image μ r L φ x

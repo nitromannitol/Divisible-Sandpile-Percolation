@@ -104,7 +104,7 @@ theorem square_half_crossApprox
     have hset : {u : Sandpile.Continuum.Space 2 | X u ω ≤ η}
         = swapPoint ⁻¹' {u | -η ≤ Z u ω} := by
       ext u
-      simp only [Set.mem_preimage, Set.mem_setOf_eq, hZ]
+      simp only [Set.mem_preimage, mem_ofPred_eq, hZ]
       rw [transpose_toFun_eq_swapPoint, swapPoint_swapPoint]
       constructor <;> intro h' <;> linarith
     rw [hset] at h
@@ -194,7 +194,7 @@ theorem crossingSet_swap {Ω : Type*} (X : Sandpile.Continuum.Space 2 → Ω →
       = {ω | Crosses (fun k => a (swapIdx k)) (fun k => b (swapIdx k)) (swapIdx i)
           {u | l ≤ X u ω}} := by
   ext ω
-  simp only [Set.mem_setOf_eq]
+  simp only [mem_ofPred_eq]
   constructor
   · intro hX
     exact crosses_swap hX

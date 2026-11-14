@@ -52,10 +52,10 @@ theorem norm_ballRetract_le (L : ℝ) (hL : 0 ≤ L) (y : Space d) :
     ‖ballRetract L y‖ ≤ L := by
   unfold ballRetract
   by_cases h : ‖y‖ ≤ L
-  · simpa only [if_pos h]
+  · simpa only [ite_eq_left h]
   · rw [not_le] at h
     have hy0 : (0 : ℝ) < ‖y‖ := lt_of_le_of_lt hL h
-    rw [if_neg (not_le.mpr h), norm_smul, Real.norm_eq_abs,
+    rw [ite_eq_right (not_le.mpr h), norm_smul, Real.norm_eq_abs,
       abs_of_nonneg (div_nonneg hL hy0.le)]
     have heq : L / ‖y‖ * ‖y‖ = L := by field_simp
     exact heq.le
@@ -123,7 +123,7 @@ theorem retractReward_eq_of_mem (T L : ℝ) (hT : 0 ≤ T) (hL : 0 ≤ L)
   have h1 : Set.projIcc 0 T hT t = (⟨t, ht⟩ : Set.Icc (0:ℝ) T) := Set.projIcc_of_mem hT ht
   have h2 : ballRetract L z = z := by
     unfold ballRetract
-    rw [if_pos (by simpa only [Metric.mem_closedBall, dist_zero_right] using hz)]
+    rw [ite_eq_left (by simpa only [Metric.mem_closedBall, dist_zero_right] using hz)]
   have h1' : (Set.projIcc 0 T hT t : ℝ) = t := by
     rw [h1]
   simp only [h1', h2]
@@ -592,9 +592,9 @@ theorem aemeasurable_brownianValue_of_growth
   refine aemeasurable_of_tendsto_metrizable_ae' (f := fun n : ℕ => fun ω =>
       brownianValue B PB (fun t z => Sandpile.Continuum.cutoff ((n : ℝ) + 1) z * Z t z ω) T x)
     (fun n => ?_) ?_
-  · letI : MeasurableSpace
+  · let : MeasurableSpace
         C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) (2 * ((n : ℝ) + 1)), ℝ) := borel _
-    haveI : BorelSpace
+    have : BorelSpace
         C(Set.Icc (0:ℝ) T ×ˢ Metric.closedBall (0 : Space d) (2 * ((n : ℝ) + 1)), ℝ) := ⟨rfl⟩
     exact aemeasurable_brownianValue_cutoff B PB x hB hBmM hBc PW Z T ((n : ℝ) + 1) hT
       (by positivity) hZmeas hZcont

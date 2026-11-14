@@ -51,7 +51,7 @@ theorem integrable_ballKernel_rpow {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (h
       rcases hd with rfl | rfl <;> simp
     rw [ae_iff]
     refine measure_mono_null (fun y hy => ?_) hnull
-    simp only [Set.mem_setOf_eq, not_not, sub_eq_zero] at hy
+    simp only [Set.mem_ofPred_eq, not_not, sub_eq_zero] at hy
     simp [hy.symm]
   filter_upwards [hae] with y hy
   have h0 : 0 ≤ centredKernel d s (planePoint (d := d) u - y) := centredKernel_nonneg_pos hy
@@ -73,7 +73,7 @@ theorem integral_ballKernel_rpow_eq {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} (
       rcases hd with rfl | rfl <;> simp
     rw [ae_iff]
     refine measure_mono_null (fun y hy => ?_) hnull
-    simp only [Set.mem_setOf_eq, not_not, sub_eq_zero] at hy
+    simp only [Set.mem_ofPred_eq, not_not, sub_eq_zero] at hy
     simp [hy.symm]
   have hcongr : (∫ y : Space d, (2 * (d : ℝ) * ballKernel d s u y) ^ ((5 : ℝ) / 2))
       = ∫ y : Space d, (2 * (d : ℝ)) ^ ((5 : ℝ) / 2)

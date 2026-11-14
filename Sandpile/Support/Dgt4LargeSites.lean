@@ -65,7 +65,7 @@ theorem measure_site_threshold_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
   rcases eq_or_lt_of_le hc with hc0 | hcpos
   · have hempty : {y : ℝ | t < -(c * y)} = (∅ : Set ℝ) := by
       ext y
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt, ← hc0,
+      simp only [mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_lt, ← hc0,
         zero_mul, neg_zero]
       linarith
     rw [hempty]
@@ -74,7 +74,7 @@ theorem measure_site_threshold_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
     simp
   · have hIio : {y : ℝ | t < -(c * y)} = Set.Iio (-(t / c)) := by
       ext y
-      simp only [Set.mem_setOf_eq, Set.mem_Iio, ← neg_div, lt_div_iff₀ hcpos]
+      simp only [mem_ofPred_eq, Set.mem_Iio, ← neg_div, lt_div_iff₀ hcpos]
       constructor <;> intro h <;> nlinarith [mul_comm y c]
     rw [hIio]
     have hkey := lowerTail_div_le_moment_mul ν hp hmom hcpos ht
@@ -386,8 +386,8 @@ theorem smallOriginNeighborAverage_of_measure_bound
       by_cases h : ζ ∈ S1
       · exact Or.inl ⟨hζ, h⟩
       · refine Or.inr ?_
-        rw [hS2, Set.mem_setOf_eq]
-        rw [hS1, Set.mem_setOf_eq] at h
+        rw [hS2, mem_ofPred_eq]
+        rw [hS1, mem_ofPred_eq] at h
         omega
     have hmle : (LatticeProb.iidLaw d ν) G
         ≤ ENNReal.ofReal (e n) + (LatticeProb.iidLaw d ν) S2 := by

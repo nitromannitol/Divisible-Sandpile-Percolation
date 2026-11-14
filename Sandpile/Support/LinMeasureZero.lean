@@ -52,7 +52,7 @@ theorem tendsto_toReal_measure_lt_of_tendstoInMeasure {Ω : Type*} [MeasurableSp
     have hne : Z R ω ≠ 0 := by
       intro h0
       simp [h0] at hω
-    simp only [Set.mem_setOf_eq] at hω
+    simp only [Set.mem_ofPred_eq] at hω
     have h1 : ε < |Z R ω| := (ENNReal.ofReal_lt_ofReal_iff (abs_pos.mpr hne)).mp hω
     simpa using h1.le
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hnormR

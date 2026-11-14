@@ -185,7 +185,7 @@ lemma exists_near_far_crossing_reduction (hBall : External.BallGreenBounds)
       intro z hz w hw hd
       exact hh z hz w hw (hd.trans (by nlinarith))
     have hinput : HasStarTopBottomCrossing ϑ r x {z | ballGreenField r ζ z ≤ (level + δ) - δ} := by
-      simpa only [Eball, mem_setOf_eq, add_sub_cancel_right] using hball
+      simpa only [Eball, mem_ofPred_eq, add_sub_cancel_right] using hball
     have hh := star_crossing_field_split (fun z => ballGreenField r ζ z) (H ζ) (N ζ)
       (fun z => ballGreenField_eq_far_add_near r L farCutoff ζ z) hδ
       ((hgap r hr3).2) hdiam hos hinput

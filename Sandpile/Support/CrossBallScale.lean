@@ -45,12 +45,12 @@ theorem ballKernel_smul {d : ℕ} {a : ℝ} (ha : 0 < a) (s : ℝ)
   unfold ballKernel
   rw [hnorm]
   by_cases hlt : ‖(planePoint (d := d) u) - z‖ < s
-  · rw [if_pos (mul_lt_mul_of_pos_left hlt ha), if_pos hlt]
+  · rw [ite_eq_left (mul_lt_mul_of_pos_left hlt ha), ite_eq_left hlt]
     by_cases hd : d = 2
-    · simp only [if_pos hd, one_mul]
+    · simp only [ite_eq_left hd, one_mul]
       congr 2
       exact mul_div_mul_left _ _ (ne_of_gt ha)
-    · simp only [if_neg hd]
+    · simp only [ite_eq_right hd]
       have h1 : (1 : ℝ) / (a * ‖(planePoint (d := d) u) - z‖)
           = (1 / a) * (1 / ‖(planePoint (d := d) u) - z‖) := by
         rw [one_div, one_div, one_div, mul_inv]
@@ -61,6 +61,6 @@ theorem ballKernel_smul {d : ℕ} {a : ℝ} (ha : 0 < a) (s : ℝ)
   · have hge : ¬ (a * ‖(planePoint (d := d) u) - z‖ < a * s) := by
       intro hc
       exact hlt (lt_of_mul_lt_mul_left hc ha.le)
-    rw [if_neg hge, if_neg hlt, mul_zero]
+    rw [ite_eq_right hge, ite_eq_right hlt, mul_zero]
 
 end Sandpile.Frozen.FixedScaleCrossings

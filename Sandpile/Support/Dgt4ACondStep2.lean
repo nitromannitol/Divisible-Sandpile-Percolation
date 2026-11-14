@@ -66,7 +66,7 @@ theorem exists_abs_integral_condTerminal_sub_le
   obtain ⟨C, hC, hlip⟩ := exists_avgIterate_abs_condScenery_deviation_le hGH hd
   refine ⟨C, hC, fun v hsq a s t k hk => ?_⟩
   set ρ : Measure (Site d → ℝ) := (LatticeProb.gaussLaw (Site d)).map (residField d hd) with hρ
-  haveI : IsProbabilityMeasure ρ :=
+  have : IsProbabilityMeasure ρ :=
     inferInstance
   set cc : ℝ := Real.sqrt (v : ℝ) with hcc
   set L : ℝ := C * ‖greenLp d hd (0 : Site d)‖ * (k : ℝ) ^ ((4 - (d : ℝ)) / 4) * |cc| with hL

@@ -72,8 +72,8 @@ theorem abs_killedStoppingSup_sub_le_of_reward (hd : 1 ≤ d) (D : Set (Site d))
       Integrable (fun X => G (τ X) X) (walkLaw d x))
     (hFG : ∀ k : ℕ, k ≤ n → ∀ X : ℕ → Site d, |F k X - G k X| ≤ E) :
     |killedStoppingSup D n x F - killedStoppingSup D n x G| ≤ E := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   refine abs_killedStoppingSup_sub_le D n x F G E hbddF hbddG ?_
   intro τ hτ hτn _
   rw [← integral_sub (hF τ hτ hτn) (hG τ hτ hτn)]

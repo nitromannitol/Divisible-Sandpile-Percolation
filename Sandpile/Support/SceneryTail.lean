@@ -50,7 +50,7 @@ theorem measure_pi_weighted_neg_le {N : ℕ} (ν : Measure ℝ) [IsProbabilityMe
     have hsum : X ξ = -∑ i, ℓ i * ξ i := by
       rw [hX]
       simp only [neg_mul, Finset.sum_neg_distrib]
-    simp only [Set.mem_setOf_eq, hsum]
+    simp only [Set.mem_ofPred_eq, hsum]
     constructor <;> intro h <;> linarith
   have hfac : ∀ ξ : Fin N → ℝ,
       Real.exp (lam * X ξ) = ∏ i : Fin N, Real.exp (-(lam * ℓ i) * ξ i) := by
@@ -99,7 +99,7 @@ theorem iidLaw_greenTime_tail_le (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hpre : {ζ : Site d → ℝ | ∑' y : Site d, greenTime d m 0 y * ζ y ≤ -r}
       = (fun ζ : Site d → ℝ => fun i => ζ (e i)) ⁻¹' {ξ | ∑ i, ℓ i * ξ i ≤ -r} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage]
     rw [tsum_greenTime_mul_eq_sum m 0 ζ,
       ← sum_boxEnum (0 : Site d) m fun z => greenTime d m 0 z * ζ z]
   have hmeasset : MeasurableSet {ξ : Fin (boxFinset (0 : Site d) m).card → ℝ |

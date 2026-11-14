@@ -70,7 +70,7 @@ theorem d23BlockCrossing_of_sequential (d : ℕ) (ν₀ θ₀ K₀ : ℝ) (hθ�
   choose laws hprob hmean hvar hint hexp Rs hRs zs hzs using
     fun n : ℕ => hcon (n + 1) (by omega)
   refine hno Rs laws zs hRs hprob hmean hvar (fun n => ?_) hint hexp hzs
-  haveI := hprob n
+  have := hprob n
   exact evariance_le_of_exp_moment hθ₀ (hmean n) (hint n) (hexp n)
 
 end Sandpile

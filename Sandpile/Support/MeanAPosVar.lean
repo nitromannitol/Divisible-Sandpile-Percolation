@@ -63,7 +63,7 @@ theorem integral_greenTimeBM_sq_pos (hd : 1 ≤ d) (hd3 : d ≤ 3) :
   have hfin : mu Set.univ = 1 := by
     rw [hmu, ← Set.univ_prod_univ, Measure.prod_prod]
     simp
-  haveI : IsProbabilityMeasure mu := ⟨hfin⟩
+  have : IsProbabilityMeasure mu := ⟨hfin⟩
   have hae : ∀ᵐ p : ℝ × ℝ ∂mu, heatKernelBM d 2 0 0 ≤ heatKernelBM d (p.1 + p.2) 0 0 := by
     rw [hrestr]
     filter_upwards [ae_restrict_mem (measurableSet_Ioo.prod measurableSet_Ioo)] with p hp

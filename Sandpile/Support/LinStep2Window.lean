@@ -44,8 +44,8 @@ theorem cast_lastVisit_if (j r : ℕ) (X : ℕ → Site d) (hr : r ∈ Finset.ra
       = Frozen.DGT4LastVisits.lastVisitIndicator r j X := by
   classical
   by_cases h : r ∈ lastVisitTimes j X
-  · rw [if_pos h, lastVisitIndicator_eq_one_of_mem X h, Nat.cast_one]
-  · rw [if_neg h, lastVisitIndicator_eq_zero_of_notMem X hr h, Nat.cast_zero]
+  · rw [ite_eq_left h, lastVisitIndicator_eq_one_of_mem X h, Nat.cast_one]
+  · rw [ite_eq_right h, lastVisitIndicator_eq_zero_of_notMem X hr h, Nat.cast_zero]
 
 /-- The product over `0 ≤ r ≤ j` with the natural last-visit exponent is the product over the
 last-visit times. -/
@@ -59,8 +59,8 @@ theorem prod_pow_lastVisit_if (j : ℕ) (X : ℕ → Site d) (f : ℕ → ℝ) :
       = ∏ r ∈ Finset.range (j + 1), (if r ∈ lastVisitTimes j X then f r else 1) := by
     refine Finset.prod_congr rfl fun r _ => ?_
     by_cases h : r ∈ lastVisitTimes j X
-    · rw [if_pos h, if_pos h, pow_one]
-    · rw [if_neg h, if_neg h, pow_zero]
+    · rw [ite_eq_left h, ite_eq_left h, pow_one]
+    · rw [ite_eq_right h, ite_eq_right h, pow_zero]
   rw [h1, Finset.prod_ite_mem,
     Finset.inter_eq_right.mpr (lastVisitTimes_subset j X)]
 

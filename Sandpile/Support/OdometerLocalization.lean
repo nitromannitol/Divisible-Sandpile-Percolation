@@ -59,7 +59,7 @@ lemma exists_greenTime_outside_box_bounds (hGH : External.GreenBoundsHigh) (hd :
         (∑ y ∈ T.filter (fun y => r < (boxDist y x : ℝ)), greenTime d t x y ^ 2) ≤
           C * r ^ (4 - (d : ℝ))) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨C, hC, htail⟩ := (hGH d hd).1
   have hdR : (5 : ℝ) ≤ d := by exact_mod_cast hd
   refine ⟨C, hC, ?_⟩
@@ -125,7 +125,7 @@ lemma odometer_condExp_tail (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
   obtain ⟨c, hc, hconc⟩ := conditional_finite_concentration (d := d) θ K hθ
   refine ⟨c / C, div_pos hc hC, ?_⟩
   intro ν hν hexp hK S r a hr ha t x hS
-  haveI := hν
+  have := hν
   have hr0 : 0 < r := lt_of_lt_of_le zero_lt_one hr
   have hid := integrable_id_of_exp_moment ν θ hθ hexp
   have hi := integrable_odometerOf d ν hid.pos_part t x
@@ -136,7 +136,7 @@ lemma odometer_condExp_tail (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
     apply Finset.sum_le_sum
     intro z _
     by_cases hz : z ∈ S
-    · simp only [offWeight, hz, if_pos, zero_pow (by decide : 2 ≠ 0)]
+    · simp only [offWeight, hz, ite_eq_left, zero_pow (by decide : 2 ≠ 0)]
       split_ifs <;> positivity
     · have hfar : r < (boxDist z x : ℝ) := lt_of_not_ge (fun h => hz (hS z h))
       simp [offWeight, hz, hfar]
@@ -144,10 +144,10 @@ lemma odometer_condExp_tail (hGH : External.GreenBoundsHigh) (hd : 5 ≤ d)
       C * r ^ (2 - (d : ℝ)) := by
     intro z _
     by_cases hz : z ∈ S
-    · simp only [offWeight, hz, if_pos]
+    · simp only [offWeight, hz, ite_eq_left]
       positivity
     · have hfar : r < (boxDist z x : ℝ) := lt_of_not_ge (fun h => hz (hS z h))
-      simpa only [offWeight, hz, if_neg, not_false_iff] using (hgreen r hr t x).1 z hfar
+      simpa only [offWeight, hz, ite_eq_right, not_false_iff] using (hgreen r hr t x).1 z hfar
   have ht := hconc ν hν hexp hK (boxFinset x t) S (fun ω => odometerOf ω t x)
     (measurable_odometerOf t x) hi
     (fun ξ η h => odometerOf_congr_box t x ξ η (fun z hz => h z (mem_boxFinset hz)))

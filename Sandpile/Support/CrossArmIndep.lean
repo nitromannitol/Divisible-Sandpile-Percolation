@@ -49,7 +49,7 @@ theorem norm_planePoint {d : ℕ} (hd : 2 ≤ d) (w : Sandpile.Continuum.Space 2
   have h2 : ∀ i : Fin 2, ‖w i‖ ^ 2 = F (i : ℕ) := by
     intro i
     simp only [hF]
-    rw [dif_pos i.isLt]
+    rw [dite_eq_left i.isLt]
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   congr 1
   calc ∑ i : Fin d, ‖(planePoint (d := d) w) i‖ ^ 2
@@ -64,7 +64,7 @@ theorem norm_planePoint {d : ℕ} (hd : 2 ≤ d) (w : Sandpile.Continuum.Space 2
         intro k _ hk
         have hk2 : ¬ k < 2 := by simpa using hk
         simp only [hF]
-        rw [dif_neg hk2]
+        rw [dite_eq_right hk2]
     _ = ∑ i : Fin 2, F (i : ℕ) := (Fin.sum_univ_eq_sum_range F 2).symm
     _ = ∑ i : Fin 2, ‖w i‖ ^ 2 := Finset.sum_congr rfl fun i _ => (h2 i).symm
 

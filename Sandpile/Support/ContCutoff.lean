@@ -122,8 +122,8 @@ that agrees with it on `[0, T]`, via `Set.IccExtend`. -/
 theorem exists_continuous_extension {T : ℝ} (hT : (0:ℝ) ≤ T) (q : ℝ → ℝ)
     (hq : ContinuousOn q (Set.Icc 0 T)) :
     ∃ q' : ℝ → ℝ, Continuous q' ∧ (∀ r ∈ Set.Icc (0:ℝ) T, q' r = q r) := by
-  refine ⟨Set.IccExtend hT ((Set.Icc (0:ℝ) T).restrict q), ?_, ?_⟩
-  · exact hq.restrict.Icc_extend'
+  refine ⟨Set.IccExtend hT ((Set.Icc (0:ℝ) T).domRestrict q), ?_, ?_⟩
+  · exact hq.domRestrict.Icc_extend'
   · intro r hr
     rw [Set.IccExtend_of_mem hT _ hr]
     rfl

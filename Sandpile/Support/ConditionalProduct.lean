@@ -30,7 +30,7 @@ coarser than the full product (Borel) σ-algebra on `ι → ℝ`, since each coo
 projection is measurable and comap is monotone in `m`. -/
 theorem productAlg_le {m : MeasurableSpace ℝ} (hm : m ≤ borel ℝ) :
     productAlg (ι := ι) m ≤ @MeasurableSpace.pi ι (fun _ => ℝ) (fun _ => borel ℝ) := by
-  letI : MeasurableSpace ℝ := borel ℝ
+  let : MeasurableSpace ℝ := borel ℝ
   refine iSup_le fun i => ?_
   have hi : Measurable (fun ξ : ι → ℝ => ξ i) := measurable_pi_apply i
   exact (MeasurableSpace.comap_mono hm).trans hi.comap_le
@@ -41,7 +41,7 @@ the identity (when `j = i`) or the constant `ξ j` (when `j ≠ i`), both measur
 theorem measurable_update_productAlg [DecidableEq ι] (m : MeasurableSpace ℝ)
     (ξ : ι → ℝ) (i : ι) :
     Measurable[m, productAlg m] (fun z => Function.update ξ i z) := by
-  letI : MeasurableSpace ℝ := m
+  let : MeasurableSpace ℝ := m
   change Measurable (fun z => Function.update ξ i z)
   refine Measurable.of_eval fun j => ?_
   by_cases hj : j = i
@@ -58,7 +58,7 @@ theorem condExp_infinitePi_coordinate [DecidableEq ι] (ν : Measure ℝ) [IsPro
         (fun _ : ι => ν))[fun ξ => ξ i | productAlg m]
       =ᵐ[Measure.infinitePi (X := fun _ : ι => ℝ) (mX := fun _ => borel ℝ)
           (fun _ : ι => ν)] fun ξ => (ν[id | m]) (ξ i) := by
-  letI : MeasurableSpace ℝ := borel ℝ
+  let : MeasurableSpace ℝ := borel ℝ
   set P := Measure.infinitePi (X := fun _ : ι => ℝ) (mX := fun _ => borel ℝ) (fun _ : ι => ν)
   set g : ℝ → ℝ := ν[id | m]
   have hg : Integrable g ν := integrable_condExp

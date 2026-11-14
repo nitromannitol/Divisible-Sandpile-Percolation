@@ -237,7 +237,7 @@ theorem exists_correlation_gap (hd : 5 ≤ d) :
       have h3 : (∑' z : Site d, green d 0 z * green d u z) ≤ greenSqSum d / 2 := by
         rw [h2]
         exact h1
-      simp only [hu, if_false]
+      simp only [hu, ite_false]
       rw [div_le_iff₀ hgs]
       linarith
   have hltT : ∀ u ∈ Fintype.piFinset (fun _ : Fin d => Finset.Icc (-⌊M⌋) ⌊M⌋),
@@ -245,7 +245,7 @@ theorem exists_correlation_gap (hd : 5 ≤ d) :
     intro u _
     by_cases hu : u = 0
     · simp [hu]
-    · simp only [hu, if_false]
+    · simp only [hu, ite_false]
       exact hlt u hu
   obtain ⟨rho, hrho1, hrhoG⟩ :=
     exists_gap_of_finset
@@ -259,7 +259,7 @@ theorem exists_correlation_gap (hd : 5 ≤ d) :
   intro x y hxy
   have hne : y - x ≠ 0 := sub_ne_zero.mpr (Ne.symm hxy)
   have hval := hrhoG (y - x)
-  simp only [hne, if_false] at hval
+  simp only [hne, ite_false] at hval
   rw [div_le_iff₀ hgs] at hval
   rw [tsum_green_mul_shift x y]
   exact hval

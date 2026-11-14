@@ -62,11 +62,11 @@ theorem crossScale_eq_fieldScale_mul {d : ℕ} (hd : d = 2 ∨ d = 3) {s : ℝ} 
   rcases hd with rfl | rfl
   · show (if (2 : ℕ) = 2 then s ^ 2 else s ^ (3 / 2 : ℝ))
       = (if (2 : ℕ) = 2 then s else Real.sqrt s) * s
-    rw [if_pos rfl, if_pos rfl]
+    rw [ite_eq_left rfl, ite_eq_left rfl]
     ring
   · show (if (3 : ℕ) = 2 then s ^ 2 else s ^ (3 / 2 : ℝ))
       = (if (3 : ℕ) = 2 then s else Real.sqrt s) * s
-    rw [if_neg (by norm_num), if_neg (by norm_num), Real.sqrt_eq_rpow,
+    rw [ite_eq_right (by norm_num), ite_eq_right (by norm_num), Real.sqrt_eq_rpow,
       show (3 / 2 : ℝ) = 1 / 2 + 1 by norm_num, Real.rpow_add hs, Real.rpow_one]
 
 /-- A crossing survives a dilation of the plane by a positive factor. -/

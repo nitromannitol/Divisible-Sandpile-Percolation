@@ -345,7 +345,7 @@ theorem card_nearPairs_le {d : ℕ} (L : ℝ) (hL : 0 ≤ L) (Lam : Finset (Site
         ≤ (Lam.filter (fun y => External.latticeNorm (y - x) ≤ L)).card := by
       refine Finset.card_le_card_of_injOn Prod.snd ?_ ?_
       · intro p hp
-        simp only [Finset.coe_filter, Set.mem_setOf_eq] at hp ⊢
+        simp only [Finset.coe_filter, Set.mem_ofPred_eq] at hp ⊢
         obtain ⟨hp1, hp2⟩ := hp
         rw [Finset.mem_filter] at hp1
         refine ⟨(Finset.mem_product.mp hp1.1).2, ?_⟩
@@ -354,7 +354,7 @@ theorem card_nearPairs_le {d : ℕ} (L : ℝ) (hL : 0 ≤ L) (Lam : Finset (Site
         rw [← hp2]
         exact h2
       · intro p hp q hq hpq
-        simp only [Finset.coe_filter, Set.mem_setOf_eq] at hp hq
+        simp only [Finset.coe_filter, Set.mem_ofPred_eq] at hp hq
         exact Prod.ext (hp.2.trans hq.2.symm) hpq
     have hcnt := card_le_of_latticeNorm_le x L hL
       (Lam.filter (fun y => External.latticeNorm (y - x) ≤ L))

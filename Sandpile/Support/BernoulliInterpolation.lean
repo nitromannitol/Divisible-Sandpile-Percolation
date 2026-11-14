@@ -146,7 +146,8 @@ lemma hasDerivAt_cornerAverage {I : Type*} [Fintype I] [DecidableEq I]
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl (fun i _ => corner_derivative_identity F t i)
   rw [he] at h
-  convert h using 1 <;> rfl
+  convert h using 1
+  rfl
 
 /-- `cornerWeight t s` is nonnegative for `t ∈ [0, 1]`. -/
 lemma cornerWeight_nonneg {I : Type*} [Fintype I] {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)

@@ -29,7 +29,7 @@ noncomputable def testedWeight (d : ℕ) (R L : ℝ) (φ : Space d → ℝ) (x :
 /-- The tested weight vanishes outside the support box `Support.supportBox d R L`. -/
 theorem testedWeight_eq_zero_of_notMem (R L : ℝ) (φ : Space d → ℝ) {x : Site d}
     (hx : x ∉ Sandpile.Support.supportBox d R L) : testedWeight d R L φ x = 0 := by
-  rw [testedWeight, if_neg hx]
+  rw [testedWeight, ite_eq_right hx]
 
 /-- The tested weight is nonnegative when the scale `R` is positive and the test function
 `φ` is nonnegative. -/
@@ -65,7 +65,7 @@ theorem tsum_sq_testedWeight_le {R : ℝ} (hR : 0 < R) (L : ℝ) {φ : Space d �
   have hfin : ∑ x ∈ Sandpile.Support.supportBox d R L, (testedWeight d R L φ x) ^ 2
       = ∑ x ∈ Sandpile.Support.supportBox d R L,
           (R ^ (((d : ℝ) - 4) / 2) * Sandpile.Support.cellMass R φ x) ^ 2 :=
-    Finset.sum_congr rfl fun x hx => by rw [testedWeight, if_pos hx]
+    Finset.sum_congr rfl fun x hx => by rw [testedWeight, ite_eq_left hx]
   rw [hfin]
   refine (sum_sq_scaled_cellMass_le hR hφ _).trans (le_of_eq ?_)
   congr 1

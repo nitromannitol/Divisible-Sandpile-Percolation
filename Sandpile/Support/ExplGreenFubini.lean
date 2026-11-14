@@ -36,7 +36,7 @@ theorem coe_integral_L2_eq_integral_of_integrable {U Ω : Type*} [MeasurableSpac
     (fun ω => (∫ u, F u ∂μ) ω) =ᵐ[P] fun ω => ∫ u, g u ω ∂μ := by
   refine ae_eq_of_forall_setIntegral_eq_of_sigmaFinite
     (fun s hs hPs => ?_) (fun _ _ _ => hg.integral_prod_right.integrableOn) ?_
-  · haveI : IsFiniteMeasure (P.restrict s) := ⟨by simpa using hPs⟩
+  · have : IsFiniteMeasure (P.restrict s) := ⟨by simpa using hPs⟩
     exact ((Lp.memLp (∫ u, F u ∂μ)).mono_measure Measure.restrict_le_self).integrable (by norm_num)
   intro s hs hPs
   let L : Lp ℝ 2 P →L[ℝ] ℝ := innerSL ℝ (indicatorConstLp 2 hs hPs.ne (1 : ℝ))
@@ -65,7 +65,7 @@ theorem integrable_greenTimeBM_and_integral_eq {d : ℕ} (hd : 1 ≤ d) {t : ℝ
     (x : Space d) :
     Integrable (greenTimeBM d t x) volume ∧ (∫ y, greenTimeBM d t x y) = t := by
   let μ : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) t)
-  haveI : IsFiniteMeasure μ := ⟨by rw [Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
+  have : IsFiniteMeasure μ := ⟨by rw [Measure.restrict_apply_univ]; exact measure_Ioo_lt_top⟩
   let F (p : ℝ × Space d) := heatKernelBM d p.1 x p.2
   have hm : Measurable F := by unfold F heatKernelBM; fun_prop
   have hn (u : ℝ) (hu : 0 < u) : (∫ y : Space d, ‖F (u, y)‖) = 1 := by

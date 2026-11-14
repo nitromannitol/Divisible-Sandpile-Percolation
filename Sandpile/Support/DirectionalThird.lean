@@ -78,7 +78,8 @@ lemma hasDerivAt_comp_fieldLine {f : (V → ℝ) → ℝ} (hf : Differentiable �
     HasDerivAt (fun u => f (fieldLine F A u)) (directionalDerivative f A (fieldLine F A x)) x := by
   have h := (hf (fieldLine F A x)).hasFDerivAt.comp_hasDerivAt x (hasDerivAt_fieldLine F A x)
   rw [← directionalDerivative_eq_fderiv] at h
-  convert h using 1 <;> rfl
+  convert h using 1
+  rfl
 
 /-- The derivative function of `x ↦ f (fieldLine F A x)` is `x ↦ directionalDerivative f A
 (fieldLine F A x)`, the pointwise form of `hasDerivAt_comp_fieldLine`. -/

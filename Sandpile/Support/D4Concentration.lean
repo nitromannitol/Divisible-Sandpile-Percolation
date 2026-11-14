@@ -66,7 +66,7 @@ theorem exists_odometerOf_conc_four (hVS : Sandpile.External.VarianceScale)
   intro ν hprob hexpint hexp x t ht2 s hs
   have ht : 1 ≤ t := by omega
   have hlog : 0 < Real.log (t : ℝ) := Real.log_pos (by exact_mod_cast (by omega : 1 < t))
-  haveI := hprob
+  have := hprob
   rcases hs.eq_or_lt with hs0 | hspos
   · -- `s = 0`: the bound is at least one and a probability is at most one
     subst hs0
@@ -101,7 +101,7 @@ theorem exists_odometerOf_conc_four (hVS : Sandpile.External.VarianceScale)
     refine lt_of_lt_of_le (pow_pos (by linarith : (0:ℝ) < ℓ i₀) 2) ?_
     exact Finset.single_le_sum (f := fun i : Fin N => ℓ i ^ 2)
       (fun i _ => sq_nonneg _) (Finset.mem_univ i₀)
-  haveI : Nonempty (Fin N) := ⟨i₀⟩
+  have : Nonempty (Fin N) := ⟨i₀⟩
   have hInfLe : lInfNorm ℓ ≤ M := ciSup_le fun i => hMinf t x _
   have hInfPos : 0 < lInfNorm ℓ := lt_of_lt_of_le (by linarith) (le_lInfNorm ℓ i₀)
   -- the concentration bound in the box coordinates
@@ -125,7 +125,7 @@ theorem exists_odometerOf_conc_four (hVS : Sandpile.External.VarianceScale)
         {ξ | s ≤ |boxOdometer t x ξ -
           ∫ η, boxOdometer t x η ∂(Measure.pi fun _ : Fin N => ν)|} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, hmean, boxOdometer_pick t x ζ]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, hmean, boxOdometer_pick t x ζ]
   -- the exponent comparison
   have hmin : (c₀ / M) * min (s ^ 2 / Real.log t) s
       ≤ c₀ * min (s ^ 2 / lTwoNorm ℓ ^ 2) (s / lInfNorm ℓ) := by
@@ -164,7 +164,7 @@ theorem exists_odometer_conc_four (hVS : Sandpile.External.VarianceScale)
             ENNReal.ofReal (C * Real.exp (-(c * min (s ^ 2 / Real.log t) s))) := by
   obtain ⟨c, C, hc, hC, hconc⟩ := exists_odometerOf_conc_four hVS θ₀ K₀ hθ₀
   refine ⟨c, C, hc, hC, fun ν hprob hexpint hexp x t ht s hs => ?_⟩
-  haveI := hprob
+  have := hprob
   have hd1 : 1 ≤ 4 := by norm_num
   have hmeas : MeasurableSet {ζ : Site 4 → ℝ | s ≤ |odometerOf ζ t x -
       ∫ η, odometerOf η t 0 ∂(LatticeProb.iidLaw 4 ν)|} :=
@@ -173,7 +173,7 @@ theorem exists_odometer_conc_four (hVS : Sandpile.External.VarianceScale)
       = scenery 4 ⁻¹' {ζ : Site 4 → ℝ | s ≤ |odometerOf ζ t x -
           ∫ η, odometerOf η t 0 ∂(LatticeProb.iidLaw 4 ν)|} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, meanOdometer_eq 4 ν hd1 t,
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, meanOdometer_eq 4 ν hd1 t,
       congrFun (odometer_eq_odometerOf σ t) x]
   rw [hpre, centeredMassLaw_scenery_preimage 4 ν hd1 hmeas]
   exact hconc ν hprob hexpint hexp x t ht s hs

@@ -146,10 +146,10 @@ theorem mean_growth_le_three_of_variance_pos
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L) := by
   obtain ⟨ΩW, mW, PW, hPW, W, hW⟩ := Sandpile.Continuum.exists_isWhiteNoise d
   obtain ⟨ΩB, mB, PB, hPB, B, hB, hBc, hBm⟩ := Sandpile.Continuum.exists_isBrownian_cont d
-  letI := mW
-  letI := hPW
-  letI := mB
-  letI := hPB
+  let := mW
+  let := hPW
+  let := mB
+  let := hPB
   obtain ⟨Z, hL2, hnn, hvar, hratio⟩ := h ΩW PW W hW ΩB PB B hB hBc hBm
   exact exists_growth_limit_of_ratio ((4 - (d : ℝ)) / 4) _
     (integral_pos_of_ae_nonneg_of_variance_pos PW _ hL2 hnn hvar) _ hratio

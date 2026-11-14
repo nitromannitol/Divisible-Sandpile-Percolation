@@ -41,7 +41,7 @@ theorem exists_smoothed_difference_tail_four (hVS : Sandpile.External.VarianceSc
   obtain ⟨c₀, C₀, hc₀, hC₀, hconc⟩ := Sandpile.Frozen.weighted_exp_concentration.2.1 θ₀ K₀ hθ₀
   refine ⟨c₀ / (4 * Cw), C₀, div_pos hc₀ (by linarith), hC₀, ?_⟩
   intro ν hprob hmean hexpint hexp n t hn hnt x u hu
-  haveI := hprob
+  have := hprob
   have hint : Integrable id ν := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   have hpos : Integrable (fun z : ℝ => max z 0) ν := by
     refine Integrable.mono' (hexpint.const_mul (1 / θ₀))
@@ -67,7 +67,7 @@ theorem exists_smoothed_difference_tail_four (hVS : Sandpile.External.VarianceSc
   have hi₀pos : 0 < smoothedCoeff 4 n m x (siteEnum s i₀) :=
     lt_of_le_of_ne (smoothedCoeff_nonneg n m x _) (Ne.symm hi₀)
   have hne : ∃ i, ℓ i ≠ 0 := ⟨i₀, by simp [hℓ]; linarith⟩
-  haveI : Nonempty (Fin N) := ⟨i₀⟩
+  have : Nonempty (Fin N) := ⟨i₀⟩
   set L : ℝ := 1 + Real.log (((t : ℝ) + 2) / ((n : ℝ) + 2)) with hL
   have hLpos : 0 < L := by
     have h1 : (1 : ℝ) ≤ ((t : ℝ) + 2) / ((n : ℝ) + 2) := by
@@ -126,8 +126,8 @@ theorem exists_smoothed_difference_tail_four (hVS : Sandpile.External.VarianceSc
         {ξ | u ≤ |diffSmoothed s n m x ξ -
           ∫ η, odometerOf η m 0 ∂(LatticeProb.iidLaw 4 ν)|} := by
     intro ζ hζ
-    simp only [Set.mem_setOf_eq] at hζ
-    simp only [Set.mem_preimage, Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq] at hζ
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq]
     rw [diffSmoothed_pick (subset_refl s) ζ]
     exact hζ.le
   have hmin : (c₀ / (4 * Cw)) * min (u ^ 2 / L) (u * (n : ℝ))

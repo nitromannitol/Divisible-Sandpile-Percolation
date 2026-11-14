@@ -41,14 +41,15 @@ lemma smoothBoundedBottleneck_positiveJet [DecidableEq V] {β : ℝ} (hβ : β �
       (hasPositiveJet_coordinate β a) (hasPositiveJet_coordinate β b)
   | succ n ih =>
     intro a b h
-    letI : Nonempty (walkMidpoints G n a b) := by
+    let : Nonempty (walkMidpoints G n a b) := by
       obtain ⟨c, hc⟩ := walkMidpoints_nonempty G h
       exact ⟨⟨c, hc⟩⟩
     have hm (c : walkMidpoints G n a b) := HasPositiveJet.softMinimum_pair hβ
       (ih a c ((mem_walkMidpoints G n a b c).mp c.property).1)
       (ih c b ((mem_walkMidpoints G n a b c).mp c.property).2)
     have hh := HasPositiveJet.softMaximum hβ hm
-    convert hh using 1 <;> congr 1
+    convert hh using 1
+    congr 1
 
 end FiniteGraph
 
@@ -65,8 +66,8 @@ lemma rectangle_positive_bottleneck_at_depth {Q : Finset (Site 2)} (hQ : IsLatti
         ((n + 1 : ℝ) * (Real.log Q.card + Real.log 2) + 2 * Real.log Q.card) / β := by
   classical
   obtain ⟨hleft, hright⟩ := rectangle_boundaries_nonempty hQ hN
-  letI : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
-  letI : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
+  let : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
+  let : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
   let P := rectangleLeft Q × rectangleRight Q
   let f (p : P) := smoothBoundedBottleneck (rectangleGraph Q) β n p.1 p.2
     (rectangle_boundedReach hQ hn p.1 p.2)

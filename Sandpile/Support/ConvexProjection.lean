@@ -26,9 +26,9 @@ theorem integral_convex_binaryProjection_le {N : ℕ} (ν : Measure ℝ) [IsProb
   classical
   set P := Measure.pi (fun _ : Fin N => ν)
   set m := generateFrom {S}
-  letI : MeasurableSpace ℝ := borel ℝ
+  let : MeasurableSpace ℝ := borel ℝ
   set M := productAlg (ι := Fin N) m
-  letI : MeasurableSpace (Fin N → ℝ) := @MeasurableSpace.pi (Fin N) (fun _ => ℝ) (fun _ => borel ℝ)
+  let : MeasurableSpace (Fin N → ℝ) := @MeasurableSpace.pi (Fin N) (fun _ => ℝ) (fun _ => borel ℝ)
   set g := binaryProjection ν S
   have hm : m ≤ borel ℝ := generateFrom_singleton_le hS
   have hM : M ≤ @MeasurableSpace.pi (Fin N) (fun _ => ℝ) (fun _ => borel ℝ) := productAlg_le hm
@@ -104,7 +104,7 @@ theorem meanOdometerOf_binaryProjection_le {d : ℕ} (ν : Measure ℝ) [IsProba
       ∫ ζ, odometerOf ζ t x ∂(LatticeProb.iidLaw d ν) := by
   set f := binaryProjection ν S
   have hfm : Measurable f := measurable_binaryProjection ν hS
-  haveI : IsProbabilityMeasure (ν.map f) := inferInstance
+  have : IsProbabilityMeasure (ν.map f) := inferInstance
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     hint.abs.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => by
       rw [Real.norm_eq_abs, abs_of_nonneg (le_max_right z 0)]

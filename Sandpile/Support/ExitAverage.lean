@@ -65,7 +65,7 @@ theorem exitAverage_mono (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ) (f g : Site
 term is either `0` or `c`. -/
 theorem exitAverage_const_le (hd : 1 ≤ d) (D : Set (Site d)) (N : ℕ) (x : Site d)
     (c : ℝ) (hc : 0 ≤ c) : exitAverage D N (fun _ => c) x ≤ c := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   classical
   have h := integral_mono (integrable_exitAverage_payoff hd D N (fun _ => c) x)
     (integrable_const c) (fun X => by dsimp only; split_ifs <;> simp_all)

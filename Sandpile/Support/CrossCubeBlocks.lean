@@ -165,10 +165,9 @@ theorem integral_blockIndicator_cmFactor [IsProbabilityMeasure P]
   have hmgf : ∫ ω, Real.exp (a * W (Set.indicator Q (fun _ => (1 : ℝ))) ω) ∂P
       = Real.exp (a ^ 2 / 2) := by
     have h := mgf_gaussianReal (X := W (Set.indicator Q (fun _ => (1 : ℝ)))) (p := P)
-      (μ := 0) (v := 1) ⟨(by first
-        | exact (hW.meas _ (memLp_indicator_const 2 hQm 1 (Or.inr hQvol.ne))).aemeasurable
-        | exact (hW.meas _ (memLp_indicator_const 2 hQm 1 (Or.inr (by simp [hQvol])))).aemeasurable
-        | fun_prop), hmap⟩ a
+      (μ := 0) (v := 1)
+      ⟨(hW.meas _ (memLp_indicator_const 2 hQm 1 (Or.inr (by simp [hQvol])))).aemeasurable,
+        hmap⟩ a
     rw [mgf] at h
     simpa using h
   have hfac : ∀ ω, cmFactor a (fun _ : Unit => W (Set.indicator Q (fun _ => (1 : ℝ)))) () ω

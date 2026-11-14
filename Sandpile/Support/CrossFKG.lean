@@ -82,12 +82,12 @@ theorem upperCylinder_pair {X : Sandpile.Continuum.Space 2 → Ω → ℝ} {A B 
   · intro x y hxy hx
     exact hVup (fun i => hxy _) hx
   · ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_preimage]
+    simp only [mem_ofPred_eq, Set.mem_preimage]
     constructor
     · intro h; convert h using 1; funext i; simp [Fin.append_left]
     · intro h; convert h using 1; funext i; simp [Fin.append_left]
   · ext ω
-    simp only [Set.mem_setOf_eq, Set.mem_preimage]
+    simp only [mem_ofPred_eq, Set.mem_preimage]
     constructor
     · intro h; convert h using 1; funext i; simp [Fin.append_right]
     · intro h; convert h using 1; funext i; simp [Fin.append_right]
@@ -136,16 +136,16 @@ theorem fkg_cylinder_same [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMe
   have e1 : (fun ω => U.indicator (fun _ => (1:ℝ)) (fun i => X (q i) ω))
       = ({ω | (fun i => X (q i) ω) ∈ U}).indicator (1 : Ω → ℝ) := by
     funext ω
-    simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
+    simp only [Set.indicator_apply, mem_ofPred_eq, Pi.one_apply]
   have e2 : (fun ω => V.indicator (fun _ => (1:ℝ)) (fun i => X (q i) ω))
       = ({ω | (fun i => X (q i) ω) ∈ V}).indicator (1 : Ω → ℝ) := by
     funext ω
-    simp only [Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply]
+    simp only [Set.indicator_apply, mem_ofPred_eq, Pi.one_apply]
   have e3 : (fun ω => U.indicator (fun _ => (1:ℝ)) (fun i => X (q i) ω)
         * V.indicator (fun _ => (1:ℝ)) (fun i => X (q i) ω))
       = ({ω | (fun i => X (q i) ω) ∈ U ∩ V}).indicator (1 : Ω → ℝ) := by
     funext ω
-    simp only [Set.indicator_apply, Set.mem_setOf_eq, Set.mem_inter_iff, Pi.one_apply]
+    simp only [Set.indicator_apply, mem_ofPred_eq, Set.mem_inter_iff, Pi.one_apply]
     by_cases hx : (fun i => X (q i) ω) ∈ U <;> by_cases hy : (fun i => X (q i) ω) ∈ V <;>
       simp [hx, hy]
   rw [e1, e2, e3] at key
@@ -572,7 +572,7 @@ theorem upperLimit_pathEvent [MeasurableSpace Ω] {X : Sandpile.Continuum.Space 
   have hrw : pathEvent X l n v = ⋂ p : ℕ × ℚ, {ω | p.1 < n → 0 ≤ p.2 → p.2 ≤ 1 →
       l ≤ X (segPt (v p.1) (v (p.1 + 1)) ((p.2 : ℝ))) ω} := by
     ext ω
-    simp only [pathEvent, Set.mem_setOf_eq, Set.mem_iInter, Prod.forall]
+    simp only [pathEvent, mem_ofPred_eq, Set.mem_iInter, Prod.forall]
   rw [hrw]
   refine upperLimit_iInter_countable _ fun p => ?_
   by_cases h : p.1 < n ∧ 0 ≤ p.2 ∧ p.2 ≤ 1
@@ -586,7 +586,7 @@ theorem upperLimit_pathEvent [MeasurableSpace Ω] {X : Sandpile.Continuum.Space 
   · have he : {ω | p.1 < n → 0 ≤ p.2 → p.2 ≤ 1 →
         l ≤ X (segPt (v p.1) (v (p.1 + 1)) ((p.2 : ℝ))) ω} = (Set.univ : Set Ω) := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      simp only [mem_ofPred_eq, Set.mem_univ, iff_true]
       intro h1 h2 h3
       exact absurd ⟨h1, h2, h3⟩ h
     rw [he]

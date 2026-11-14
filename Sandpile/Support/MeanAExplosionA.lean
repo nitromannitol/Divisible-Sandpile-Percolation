@@ -98,7 +98,7 @@ theorem mean_growth_le_three_wired
     ∃ L : ℝ, 0 < L ∧
       Tendsto (fun t : ℕ => (t : ℝ) ^ (-((4 - (d : ℝ)) / 4)) *
         Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t) atTop (𝓝 L) := by
-  haveI := hprob
+  have := hprob
   refine mean_growth_le_three_of_variance_pos d ν ?_
   intro ΩW _ PW _ W hW ΩB _ PB _ B hB hBc hBm
   obtain ⟨Z, hZL2, hZnn, hVpos, hLpos, hmean0, _⟩ :=

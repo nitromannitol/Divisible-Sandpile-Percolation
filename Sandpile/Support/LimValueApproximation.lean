@@ -28,7 +28,7 @@ theorem Sandpile.Support.ae_eq_of_continuous_versions {Ω X : Type*}
     (heq : ∀ x, F x =ᵐ[P] G x) :
     ∀ᵐ ω ∂P, ∀ x, F x ω = G x ω := by
   obtain ⟨S, hS, hSd⟩ := TopologicalSpace.exists_countable_dense X
-  haveI : Countable S := hS.to_subtype
+  have : Countable S := hS.to_subtype
   have hEq : ∀ᵐ ω ∂P, ∀ x : S, F x ω = G x ω :=
     ae_all_iff.mpr fun x => heq x
   filter_upwards [hF, hG, hEq] with ω hωF hωG hωEq

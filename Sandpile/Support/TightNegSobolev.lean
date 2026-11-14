@@ -30,7 +30,7 @@ theorem tight_congr_ge_one {Ω : Type*} [MeasurableSpace Ω] (d : ℕ) (s : ℝ)
   have hset : {ω | M < Sandpile.Continuum.negSobolevNorm d s D (G R ω)}
       = {ω | M < Sandpile.Continuum.negSobolevNorm d s D (F R ω)} := by
     ext ω
-    rw [Set.mem_setOf_eq, Set.mem_setOf_eq, h R hR ω]
+    rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq, h R hR ω]
   rw [hset]
   exact hMR R hR
 
@@ -95,7 +95,7 @@ theorem tight_sub {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (s : ℝ) (P : Mea
       ⊆ {ω | MF < Sandpile.Continuum.negSobolevNorm d s D (F R ω)} ∪
         {ω | MG < Sandpile.Continuum.negSobolevNorm d s D (G R ω)} := by
     intro ω hω
-    simp only [Set.mem_setOf_eq, Set.mem_union]
+    simp only [Set.mem_ofPred_eq, Set.mem_union]
     by_contra hcon
     push Not at hcon
     have hle := LatticeProb.Sobolev.negSobolevNorm_sub_le s D (F R ω) (G R ω)

@@ -364,7 +364,7 @@ theorem measure_le_mean_sub (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hch := measure_ge_le_exp_mul_mgf (μ := μ) (X := X) r hlam.le hi
   have he : {ξ : Fin M → ℝ | r ≤ X ξ} = {ξ | F ξ ≤ EF - r} := by
     ext ξ
-    simp only [hXdef, Set.mem_setOf_eq]
+    simp only [hXdef, Set.mem_ofPred_eq]
     constructor <;> intro h <;> linarith
   rw [he] at hch
   have hfin : (μ {ξ : Fin M → ℝ | F ξ ≤ EF - r}).toReal

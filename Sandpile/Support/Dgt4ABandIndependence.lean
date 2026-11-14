@@ -29,7 +29,7 @@ theorem symmDiff_gt_eq {α : Type*} (F s t : α → ℝ) :
     symmDiff {a : α | F a > s a} {a : α | F a > t a}
       = {a : α | min (s a) (t a) < F a ∧ F a ≤ max (s a) (t a)} := by
   ext a
-  simp only [Set.mem_symmDiff, mem_setOf_eq, gt_iff_lt, not_lt]
+  simp only [Set.mem_symmDiff, mem_ofPred_eq, gt_iff_lt, not_lt]
   rcases le_total (s a) (t a) with h | h
   · rw [min_eq_left h, max_eq_right h]
     constructor
@@ -185,7 +185,7 @@ theorem measure_symmDiff_threshold_eq_integral_scenery (d : ℕ) (hd : 1 ≤ d) 
           Sandpile.avg (Sandpile.originOdometer (Sandpile.scenery d σ) n) 0}
         {σ | -(Sandpile.scenery d σ 0) > b} := by
     ext σ
-    simp only [Set.mem_preimage, Set.mem_symmDiff, mem_setOf_eq]
+    simp only [Set.mem_preimage, Set.mem_symmDiff, mem_ofPred_eq]
     exact Iff.rfl
   rw [hset] at hpre
   rw [hpre, measure_symmDiff_threshold_eq_integral d hd ν n b]

@@ -53,7 +53,7 @@ lemma gridFaceRepresentative_reachable {m n : ℕ} (K : Set (primalGrid m n))
     (gridBoundaryGraph K).Reachable (gridFaceRepresentative K c) (.inr p) := by
   classical
   have he : ∃ q : K, IsGridCorner c q := ⟨p, hp⟩
-  simp only [gridFaceRepresentative, dif_pos he]
+  simp only [gridFaceRepresentative, dite_eq_left he]
   exact (gridBadGraph_corners_reachable K he.choose p he.choose_spec hp).map (gridBadBoundaryHom K)
 
 /-- Transports each abstract dual vertex (a grid cell, or one of `DualFlux`'s two poles) into

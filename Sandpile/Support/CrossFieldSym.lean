@@ -151,7 +151,7 @@ theorem crossingSet_translate {Ω : Type*} (X : Sandpile.Continuum.Space 2 → �
     {ω | Crosses (fun k => a k + v k) (fun k => b k + v k) i {u | l ≤ X u ω}}
       = {ω | Crosses a b i {u | l ≤ X (u + v) ω}} := by
   ext ω
-  simp only [Set.mem_setOf_eq]
+  simp only [mem_ofPred_eq]
   exact crosses_translate_iff v a b i {u | l ≤ X u ω}
 
 end Sandpile.Support

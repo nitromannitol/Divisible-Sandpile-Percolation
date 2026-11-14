@@ -109,7 +109,7 @@ theorem ballExitEvent_eq (B : ℝ≥0 → ΩB → Space d) (u : Space d) (A T : 
     (hcont : ∀ ω, Continuous fun s => B s ω) :
     ballExitEvent B u A T = {ω : ΩB | ((ballExitTime B u A T ω : ℝ≥0) : ℝ) < T} := by
   ext ω
-  simp only [ballExitEvent, ballExitTime, Set.mem_setOf_eq]
+  simp only [ballExitEvent, ballExitTime, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨s, hs, hA⟩
     have hex : LatticeProb.exitTime B u A ω ≤ ((s : ℝ≥0) : ℝ≥0∞) :=

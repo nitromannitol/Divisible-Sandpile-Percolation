@@ -145,7 +145,7 @@ theorem Sandpile.Support.aestronglyMeasurable_whiteNoise_of_basis {Ω ι : Type*
     (hb : ∀ i, AEStronglyMeasurable[m] (W (fun y => b i y)) P)
     (f : Lp ℝ 2 (volume : Measure (Space d))) :
     AEStronglyMeasurable[m] (W (fun y => f y)) P := by
-  letI : MeasurableSpace Ω := mΩ
+  let : MeasurableSpace Ω := mΩ
   let F := Sandpile.Support.whiteNoiseL2 hW
   let WF : Lp ℝ 2 (volume : Measure (Space d)) → Ω → ℝ := fun f => F f
   have hb' : ∀ i, AEStronglyMeasurable[m] (WF (b i)) P := fun i =>

@@ -40,9 +40,9 @@ theorem sq_sub_le_split {G K M : ℝ} (h0 : 0 ≤ K) (hKG : K ≤ G) (hM : 0 ≤
   have hD0 : 0 ≤ G - K := by linarith
   have hDG : G - K ≤ G := by linarith
   by_cases hc : M < G
-  · rw [if_pos hc]
+  · rw [ite_eq_left hc]
     nlinarith
-  · rw [if_neg hc]
+  · rw [ite_eq_right hc]
     rw [not_lt] at hc
     nlinarith
 
@@ -63,9 +63,9 @@ theorem integral_sq_sub_le {α : Type*} [MeasurableSpace α] {μ : Measure α} {
     have h := sq_sub_le_split hy0 hyG hM
     by_cases hc : M < G y
     · rw [Set.indicator_of_mem (show y ∈ {z | M < G z} from hc)]
-      rwa [if_pos hc] at h
+      rwa [ite_eq_left hc] at h
     · rw [Set.indicator_of_notMem (show y ∉ {z | M < G z} from hc)]
-      rwa [if_neg hc] at h
+      rwa [ite_eq_right hc] at h
   have hDsq : Integrable (fun y => (G y - K y) ^ 2) μ := by
     refine Integrable.mono' hGsq (hDm.pow 2) ?_
     filter_upwards [hK0, hKG] with y hy0 hyG
@@ -107,7 +107,7 @@ theorem exists_setIntegral_gt_sq_lt {α : Type*} [MeasurableSpace α] {μ : Meas
       refine tendsto_const_nhds.congr' ?_
       filter_upwards [eventually_ge_atTop N] with n hn
       refine (Set.indicator_of_notMem (show y ∉ {z | (n : ℝ) < G z} from ?_) _).symm
-      simp only [Set.mem_setOf_eq, not_lt]
+      simp only [Set.mem_ofPred_eq, not_lt]
       exact le_trans hN.le (by exact_mod_cast hn)
   obtain ⟨n, hn⟩ := (hlim.eventually (gt_mem_nhds hε)).exists
   refine ⟨(n : ℝ), Nat.cast_nonneg n, ?_⟩

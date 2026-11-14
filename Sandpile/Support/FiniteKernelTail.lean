@@ -53,8 +53,8 @@ lemma linear_pi_update {N : ℕ} (a x : Fin N → ℝ) (i : Fin N) (y : ℝ) :
       if j = i then a i * (x i - y) else 0 := by
     by_cases hj : j = i
     · subst j; simp [mul_sub]
-    · simp only [Function.update_of_ne hj, if_neg hj, sub_self]
-  simp only [he, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    · simp only [Function.update_of_ne hj, ite_eq_right hj, sub_self]
+  simp only [he, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
 
 /-- The finite linear form `∑ i, a i x i`, for `x` distributed as a product of mean-zero
 `θ`-exponentially integrable coordinates with `∑ a i² ≤ B` and `|a i| ≤ B/H`, obeys the
@@ -72,7 +72,7 @@ lemma exists_finite_linear_tail (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) :
   obtain ⟨c, C, hc, hC, htail⟩ := weighted_tail_of_norm_bounds θ K B hθ hB
   refine ⟨c, C, hc, hC, ?_⟩
   intro N μ hμ hexp hK hmean a hsum H hH hmax t ht
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   have hh := htail N μ hμ hexp hK (fun x => ∑ i, a i * x i) (by fun_prop)
     (fun i => |a i|) (fun i => abs_nonneg _) (fun x i y => by
       rw [linear_pi_update, abs_mul]) (by simpa only [sq_abs] using hsum) H hH hmax t ht
@@ -96,7 +96,7 @@ lemma exists_finite_kernel_tail (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) :
   obtain ⟨c, C, hc, hC, htail⟩ := exists_finite_linear_tail θ K B hθ hB
   refine ⟨c, C, hc, hC, ?_⟩
   intro d μ hμ hexp hK hmean a s hs hsum H hH hmax t ht
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   let A (i : Fin s.card) := a (siteEnum s i)
   have hsum' : (∑ i, A i ^ 2) ≤ B := by
     change (∑ i, a (siteEnum s i) ^ 2) ≤ B
@@ -114,7 +114,7 @@ lemma exists_finite_kernel_tail (θ K B : ℝ) (hθ : 0 < θ) (hB : 0 < B) :
       (fun ζ : Site d → ℝ => fun i => ζ (siteEnum s i)) ⁻¹'
         {x : Fin s.card → ℝ | t < |∑ i, A i * x i|} := by
     ext ζ
-    simp only [mem_preimage, mem_setOf_eq, he]
+    simp only [mem_preimage, mem_ofPred_eq, he]
   rw [hevent, hp]
   exact htail s.card μ hμ hexp hK hmean A hsum' H hH (fun i => hmax _) t ht
 
@@ -166,7 +166,7 @@ lemma exists_far_increment_tail (hBall : External.BallGreenBounds)
   obtain ⟨c, C, hc, hC, htail⟩ := exists_finite_kernel_tail θ K B hθ hB
   refine ⟨c, C, hc, hC, ?_⟩
   intro μ hμ hexp hK hmean r L hr hL φ hφ z w hzw t ht
-  letI : IsProbabilityMeasure μ := hμ
+  let : IsProbabilityMeasure μ := hμ
   let h := External.BallGreen.cutField r L φ
   let k (y : Site 4) := h (y - z) - h (y - w)
   obtain ⟨s, hs⟩ := exists_finiteKernelField_coordinates (boxFinset 0 r)

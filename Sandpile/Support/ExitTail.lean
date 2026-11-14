@@ -24,7 +24,7 @@ namespace Sandpile
 
 /-- The law of the simple random walk from `x` is a probability measure. -/
 theorem walkLaw_univ {d : ℕ} (hd : 1 ≤ d) (x : Site d) : (walkLaw d x) Set.univ = 1 := by
-  haveI : ∀ i : ℕ, IsProbabilityMeasure (stepLaw d) := fun i => by
+  have : ∀ i : ℕ, IsProbabilityMeasure (stepLaw d) := fun i => by
     have h := LatticeProb.instructionLaw_isProbability hd (0 : Site d)
     exact h
   rw [walkLaw, Measure.map_apply (measurable_walkPath x), Set.preimage_univ]
@@ -127,7 +127,7 @@ theorem exists_exit_tail {d : ℕ} (hd : 1 ≤ d) :
       refine Finset.sup_le fun i _ => key _ (by rw [abs_sub_comm]; exact hx i)
     have hset : {X : ℕ → Site d | X n ∈ D} = {X : ℕ → Site d | X n ∈ (boxFinset 0 r)} := by
       ext X
-      simp only [Set.mem_setOf_eq, hDdef]
+      simp only [Set.mem_ofPred_eq, hDdef]
       constructor
       · intro h
         have hx : ∀ i, |X n i - (0 : Site d) i| ≤ r := by simpa using h

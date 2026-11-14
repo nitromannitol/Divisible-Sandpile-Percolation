@@ -85,7 +85,7 @@ theorem ae_infiniteGreenField_eq (hd : 5 ≤ d) (x : Site d) (c : ℝ) :
   have hex : ∃ L : ℝ,
       Tendsto (fun n => infiniteGreenFieldPartial n (fun z => c * ω z) x) atTop (𝓝 L) :=
     ⟨_, htend⟩
-  rw [infiniteGreenField, dif_pos hex]
+  rw [infiniteGreenField, dite_eq_left hex]
   exact tendsto_nhds_unique (Classical.choose_spec hex) htend
 
 /-- The box of radius `n - |y|_∞` around the origin sits inside the box of radius
@@ -155,7 +155,7 @@ theorem ae_infiniteGreenField_shift (hd : 5 ≤ d) (x y : Site d) (c : ℝ) :
   have hex : ∃ L : ℝ,
       Tendsto (fun n => infiniteGreenFieldPartial n (fun z => c * ω (z + y)) x) atTop (𝓝 L) :=
     ⟨_, htend⟩
-  rw [infiniteGreenField, dif_pos hex, hval]
+  rw [infiniteGreenField, dite_eq_left hex, hval]
   exact tendsto_nhds_unique (Classical.choose_spec hex) htend
 
 /-- The i.i.d. Gaussian scenery of variance `v` is the standard Gaussian product

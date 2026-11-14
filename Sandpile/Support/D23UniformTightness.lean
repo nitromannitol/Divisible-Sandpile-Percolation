@@ -118,7 +118,7 @@ theorem heat_potential_tightness_uniform_of_exp_bound
       hp₀0 hq ε hε
     refine ⟨B, ?_⟩
     intro ν hν hmean hexp hK₀ R hR
-    letI := hν
+    let := hν
     have hint := integrable_abs_rpow_of_exp_moment ν θ₀ hθ₀ hexp p₀ hp₀0.le
     refine le_trans (measure_mono ?_)
       (hB (Sandpile.centeredMassLaw d ν) inferInstance (piField d R)
@@ -137,7 +137,7 @@ theorem heat_potential_tightness_uniform_of_exp_bound
       kolmogorovModulusPi_holds (d + 1) (boxLo d L) (boxHi d T L) p₀ (p₀ * β) MM hp₀0 hq ε η hε hη
     refine ⟨δ, hδ0, ?_⟩
     intro ν hν hmean hexp hK₀ R hR
-    letI := hν
+    let := hν
     have hint := integrable_abs_rpow_of_exp_moment ν θ₀ hθ₀ hexp p₀ hp₀0.le
     refine le_trans (measure_mono ?_)
       (hδ (Sandpile.centeredMassLaw d ν) inferInstance (piField d R)

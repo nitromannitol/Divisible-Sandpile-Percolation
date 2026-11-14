@@ -94,7 +94,7 @@ theorem tendstoInDistribution_of_coupling [BorelSpace E]
     intro δ hδ _
     exact le_trans (hstep ε δ hε (by exact_mod_cast hδ))
       (by gcongr; exact le_of_eq (by simp [ENNReal.ofReal_coe_nnreal]))
-  haveI : IsProbabilityMeasure (ν.map Y) :=
+  have : IsProbabilityMeasure (ν.map Y) :=
     inferInstance
   have hlim : Filter.Tendsto (fun ε : ℝ => (ν.map Y) (Metric.cthickening ε F)) (𝓝[>] 0)
       (𝓝 ((ν.map Y) F)) :=

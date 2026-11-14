@@ -53,27 +53,27 @@ theorem exists_nat_chain_of_reachedPt {p : Space 2} (h : reachedPt a b lev bf D 
   refine ⟨k, fun j => if hj : j < k + 1 then (v ⟨j, hj⟩ : Space 2) else p, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro j hj
     dsimp only
-    rw [dif_pos (Nat.lt_succ_of_le hj)]
+    rw [dite_eq_left (Nat.lt_succ_of_le hj)]
     exact (v ⟨j, Nat.lt_succ_of_le hj⟩).2
   · dsimp only
-    rw [dif_pos (Nat.succ_pos k)]
+    rw [dite_eq_left (Nat.succ_pos k)]
     simpa using h0
   · dsimp only
-    rw [dif_pos (Nat.succ_pos k)]
+    rw [dite_eq_left (Nat.succ_pos k)]
     simpa using hr
   · intro j hj
     dsimp only
-    rw [dif_pos (Nat.lt_succ_of_le hj)]
+    rw [dite_eq_left (Nat.lt_succ_of_le hj)]
     exact hD0 ⟨j, Nat.lt_succ_of_le hj⟩
   · intro j hj
     dsimp only
     have h1 : j < k + 1 := Nat.lt_succ_of_lt hj
     have h2 : j + 1 < k + 1 := Nat.succ_lt_succ hj
-    rw [dif_pos h1, dif_pos h2]
+    rw [dite_eq_left h1, dite_eq_left h2]
     have := hs ⟨j, hj⟩
     simpa [Fin.castSucc, Fin.succ, Fin.castAdd, Fin.castLE] using this
   · dsimp only
-    rw [dif_pos (Nat.lt_succ_self k)]
+    rw [dite_eq_left (Nat.lt_succ_self k)]
     simpa [Fin.last] using hlast
 
 omit [MeasurableSpace Ω] in
@@ -90,28 +90,28 @@ theorem reachedPt_step {p p' : Space 2} (h : reachedPt a b lev bf D ω p)
     (hp' : p' ∈ sampPts a b) (hD' : sqOf p' ∈ D) (hstep : stepOK a b lev bf ω p p') :
     reachedPt a b lev bf D ω p' := by
   obtain ⟨k, w, hw, h0, hr, hD, hs, hlast⟩ := exists_nat_chain_of_reachedPt h
-  have hw' : ∀ j ≤ k, (if j ≤ k then w j else p') = w j := fun j hj => if_pos hj
-  have hlast' : (if k + 1 ≤ k then w (k + 1) else p') = p' := if_neg (by omega)
+  have hw' : ∀ j ≤ k, (if j ≤ k then w j else p') = w j := fun j hj => ite_eq_left hj
+  have hlast' : (if k + 1 ≤ k then w (k + 1) else p') = p' := ite_eq_right (by omega)
   have := reachedPt_of_nat (a := a) (b := b) (lev := lev) (bf := bf) (D := D) (ω := ω)
     (k + 1) (fun j => if j ≤ k then w j else p') ?_ ?_ ?_ ?_ ?_
   · rwa [hlast'] at this
   · intro j hj
     by_cases hjk : j ≤ k
-    · rw [if_pos hjk]; exact hw j hjk
-    · rw [if_neg hjk]; exact hp'
+    · rw [ite_eq_left hjk]; exact hw j hjk
+    · rw [ite_eq_right hjk]; exact hp'
   · rw [hw' 0 (Nat.zero_le k)]; exact h0
   · rw [hw' 0 (Nat.zero_le k)]; exact hr
   · intro j hj
     by_cases hjk : j ≤ k
-    · rw [if_pos hjk]; exact hD j hjk
-    · rw [if_neg hjk]; exact hD'
+    · rw [ite_eq_left hjk]; exact hD j hjk
+    · rw [ite_eq_right hjk]; exact hD'
   · intro j hj
     by_cases hjk : j < k
-    · rw [if_pos (le_of_lt hjk), if_pos (by omega : j + 1 ≤ k)]
+    · rw [ite_eq_left (le_of_lt hjk), ite_eq_left (by omega : j + 1 ≤ k)]
       exact hs j hjk
     · have hjk' : j = k := by omega
       subst hjk'
-      rw [if_pos (le_refl j), if_neg (by omega : ¬ j + 1 ≤ j), hlast]
+      rw [ite_eq_left (le_refl j), ite_eq_right (by omega : ¬ j + 1 ≤ j), hlast]
       exact hstep
 
 omit [MeasurableSpace Ω] in
@@ -340,13 +340,13 @@ theorem measurable_truncField (hm : BlockMeasurable d a b G bf) (A : Finset (cel
     Measurable[indepAlg G (↑A : Set (cellIdx d a b))] (truncField d a b lev bf A u) := by
   by_cases hu : sqOf u ∈ doneSq d a b A
   · have hrw : truncField d a b lev bf A u = bf u := by
-      funext ω; rw [truncField, if_pos hu]
+      funext ω; rw [truncField, ite_eq_left hu]
     rw [hrw, mem_doneSq] at *
     have hsub : (↑(blockIdx d a b (sqOf u)) : Set (cellIdx d a b)) ⊆ (↑A : Set (cellIdx d a b)) :=
       fun i hi => Finset.mem_coe.mpr (hu.2 (Finset.mem_coe.mp hi))
     exact (hm (sqOf u) hu.1 u (sqAdj_refl _)).mono (indepAlg_mono G hsub) le_rfl
   · have hrw : truncField d a b lev bf A u = fun _ => lev - 1 := by
-      funext ω; rw [truncField, if_neg hu]
+      funext ω; rw [truncField, ite_eq_right hu]
     rw [hrw]
     exact @measurable_const ℝ Ω inferInstance (indepAlg G _) (lev - 1)
 
@@ -363,8 +363,8 @@ theorem closedCrossEvent_truncField_subset {l : ℝ} (hlev : lev < l)
   have hval := hch j q hj hq0 hq1
   by_cases hsq : sqOf (segPt (chainFun ch.1 j) (chainFun ch.1 (j + 1)) (q : ℝ))
       ∈ doneSq d a b A
-  · rwa [truncField, if_pos hsq] at hval
-  · rw [truncField, if_neg hsq] at hval
+  · rwa [truncField, ite_eq_left hsq] at hval
+  · rw [truncField, ite_eq_right hsq] at hval
     exfalso
     have hpos : (0 : ℝ) < ((n : ℝ) + 1) := by positivity
     have h1 : (1 : ℝ) / ((n : ℝ) + 1) ≤ 1 := by
@@ -410,7 +410,7 @@ theorem closedCrossEvent_subset_truncField {l : ℝ} (hlev : lev < l)
   refine Set.mem_iUnion.mpr ⟨ch, ?_⟩
   intro j q hj hq0 hq1
   have hsq := chain_samples_in_doneSq hstop ch.2 hlevch j hj q hq0 hq1
-  rw [truncField, if_pos hsq]
+  rw [truncField, ite_eq_left hsq]
   exact hch j q hj hq0 hq1
 
 /-- **The exploration of Step 2 decides the crossing.** -/

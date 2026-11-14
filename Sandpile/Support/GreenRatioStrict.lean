@@ -37,7 +37,7 @@ theorem greenRatioSup_lt_one {d : ℕ} (hd : 3 ≤ d) : greenRatioSup d < 1 := b
     have h := srwHitProb_le_one hd0 x
     rw [srwHitProb_eq_green_ratio hd, div_le_one hG0pos] at h
     exact h
-  haveI := nonempty_nonzero_site hd0
+  have := nonempty_nonzero_site hd0
   by_contra hcon
   have hge1 : 1 ≤ greenRatioSup d := not_lt.mp hcon
   -- decay

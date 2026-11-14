@@ -74,7 +74,7 @@ theorem sum_abs_sum_indicator_integral_le (μ : Measure (ℕ → Site d)) [IsPro
         simp only
         have hsum : ∑ z ∈ u, Set.indicator {Y : ℕ → Site d | Y j = z} (fun Y => |f j Y|) X
             = if X j ∈ u then |f j X| else 0 := by
-          simp only [Set.indicator_apply, Set.mem_setOf_eq]
+          simp only [Set.indicator_apply, Set.mem_ofPred_eq]
           exact Finset.sum_ite_eq u (X j) (fun _ => |f j X|)
         rw [hsum]
         split
@@ -137,16 +137,16 @@ theorem indicator_forall_eq_prod (σ : Site d → ℝ) (n j : ℕ) (X : ℕ → 
           (if 0 < odometer σ (n - i) (X i) then (1 : ℝ) else 0) := by
   classical
   rw [Set.indicator_apply]
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   by_cases h : ∀ r ≤ j, 0 < odometer σ (n - r) (X r)
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     refine (Finset.prod_eq_one fun i hi => ?_).symm
-    rw [if_pos (h i (by have := Finset.mem_range.mp hi; omega))]
-  · rw [if_neg h]
+    rw [ite_eq_left (h i (by have := Finset.mem_range.mp hi; omega))]
+  · rw [ite_eq_right h]
     push Not at h
     obtain ⟨r, hr, hr0⟩ := h
     refine (Finset.prod_eq_zero (i := r) (Finset.mem_range.mpr (by omega)) ?_).symm
-    rw [if_neg (by exact not_lt.mpr hr0)]
+    rw [ite_eq_right (by exact not_lt.mpr hr0)]
 
 /-- **`eq:odometer-derivative` in the vocabulary of the survival lemma**
 (`sandpile.tex:5679-5682`): the coordinate derivative of the odometer along a

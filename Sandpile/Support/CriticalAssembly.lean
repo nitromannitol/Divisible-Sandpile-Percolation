@@ -288,7 +288,7 @@ theorem exists_critical_toppling_bound
       calc L ^ (-cexp) = 1 * L ^ (-cexp) := (one_mul _).symm
         _ ≤ C * L ^ (-cexp) := mul_le_mul_of_nonneg_right hCone hLneg.le
     by_cases hd2 : d = 2
-    · rw [if_pos hd2]
+    · rw [ite_eq_left hd2]
       set R : ℝ := Real.log (t : ℝ) ^ ((7 : ℝ) / 4) * (t : ℝ) ^ (-(1 : ℝ) / 2) * L ^ (a / 2)
         with hRdef
       have hR0 : (0 : ℝ) ≤ R := by
@@ -338,7 +338,7 @@ theorem exists_critical_toppling_bound
         _ ≤ C * L ^ (-cexp) + Cbig * R := add_le_add hkappaC (le_trans hkey hstep)
         _ ≤ C * L ^ (-cexp) + C * R :=
             add_le_add le_rfl (mul_le_mul_of_nonneg_right hCbC hR0)
-    · rw [if_neg hd2]
+    · rw [ite_eq_right hd2]
       set R : ℝ := Real.log (t : ℝ) ^ ((3 : ℝ) / 4) * (t : ℝ) ^ (-(1 : ℝ) / 4) * L ^ (a / 4)
         with hRdef
       have hR0 : (0 : ℝ) ≤ R := by

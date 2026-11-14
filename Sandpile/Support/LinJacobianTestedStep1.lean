@@ -38,7 +38,7 @@ noncomputable def testedWeightCut (d : ℕ) (R L : ℝ) (φ : Space d → ℝ) (
 /-- For `R ≥ 1` the cut weight agrees with the uncut tested weight. -/
 theorem testedWeightCut_eq {R : ℝ} (hR : 1 ≤ R) (L : ℝ) (φ : Space d → ℝ) (x : Site d) :
     testedWeightCut d R L φ x = testedWeight d R L φ x := by
-  rw [testedWeightCut, if_pos hR]
+  rw [testedWeightCut, ite_eq_left hR]
 
 /-- The cut weight is nonnegative when the test function `φ` is, at every scale
 `R` (including `R < 1`, where it is zero). -/
@@ -75,7 +75,7 @@ theorem testedWeightCut_eq_scaled {R : ℝ} (hR : 1 ≤ R) (L : ℝ) {φ : Space
   have hnn : 0 ≤ Sandpile.Support.cellMass R φ x := by
     rw [Sandpile.Support.cellMass]
     exact integral_nonneg fun z => hφ z
-  rw [testedWeightCut_eq hR L φ x, testedWeight, if_pos hx, abs_of_nonneg hnn]
+  rw [testedWeightCut_eq hR L φ x, testedWeight, ite_eq_left hx, abs_of_nonneg hnn]
 
 /-- **Step 1 of `lem:dgt4-linearization-from-survival` at the tested weight.**
 The two tested intersection moments, the covariance bound of the lemma and
@@ -119,7 +119,7 @@ theorem tendsto_tsum_variance_testedWeight {l : Filter ℝ} [NeZero d] (hd : 5 �
     fun R hR x hx => testedWeightCut_eq_scaled hR L hφ hx
   have hzero : ∀ R : ℝ, ¬ (1 ≤ R) → ∀ x : Site d, a R x = 0 := by
     intro R hR x
-    simp only [hadef, testedWeightCut, if_neg hR]
+    simp only [hadef, testedWeightCut, ite_eq_right hR]
   refine tendsto_tsum_variance_of_moments (hl := hl) μ (by omega) n
     (fun R => Sandpile.Support.supportBox d R L) a
     (fun R x => testedWeightCut_nonneg R L hφ x)

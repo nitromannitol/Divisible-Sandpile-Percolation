@@ -158,7 +158,7 @@ theorem Sandpile.dlt4_killed_scaling_sequence_of_inputs
   have hkt : Tendsto kseq atTop atTop := tendsto_atTop_mono hk tendsto_id
   have hRt : Tendsto Rseq atTop atTop :=
     tendsto_atTop_mono (fun n => by linarith [hR n]) tendsto_natCast_atTop_atTop
-  haveI : ∀ n, IsProbabilityMeasure (νs (kseq n)) := fun n => hprob (kseq n)
+  have : ∀ n, IsProbabilityMeasure (νs (kseq n)) := fun n => hprob (kseq n)
   have hfdd : ∀ (m : ℕ) (r : Fin m → ℝ) (w : Fin m → Space d),
       (∀ i, r i ∈ Set.Icc (0 : ℝ) T) →
       TendstoInDistribution

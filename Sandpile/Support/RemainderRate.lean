@@ -60,7 +60,7 @@ theorem supOverSd_ne_two (hd : 1 ≤ d) (hd3 : d ≤ 3) (hd2 : d ≠ 2) {N : ℕ
   have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
   interval_cases d
   · have hrate : greenSupRate 1 N = (N : ℝ) ^ ((1 : ℝ) / 2) := by
-      rw [greenSupRate, if_pos rfl, Real.sqrt_eq_rpow]
+      rw [greenSupRate, ite_eq_left rfl, Real.sqrt_eq_rpow]
     rw [supOverSd, hrate]
     norm_num
     rw [← Real.rpow_sub hN0]

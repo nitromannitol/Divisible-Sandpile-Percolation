@@ -126,7 +126,7 @@ theorem d4_ball_green_crossing_of_rsw
           finiteKernelField (External.BallGreen.cutField r ⌊(r : ℝ) ^ α⌋₊ farCutoff) ζ
             (planeTranslate x (w : Site 2))) ≤ -(ε * Real.log r) + 2 * η * Real.log r} := by
       intro ζ hζ
-      simp only [Set.mem_setOf_eq] at hζ ⊢
+      simp only [mem_ofPred_eq] at hζ ⊢
       exact crossingValue_le_of_hasStarTopBottomCrossing (le_trans (zero_le_one) hϑ) r x _ hζ
     have hmono1 := measure_mono (μ := LatticeProb.iidLaw 4 ν) hbridge
     -- the comparison at a := 4ε/5

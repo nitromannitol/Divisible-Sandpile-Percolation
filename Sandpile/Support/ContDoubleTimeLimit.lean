@@ -108,16 +108,16 @@ theorem sum_one_sub_le {k A₁ A₂ : ℕ} (g : ℕ → ℝ) (hg0 : ∀ a, 0 ≤
       ≤ (if a < A₁ then S a else 0) + (if A₂ ≤ a then S a else 0) := by
     intro a _
     by_cases h1 : a < A₁
-    · simp only [h1, if_true]
+    · simp only [h1, ite_true]
       have : (1 - g a) * S a ≤ S a := by nlinarith [hS a, hg0 a]
       by_cases h2 : A₂ ≤ a
-      · simp only [h2, if_true]; nlinarith [hS a]
-      · simp only [h2, if_false]; linarith
+      · simp only [h2, ite_true]; nlinarith [hS a]
+      · simp only [h2, ite_false]; linarith
     · by_cases h2 : A₂ ≤ a
-      · simp only [h1, if_false, h2, if_true, zero_add]
+      · simp only [h1, ite_false, h2, ite_true, zero_add]
         nlinarith [hS a, hg0 a]
       · have hg : g a = 1 := hone a (by omega) (by omega)
-        simp only [h1, if_false, h2, if_false, hg]
+        simp only [h1, ite_false, h2, ite_false, hg]
         norm_num
   refine le_trans (Finset.sum_le_sum hpt) ?_
   rw [Finset.sum_add_distrib]

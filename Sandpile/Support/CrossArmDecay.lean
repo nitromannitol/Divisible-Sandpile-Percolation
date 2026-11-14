@@ -113,7 +113,7 @@ theorem measure_iInter_compl_le {Ω : Type} [MeasurableSpace Ω] (P : Measure Ω
       ENNReal.ofReal_one]
     exact tsub_le_tsub_left (hAc i) 1
   calc ∏ i ∈ Finset.range n, P ((A i)ᶜ)
-      ≤ ∏ _i ∈ Finset.range n, ENNReal.ofReal (1 - c) := Finset.prod_le_prod' hstep
+      ≤ ∏ _i ∈ Finset.range n, ENNReal.ofReal (1 - c) := Finset.prod_le_prod hstep
     _ = ENNReal.ofReal (1 - c) ^ n := by simp
     _ = ENNReal.ofReal ((1 - c) ^ n) := (ENNReal.ofReal_pow (by linarith) n).symm
 

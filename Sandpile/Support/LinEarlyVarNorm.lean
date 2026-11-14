@@ -51,13 +51,13 @@ theorem tsum_norm_covSurvival_le (μ : Measure (Site d → ℝ)) [IsProbabilityM
     intro z hz
     rw [norm_eq_zero]
     refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
-    rw [if_neg (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul, zero_mul]
+    rw [ite_eq_right (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul, zero_mul]
   have hzero2 : ∀ z : Site d, z ∉ t.image X →
       (∑ i ∈ t, ∑ j ∈ t,
         (if X i = z then (1 : ℝ) else 0) * (if Y j = z then (1 : ℝ) else 0)) = 0 := by
     intro z hz
     refine Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_
-    rw [if_neg (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul]
+    rw [ite_eq_right (fun hh => hz (Finset.mem_image.mpr ⟨i, hi, hh⟩)), zero_mul]
   have hsum1 : Summable (fun z : Site d => ‖∑ i ∈ t, ∑ j ∈ t,
       (if X i = z then (1 : ℝ) else 0) * (if Y j = z then (1 : ℝ) else 0) *
         covSurvival μ n i j X Y‖) := by

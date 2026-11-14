@@ -50,7 +50,7 @@ theorem ae_step_walk (hd : 1 ≤ d) (x : Site d) :
         = ⋂ n : ℕ, (fun X : ℕ → Site d => (X n, X (n + 1))) ⁻¹'
             {p : Site d × Site d | ∀ i, ((p.2) i - (p.1) i).natAbs ≤ 1} := by
       ext X
-      simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]
+      simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage]
     rw [hrw]
     refine MeasurableSet.iInter fun n => ?_
     exact ((measurable_pi_apply n).prodMk (measurable_pi_apply (n + 1)))

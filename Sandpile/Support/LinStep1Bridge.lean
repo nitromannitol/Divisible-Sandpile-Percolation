@@ -57,7 +57,7 @@ theorem indep_path_factorization (ν : Measure ℝ) [IsProbabilityMeasure ν]
   have hset : {σ : Site d → ℝ | ∀ i : Fin m, J σ (xs i) ≤ c i}
       = {σ : Site d → ℝ | ∀ x ∈ Finset.image xs Finset.univ, J σ x ≤ b x} := by
     ext σ
-    simp only [Set.mem_setOf_eq, Finset.mem_image, Finset.mem_univ, true_and]
+    simp only [Set.mem_ofPred_eq, Finset.mem_image, Finset.mem_univ, true_and]
     constructor
     · rintro h x ⟨i, rfl⟩
       rw [hbxs i]
@@ -86,7 +86,7 @@ theorem measureReal_threshold_gt_gauss (hd : 5 ≤ d) (v : ℝ≥0) (c : ℝ) :
   have hcompl : {σ : Site d → ℝ | c < -infiniteGreenField (scenery d σ) 0}
       = {σ : Site d → ℝ | -infiniteGreenField (scenery d σ) 0 ≤ c}ᶜ := by
     ext σ
-    simp only [Set.mem_setOf_eq, Set.mem_compl_iff, not_le]
+    simp only [Set.mem_ofPred_eq, Set.mem_compl_iff, not_le]
   have hIoi : (Set.Ioi c) = (Set.Iic c)ᶜ := by
     ext x
     simp only [Set.mem_Ioi, Set.mem_compl_iff, Set.mem_Iic, not_le]
@@ -132,7 +132,7 @@ theorem eventually_gauss_path_factorization_of_field
       = {σ : Site d → ℝ | c i < -infiniteGreenField (scenery d σ) 0} := by
     intro i
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   have hup' : ∀ i, ((gaussianReal 0 (((v : ℝ) * greenSqSum d).toNNReal)).real
       (Set.Ioi (c i))) ≤ K / R ^ 2 := by
     intro i
@@ -147,12 +147,12 @@ theorem eventually_gauss_path_factorization_of_field
   have hset : {σ : Site d → ℝ | ∀ i : Fin m, J σ (xs i) ≤ c i}
       = {σ : Site d → ℝ | ∀ i : Fin m, -infiniteGreenField (scenery d σ) (xs i) ≤ c i} := by
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   have hset0 : ∀ i : Fin m, {σ : Site d → ℝ | J σ 0 ≤ c i}
       = {σ : Site d → ℝ | -infiniteGreenField (scenery d σ) 0 ≤ c i} := by
     intro i
     ext σ
-    simp only [Set.mem_setOf_eq, hJ]
+    simp only [Set.mem_ofPred_eq, hJ]
   rw [hset]
   simp only [hset0]
   simpa only [measureReal_def] using hmain

@@ -123,7 +123,7 @@ theorem lintegral_greenTimeBM_sq_lt_top (hd : 1 ≤ d) (hd3 : d ≤ 3) {t : ℝ}
     ∫⁻ y : Space d, ENNReal.ofReal (greenTimeBM d t x y) ^ 2 < ⊤ := by
   classical
   set ν : Measure ℝ := volume.restrict (Set.Ioo (0 : ℝ) t) with hν
-  haveI : IsFiniteMeasure ν := by
+  have : IsFiniteMeasure ν := by
     constructor
     rw [hν, Measure.restrict_apply_univ]
     exact measure_Ioo_lt_top

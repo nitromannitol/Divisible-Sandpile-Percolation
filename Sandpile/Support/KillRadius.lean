@@ -98,8 +98,8 @@ theorem integrable_stopped_scaledReward (hd : 1 ≤ d) (x : Site d) (n : ℕ) (R
     Integrable (fun X : ℕ → Site d =>
       F (((n : ℕ) - ((τ X : ℕ) : ℝ)) / R ^ 2)
         (Sandpile.External.Lclt.scaledSite R (X (τ X)))) (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
+  have : NeZero d := ⟨by omega⟩
+  have : IsProbabilityMeasure (walkLaw d x) := walkLaw_isProbabilityMeasure d x
   refine (integrable_const M).mono'
     (measurable_stopped_scaledReward n R F hτ hτn).aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall fun X => ?_

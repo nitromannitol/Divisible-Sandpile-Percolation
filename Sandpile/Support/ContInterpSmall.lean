@@ -200,7 +200,7 @@ theorem tendsto_interp_rate_zero (hd : 1 ≤ d) (hd3 : d ≤ 3) {r : ℝ} (hr : 
     · filter_upwards [eventually_ge_atTop (1 : ℝ)] with R hR
       have he : Sandpile.greenSupRate 1 (⌊R ^ 2 * r⌋₊ + 1)
           = Real.sqrt ((⌊R ^ 2 * r⌋₊ : ℝ) + 1) := by
-        rw [Sandpile.greenSupRate, if_pos rfl]
+        rw [Sandpile.greenSupRate, ite_eq_left rfl]
         push_cast
         ring_nf
       rw [he, show ((1 : ℕ) : ℝ) / 2 - 2 = -(3 / 2 : ℝ) by norm_num]
@@ -212,7 +212,7 @@ theorem tendsto_interp_rate_zero (hd : 1 ≤ d) (hd3 : d ≤ 3) {r : ℝ} (hr : 
     · filter_upwards [eventually_ge_atTop (1 : ℝ)] with R hR
       have he : Sandpile.greenSupRate 2 (⌊R ^ 2 * r⌋₊ + 1)
           = 1 + Real.log ((⌊R ^ 2 * r⌋₊ : ℝ) + 1) := by
-        rw [Sandpile.greenSupRate, if_neg (by norm_num), if_pos rfl]
+        rw [Sandpile.greenSupRate, ite_eq_right (by norm_num), ite_eq_left rfl]
         push_cast
         ring_nf
       rw [he, show ((2 : ℕ) : ℝ) / 2 - 2 = -(1 : ℝ) by norm_num]
@@ -228,7 +228,7 @@ theorem tendsto_interp_rate_zero (hd : 1 ≤ d) (hd3 : d ≤ 3) {r : ℝ} (hr : 
         = R ^ (-(1 / 2) : ℝ) := by
       intro R
       rw [show ((3 : ℕ) : ℝ) / 2 - 2 = -(1 / 2 : ℝ) by norm_num, Sandpile.greenSupRate,
-        if_neg (by norm_num), if_neg (by norm_num), mul_one]
+        ite_eq_right (by norm_num), ite_eq_right (by norm_num), mul_one]
     simp only [he]
     exact tendsto_rpow_neg_atTop (by norm_num)
 

@@ -110,7 +110,7 @@ theorem blockEvent_succ {Ω : Type*} (X : ℝ≥0 → Ω → ℝ) (T0 : ℝ≥0)
     blockEvent X T0 A (n + 1)
       = blockEvent X T0 A n ∩ {ω | |X (blockTime T0 (n + 1)) ω| < A} := by
   ext ω
-  simp only [blockEvent, Set.mem_setOf_eq, Set.mem_inter_iff]
+  simp only [blockEvent, Set.mem_ofPred_eq, Set.mem_inter_iff]
   constructor
   · intro h
     exact ⟨fun k => h k.castSucc, h (Fin.last (n + 1))⟩
@@ -140,7 +140,7 @@ theorem measure_blockEvent_succ_le {Ω : Type*} [MeasurableSpace Ω] {X : ℝ≥
   have hprod : P.map (fun ω => (U ω, V ω)) = (P.map U).prod (P.map V) :=
     hind.map_prod_eq_prod_map_map hUmeas hVmeas
   have hSmeas : MeasurableSet {f : Fin (n + 1) → ℝ | ∀ k, |f k| < A} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     exact MeasurableSet.iInter (fun k =>
       measurableSet_lt ((continuous_apply k).abs.measurable) measurable_const)
   set C : Set ((Fin (n + 1) → ℝ) × ℝ) :=
@@ -154,7 +154,7 @@ theorem measure_blockEvent_succ_le {Ω : Type*} [MeasurableSpace Ω] {X : ℝ≥
   have hev : blockEvent X T0 A (n + 1) = (fun ω => (U ω, V ω)) ⁻¹' C := by
     rw [blockEvent_succ]
     ext ω
-    simp only [Set.mem_inter_iff, Set.mem_preimage, hCdef, Set.mem_setOf_eq, blockEvent, hUdef,
+    simp only [Set.mem_inter_iff, Set.mem_preimage, hCdef, Set.mem_ofPred_eq, blockEvent, hUdef,
       hVdef, Fin.val_last]
     constructor
     · rintro ⟨h1, h2⟩
@@ -197,7 +197,7 @@ theorem measure_blockEvent_succ_le {Ω : Type*} [MeasurableSpace Ω] {X : ℝ≥
       rw [Set.indicator_of_notMem hfmem, mul_zero, nonpos_iff_eq_zero]
       convert measure_empty (μ := P.map V)
       ext v
-      simp only [Set.mem_setOf_eq, hCdef, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, hCdef, Set.mem_empty_iff_false, iff_false]
       intro hcon
       exact hf hcon.1
   calc P (blockEvent X T0 A (n + 1)) = P ((fun ω => (U ω, V ω)) ⁻¹' C) := by rw [hev]

@@ -57,8 +57,8 @@ lemma exists_gaussian_rectangle_mean_lower (hRSW : External.PlanarRSW)
       intro ζ hζ
       have h1 : E + (a / 4) * Real.log r < -(a / 4) * Real.log r := by linarith
       have hζ' := hζ
-      simp only [Set.mem_setOf_eq] at hζ'
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq] at hζ'
+      simp only [Set.mem_ofPred_eq]
       linarith
     have hmono := measure_mono (μ := LatticeProb.iidLaw 4 (gaussianReal 0 v)) hsub
     have hcard : 2 ≤ (planeRectangle ⌊ϑ * r⌋₊ r).card := by

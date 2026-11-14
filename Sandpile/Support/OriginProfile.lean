@@ -144,7 +144,7 @@ with its total probability of hitting the origin (`LatticeProb.siteWalkLaw_hitOr
 theorem originMean_survival_lower (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hpos : Integrable (fun z => max z 0) ν) (n : ℕ) (x : Site d) :
     (1 - LatticeProb.srwHitProb d x) * fullMean d ν n ≤ originMean ν n x := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hM : 0 ≤ fullMean d ν n := integral_nonneg fun ζ => odometerOf_nonneg ζ n 0
   by_cases hx : x = 0
   · subst hx
@@ -162,7 +162,7 @@ theorem originMean_survival_lower (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabili
         LatticeProb.hitOrigin d := by
       intro X hX
       obtain ⟨j, hj, he⟩ := exitNat_le_iff.mp hX
-      exact ⟨j, by simpa only [Set.mem_setOf_eq, not_not] using he⟩
+      exact ⟨j, by simpa only [Set.mem_ofPred_eq, not_not] using he⟩
     have hprob := ENNReal.toReal_mono (measure_ne_top (walkLaw d x) _)
       (measure_mono he : walkLaw d x _ ≤ walkLaw d x _)
     change (walkLaw d x _).toReal ≤

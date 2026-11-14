@@ -21,8 +21,8 @@ theorem Sandpile.bddAbove_killedSet_stopped_value {d : ℕ} (hd : 1 ≤ d)
     (D : Set (Sandpile.Site d)) (x : Sandpile.Site d) (n : ℕ)
     (F : ℕ → Sandpile.Site d → ℝ) :
     BddAbove (Sandpile.killedSet D n x (fun k X => F k (X k))) := by
-  letI : NeZero d := ⟨by omega⟩
-  letI : IsProbabilityMeasure (Sandpile.walkLaw d x) := Sandpile.walkLaw_isProbabilityMeasure d x
+  let : NeZero d := ⟨by omega⟩
+  let : IsProbabilityMeasure (Sandpile.walkLaw d x) := Sandpile.walkLaw_isProbabilityMeasure d x
   let M : ℝ := ∑ j ∈ Finset.range (n + 1), ∑ z ∈ Sandpile.boxFinset x n, |F j z|
   refine ⟨M, ?_⟩
   rintro a ⟨τ, hτ, ht, _hc, rfl⟩

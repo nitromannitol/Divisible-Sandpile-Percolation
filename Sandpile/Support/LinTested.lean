@@ -312,7 +312,7 @@ theorem exists_sum_tested_first_moment_le (hd : 5 ≤ d)
             (∫⁻ X, ∫⁻ Y, Sandpile.External.interCount X Y
               ∂(walkLaw d y) ∂(walkLaw d x))
         ≤ ENNReal.ofReal C := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨C₁, hC₁, hbound⟩ := lintegral_interCount_le (d := d) hd hGreen
   refine ⟨C₁ * ((∫ z, |φ z|) * Cφ * ((d : ℝ) * 2 ^ d) * (2 * L + 5) ^ 4), ?_, ?_⟩
   · have h1 : (0 : ℝ) ≤ ∫ z, |φ z| := integral_nonneg fun z => abs_nonneg _

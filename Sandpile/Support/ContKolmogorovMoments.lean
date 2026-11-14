@@ -42,7 +42,7 @@ theorem integrable_linInterp_sub_rpow (hd : 1 ≤ d) (ν : Measure ℝ) [IsProba
         - linInterp d R (Sandpile.scenery d σ) r' w'| ^ p)
       (Sandpile.centeredMassLaw d ν) := by
   classical
-  haveI := ‹IsProbabilityMeasure ν›
+  have := ‹IsProbabilityMeasure ν›
   have hrep : ∀ σ : Site d → ℝ,
       linInterp d R (Sandpile.scenery d σ) r w
         - linInterp d R (Sandpile.scenery d σ) r' w'
@@ -86,7 +86,7 @@ theorem integrable_linInterp_rpow (hd : 1 ≤ d) (ν : Measure ℝ) [IsProbabili
       |linInterp d R (Sandpile.scenery d σ) r w| ^ p)
       (Sandpile.centeredMassLaw d ν) := by
   classical
-  haveI := ‹IsProbabilityMeasure ν›
+  have := ‹IsProbabilityMeasure ν›
   have hrep : ∀ σ : Site d → ℝ,
       linInterp d R (Sandpile.scenery d σ) r w
       = ∑ i, interpCoeff d R r w (Sandpile.siteEnum s i)

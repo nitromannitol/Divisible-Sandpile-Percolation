@@ -205,7 +205,7 @@ theorem measurableSet_pathEvent {Ω : Type*} [MeasurableSpace Ω]
       ⋂ (j : ℕ), ⋂ (q : ℚ), {ω | j < n → 0 ≤ q → q ≤ 1 →
         l ≤ X (segPt (v j) (v (j + 1)) (q : ℝ)) ω} := by
     ext ω
-    simp only [pathEvent, Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [pathEvent, mem_ofPred_eq, Set.mem_iInter]
   rw [hrw]
   refine MeasurableSet.iInter fun j => MeasurableSet.iInter fun q => ?_
   by_cases h : j < n ∧ 0 ≤ q ∧ q ≤ 1
@@ -218,7 +218,7 @@ theorem measurableSet_pathEvent {Ω : Type*} [MeasurableSpace Ω]
   · have hset : {ω | j < n → 0 ≤ q → q ≤ 1 → l ≤ X (segPt (v j) (v (j + 1)) (q : ℝ)) ω}
         = Set.univ := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      simp only [mem_ofPred_eq, Set.mem_univ, iff_true]
       intro h1 h2 h3
       exact absurd ⟨h1, h2, h3⟩ h
     rw [hset]
@@ -386,9 +386,9 @@ theorem exists_vertices_of_reflTransGen {X : Type*} [MetricSpace X] {Γ : Set X}
   | @tail b c hab hbc ih =>
       obtain ⟨m, v, hv0, hvm, hvΓ, hvd⟩ := ih
       refine ⟨m + 1, fun j => if j ≤ m + 1 then v j else c, ?_, ?_, ?_, ?_⟩
-      · simp only [if_pos (Nat.zero_le _)]
+      · simp only [ite_eq_left (Nat.zero_le _)]
         exact hv0
-      · simp only [if_neg (by omega : ¬ (m + 1 + 1 ≤ m + 1))]
+      · simp only [ite_eq_right (by omega : ¬ (m + 1 + 1 ≤ m + 1))]
       · intro j hj
         by_cases hjm : j ≤ m + 1
         · simpa [hjm] using hvΓ j hjm
@@ -400,7 +400,7 @@ theorem exists_vertices_of_reflTransGen {X : Type*} [MetricSpace X] {Γ : Set X}
           simpa [h1, h2] using hvd j (by omega)
         · have hjeq : j = m + 1 := by omega
           subst hjeq
-          simp only [if_pos (le_refl (m + 1)), if_neg (by omega : ¬ (m + 1 + 1 ≤ m + 1))]
+          simp only [ite_eq_left (le_refl (m + 1)), ite_eq_right (by omega : ¬ (m + 1 + 1 ≤ m + 1))]
           rw [hvm]
           exact hbc.2
 

@@ -103,7 +103,7 @@ theorem corrRate_geom_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (h
   have hgl : (0 : ℝ) < (geomRatio q) ^ l := pow_pos hgp l
   rw [Sandpile.External.Variance.corrRate]
   by_cases h2 : d = 2
-  · rw [if_pos h2, ratio_geom hq hN j l, ratio_geom_inv hq hN j l]
+  · rw [ite_eq_left h2, ratio_geom hq hN j l, ratio_geom_inv hq hN j l]
     have hlog : Real.log ((q : ℝ) ^ ((l : ℝ))) = (l : ℝ) * Real.log (q : ℝ) :=
       Real.log_rpow hq0 _
     have hsqrt : Real.sqrt ((q : ℝ) ^ (-(l : ℝ))) = (q : ℝ) ^ (-(l : ℝ) / 2) := by
@@ -123,7 +123,7 @@ theorem corrRate_geom_le {d : ℕ} (hd : 1 ≤ d) (hd3 : d ≤ 3) {q N : ℕ} (h
           mul_le_mul_of_nonneg_right hbound hpos.le
       _ = 3 * (geomRatio q) ^ l := by rw [← hprod]
   · have h4 : d ≠ 4 := by omega
-    rw [if_neg h2, if_neg h4, ratio_geom hq hN j l]
+    rw [ite_eq_right h2, ite_eq_right h4, ratio_geom hq hN j l]
     have hpow : ((q : ℝ) ^ (-(l : ℝ))) ^ ((1 : ℝ) / 4) = (geomRatio q) ^ l := by
       rw [← Real.rpow_mul hq0.le, geomRatio_pow hq l]
       congr 1
@@ -238,9 +238,9 @@ theorem gram_offRow_geom_le (ν : Measure ℝ) (hvar : 0 < variance (id : ℝ �
         else (geomRatio q) ^ (max (k : ℕ) (j : ℕ) - min (k : ℕ) (j : ℕ))) := by
     intro k
     by_cases hjk : j = k
-    · rw [offEntry, if_pos hjk, if_pos hjk]
+    · rw [offEntry, ite_eq_left hjk, ite_eq_left hjk]
       norm_num
-    rw [offEntry, if_neg hjk, if_neg hjk]
+    rw [offEntry, ite_eq_right hjk, ite_eq_right hjk]
     have hnn : ∀ a b : Fin m, 0 ≤ S a b := fun a b =>
       gram_stdCoeff_nonneg ν hvar hns hsub a b
     rcases le_total (j : ℕ) (k : ℕ) with hle | hle

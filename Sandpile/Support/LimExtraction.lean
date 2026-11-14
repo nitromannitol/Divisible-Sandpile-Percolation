@@ -116,9 +116,9 @@ theorem finite_scale_extraction_of_inputs
           {u | 4 * c ≤ ⨆ i : Fin k, ballField d W (s i : ℝ) u ω}} := by
   by_cases hex : ∃ (Ω : Type) (m : MeasurableSpace Ω), @CarriesWhiteNoise d Ω m
   · obtain ⟨Ω₀, m₀, hcar⟩ := hex
-    letI := m₀
+    let := m₀
     obtain ⟨P₀, hP₀, W₀, hW₀, hc₀⟩ := hcar
-    letI := hP₀
+    let := hP₀
     obtain ⟨q, hq, hsurj⟩ := exists_scale_enum
     have hlow₀ := scaleCrossingLower_of_fixed_scale hRSWc hPitt hGauss hd hW₀ hc₀
     have hAS := ae_exists_scale_crossing_all hZ Ω₀ P₀ W₀ hW₀ hc₀ a b hab dir

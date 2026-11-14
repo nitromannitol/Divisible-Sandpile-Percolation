@@ -90,7 +90,7 @@ theorem exists_ball_time_tail (hBG : Sandpile.External.BallGreenBounds) (θ₀ K
   obtain ⟨G, g, hG, hg, hb⟩ := hBG
   refine ⟨c / G, C, by positivity, hC, ?_⟩
   intro Aex hAex ν hν hint hK hmean r hr s hs z
-  haveI := hν
+  have := hν
   have hrpos : (0 : ℝ) < (r : ℝ) := by
     have : 0 < r := by omega
     exact_mod_cast this
@@ -119,7 +119,7 @@ theorem exists_ball_time_tail (hBG : Sandpile.External.BallGreenBounds) (θ₀ K
       = {ζ : Site 4 → ℝ |
       s < |finiteKernelField (External.BallGreen.timeTail r (Aex : ℝ)) ζ z|} := by
     ext ζ
-    rw [Set.mem_setOf_eq, Set.mem_setOf_eq, ballGreenField_sub_frGreenFieldTime]
+    rw [Set.mem_ofPred_eq, Set.mem_ofPred_eq, ballGreenField_sub_frGreenFieldTime]
   rw [hset]
   refine hh.trans (ENNReal.ofReal_le_ofReal ?_)
   have hdiv : s / (G / (r : ℝ) ^ 2) = s * (r : ℝ) ^ 2 / G := by

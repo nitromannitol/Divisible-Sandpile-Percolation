@@ -28,8 +28,8 @@ lemma crossingValue_spec {Q : Finset (Site 2)} (hQ : IsLatticeRectangle Q)
       a ∈ rectangleLeft Q ∧ b ∈ rectangleRight Q ∧ walkBottleneck p F = crossingValue Q F := by
   classical
   obtain ⟨hleft, hright⟩ := rectangle_boundaries_nonempty hQ hN
-  letI : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
-  letI : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
+  let : Nonempty (rectangleLeft Q) := ⟨⟨hleft.choose, hleft.choose_spec⟩⟩
+  let : Nonempty (rectangleRight Q) := ⟨⟨hright.choose, hright.choose_spec⟩⟩
   have hn : Q.card ≤ 2 ^ Q.card := Q.card.lt_two_pow_self.le
   let f (c : rectangleLeft Q × rectangleRight Q) :=
     boundedBottleneckValue (rectangleGraph Q) Q.card c.1 c.2

@@ -58,7 +58,7 @@ theorem exitNat_le_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d} {j : ℕ
   classical
   have hex : ∃ j, j ≤ t ∧ X j ∉ D := ⟨j, hjt, hj⟩
   unfold exitNat
-  rw [dif_pos hex]
+  rw [dite_eq_left hex]
   exact Nat.find_le ⟨hjt, hj⟩
 
 /-- Every time strictly before the exit index, and at most `t`, has the walk still in `D`. -/
@@ -75,7 +75,7 @@ theorem notMem_exitNat {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
   unfold exitNat at h ⊢
   split at h
   · rename_i hex
-    rw [dif_pos hex]
+    rw [dite_eq_left hex]
     exact (Nat.find_spec hex).2
   · omega
 
@@ -299,8 +299,8 @@ theorem afterExit_past (s : Finset (Site d)) (ζ : Site d → ℝ) {τ : (ℕ �
   unfold afterExit residualSum residualStop
   rw [gluePath_congr k h Y]
   by_cases hk : τ X = k
-  · rw [if_pos hk, if_pos (hτ k X X' h hk)]
-  · rw [if_neg hk, if_neg ?_]
+  · rw [ite_eq_left hk, ite_eq_left (hτ k X X' h hk)]
+  · rw [ite_eq_right hk, ite_eq_right ?_]
     intro hk'
     exact hk (hτ k X' X (fun j hj => (h j hj).symm) hk')
 
@@ -314,9 +314,9 @@ theorem afterExit_shift (s : Finset (Site d)) (ζ : Site d → ℝ)
   unfold afterExit residualSum residualStop
   rw [gluePath_shift]
   by_cases hk : τ X = σ X
-  · rw [if_pos hk, hk]
+  · rw [ite_eq_left hk, hk]
     simp
-  · rw [if_neg hk]
+  · rw [ite_eq_right hk]
     exact Finset.sum_congr rfl fun i _ => rfl
 
 /-- `gluePath k` is measurable as a function of the pair of paths it glues together. -/
@@ -325,9 +325,9 @@ theorem measurable_gluePath (k : ℕ) :
   refine Measurable.of_eval fun j => ?_
   unfold gluePath
   by_cases h : j ≤ k
-  · simp only [if_pos h]
+  · simp only [ite_eq_left h]
     exact (measurable_pi_apply j).comp measurable_fst
-  · simp only [if_neg h]
+  · simp only [ite_eq_right h]
     exact (measurable_pi_apply (j - k)).comp measurable_snd
 
 /-- `afterExit s ζ τ k`, uncurried over the pair of paths it is glued from, is measurable. -/
@@ -363,17 +363,17 @@ theorem measurable_afterExit (s : Finset (Site d)) (ζ : Site d → ℝ)
       omega
     unfold afterExit residualSum
     by_cases hk : τ X = k
-    · rw [if_pos hk]
+    · rw [ite_eq_left hk]
       refine (Finset.sum_eq_zero fun m _ => ?_).symm
-      rw [if_neg (by tauto)]
-    · rw [if_neg hk]
+      rw [ite_eq_right (by tauto)]
+    · rw [ite_eq_right hk]
       symm
       refine (Finset.sum_eq_single (residualStop k τ X Y) ?_ ?_).trans ?_
       · intro m _ hm
-        rw [if_neg (by tauto)]
+        rw [ite_eq_right (by tauto)]
       · intro hmem
         exact absurd (Finset.mem_range.mpr (by omega)) hmem
-      · rw [if_pos ⟨hk, rfl⟩]
+      · rw [ite_eq_left ⟨hk, rfl⟩]
   rw [hsplit]
   refine Finset.measurable_sum _ fun m _ => ?_
   refine Measurable.ite ?_ (hval m) measurable_const
@@ -405,7 +405,7 @@ theorem ae_boxDist_walk (hd : 1 ≤ d) (x : Site d) :
     have hrw : {X : ℕ → Site d | ∀ n : ℕ, boxDist x (X n) ≤ n}
         = ⋂ n : ℕ, (fun X : ℕ → Site d => X n) ⁻¹' {y : Site d | boxDist x y ≤ n} := by
       ext X
-      simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]
+      simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage]
     rw [hrw]
     refine MeasurableSet.iInter fun n => (measurable_pi_apply n) ?_
     exact (Set.to_countable _).measurableSet
@@ -429,7 +429,7 @@ theorem exitNat_eq_succ_of {D : Set (Site d)} {t : ℕ} {X : ℕ → Site d}
     (h : ∀ j ≤ t, X j ∈ D) : exitNat D t X = t + 1 := by
   classical
   unfold exitNat
-  rw [dif_neg]
+  rw [dite_eq_right]
   rintro ⟨j, hj, hjD⟩
   exact hjD (h j hj)
 
@@ -538,7 +538,7 @@ the walk cannot leave the box `boxFinset x t` by time `t`. -/
 theorem integrable_exitReward (hd : 1 ≤ d) (x : Site d) (D : Set (Site d))
     (ζ : Site d → ℝ) (t : ℕ) :
     Integrable (exitReward D ζ t) (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   refine (integrable_const (odometerBound x t ζ)).mono'
     (measurable_exitReward D ζ t).aestronglyMeasurable ?_
   filter_upwards [ae_boxDist_walk hd x] with X hX
@@ -554,7 +554,7 @@ times the scenery's bound on the box the walk cannot leave by time `t`. -/
 theorem integrable_stoppedScenery_walk (hd : 1 ≤ d) (x : Site d) (ζ : Site d → ℝ) (t : ℕ)
     {τ : (ℕ → Site d) → ℕ} (hτ : IsWalkStopping τ) (hτt : ∀ X, τ X ≤ t) :
     Integrable (fun X => sceneryPartialSum ζ (τ X) X) (walkLaw d x) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   refine (integrable_const (t * sceneryBound x t ζ)).mono'
     (measurable_stoppedScenery t ζ hτ hτt).aestronglyMeasurable ?_
   filter_upwards [ae_boxDist_walk hd x] with X hX
@@ -592,7 +592,7 @@ theorem integral_stopped_sub_le (hOS : External.OptimalStopping) (hd : 1 ≤ d)
         - (∫ X, sceneryPartialSum ζ (stopBeforeExit D t τ X) X ∂(walkLaw d x))
       ≤ ∫ X, exitReward D ζ t X ∂(walkLaw d x) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   set σ := stopBeforeExit D t τ with hσdef
   have hσ : IsWalkStopping σ := isWalkStopping_stopBeforeExit hτ hτt
   have hσt : ∀ X, σ X ≤ t := stopBeforeExit_le hτt
@@ -662,7 +662,7 @@ theorem integral_stopped_sub_le (hOS : External.OptimalStopping) (hd : 1 ≤ d)
     · have hzero : ∀ Y : ℕ → Site d, afterExit s ζ τ (σ X) X Y = 0 := by
         intro Y
         unfold afterExit
-        rw [if_pos hcase]
+        rw [ite_eq_left hcase]
       simp only [hzero, integral_zero]
       exact exitReward_nonneg D ζ t X
     · have hex : exitNat D t X < τ X := by have := hmin X; omega
@@ -682,7 +682,7 @@ theorem integral_stopped_sub_le (hOS : External.OptimalStopping) (hd : 1 ≤ d)
         refine integral_congr_ae ?_
         filter_upwards [ae_boxDist_walk hd (X (σ X))] with Y hY
         unfold afterExit
-        rw [if_neg hcase]
+        rw [ite_eq_right hcase]
         unfold residualSum sceneryPartialSum
         refine Finset.sum_congr rfl fun i hi => ?_
         have hi' := Finset.mem_range.mp hi
@@ -783,7 +783,7 @@ theorem abs_integral_stoppedScenery_sub_le (hd : 1 ≤ d) (x : Site d) (ζ η : 
     |(∫ X, sceneryPartialSum ζ (ρ X) X ∂(walkLaw d x))
         - ∫ X, sceneryPartialSum η (ρ X) X ∂(walkLaw d x)|
       ≤ t * ∑ y ∈ boxFinset x t, |ζ y - η y| := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   rw [← integral_sub (integrable_stoppedScenery_walk hd x ζ t hρ hρt)
     (integrable_stoppedScenery_walk hd x η t hρ hρt)]
   have hpt : ∀ X : ℕ → Site d,

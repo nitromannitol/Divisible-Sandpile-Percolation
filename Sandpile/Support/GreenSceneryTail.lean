@@ -719,7 +719,7 @@ theorem exists_scenery_tail_stretched (hGH : Sandpile.External.GreenBoundsHigh) 
     have hsmallw : ∀ y : Site d, lam * greenTime d m 0 y ≤ 1 →
         w y ≤ Cψ * (lam * greenTime d m 0 y) ^ (2 : ℝ) := by
       intro y hy
-      simp only [hwdef, hy, if_true]
+      simp only [hwdef, hy, ite_true]
       exact le_rfl
     have hlargew : ∀ y : Site d, 1 ≤ lam * greenTime d m 0 y →
         w y ≤ Cψ * (lam * greenTime d m 0 y) ^ (γ / (γ - 1)) := by

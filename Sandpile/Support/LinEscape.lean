@@ -93,7 +93,7 @@ theorem hitPair_iff (ξ : ℕ → Site d) :
   have h0 : (LatticeProb.truncInc (d := d) 1 ξ) 0 = ξ 0 := by
     simp [LatticeProb.truncInc]
   have hzero : walkPath (0 : Site d) ξ 0 = 0 := by simp [walkPath]
-  simp only [hitPair, Set.mem_setOf_eq, h0, noRetEver, Set.mem_setOf_eq, not_forall, hzero]
+  simp only [hitPair, Set.mem_ofPred_eq, h0, noRetEver, Set.mem_ofPred_eq, not_forall, hzero]
   constructor
   · rintro ⟨s, hs⟩
     refine ⟨s + 1, by omega, ?_⟩
@@ -169,7 +169,7 @@ theorem escProb_eq [NeZero d] (hd : 3 ≤ d) : escProb d = 1 / green d 0 0 := by
   rw [integral_congr_ae (Filter.Eventually.of_forall hinner)]
   have hmarg : ∫ ξ, LatticeProb.srwHitProb d (ξ 0) ∂(LatticeProb.incPathLaw d)
       = ∫ e, LatticeProb.srwHitProb d e ∂(stepLaw d) := by
-    haveI : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd1
+    have : IsProbabilityMeasure (stepLaw d) := isProbabilityMeasure_stepLaw hd1
     have heval : (Measure.infinitePi fun _ : ℕ => stepLaw d).map (fun ξ : ℕ → Site d => ξ 0)
         = stepLaw d := Measure.infinitePi_map_eval _ 0
     have hmap := integral_map (μ := Measure.infinitePi fun _ : ℕ => stepLaw d)

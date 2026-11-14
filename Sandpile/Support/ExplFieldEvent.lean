@@ -116,7 +116,7 @@ theorem gaussianPotential_heat_semigroup_common_of_local_envelopes
       Integrable (fun y => heatKernelBM d r x y * Z s y ω) volume ∧
         (∫ y, heatKernelBM d r x y * Z s y ω) = Z (r + s) x ω - Z r x ω := by
   let E := {r : ℝ // 0 < r} × (ℝ≥0 × Space d)
-  letI : Nonempty E := ⟨⟨⟨1, zero_lt_one⟩, 0, 0⟩⟩
+  let : Nonempty E := ⟨⟨⟨1, zero_lt_one⟩, 0, 0⟩⟩
   let F (q : E) (ω : Ω) := ∫ y, heatKernelBM d q.1.1 q.2.2 y * Z q.2.1 y ω
   let G (q : E) (ω : Ω) := Z (q.1.1 + q.2.1) q.2.2 ω - Z q.1.1 q.2.2 ω
   have hZ : ∀ᵐ ω ∂P, Continuous (fun q : ℝ≥0 × Space d => Z q.1 q.2 ω) := by

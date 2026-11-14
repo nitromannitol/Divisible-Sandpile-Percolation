@@ -39,7 +39,7 @@ theorem measure_abs_centeredDeviation_ge_le (ν : Measure ℝ) [IsProbabilityMea
         ∪ {ζ : Site d → ℝ | t ≤ -(centeredDeviation d ζ n
             - ∫ η, centeredDeviation d η n ∂(LatticeProb.iidLaw d ν))} := by
     ext ζ
-    simp only [Set.mem_setOf_eq, Set.mem_union]
+    simp only [mem_ofPred_eq, Set.mem_union]
     rw [le_abs]
   rw [hset]
   calc ((LatticeProb.iidLaw d ν).real

@@ -57,7 +57,7 @@ theorem exists_smoothed_odometer_tail_four_uniform (hVS : Sandpile.External.Vari
   have hM0 : (0 : ℝ) < M := lt_of_lt_of_le one_pos hM
   refine ⟨c₀ / M, max C₀ 1, div_pos hc₀ hM0, lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩
   intro ν hprob hexpint hexp hpos t s hs
-  haveI := hprob
+  have := hprob
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   set mean : ℝ := ∫ η, odometerOf η t 0 ∂P with hmeandef
   set L : ℝ := Real.log ((t : ℝ) + 3) with hLdef
@@ -81,7 +81,7 @@ theorem exists_smoothed_odometer_tail_four_uniform (hVS : Sandpile.External.Vari
     have hempty : {ζ : Site 4 → ℝ | (avg^[1] fun x => odometerOf ζ 0 x -
         ∫ η, odometerOf η 0 0 ∂P) 0 ≤ -s} = ∅ := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_le]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le]
       rw [avg_iterate_sub_const (by norm_num) 1 (odometerOf ζ 0) _ 0, hI, sub_zero]
       have hfun : odometerOf ζ 0 = fun _ : Site 4 => (0 : ℝ) := rfl
       rw [hfun, avg_iterate_zero]
@@ -94,7 +94,7 @@ theorem exists_smoothed_odometer_tail_four_uniform (hVS : Sandpile.External.Vari
     have hℓnn : ∀ i, 0 ≤ ℓ i := fun i => smoothedCoeff_nonneg _ _ _ _
     obtain ⟨i₀, hi₀⟩ := exists_smoothedCoeff_ne_zero (d := 4) (by norm_num) 1 t ht
     have hne : ∃ i, ℓ i ≠ 0 := ⟨i₀, hi₀⟩
-    haveI : Nonempty (Fin N) := ⟨i₀⟩
+    have : Nonempty (Fin N) := ⟨i₀⟩
     have hi₀pos : 0 < ℓ i₀ := lt_of_le_of_ne (hℓnn i₀) (Ne.symm hi₀)
     have hTwo : lTwoNorm ℓ ^ 2 = ∑ i, ℓ i ^ 2 := lTwoNorm_sq ℓ
     have hTwoLe : lTwoNorm ℓ ^ 2 ≤ M * L := by
@@ -137,9 +137,9 @@ theorem exists_smoothed_odometer_tail_four_uniform (hVS : Sandpile.External.Vari
         ⊆ (fun ζ : Site 4 → ℝ => fun i => ζ (siteEnum s0 i)) ⁻¹'
           {ξ | s ≤ |scenerySmoothed s0 1 t 0 ξ - mean|} := by
       intro ζ hζ
-      simp only [Set.mem_setOf_eq] at hζ
+      simp only [Set.mem_ofPred_eq] at hζ
       rw [avg_iterate_sub_const (by norm_num) 1 (odometerOf ζ t) _ 0] at hζ
-      simp only [Set.mem_preimage, Set.mem_setOf_eq]
+      simp only [Set.mem_preimage, Set.mem_ofPred_eq]
       rw [scenerySmoothed_pick (subset_refl s0) ζ]
       refine le_trans ?_ (neg_le_abs _)
       rw [← hmeandef] at hζ
@@ -204,7 +204,7 @@ theorem exists_reflected_tail_four_uniform (hVS : Sandpile.External.VarianceScal
   have hK₀ : 0 < max K₀ 1 := lt_of_lt_of_le one_pos (le_max_right _ _)
   refine ⟨min θ₀ c₀, max K₀ 1 + C₀, lt_min hθ₀ hc₀, by positivity, ?_⟩
   intro ν hprob hexpint hexp hpos t h hh
-  haveI := hprob
+  have := hprob
   have hsm := hsm ν hprob hexpint hexp hpos
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   set mean : ℝ := ∫ η, odometerOf η t 0 ∂P with hmeandef
@@ -295,7 +295,7 @@ theorem exists_crude_increment_four_uniform (hVS : Sandpile.External.VarianceSca
     exists_reflected_tail_four_uniform hVS θ₀ K₀ hθ₀
   refine ⟨c₁, c₁ / 4, 2 * C₁ / c₁, hc₁, by positivity, by positivity, ?_⟩
   intro ν hprob hmean hexpint hexp hint hpos t
-  haveI := hprob
+  have := hprob
   have htail := htail ν hprob hexpint hexp hpos
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   set mean : ℝ := ∫ η, odometerOf η t 0 ∂P with hmeandef
@@ -326,7 +326,7 @@ theorem exists_crude_increment_four_uniform (hVS : Sandpile.External.VarianceSca
     have hset : {ζ : Site 4 → ℝ | h ≤ f ζ}
         = {ζ : Site 4 → ℝ | h ≤ -(ζ 0) - avg (odometerOf ζ t) 0} := by
       ext ζ
-      simp only [Set.mem_setOf_eq, hf, le_max_iff]
+      simp only [Set.mem_ofPred_eq, hf, le_max_iff]
       constructor
       · rintro (hc | hc)
         · linarith
@@ -436,7 +436,7 @@ theorem exists_crude_log_upper_four_uniform (hVS : Sandpile.External.VarianceSca
   have hD0 : 0 ≤ D := by dsimp [D]; positivity
   refine ⟨2 * (A + D + C₂), by positivity, ?_⟩
   intro ν hprob hmean hexpint hexp hint hpos t
-  haveI := hprob
+  have := hprob
   have hstep := hstep ν hprob hmean hexpint hexp hint hpos
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   set m : ℕ → ℝ := fun n => ∫ ζ, odometerOf ζ n 0 ∂P with hmdef

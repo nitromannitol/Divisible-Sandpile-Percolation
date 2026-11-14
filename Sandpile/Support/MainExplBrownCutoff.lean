@@ -146,7 +146,7 @@ theorem exists_brownian_cutoff_error (d : ℕ) (p : ℕ) {K T ε : ℝ} (hK : 0 
     intro n
     have h := (hmeas (n + 1)).compl
     have he : (S n) = {ω | 2 ^ (n + 1) * A ≤ ‖Y ω‖}ᶜ := by
-      ext ω; simp only [hS, Set.mem_setOf_eq, Set.mem_compl_iff, not_le]
+      ext ω; simp only [hS, mem_ofPred_eq, Set.mem_compl_iff, not_le]
     rw [he]; exact h
   have hstep : ∀ n : ℕ, (∫ ω, Set.indicator (S n) f ω ∂P) ≤ ε := by
     intro n
@@ -208,7 +208,7 @@ theorem exists_brownian_cutoff_error (d : ℕ) (p : ℕ) {K T ε : ℝ} (hK : 0 
       refine tendsto_nhds_of_eventually_eq ?_
       filter_upwards [Filter.eventually_ge_atTop N] with n hn
       have hmem : ω ∈ S n := by
-        simp only [hS, Set.mem_setOf_eq]
+        simp only [hS, mem_ofPred_eq]
         have h2 : (2 : ℝ) ^ (N + 1) * A ≤ 2 ^ (n + 1) * A := by
           have : (2 : ℝ) ^ (N + 1) ≤ 2 ^ (n + 1) := by
             apply pow_le_pow_right₀ (by norm_num); omega

@@ -176,7 +176,7 @@ theorem exists_window_second_moment_four (hVS : Sandpile.External.VarianceScale)
         (A₀ * Real.log ((t : ℝ) + 2) + 1) *
           (∫ ζ, reflectionSum ζ n t x ∂(LatticeProb.iidLaw 4 ν))
         + (A₀ * Real.log ((t : ℝ) + 2) + 1) ^ 2 * (C / ((t : ℝ) + 2) ^ 2) := by
-  haveI := hprob
+  have := hprob
   obtain ⟨A₀, C, hA₀, hC, hexc⟩ :=
     exists_excess_sq_bound_four hVS ν hprob hmean hvar hvar' θ hθ hexp
   refine ⟨A₀, C, hA₀, hC, ?_⟩
@@ -223,7 +223,7 @@ theorem tendsto_log_mul_window_mean (hVS : Sandpile.External.VarianceScale)
     Tendsto (fun R : ℝ => (A₀ * Real.log ((⌊R ^ α⌋₊ : ℝ) + 2) + 1) *
         ∫ η, reflectionSum η ⌊R * Real.sqrt (⌊R ^ α⌋₊ : ℝ)⌋₊ ⌊R ^ α⌋₊ 0
           ∂(LatticeProb.iidLaw 4 ν)) atTop (𝓝 0) := by
-  haveI := hprob
+  have := hprob
   obtain ⟨Cw, hCw, hmb⟩ := window_mean_bound_four hVS ν hprob hmean θ
     (∫ z, Real.exp (θ * |z|) ∂ν) hθ hexpint le_rfl hintν hpos
   have hmaj : Tendsto (fun R : ℝ => (A₀ + 1) * Cw *
@@ -288,7 +288,7 @@ theorem tendsto_step3_four (hVS : Sandpile.External.VarianceScale)
         negSobolevNorm 4 s D (omegaRep D w (latticePairing R (windowField ν α R ζ)))})
       atTop (𝓝 0) := by
   classical
-  haveI := hprob
+  have := hprob
   set P : Measure (Site 4 → ℝ) := LatticeProb.iidLaw 4 ν with hP
   obtain ⟨A₀, Cx, hA₀, hCx, hwin⟩ :=
     exists_window_second_moment_four hVS ν hprob hmean hvar hvar' θ hθ hexp hintν hpos

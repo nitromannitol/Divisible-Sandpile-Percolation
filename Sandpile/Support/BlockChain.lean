@@ -167,12 +167,8 @@ theorem block_tb_lr_connect {r : ℕ} (F : Site 2 → ℝ) (ℓ : ℝ) (z : Site
     ?_⟩
   intro u hu
   rcases (SimpleGraph.Walk.mem_support_append_iff _ _).mp hu with hu | hu
-  · first
-    | exact hA u hu
-    | exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
-  · first
-    | exact hB u hu
-    | exact hB u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · exact hA u (Eq.mp (congrArg (u ∈ ·) (SimpleGraph.Walk.support_copy _ _ _)) hu)
+  · exact hB u hu
 
 /-- One routing step: for adjacent good blocks, a bottom-top crossing witness
 of the first block extends, through the level superlevel set, to a bottom-top

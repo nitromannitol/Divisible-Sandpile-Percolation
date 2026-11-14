@@ -51,7 +51,7 @@ lemma planeEmbed_injective : Function.Injective planeEmbed := by
   funext i
   have hi : (i : ℕ) < 2 := i.isLt
   have hh := congrFun h (⟨(i : ℕ), by omega⟩ : Fin 4)
-  simp only [planeEmbed, hi, dif_pos] at hh
+  simp only [planeEmbed, hi, dite_eq_left] at hh
   simpa using hh
 
 /-- The plane embedding sends translation by a standard basis vector `unit i` of `ℤ²` to
@@ -65,11 +65,11 @@ lemma planeEmbed_add_unit (z : Site 2) (i : Fin 2) :
     simp only [Pi.add_apply, planeEmbed_apply_lt z j hj, unit, Pi.single_apply]
     congr 1
     by_cases hji : (j : ℕ) = (i : ℕ)
-    · rw [if_pos, if_pos] <;> simp [Fin.ext_iff, hji]
-    · rw [if_neg, if_neg] <;> simp [Fin.ext_iff, hji]
+    · rw [ite_eq_left, ite_eq_left] <;> simp [Fin.ext_iff, hji]
+    · rw [ite_eq_right, ite_eq_right] <;> simp [Fin.ext_iff, hji]
   · rw [planeEmbed_apply_ge _ _ hj]
     simp only [Pi.add_apply, planeEmbed_apply_ge z j hj, unit, Pi.single_apply]
-    rw [if_neg]
+    rw [ite_eq_right]
     · simp
     · simp only [Fin.ext_iff]
       have := i.isLt

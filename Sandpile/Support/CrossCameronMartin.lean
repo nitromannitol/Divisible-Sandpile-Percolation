@@ -149,9 +149,9 @@ theorem whiteNoise_tilted_map_shift (hW : IsWhiteNoise d W P) {k : Space d → �
   -- assemble
   have hstep : (P.map Φ).tilted q = (P.map Φ).map (Prod.map (fun y : ℝ => y + a * v) id) := by
     rw [hprod]
-    haveI : IsProbabilityMeasure (P.map (W k)) :=
+    have : IsProbabilityMeasure (P.map (W k)) :=
       inferInstance
-    haveI : IsProbabilityMeasure (P.map fun ω => fun t : T => Z t ω) :=
+    have : IsProbabilityMeasure (P.map fun ω => fun t : T => Z t ω) :=
       inferInstance
     rw [hqdef, tilted_prod_left (g := fun y : ℝ => a * y - a ^ 2 * v / 2) _ _ (by fun_prop),
       htiltk, ← Measure.map_id (μ := P.map fun ω => fun t : T => Z t ω),

@@ -46,16 +46,16 @@ theorem ballKernel_nonneg {d : ℕ} {s : ℝ} (u : Sandpile.Continuum.Space 2)
     lt_of_le_of_ne (norm_nonneg _) (Ne.symm hne)
   unfold ballKernel
   by_cases hlt : ‖(planePoint (d := d) u) - z‖ < s
-  · rw [if_pos hlt]
+  · rw [ite_eq_left hlt]
     by_cases hd : d = 2
-    · rw [if_pos hd]
+    · rw [ite_eq_left hd]
       have hge : (1 : ℝ) ≤ s / ‖(planePoint (d := d) u) - z‖ := (one_le_div hpos).mpr hlt.le
       exact mul_nonneg (by positivity) (Real.log_nonneg hge)
-    · rw [if_neg hd]
+    · rw [ite_eq_right hd]
       have hinv : 1 / s ≤ 1 / ‖(planePoint (d := d) u) - z‖ :=
         one_div_le_one_div_of_le hpos hlt.le
       exact mul_nonneg (by positivity) (by linarith)
-  · rw [if_neg hlt]
+  · rw [ite_eq_right hlt]
 
 /-- The product of two ball kernels is almost everywhere nonnegative: it can be
 negative only at the two centres, and a point is null in dimension two or three. -/

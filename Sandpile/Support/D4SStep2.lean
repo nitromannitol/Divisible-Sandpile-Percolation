@@ -189,11 +189,11 @@ theorem tendsto_step2_four (hHK : External.HeatKernelBounds) (hVS : External.Var
     · filter_upwards [eventually_ge_atTop (1:ℝ)] with R hR1 ζ
       have hC₀ : ∀ x : Site 4, Sandpile.External.SameParity x 0 →
           smoothedError ν α R ζ (parityBase x) = smoothedError ν α R ζ 0 := by
-        intro x hx; rw [parityBase, if_pos hx]
+        intro x hx; rw [parityBase, ite_eq_left hx]
       have hC₁ : ∀ x : Site 4, ¬ Sandpile.External.SameParity x 0 →
           smoothedError ν α R ζ (parityBase x) =
             smoothedError ν α R ζ ((0 : Site 4) + unit (0 : Fin 4)) := by
-        intro x hx; rw [parityBase, if_neg hx]
+        intro x hx; rw [parityBase, ite_eq_right hx]
       have hb := hK2b R hR1 (fun x => smoothedError ν α R ζ (parityBase x))
         (smoothedError ν α R ζ 0)
         (smoothedError ν α R ζ ((0 : Site 4) + unit (0 : Fin 4))) hC₀ hC₁

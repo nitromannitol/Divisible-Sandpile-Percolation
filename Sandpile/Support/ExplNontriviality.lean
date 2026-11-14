@@ -108,11 +108,11 @@ theorem percolation_below_criticality_of_critical_levels
   have hgap : 1 - g < ρ := lt_of_le_of_lt (le_max_right _ _) hρ1
   have hρmem : ρ ∈ Set.Ico ρ₀ 1 := ⟨hρ₀le, hρ2⟩
   have hρmem' : ρ ∈ Set.Ioc (0 : ℝ) 1 := ⟨lt_of_lt_of_le hρ₀.1 hρ₀le, le_of_lt hρ2⟩
-  haveI : IsProbabilityMeasure (μ ρ) := hprob ρ
+  have : IsProbabilityMeasure (μ ρ) := hprob ρ
   have hapos : (0 : ℝ) < 1 - ρ := by linarith
   have hid : Integrable (id : ℝ → ℝ) (μ ρ) :=
     integrable_id_of_exp_moment_at (μ ρ) θ₀ ρ hθ₀ (hexpint ρ hρmem)
-  haveI hmprob : IsProbabilityMeasure ((μ ρ).map fun s => s + (1 - ρ)) :=
+  have hmprob : IsProbabilityMeasure ((μ ρ).map fun s => s + (1 - ρ)) :=
     inferInstance
   have hmmean : ∫ s, s ∂((μ ρ).map fun s => s + (1 - ρ)) = 1 := by
     rw [integral_id_map_add_const (μ ρ) (1 - ρ) hid, hmean ρ hρmem']
@@ -152,7 +152,7 @@ theorem percolation_below_criticality_of_critical_levels
   filter_upwards [hae'] with σ hσ
   refine hasInfiniteComponent_toppledSet_of σ (max t₀ 2) _ hσ ?_
   intro x hx
-  simp only [Set.mem_setOf_eq] at hx
+  simp only [Set.mem_ofPred_eq] at hx
   have hfun : (fun y => σ y + 2 * (d : ℝ) * ((1 - ρ) / (2 * (d : ℝ))))
       = fun y => σ y + (1 - ρ) := by
     funext y

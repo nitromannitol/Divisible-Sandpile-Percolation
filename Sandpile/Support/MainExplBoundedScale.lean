@@ -46,7 +46,7 @@ theorem exists_finite_odometer_bound (d : ℕ) (P : Measure (Site d → ℝ)) [I
   rw [hEempty, measure_empty] at ht
   obtain ⟨m, hm⟩ := (ht.eventually_lt_const (ENNReal.ofReal_pos.mpr hε)).exists
   refine ⟨(m : ℝ) + 1, {σ | A σ ≤ (m : ℝ)}, by positivity, ?_, ?_⟩
-  · simpa only [Set.compl_setOf, not_le, Function.comp_apply, E] using hm.le
+  · simpa only [compl_ofPred, not_le, Function.comp_apply, E] using hm.le
   · intro σ hσ n hn y hy
     have h₁ : |odometer σ n y| ≤ ∑ z ∈ boxFinset (0 : Site d) J, |odometer σ n z| :=
       Finset.single_le_sum (fun z _ => abs_nonneg (odometer σ n z)) hy
@@ -118,10 +118,10 @@ theorem exists_bounded_scale_interpolation_bound
   have hf : ∀ y, |f y| ≤ M := by
     intro y
     by_cases hy : y ∈ boxFinset (0 : Site d) ⌈L * ρ + 2⌉₊
-    · simp only [f, if_pos hy, abs_mul, abs_of_nonneg hp0]
+    · simp only [f, ite_eq_left hy, abs_mul, abs_of_nonneg hp0]
       calc _ ≤ 1 * M := mul_le_mul hp1 (hbound σ hσ _ htime y hy) (abs_nonneg _) zero_le_one
         _ = M := one_mul _
-    · simpa only [f, if_neg hy, abs_zero] using hM.le
+    · simpa only [f, ite_eq_right hy, abs_zero] using hM.le
   have heq : ∀ z ∈ K, multilinearInterp R
       (fun y => R ^ (-(2 - (d : ℝ) / 2)) * odometer σ ⌊T * R ^ 2⌋₊ y) z =
       multilinearInterp R f z := by
@@ -131,7 +131,7 @@ theorem exists_bounded_scale_interpolation_bound
     apply Finset.sum_congr rfl
     intro e _
     rw [show f (fun i => ⌊R * z i⌋ + if e i then 1 else 0) = _ from
-      if_pos (interpolation_corner_mem_box L ρ hL hρ.le R hR hRL z hzn e)]
+      ite_eq_left (interpolation_corner_mem_box L ρ hL hρ.le R hR hRL z hzn e)]
   constructor
   · intro z hz
     rw [heq z hz]

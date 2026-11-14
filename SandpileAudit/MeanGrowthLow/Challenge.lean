@@ -173,7 +173,7 @@ instance {d : ℕ} (ν : Measure ℝ) [IsProbabilityMeasure ν] :
     IsProbabilityMeasure (centeredMassLaw d ν) := by
   unfold centeredMassLaw
   have : IsProbabilityMeasure (ν.map fun z => 1 + 2 * (d : ℝ) * z) :=
-    Measure.isProbabilityMeasure_map (by fun_prop)
+    inferInstance
   infer_instance
 
 /-- `E u_t(0)`, the mean odometer at the origin after `t` steps. -/

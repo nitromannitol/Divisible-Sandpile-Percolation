@@ -214,7 +214,7 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `thm-main-explosion-iii-a` | `b165790a943142008377ea6e0dae67988d9f42fe19678c6c9eb82fd7e38c8d61` |
 | `thm-main-explosion-iii-b` | `670253366db20953efea4004c821a376d8628b9f640b2093838db687f993c70b` |
 | `thm-main-explosion-ii-c` | `9586262156f799140d8da342905a7d8ba486d44606dae16f1713bf9467b7b43f` |
-| `ext-intersection-second-moment` | `7690cf61ce21585257a62413fd22e1288c663b4aaa7e2ce4e6ceb97b305adec6` |
+| `ext-intersection-second-moment` | `d8040d1d37b435ad8e3dcdf38473ee172e6e94091830b8f413b557b824221aae` |
 | `cor-mean-localization` | `d808abb774b9c47af4c39a74fc71ffb7f66d542c6ccd02a416a2825969a5850a` |
 | `prop-d4-diffusive-tightness` | `ae21b2376b073f2792fcefa0a58762c774aa940c1619d4a8d04a5ff6e01bfd95` |
 | `thm-critical-toppling` | `24a69b951ee78548541af7484cba209080925de83e9e229cae43210e8bff3cdb` |

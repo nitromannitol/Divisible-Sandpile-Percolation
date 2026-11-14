@@ -566,15 +566,15 @@ nodes:
     approved: "2026-09-25"
 
   - id: ext-intersection-second-moment
-    version: 2
+    version: 3
     kind: theorem
     source: sandpile.tex:1319-1324 (label eq-dgt4-intersection-second-moment, LawlerInt Theorem 3.3.2 proof pp. 95-97); Lawler, Intersections of Random Walks, proof of Theorem 3.3.2 pp. 95-97; proved unconditionally in this repository via the local-time factorization and the ordinary Markov property of the walk, rather than assumed
     file: Sandpile/External/IntersectionSecondMomentProved.lean
     export: Sandpile.External.intersectionSecondMoment
     state: PROVED
-    frozen_sha256: 7690cf61ce21585257a62413fd22e1288c663b4aaa7e2ce4e6ceb97b305adec6
+    frozen_sha256: d8040d1d37b435ad8e3dcdf38473ee172e6e94091830b8f413b557b824221aae
     provider: Sandpile.External.intersectionSecondMoment
-    approved: "2026-09-26"
+    approved: "2026-11-13"
 
   - id: cor-mean-localization
     version: 5

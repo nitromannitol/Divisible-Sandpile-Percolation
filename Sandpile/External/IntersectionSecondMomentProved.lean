@@ -574,6 +574,6 @@ end Sandpile
 /-- **The second intersection estimate holds**; it is no longer an assumption. -/
 theorem Sandpile.External.intersectionSecondMoment : Sandpile.External.IntersectionSecondMoment := by
   intro d hd
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   exact Sandpile.lintegral_interCount_sq_le hd
 -- FROZEN-STATEMENT-END

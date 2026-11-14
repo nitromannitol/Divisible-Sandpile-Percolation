@@ -43,7 +43,7 @@ theorem Sandpile.Frozen.high_tail
           C * (Real.log t) ^ (1 / min γ ((d : ℝ) / 2))
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   obtain ⟨a, b, ha, hab, hev⟩ := htail
   have hb : 0 < b := lt_of_lt_of_le ha hab
   obtain ⟨s₁, hs₁⟩ := hev.exists_forall_of_atTop

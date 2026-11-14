@@ -50,7 +50,7 @@ theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
 -- FROZEN-STATEMENT-END
 := by
   classical
-  haveI := hprob
+  have := hprob
   -- The mean-zero and variance hypotheses are the standing ones of the section
   -- and are not used: the concentration lemma centres by the actual mean, and
   -- the bound does not see the variance.
@@ -89,7 +89,7 @@ theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
         (Sandpile.avg^[m] fun x => Sandpile.odometerOf ζ 0 x -
           ∫ ζ', Sandpile.odometerOf ζ' 0 0 ∂(LatticeProb.iidLaw d ν)) 0 ≤ -s} = ∅ := by
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_le, hzero ζ]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le, hzero ζ]
       linarith
     rw [hempty]
     simp
@@ -107,7 +107,7 @@ theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
           ≤ C₁ * (m : ℝ) ^ (((4 : ℝ) - d) / 2) :=
       le_trans (Sandpile.sum_smoothedCoeff_sq_le m n hsummable htail2) htail3
     obtain ⟨i₀, hi₀⟩ := Sandpile.exists_smoothedCoeff_ne_zero (d := d) hd1 m n hn
-    haveI : Nonempty (Fin (Sandpile.boxFinset (0 : Sandpile.Site d) (m + n)).card) := ⟨i₀⟩
+    have : Nonempty (Fin (Sandpile.boxFinset (0 : Sandpile.Site d) (m + n)).card) := ⟨i₀⟩
     have hi₀pos : 0 < Sandpile.smoothedCoeff d m n 0
         (Sandpile.siteEnum (Sandpile.boxFinset (0 : Sandpile.Site d) (m + n)) i₀) :=
       lt_of_le_of_ne (Sandpile.smoothedCoeff_nonneg m n 0 _) (Ne.symm hi₀)
@@ -186,9 +186,9 @@ theorem Sandpile.Frozen.dgt4_smoothed_odometer_tail
               (Sandpile.boxFinset (0 : Sandpile.Site d) (m + n)) m n 0 η
               ∂(Measure.pi fun _ => ν)|} := by
       intro ζ hζ
-      simp only [Set.mem_setOf_eq] at hζ
+      simp only [Set.mem_ofPred_eq] at hζ
       rw [Sandpile.avg_iterate_sub_const hd1 m _ _ 0] at hζ
-      simp only [Set.mem_preimage, Set.mem_setOf_eq]
+      simp only [Set.mem_preimage, Set.mem_ofPred_eq]
       rw [hmean', Sandpile.scenerySmoothed_pick (subset_refl _) ζ]
       refine le_trans ?_ (neg_le_abs _)
       linarith

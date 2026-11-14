@@ -188,7 +188,8 @@ theorem fourier_gaussian_core_error_le {l : ℕ} (hl : 2 ≤ l) (z : Fin 4 → �
       norm_num
       ring1
     rw [heq, norm_mul, latticeCharacter_norm_eq_one]
-    convert hc using 1 <;> norm_num
+    convert hc using 1
+    norm_num
   have hpoint' : ∀ θ ∈ G, ‖f θ - g θ‖ ≤
       9216 / (l : ℝ) * Real.exp (-(l : ℝ) * (∑ i : Fin 4, θ i ^ 2) / 192) := by
     intro θ hθ
@@ -316,7 +317,7 @@ theorem corner_box_ae_eq_abs_ball {d : ℕ} {η : ℝ} :
     simp
   · apply Set.ext
     intro u
-    simp only [Set.mem_setOf_eq, Set.mem_Icc, Pi.le_def]
+    simp only [Set.mem_ofPred_eq, Set.mem_Icc, Pi.le_def]
     constructor
     · intro hu
       constructor <;> intro i
@@ -394,7 +395,7 @@ theorem antipode_corner_integral_sum_eq {d n : ℕ} (η : ℝ)
         (isCompact_Icc : IsCompact (Set.Icc (Real.pi - η) (Real.pi + η))))
       convert hcomp using 1
       ext θ
-      simp only [B, Set.mem_setOf_eq, Set.mem_Icc]
+      simp only [B, Set.mem_ofPred_eq, Set.mem_Icc]
       constructor
       · intro hθ i
         have hi := abs_le.mp (hθ i)
@@ -591,7 +592,7 @@ theorem torusIntegral_eq_origin_add_corner_add_residual {d n : ℕ} (hd : 1 ≤ 
     refine Set.disjoint_right.mpr ?_
     intro θ hθC hθG
     rcases Set.mem_iUnion.mp hθC with ⟨b, hb⟩
-    haveI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+    have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
     let i : Fin d := Classical.choice inferInstance
     by_cases hbi : b i
     · have hi := hb i
@@ -644,10 +645,6 @@ theorem corner_box_ae_eq_open {d : ℕ} {η : ℝ} (b : Fin d → Bool) :
     push Not at hθ
     exact Set.mem_iUnion.mpr ⟨hθ.choose, hθ.choose_spec⟩
   filter_upwards [hne] with θ hθ
-  change (∀ i, if b i then θ i ∈ Set.Ioc (Real.pi - η) Real.pi
-      else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + η)) =
-    (∀ i, if b i then θ i ∈ Set.Ioo (Real.pi - η) Real.pi
-      else θ i ∈ Set.Icc (-Real.pi) (-Real.pi + η))
   apply propext
   constructor <;> intro h i <;> by_cases hb : b i
   · have hi := h i
@@ -766,7 +763,7 @@ theorem fourierStepIntegrand_integral_shift_pi_eq {l : ℕ} (z : Fin 4 → ℤ) 
     simpa [tr, add_comm] using h
   have hpre : tr ⁻¹' B = G := by
     ext u
-    simp only [B, G, nearOriginBox, tr, Set.mem_preimage, Set.mem_setOf_eq,
+    simp only [B, G, nearOriginBox, tr, Set.mem_preimage, Set.mem_ofPred_eq,
       Pi.add_apply]
     constructor
     · intro h i

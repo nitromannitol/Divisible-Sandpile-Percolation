@@ -31,7 +31,7 @@ theorem Sandpile.Continuum.exists_isBrownian (d : ℕ) :
 -- FROZEN-STATEMENT-END
 := by
   obtain ⟨Ω₀, mΩ₀, P₀, C, hCm, hC⟩ := LatticeProb.exists_isBrownianReal
-  haveI : IsProbabilityMeasure P₀ := hC.isGaussianProcess.isProbabilityMeasure
+  have : IsProbabilityMeasure P₀ := hC.isGaussianProcess.isProbabilityMeasure
   refine ⟨Fin d → Ω₀, inferInstance, MeasureTheory.Measure.pi fun _ => P₀, inferInstance,
     fun x => LatticeProb.dimBrownian d C x, fun x => ?_⟩
   refine ⟨?_, ?_, ?_⟩

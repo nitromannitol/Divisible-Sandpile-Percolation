@@ -61,7 +61,7 @@ theorem Sandpile.Frozen.d4_diffusive_tightness
 -- FROZEN-STATEMENT-END
 := by
   have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
-  haveI := hprob
+  have := hprob
   have _hMeanZero := hmean
   have _hNondegenerate := hvar
   have hsq : MemLp (id : ℝ → ℝ) 2 ν :=

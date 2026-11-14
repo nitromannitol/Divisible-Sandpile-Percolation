@@ -57,7 +57,7 @@ theorem Sandpile.Frozen.dgt4_green_scenery_tail
             ENNReal.ofReal (C * Real.exp (-(c * s ^ min γ ((d : ℝ) / 2))))
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   -- The variance hypotheses are the standing ones of the section and are not
   -- used: the bound depends on the law only through its exponential moment and

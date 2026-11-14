@@ -155,7 +155,7 @@ theorem Sandpile.Frozen.brownian_optimal_stopping
     have hset : {s : ℝ≥0 | (s : ℝ) ≤ T ∧ M s ω = (fun t y => -h t y) (T - (s : ℝ)) (B x s ω)}
         = {s : ℝ≥0 | (s : ℝ) ≤ T ∧ h (T - (s : ℝ)) (B x s ω) + M s ω = 0} := by
       ext s
-      simp only [Set.mem_setOf_eq, and_congr_right_iff]
+      simp only [Set.mem_ofPred_eq, and_congr_right_iff]
       intro _
       constructor
       · intro hh; rw [hh]; ring

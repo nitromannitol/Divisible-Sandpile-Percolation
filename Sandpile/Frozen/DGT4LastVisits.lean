@@ -55,7 +55,7 @@ theorem lastVisitIndicator_eq_visitInd {d : ℕ} (i j : ℕ) (X : ℕ → Sandpi
     lastVisitIndicator i j X = Sandpile.visitInd i (j - i) X := by
   have hiff : (X ∈ {Y : ℕ → Sandpile.Site d | ∀ r : ℕ, i < r → r ≤ j → Y i ≠ Y r})
       ↔ Sandpile.relPath i X ∈ Sandpile.noRet d (j - i) := by
-    simp only [Set.mem_setOf_eq, Sandpile.noRet, Sandpile.relPath, Nat.add_zero, sub_self]
+    simp only [Set.mem_ofPred_eq, Sandpile.noRet, Sandpile.relPath, Nat.add_zero, sub_self]
     constructor
     · intro h s hs1 hs2
       have hij : i ≤ j := by
@@ -99,7 +99,7 @@ theorem Sandpile.Frozen.dgt4_last_visits
           Real.log (1 - (j : ℝ) / (n : ℝ))| ∂(Sandpile.walkLaw d 0) ≤ η
 -- FROZEN-STATEMENT-END
 := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   have hd3 : 3 ≤ d := by omega
   filter_upwards [Sandpile.lastVisit_eventually (d := d) hd3 hε.1 hε.2 hη] with n hn
   intro j hj

@@ -70,8 +70,8 @@ theorem Sandpile.Frozen.mean_localization
 -- FROZEN-STATEMENT-END
 := by
   have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
-  haveI := hprob
-  haveI : NeZero d := ⟨by omega⟩
+  have := hprob
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨-, -, C₀, c₀, hC₀, hc₀, hbnd⟩ := hHeatKernel d hd
   refine ⟨C₀, c₀, hC₀, hc₀, ?_⟩
   intro A hA R hR t htR x

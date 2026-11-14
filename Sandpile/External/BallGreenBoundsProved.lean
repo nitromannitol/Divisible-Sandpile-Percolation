@@ -1012,7 +1012,7 @@ box `LatticeProb.boxFinset 0 r`. -/
 private theorem box_eq_boxFinset (r : ℕ) :
     BallGreen.box r = (LatticeProb.boxFinset (0 : Sandpile.Site 4) r : Set (Sandpile.Site 4)) := by
   ext u
-  simp only [BallGreen.box, Set.mem_setOf_eq, Finset.mem_coe, LatticeProb.mem_boxFinset_iff,
+  simp only [BallGreen.box, Set.mem_ofPred_eq, Finset.mem_coe, LatticeProb.mem_boxFinset_iff,
     Pi.zero_apply, sub_zero]
   constructor
   · intro h i
@@ -1891,7 +1891,7 @@ theorem cutFieldShiftBound_of_farResidualBound (hfar : farResidualBound) : cutFi
       exact hu (LatticeProb.mem_ballFinset_iff.mpr (not_lt.mp hc))
     have hρlebigS : ρ ≤ bigS := by rw [hbigSdef]; linarith
     apply Set.indicator_of_notMem
-    simp only [Set.mem_setOf_eq, not_lt]
+    simp only [Set.mem_ofPred_eq, not_lt]
     linarith
   have hFzero : ∀ u : Sandpile.Site 4, u ∉ LatticeProb.ballFinset 4 bigS →
       Set.indicator {u : Sandpile.Site 4 | ρ ≤ BallGreen.latticeNorm u}
@@ -3179,7 +3179,7 @@ theorem stepToward_eq_dirVec {p y : Sandpile.Site 4} (hne : y ≠ p) :
     push Not at hc
     exact hne (funext hc)
   exact ⟨(h.choose, decide (y h.choose < p h.choose)), by
-    rw [stepToward, dif_pos h]⟩
+    rw [stepToward, dite_eq_left h]⟩
 
 /-- When `y ≠ p`, `stepToward p y` is `±` a coordinate unit vector. -/
 theorem stepToward_eq_unit_or_neg_unit {p y : Sandpile.Site 4} (hne : y ≠ p) :
@@ -3203,7 +3203,7 @@ theorem l1Norm_towardStep_add_one_eq {p y : Sandpile.Site 4} (hne : y ≠ p) :
   have hjne : y j ≠ p j := h.choose_spec
   have hstep : stepToward p y =
       LatticeProb.dirVec ((j, decide (y j < p j)) : LatticeProb.Dir 4) := by
-    rw [stepToward, dif_pos h]
+    rw [stepToward, dite_eq_left h]
   have hsplit : ∀ z : Sandpile.Site 4,
       l1Norm z = (z j).natAbs + ∑ i ∈ Finset.univ.erase j, (z i).natAbs := by
     intro z
@@ -3226,9 +3226,9 @@ theorem l1Norm_towardStep_add_one_eq {p y : Sandpile.Site 4} (hne : y ≠ p) :
     have hpb : (p - y) j = p j - y j := rfl
     rw [hpa, hpb, hv]
     by_cases hlt : y j < p j
-    · rw [if_pos hlt]
+    · rw [ite_eq_left hlt]
       omega
-    · rw [if_neg hlt]
+    · rw [ite_eq_right hlt]
       have hpy : p j < y j := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hjne)
       omega
   omega
@@ -3730,7 +3730,7 @@ theorem towardStep_mem_interval {p y : Sandpile.Site 4}
   have hj : y j ≠ p j := h.choose_spec
   have hstep : stepToward p y =
       LatticeProb.dirVec ((j, decide (y j < p j)) : LatticeProb.Dir 4) := by
-    rw [stepToward, dif_pos h]
+    rw [stepToward, dite_eq_left h]
   have hv : (stepToward p y) j = if y j < p j then (1 : ℤ) else -1 := by
     rw [hstep, dirVec_self_eq]
     by_cases hlt : y j < p j <;> simp [hlt]
@@ -3739,11 +3739,11 @@ theorem towardStep_mem_interval {p y : Sandpile.Site 4}
   · subst i
     rw [towardStep, Pi.add_apply, hv]
     by_cases hlt : y j < p j
-    · rw [if_pos hlt]
+    · rw [ite_eq_left hlt]
       have hlow := (hy j).1
       have hupp := (hy j).2
       constructor <;> omega
-    · rw [if_neg hlt]
+    · rw [ite_eq_right hlt]
       have hpy : p j < y j := lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hj)
       have hlow := (hy j).1
       have hupp := (hy j).2

@@ -64,8 +64,8 @@ theorem Sandpile.Frozen.dgt4_linearization
     Sandpile.External.intersectionSecondMoment
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have _besov := hBesov
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : NullSingletonClass ν := ⟨fun z => hatom z⟩
+  have : NeZero d := ⟨by omega⟩
+  have : NullSingletonClass ν := ⟨fun z => hatom z⟩
   have hκ : 0 < κ := by
     rcases hcase with ⟨-, hκ1⟩ | ⟨α, hα, -, -, hκ2⟩
     · rw [hκ1]; norm_num

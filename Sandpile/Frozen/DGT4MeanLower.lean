@@ -54,11 +54,11 @@ theorem Sandpile.Frozen.dgt4_mean_lower
     obtain ⟨hq0, hq1⟩ := hq
     obtain ⟨c, hc, t₀, hbnd⟩ := Sandpile.exists_mean_lower_uniform hd1 hd2 a q ha hq0 hq1
     refine ⟨c, hc, t₀, fun ν hprob hintν hmean _hnondeg htail t ht => ?_⟩
-    haveI := hprob
+    have := hprob
     rw [Sandpile.meanOdometer_eq d ν hd1 t]
     exact hbnd ν hprob hintν hmean htail t ht
   refine ⟨fun ν hprob hintν hmean hnondeg => ?_, hII⟩
-  haveI := hprob
+  have := hprob
   obtain ⟨a, ha, hpa⟩ := Sandpile.exists_left_tail_pos ν hintν hmean hnondeg
   obtain ⟨q, hqdef⟩ : ∃ x : ℝ, x = min 1 (ν (Set.Iic (-a))).toReal := ⟨_, rfl⟩
   have hq0 : 0 < q := by

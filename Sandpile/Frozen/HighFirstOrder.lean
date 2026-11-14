@@ -39,7 +39,7 @@ theorem Sandpile.Frozen.high_first_order
       c * (Real.log t) ^ ((2 : ℝ) / d) ≤ Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) t
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   have hv : 0 < (evariance (id : ℝ → ℝ) ν).toReal :=
     ENNReal.toReal_pos (ne_of_gt hvar) (ne_of_lt hvar')
   set ν₀ : ℝ := Real.sqrt (evariance (id : ℝ → ℝ) ν).toReal with hν₀def

@@ -24,7 +24,7 @@ theorem Sandpile.Frozen.four_first_order
           Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t) atTop (𝓝 1)
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   obtain ⟨c, C, hc, hC, t₀, hb, hlimit⟩ :=
     Sandpile.exists_critical_bounds_fixed_four ν hmean hvar hvar' θ₀ hθ₀ hexp
   exact hlimit

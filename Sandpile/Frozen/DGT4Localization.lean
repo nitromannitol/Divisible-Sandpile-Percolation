@@ -107,7 +107,7 @@ theorem Sandpile.Frozen.dgt4_localization
     _ = (LatticeProb.iidLaw d ν) (⋃ x ∈ K, E x) := by
       congr 1
       ext ζ
-      simp only [Set.mem_setOf_eq, Set.mem_iUnion, E, S]
+      simp only [Set.mem_ofPred_eq, Set.mem_iUnion, E, S]
       constructor <;> rintro ⟨x, hx, h⟩ <;> exact ⟨x, hx, h⟩
     _ ≤ ∑ x ∈ K, (LatticeProb.iidLaw d ν) (E x) := measure_biUnion_finset_le K E
     _ ≤ ∑ _x ∈ K, ENNReal.ofReal B := Finset.sum_le_sum hx

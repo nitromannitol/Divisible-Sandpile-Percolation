@@ -47,7 +47,7 @@ theorem Sandpile.Frozen.critical_toppling
     Sandpile.exists_critical_toppling_bound hVarScale hBerryEsseen d hd hd3 ν₀ M hν₀ a ha ha'
   refine ⟨c, C, hc, hC, ?_⟩
   intro ν hprob hmean hvar hvar' hint hν₀var hmom t L ht hL hLa
-  haveI := hprob
+  have := hprob
   have hne0 : evariance (id : ℝ → ℝ) ν ≠ 0 := ne_of_gt hvar
   have hnetop : evariance (id : ℝ → ℝ) ν ≠ ⊤ := ne_of_lt hvar'
   have hvarR : 0 < variance (id : ℝ → ℝ) ν := by

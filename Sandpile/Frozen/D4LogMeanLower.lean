@@ -23,5 +23,5 @@ theorem Sandpile.Frozen.d4_log_mean_lower
       c * Real.log t ≤ Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   exact Sandpile.exists_log_mean_lower_integrable_four ν hint hmean hnondeg

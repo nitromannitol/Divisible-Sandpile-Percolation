@@ -98,7 +98,7 @@ theorem Sandpile.Frozen.dgt4_level_shift_decoupling
   obtain ⟨c, hc, hdec⟩ := Sandpile.odometer_sublevel_decoupling hGreenHigh d hd θ₀ K₀ hθ₀
   refine ⟨c, 8 * (5 : ℝ) ^ d, hc, by positivity, ?_⟩
   intro ν hν hmean hvp hvf hexp hK t x₁ x₂ L r hL hr hsep s a ha _hs
-  haveI := hν
+  have := hν
   have hL₂ : 0 ≤ 2 * L := by linarith
   let K := fun x : Sandpile.Site d => Sandpile.realBoxFinset x (2 * L)
   let m := Sandpile.Frozen.DGT4LevelShiftDecoupling.meanOdometerOf d ν t

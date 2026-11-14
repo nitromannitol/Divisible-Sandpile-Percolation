@@ -159,8 +159,8 @@ theorem Sandpile.Frozen.dgt4_linearization_from_survival
   have hInter : Sandpile.External.IntersectionSecondMoment :=
     Sandpile.External.intersectionSecondMoment
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : NullSingletonClass ν := ⟨fun z => hatom z⟩
+  have : NeZero d := ⟨by omega⟩
+  have : NullSingletonClass ν := ⟨fun z => hatom z⟩
   have _hvar := hvar
   have hLp : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp measurable_id.aestronglyMeasurable).mp hvar'

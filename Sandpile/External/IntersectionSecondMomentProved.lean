@@ -116,7 +116,7 @@ theorem walkLaw_apply_two_site [NeZero d] (hd : 1 ≤ d) (x z w : Site d) (i m :
     rw [hFdef, hHdef]
     dsimp only [LatticeProb.shiftPath]
     by_cases h1 : X i = z <;> by_cases h2 : X (i + m) = w <;>
-      simp [h1, h2, Set.indicator, Set.mem_setOf_eq]
+      simp [h1, h2, Set.indicator]
   have hpathExpect : ∀ v : Site d, LatticeProb.pathExpect d F v = heatKernel d m v w := by
     intro v
     rw [LatticeProb.pathExpect, hFdef]
@@ -134,7 +134,7 @@ theorem walkLaw_apply_two_site [NeZero d] (hd : 1 ≤ d) (x z w : Site d) (i m :
     intro X
     rw [hpathExpect, hHdef]
     dsimp only
-    by_cases h : X i = z <;> simp [h, Set.indicator, Set.mem_setOf_eq]
+    by_cases h : X i = z <;> simp [h, Set.indicator]
   rw [funext hLHS, funext hRHS] at hmk
   rw [integral_const_mul] at hmk
   have hint1 : ∫ X, Set.indicator {X : ℕ → Site d | X i = z ∧ X (i + m) = w} (fun _ => (1 : ℝ)) X
@@ -173,7 +173,7 @@ theorem lintegral_localTime_mul_le [NeZero d] (hd : 3 ≤ d) (x z w : Site d) :
         = Set.indicator {X : ℕ → Site d | X i = z ∧ X i' = w} (fun _ => (1 : ℝ≥0∞)) := by
       funext X
       by_cases h1 : X i = z <;> by_cases h2 : X i' = w <;>
-        simp [h1, h2, Set.indicator, Set.mem_setOf_eq]
+        simp [h1, h2, Set.indicator]
     rw [heq, lintegral_indicator_const (measurableSet_path_eq_and i z i' w)]
     simp
   have hexpand : ∀ X : ℕ → Site d, localTime z X * localTime w X
@@ -190,7 +190,7 @@ theorem lintegral_localTime_mul_le [NeZero d] (hd : 3 ≤ d) (x z w : Site d) :
         = Set.indicator {X : ℕ → Site d | X i = z ∧ X i' = w} (fun _ => (1 : ℝ≥0∞)) from by
       funext X
       by_cases h1 : X i = z <;> by_cases h2 : X i' = w <;>
-        simp [h1, h2, Set.indicator, Set.mem_setOf_eq]]
+        simp [h1, h2, Set.indicator]]
     exact measurable_const.indicator (measurableSet_path_eq_and i z i' w)
   calc ∫⁻ X, localTime z X * localTime w X ∂(walkLaw d x)
       = ∫⁻ X, ∑' i : ℕ, ∑' i' : ℕ,

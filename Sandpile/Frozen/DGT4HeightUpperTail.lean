@@ -48,7 +48,7 @@ theorem Sandpile.Frozen.dgt4_height_upper_tail
 -- FROZEN-STATEMENT-END
 := by
   classical
-  haveI := hprob
+  have := hprob
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   have hd1 : 1 ≤ d := le_trans (by norm_num) hd
   have hdR : (5 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd

@@ -44,7 +44,7 @@ theorem Sandpile.Frozen.critical_mean_one
 := by
   classical
   have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
-  haveI := hprob
+  have := hprob
   have hne0 : evariance (id : ℝ → ℝ) ν ≠ 0 := ne_of_gt hvar
   have hnetop : evariance (id : ℝ → ℝ) ν ≠ ⊤ := ne_of_lt hvar'
   have hvarR : 0 < variance (id : ℝ → ℝ) ν := by
@@ -143,7 +143,7 @@ theorem Sandpile.Frozen.critical_mean_one
     have h2 : Sandpile.lowerTailRemainder d t ((t : ℝ) ^ δ) a ≤ Krate * (t : ℝ) ^ (-α) := by
       rw [Sandpile.lowerTailRemainder]
       by_cases hd2 : d = 2
-      · rw [if_pos hd2]
+      · rw [ite_eq_left hd2]
         refine Sandpile.log_power_rate_le ht1 (ε := (1 : ℝ) / 14) (w := (1 : ℝ) / 4)
           (by norm_num) (by norm_num) ?_ ?_ ?_ ?_
         · have e : (1 : ℝ) / ((1 : ℝ) / 14) = 14 := by norm_num
@@ -158,7 +158,7 @@ theorem Sandpile.Frozen.critical_mean_one
               = -((1 : ℝ) / 8) := by norm_num
           rw [e]
           linarith
-      · rw [if_neg hd2]
+      · rw [ite_eq_right hd2]
         refine Sandpile.log_power_rate_le ht1 (ε := (1 : ℝ) / 12) (w := (1 : ℝ) / 8)
           (by norm_num) (by norm_num) ?_ ?_ ?_ ?_
         · have e : (1 : ℝ) / ((1 : ℝ) / 12) = 12 := by norm_num

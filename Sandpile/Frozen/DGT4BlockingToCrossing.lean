@@ -76,7 +76,7 @@ theorem Sandpile.Frozen.dgt4_blocking_to_crossing
 -- FROZEN-STATEMENT-END
 := by
   classical
-  letI : NeZero d := ⟨by omega⟩
+  let : NeZero d := ⟨by omega⟩
   let i : Fin d := ⟨0, by omega⟩
   let D := LatticeProb.componentIn O (0 : Sandpile.Site d)
   have h0 : (0 : Sandpile.Site d) ∈ O := hS (by

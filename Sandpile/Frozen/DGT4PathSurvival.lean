@@ -98,7 +98,7 @@ theorem Sandpile.Frozen.dgt4_path_survival
                 εfun R
 -- FROZEN-STATEMENT-END
 := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   -- the Green bounds, the mean-zero hypothesis and the nondegeneracy of the one-site law
   -- are the standing hypotheses of the subsection; the two conclusions use only the
   -- atomlessness (through the Gaussian branch) and the finite variance.

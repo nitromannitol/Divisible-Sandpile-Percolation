@@ -74,7 +74,7 @@ theorem Sandpile.Frozen.d4_critical_level_percolation
   set n₀ : ℕ := max (max r₀ R₂) 2 with hn₀
   refine ⟨b₀ / 8, by positivity, max (16 * (A + 1) ^ 2) (n₀ ^ 2 * (A + 1)), ?_⟩
   intro ν hν hmean hvar hexpint hexp t ht
-  haveI := hν
+  have := hν
   set r : ℕ := ⌊Real.sqrt ((t : ℝ) / ((A : ℝ) + 1))⌋₊ with hr
   have hn₀r : n₀ ≤ r := Sandpile.le_floor_sqrt A t n₀ (le_trans (le_max_right _ _) ht)
   have hr₀r : r₀ ≤ r := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn₀r

@@ -86,7 +86,7 @@ theorem Sandpile.Frozen.finite_time_concentration_scale
               ∑' z : Sandpile.Site d, Sandpile.greenTime d n x z * Sandpile.greenTime d m y z)
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   refine ⟨fun _d _hd t x => Sandpile.odometerOf_convexOn t x, ?_, ?_, ?_⟩
   · intro _d _hd t x ζ η hsum
     exact Sandpile.abs_odometerOf_sub_le_l2 t x ζ η hsum

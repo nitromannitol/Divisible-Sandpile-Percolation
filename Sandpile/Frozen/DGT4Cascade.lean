@@ -114,7 +114,7 @@ theorem Sandpile.Frozen.dgt4_cascade
     (one_le_pow₀ (by norm_num))
   refine ⟨b, η, M, hb, hη, ?_⟩
   intro ν hν hmean hvp hvf hexp hK t hm n
-  haveI := hν
+  have := hν
   let m := Sandpile.Frozen.DGT4Cascade.meanOdometerOf d ν t
   have hmM : M ≤ m := hm
   have hm1 : 1 ≤ m := hM.trans hmM

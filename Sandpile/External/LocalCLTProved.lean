@@ -834,7 +834,7 @@ theorem torusBox_integral_split_three {d n : ℕ} (hd : 1 ≤ d) (η : ℝ)
   have hdisGA : Disjoint G A := by
     refine Set.disjoint_right.mpr ?_
     intro θ hθA hθG
-    haveI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+    have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
     let i : Fin d := Classical.choice inferInstance
     have htri : Real.pi ≤ |θ i| + |θ i - Real.pi| := by
       have h := abs_sub_le Real.pi (θ i) 0
@@ -921,7 +921,7 @@ theorem antipode_box_ae_eq_abs_box {d : ℕ} {η : ℝ} :
     simp
   · apply Set.ext
     intro u
-    simp only [Set.mem_setOf_eq, Set.mem_Icc, Pi.le_def]
+    simp only [Set.mem_ofPred_eq, Set.mem_Icc, Pi.le_def]
     constructor
     · intro hu
       constructor <;> intro i
@@ -1011,7 +1011,7 @@ theorem antipode_corner_sum_eq_integral {d n : ℕ} (η : ℝ)
         (isCompact_Icc : IsCompact (Set.Icc (Real.pi - η) (Real.pi + η))))
       convert hcomp using 1
       ext θ
-      simp only [B, Set.mem_setOf_eq, Set.mem_Icc]
+      simp only [B, Set.mem_ofPred_eq, Set.mem_Icc]
       constructor
       · intro hθ i
         have hi := abs_le.mp (hθ i)
@@ -2192,7 +2192,7 @@ theorem torusBox_integral_eq_two_mul_zero_add_remainder {d n : ℕ} (hd : 1 ≤ 
     refine Set.disjoint_right.mpr ?_
     intro θ hθK hθG
     rcases Set.mem_iUnion.mp hθK with ⟨b, hb⟩
-    haveI : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
+    have : Nonempty (Fin d) := ⟨⟨0, by omega⟩⟩
     let i : Fin d := Classical.choice inferInstance
     by_cases hbi : b i
     · have hi := hb i

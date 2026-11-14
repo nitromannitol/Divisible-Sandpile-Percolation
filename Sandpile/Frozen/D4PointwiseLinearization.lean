@@ -46,5 +46,5 @@ theorem Sandpile.Frozen.d4_pointwise_linearization
   have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
   have _ := hvar
   have _ := hvar'
-  haveI := hprob
+  have := hprob
   exact Sandpile.exists_pointwise_linearization_four hVarScale ν hmean θ hθ hexp

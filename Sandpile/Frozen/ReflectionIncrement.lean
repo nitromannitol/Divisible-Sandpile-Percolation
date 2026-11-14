@@ -51,8 +51,8 @@ theorem Sandpile.Frozen.reflection_increment
             ∂(Sandpile.centeredMassLaw d ν))
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
-  haveI : IsProbabilityMeasure (ν.map fun z => 1 + 2 * (d : ℝ) * z) :=
+  have := hprob
+  have : IsProbabilityMeasure (ν.map fun z => 1 + 2 * (d : ℝ) * z) :=
     inferInstance
   set μ : Measure ℝ := ν.map (fun z => 1 + 2 * (d : ℝ) * z) with hμ
   have hPeq : Sandpile.centeredMassLaw d ν = Sandpile.massLaw d μ := rfl

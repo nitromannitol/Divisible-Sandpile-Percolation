@@ -59,7 +59,7 @@ theorem Sandpile.Frozen.d4_superdiffusive_limit
 := by
   have hHeatKernel : Sandpile.External.HeatKernelBounds := Sandpile.External.heatKernelBounds
   have hVarScale : Sandpile.External.VarianceScale := Sandpile.External.varianceScale
-  haveI := hprob
+  have := hprob
   -- the moment hypotheses the two clauses consume, from the finite variance
   have hsqm : MemLp (id : ℝ → ℝ) 2 ν :=
     (evariance_lt_top_iff_memLp measurable_id.aestronglyMeasurable).mp hvar'

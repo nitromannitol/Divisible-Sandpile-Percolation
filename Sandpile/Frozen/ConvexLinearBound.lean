@@ -71,9 +71,9 @@ theorem Sandpile.Frozen.convex_linear_bound :
   obtain ⟨C₀, hC₀pos, hES⟩ := LatticeProb.exists_efron_stein_L2
   refine ⟨4 * C₀ + 1, by positivity, ?_⟩
   intro N ν hprob hmean hsq F hFm D hDm hconv hderiv b hDb L hL
-  haveI := hprob
+  have := hprob
   set π : Measure (Fin N → ℝ) := Measure.pi fun _ : Fin N => ν with hπ
-  haveI : IsProbabilityMeasure π := by rw [hπ]; infer_instance
+  have : IsProbabilityMeasure π := by rw [hπ]; infer_instance
   set a : Fin N → ℝ := fun i => ∫ η, D i η ∂π with hadef
   set c : ℝ := ∫ η, F η ∂π with hcdef
   -- the right-hand side is nonnegative
@@ -224,9 +224,9 @@ theorem Sandpile.Frozen.convex_linear_bound :
     rw [Real.norm_eq_abs]
     simp only [Pi.add_apply]
     by_cases hcase : L < |p.1 - p.2|
-    · rw [if_pos hcase, abs_of_nonneg (sq_nonneg _)]
+    · rw [ite_eq_left hcase, abs_of_nonneg (sq_nonneg _)]
       nlinarith [sq_nonneg (p.1 + p.2)]
-    · rw [if_neg hcase]
+    · rw [ite_eq_right hcase]
       simp only [abs_zero]
       nlinarith [sq_nonneg p.1, sq_nonneg p.2]
   have hp3 : ∀ i : Fin N, Integrable
@@ -331,13 +331,13 @@ theorem Sandpile.Frozen.convex_linear_bound :
               + (D i (Function.update q.1 i q.2) - a i) ^ 2) := by rw [sq_abs, sq_abs]
     rw [hGdiff, mul_pow]
     by_cases hcase : L < |q.1 i - q.2|
-    · rw [if_pos hcase]
+    · rw [ite_eq_left hcase]
       have h1' : (Δ - a i) ^ 2 ≤ b i ^ 2 := by
         nlinarith [habs2, abs_nonneg (Δ - a i), sq_abs (Δ - a i), hb0 i]
       have h2' : 0 ≤ 2 * L ^ 2 * ((D i q.1 - a i) ^ 2
           + (D i (Function.update q.1 i q.2) - a i) ^ 2) := by positivity
       nlinarith [sq_nonneg (q.1 i - q.2), h1', h2']
-    · rw [if_neg hcase, mul_zero, add_zero]
+    · rw [ite_eq_right hcase, mul_zero, add_zero]
       have hle : |q.1 i - q.2| ≤ L := not_lt.mp hcase
       have hsqle : (q.1 i - q.2) ^ 2 ≤ L ^ 2 := by
         nlinarith [abs_nonneg (q.1 i - q.2), sq_abs (q.1 i - q.2), hL.le]

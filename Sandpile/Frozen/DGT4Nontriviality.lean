@@ -66,7 +66,7 @@ theorem Sandpile.Frozen.dgt4_nontriviality
                         Sandpile.odometerOf ζ t x} (0 : Sandpile.Site d)).Infinite}
 -- FROZEN-STATEMENT-END
 := by
-  letI : NeZero d := ⟨by omega⟩
+  let : NeZero d := ⟨by omega⟩
   have hGreenHigh : Sandpile.External.GreenBoundsHigh := Sandpile.External.greenBoundsHigh
   obtain ⟨b, C, M, hb, hC, hM, hconn⟩ :=
     Sandpile.exists_odometer_origin_connection hBoundary hGreenHigh d hd θ₀ K₀ hθ₀
@@ -82,7 +82,7 @@ theorem Sandpile.Frozen.dgt4_nontriviality
   obtain ⟨t₂, ht₂⟩ := eventually_atTop.mp (hgrow.eventually_ge_atTop L)
   refine ⟨c₀ / 4, by positivity, max t₁ t₂, ?_⟩
   intro ν hν hmean hvarlow hvarfin hexp hK t ht
-  letI := hν
+  let := hν
   let m := ∫ ω, Sandpile.odometerOf ω t (0 : Sandpile.Site d) ∂(LatticeProb.iidLaw d ν)
   have hint := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexp
   have hlow : c₀ * (Real.log t) ^ ((2 : ℝ) / d) ≤ m := hmeanlower ν hν hint hmean

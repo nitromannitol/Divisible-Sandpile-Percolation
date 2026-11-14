@@ -75,7 +75,7 @@ theorem Sandpile.Frozen.critical_toppling_d4
   refine ⟨min cL cc, max (2 * CU) CC, lt_min hcL hcc,
     lt_of_lt_of_le hCC (le_max_right _ _), max tL 2, ?_⟩
   intro ν hprob hmean hvar hexpint hexp
-  haveI := hprob
+  have := hprob
   have hint := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     hint.abs.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => by

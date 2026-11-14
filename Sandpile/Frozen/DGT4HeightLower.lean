@@ -59,7 +59,7 @@ theorem Sandpile.Frozen.dgt4_height_lower
     Sandpile.exists_odometer_conc (d := d) hGreenHigh hd θ₀ K₀ hθ₀
   refine ⟨min c₁ c₂, C₂, lt_min hc₁ hc₂, hC₂, max t₀ 1, ?_⟩
   intro ν hprob hmean hvar hexpint hexp
-  haveI := hprob
+  have := hprob
   have hint : Integrable id ν := LatticeProb.integrable_id_of_exp_moment ν θ₀ hθ₀ hexpint
   have hpos : Integrable (fun z : ℝ => max z 0) ν :=
     Integrable.mono' hint.abs (measurable_id.max measurable_const).aestronglyMeasurable

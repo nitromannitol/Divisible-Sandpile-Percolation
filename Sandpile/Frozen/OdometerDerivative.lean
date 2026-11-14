@@ -46,11 +46,11 @@ theorem Sandpile.Frozen.odometer_derivative
 -- FROZEN-STATEMENT-END
 := by
   classical
-  haveI : ∀ x, IsProbabilityMeasure (ν x) := hprob
-  haveI : ∀ x, NullSingletonClass (ν x) := hatom
+  have : ∀ x, IsProbabilityMeasure (ν x) := hprob
+  have : ∀ x, NullSingletonClass (ν x) := hatom
   filter_upwards [Sandpile.ae_odometer_preactivation_ne_zero_pi (d := d) ν] with ζ hζ
   intro n _hn x z
-  simp only [Set.indicator, Set.mem_setOf_eq]
+  simp only [Set.indicator, Set.mem_ofPred_eq]
   have hI : (∫ X, ∑ j ∈ Finset.range n,
       (if X j = z then (1 : ℝ) else 0) *
         ∏ i ∈ Finset.range (j + 1),

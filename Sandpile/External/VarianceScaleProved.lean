@@ -37,8 +37,8 @@ theorem Sandpile.heatKernel_eq_srwHeat (d : ℕ) : ∀ (k : ℕ) (x y : Sandpile
       show (if x = y then (1 : ℝ) else 0) = LatticeProb.srwHeat d 0 (y - x)
       rw [LatticeProb.srwHeat_zero]
       by_cases h : x = y
-      · rw [if_pos h, if_pos (by rw [h]; ring)]
-      · rw [if_neg h, if_neg (fun hc => h (by linear_combination -hc))]
+      · rw [ite_eq_left h, ite_eq_left (by rw [h]; ring)]
+      · rw [ite_eq_right h, ite_eq_right (fun hc => h (by linear_combination -hc))]
   | succ k ih =>
       intro x y
       show (∑ i : Fin d, (Sandpile.heatKernel d k (x + LatticeProb.unit i) y

@@ -25,5 +25,5 @@ theorem Sandpile.Frozen.mean_growth_four
         Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) t ≤ C * Real.log t
 -- FROZEN-STATEMENT-END
 := by
-  haveI := hprob
+  have := hprob
   exact Sandpile.exists_log_mean_bounds_fixed_four ν hmean hvar hvar' θ₀ hθ₀ hexp

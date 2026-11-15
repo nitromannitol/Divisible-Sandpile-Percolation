@@ -1,13 +1,14 @@
 import Sandpile.MainTheorems
 import Sandpile.PercolationCorollaries
+import Sandpile.PercolationBoundaryCorollaries
 
 /-!
 # Axioms audit
 
 Building this module prints the axiom dependencies of the twelve main theorems of
-`Sandpile/MainTheorems.lean` and of the two variants of Theorems 1.1 and 1.2 in
-`Sandpile/PercolationCorollaries.lean`.  Each must report exactly the three standard
-foundational axioms of Mathlib: `propext`, `Classical.choice`, `Quot.sound`.
+`Sandpile/MainTheorems.lean` and of the variants of Theorems 1.1 and 1.2 in
+`Sandpile/PercolationCorollaries.lean` and `Sandpile/PercolationBoundaryCorollaries.lean`.
+Each must report exactly the three standard foundational axioms of Mathlib: `propext`, `Classical.choice`, `Quot.sound`.
 
 The results the paper cites without proof are not axioms here: each is a `Prop` in
 `Sandpile/External/` taken as an explicit hypothesis of the theorems that use it, so it
@@ -31,3 +32,7 @@ This file is not imported by the library root; the report runs when it is built 
 #print axioms Sandpile.high_nonconvergence
 #print axioms Sandpile.percolation_below_criticality'
 #print axioms Sandpile.critical_level_percolation'
+
+#print axioms Sandpile.External.exteriorBoundaryConnected_holds
+#print axioms Sandpile.percolation_below_criticality_without_exterior_boundary
+#print axioms Sandpile.critical_level_percolation_without_exterior_boundary

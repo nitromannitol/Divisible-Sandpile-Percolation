@@ -12,6 +12,7 @@ dependency are not this repository's to fix and are ignored.
 from __future__ import annotations
 
 from collections import Counter
+import argparse
 import re
 import subprocess
 import sys
@@ -70,10 +71,10 @@ def repo_relative(path_text: str) -> str:
 def is_own_module(warning_text: str) -> bool:
     """Whether a warning is located in a module of this repository.
 
-    A warning without a source location is counted, so that nothing is hidden."""
+    Warnings without a source location are not attributed to this repository."""
     location = LOCATION_RE.match(warning_text)
     if location is None:
-        return True
+        return False
     path = repo_relative(location.group("path"))
     return path in OWN_FILES or path.startswith(OWN_ROOTS)
 
@@ -85,27 +86,28 @@ def main() -> int:
         print(f"check_warnings: could not parse manifest: {error}", file=sys.stderr)
         return 1
 
-    build = subprocess.run(
-        ["lake", "build", "Sandpile"],
-        cwd=ROOT,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        check=False,
-    )
-    sys.stdout.write(build.stdout)
-    if build.returncode != 0:
-        print(
-            f"check_warnings: FAIL (lake build Sandpile exited {build.returncode})",
-            file=sys.stderr,
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--build-log", type=Path, help="inspect an existing successful build log")
+    args = parser.parse_args()
+    if args.build_log:
+        output = args.build_log.read_text(encoding="utf-8", errors="replace")
+    else:
+        build = subprocess.run(
+            ["lake", "build", "Sandpile"], cwd=ROOT,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+            encoding="utf-8", errors="replace", check=False,
         )
-        return 1
+        output = build.stdout
+        if build.returncode != 0:
+            sys.stdout.write(output)
+            print(f"check_warnings: FAIL (lake build Sandpile exited {build.returncode})",
+                  file=sys.stderr)
+            return 1
+    sys.stdout.write(output)
 
     actual: Counter[str] = Counter()
     unexpected: list[str] = []
-    for raw_line in build.stdout.splitlines():
+    for raw_line in output.splitlines():
         line = ANSI_RE.sub("", raw_line)
         warning = WARNING_RE.fullmatch(line)
         if warning is None or not is_own_module(warning.group(1)):

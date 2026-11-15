@@ -22,6 +22,7 @@ import Sandpile.External.ContinuumOptimalStopping
 import Sandpile.External.ContinuumRSW
 import Sandpile.External.CubeStoppingStability
 import Sandpile.External.ExteriorBoundaryConnected
+import Sandpile.External.ExteriorBoundaryConnectedProved
 import Sandpile.External.GaussianFourierProved
 import Sandpile.External.GaussianLawCovariance
 import Sandpile.External.GaussianLawCovarianceProved
@@ -971,6 +972,7 @@ import Sandpile.Support.ContSelfSimilarMoments
 import Sandpile.Support.ContSelfSimilarFromScaling
 import Sandpile.MainTheorems
 import Sandpile.PercolationCorollaries
+import Sandpile.PercolationBoundaryCorollaries
 
 /-!
 # The divisible sandpile percolation development

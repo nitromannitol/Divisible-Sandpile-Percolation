@@ -138,6 +138,13 @@ corresponding theorem of `Sandpile/MainTheorems.lean` (see [`DESIGN.md`](DESIGN.
 comparator checks each solution statement against its challenge, and the dependency closure
 against Mathlib.
 
+`Nontriviality/` and `CriticalLevels/` also have a `Corollary.lean`, outside the comparator
+configuration.  It restates the checked theorem without the hypothesis
+`External.BallOccupationDensity`, which it proves from the repository's
+`Sandpile.External.ballOccupationDensity_holds`: `SandpileAudit.percolation_below_criticality'`
+and `SandpileAudit.critical_level_percolation'`.  Every other hypothesis and the conclusion are
+those of the checked theorem.
+
 ## Reproducing The Checks
 
 The comparator configurations permit only

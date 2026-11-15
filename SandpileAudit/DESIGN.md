@@ -20,6 +20,14 @@ each pair has its own bridge under `SandpileAudit/Support/`.
   and the permitted axioms (`propext`, `Classical.choice`, `Quot.sound`), and
   enables the nanoda kernel.
 
+`Nontriviality/` and `CriticalLevels/` also have a file `Corollary.lean`, which the
+comparator does not read.  It imports the pair's `Solution.lean` and the repository's
+proof `Sandpile.External.ballOccupationDensity_holds`, proves the vocabulary's
+`External.BallOccupationDensity` from it through the pair's `Bridge.isBrownian_iff`, and
+restates the checked theorem without that one hypothesis
+(`SandpileAudit.percolation_below_criticality'`,
+`SandpileAudit.critical_level_percolation'`).
+
 ## 0. Solution architecture
 
 The comparator checks that the solution theorem has the same elaborated type

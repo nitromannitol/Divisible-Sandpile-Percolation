@@ -53,6 +53,14 @@ Mathlib-only vocabulary for the comparator (see [`SandpileAudit/`](SandpileAudit
 | Theorem 1.3(iii)(c), `thm:main-explosion` | `Sandpile.high_sobolev_limit` | `Sandpile.Frozen.high_sobolev_limit` | `SandpileAudit/HighSobolevLimit/` |
 | Theorem 1.3(iii)(d), `thm:main-explosion` | `Sandpile.high_nonconvergence` | `Sandpile.Frozen.high_nonconvergence` | `SandpileAudit/HighNonconvergence/` |
 
+Theorems 1.1 and 1.2 are also stated without the hypothesis
+`Sandpile.External.BallOccupationDensity`, which `Sandpile.External.ballOccupationDensity_holds`
+proves: `Sandpile.percolation_below_criticality'` and `Sandpile.critical_level_percolation'` in
+[`Sandpile/PercolationCorollaries.lean`](Sandpile/PercolationCorollaries.lean), with every other
+hypothesis and the conclusion as in `Sandpile/MainTheorems.lean`.  Their Mathlib-only
+counterparts are in `SandpileAudit/Nontriviality/Corollary.lean` and
+`SandpileAudit/CriticalLevels/Corollary.lean`.
+
 ## How the paper's objects are modelled
 
 | paper | Lean | where |

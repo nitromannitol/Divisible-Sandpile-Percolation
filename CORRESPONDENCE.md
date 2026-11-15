@@ -232,7 +232,7 @@ nothing for it.
 | `thm-d23-critical-level-percolation` | `External.LSSDomination` | Liggett-Schonmann-Stacey Corollary 1.4, cited at `sandpile.tex:2589` | hypothesis |
 | `thm-d23-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity` | the three inputs that `thm-limiting-odometer-crossing` carries | hypothesis: `ContinuumRSW`, `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` |
 | `thm-d23-critical-level-percolation` | `External.CubeStoppingStability` | the killed form of the stopping stability, which `rem-dlt4-killed-scaling` carries as well | hypothesis |
-| `lem-brownian-ball-localization` | `External.BrownianExitStep` | the strong Markov property of Brownian motion at the exit time of the ball, `sandpile.tex:1648-1686`; Mörters and Peres, *Brownian Motion*, Theorem 2.16 | hypothesis |
+| `lem-brownian-ball-localization` | `External.BrownianExitStep` | the strong Markov property of Brownian motion at the exit time of the ball, `sandpile.tex:1648-1686`; Mörters and Peres, *Brownian Motion*, Theorem 2.16 | hypothesis, proved: `Sandpile.External.brownianExitStep_holds` |
 
 `thm-critical-toppling` and the corollary that follows it are the nodes whose
 paper proof cites a work directly rather than through a display of
@@ -360,6 +360,7 @@ Lattice-Probability.
 | `External.GaussianLawDeterminedByCovariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` |
 | `External.PittGaussianFKG` | `Sandpile.External.pittGaussianFKG` |
 | `External.GaussianLipschitzConcentration` | `Sandpile.External.gaussianLipschitzConcentration` |
+| `External.BrownianExitStep`, the strong Markov step at the exit time of a ball | `Sandpile.External.brownianExitStep_holds` |
 | the existence of white noise on `ℝ^d`, on which every `IsWhiteNoise` statement is quantified | `Sandpile.Continuum.exists_isWhiteNoise` |
 | the existence of Brownian motion on `ℝ^d`, on which every `IsBrownian` statement is quantified | `Sandpile.Continuum.exists_isBrownian` |
 
@@ -487,7 +488,7 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 | `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `sandpile.tex:3575-3596`, `thm:d4-ball-green-crossing` | PROVED |
 | `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `sandpile.tex:3974-3985`, `lem-d4-exit-average-concentration` | PROVED |
 | `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `sandpile.tex:4023-4039`, `thm:d4-critical-level-percolation` | PROVED |
-| `ext-brownian-exit-step` | `Sandpile.External.BrownianExitStep` | sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16 | FROZEN |
+| `ext-brownian-exit-step` | `Sandpile.External.brownianExitStep_holds` | sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
 | `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
 

@@ -237,5 +237,6 @@ for a general continuous field it is false.  The proof also makes explicit the
 integrability that the strong Markov step needs.  The lemma's statement is
 unchanged.  In the formalization the strong Markov step is the cited input
 `Sandpile.External.BrownianExitStep`, stated for a field with an integrable
-envelope and with the value at the remaining horizon, and the monotonicity in the
+envelope and with the value at the remaining horizon and proved in the repository
+(`Sandpile.External.brownianExitStep_holds`), and the monotonicity in the
 horizon is the repository node `Sandpile.Frozen.brownian_value_mono_horizon`.

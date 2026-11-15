@@ -1072,15 +1072,14 @@ nodes:
     approved: "2026-09-27"
 
   - id: ext-brownian-exit-step
-    version: 3
-    kind: definition
-    source: sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16
-    file: Sandpile/External/BrownianExitStep.lean
-    export: Sandpile.External.BrownianExitStep
-    state: FROZEN
-    frozen_sha256: 0aeebcb64fe85fcf26ba084c7348e96e0d7b051d4efe54d997f2378258d8ade9
-    provider: Sandpile.External.BrownianExitStep
-    approved: "2026-09-27"
+    version: 4
+    kind: theorem
+    source: sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/BrownianExitStepProved.lean
+    export: Sandpile.External.brownianExitStep_holds
+    state: SEALED
+    frozen_sha256: 4828a213f9db8659a075a9fe640935c10a133e8b17b85720406a1be9308ead82
+    provider: Sandpile.External.brownianExitStep_holds
 
   - id: lem-brownian-value-mono-horizon
     version: 2

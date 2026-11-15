@@ -14,6 +14,7 @@ import Sandpile.External.BallGreenBoundsProved
 import Sandpile.External.BerryEsseen
 import Sandpile.External.ContStoppingStability
 import Sandpile.External.BrownianExitStep
+import Sandpile.External.BrownianExitStepProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.ContinuumOptimalStopping
 import Sandpile.External.ContinuumRSW

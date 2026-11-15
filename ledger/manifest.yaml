@@ -379,15 +379,14 @@ nodes:
     approved: "2026-09-14"
 
   - id: ext-rellich-kondrachov-negsobolev
-    version: 1
-    kind: definition
-    source: sandpile.tex:5642-5687 (RellichKondrachov compact Sobolev embedding, cited implicitly in the H-s-loc clause of lem:dgt4-linearization-from-survival)
-    file: Sandpile/External/RellichKondrachovNegSobolev.lean
-    export: Sandpile.External.RellichKondrachovNegSobolev
-    state: FROZEN
-    frozen_sha256: 30484f96851b0082e8ca2d7af6792dc10c73a39dc50c1dd74a2dd5f3b86c89f7
-    provider: Sandpile.External.RellichKondrachovNegSobolev
-    approved: "2026-09-16"
+    version: 2
+    kind: theorem
+    source: sandpile.tex:5642-5687 (RellichKondrachov compact Sobolev embedding, cited implicitly in the H-s-loc clause of lem:dgt4-linearization-from-survival); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/RellichKondrachovNegSobolevProved.lean
+    export: Sandpile.External.rellichKondrachovNegSobolev_holds
+    state: SEALED
+    frozen_sha256: daf6030341cf030c79bdf516799d63e29f9057341abe9b528b681ebda3a29c03
+    provider: Sandpile.External.rellichKondrachovNegSobolev_holds
 
   - id: ext-ball-occupation-density
     version: 3

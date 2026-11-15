@@ -48,6 +48,7 @@ import Sandpile.External.PittGaussianFKG
 import Sandpile.External.PittGaussianFKGProved
 import Sandpile.External.PlanarRSW
 import Sandpile.External.RellichKondrachovNegSobolev
+import Sandpile.External.RellichKondrachovNegSobolevProved
 import Sandpile.External.VarianceScale
 import Sandpile.External.VarianceScaleProved
 import Sandpile.Frozen.BrownianBallLocalization

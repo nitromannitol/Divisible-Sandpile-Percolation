@@ -10,6 +10,7 @@ import Sandpile.Frozen.HighFirstOrder
 import Sandpile.Frozen.HighTail
 import Sandpile.Frozen.HighSobolevLimit
 import Sandpile.Frozen.HighNonconvergence
+import Sandpile.External.LSSDominationProved
 import Sandpile.External.PittGaussianFKGProved
 import Sandpile.External.GaussianLipschitzConcentrationProved
 import Sandpile.External.NormalComparisonProved
@@ -38,7 +39,7 @@ inequality, the Besov tightness criterion of Furlan and Mourrat, the optimal-sto
 representation, the Gaussian-law-by-covariance fact, and Pinsker's inequality.  Of these, the
 first seven appear as explicit hypotheses of theorems below at earlier versions; since each is
 now proved unconditionally, no theorem here carries it as a hypothesis any longer.  The
-certified statements of Theorems 1.1 and 1.2 still carry Pitt's theorem, that of
+certified statements of Theorems 1.1 and 1.2 still carry LSS domination and Pitt's theorem, that of
 Theorem 1.3(iii)(c) Gaussian concentration, the normal comparison inequality and the Besov
 tightness criterion, and those of Theorems 1.3(ii)(c) and 1.3(iii)(d) the Besov tightness
 criterion; the theorems here supply the proofs.  The optimal-stopping representation is used,
@@ -91,7 +92,6 @@ universe u
 `Sandpile.Frozen.percolation_below_criticality`. -/
 theorem Sandpile.percolation_below_criticality
     (hRSW : Sandpile.External.PlanarRSW)
-    (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hOcc : Sandpile.External.BallOccupationDensity)
@@ -105,14 +105,13 @@ theorem Sandpile.percolation_below_criticality
     ∃ ρPlus ∈ Set.Ico ρ₀ 1, ∀ ρ ∈ Set.Ioo ρPlus 1,
       ∀ᵐ σ ∂(Sandpile.massLaw d (μ ρ)),
         Sandpile.HasInfiniteComponent (Sandpile.toppledSet σ) := by
-  exact Sandpile.Frozen.percolation_below_criticality hRSW hLSS hBoundary hRSWc
+  exact Sandpile.Frozen.percolation_below_criticality hRSW Sandpile.External.lssDomination hBoundary hRSWc
     Sandpile.External.pittGaussianFKG hOcc hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 
 /-- **Theorem 1.2** (`thm:main-critical-level-percolation`).  The certified statement is
 `Sandpile.Frozen.critical_level_percolation`. -/
 theorem Sandpile.critical_level_percolation
     (hRSW : Sandpile.External.PlanarRSW)
-    (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hOcc : Sandpile.External.BallOccupationDensity)
@@ -126,7 +125,7 @@ theorem Sandpile.critical_level_percolation
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} := by
-  exact Sandpile.Frozen.critical_level_percolation hRSW hLSS
+  exact Sandpile.Frozen.critical_level_percolation hRSW Sandpile.External.lssDomination
     hBoundary hRSWc Sandpile.External.pittGaussianFKG hOcc hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
 
 /-- **Theorem 1.3(i)(a)** (`thm:main-explosion`).  The certified statement is

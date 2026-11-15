@@ -21,7 +21,7 @@ open scoped NNReal ENNReal
 /-- Theorem 1.1 (`thm:main-nontriviality`). -/
 theorem percolation_below_criticality
     (hRSW : External.PlanarRSW)
-    (hLSS : External.LSSDomination)
+    (_hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hOcc : External.BallOccupationDensity)
@@ -37,7 +37,7 @@ theorem percolation_below_criticality
         HasInfiniteComponent (toppledSet σ) := by
   rw [Bridge.toppledSet_eq]
   exact Sandpile.percolation_below_criticality
-    (Bridge.planarRSW hRSW) (Bridge.lssDomination hLSS)
+    (Bridge.planarRSW hRSW)
     (Bridge.exteriorBoundaryConnected hBoundary) (Bridge.continuumRSW hRSWc)
     (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd μ hprob hmean ρ₀ ν₀ θ₀

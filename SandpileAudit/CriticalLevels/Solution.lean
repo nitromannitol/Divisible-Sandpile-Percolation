@@ -21,7 +21,7 @@ open scoped NNReal ENNReal
 /-- Theorem 1.2 (`thm:main-critical-level-percolation`). -/
 theorem critical_level_percolation
     (hRSW : External.PlanarRSW)
-    (hLSS : External.LSSDomination)
+    (_hLSS : External.LSSDomination)
     (hBoundary : External.ExteriorBoundaryConnected)
     (hRSWc : External.ContinuumRSW)
     (hOcc : External.BallOccupationDensity)
@@ -38,7 +38,7 @@ theorem critical_level_percolation
   rw [Bridge.odometer_eq]
   exact Sandpile.critical_level_percolation
     (Bridge.planarRSW hRSW)
-    (Bridge.lssDomination hLSS) (Bridge.exteriorBoundaryConnected hBoundary)
+    (Bridge.exteriorBoundaryConnected hBoundary)
     (Bridge.continuumRSW hRSWc)
     (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd ν₀ θ₀ K₀ hν₀ hθ₀

@@ -5,7 +5,7 @@ open Lake DSL
 package «divisible_sandpile» where
 
 require «lattice-probability» from git
-  "https://github.com/nitromannitol/Lattice-Probability.git" @ "6128aa3885ba8df454cdc7855df1ea14a15c1f79"
+  "https://github.com/nitromannitol/Lattice-Probability.git" @ "751040ea092fcf9ae7de4edb7e4f89af4c5291ec"
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @ "065356127b1dc0016f66b7283ce0ce2c4055aa55"

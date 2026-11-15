@@ -15,9 +15,9 @@ The two theorems below restate Theorems 1.1 and 1.2 without that hypothesis.  Ev
 hypothesis, quantifier and conclusion is the one in `Sandpile/MainTheorems.lean`, in the same
 order.  Compared with the certified statements `Sandpile.Frozen.percolation_below_criticality`
 and `Sandpile.Frozen.critical_level_percolation`, the hypotheses
-`Sandpile.External.PittGaussianFKG` and `Sandpile.External.BallOccupationDensity` are removed;
-both are proved in this repository.  The cited inputs `Sandpile.External.PlanarRSW`,
-`Sandpile.External.LSSDomination`, `Sandpile.External.ExteriorBoundaryConnected`,
+`Sandpile.External.PittGaussianFKG`, `Sandpile.External.LSSDomination` and
+`Sandpile.External.BallOccupationDensity` are removed; all are proved in this repository.
+The cited inputs `Sandpile.External.PlanarRSW`, `Sandpile.External.ExteriorBoundaryConnected`,
 `Sandpile.External.ContinuumRSW` and `Sandpile.External.CubeStoppingStability` remain
 hypotheses.
 -/
@@ -31,7 +31,6 @@ proves.  The other hypotheses and the conclusion are those of
 `Sandpile.percolation_below_criticality`. -/
 theorem Sandpile.percolation_below_criticality'
     (hRSW : Sandpile.External.PlanarRSW)
-    (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hCube : Sandpile.External.CubeStoppingStability)
@@ -44,7 +43,7 @@ theorem Sandpile.percolation_below_criticality'
     ∃ ρPlus ∈ Set.Ico ρ₀ 1, ∀ ρ ∈ Set.Ioo ρPlus 1,
       ∀ᵐ σ ∂(Sandpile.massLaw d (μ ρ)),
         Sandpile.HasInfiniteComponent (Sandpile.toppledSet σ) :=
-  Sandpile.percolation_below_criticality hRSW hLSS hBoundary hRSWc
+  Sandpile.percolation_below_criticality hRSW hBoundary hRSWc
     Sandpile.External.ballOccupationDensity_holds hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀
     hvar hexpint hexp
 
@@ -54,7 +53,6 @@ proves.  The other hypotheses and the conclusion are those of
 `Sandpile.critical_level_percolation`. -/
 theorem Sandpile.critical_level_percolation'
     (hRSW : Sandpile.External.PlanarRSW)
-    (hLSS : Sandpile.External.LSSDomination)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hCube : Sandpile.External.CubeStoppingStability)
@@ -67,5 +65,5 @@ theorem Sandpile.critical_level_percolation'
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} :=
-  Sandpile.critical_level_percolation hRSW hLSS hBoundary hRSWc
+  Sandpile.critical_level_percolation hRSW hBoundary hRSWc
     Sandpile.External.ballOccupationDensity_holds hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀

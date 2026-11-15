@@ -198,7 +198,6 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
-| `Sandpile.External.ContinuumBesovTightness` (`hBesov`) | tightness criterion in `H^{−s}_loc` for a jointly measurable field, from covariance bounds | Furlan and Mourrat, Theorem 2.30 (`p = q = 2`) | Theorems 1.3(ii)(c), 1.3(iii)(c), 1.3(iii)(d) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
 The inputs `MultivariateBerryEsseen` and `RellichKondrachovNegSobolev` are hypotheses of
@@ -214,13 +213,14 @@ determination of a centred Gaussian law by its covariance, Pinsker's inequality,
 intersection moment of two independent walks, the local central limit theorem, its paired
 dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982),
 Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov),
-the normal comparison inequality (Li and Shao, Corollary 2.1), and the strong Markov property of
-Brownian motion at the exit time of a ball (Mörters and Peres, *Brownian Motion*, Theorem 2.16),
-and the finite-range percolation consequence of LSS domination
+the normal comparison inequality (Li and Shao, Corollary 2.1), the Besov tightness criterion,
+the strong Markov property of Brownian motion at the exit time of a ball
+(Mörters and Peres, *Brownian Motion*, Theorem 2.16), and the finite-range percolation
+consequence of LSS domination
 (`Sandpile.External.lssDomination`).
 The certified statements of Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry LSS
-domination and Pitt's theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration and the normal comparison
-inequality, as hypotheses; `Sandpile/MainTheorems.lean` discharges them. The certified statement
+domination and Pitt's theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration and the
+normal comparison inequality, as hypotheses; `Sandpile/MainTheorems.lean` discharges them. The certified statement
 of `lem:brownian-ball-localization` still carries the strong Markov step;
 `Sandpile.brownian_ball_localization` (`Sandpile/External/BrownianExitStepProved.lean`) is the
 same statement without it.

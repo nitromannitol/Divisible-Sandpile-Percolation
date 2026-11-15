@@ -32,10 +32,14 @@ certified statement carries no hypothesis for it.  `HeatKernelBounds` and
 `VarianceScale` are each proved unconditionally in this repository
 (`Sandpile.External.heatKernelBounds`, `Sandpile.External.varianceScale`), so
 neither is carried as a hypothesis by the certified statement, and this
-challenge carries neither either.
+challenge carries neither either.  `ContinuumBesovTightness` (the Besov
+tightness criterion; Furlan and Mourrat, Theorem 2.30) is also proved
+unconditionally in this repository
+(`Sandpile.External.continuumBesovTightness_holds`); the certified statement
+still carries it as a hypothesis, `Sandpile.four_sobolev` discharges it, and
+this challenge does not carry it.  The remaining cited result is restated in
+the vocabulary as the same hypothesis the certified statement carries.
 
-* `External.ContinuumBesovTightness`: the Besov tightness criterion (Furlan and
-  Mourrat, Theorem 2.30);
 * `External.MembraneScalingLimitFour`: the scaling limit of the four-dimensional
   membrane model (Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra,
   Theorem 3.11).
@@ -1182,7 +1186,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(ii)(c) (`thm:main-explosion`). -/
 theorem four_sobolev
-    (hBesov : External.ContinuumBesovTightness (Site 4 → ℝ))
     (hMembrane : External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)

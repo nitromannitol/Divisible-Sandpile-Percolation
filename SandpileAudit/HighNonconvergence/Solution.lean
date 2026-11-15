@@ -20,8 +20,7 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(d) (`thm:main-explosion`). -/
 theorem high_nonconvergence
-    (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : External.ContinuumBesovTightness (Site d → ℝ)) :
+    (d : ℕ) (hd : 5 ≤ d) :
     ∃ ν : Measure ℝ, IsProbabilityMeasure ν ∧ ∀ [_i : IsProbabilityMeasure ν],
       (∫ z, z ∂ν = 0) ∧ variance id ν = 1 ∧
       (∃ p : ℝ → ℝ, ContDiff ℝ (⊤ : ℕ∞) p ∧ (∀ z : ℝ, 0 < p z) ∧
@@ -52,7 +51,6 @@ theorem high_nonconvergence
             Continuum.TendstoInNegSobolev d s (centeredMassLaw d ν)
               (Continuum.diffusiveFluctuation (centeredMassLaw d ν) T) K := by
   rw [Bridge.diffusiveFluctuation_eq]
-  exact Sandpile.high_nonconvergence
-    d hd (Bridge.continuumBesovTightness _ hBesov)
+  exact Sandpile.high_nonconvergence d hd
 
 end SandpileAudit

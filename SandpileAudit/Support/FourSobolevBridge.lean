@@ -76,11 +76,6 @@ theorem membraneDefect_eq :
 
 /-! ### The cited results -/
 
-theorem continuumBesovTightness (Ω : Type*) [MeasurableSpace Ω]
-    (h : SandpileAudit.External.ContinuumBesovTightness Ω) :
-    Sandpile.External.ContinuumBesovTightness Ω :=
-  h
-
 theorem membraneScalingLimitFour (h : SandpileAudit.External.MembraneScalingLimitFour) :
     Sandpile.External.MembraneScalingLimitFour := by
   unfold SandpileAudit.External.MembraneScalingLimitFour at h

@@ -1,4 +1,5 @@
 import Sandpile.External.RellichKondrachovNegSobolev
+import Sandpile.External.ContinuumBesovTightnessProved
 import Sandpile.Frozen.DGT4LinearizationFromSurvival
 import LatticeProb.Analysis.Sobolev.RellichConvolvedCompact
 
@@ -17,8 +18,9 @@ test functions on `D` through a uniformly chosen mollifier.
 
 The `Prop` and its name are left untouched, so no frozen statement changes.
 `Sandpile.dgt4_linearization_from_survival` is `lem:dgt4-linearization-from-survival` without the
-hypothesis `Sandpile.External.RellichKondrachovNegSobolev`; the Besov tightness criterion
-`Sandpile.External.ContinuumBesovTightness` remains a hypothesis.
+hypothesis `Sandpile.External.RellichKondrachovNegSobolev` and without the Besov tightness criterion
+`Sandpile.External.ContinuumBesovTightness`, which `Sandpile.External.continuumBesovTightness_holds`
+proves.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -33,12 +35,12 @@ theorem Sandpile.External.rellichKondrachovNegSobolev_holds :
 -- FROZEN-STATEMENT-END
 := LatticeProb.Sobolev.rellichKondrachovNegSobolev_holds
 
-/-- `lem:dgt4-linearization-from-survival` without the hypothesis
-`Sandpile.External.RellichKondrachovNegSobolev`, which
-`Sandpile.External.rellichKondrachovNegSobolev_holds` proves. -/
+/-- `lem:dgt4-linearization-from-survival` without the hypotheses
+`Sandpile.External.ContinuumBesovTightness` and `Sandpile.External.RellichKondrachovNegSobolev`,
+which `Sandpile.External.continuumBesovTightness_holds` and
+`Sandpile.External.rellichKondrachovNegSobolev_holds` prove. -/
 theorem Sandpile.dgt4_linearization_from_survival
     (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hatom : ∀ z : ℝ, ν {z} = 0) (hmean : ∫ z, z ∂ν = 0)
     (hvar : 0 < evariance (id : ℝ → ℝ) ν) (hvar' : evariance (id : ℝ → ℝ) ν < ⊤)
@@ -89,6 +91,7 @@ theorem Sandpile.dgt4_linearization_from_survival
                           ∑ j ∈ Finset.range ⌊R ^ 2 * T⌋₊,
                             q R j * (Sandpile.avg^[j] (Sandpile.scenery d σ)) x) φ)}).toReal)
               atTop (𝓝 0) :=
-  Sandpile.Frozen.dgt4_linearization_from_survival d hd hBesov
+  Sandpile.Frozen.dgt4_linearization_from_survival d hd
+    (Sandpile.External.continuumBesovTightness_holds _)
     Sandpile.External.rellichKondrachovNegSobolev_holds ν hatom hmean hvar hvar' T hT q hq
     hsurvival hcov

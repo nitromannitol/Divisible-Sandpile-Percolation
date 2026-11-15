@@ -21,7 +21,6 @@ open scoped NNReal ENNReal
 /-- Theorem 1.3(iii)(c) (`thm:main-explosion`). -/
 theorem high_sobolev_limit
     (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : External.ContinuumBesovTightness (Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤) :
     (∀ v : ℝ≥0, ν = gaussianReal 0 v →
@@ -48,7 +47,6 @@ theorem high_sobolev_limit
                       meanOdometer (centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
   rw [Bridge.meanOdometer_eq, Bridge.odometer_eq]
-  exact Sandpile.high_sobolev_limit
-    d hd (Bridge.continuumBesovTightness _ hBesov) ν hmean hvar hvar'
+  exact Sandpile.high_sobolev_limit d hd ν hmean hvar hvar'
 
 end SandpileAudit

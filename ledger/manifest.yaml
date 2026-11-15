@@ -476,15 +476,14 @@ nodes:
     approved: "2026-09-19"
 
   - id: ext-continuum-besov-tightness
-    version: 3
-    kind: definition
-    source: sandpile.tex:1703-1707 (FurlanMourrat Theorem 2.30 at p=q=2, covariance form, with the Besov-Sobolev identification)
-    file: Sandpile/External/ContinuumBesovTightness.lean
-    export: Sandpile.External.ContinuumBesovTightness
-    state: FROZEN
-    frozen_sha256: a8ad3690aff8f0523ac2530b309d5a64fe004e773a1bb2fb967de96b45776dce
-    provider: Sandpile.External.ContinuumBesovTightness
-    approved: "2026-11-12"
+    version: 4
+    kind: theorem
+    source: sandpile.tex:1703-1707 (FurlanMourrat Theorem 2.30 at p=q=2, covariance form, with the Besov-Sobolev identification); a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/ContinuumBesovTightnessProved.lean
+    export: Sandpile.External.continuumBesovTightness_holds
+    state: SEALED
+    frozen_sha256: 1eb1cd0532c4b8cdf45feef46adc74cc3a14c26c7f80b2c12ff6c7f77ddc460d
+    provider: Sandpile.External.continuumBesovTightness_holds
 
   - id: thm-rw
     version: 3

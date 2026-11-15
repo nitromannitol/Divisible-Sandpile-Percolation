@@ -59,22 +59,23 @@ library theorem carries, restated in the vocabulary.
 | `MeanGrowthFour/` | none |
 | `FourFirstOrder/` | none |
 | `FourGaussian/` | none |
-| `FourSobolev/` | `ContinuumBesovTightness`, `MembraneScalingLimitFour` |
+| `FourSobolev/` | `MembraneScalingLimitFour` |
 | `HighFirstOrder/` | none |
 | `HighTail/` | none |
-| `HighSobolevLimit/` | `ContinuumBesovTightness` |
-| `HighNonconvergence/` | `ContinuumBesovTightness` |
+| `HighSobolevLimit/` | none |
+| `HighNonconvergence/` | none |
 
 Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
 `IntersectionSecondMoment`, `LocalCLT`, `PairedLocalCLTFour` and
 `BallGreenBounds`, are proved unconditionally in the repository
 (`Sandpile/External/*Proved.lean`; see `ASSUMPTIONS.md`) rather than assumed;
 none of the twelve certified statements, and so none of the challenges above,
-carries any of the seven as a hypothesis.  Three more, `PittGaussianFKG`,
-`GaussianLipschitzConcentration` and `NormalComparison`, are proved
-unconditionally in the same way.
-The certified statements of `Nontriviality/`, `CriticalLevels/` and
-`HighSobolevLimit/` still carry them as hypotheses; the theorems of
+carries any of the seven as a hypothesis.  Four more, `PittGaussianFKG`,
+`GaussianLipschitzConcentration`, `NormalComparison` and
+`ContinuumBesovTightness`, are proved unconditionally in the same way.
+The certified statements of `Nontriviality/`, `CriticalLevels/`,
+`FourSobolev/`, `HighSobolevLimit/` and `HighNonconvergence/` still carry them
+as hypotheses; the theorems of
 `Sandpile/MainTheorems.lean` discharge them, and the challenges above do not
 carry them.
 

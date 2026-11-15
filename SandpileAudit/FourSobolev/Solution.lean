@@ -20,7 +20,6 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(ii)(c) (`thm:main-explosion`). -/
 theorem four_sobolev
-    (hBesov : External.ContinuumBesovTightness (Site 4 → ℝ))
     (hMembrane : External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -55,7 +54,7 @@ theorem four_sobolev
                             meanOdometer (centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))} ≤
                   ENNReal.ofReal ε := by
   rw [Bridge.meanOdometer_eq, Bridge.odometer_eq]
-  exact Sandpile.four_sobolev (Bridge.continuumBesovTightness _ hBesov)
-    (Bridge.membraneScalingLimitFour hMembrane) ν hmean hvar hvar' θ₀ hθ₀ hexp T hT s hs
+  exact Sandpile.four_sobolev (Bridge.membraneScalingLimitFour hMembrane) ν hmean hvar hvar'
+    θ₀ hθ₀ hexp T hT s hs
 
 end SandpileAudit

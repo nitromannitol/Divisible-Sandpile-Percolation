@@ -32,11 +32,12 @@ certified statement carries no hypothesis for it.  `IntersectionSecondMoment`
 and `LocalCLT` are each proved unconditionally in this repository
 (`Sandpile.External.intersectionSecondMoment`, `Sandpile.External.localCLT`),
 so neither is carried as a hypothesis by the certified statement, and this
-challenge does not carry either.  The remaining cited result is restated in
-the vocabulary as the same hypothesis the certified statement carries.
-
-* `External.ContinuumBesovTightness`: the Besov tightness criterion (Furlan and
-  Mourrat, Theorem 2.30).
+challenge does not carry either.  `ContinuumBesovTightness` (the Besov
+tightness criterion; Furlan and Mourrat, Theorem 2.30) is also proved
+unconditionally in this repository
+(`Sandpile.External.continuumBesovTightness_holds`); the certified statement
+still carries it as a hypothesis, `Sandpile.high_nonconvergence` discharges
+it, and this challenge does not carry it.
 
 ## Presentation deltas
 
@@ -1180,8 +1181,7 @@ open scoped NNReal ENNReal
 
 /-- Theorem 1.3(iii)(d) (`thm:main-explosion`). -/
 theorem high_nonconvergence
-    (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : External.ContinuumBesovTightness (Site d → ℝ)) :
+    (d : ℕ) (hd : 5 ≤ d) :
     ∃ ν : Measure ℝ, IsProbabilityMeasure ν ∧ ∀ [_i : IsProbabilityMeasure ν],
       (∫ z, z ∂ν = 0) ∧ variance id ν = 1 ∧
       (∃ p : ℝ → ℝ, ContDiff ℝ (⊤ : ℕ∞) p ∧ (∀ z : ℝ, 0 < p z) ∧

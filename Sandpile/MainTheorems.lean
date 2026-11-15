@@ -13,6 +13,7 @@ import Sandpile.Frozen.HighNonconvergence
 import Sandpile.External.PittGaussianFKGProved
 import Sandpile.External.GaussianLipschitzConcentrationProved
 import Sandpile.External.NormalComparisonProved
+import Sandpile.External.ContinuumBesovTightnessProved
 
 /-!
 # Main results
@@ -26,24 +27,25 @@ critical growth and scaling theorem (`thm:main-explosion`) as they are registere
 
 Each theorem below restates its certified counterpart in `Sandpile/Frozen/` and is proved by
 `exact` of it, so the statements displayed in this file are the certified ones, except that
-Theorems 1.1, 1.2 and 1.3(iii)(c) omit hypotheses of their certified counterparts that are
-now proved in this repository (see below).  The hypotheses whose types are named
-`Sandpile.External.*` are results the paper cites without proof; they are assumed, not proved,
-and are listed with their statements in `ASSUMPTIONS.md`.
-Nine cited inputs are also proved in this repository (the files
-`Sandpile/External/*Proved.lean`): the `d ≥ 5` Green estimates, the finite-time variance scale,
-the heat-kernel bounds, Pitt's Gaussian FKG theorem, Gaussian concentration for a Lipschitz
-functional, the normal comparison inequality, the optimal-stopping representation, the
-Gaussian-law-by-covariance fact, and Pinsker's inequality.  Of these, the first six appear as
-explicit hypotheses of theorems below at earlier versions; since each is now proved
-unconditionally, no theorem here carries it as a hypothesis any longer.  The certified
-statements of Theorems 1.1 and 1.2 still carry Pitt's theorem, and that of Theorem 1.3(iii)(c)
-Gaussian concentration and the normal comparison inequality; the theorems here supply the
-proofs.  The optimal-stopping representation is used, and discharged the same way, inside the
-certified proofs of `thm:RW` and two lemmas that feed these theorems; it was never itself a
-hypothesis of a theorem in this file.  The Gaussian-law-by-covariance fact and Pinsker's
-inequality are used only inside the certified proofs and are not hypotheses of any theorem in
-this file either.
+Theorems 1.1, 1.2, 1.3(ii)(c), 1.3(iii)(c) and 1.3(iii)(d) omit hypotheses of their certified
+counterparts that are now proved in this repository (see below).  The hypotheses whose types
+are named `Sandpile.External.*` are results the paper cites without proof; they are assumed, not
+proved, and are listed with their statements in `ASSUMPTIONS.md`.
+Cited inputs proved in this repository (the files `Sandpile/External/*Proved.lean`) include
+the `d ≥ 5` Green estimates, the finite-time variance scale, the heat-kernel bounds, Pitt's
+Gaussian FKG theorem, Gaussian concentration for a Lipschitz functional, the normal comparison
+inequality, the Besov tightness criterion of Furlan and Mourrat, the optimal-stopping
+representation, the Gaussian-law-by-covariance fact, and Pinsker's inequality.  Of these, the
+first seven appear as explicit hypotheses of theorems below at earlier versions; since each is
+now proved unconditionally, no theorem here carries it as a hypothesis any longer.  The
+certified statements of Theorems 1.1 and 1.2 still carry Pitt's theorem, that of
+Theorem 1.3(iii)(c) Gaussian concentration, the normal comparison inequality and the Besov
+tightness criterion, and those of Theorems 1.3(ii)(c) and 1.3(iii)(d) the Besov tightness
+criterion; the theorems here supply the proofs.  The optimal-stopping representation is used,
+and discharged the same way, inside the certified proofs of `thm:RW` and two lemmas that feed
+these theorems; it was never itself a hypothesis of a theorem in this file.  The
+Gaussian-law-by-covariance fact and Pinsker's inequality are used only inside the certified
+proofs and are not hypotheses of any theorem in this file either.
 
 * `Sandpile.percolation_below_criticality`: for `d ≥ 2` and a family of laws `μ_ρ` of mean `ρ`
   with a uniform variance lower bound and a uniform exponential moment on `[ρ₀, 1)`, there is
@@ -242,7 +244,6 @@ theorem Sandpile.four_gaussian
 /-- **Theorem 1.3(ii)(c)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.four_sobolev`. -/
 theorem Sandpile.four_sobolev
-    (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site 4 → ℝ))
     (hMembrane : Sandpile.External.MembraneScalingLimitFour)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤)
@@ -276,8 +277,8 @@ theorem Sandpile.four_sobolev
                           (fun x => Sandpile.odometer σ ⌊R ^ α⌋₊ x -
                             Sandpile.meanOdometer (Sandpile.centeredMassLaw 4 ν) ⌊R ^ α⌋₊)))} ≤
                   ENNReal.ofReal ε := by
-  exact Sandpile.Frozen.four_sobolev hBesov hMembrane ν hmean hvar hvar'
-    θ₀ hθ₀ hexp T hT s hs
+  exact Sandpile.Frozen.four_sobolev (Sandpile.External.continuumBesovTightness_holds _)
+    hMembrane ν hmean hvar hvar' θ₀ hθ₀ hexp T hT s hs
 
 /-- **Theorem 1.3(iii)(a)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_first_order`. -/
@@ -319,7 +320,6 @@ theorem Sandpile.high_tail
 `Sandpile.Frozen.high_sobolev_limit`. -/
 theorem Sandpile.high_sobolev_limit
     (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ))
     (ν : Measure ℝ) [IsProbabilityMeasure ν]
     (hmean : ∫ z, z ∂ν = 0) (hvar : 0 < evariance id ν) (hvar' : evariance id ν < ⊤) :
     (∀ v : ℝ≥0, ν = gaussianReal 0 v →
@@ -346,13 +346,13 @@ theorem Sandpile.high_sobolev_limit
                       Sandpile.meanOdometer (Sandpile.centeredMassLaw d ν) ⌊T * R ^ 2⌋₊) φ)
               (Sandpile.Continuum.weightedMembraneCov d (variance id ν) (1 - 1 / α) T)) := by
   exact Sandpile.Frozen.high_sobolev_limit Sandpile.External.gaussianLipschitzConcentration
-    Sandpile.External.normalComparison d hd hBesov ν hmean hvar hvar'
+    Sandpile.External.normalComparison d hd (Sandpile.External.continuumBesovTightness_holds _) ν
+    hmean hvar hvar'
 
 /-- **Theorem 1.3(iii)(d)** (`thm:main-explosion`).  The certified statement is
 `Sandpile.Frozen.high_nonconvergence`. -/
 theorem Sandpile.high_nonconvergence
-    (d : ℕ) (hd : 5 ≤ d)
-    (hBesov : Sandpile.External.ContinuumBesovTightness (Sandpile.Site d → ℝ)) :
+    (d : ℕ) (hd : 5 ≤ d) :
     ∃ ν : Measure ℝ, IsProbabilityMeasure ν ∧ ∀ [_i : IsProbabilityMeasure ν],
       (∫ z, z ∂ν = 0) ∧ variance id ν = 1 ∧
       (∃ p : ℝ → ℝ, ContDiff ℝ (⊤ : ℕ∞) p ∧ (∀ z : ℝ, 0 < p z) ∧
@@ -382,4 +382,4 @@ theorem Sandpile.high_nonconvergence
               (Sandpile.Continuum.Space d → ℝ) → ℝ,
             Sandpile.Continuum.TendstoInNegSobolev d s (Sandpile.centeredMassLaw d ν)
               (Sandpile.Continuum.diffusiveFluctuation (Sandpile.centeredMassLaw d ν) T) K := by
-  exact Sandpile.Frozen.high_nonconvergence d hd hBesov
+  exact Sandpile.Frozen.high_nonconvergence d hd (Sandpile.External.continuumBesovTightness_holds _)

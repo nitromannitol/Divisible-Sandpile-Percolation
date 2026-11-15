@@ -17,8 +17,6 @@ equal to their counterparts, and the solution uses them definitionally.  What th
 * The definitions built on the recursive ones are proved equal to their counterparts by rewriting.
   These equalities are stated between the constants themselves, so that `rw` replaces every
   occurrence at once.
-* Each cited-result proposition of the vocabulary that the statement carries implies the
-  repository's, by the hypothesis itself or through the identifications above.
 -/
 
 namespace SandpileAudit.Bridge
@@ -49,12 +47,5 @@ theorem diffusiveFluctuation_eq :
   simp only [SandpileAudit.Continuum.diffusiveFluctuation,
     Sandpile.Continuum.diffusiveFluctuation, odometer_eq, meanOdometer_eq]
   rfl
-
-/-! ### The cited results -/
-
-theorem continuumBesovTightness (Ω : Type*) [MeasurableSpace Ω]
-    (h : SandpileAudit.External.ContinuumBesovTightness Ω) :
-    Sandpile.External.ContinuumBesovTightness Ω :=
-  h
 
 end SandpileAudit.Bridge

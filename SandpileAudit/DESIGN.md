@@ -47,8 +47,8 @@ and does not reach a recursive definition, is a token-for-token copy of its
 source over Mathlib types, and is definitionally equal to its counterpart.
 The solutions use these definitionally, with no rewriting: the `exact` that
 closes each solution, and the bridges of Section 3 that are proved by the
-hypothesis itself (`planarRSW`, `lssDomination`, `exteriorBoundaryConnected`,
-`continuumBesovTightness`), are checked by the kernel, which unfolds both sides.
+hypothesis itself (`planarRSW`, `lssDomination`, `exteriorBoundaryConnected`),
+are checked by the kernel, which unfolds both sides.
 
 ## 2. Recursive copies and structure copies
 

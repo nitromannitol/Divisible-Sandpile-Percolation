@@ -77,13 +77,13 @@ certified ones. The hypotheses listed are the cited results each theorem carries
 family of laws `μ_ρ` of mean `ρ`, with `Var_{μ_ρ} σ(0) ≥ ν₀²` and
 `E_{μ_ρ} e^{θ₀|σ(0)−ρ|} ≤ K₀` for `ρ ∈ [ρ₀, 1)`, there is `ρ₊ ∈ [ρ₀, 1)` such that for every
 `ρ ∈ (ρ₊, 1)` the toppled set contains an infinite component almost surely. Hypotheses:
-`PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`,
+`PlanarRSW`, `ExteriorBoundaryConnected`, `ContinuumRSW`,
 `BallOccupationDensity`, `CubeStoppingStability`.
 
 **Theorem 1.2 (critical level percolation, `thm:main-critical-level-percolation`).** There are
 `c > 0` and `t₀`, depending only on `d, ν₀, θ₀, K₀`, such that for every mean-one law with
 those bounds and every `t ≥ t₀`, `{x : u_t(x) > c h(t)}` contains an infinite component almost
-surely. Hypotheses: the same seven as Theorem 1.1.
+surely. Hypotheses: the same as Theorem 1.1.
 
 **Theorem 1.3(i) (`d ≤ 3`).**
 
@@ -186,16 +186,13 @@ arXiv version.
 ## Assumed literature inputs
 
 Results that the paper quotes from the literature are stated in Lean as propositions in
-`Sandpile/External/`. There are 12 such propositions that this repository does not prove, and
-every theorem whose proof uses one takes it as an explicit hypothesis, so the statement shows
-exactly which of them it rests on. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) lists all 12 with their
-verbatim Lean statements. Ten are hypotheses of the main theorems:
+`Sandpile/External/`. [`ASSUMPTIONS.md`](ASSUMPTIONS.md) records the frozen formulations;
+some of these now have proofs. The following inputs are used as hypotheses:
 
 | Hypothesis | Content | Source | Used by |
 | --- | --- | --- | --- |
 | `Sandpile.External.PlanarRSW` (`hRSW`) | Russo–Seymour–Welsh crossing comparison for symmetric positively associated planar site fields | Köhler-Schindler and Tassion, Theorem 1 and Comment 1 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumRSW` (`hRSWc`) | the same crossing comparison for symmetric positively associated continuous planar fields (superlevel sets) | Köhler-Schindler and Tassion, Theorem 1 and Comment 1 | Theorems 1.1, 1.2 |
-| `Sandpile.External.LSSDomination` (`hLSS`) | a planar stationary `k`-dependent site process with one-site density at least `1 − δ` has an infinite component almost surely | Liggett, Schonmann and Stacey (1997), Corollary 1.4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ExteriorBoundaryConnected` (`hBoundary`) | the exterior vertex boundary of a finite `*`-connected subset of `ℤ^d` is `*`-connected | Timár, Theorem 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
@@ -204,12 +201,12 @@ verbatim Lean statements. Ten are hypotheses of the main theorems:
 | `Sandpile.External.ContinuumBesovTightness` (`hBesov`) | tightness criterion in `H^{−s}_loc` for a jointly measurable field, from covariance bounds | Furlan and Mourrat, Theorem 2.30 (`p = q = 2`) | Theorems 1.3(ii)(c), 1.3(iii)(c), 1.3(iii)(d) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
-The other two, `MultivariateBerryEsseen` and `RellichKondrachovNegSobolev`, are hypotheses of
+The inputs `MultivariateBerryEsseen` and `RellichKondrachovNegSobolev` are hypotheses of
 intermediate statements in `Sandpile/Frozen/` only.
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
 hypothesis.
 
-Fourteen further results the paper cites without proof are **proved unconditionally in this
+Further results the paper cites without proof are **proved unconditionally in this
 repository** (`Sandpile/External/*Proved.lean`) and so are not carried as a hypothesis by any
 main theorem: the `d ≥ 5` Green-function estimates, the finite-time variance scale, the
 heat-kernel bounds, the discrete optimal-stopping representation of the odometer, the
@@ -218,9 +215,11 @@ intersection moment of two independent walks, the local central limit theorem, i
 dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982),
 Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov),
 the normal comparison inequality (Li and Shao, Corollary 2.1), and the strong Markov property of
-Brownian motion at the exit time of a ball (Mörters and Peres, *Brownian Motion*, Theorem 2.16).
-The certified statements of Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry Pitt's
-theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration and the normal comparison
+Brownian motion at the exit time of a ball (Mörters and Peres, *Brownian Motion*, Theorem 2.16),
+and the finite-range percolation consequence of LSS domination
+(`Sandpile.External.lssDomination`).
+The certified statements of Theorems 1.1 and 1.2 in `Sandpile/Frozen/` still carry LSS
+domination and Pitt's theorem, and that of Theorem 1.3(iii)(c) Gaussian concentration and the normal comparison
 inequality, as hypotheses; `Sandpile/MainTheorems.lean` discharges them. The certified statement
 of `lem:brownian-ball-localization` still carries the strong Markov step;
 `Sandpile.brownian_ball_localization` (`Sandpile/External/BrownianExitStepProved.lean`) is the

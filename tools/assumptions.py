@@ -54,7 +54,9 @@ def bridge_proof(n):
             block = text[opening.end():].split("\nend " + namespace, 1)[0]
             target = r"(?:" + re.escape(export) + "|" + re.escape(short) + r")"
             match = re.search(r"^theorem\s+(\w+)\s*:\s*" + target + r"\s*:=", block, re.M)
-            if match:
+            prefix = text[:opening.end()] + block[:match.start()] if match else ""
+            if (match and len(re.findall(r"^\s*namespace\b", prefix, re.M)) == 1
+                    and not re.search(r"^\s*(?:variable|variables|section)\b", prefix, re.M)):
                 return {"id": namespace + "." + match.group(1), "file": str(companion),
                         "unconditional_bridge": True}
     names = {re.escape(export), r"External\." + re.escape(short)}

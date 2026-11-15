@@ -390,15 +390,14 @@ nodes:
     approved: "2026-09-16"
 
   - id: ext-ball-occupation-density
-    version: 2
-    kind: definition
-    source: sandpile.tex:2101-2115 (the kernel of X_s, in the context of eq:dlt4-linear-gaussian-potential), sandpile.tex:2499-2503 (expected occupation density); Morters-Peres, Brownian Motion, Ch. 3, Green function of a ball, theorem number not verified
-    file: Sandpile/External/BallOccupationDensity.lean
-    export: Sandpile.External.BallOccupationDensity
-    state: FROZEN
-    frozen_sha256: 43a2ec07e5023f41b16b02cdc5cac64e18f410cffc6a9633360499f4b0d878d4
-    provider: Sandpile.External.BallOccupationDensity
-    approved: "2026-09-16"
+    version: 3
+    kind: theorem
+    source: sandpile.tex:2101-2115 (the kernel of X_s, in the context of eq:dlt4-linear-gaussian-potential), sandpile.tex:2499-2503 (expected occupation density); Morters-Peres, Brownian Motion, Ch. 3, Green function of a ball, theorem number not verified; a cited result, proved unconditionally in this repository from the shared library rather than assumed
+    file: Sandpile/External/BallOccupationDensityProved.lean
+    export: Sandpile.External.ballOccupationDensity_holds
+    state: SEALED
+    frozen_sha256: 0df63b53fe69f49f5fd75f72e653b57d9faef1e62d3a54bd161408444617670e
+    provider: Sandpile.External.ballOccupationDensity_holds
 
   - id: lem-recursion
     version: 3

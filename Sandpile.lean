@@ -11,6 +11,7 @@ import Sandpile.External.BPSH
 import Sandpile.External.BPSHProved
 import Sandpile.External.BallGreenBounds
 import Sandpile.External.BallGreenBoundsProved
+import Sandpile.External.BallOccupationDensityProved
 import Sandpile.External.BerryEsseen
 import Sandpile.External.ContStoppingStability
 import Sandpile.External.BrownianExitStep

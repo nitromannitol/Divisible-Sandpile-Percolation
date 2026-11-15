@@ -49,6 +49,12 @@ def bridge_proof(n):
     companion = source.with_name(source.stem + "Proved.lean")
     if (ROOT / companion).is_file():
         text = (ROOT / companion).read_text(encoding="utf-8")
+        top_level = re.search(r"^theorem\s+(" + re.escape(namespace) + r"\.\w+)\s*:\s*"
+                              + re.escape(export) + r"\s*:=", text, re.M)
+        if top_level and not re.search(r"^\s*(?:variable|variables|section|namespace)\b",
+                                       text[:top_level.start()], re.M):
+            return {"id": top_level.group(1), "file": str(companion),
+                    "unconditional_bridge": True}
         opening = re.search(r"^namespace\s+" + re.escape(namespace) + r"\s*$", text, re.M)
         if opening:
             block = text[opening.end():].split("\nend " + namespace, 1)[0]

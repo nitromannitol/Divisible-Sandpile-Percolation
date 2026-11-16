@@ -20,9 +20,8 @@ theorem Sandpile.percolation_below_criticality_without_exterior_boundary
     ∃ ρPlus ∈ Set.Ico ρ₀ 1, ∀ ρ ∈ Set.Ioo ρPlus 1,
       ∀ᵐ σ ∂(Sandpile.massLaw d (μ ρ)),
         Sandpile.HasInfiniteComponent (Sandpile.toppledSet σ) :=
-  Sandpile.percolation_below_criticality hRSW Sandpile.External.exteriorBoundaryConnected_holds hRSWc
-    Sandpile.External.ballOccupationDensity_holds hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀
-    hvar hexpint hexp
+  Sandpile.percolation_below_criticality hRSW hRSWc hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀
+    hρ₀ hν₀ hθ₀ hvar hexpint hexp
 
 /-- Theorem 1.2 without the proved ball occupation and exterior-boundary inputs. -/
 theorem Sandpile.critical_level_percolation_without_exterior_boundary
@@ -38,5 +37,4 @@ theorem Sandpile.critical_level_percolation_without_exterior_boundary
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} :=
-  Sandpile.critical_level_percolation hRSW Sandpile.External.exteriorBoundaryConnected_holds hRSWc
-    Sandpile.External.ballOccupationDensity_holds hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
+  Sandpile.critical_level_percolation hRSW hRSWc hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀

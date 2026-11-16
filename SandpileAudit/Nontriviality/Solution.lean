@@ -9,7 +9,7 @@ import SandpileAudit.Support.NontrivialityBridge
 The challenge module `SandpileAudit/Nontriviality/Challenge.lean` imports only Mathlib and states
 the theorem with one intentional `sorry`.  This solution imports the repository together with
 `SandpileAudit.Nontriviality.SolutionBasic`, a verbatim copy of the challenge's vocabulary, and
-proves the byte-identical statement from `Sandpile.percolation_below_criticality` through the
+proves the byte-identical statement from `Sandpile.Frozen.percolation_below_criticality` through the
 bridges in `SandpileAudit/Support/NontrivialityBridge.lean`.
 -/
 
@@ -36,10 +36,10 @@ theorem percolation_below_criticality
       ∀ᵐ σ ∂(massLaw d (μ ρ)),
         HasInfiniteComponent (toppledSet σ) := by
   rw [Bridge.toppledSet_eq]
-  exact Sandpile.percolation_below_criticality
-    (Bridge.planarRSW hRSW)
+  exact Sandpile.Frozen.percolation_below_criticality
+    (Bridge.planarRSW hRSW) Sandpile.External.lssDomination
     (Bridge.exteriorBoundaryConnected hBoundary) (Bridge.continuumRSW hRSWc)
-    (Bridge.ballOccupationDensity hOcc)
+    Sandpile.External.pittGaussianFKG (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd μ hprob hmean ρ₀ ν₀ θ₀
     K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 

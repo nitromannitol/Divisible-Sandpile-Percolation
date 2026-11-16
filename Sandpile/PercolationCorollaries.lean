@@ -4,22 +4,10 @@ import Sandpile.External.BallOccupationDensityProved
 /-!
 # Theorems 1.1 and 1.2 without the ball occupation density
 
-`Sandpile.percolation_below_criticality` (`thm:main-nontriviality`) and
-`Sandpile.critical_level_percolation` (`thm:main-critical-level-percolation`) in
-`Sandpile/MainTheorems.lean` take as a hypothesis the cited input
-`Sandpile.External.BallOccupationDensity`, the Green function of a Euclidean ball in
-occupation-density form.  This repository proves it as
-`Sandpile.External.ballOccupationDensity_holds`.
-
-The two theorems below restate Theorems 1.1 and 1.2 without that hypothesis.  Every other
-hypothesis, quantifier and conclusion is the one in `Sandpile/MainTheorems.lean`, in the same
-order.  Compared with the certified statements `Sandpile.Frozen.percolation_below_criticality`
-and `Sandpile.Frozen.critical_level_percolation`, the hypotheses
-`Sandpile.External.PittGaussianFKG`, `Sandpile.External.LSSDomination` and
-`Sandpile.External.BallOccupationDensity` are removed; all are proved in this repository.
-The cited inputs `Sandpile.External.PlanarRSW`, `Sandpile.External.ExteriorBoundaryConnected`,
-`Sandpile.External.ContinuumRSW` and `Sandpile.External.CubeStoppingStability` remain
-hypotheses.
+These corollaries retain the exterior-boundary hypothesis and discharge the ball occupation
+density input using `Sandpile.External.ballOccupationDensity_holds`. The main theorems also
+discharge both inputs. Compared with the certified statements in `Sandpile.Frozen`, the
+LSS domination and Pitt Gaussian FKG inputs are also supplied by proofs in this repository.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -27,8 +15,7 @@ open scoped NNReal ENNReal
 
 /-- **Theorem 1.1** (`thm:main-nontriviality`) without the hypothesis
 `Sandpile.External.BallOccupationDensity`, which `Sandpile.External.ballOccupationDensity_holds`
-proves.  The other hypotheses and the conclusion are those of
-`Sandpile.percolation_below_criticality`. -/
+proves.  The exterior-boundary hypothesis is retained for compatibility. -/
 theorem Sandpile.percolation_below_criticality'
     (hRSW : Sandpile.External.PlanarRSW)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
@@ -43,14 +30,13 @@ theorem Sandpile.percolation_below_criticality'
     ∃ ρPlus ∈ Set.Ico ρ₀ 1, ∀ ρ ∈ Set.Ioo ρPlus 1,
       ∀ᵐ σ ∂(Sandpile.massLaw d (μ ρ)),
         Sandpile.HasInfiniteComponent (Sandpile.toppledSet σ) :=
-  Sandpile.percolation_below_criticality hRSW hBoundary hRSWc
-    Sandpile.External.ballOccupationDensity_holds hCube d hd μ hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀
-    hvar hexpint hexp
+  Sandpile.Frozen.percolation_below_criticality hRSW Sandpile.External.lssDomination hBoundary hRSWc
+    Sandpile.External.pittGaussianFKG Sandpile.External.ballOccupationDensity_holds hCube d hd μ
+    hprob hmean ρ₀ ν₀ θ₀ K₀ hρ₀ hν₀ hθ₀ hvar hexpint hexp
 
 /-- **Theorem 1.2** (`thm:main-critical-level-percolation`) without the hypothesis
 `Sandpile.External.BallOccupationDensity`, which `Sandpile.External.ballOccupationDensity_holds`
-proves.  The other hypotheses and the conclusion are those of
-`Sandpile.critical_level_percolation`. -/
+proves.  The exterior-boundary hypothesis is retained for compatibility. -/
 theorem Sandpile.critical_level_percolation'
     (hRSW : Sandpile.External.PlanarRSW)
     (hBoundary : Sandpile.External.ExteriorBoundaryConnected)
@@ -65,5 +51,5 @@ theorem Sandpile.critical_level_percolation'
         ∀ᵐ σ ∂(Sandpile.massLaw d μ),
           Sandpile.HasInfiniteComponent
             {x | c * Sandpile.criticalScale d t < Sandpile.odometer σ t x} :=
-  Sandpile.critical_level_percolation hRSW hBoundary hRSWc
-    Sandpile.External.ballOccupationDensity_holds hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀
+  Sandpile.Frozen.critical_level_percolation hRSW Sandpile.External.lssDomination hBoundary hRSWc
+    Sandpile.External.pittGaussianFKG Sandpile.External.ballOccupationDensity_holds hCube d hd ν₀ θ₀ K₀ hν₀ hθ₀

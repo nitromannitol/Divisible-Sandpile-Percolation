@@ -9,7 +9,7 @@ import SandpileAudit.Support.CriticalLevelsBridge
 The challenge module `SandpileAudit/CriticalLevels/Challenge.lean` imports only Mathlib and states
 the theorem with one intentional `sorry`.  This solution imports the repository together with
 `SandpileAudit.CriticalLevels.SolutionBasic`, a verbatim copy of the challenge's vocabulary, and
-proves the byte-identical statement from `Sandpile.critical_level_percolation` through the bridges
+proves the byte-identical statement from `Sandpile.Frozen.critical_level_percolation` through the bridges
 in `SandpileAudit/Support/CriticalLevelsBridge.lean`.
 -/
 
@@ -36,11 +36,11 @@ theorem critical_level_percolation
           HasInfiniteComponent
             {x | c * criticalScale d t < odometer σ t x} := by
   rw [Bridge.odometer_eq]
-  exact Sandpile.critical_level_percolation
-    (Bridge.planarRSW hRSW)
+  exact Sandpile.Frozen.critical_level_percolation
+    (Bridge.planarRSW hRSW) Sandpile.External.lssDomination
     (Bridge.exteriorBoundaryConnected hBoundary)
     (Bridge.continuumRSW hRSWc)
-    (Bridge.ballOccupationDensity hOcc)
+    Sandpile.External.pittGaussianFKG (Bridge.ballOccupationDensity hOcc)
     (Bridge.cubeStoppingStability hCube) d hd ν₀ θ₀ K₀ hν₀ hθ₀
 
 end SandpileAudit

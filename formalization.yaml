@@ -14,9 +14,9 @@ project:
     determinism, Gaussian fluctuations and the membrane limit in dimension four, and
     the tail-determined growth, the weighted membrane limits and the
     non-convergence of the rescaled fluctuations in dimension at least five.
-    Sixteen results the paper cites from the literature are explicit
-    hypotheses of the theorems that use them, and ten further cited results
-    are proved. The twelve main theorems are independently checked by the
+    Some results the paper cites from the literature are explicit hypotheses;
+    others, including the multivariate Berry–Esseen comparison, are proved.
+    The twelve main theorems are independently checked by the
     SandpileAudit/ comparator pairs over a Mathlib-only vocabulary.
   authors:
     - "Ahmed Bou-Rabee"
@@ -60,12 +60,12 @@ status:
     (Theorem 1.2), and the ten parts of the critical growth and scaling
     theorem (Theorem 1.3), with the lemmas, propositions and corollaries
     behind them.  SCOPE BOUNDARY: 26 results the paper cites from the
-    literature are stated as propositions in Sandpile/External/.  12 of them
-    are explicit hypotheses of every theorem whose proof uses them and are
-    assumed, not proved; ASSUMPTIONS.md lists all 12 with their Lean
-    statements.  The other 14 are proved unconditionally here
-    (Sandpile/External/*Proved.lean), and none of the twelve main theorems
-    carries any of them as a hypothesis.  Not formalized: the proof-overview,
+    literature are stated as propositions in Sandpile/External/. Some are
+    explicit hypotheses of frozen statements; ASSUMPTIONS.md lists them and
+    identifies those also proved here. In particular,
+    Sandpile.External.multivariateBerryEsseen_holds proves the multivariate
+    Berry–Esseen comparison, and Sandpile.critical_toppling and
+    Sandpile.critical_mean_one discharge it. Not formalized: the proof-overview,
     related-work and open-problem subsections, the unlabelled remarks
     (including the nonpercolation remark at low mean, which quotes a Peierls
     argument of Fey, Meester and Redig), and the figures.  The main theorems are
@@ -425,12 +425,12 @@ alignment:
       lean: "Sandpile.External.*"
       module: "Sandpile.External"
       status: "literature-dependency"
-      note: "Explicit hypotheses of the theorems that use them; 12 propositions; listed in ASSUMPTIONS.md."
+      note: "Explicit hypotheses of the theorems that use them; listed in ASSUMPTIONS.md."
     - source: "Cited results proved here"
-      lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker,intersectionSecondMoment,localCLT,pairedLocalCLTFour,ballGreenBounds,pittGaussianFKG,gaussianLipschitzConcentration,normalComparison,brownianExitStep_holds}"
+      lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker,intersectionSecondMoment,localCLT,pairedLocalCLTFour,ballGreenBounds,pittGaussianFKG,gaussianLipschitzConcentration,normalComparison,brownianExitStep_holds,multivariateBerryEsseen_holds}"
       module: "Sandpile.External"
       status: "proved"
-      note: "14 propositions the paper cites without proof, proved unconditionally from the shared library Lattice-Probability; each is a PROVED or SEALED manifest node, and none is a hypothesis of a main theorem."
+      note: "Results the paper cites without proof, proved unconditionally in the formalization or its dependencies. Frozen statements may retain these as hypotheses, with proved alternatives available."
 
 acknowledgements: >-
   The paper is joint work with Christoforos Panagiotis.  Built on Lean 4,

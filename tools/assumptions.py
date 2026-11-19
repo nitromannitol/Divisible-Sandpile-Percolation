@@ -47,6 +47,8 @@ def bridge_proof(n):
     namespace, short = export.rsplit(".", 1)
     source = pathlib.Path(n["file"])
     companion = source.with_name(source.stem + "Proved.lean")
+    if not (ROOT / companion).is_file():
+        companion = source.with_name(short + "Proved.lean")
     if (ROOT / companion).is_file():
         text = (ROOT / companion).read_text(encoding="utf-8")
         top_level = re.search(r"^theorem\s+(" + re.escape(namespace) + r"\.\w+)\s*:\s*"

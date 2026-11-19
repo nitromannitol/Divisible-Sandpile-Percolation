@@ -200,8 +200,10 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
-The inputs `MultivariateBerryEsseen` and `RellichKondrachovNegSobolev` are hypotheses of
-intermediate statements in `Sandpile/Frozen/` only.
+The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
+`Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the
+`MultivariateBerryEsseen` hypothesis; `Sandpile.critical_toppling` and
+`Sandpile.critical_mean_one` discharge it using `Sandpile.External.multivariateBerryEsseen_holds`.
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
 hypothesis.
 
@@ -213,7 +215,8 @@ determination of a centred Gaussian law by its covariance, Pinsker's inequality,
 intersection moment of two independent walks, the local central limit theorem, its paired
 dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982),
 Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov),
-the normal comparison inequality (Li and Shao, Corollary 2.1), the Besov tightness criterion,
+the normal comparison inequality (Li and Shao, Corollary 2.1), the multivariate Berry–Esseen
+comparison for orthants (Raič, Theorem 1.1), the Besov tightness criterion,
 the strong Markov property of Brownian motion at the exit time of a ball
 (Mörters and Peres, *Brownian Motion*, Theorem 2.16), and the finite-range percolation
 consequence of LSS domination

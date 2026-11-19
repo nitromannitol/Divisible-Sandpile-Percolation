@@ -71,4 +71,20 @@ theorem cascade_probability_bound
     hE hL hA hB hEm hLm hAm hBm hbridge heq
   exact (mul_le_mul_of_nonneg_right hElarge measureReal_nonneg).trans hbridgeprob
 
+/-- When the intermediate event has positive probability, the division-free cascade
+implication yields the corresponding quotient bound. -/
+theorem cascade_probability_bound_div
+    (μ : Measure (Site 2 → ℝ)) [IsProbabilityMeasure μ] (hμ : IsAssociatedPlanarLaw μ)
+    {T C E L A B : Set (Site 2 → ℝ)}
+    (hC : IsUpperSet C) (hE : IsUpperSet E) (hL : IsUpperSet L)
+    (hA : IsUpperSet A) (hB : IsUpperSet B)
+    (hCm : MeasurableSet C) (hEm : MeasurableSet E) (hLm : MeasurableSet L)
+    (hAm : MeasurableSet A) (hBm : MeasurableSet B)
+    (hcover : T ⊆ C ∪ E) (hbridge : E ∩ L ⊆ A ∪ B) (heq : μ.real A = μ.real B)
+    {δ : ℝ} (hδ : δ ≤ 1) (hCsmall : μ.real C < δ)
+    (hTlarge : 1 - (1 - δ) ^ 2 ≤ μ.real T) (hLpos : 0 < μ.real L) :
+    δ ≤ (1 - (1 - μ.real A) ^ 2) / μ.real L := by
+  exact (le_div_iff₀ hLpos).2 (cascade_probability_bound μ hμ hC hE hL hA hB
+    hCm hEm hLm hAm hBm hcover hbridge heq hδ hCsmall hTlarge)
+
 end Sandpile.External.RSW

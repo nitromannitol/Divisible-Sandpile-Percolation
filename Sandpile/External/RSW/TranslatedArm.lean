@@ -83,4 +83,8 @@ theorem kstArm_shift_four_alpha (m : ℕ) (hsep : 5 * (m / 64) ≤ m / 12) :
     · push_cast
       omega
 
+/-- The rounded arm target is narrow enough for both translated arms at every scale. -/
+theorem five_arm_offsets_le_bridge_offset (m : ℕ) : 5 * (m / 64) ≤ m / 12 := by
+  omega
+
 end Sandpile.External.RSW

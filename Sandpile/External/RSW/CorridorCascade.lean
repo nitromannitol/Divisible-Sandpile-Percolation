@@ -64,4 +64,28 @@ theorem kstCorridor_cascade_probability (μ : Measure (Sym2 (Site 2) → Bool))
     hcover (hp₁.trans hp₂.symm) hδ hsmall hlarge
   rwa [hp₁] at hh
 
+/-- The quotient form of the cascade estimate when the intermediate quasi-crossing has
+positive probability. -/
+theorem kstCorridor_cascade_max (μ : Measure (Sym2 (Site 2) → Bool))
+    [IsProbabilityMeasure μ]
+    (ha : ∀ A B : Set (Sym2 (Site 2) → Bool), IsUpperSet A → IsUpperSet B →
+      MeasurableSet A → MeasurableSet B → μ.real A * μ.real B ≤ μ.real (A ∩ B))
+    (ht : ∀ v : Site 2, MeasurePreserving (fun ω : Sym2 (Site 2) → Bool =>
+      ω ∘ Sym2.map (fun z => z + v)) μ μ)
+    (n m k : ℕ) (hcover : KSTCorridorBridgeCover n m k)
+    (hpos : 0 < μ.real (kstQuasiCrossingEvent m k)) :
+    1 - Real.sqrt (1 - μ.real (kstQuasiCrossingEvent n m)) ≤
+      max (μ.real (kstQuasiCrossingEvent n k))
+        ((1 - (1 - μ.real (kstBridgeEvent m)) ^ 2) / μ.real (kstQuasiCrossingEvent m k)) := by
+  let δ := 1 - Real.sqrt (1 - μ.real (kstQuasiCrossingEvent n m))
+  have hδ : δ ≤ 1 := by dsimp [δ]; linarith [Real.sqrt_nonneg (1 - μ.real (kstQuasiCrossingEvent n m))]
+  have hlarge : 1 - (1 - δ) ^ 2 ≤ μ.real (kstQuasiCrossingEvent n m) := by
+    dsimp only [δ]
+    rw [sub_sub_cancel, Real.sq_sqrt (sub_nonneg.mpr measureReal_le_one)]
+    linarith
+  by_cases hsmall : μ.real (kstQuasiCrossingEvent n k) < δ
+  · have hh := kstCorridor_cascade_probability μ ha ht n m k hcover hδ hsmall hlarge
+    exact (le_div_iff₀ hpos).2 hh |>.trans (le_max_right _ _)
+  · exact (le_of_not_gt hsmall).trans (le_max_left _ _)
+
 end Sandpile.External.RSW

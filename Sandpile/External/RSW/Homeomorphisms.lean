@@ -133,4 +133,34 @@ theorem crossingComparisonIso_le_of_le_exponent {a b : ℝ} (ha : 0 < a) (hab : 
   exact (Real.rpow_le_rpow_of_exponent_ge' hbase0 hbase1 ha.le hab).trans
     (Real.rpow_le_rpow hbase0 hbase ha.le)
 
+/-- Doubling the exponent makes the comparison function at most the square of its previous
+value. -/
+theorem crossingComparisonIso_le_sq_of_two_mul_le {a b : ℝ} (ha : 0 < a) (hab : 2 * a ≤ b)
+    (x : Icc (0 : ℝ) 1) :
+    (crossingComparisonIso b (by linarith) x : ℝ) ≤
+      (crossingComparisonIso a ha x : ℝ) ^ 2 := by
+  have hb : 0 < b := by linarith
+  have hle : a ≤ b := by linarith
+  have hx0 : 0 ≤ 1 - (x : ℝ) := by linarith [x.property.2]
+  have hx1 : 1 - (x : ℝ) ≤ 1 := by linarith [x.property.1]
+  have hinv : b⁻¹ ≤ a⁻¹ := (inv_le_inv₀ hb ha).2 hle
+  have hroot : (1 - (x : ℝ)) ^ a⁻¹ ≤ (1 - (x : ℝ)) ^ b⁻¹ :=
+    Real.rpow_le_rpow_of_exponent_ge' hx0 hx1 (inv_pos.mpr hb).le hinv
+  have ha0 : 0 ≤ 1 - (1 - (x : ℝ)) ^ a⁻¹ :=
+    sub_nonneg.mpr (Real.rpow_le_one hx0 hx1 (inv_pos.mpr ha).le)
+  have ha1 : 1 - (1 - (x : ℝ)) ^ a⁻¹ ≤ 1 := by
+    linarith [Real.rpow_nonneg hx0 a⁻¹]
+  have hb0 : 0 ≤ 1 - (1 - (x : ℝ)) ^ b⁻¹ :=
+    sub_nonneg.mpr (Real.rpow_le_one hx0 hx1 (inv_pos.mpr hb).le)
+  have hbase : 1 - (1 - (x : ℝ)) ^ b⁻¹ ≤ 1 - (1 - (x : ℝ)) ^ a⁻¹ := by
+    linarith
+  rw [crossingComparisonIso_apply, crossingComparisonIso_apply]
+  calc
+    _ ≤ (1 - (1 - (x : ℝ)) ^ a⁻¹) ^ b := Real.rpow_le_rpow hb0 hbase hb.le
+    _ ≤ (1 - (1 - (x : ℝ)) ^ a⁻¹) ^ (2 * a) :=
+      Real.rpow_le_rpow_of_exponent_ge' ha0 ha1 (by positivity) hab
+    _ = _ := by
+      rw [mul_comm 2 a, Real.rpow_mul ha0]
+      exact Real.rpow_natCast _ 2
+
 end Sandpile.External.RSW

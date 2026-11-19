@@ -59,6 +59,21 @@ theorem prod_measureReal_le_biInter_of_upper (μ : Measure (Site 2 → ℝ))
     exact (mul_le_mul_of_nonneg_left ih measureReal_nonneg).trans
       (hμ (A i) (⋂ j ∈ s, A j) (hA i) hu (hAm i) hm)
 
+/-- If finitely many increasing events each have probability at least `p ≥ 0`, their
+intersection has probability at least `p` raised to the number of events. -/
+theorem pow_le_measureReal_biInter_of_upper (μ : Measure (Site 2 → ℝ))
+    [IsProbabilityMeasure μ] (hμ : IsAssociatedPlanarLaw μ)
+    {κ : Type*} (A : κ → Set (Site 2 → ℝ)) (hA : ∀ i, IsUpperSet (A i))
+    (hAm : ∀ i, MeasurableSet (A i)) (s : Finset κ) {p : ℝ} (hp : 0 ≤ p)
+    (hprob : ∀ i ∈ s, p ≤ μ.real (A i)) :
+    p ^ s.card ≤ μ.real (⋂ i ∈ s, A i) := by
+  classical
+  calc
+    p ^ s.card = ∏ _i ∈ s, p := by simp
+    _ ≤ ∏ i ∈ s, μ.real (A i) :=
+      Finset.prod_le_prod₀ (fun _ _ => hp) (fun i hi => hprob i hi)
+    _ ≤ _ := prod_measureReal_le_biInter_of_upper μ hμ A hA hAm s
+
 /-- Among finitely many increasing events, one has probability at least the square-root
 bound in terms of the probability of their union. -/
 theorem exists_measureReal_ge_sqrt_union (μ : Measure (Site 2 → ℝ))

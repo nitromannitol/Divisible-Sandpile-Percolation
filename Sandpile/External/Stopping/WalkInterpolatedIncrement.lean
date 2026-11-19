@@ -38,7 +38,7 @@ theorem linearWalk_increment_small (d : ℕ) (hd : 1 ≤ d) (ε η : ℝ)
     apply (div_le_iff₀ hRpos).2
     nlinarith
   have herror' : 1 / R + 1 / R ≤ ε / 2 := by
-    convert herror using 1 <;> ring
+    convert herror using 1; ring
   have hbound := hsmall R hR₁' H x (linearWalk R) τ σ hτ
     (linearWalk_grid_causal R) hτH hτσ
   apply le_trans (measure_mono_ae ?_) hbound

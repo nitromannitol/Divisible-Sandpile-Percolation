@@ -36,7 +36,7 @@ theorem tendstoInDistribution_walk_brownian_cumulative_intervals
   have hF : Continuous F := by
     apply continuous_pi
     intro p
-    apply continuous_finset_sum
+    apply continuous_finsetSum
     intro i _
     split_ifs
     · exact continuous_apply _

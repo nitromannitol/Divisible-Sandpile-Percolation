@@ -56,6 +56,25 @@ theorem sq_le_of_sqrt_mul_le {current previous : ℝ} (hcurrent : 0 < current)
     nlinarith
   nlinarith
 
+/-- A comparison across scales also settles the zero-probability closing case. -/
+theorem sq_le_of_sqrt_mul_le_of_scale (f : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1)
+    (current previous : Icc (0 : ℝ) 1) (hscale : f previous ≤ current)
+    (hclose : Real.sqrt (current : ℝ) * (previous : ℝ) ≤ current) :
+    (previous : ℝ) ^ 2 ≤ current := by
+  by_cases hpos : (0 : ℝ) < current
+  · exact sq_le_of_sqrt_mul_le hpos previous.property.1 hclose
+  · have hzero : current = ⊥ := by
+      apply Subtype.ext
+      change (current : ℝ) = 0
+      linarith [current.property.1]
+    have hprevious : previous = ⊥ := by
+      apply f.injective
+      rw [OrderIso.map_bot]
+      exact le_antisymm (hzero ▸ hscale) bot_le
+    rw [hprevious]
+    change (0 : ℝ) ^ 2 ≤ (current : ℝ)
+    simpa only [zero_pow (by norm_num : 2 ≠ 0)] using current.property.1
+
 /-- The final comparison at scale `n` follows from primal and dual square bounds
 and the bridge comparison at the last good scale. -/
 theorem kstScaleIso_closing (i : ℕ) (current previous dualCurrent dualPrevious : Icc (0 : ℝ) 1)

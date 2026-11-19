@@ -181,4 +181,16 @@ theorem kstScaleIso_succ_le_sq (i : ℕ) (x : Icc (0 : ℝ) 1) :
     nlinarith [pow_nonneg (by norm_num : (0 : ℝ) ≤ 2000) i]
   exact crossingComparisonIso_le_sq_of_two_mul_le (pow_pos (by norm_num) i) hpow x
 
+/-- The initial scale-indexed comparison function is the identity. -/
+theorem kstScaleIso_zero (x : Icc (0 : ℝ) 1) : kstScaleIso 0 x = x := by
+  apply Subtype.ext
+  simp [kstScaleIso, crossingComparisonIso_apply]
+
+/-- The scale-indexed comparison inequality is symmetric under interchange of the two
+complementary probabilities. -/
+theorem kstScaleIso_duality (i : ℕ) (x y : Icc (0 : ℝ) 1) :
+    kstScaleIso i (unitIntervalComplement y) ≤ x ↔
+      kstScaleIso i (unitIntervalComplement x) ≤ y :=
+  crossingComparison_duality ((2000 : ℝ) ^ i) (pow_pos (by norm_num) i) x y
+
 end Sandpile.External.RSW

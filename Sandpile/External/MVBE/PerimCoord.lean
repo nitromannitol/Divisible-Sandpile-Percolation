@@ -559,8 +559,7 @@ theorem perimCQ_le_density (h : ℝ) {t : ℝ} (ht : 0 < t) :
   refine mul_le_mul_of_nonneg_right ?_ hp
   linarith [perimC_sqrt_pi_le]
 
-/-- **(P3)**  `e2 ≤ 0.4432 t φ(h₊)`.  (The constant `0.443` of the feasibility study is false:
-for `h = 0`, `t → 0` the ratio tends to `√π/4 = 0.44311…`.) -/
+/-- **(P3)**  `e2 ≤ 0.4432 t φ(h₊)`. -/
 theorem perimCE2_le_density (h : ℝ) {t : ℝ} (ht : 0 < t) :
     perimCE2 h t ≤ (4432 / 10000 : ℝ) * (t * gaussianPDFReal 0 1 (max h 0)) := by
   refine (perimCE2_le_sqrtPi h ht).trans ?_
@@ -688,7 +687,7 @@ theorem perimCTail_le_mul_perimCU (h : ℝ) {t : ℝ} (ht : 0 < t) :
     _ ≤ 2 * (K * perimCU h t) := by linarith
     _ = 2 * K * perimCU h t := by ring
 
-/-- **(P5c), the form of the feasibility study.**
+/-- **(P5c).**
 `Φ̄(h) ≤ 3.2 (1 + 4 (1 + h₊)² t²) u`. -/
 theorem perimCTail_le_mul_perimCU_32 (h : ℝ) {t : ℝ} (ht : 0 < t) :
     perimCTail h ≤ (32 / 10 : ℝ) * (1 + 4 * (1 + max h 0) ^ 2 * t ^ 2) * perimCU h t := by

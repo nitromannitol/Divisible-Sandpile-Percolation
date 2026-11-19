@@ -380,7 +380,7 @@ theorem perimF_sub_le {m : ℕ} (h : Fin m → ℝ) {a b : ℝ} (hab : a ≤ b) 
   image_sub_le_mul_sub_of_deriv_le (perimF_differentiable h) (perimF_deriv_le_three h) hab
 
 
-/-- The same Lipschitz bound with the threshold `max m 2` of the packet statement. -/
+/-- The same Lipschitz bound with the threshold `max m 2`. -/
 theorem perimF_sub_le_max {m : ℕ} (h : Fin m → ℝ) {a b : ℝ} (hab : a ≤ b) :
     perimF h b - perimF h a ≤ (3 + √(2 * Real.log (max m 2 : ℕ))) * (b - a) := by
   refine (perimF_sub_le h hab).trans ?_

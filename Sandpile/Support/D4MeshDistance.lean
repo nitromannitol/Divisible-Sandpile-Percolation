@@ -78,3 +78,26 @@ theorem mesh_distance_sq_bounds (R : ℝ) (hR : 1 ≤ R) (u v : Space 4) :
     nlinarith
 
 end Sandpile.Support
+
+namespace Sandpile.Support
+
+open Sandpile Sandpile.Continuum
+
+/-- On a bounded set, the logarithm of the rescaled squared mesh distance has
+only a logarithmic singularity on the continuum diagonal. -/
+theorem abs_log_mesh_distance_le (R B : ℝ) (hR : 1 ≤ R)
+    (u v : Space 4) (hr : 0 < ‖u - v‖) (hB : ‖u - v‖ ≤ B) :
+    |Real.log ((1 + ∑ i : Fin 4,
+      (((⌊R * u i⌋ - ⌊R * v i⌋ : ℤ) : ℝ) ^ 2)) / R ^ 2)| ≤
+      Real.log (9 + 2 * B ^ 2) + Real.log 8 +
+        2 * max 0 (Real.log ‖u - v‖⁻¹) := by
+  have hdist := mesh_distance_sq_bounds R hR u v
+  dsimp only at hdist
+  have hupper : (1 + ∑ i : Fin 4,
+      (((⌊R * u i⌋ - ⌊R * v i⌋ : ℤ) : ℝ) ^ 2)) / R ^ 2 ≤ 9 + 2 * B ^ 2 := by
+    have : ‖u - v‖ ^ 2 ≤ B ^ 2 := by nlinarith [norm_nonneg (u - v)]
+    linarith [hdist.2]
+  exact abs_log_le_of_sq_div_le hr (by norm_num : (1 : ℝ) ≤ 8)
+    (by nlinarith [sq_nonneg B] : (1 : ℝ) ≤ 9 + 2 * B ^ 2) hdist.1 hupper
+
+end Sandpile.Support

@@ -75,4 +75,18 @@ theorem exists_openWalk_of_mem_support {Q : Finset (Site 2)} {ω : Sym2 (Site 2)
     exact he.elim (fun h => p.edges_takeUntil_subset_edges hx h)
       (fun h => p.edges_takeUntil_subset_edges hy h)
 
+/-- Two open walks meeting a third can be joined from the first starting vertex to the
+third ending vertex. -/
+theorem exists_openWalk_of_three_walks {Q : Finset (Site 2)} {ω : Sym2 (Site 2) → Bool}
+    {a b c d e f x y : Q} (p : (rectangleGraph Q).Walk a b)
+    (q : (rectangleGraph Q).Walk c d) (r : (rectangleGraph Q).Walk e f)
+    (hp : IsBondOpenWalk ω p) (hq : IsBondOpenWalk ω q) (hr : IsBondOpenWalk ω r)
+    (hx₁ : x ∈ p.support) (hx₂ : x ∈ q.support)
+    (hy₁ : y ∈ q.support) (hy₂ : y ∈ r.support) :
+    ∃ s : (rectangleGraph Q).Walk a f, IsBondOpenWalk ω s := by
+  obtain ⟨p', hp', _⟩ := exists_openWalk_of_mem_support p hp p.start_mem_support hx₁
+  obtain ⟨q', hq', _⟩ := exists_openWalk_of_mem_support q hq hx₂ hy₁
+  obtain ⟨r', hr', _⟩ := exists_openWalk_of_mem_support r hr hy₂ r.end_mem_support
+  exact ⟨(p'.append q').append r', (hp'.append hq').append hr'⟩
+
 end Sandpile.External.RSW

@@ -54,4 +54,62 @@ def crossingComparisonIso (a : ℝ) (ha : 0 < a) : Icc (0 : ℝ) 1 ≃o Icc (0 :
 theorem crossingComparisonIso_apply (a : ℝ) (ha : 0 < a) (x : Icc (0 : ℝ) 1) :
     (crossingComparisonIso a ha x : ℝ) = (1 - (1 - (x : ℝ)) ^ a⁻¹) ^ a := rfl
 
+/-- The map obtained by reflecting the value of the crossing comparison isomorphism. -/
+def crossingComparisonFlip (a : ℝ) (ha : 0 < a) (x : Icc (0 : ℝ) 1) : Icc (0 : ℝ) 1 :=
+  OrderDual.ofDual (unitIntervalReflect (crossingComparisonIso a ha x))
+
+/-- The reflected crossing comparison map is `1 - f_a`. -/
+theorem crossingComparisonFlip_apply (a : ℝ) (ha : 0 < a) (x : Icc (0 : ℝ) 1) :
+    (crossingComparisonFlip a ha x : ℝ) =
+      1 - (1 - (1 - (x : ℝ)) ^ a⁻¹) ^ a := rfl
+
+/-- The reflected crossing comparison map is an involution. -/
+theorem crossingComparisonFlip_involutive (a : ℝ) (ha : 0 < a) :
+    Function.Involutive (crossingComparisonFlip a ha) := by
+  intro x
+  apply Subtype.ext
+  simp only [crossingComparisonFlip_apply, sub_sub_cancel]
+  have hx0 : 0 ≤ 1 - (x : ℝ) := by linarith [x.property.2]
+  have hx1 : 1 - (x : ℝ) ≤ 1 := by linarith [x.property.1]
+  have hb : 0 ≤ 1 - (1 - (x : ℝ)) ^ a⁻¹ :=
+    sub_nonneg.mpr (Real.rpow_le_one hx0 hx1 (inv_pos.mpr ha).le)
+  rw [Real.rpow_rpow_inv hb ha.ne']
+  simp only [sub_sub_cancel]
+  rw [Real.rpow_inv_rpow hx0 ha.ne']
+  ring
+
+/-- Reflection of a point of the unit interval. -/
+def unitIntervalComplement (x : Icc (0 : ℝ) 1) : Icc (0 : ℝ) 1 :=
+  OrderDual.ofDual (unitIntervalReflect x)
+
+/-- The reflected comparison map reverses order. -/
+theorem crossingComparisonFlip_antitone (a : ℝ) (ha : 0 < a) :
+    Antitone (crossingComparisonFlip a ha) := by
+  intro x y hxy
+  change 1 - (crossingComparisonIso a ha y : ℝ) ≤
+    1 - (crossingComparisonIso a ha x : ℝ)
+  have hh : (crossingComparisonIso a ha x : ℝ) ≤ (crossingComparisonIso a ha y : ℝ) :=
+    (crossingComparisonIso a ha).monotone hxy
+  linarith
+
+/-- The comparison inequality is symmetric under interchange of the two complementary
+probabilities. -/
+theorem crossingComparison_duality (a : ℝ) (ha : 0 < a) (x y : Icc (0 : ℝ) 1) :
+    crossingComparisonIso a ha (unitIntervalComplement y) ≤ x ↔
+      crossingComparisonIso a ha (unitIntervalComplement x) ≤ y := by
+  have forward (u v : Icc (0 : ℝ) 1)
+      (h : crossingComparisonIso a ha (unitIntervalComplement v) ≤ u) :
+      crossingComparisonIso a ha (unitIntervalComplement u) ≤ v := by
+    have h₁ : unitIntervalComplement u ≤
+        crossingComparisonFlip a ha (unitIntervalComplement v) := by
+      change 1 - (u : ℝ) ≤ 1 - (crossingComparisonIso a ha (unitIntervalComplement v) : ℝ)
+      have h' : (crossingComparisonIso a ha (unitIntervalComplement v) : ℝ) ≤ (u : ℝ) := h
+      linarith
+    have h₂ := (crossingComparisonFlip_antitone a ha) h₁
+    rw [crossingComparisonFlip_involutive a ha] at h₂
+    change 1 - (v : ℝ) ≤ 1 - (crossingComparisonIso a ha (unitIntervalComplement u) : ℝ) at h₂
+    change (crossingComparisonIso a ha (unitIntervalComplement u) : ℝ) ≤ (v : ℝ)
+    linarith
+  exact ⟨forward x y, forward y x⟩
+
 end Sandpile.External.RSW

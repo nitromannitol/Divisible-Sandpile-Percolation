@@ -163,4 +163,22 @@ theorem crossingComparisonIso_le_sq_of_two_mul_le {a b : ℝ} (ha : 0 < a) (hab 
       rw [mul_comm 2 a, Real.rpow_mul ha0]
       exact Real.rpow_natCast _ 2
 
+/-- The scale-indexed comparison functions used in the quasi-crossing induction. -/
+def kstScaleIso (i : ℕ) : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1 :=
+  crossingComparisonIso ((2000 : ℝ) ^ i) (pow_pos (by norm_num) i)
+
+/-- The scale-indexed comparison functions decrease with their index. -/
+theorem kstScaleIso_antitone (i j : ℕ) (hij : i ≤ j) (x : Icc (0 : ℝ) 1) :
+    (kstScaleIso j x : ℝ) ≤ (kstScaleIso i x : ℝ) := by
+  exact crossingComparisonIso_le_of_le_exponent (pow_pos (by norm_num) i)
+    (pow_le_pow_right₀ (by norm_num) hij) x
+
+/-- The next scale-indexed comparison function is at most the square of the previous one. -/
+theorem kstScaleIso_succ_le_sq (i : ℕ) (x : Icc (0 : ℝ) 1) :
+    (kstScaleIso (i + 1) x : ℝ) ≤ (kstScaleIso i x : ℝ) ^ 2 := by
+  have hpow : 2 * (2000 : ℝ) ^ i ≤ (2000 : ℝ) ^ (i + 1) := by
+    rw [pow_succ]
+    nlinarith [pow_nonneg (by norm_num : (0 : ℝ) ≤ 2000) i]
+  exact crossingComparisonIso_le_sq_of_two_mul_le (pow_pos (by norm_num) i) hpow x
+
 end Sandpile.External.RSW

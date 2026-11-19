@@ -24,7 +24,8 @@ theorem heat_covariance_integral_bound_of_riesz (d : ℕ) (β : ℝ)
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, 0 < t → ∀ c : Space d × Space d → ℝ,
       Integrable (fun p => (f p.1 * f p.2 * heatKernel d t (p.1 - p.2)) * c p)
         (volume.prod volume) →
-      (∀ᵐ p ∂(volume.prod volume), |c p| ≤ K * ‖p.1 - p.2‖ ^ (-β)) →
+      (∀ᵐ p ∂(volume.prod volume), f p.1 ≠ 0 → f p.2 ≠ 0 →
+        |c p| ≤ K * ‖p.1 - p.2‖ ^ (-β)) →
       (∫ p : Space d × Space d,
         (f p.1 * f p.2 * heatKernel d t (p.1 - p.2)) * c p ∂(volume.prod volume)) ≤
           K * (B * (C * t ^ (-β / 2)) * ∫ y, |f y|) := by
@@ -40,6 +41,11 @@ theorem heat_covariance_integral_bound_of_riesz (d : ℕ) (β : ℝ)
         K * (|f p.1| * |f p.2| * k (p.1 - p.2)) := by
     filter_upwards [hcov] with p hp
     have hheat := heatKernel_nonneg d ht (p.1 - p.2)
+    by_cases hp1 : f p.1 = 0
+    · simp [hp1]
+    by_cases hp2 : f p.2 = 0
+    · simp [hp2]
+    have hp := hp hp1 hp2
     calc
       _ ≤ |(f p.1 * f p.2 * heatKernel d t (p.1 - p.2)) * c p| := le_abs_self _
       _ = |f p.1| * |f p.2| * heatKernel d t (p.1 - p.2) * |c p| := by
@@ -73,7 +79,7 @@ theorem uniform_fourierNegEnergy_of_riesz_covariance {Ω ι : Type*}
     (hmean : ∀ i z, ∫ ω, T i ω z ∂P = 0)
     (hfield : ∀ i, ∀ᵐ ω ∂P, Integrable (fun z => χ z * T i ω z))
     (hcov : ∀ i, ∀ᵐ p : Space d × Space d ∂(volume.prod volume),
-      |covariance (fun ω => T i ω p.1) (fun ω => T i ω p.2) P| ≤
+      χ p.1 ≠ 0 → χ p.2 ≠ 0 → |covariance (fun ω => T i ω p.1) (fun ω => T i ω p.2) P| ≤
         K * ‖p.1 - p.2‖ ^ (-β)) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ i,
       (∫⁻ ω, fourierNegEnergy d s (fun z => χ z * T i ω z) ∂P) ≤ ENNReal.ofReal M := by

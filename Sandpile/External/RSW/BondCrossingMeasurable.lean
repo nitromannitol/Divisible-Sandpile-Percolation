@@ -25,14 +25,14 @@ theorem measurableSet_isBondOpenWalk {Q : Finset (Site 2)} {a b : Q}
 
 /-- A rectangle bond crossing event is measurable. -/
 theorem measurableSet_bondCrossingEvent (w h : ℕ) : MeasurableSet (bondCrossingEvent w h) := by
-  letI (a b : planeRectangle w h) : Countable ((rectangleGraph (planeRectangle w h)).Walk a b) :=
+  let (a b : planeRectangle w h) : Countable ((rectangleGraph (planeRectangle w h)).Walk a b) :=
     SimpleGraph.Walk.support_injective.countable
   have hm (a b : planeRectangle w h) (p : (rectangleGraph (planeRectangle w h)).Walk a b) :
       MeasurableSet {ω : Sym2 (Site 2) → Bool |
         a ∈ rectangleLeft (planeRectangle w h) ∧ b ∈ rectangleRight (planeRectangle w h) ∧
           IsBondOpenWalk ω p} :=
     (MeasurableSet.const _).inter ((MeasurableSet.const _).inter (measurableSet_isBondOpenWalk p))
-  simpa only [bondCrossingEvent, setOf_exists] using
+  simpa only [bondCrossingEvent, ofPred_exists] using
     (MeasurableSet.iUnion fun a => MeasurableSet.iUnion fun b => MeasurableSet.iUnion fun p => hm a b p)
 
 end Sandpile.External.RSW

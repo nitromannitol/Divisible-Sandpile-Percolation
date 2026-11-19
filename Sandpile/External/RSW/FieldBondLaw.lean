@@ -21,7 +21,7 @@ def fieldBondLaw (μ : Measure (Site 2 → ℝ)) (level : ℝ) :
 /-- A probability field law induces a probability bond law. -/
 theorem isProbabilityMeasure_fieldBondLaw (μ : Measure (Site 2 → ℝ)) [IsProbabilityMeasure μ]
     (level : ℝ) : IsProbabilityMeasure (fieldBondLaw μ level) := by
-  letI : IsProbabilityMeasure (μ.map (thresholdConfig level)) :=
+  let : IsProbabilityMeasure (μ.map (thresholdConfig level)) :=
     (Measure.isProbabilityMeasure_map_iff (measurable_thresholdConfig level).aemeasurable).2
       inferInstance
   exact (Measure.isProbabilityMeasure_map_iff measurable_siteBondConfig.aemeasurable).2 inferInstance

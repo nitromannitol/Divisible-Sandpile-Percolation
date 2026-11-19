@@ -181,6 +181,11 @@ theorem kstScaleIso_succ_le_sq (i : ℕ) (x : Icc (0 : ℝ) 1) :
     nlinarith [pow_nonneg (by norm_num : (0 : ℝ) ≤ 2000) i]
   exact crossingComparisonIso_le_sq_of_two_mul_le (pow_pos (by norm_num) i) hpow x
 
+/-- The square root of the next comparison function is bounded by the preceding one. -/
+theorem kstScaleIso_sqrt_succ_le (i : ℕ) (x : Icc (0 : ℝ) 1) :
+    Real.sqrt (kstScaleIso (i + 1) x : ℝ) ≤ (kstScaleIso i x : ℝ) :=
+  (Real.sqrt_le_left (kstScaleIso i x).property.1).2 (kstScaleIso_succ_le_sq i x)
+
 /-- The initial scale-indexed comparison function is the identity. -/
 theorem kstScaleIso_zero (x : Icc (0 : ℝ) 1) : kstScaleIso 0 x = x := by
   apply Subtype.ext

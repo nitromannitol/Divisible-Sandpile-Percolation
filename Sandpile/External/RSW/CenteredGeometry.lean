@@ -22,7 +22,7 @@ theorem mem_centeredPlaneRectangle (m n : ℕ) (z : Site 2) :
     z ∈ centeredPlaneRectangle m n ↔
       -(m : ℤ) ≤ z 0 ∧ z 0 ≤ m ∧ -(n : ℤ) ≤ z 1 ∧ z 1 ≤ n := by
   simp only [centeredPlaneRectangle, Fintype.mem_piFinset, Finset.mem_Icc,
-    Fin.forall_fin_two, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one]
+    Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]
   tauto
 
 /-- Translation from an origin-based box to its centered counterpart. -/

@@ -42,4 +42,13 @@ theorem fieldBondLaw_centeredCrossing (μ : Measure (Site 2 → ℝ))
   exact ((fieldBondLaw_symmetric μ hμ level).1 (- ![(m : ℤ), (n : ℤ)])).measureReal_preimage
     (measurableSet_bondCrossingEvent (2 * m) (2 * n)).nullMeasurableSet
 
+/-- The centered bond crossing probability equals the origin-based field crossing probability
+when the rectangle has positive width. -/
+theorem fieldBondLaw_centeredCrossing_eq_field (μ : Measure (Site 2 → ℝ))
+    (hμ : IsSymmetricPlanarLaw μ) (level : ℝ) (m n : ℕ) (hm : 0 < m) :
+    (fieldBondLaw μ level).real (centeredBondCrossingEvent m n) =
+      μ.real (planarCrossingEvent (2 * m) (2 * n) level) :=
+  (fieldBondLaw_centeredCrossing μ hμ level m n).trans
+    (fieldBondLaw_crossing μ level (2 * m) (2 * n) (by omega))
+
 end Sandpile.External.RSW

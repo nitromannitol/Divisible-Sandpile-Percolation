@@ -112,4 +112,25 @@ theorem crossingComparison_duality (a : ℝ) (ha : 0 < a) (x y : Icc (0 : ℝ) 1
     linarith
   exact ⟨forward x y, forward y x⟩
 
+/-- Increasing the exponent decreases the crossing comparison function. -/
+theorem crossingComparisonIso_le_of_le_exponent {a b : ℝ} (ha : 0 < a) (hab : a ≤ b)
+    (x : Icc (0 : ℝ) 1) :
+    (crossingComparisonIso b (lt_of_lt_of_le ha hab) x : ℝ) ≤
+      (crossingComparisonIso a ha x : ℝ) := by
+  have hb : 0 < b := lt_of_lt_of_le ha hab
+  have hx0 : 0 ≤ 1 - (x : ℝ) := by linarith [x.property.2]
+  have hx1 : 1 - (x : ℝ) ≤ 1 := by linarith [x.property.1]
+  have hinv : b⁻¹ ≤ a⁻¹ := (inv_le_inv₀ hb ha).2 hab
+  have hroot : (1 - (x : ℝ)) ^ a⁻¹ ≤ (1 - (x : ℝ)) ^ b⁻¹ :=
+    Real.rpow_le_rpow_of_exponent_ge' hx0 hx1 (inv_pos.mpr hb).le hinv
+  have hbase0 : 0 ≤ 1 - (1 - (x : ℝ)) ^ b⁻¹ :=
+    sub_nonneg.mpr (Real.rpow_le_one hx0 hx1 (inv_pos.mpr hb).le)
+  have hbase1 : 1 - (1 - (x : ℝ)) ^ b⁻¹ ≤ 1 := by
+    linarith [Real.rpow_nonneg hx0 b⁻¹]
+  have hbase : 1 - (1 - (x : ℝ)) ^ b⁻¹ ≤ 1 - (1 - (x : ℝ)) ^ a⁻¹ := by
+    linarith
+  rw [crossingComparisonIso_apply, crossingComparisonIso_apply]
+  exact (Real.rpow_le_rpow_of_exponent_ge' hbase0 hbase1 ha.le hab).trans
+    (Real.rpow_le_rpow hbase0 hbase ha.le)
+
 end Sandpile.External.RSW

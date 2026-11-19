@@ -51,7 +51,6 @@ theorem eventually_greenTime_cellKernelCoeff_small
   have hprod : 0 ≤ C * R⁻¹ ^ 4 := by positivity
   have heq : C * R⁻¹ ^ 4 * R ^ (3 : ℕ) = C * R⁻¹ := by
     field_simp
-    <;> ring
   calc
     |cellKernelCoeff R ψ (s R) (greenTime 4 ⌊R ^ (3 : ℝ)⌋₊) y|
         ≤ C * R⁻¹ ^ 4 * (⌊R ^ (3 : ℝ)⌋₊ : ℝ) :=

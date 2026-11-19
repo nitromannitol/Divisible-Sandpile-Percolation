@@ -50,7 +50,7 @@ theorem eventually_coordinate_bound_of_sub_norm_tendsto_zero {α ι : Type*}
       lp.norm_apply_le_norm (by norm_num : (2 : ℝ≥0∞) ≠ 0) (a j - b j) i
   have htriangle := abs_add_le (a j i - b j i) (b j i)
   have hsum : |a j i| ≤ |a j i - b j i| + |b j i| := by
-    convert htriangle using 1 <;> congr 1 <;> ring
+    convert htriangle using 1; congr 1; ring
   linarith [hj i]
 
 end Sandpile.Support

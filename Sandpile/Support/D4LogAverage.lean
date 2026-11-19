@@ -66,4 +66,36 @@ theorem cellMass_sum_le_of_log_bound (R : ℝ) (w : Space 4 → ℝ)
     simpa only [abs_of_nonneg (hw0 _)] using hconv
   exact hmono.trans (add_le_add le_rfl (mul_le_mul_of_nonneg_left hconv' hB))
 
+/-- A double cell-mass average of a logarithmically bounded lattice kernel is
+bounded uniformly in the mesh. -/
+theorem double_cellMass_sum_le_of_log_bound (R : ℝ) (w : Space 4 → ℝ)
+    (hw : Integrable w) (hw0 : ∀ z, 0 ≤ w z) (W : ℝ) (hwB : ∀ z, |w z| ≤ W)
+    (s : Finset (Site 4))
+    (hs : ∀ z, w z ≠ 0 → (fun i => ⌊R * z i⌋) ∈ s)
+    (K : Site 4 → Site 4 → ℝ) (A B : ℝ) (hB : 0 ≤ B)
+    (hbound : ∀ u v, w u ≠ 0 → w v ≠ 0 → u ≠ v →
+      K (fun i => ⌊R * u i⌋) (fun i => ⌊R * v i⌋) ≤ A + B * logKernel (u - v)) :
+    (∑ a ∈ s, ∑ b ∈ s, cellMass R w a * cellMass R w b * K a b) ≤
+      (A * (∫ z, w z) + B * (W * ∫ z, logKernel z)) * (∫ z, w z) := by
+  let M := A * (∫ z, w z) + B * (W * ∫ z, logKernel z)
+  let f : Site 4 → ℝ := fun a => ∑ b ∈ s, cellMass R w b * K a b
+  have hrow (u : Space 4) (hu : w u ≠ 0) :
+      f (fun i => ⌊R * u i⌋) ≤ M := by
+    dsimp only [f, M]
+    apply cellMass_sum_le_of_log_bound R w hw hw0 W hwB s hs
+      (fun b => K (fun i => ⌊R * u i⌋) b) u A B hB
+    intro z hz hzu
+    exact hbound u z hu hz (Ne.symm hzu)
+  have hout := cellMass_sum_le_of_log_bound R w hw hw0 W hwB s hs f 0 M 0 (le_refl 0)
+    (fun z hz _ => by simpa only [zero_mul, add_zero] using hrow z hz)
+  simp only [zero_mul, add_zero] at hout
+  have heq : (∑ a ∈ s, ∑ b ∈ s, cellMass R w a * cellMass R w b * K a b) =
+      ∑ a ∈ s, cellMass R w a * f a := by
+    apply Finset.sum_congr rfl
+    intro a _
+    simp only [f, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun b _ => by ring
+  rw [heq]
+  exact hout
+
 end Sandpile.Support

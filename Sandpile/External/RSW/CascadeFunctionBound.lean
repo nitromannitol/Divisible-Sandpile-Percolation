@@ -71,4 +71,32 @@ theorem kstCascade_function_bound
         (kstScaleIso 8 u).property.1
   exact hnum'.trans hmul
 
+/-- The cascade denominator is positive away from the upper endpoint. -/
+theorem kstCascade_denominator_pos (x : Icc (0 : ℝ) 1) (hx : x < ⊤) :
+    0 < (kstScaleIso 4 (unitIntervalComplement ((kstScaleIso 1).symm x)) : ℝ) := by
+  have hh := (kstScaleIso 1).symm.strictMono hx
+  rw [OrderIso.map_top] at hh
+  have hy : (⊥ : Icc (0 : ℝ) 1) < unitIntervalComplement ((kstScaleIso 1).symm x) := by
+    change (0 : ℝ) < 1 - ((kstScaleIso 1).symm x : ℝ)
+    change ((kstScaleIso 1).symm x : ℝ) < 1 at hh
+    linarith
+  have hz := (kstScaleIso 4).strictMono hy
+  rw [OrderIso.map_bot] at hz
+  exact hz
+
+/-- The source's quotient-form comparison is valid away from the zero-denominator endpoint. -/
+theorem kstCascade_function_bound_div
+    (hcomp₁ : ∀ x : Icc (0 : ℝ) 1,
+      kstScaleIso 2 x ≤ kstScaleIso 1 (kstScaleIso 1 x))
+    (hcomp₄ : ∀ x : Icc (0 : ℝ) 1,
+      kstScaleIso 8 x ≤ kstScaleIso 4 (kstScaleIso 4 x))
+    (hcomp₉ : ∀ x : Icc (0 : ℝ) 1,
+      kstScaleIso 18 x ≤ kstScaleIso 9 (kstScaleIso 9 x))
+    (x : Icc (0 : ℝ) 1) (hx : x < ⊤) :
+    (1 - (1 - ((kstScaleIso 1).symm (kstScaleIso 18 (unitIntervalComplement x)) : ℝ)) ^ 2) /
+        (kstScaleIso 4 (unitIntervalComplement ((kstScaleIso 1).symm x)) : ℝ) ≤
+      (kstScaleIso 8 (unitIntervalComplement x) : ℝ) := by
+  apply (div_le_iff₀ (kstCascade_denominator_pos x hx)).2
+  exact kstCascade_function_bound hcomp₁ hcomp₄ hcomp₉ x
+
 end Sandpile.External.RSW

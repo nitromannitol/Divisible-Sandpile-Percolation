@@ -52,7 +52,7 @@ theorem Sandpile.Support.exists_measurable_compact_ball_selector
   let c : ℕ → α := fun n => if h : n < N then (e ⟨n, h⟩).1 else x₀
   have hc : ∀ n, n < N → c n ∈ K := by
     intro n hn
-    exact hSK (by simpa only [c, dif_pos hn] using (e ⟨n, hn⟩).2)
+    exact hSK (by simpa only [c, dite_eq_left hn] using (e ⟨n, hn⟩).2)
   have hcover' : ∀ x ∈ K, ∃ n < N, dist x (c n) < δ := by
     intro x hx
     obtain ⟨z, hz⟩ := Set.mem_iUnion.1 (hcover hx)
@@ -60,7 +60,7 @@ theorem Sandpile.Support.exists_measurable_compact_ball_selector
     let j : Fin N := e.symm ⟨z, hzS⟩
     refine ⟨j, j.2, ?_⟩
     have he : c j = z := by
-      simp only [c, dif_pos j.2]
+      simp only [c, dite_eq_left j.2]
       exact congrArg Subtype.val (e.apply_symm_apply ⟨z, hzS⟩)
     rw [he]
     exact hxz

@@ -1,6 +1,6 @@
 # Comparator runs
 
-The official `leanprover/comparator` was run on all seventeen pairs in this directory on a local machine (Linux 6.17), with the Lean kernel and the independent `nanoda` kernel both enabled (every committed `comparator.json` sets `"enable_nanoda": true`).  The twelve pairs of the main theorems were run against the repository at commit `22843dcf6cd47a3a8688a3fb9196accb2d229087`, and the five `*Unconditional` pairs against commit `909746b755502d79322614e4c263e0aef15e64b5`; between the two the challenges, solutions, bridges and vocabulary of the twelve pairs are unchanged.  The dependencies are those pinned in `lake-manifest.json` (mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55`, Lattice-Probability `751040ea092fcf9ae7de4edb7e4f89af4c5291ec`) under `leanprover/lean4:v4.35.0-rc2`.
+The official `leanprover/comparator` was run on all seventeen pairs in this directory on a local machine (Linux 6.17), with the Lean kernel and the independent `nanoda` kernel both enabled (every committed `comparator.json` sets `"enable_nanoda": true`).  The pairs `FourFirstOrder`, `FourGaussian`, `HighFirstOrder`, `HighNonconvergence`, `HighSobolevLimit`, `HighTail` and `MeanGrowthFour` were run against the repository at commit `22843dcf6cd47a3a8688a3fb9196accb2d229087`, the five `*Unconditional` pairs at commit `909746b755502d79322614e4c263e0aef15e64b5`, and `Nontriviality`, `CriticalLevels`, `MeanGrowthLow`, `BrownianScalingLimit` and `FourSobolev`, whose bridges name the cited propositions, at commit `b391b5ef6564052b3ff594418d5d5d62abeddf49`.  Between these commits the challenges, solutions, bridges and vocabulary of the pairs are unchanged, and the library changes only in docstrings.  The dependencies are those pinned in `lake-manifest.json` (mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55`, Lattice-Probability `751040ea092fcf9ae7de4edb7e4f89af4c5291ec`) under `leanprover/lean4:v4.35.0-rc2`.
 
 | Tool | Revision |
 |---|---|
@@ -15,7 +15,7 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (392 s) |
+| Lean and nanoda kernels | passed (531 s) |
 
 ## `BrownianScalingLimitUnconditional`
 
@@ -27,7 +27,7 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (498 s) |
+| Lean and nanoda kernels | passed (652 s) |
 
 ## `CriticalLevelsUnconditional`
 
@@ -51,7 +51,7 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (308 s) |
+| Lean and nanoda kernels | passed (434 s) |
 
 ## `FourSobolevUnconditional`
 
@@ -93,7 +93,7 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (389 s) |
+| Lean and nanoda kernels | passed (621 s) |
 
 ## `MeanGrowthLowUnconditional`
 
@@ -105,7 +105,7 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (476 s) |
+| Lean and nanoda kernels | passed (613 s) |
 
 ## `NontrivialityUnconditional`
 

@@ -3,14 +3,14 @@ import Sandpile.External.ContinuumOptimalStopping
 /-!
 # Optimal stopping for continuous Brownian paths
 
-The finite-horizon optimal-stopping input with continuity of every sample path.
+The finite-horizon optimal-stopping input for continuous paths and measurable time slices.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
 /-- The finite-horizon optimal-stopping input for a Brownian family whose paths
-are all continuous. -/
+are all continuous and whose time slices are strongly measurable. -/
 def Sandpile.External.ContinuumOptimalStoppingOfContinuous (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (T : ℝ), 0 < T →
     ∀ G : ℝ → Sandpile.Continuum.Space d → ℝ,
@@ -23,6 +23,7 @@ def Sandpile.External.ContinuumOptimalStoppingOfContinuous (Ω : Type*) [Measura
           (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d),
           (∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P) →
           (∀ y ω, Continuous fun s => B y s ω) →
+          (∀ y t, StronglyMeasurable (B y t)) →
           ∃ M : ℝ≥0 → Ω → ℝ,
             (∀ s : ℝ≥0, Measurable (M s)) ∧
             (∀ s : ℝ≥0, (s : ℝ) ≤ T →
@@ -46,5 +47,5 @@ def Sandpile.External.ContinuumOptimalStoppingOfContinuous (Ω : Type*) [Measura
 theorem Sandpile.External.continuumOptimalStoppingOfContinuous_of_continuumOptimalStopping
     {Ω : Type*} [MeasurableSpace Ω] (h : Sandpile.External.ContinuumOptimalStopping Ω) :
     Sandpile.External.ContinuumOptimalStoppingOfContinuous Ω := by
-  intro d T hT G hG hGgrow x P _ B hB _
+  intro d T hT G hG hGgrow x P _ B hB _ _
   exact h d T hT G hG hGgrow x P B hB

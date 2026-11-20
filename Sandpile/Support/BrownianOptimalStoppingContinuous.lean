@@ -4,13 +4,13 @@ import Sandpile.External.ContinuumOptimalStoppingOfContinuous
 /-!
 # Brownian optimal stopping with continuous paths
 
-The optimal-stopping representation under the everywhere-continuous path convention.
+The optimal-stopping representation for continuous paths and measurable time slices.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
-/-- The Brownian optimal-stopping representation for continuous paths. -/
+/-- The Brownian optimal-stopping representation for regular paths. -/
 theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
     (d : ℕ) (T : ℝ) (hT : 0 < T) (h : ℝ → Sandpile.Continuum.Space d → ℝ)
     (hcont : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => h p.1 p.2)
@@ -23,7 +23,8 @@ theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
     (P : Measure Ω) [IsProbabilityMeasure P]
     (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
     (hB : ∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P)
-    (hBc : ∀ y ω, Continuous fun s => B y s ω) :
+    (hBc : ∀ y ω, Continuous fun s => B y s ω)
+    (hBm : ∀ y t, StronglyMeasurable (B y t)) :
     ∃ M : ℝ≥0 → Ω → ℝ,
       (∀ s : ℝ≥0, Measurable (M s)) ∧
       (∀ s : ℝ≥0, (s : ℝ) ≤ T →
@@ -56,7 +57,7 @@ theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
     obtain ⟨C, k, hCk⟩ := hgrow
     exact ⟨C, k, fun t ht y => by simpa using hCk t ht y⟩
   obtain ⟨M, hMmeas, hMmod, hMright, τ, hτleast, hτstop, hτgreat, hτmin⟩ :=
-    hOS d T hT (fun t y => -h t y) hGcont hGgrow x P B hB hBc
+    hOS d T hT (fun t y => -h t y) hGcont hGgrow x P B hB hBc hBm
   have hτle : ∀ ω : Ω, ((τ ω : ℝ≥0) : ℝ) ≤ T := fun ω => (hτleast ω).1.1
   have hdisc : Sandpile.Continuum.brownianDiscount (B x) P h T
       = -∫ ω, h (T - (τ ω : ℝ)) (B x (τ ω) ω) ∂P := by

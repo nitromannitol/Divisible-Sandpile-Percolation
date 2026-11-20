@@ -36,7 +36,12 @@ headers.
 The main results are additionally exposed, stated in full, in
 [`Sandpile/MainTheorems.lean`](Sandpile/MainTheorems.lean), each proved by
 `exact` of its certified statement, and all twelve are restated over a
-Mathlib-only vocabulary for the comparator (see [`SandpileAudit/`](SandpileAudit/)).
+Mathlib-only vocabulary for the comparator (see [`SandpileAudit/`](SandpileAudit/)).  The
+hypothesis-free forms of Theorems 1.1, 1.2, 1.3(i)(a), 1.3(i)(b) and 1.3(ii)(c) have their own
+pairs, `SandpileAudit/<Pair>Unconditional/`, checked against
+`Sandpile.percolation_below_criticality_proved`, `Sandpile.critical_level_percolation_proved`,
+`Sandpile.mean_growth_le_three_proved`, `Sandpile.brownian_scaling_limit_proved` and
+`Sandpile.four_sobolev_of_proved_inputs`.
 
 | Source | Main theorem | Certified statement | Comparator |
 |---|---|---|---|
@@ -423,7 +428,7 @@ The self-similarity proof does not use its optimal-stopping hypothesis. The succ
 without it, retaining continuum stopping stability. With
 `Sandpile.External.continuumStoppingStability_holds` they become
 `Sandpile.continuum_value_self_similar_proved`, `Sandpile.dlt4_mean_asymptotic_proved` and
-`Sandpile.mean_growth_le_three_proved`, which take no hypothesis. The earlier description of
+`Sandpile.mean_growth_le_three_proved`, which take no hypothesis. The description of
 `prop:continuum-value-selfsimilar` above records the frozen declaration and its intended
 argument; the successor uses the parabolic scaling limit directly.
 

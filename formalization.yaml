@@ -14,9 +14,11 @@ project:
     determinism, Gaussian fluctuations and the membrane limit in dimension four, and
     the tail-determined growth, the weighted membrane limits and the
     non-convergence of the rescaled fluctuations in dimension at least five.
-    Some results the paper cites from the literature are explicit hypotheses;
-    others, including the multivariate Berry–Esseen comparison, are proved.
-    The twelve main theorems are independently checked by the
+    Every result the paper cites from the literature is proved in the
+    formalization; the certified statements carry some of them as explicit
+    hypotheses, and every main theorem also holds without hypotheses.  The
+    twelve main theorems, and the hypothesis-free forms of the five whose
+    certified statements carry cited results, are independently checked by the
     SandpileAudit/ comparator pairs over a Mathlib-only vocabulary.
   authors:
     - "Ahmed Bou-Rabee"
@@ -47,7 +49,7 @@ related_formalizations:
     note: >-
       Lattice-Probability (LatticeProb), a separate Lean library by the same
       author, pinned as a git dependency at commit
-      9d44b4d4670df393bb86ac5a4e042f215001cddf. The formalization uses it for
+      751040ea092fcf9ae7de4edb7e4f89af4c5291ec. The formalization uses it for
       the lattice and walk vocabulary and for general probability and analysis.
 
 status:
@@ -59,21 +61,23 @@ status:
     percolation of the critical level sets of the finite-time odometer
     (Theorem 1.2), and the ten parts of the critical growth and scaling
     theorem (Theorem 1.3), with the lemmas, propositions and corollaries
-    behind them.  SCOPE BOUNDARY: 26 results the paper cites from the
-    literature are stated as propositions in Sandpile/External/. Some are
-    explicit hypotheses of frozen statements; ASSUMPTIONS.md lists them and
-    identifies those also proved here. In particular,
-    Sandpile.External.multivariateBerryEsseen_holds proves the multivariate
-    Berry–Esseen comparison, and Sandpile.critical_toppling and
-    Sandpile.critical_mean_one discharge it. Not formalized: the proof-overview,
+    behind them.  The 26 results the paper cites from the literature are
+    stated as propositions in Sandpile/External/, and each is proved in the
+    formalization (Sandpile/External/*Proved.lean and the shared library).
+    Some are explicit hypotheses of certified statements; ASSUMPTIONS.md lists
+    those with their statements and the theorems that prove them, and the
+    hypothesis-free forms (Sandpile.*_proved, Sandpile/MainTheorems.lean)
+    discharge them. Not formalized: the proof-overview,
     related-work and open-problem subsections, the unlabelled remarks
     (including the nonpercolation remark at low mean, which quotes a Peierls
     argument of Fey, Meester and Redig), and the figures.  The main theorems are
-    stated in full in Sandpile/MainTheorems.lean; all twelve are additionally
-    restated over a Mathlib-only vocabulary for the Lean comparator (SandpileAudit/).
+    stated in full in Sandpile/MainTheorems.lean; all twelve, and the
+    hypothesis-free forms of Theorems 1.1, 1.2, 1.3(i)(a), 1.3(i)(b) and
+    1.3(ii)(c), are additionally restated over a Mathlib-only vocabulary for
+    the Lean comparator (SandpileAudit/).
   sorry_count: 0
   sorry_count_scope: "Sandpile production library only"
-  comparator_challenge_sorry_count: 12
+  comparator_challenge_sorry_count: 17
   sorry_in_definitions: 0
   axioms:
     - "propext"
@@ -86,17 +90,17 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/Nontriviality/comparator.json"
       literature_dependencies:
-        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
+        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis and proved by Sandpile.External.planarRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
-        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis"
+        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); a hypothesis of the certified statement, supplied by Sandpile.External.lssDomination"
           source: "Liggett, Schonmann and Stacey, Corollary 1.4"
-        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis"
+        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); a hypothesis of the certified statement, supplied by Sandpile.External.exteriorBoundaryConnected_holds"
           source: "Timar, Theorem 3"
-        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis"
+        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis and proved by Sandpile.External.continuumRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, continuum form"
-        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis"
+        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); a hypothesis of the certified statement, supplied by Sandpile.External.ballOccupationDensity_holds"
           source: "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball"
-        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.cubeStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "Sandpile.critical_level_percolation"
       file: "Sandpile/MainTheorems.lean"
@@ -104,17 +108,17 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/CriticalLevels/comparator.json"
       literature_dependencies:
-        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
+        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis and proved by Sandpile.External.planarRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
-        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis"
+        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); a hypothesis of the certified statement, supplied by Sandpile.External.lssDomination"
           source: "Liggett, Schonmann and Stacey, Corollary 1.4"
-        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis"
+        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); a hypothesis of the certified statement, supplied by Sandpile.External.exteriorBoundaryConnected_holds"
           source: "Timar, Theorem 3"
-        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis"
+        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis and proved by Sandpile.External.continuumRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, continuum form"
-        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis"
+        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); a hypothesis of the certified statement, supplied by Sandpile.External.ballOccupationDensity_holds"
           source: "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball"
-        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.cubeStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "Sandpile.mean_growth_le_three"
       file: "Sandpile/MainTheorems.lean"
@@ -122,9 +126,9 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/MeanGrowthLow/comparator.json"
       literature_dependencies:
-        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.continuumStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
-        - statement: "finite-horizon optimal stopping for Brownian motion (Sandpile.External.ContinuumOptimalStopping); carried as an explicit hypothesis"
+        - statement: "finite-horizon optimal stopping for Brownian motion (Sandpile.External.ContinuumOptimalStopping); carried as an explicit hypothesis and proved by Sandpile.External.continuumOptimalStopping_holds"
           source: "Peskir and Shiryaev, Theorem 2.2"
     - declaration: "Sandpile.brownian_scaling_limit"
       file: "Sandpile/MainTheorems.lean"
@@ -132,7 +136,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/BrownianScalingLimit/comparator.json"
       literature_dependencies:
-        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.continuumStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
     - declaration: "Sandpile.mean_growth_four"
       file: "Sandpile/MainTheorems.lean"
@@ -158,7 +162,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/FourSobolev/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
         - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis and proved by Sandpile.External.membraneScalingLimitFour_holds"
           source: "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11"
@@ -180,7 +184,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/HighSobolevLimit/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
     - declaration: "Sandpile.high_nonconvergence"
       file: "Sandpile/MainTheorems.lean"
@@ -188,7 +192,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/HighNonconvergence/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
     - declaration: "SandpileAudit.percolation_below_criticality"
       file: "SandpileAudit/Nontriviality/Solution.lean"
@@ -196,17 +200,17 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/Nontriviality/comparator.json"
       literature_dependencies:
-        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
+        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis and proved by Sandpile.External.planarRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
-        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis"
+        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis and proved by Sandpile.External.lssDomination"
           source: "Liggett, Schonmann and Stacey, Corollary 1.4"
-        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis"
+        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis and proved by Sandpile.External.exteriorBoundaryConnected_holds"
           source: "Timar, Theorem 3"
-        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis"
+        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis and proved by Sandpile.External.continuumRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, continuum form"
-        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis"
+        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis and proved by Sandpile.External.ballOccupationDensity_holds"
           source: "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball"
-        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.cubeStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "SandpileAudit.critical_level_percolation"
       file: "SandpileAudit/CriticalLevels/Solution.lean"
@@ -214,17 +218,17 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/CriticalLevels/comparator.json"
       literature_dependencies:
-        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis"
+        - statement: "the planar Russo-Seymour-Welsh crossing comparison, in its integer-lattice site form (Sandpile.External.PlanarRSW); carried as an explicit hypothesis and proved by Sandpile.External.planarRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1"
-        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis"
+        - statement: "stochastic domination of a finite-range dependent field by a product measure (Sandpile.External.LSSDomination); carried as an explicit hypothesis and proved by Sandpile.External.lssDomination"
           source: "Liggett, Schonmann and Stacey, Corollary 1.4"
-        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis"
+        - statement: "connectivity of the exterior vertex boundary of a finite connected set (Sandpile.External.ExteriorBoundaryConnected); carried as an explicit hypothesis and proved by Sandpile.External.exteriorBoundaryConnected_holds"
           source: "Timar, Theorem 3"
-        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis"
+        - statement: "the continuum crossing comparison for a field on a probability space (Sandpile.External.ContinuumRSW); carried as an explicit hypothesis and proved by Sandpile.External.continuumRSW_holds"
           source: "Kohler-Schindler and Tassion, Theorem 1 and Comment 1, continuum form"
-        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis"
+        - statement: "the occupation density of Brownian motion stopped on exiting a Euclidean ball (Sandpile.External.BallOccupationDensity); carried as an explicit hypothesis and proved by Sandpile.External.ballOccupationDensity_holds"
           source: "Morters and Peres, Brownian Motion, Chapter 3, the Green function of a ball"
-        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of the cube-killed optimal-stopping values (Sandpile.External.CubeStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.cubeStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4, cube-killed form"
     - declaration: "SandpileAudit.mean_growth_le_three"
       file: "SandpileAudit/MeanGrowthLow/Solution.lean"
@@ -232,9 +236,9 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/MeanGrowthLow/comparator.json"
       literature_dependencies:
-        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.continuumStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
-        - statement: "finite-horizon optimal stopping for Brownian motion (Sandpile.External.ContinuumOptimalStopping); carried as an explicit hypothesis"
+        - statement: "finite-horizon optimal stopping for Brownian motion (Sandpile.External.ContinuumOptimalStopping); carried as an explicit hypothesis and proved by Sandpile.External.continuumOptimalStopping_holds"
           source: "Peskir and Shiryaev, Theorem 2.2"
     - declaration: "SandpileAudit.brownian_scaling_limit"
       file: "SandpileAudit/BrownianScalingLimit/Solution.lean"
@@ -242,7 +246,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/BrownianScalingLimit/comparator.json"
       literature_dependencies:
-        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis"
+        - statement: "stability of optimal-stopping values under uniform convergence of rewards (Sandpile.External.ContinuumStoppingStability); carried as an explicit hypothesis and proved by Sandpile.External.continuumStoppingStability_holds"
           source: "Coquet and Toldo, Theorem 3 and Corollary 4"
     - declaration: "SandpileAudit.mean_growth_four"
       file: "SandpileAudit/MeanGrowthFour/Solution.lean"
@@ -268,7 +272,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/FourSobolev/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
         - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis and proved by Sandpile.External.membraneScalingLimitFour_holds"
           source: "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11"
@@ -290,7 +294,7 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/HighSobolevLimit/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
     - declaration: "SandpileAudit.high_nonconvergence"
       file: "SandpileAudit/HighNonconvergence/Solution.lean"
@@ -298,8 +302,68 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "SandpileAudit/HighNonconvergence/comparator.json"
       literature_dependencies:
-        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
+        - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); a hypothesis of the certified statement, supplied by Sandpile.External.continuumBesovTightness_holds"
           source: "Furlan and Mourrat, Theorem 2.30"
+    - declaration: "Sandpile.percolation_below_criticality_proved"
+      file: "Sandpile/NontrivialityUnconditional.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/NontrivialityUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.critical_level_percolation_proved"
+      file: "Sandpile/CriticalLevelsUnconditional.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/CriticalLevelsUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.mean_growth_le_three_proved"
+      file: "Sandpile/Support/MeanGrowthLowUnconditional.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/MeanGrowthLowUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.brownian_scaling_limit_proved"
+      file: "Sandpile/Support/BrownianScalingLimitUnconditional.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/BrownianScalingLimitUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "Sandpile.four_sobolev_of_proved_inputs"
+      file: "Sandpile/MembraneConsequences.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/FourSobolevUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "SandpileAudit.percolation_below_criticality_unconditional"
+      file: "SandpileAudit/NontrivialityUnconditional/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/NontrivialityUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "SandpileAudit.critical_level_percolation_unconditional"
+      file: "SandpileAudit/CriticalLevelsUnconditional/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/CriticalLevelsUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "SandpileAudit.mean_growth_le_three_unconditional"
+      file: "SandpileAudit/MeanGrowthLowUnconditional/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/MeanGrowthLowUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "SandpileAudit.brownian_scaling_limit_unconditional"
+      file: "SandpileAudit/BrownianScalingLimitUnconditional/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/BrownianScalingLimitUnconditional/comparator.json"
+      literature_dependencies: []
+    - declaration: "SandpileAudit.four_sobolev_unconditional"
+      file: "SandpileAudit/FourSobolevUnconditional/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "SandpileAudit/FourSobolevUnconditional/comparator.json"
+      literature_dependencies: []
 
 automation:
   methods:
@@ -416,21 +480,41 @@ alignment:
       module: "Sandpile.MainTheorems"
       status: "proved"
       note: "Certified statement Sandpile.Frozen.high_nonconvergence. Comparator challenge SandpileAudit/HighNonconvergence/."
+    - source: "Theorem 1.1 (thm:main-nontriviality), without hypotheses"
+      lean: "Sandpile.percolation_below_criticality_proved"
+      module: "Sandpile.NontrivialityUnconditional"
+      status: "proved"
+      note: "The certified statement with its cited-input binders removed. Comparator challenge SandpileAudit/NontrivialityUnconditional/."
+    - source: "Theorem 1.2 (thm:main-critical-level-percolation), without hypotheses"
+      lean: "Sandpile.critical_level_percolation_proved"
+      module: "Sandpile.CriticalLevelsUnconditional"
+      status: "proved"
+      note: "The certified statement with its cited-input binders removed. Comparator challenge SandpileAudit/CriticalLevelsUnconditional/."
+    - source: "Theorem 1.3(i)(a) (thm:main-explosion), without hypotheses"
+      lean: "Sandpile.mean_growth_le_three_proved"
+      module: "Sandpile.Support.MeanGrowthLowUnconditional"
+      status: "proved"
+      note: "The certified statement with its cited-input binders removed. Comparator challenge SandpileAudit/MeanGrowthLowUnconditional/."
+    - source: "Theorem 1.3(i)(b) (thm:main-explosion), without hypotheses"
+      lean: "Sandpile.brownian_scaling_limit_proved"
+      module: "Sandpile.Support.BrownianScalingLimitUnconditional"
+      status: "proved"
+      note: "The certified statement with its cited-input binder removed. Comparator challenge SandpileAudit/BrownianScalingLimitUnconditional/."
+    - source: "Theorem 1.3(ii)(c) (thm:main-explosion), without hypotheses"
+      lean: "Sandpile.four_sobolev_of_proved_inputs"
+      module: "Sandpile.MembraneConsequences"
+      status: "proved"
+      note: "The certified statement with its cited-input binders removed. Comparator challenge SandpileAudit/FourSobolevUnconditional/."
     - source: "The lemmas, propositions and corollaries of the paper, and the other parts of multi-part statements"
       lean: "Sandpile.Frozen.*"
       module: "Sandpile.Frozen"
       status: "proved"
       note: "69 paper-statement nodes in all, including the twelve above, listed with their paper locations in CORRESPONDENCE.md."
-    - source: "Cited results that remain assumed"
-      lean: "Sandpile.External.*"
-      module: "Sandpile.External"
-      status: "literature-dependency"
-      note: "Explicit hypotheses of the theorems that use them; listed in ASSUMPTIONS.md."
     - source: "Cited results proved here"
-      lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker,intersectionSecondMoment,localCLT,pairedLocalCLTFour,ballGreenBounds,pittGaussianFKG,gaussianLipschitzConcentration,normalComparison,brownianExitStep_holds,multivariateBerryEsseen_holds}"
+      lean: "Sandpile.External.{greenBoundsHigh,varianceScale,heatKernelBounds,optimalStopping,gaussianLawDeterminedByCovariance,pinsker,intersectionSecondMoment,localCLT,pairedLocalCLTFour,ballGreenBounds,pittGaussianFKG,gaussianLipschitzConcentration,normalComparison,brownianExitStep_holds,multivariateBerryEsseen_holds,planarRSW_holds,lssDomination,exteriorBoundaryConnected_holds,continuumRSW_holds,ballOccupationDensity_holds,cubeStoppingStability_holds,continuumStoppingStability_holds,continuumOptimalStopping_holds,continuumBesovTightness_holds,membraneScalingLimitFour_holds,rellichKondrachovNegSobolev_holds}"
       module: "Sandpile.External"
       status: "proved"
-      note: "Results the paper cites without proof, proved unconditionally in the formalization or its dependencies. Frozen statements may retain these as hypotheses, with proved alternatives available."
+      note: "All 26 results the paper cites without proof, proved unconditionally in the formalization or its dependencies. Certified statements may carry some of them as hypotheses; ASSUMPTIONS.md lists those with the theorems that prove them."
 
 acknowledgements: >-
   The paper is joint work with Christoforos Panagiotis.  Built on Lean 4,

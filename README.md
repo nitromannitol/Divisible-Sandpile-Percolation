@@ -210,7 +210,7 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball; proved by `Sandpile.External.ballOccupationDensity_holds` | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle; proved by `Sandpile.External.cubeStoppingStability_holds` | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk; proved by `Sandpile.External.continuumStoppingStability_holds` | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
-| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth; the frozen form has the defect described below | Peskir and Shiryaev, Theorem 2.2 | frozen Theorem 1.3(i)(a) |
+| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with continuous paths and strongly measurable time slices and a continuous gain of polynomial growth; proved by `Sandpile.External.continuumOptimalStopping_holds` | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field; proved by `Sandpile.External.membraneScalingLimitFour_holds` | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
 `ContinuumStoppingStability` and `PlanarRSW` are proved, by
@@ -228,21 +228,14 @@ and take no hypothesis. `CubeStoppingStability` is proved by
 `Sandpile.percolation_below_criticality_proved` and `Sandpile.critical_level_percolation_proved`
 are Theorems 1.1 and 1.2 without hypotheses.
 
-The frozen `ContinuumOptimalStopping` permits Brownian paths to be discontinuous on a null
-set, but requires a pointwise least contact time that is a raw natural-filtration stopping
-time. A suitable exceptional path forces that time to be zero almost surely even for a gain
-where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
-An earlier version with continuous paths also failed because it did not require ambient
-measurability of the time slices. The amended
-`Sandpile.External.ContinuumOptimalStoppingOfContinuous` requires continuous paths and
-strongly measurable time slices and is proved by
-`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The value is jointly
-continuous and independent of the Brownian realization. The first contact is optimal and
-minimal, and the value process stopped there is a martingale.
-`Sandpile.Support.brownian_optimal_stopping_of_continuous` proves the Brownian representation
-under these path and measurability hypotheses without an optimal-stopping input. The
-self-similarity and mean-growth successors above do not require that input either. See
-`CORRESPONDENCE.md` for the defects and deviation.
+`ContinuumOptimalStopping` takes Brownian paths to be continuous, as the paper does, and
+each time slice to be strongly measurable; it is proved by
+`Sandpile.External.continuumOptimalStopping_holds`. The value is jointly continuous and
+independent of the Brownian realization. The first contact is optimal and minimal, and the
+value process stopped there is a martingale. `Sandpile.brownian_optimal_stopping_proved` is
+the Brownian representation `prop:brownian-os` without the optimal-stopping input. The
+self-similarity and mean-growth successors above do not require that input either.
+`CORRESPONDENCE.md` records where the proof departs from the cited source.
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
 `Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the
@@ -557,13 +550,10 @@ exactly `propext`, `Classical.choice` and `Quot.sound`. Among the other register
 `Sandpile.d4_ball_green_crossing` and `Sandpile.d4_critical_level_percolation` are registered
 forms without hypotheses.
 
-Every cited result that a certified statement carries as a hypothesis is proved here, with one
-exception, so each such statement can be applied without its hypotheses. Of the nine results
-recorded as assumed in [`ASSUMPTIONS.md`](ASSUMPTIONS.md), eight are proved. The ninth,
-`Sandpile.External.ContinuumOptimalStopping`, is not proved because it is defective as stated
-(see [Assumed literature inputs](#assumed-literature-inputs)), and no form listed above uses
-it. Its amended form `Sandpile.External.ContinuumOptimalStoppingOfContinuous` is proved. The
-one registered statement that needs it and whose conclusion has the same defect,
-`prop:brownian-os`, is proved for continuous paths with measurable time slices as
-`Sandpile.Support.brownian_optimal_stopping_of_continuous`. No other input remains assumed
+Every cited result that a certified statement carries as a hypothesis is proved here, so each
+such statement can be applied without its hypotheses. All nine results recorded as assumed in
+[`ASSUMPTIONS.md`](ASSUMPTIONS.md) are proved; the last of them, the finite-horizon
+optimal-stopping theorem `Sandpile.External.ContinuumOptimalStopping`, is proved by
+`Sandpile.External.continuumOptimalStopping_holds`, and with it `prop:brownian-os` holds
+without hypotheses as `Sandpile.brownian_optimal_stopping_proved`. No input remains assumed
 anywhere in the repository.

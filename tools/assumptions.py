@@ -97,6 +97,14 @@ def conditional(c):
     body = re.sub(r"(?s)^\s*/--.*?-/\s*", "", block)
     if re.fullmatch(r"(?s)theorem\s+\S+\s*:\s*\S+\s*", body):
         return None
+    # A proposition stated at an arbitrary space, `PROP Ω`, is proved outright by a theorem whose
+    # only binders introduce that space and an instance on it; such binders are not hypotheses.
+    m = re.fullmatch(r"(?s)theorem\s+\S+((?:\s*(?:\{\w+\s*:\s*Type\*?\}|\(\w+\s*:\s*Type\*?\)"
+                     r"|\[\w+\s+\w+\]))*)\s*:\s*\S+((?:\s+\w+)*)\s*", body)
+    if m:
+        bound = re.findall(r"[{(](\w+)\s*:", m.group(1))
+        if m.group(2).split() == bound:
+            return None
     return block
 
 
@@ -135,7 +143,8 @@ def render():
                  if len(withproof) > 1 else
                  "Of these, **one is also proved in this repository** and so need not "
                  "be taken on trust; it is marked below with the theorem that proves it. ") +
-                (f"The remaining **{len(assumed) - len(withproof)}** are assumed outright."
+                ("None is assumed outright." if len(assumed) == len(withproof) else
+                 f"The remaining **{len(assumed) - len(withproof)}** are assumed outright."
                  if len(assumed) - len(withproof) != 1 else
                  "The remaining **one** is assumed outright."), ""]
         ncond = sum(1 for n in withproof if conditional(comp[pathlib.Path(n["file"]).stem]))
@@ -161,19 +170,6 @@ def render():
                 f"* **Cited at** {n['source']}",
                 line,
                 ""]
-        if n["id"] == "ext-continuum-optimal-stopping":
-            out += ["**Defect and deviation.** The frozen proposition permits exceptional paths of",
-                    "Brownian motion while requiring a pointwise least contact for a right-continuous",
-                    "modification and a raw natural-filtration stopping time. A pathological null",
-                    "path can force that stop to be zero almost surely even when stopping at the",
-                    "horizon has strictly greater reward. An earlier continuous-path replacement",
-                    "also omitted ambient measurability of Brownian time slices; a null copy of",
-                    "Wiener space with the trivial sigma algebra gives a contradiction. The amended",
-                    "`Sandpile.External.ContinuumOptimalStoppingOfContinuous` assumes continuous",
-                    "paths and strongly measurable time slices and is proved by",
-                    "`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The Brownian",
-                    "representation `Sandpile.Support.brownian_optimal_stopping_of_continuous`",
-                    "uses this proved result. See `CORRESPONDENCE.md` for details.", ""]
         out += ["```lean", frozen_block(n["file"]), "```", ""]
         if cond:
             out += [f"The proof `{name}`:", "", "```lean", cond, "```", ""]

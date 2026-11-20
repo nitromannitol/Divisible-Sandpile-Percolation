@@ -216,7 +216,7 @@ nothing for it.
 | `thm-main-explosion-i-a` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
 | `thm-main-explosion-i-a` | `External.ContinuumStoppingStability` | reached through `cor:dlt4-mean-asymptotic` and `thm:main-explosion`(i)(b), which the proof applies at `T = 1`; the paper's own reduction is `sandpile.tex:299`, "Part (i)(a) is Corollary~\ref{cor:dlt4-mean-asymptotic}". The input is taken at the universe of the realization spaces the statement builds for itself | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.mean_growth_le_three_proved` |
 | `thm-main-explosion-i-a` | `External.VarianceScale` | reached through `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`), whose uniform exponential moment is the input the corollary's sentence names at `sandpile.tex:2030-2032` | proved: `Sandpile.External.varianceScale` |
-| `thm-main-explosion-i-a` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`. The statement names no probability space, so the hypothesis is carried for every space carrying a family of Brownian motions, which is the form the cited theorem has | hypothesis; not used by `Sandpile.mean_growth_le_three_proved` |
+| `thm-main-explosion-i-a` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`. The statement names no probability space, so the hypothesis is carried for every space carrying a family of Brownian motions with continuous paths and measurable time slices, which is the form the cited theorem has | hypothesis, proved: `Sandpile.External.continuumOptimalStopping_holds`; not used by `Sandpile.mean_growth_le_three_proved` |
 | `prop-dlt4-heat-potential-invariance` | `External.LocalCLT` | `eq:lclt-parity` | proved: `Sandpile.External.localCLT` |
 | `thm-main-explosion-ii-c` | `External.ContinuumBesovTightness` | the Besov tightness criterion, reached through `prop:d4-diffusive-tightness` and `lem:sobolev-tightness`, which the paper cites at `sandpile.tex:1676-1680`; part (ii)(c) is those two propositions by `sandpile.tex:302-304` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `thm-main-explosion-iii-c` | `External.LocalCLT`, `External.ContinuumBesovTightness` | the same two that `thm:dgt4-diffusive-membrane` carries; part (iii)(c) is that theorem by `sandpile.tex:307-308` | hypothesis: `ContinuumBesovTightness` (proved: `Sandpile.External.continuumBesovTightness_holds`); proved here: `LocalCLT` by `Sandpile.External.localCLT` |
@@ -229,7 +229,7 @@ nothing for it.
 | `prop-continuum-value-selfsimilar` | `External.VarianceScale` | `eq:Qt-table` | proved: `Sandpile.External.varianceScale` |
 | `prop-continuum-value-selfsimilar` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
 | `prop-continuum-value-selfsimilar` | `External.ContinuumStoppingStability` | Coquet–Toldo Theorem 3 and Corollary 4, through the parabolic scaling limit `thm:main-explosion`(i)(b), used at `sandpile.tex:1995-1997`. The input is taken at the Brownian realization space’s universe, and the motion carries continuous paths and strongly measurable evaluations. | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.continuum_value_self_similar_proved` |
-| `prop-continuum-value-selfsimilar` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis; not used by `Sandpile.continuum_value_self_similar_proved` |
+| `prop-continuum-value-selfsimilar` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis, proved: `Sandpile.External.continuumOptimalStopping_holds`; not used by `Sandpile.continuum_value_self_similar_proved` |
 | `prop-d4-pointwise-linearization` | `External.VarianceScale` | `eq:d4-window-l2`, `eq:d4-window-linfty` | proved: `Sandpile.External.varianceScale` |
 | `lem-d4-difference-tail` | `External.VarianceScale` | `eq:d4-full-window-bounds` | proved: `Sandpile.External.varianceScale` |
 | `cor-critical-mean-one` | `External.VarianceScale`, `External.MultivariateBerryEsseen` | `eq:Qt-table`, `eq:corr-bound`; the multivariate Berry-Esseen comparison of `sandpile.tex:1770-1782` | hypothesis: `MultivariateBerryEsseen`; proved here: `VarianceScale` by `Sandpile.External.varianceScale` |
@@ -252,13 +252,13 @@ nothing for it.
 | `thm-main-critical-level-percolation` | `External.BallGreenBounds` | `eq:d4ball-point`, `eq:d4ball-square`, `eq:d4ball-near`, `eq:d4ball-far-cube`, `eq:d4ball-shift`, `eq:d4ball-time-tail` | proved: `Sandpile.External.ballGreenBounds` |
 | `thm-main-critical-level-percolation` | `External.GreenBoundsHigh`, `External.VarianceScale` | `eq:dgt4-green-tail`; `eq:Qt-table`, `eq:d4-full-window-bounds` | proved here: `GreenBoundsHigh` by `Sandpile.External.greenBoundsHigh`, `VarianceScale` by `Sandpile.External.varianceScale` |
 | `thm-main-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity`, `External.CubeStoppingStability` | the `d = 2, 3` branch, through `thm:d23-critical-level-percolation` | hypothesis: `ContinuumRSW` (proved: `Sandpile.External.continuumRSW_holds`), `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`), `CubeStoppingStability` (proved: `Sandpile.External.cubeStoppingStability_holds`) |
-| `prop-brownian-os` | `External.ContinuumOptimalStopping` | the finite-horizon optimal-stopping theorem applied to the gain `-h(T-s,B_s)`, Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis |
+| `prop-brownian-os` | `External.ContinuumOptimalStopping` | the finite-horizon optimal-stopping theorem applied to the gain `-h(T-s,B_s)`, Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis, proved: `Sandpile.External.continuumOptimalStopping_holds`; discharged by `Sandpile.brownian_optimal_stopping_proved` |
 | `lem-sobolev-tightness` | `External.ContinuumBesovTightness` | the tightness criterion of Furlan and Mourrat, Theorem 2.30, at `p = q = 2` with regularity exponent `-β/2` and `α = -s`, together with the identification of `B^{-s,loc}_{2,2}` with `H^{-s}_loc`, cited at `sandpile.tex:1661-1662` and `sandpile.tex:1676-1680` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `prop-d4-diffusive-tightness` | `External.ContinuumBesovTightness` as well | the same criterion, reached through `lem:sobolev-tightness`, which the proof at `sandpile.tex:3288-3316` applies with `β = 2ε` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `cor-dlt4-mean-asymptotic` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
 | `cor-dlt4-mean-asymptotic` | `External.ContinuumStoppingStability` | reached through `thm:main-explosion`(i)(b), which the corollary's proof applies at `T = 1` and at the origin (`sandpile.tex:2030-2032`). The input is taken at the universe of the corollary's own Brownian realization space and beside the path regularity of the motion | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.dlt4_mean_asymptotic_proved` |
 | `cor-dlt4-mean-asymptotic` | `External.VarianceScale` | reached through `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`), whose uniform exponential moment is the input the corollary's sentence names at `sandpile.tex:2030-2032` | proved: `Sandpile.External.varianceScale` |
-| `cor-dlt4-mean-asymptotic` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`; carried at the corollary's own Brownian realization space, exactly as that proposition carries it | hypothesis; not used by `Sandpile.dlt4_mean_asymptotic_proved` |
+| `cor-dlt4-mean-asymptotic` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`; carried at the corollary's own Brownian realization space, exactly as that proposition carries it | hypothesis, proved: `Sandpile.External.continuumOptimalStopping_holds`; not used by `Sandpile.dlt4_mean_asymptotic_proved` |
 | `thm-main-explosion-i-b` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the heat-potential invariance proposition used in the scaling proof at `sandpile.tex:1877-1879`. | proved: `Sandpile.External.localCLT` |
 | `thm-main-explosion-i-b` | `External.ContinuumStoppingStability` | the stability of optimal-stopping values under uniform convergence of bounded rewards, together with the invariance principle for the stopped walk, Coquet and Toldo Theorem 3 and Corollary 4, cited at `sandpile.tex:1900-1907` and announced at `sandpile.tex:649`. The input is taken at the universe of the statement's own Brownian realization space, and the motion carries the path regularity of `lem:brownian-ball-localization` | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.brownian_scaling_limit_proved` |
 | `rem-dlt4-killed-scaling` | `External.ContinuumStoppingStability`, `External.CubeStoppingStability`, `External.LocalCLT` | Coquet–Toldo stopping stability and its killed form, `sandpile.tex:1900-1907` and `sandpile.tex:1929-1931`; the parity local central limit theorem `eq:lclt-parity` through `prop:dlt4-heat-potential-invariance`. The stopping stability is taken at the universe of the statement's two realization spaces | hypothesis: `ContinuumStoppingStability` (proved: `Sandpile.External.continuumStoppingStability_holds`), `CubeStoppingStability` (proved: `Sandpile.External.cubeStoppingStability_holds`); proved here: `LocalCLT` by `Sandpile.External.localCLT` |
@@ -369,54 +369,49 @@ measurable version is strictly more than almost-everywhere measurability of
 `continuumValue` itself, so the form weakens nothing the paper asserts
 (`prop-continuum-value-selfsimilar`).
 
-## Brownian optimal stopping and exceptional paths
+## Brownian optimal stopping
 
-The frozen `External.ContinuumOptimalStopping` assumes Brownian paths are continuous only
-almost surely but asks for an everywhere right-continuous modification whose contact set has
-a pointwise least element that is a raw natural-filtration stopping time. On an exceptional
-null path one can arrange contacts with every right-continuous candidate at times arbitrarily
-close to zero. Its least contact is then zero, and the raw stopping-time history criterion
-forces the time to be zero almost surely. For the gain `G(t,z) = z₀ + 1 - t` with horizon
-one, that stop has mean zero while the constant stop at one has mean one. The contact-time
-conclusion of `Frozen.brownian_optimal_stopping` has the same defect, taking `h = -G`.
-The frozen theorem is conditional on the defective input.
+`External.ContinuumOptimalStopping` is the finite-horizon optimal-stopping theorem of Peskir
+and Shiryaev (Theorem 2.2), cited at `sandpile.tex:1099`, for a family of Brownian motions
+indexed by the starting point. Following the paper's convention that Brownian motion has
+continuous paths, every path of the family is continuous, and every time slice is a strongly
+measurable random variable, so that the value process is a process on the given space; the
+main theorems that build the family carry both hypotheses (`hBc`, `hBm`). The theorem is
+proved by `External.continuumOptimalStopping_holds`, and
+`Sandpile.brownian_optimal_stopping_proved` is `prop:brownian-os` without its
+optimal-stopping hypothesis.
 
-An earlier all-path-continuous version also failed: `IsBrownian` gives only
-almost-everywhere measurability of the time slices, while `M` must be measurable in the
-ambient space. Take a disjoint null copy of canonical Wiener path space, equip that copy
-with the trivial sigma algebra, and use the same continuous path on both copies. For the
-gain above, optimality forces the stop to be one almost surely, and the raw stopping-time
-history criterion forces the same value on matching null copies. The pointwise contact
-condition then makes `M 1` equal to `1 + B 1` on those copies of almost every Wiener path.
-This is nonconstant, but any measurable real function is constant on the null copy.
-
-The deviation `External.ContinuumOptimalStoppingOfContinuous` requires continuity of
-every path and strong measurability of every Brownian time slice; the main use sites already
-carry both hypotheses. It is proved by `External.continuumOptimalStoppingOfContinuous_holds`.
 The supporting results prove that the raw and augmented values agree
 (`Support.snellValue_eq_sSup_usualAugmentation`), that the value does not depend on the
 Brownian realization (`Support.snellValue_eq_of_isBrownian`), and that it is jointly
 continuous in time and starting point (`Support.continuousOn_brownian_snellValue`).
 `Support.exists_adapted_brownian_value_process` constructs a continuous adapted value
 process with an integrable path bound and a least raw contact time.
-
 `Support.brownian_stopped_value_expectation_bound` proves the stopped expectation bound
 for every bounded raw stop, and `Support.brownian_first_contact_stopped_martingale`
 proves the martingale property through first contact. The first contact attains the value
-and is minimal among optimal stops. `Support.brownian_optimal_stopping_of_continuous`
-therefore proves the representation without an optimal-stopping hypothesis.
+and is minimal among optimal stops.
 
-The paper cites the continuous-time Snell-envelope theorem. The proof here uses Brownian
-restart and superharmonicity in the Markovian setting, as in Peskir and Shiryaev,
-Chapter I, Section 2.2, but obtains contact optimality by a different argument. Choose
-near-optimal bounded stops. Their expected nonnegative value-minus-reward gaps converge
-to zero, so the probability that such a stop precedes the first ε-contact tends to zero.
-The stopped supermartingale comparison and the integrable path envelope then show that
-the expected value at ε-contact equals the initial value. Continuity and domination pass
-this equality to first contact. The stopped martingale follows from equal expectations.
-Superharmonicity itself follows by selecting finitely many near-optimal continuations on
-compact sets, using Brownian restart and controlling the tails; dyadic stopping-time
-approximation extends the bound to arbitrary bounded stops.
+The proof departs from the cited source in three places.
+
+- *Markovian superharmonicity.* The paper cites the continuous-time Snell-envelope theorem.
+  The proof here uses Brownian restart and superharmonicity in the Markovian setting, as in
+  Peskir and Shiryaev, Chapter I, Section 2.2. Superharmonicity itself follows by selecting
+  finitely many near-optimal continuations on compact sets, using Brownian restart and
+  controlling the tails; dyadic stopping-time approximation extends the bound to arbitrary
+  bounded stops.
+- *Contact optimality from near-optimal gaps.* Choose near-optimal bounded stops. Their
+  expected nonnegative value-minus-reward gaps converge to zero, so the probability that such
+  a stop precedes the first ε-contact tends to zero. The stopped supermartingale comparison
+  and the integrable path envelope then show that the expected value at ε-contact equals the
+  initial value. Continuity and domination pass this equality to first contact. The stopped
+  martingale follows from equal expectations.
+- *Raw and augmented filtrations.* The paper's stopping times are those of the completed
+  natural filtration of the motion (`sandpile.tex:973-974`); the statements here use the raw
+  natural filtration (`Continuum.IsBrownianStopping`). For a gain of polynomial growth the
+  value is the same over the stopping times of the raw filtration and of its usual
+  augmentation (`Support.snellValue_eq_sSup_usualAugmentation`), and the first contact time
+  is a stopping time of the raw filtration.
 
 The self-similarity proof does not use its optimal-stopping hypothesis. The successors
 `Support.continuum_value_self_similar_without_optimal_stopping`,
@@ -603,6 +598,7 @@ Lattice-Probability.
 | `External.RellichKondrachovNegSobolev`, the Rellich-Kondrachov compact embedding of the Sobolev scale on a bounded domain | `Sandpile.External.rellichKondrachovNegSobolev_holds` |
 | `External.ContinuumBesovTightness`, the Besov tightness criterion of Furlan and Mourrat in its covariance form | `Sandpile.External.continuumBesovTightness_holds` |
 | `External.ContinuumStoppingStability`, the stability of optimal-stopping values with the invariance principle for the stopped walk | `Sandpile.External.continuumStoppingStability_holds` |
+| `External.ContinuumOptimalStopping`, the finite-horizon optimal-stopping theorem for Brownian motion | `Sandpile.External.continuumOptimalStopping_holds` |
 | `External.PlanarRSW`, the planar crossing comparison of Köhler-Schindler and Tassion | `Sandpile.External.planarRSW_holds` |
 | `External.ContinuumRSW`, the continuum crossing comparison, from the planar one | `Sandpile.External.continuumRSW_holds` |
 | `External.CubeStoppingStability`, the stability of cube-killed optimal-stopping values | `Sandpile.External.cubeStoppingStability_holds` |
@@ -658,7 +654,7 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | sandpile.tex:2262-2264 (Kohler-Schindler–Tassion Theorem 1 and Comment 1, planar crossing comparison) | FROZEN |
 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | sandpile.tex:2589,3992 (LSS Corollary 1.4) | FROZEN |
 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion) | FROZEN |
-| `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `sandpile.tex:1083-1099`, `prop-brownian-os` | PROVED |
+| `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `sandpile.tex:1083-1099`, `prop-brownian-os` | SEALED |
 | `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `sandpile.tex:1692-1702`, `lem-sobolev-tightness` | PROVED |
 | `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `sandpile.tex:4831-4847`, `lem-dgt4-weighted-last-visits` | PROVED |
 | `ext-normal-comparison` | `Sandpile.External.normalComparison` | sandpile.tex:5536-5543 (LiShao Corollary 2.1 p. 496, normal comparison inequality); a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
@@ -736,8 +732,8 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 | `ext-brownian-exit-step` | `Sandpile.External.brownianExitStep_holds` | sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
 | `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
-| `ext-continuous-brownian-optimal-stopping` | `Sandpile.External.continuousOptimalStopping_holds` | sandpile.tex:1099 (Peskir and Shiryaev, finite-horizon Brownian optimal stopping); continuous paths and measurable time slices | SEALED |
-| `prop-brownian-os-continuous` | `Sandpile.Support.brownian_optimal_stopping_of_continuous` | `sandpile.tex:1083-1099`, `prop-brownian-os` | SEALED |
+| `ext-continuum-optimal-stopping-proved` | `Sandpile.External.continuumOptimalStopping_holds` | sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion); a cited result, proved unconditionally in this repository rather than assumed | SEALED |
+| `prop-brownian-os-proved` | `Sandpile.brownian_optimal_stopping_proved` | `sandpile.tex:1083-1099`, `prop-brownian-os` | SEALED |
 | `thm-main-explosion-i-a-proved` | `Sandpile.mean_growth_le_three_proved` | `sandpile.tex:213-215`, `thm:main-explosion` | SEALED |
 | `thm-main-explosion-i-b-proved` | `Sandpile.brownian_scaling_limit_proved` | `sandpile.tex:216-236`, `thm-main-explosion` | SEALED |
 | `prop-continuum-value-selfsimilar-proved` | `Sandpile.continuum_value_self_similar_proved` | `sandpile.tex:1989-2008`, `prop-continuum-value-selfsimilar` | SEALED |

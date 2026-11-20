@@ -3,6 +3,7 @@ import Sandpile.External.RSW.GoodBaseScale
 import Sandpile.External.RSW.CorridorCascade
 import Sandpile.External.RSW.BridgePathIntersection
 import Sandpile.External.RSW.BaseScaleArithmetic
+import Sandpile.External.RSW.NearScaleBound
 
 /-!
 # Bridge induction from geometric estimates
@@ -34,13 +35,13 @@ theorem kstBridge_base_comparison_of_geometry
         (μ.map dualBondConfig).real
           (bondCrossingEvent (16 * kstBaseScale j) (2 * kstBaseScale j)))
     (hnear : ∀ j,
-      1 - (1 - (kstScaleIso 4 (unitIntervalComplement
+      (kstScaleIso 2 (unitIntervalComplement
         (probabilityInUnitInterval (μ.map dualBondConfig)
-          (kstBridgeEvent (kstBaseScale (j + 1))))) : ℝ)) ^ 2 ≤
+          (kstBridgeEvent (kstBaseScale (j + 1))))) : ℝ) ≤
         μ.real (kstQuasiCrossingEvent (kstBaseScale (j + 1)) (kstBaseScale j)))
     (hnearDual : ∀ j,
-      1 - (1 - (kstScaleIso 4 (unitIntervalComplement
-        (probabilityInUnitInterval μ (kstBridgeEvent (kstBaseScale (j + 1))))) : ℝ)) ^ 2 ≤
+      (kstScaleIso 2 (unitIntervalComplement
+        (probabilityInUnitInterval μ (kstBridgeEvent (kstBaseScale (j + 1))))) : ℝ) ≤
         (μ.map dualBondConfig).real
           (kstQuasiCrossingEvent (kstBaseScale (j + 1)) (kstBaseScale j)))
     (hcover : ∀ i j, j < i → KSTCorridorBridgeCover
@@ -64,6 +65,14 @@ theorem kstBridge_base_comparison_of_geometry
     (kstQuasiCrossingEvent (kstBaseScale i) (kstBaseScale j))
   let r := fun i j => probabilityInUnitInterval ν
     (kstQuasiCrossingEvent (kstBaseScale i) (kstBaseScale j))
+  have hnearStrong (j : ℕ) :
+      1 - (1 - (kstScaleIso 4 (unitIntervalComplement (d (j + 1))) : ℝ)) ^ 2 ≤
+        (q (j + 1) j : ℝ) :=
+    (kstScaleIso_adjacent_bound (unitIntervalComplement (d (j + 1)))).trans (hnear j)
+  have hnearDualStrong (j : ℕ) :
+      1 - (1 - (kstScaleIso 4 (unitIntervalComplement (b (j + 1))) : ℝ)) ^ 2 ≤
+        (r (j + 1) j : ℝ) :=
+    (kstScaleIso_adjacent_bound (unitIntervalComplement (b (j + 1)))).trans (hnearDual j)
   have hpos (i : ℕ) : 0 < kstBaseScale i := by
     exact Nat.mul_pos (by norm_num) (pow_pos (by norm_num) i)
   have hmono {i j : ℕ} (hij : i ≤ j) : kstBaseScale i ≤ kstBaseScale j := by
@@ -80,7 +89,7 @@ theorem kstBridge_base_comparison_of_geometry
   have hadj : ∀ j, kstScaleIso 4 (unitIntervalComplement (d (j + 1))) ≤ q (j + 1) j := by
     intro j
     have hx := (kstScaleIso 4 (unitIntervalComplement (d (j + 1)))).property
-    have hn := hnear j
+    have hn := hnearStrong j
     change 1 - (1 - (kstScaleIso 4 (unitIntervalComplement (d (j + 1))) : ℝ)) ^ 2 ≤
       (q (j + 1) j : ℝ) at hn
     change (kstScaleIso 4 (unitIntervalComplement (d (j + 1))) : ℝ) ≤ (q (j + 1) j : ℝ)
@@ -89,7 +98,7 @@ theorem kstBridge_base_comparison_of_geometry
   have hadjDual : ∀ j, kstScaleIso 4 (unitIntervalComplement (b (j + 1))) ≤ r (j + 1) j := by
     intro j
     have hx := (kstScaleIso 4 (unitIntervalComplement (b (j + 1)))).property
-    have hn := hnearDual j
+    have hn := hnearDualStrong j
     change 1 - (1 - (kstScaleIso 4 (unitIntervalComplement (b (j + 1))) : ℝ)) ^ 2 ≤
       (r (j + 1) j : ℝ) at hn
     change (kstScaleIso 4 (unitIntervalComplement (b (j + 1))) : ℝ) ≤ (r (j + 1) j : ℝ)
@@ -104,10 +113,10 @@ theorem kstBridge_base_comparison_of_geometry
   · exact hadjDual
   · intro i j hij hsmall
     exact kstCorridor_cascade_probability μ ha ht _ _ _ (hcover i j hij)
-      (kstScaleIso 4 (unitIntervalComplement (d (i + 1)))).property.2 hsmall (hnear i)
+      (kstScaleIso 4 (unitIntervalComplement (d (i + 1)))).property.2 hsmall (hnearStrong i)
   · intro i j hij hsmall
     exact kstCorridor_cascade_probability ν haν htν _ _ _ (hcover i j hij)
-      (kstScaleIso 4 (unitIntervalComplement (b (i + 1)))).property.2 hsmall (hnearDual i)
+      (kstScaleIso 4 (unitIntervalComplement (b (i + 1)))).property.2 hsmall (hnearDualStrong i)
   · intro i j hij
     exact measureReal_kstQuasiCrossing_mul_bridge_le μ ha _ _ (hpos j) (hmono hij)
   · intro i j hij

@@ -137,7 +137,7 @@ theorem kstTopConnectedEvent_of_separated_paths {W n m : ℕ}
       obtain ⟨e', he', heq⟩ := List.mem_map.mp hr
       change Sym2.map Subtype.val e' = e at heq
       rw [← heq]
-      exact (isBondOpenWalk_iff_local_edges ω r).mp hor e' he' 
+      exact (isBondOpenWalk_iff_local_edges ω r).mp hor e' he'
     have hcOuter : c ∈ (r.map g).support := hqs c q.end_mem_support
     rw [SimpleGraph.Walk.support_map] at hcOuter
     obtain ⟨x, hxr, hx⟩ := List.mem_map.mp hcOuter

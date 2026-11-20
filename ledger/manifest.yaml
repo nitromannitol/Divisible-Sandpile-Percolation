@@ -1120,3 +1120,63 @@ nodes:
     state: SEALED
     frozen_sha256: 027f6db2614f306145ee4fcac7c4d9d077cae138c14fe7b61bf8467c2e96933c
     provider: Sandpile.Support.brownian_optimal_stopping_of_continuous
+
+  - id: thm-main-explosion-i-a-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    file: Sandpile/Support/MeanGrowthLowUnconditional.lean
+    export: Sandpile.mean_growth_le_three_proved
+    state: SEALED
+    frozen_sha256: 1af1c929a192593f5fe7beef10ba18515f0fdf4afaf8112bb2f826fcb20ae8cb
+    provider: Sandpile.mean_growth_le_three_proved
+
+  - id: thm-main-explosion-i-b-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds
+    file: Sandpile/Support/BrownianScalingLimitUnconditional.lean
+    export: Sandpile.brownian_scaling_limit_proved
+    state: SEALED
+    frozen_sha256: 17a268a097551d11d95e0e6b9803b2289bba056995a8f972184076210d2101bf
+    provider: Sandpile.brownian_scaling_limit_proved
+
+  - id: prop-continuum-value-selfsimilar-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    file: Sandpile/Support/ContinuumValueSelfSimilarUnconditional.lean
+    export: Sandpile.continuum_value_self_similar_proved
+    state: SEALED
+    frozen_sha256: 9b095505a7abb77f40645205b7a3a08a8ebb6e6b660c32995ed224d7b6dabead
+    provider: Sandpile.continuum_value_self_similar_proved
+
+  - id: cor-dlt4-mean-asymptotic-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    file: Sandpile/Support/MeanAsymptoticUnconditional.lean
+    export: Sandpile.dlt4_mean_asymptotic_proved
+    state: SEALED
+    frozen_sha256: 67fa3c026fc085f09a7d3e7aea05666091f98ce52400a216fb01d51bcafa6bb0
+    provider: Sandpile.dlt4_mean_asymptotic_proved
+
+  - id: thm-d4-ball-green-crossing-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); the planar RSW hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds
+    file: Sandpile/D4BallGreenCrossingUnconditional.lean
+    export: Sandpile.d4_ball_green_crossing
+    state: SEALED
+    frozen_sha256: b9770a7300e95cc65e8c7faf5736bdde945467f32ac6a1742d343ef47fb4fdd1
+    provider: Sandpile.d4_ball_green_crossing
+
+  - id: thm-d4-critical-level-percolation-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); the planar RSW hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds; the LSS domination hypothesis is also dropped, now discharged unconditionally by Sandpile.External.lssDomination
+    file: Sandpile/D4CriticalLevelPercolationUnconditional.lean
+    export: Sandpile.d4_critical_level_percolation
+    state: SEALED
+    frozen_sha256: 06c7914e501891fc6ce4d5568dea4b6341dd98539ba5768f1167e898a984f3aa
+    provider: Sandpile.d4_critical_level_percolation

@@ -2267,6 +2267,65 @@ REVIEWED: dict[str, str] = {
         "hypothesis), d : N with hd : 1 <= d (added; d = 0 makes avg a junk zero), zeta, n : N, x "
         "bound as arguments. Nothing left out; stopping times are everywhere-bounded by n rather "
         "than almost surely.",
+    "thm-main-explosion-i-a-proved":
+        "The statement is that of thm-main-explosion-i-a (Sandpile.Frozen.mean_growth_le_three) "
+        "with the two cited-input binders hStab (ContinuumStoppingStability.{0}) and hOS (forall "
+        "OmegaB : Type, ContinuumOptimalStopping OmegaB) deleted; every other binder, their order "
+        "and the conclusion are unchanged character for character. Paper (part (i)(a) of "
+        "thm:main-explosion) makes one assertion, that lim t^{-(4-d)/4} E u_t(0) exists in "
+        "(0,infinity) for d in {1,2,3}; the Lean conclusion is exists L : R, 0 < L /\\ Tendsto "
+        "(t^(-((4-d)/4)) * meanOdometer (centeredMassLaw d nu) t) atTop (nhds L), read as "
+        "recorded for thm-main-explosion-i-a. The stopping stability is supplied by "
+        "Sandpile.External.continuumStoppingStability_holds and the optimal-stopping input is not "
+        "used. Nothing of the paper's statement is dropped.",
+    "thm-main-explosion-i-b-proved":
+        "The statement is that of thm-main-explosion-i-b (Sandpile.Frozen.brownian_scaling_limit) "
+        "with the cited-input binder hStab (ContinuumStoppingStability.{u}) deleted; every other "
+        "binder, including the white-noise space, the modification Z with hZmod, hZcont, hZgrow, "
+        "the Brownian family on Omega' : Type u with hB, hBc, hBm, and T > 0, and the "
+        "three-clause conclusion (finite-dimensional convergence in distribution to the Brownian "
+        "stopping value, uniform-norm tightness and modulus tightness on every compact K) are "
+        "unchanged character for character, so the reading recorded for thm-main-explosion-i-b "
+        "applies verbatim. The stopping stability is supplied by "
+        "Sandpile.External.continuumStoppingStability_holds.",
+    "prop-continuum-value-selfsimilar-proved":
+        "The statement is that of prop-continuum-value-selfsimilar "
+        "(Sandpile.Frozen.continuum_value_self_similar) with the cited-input binders hStab "
+        "(ContinuumStoppingStability.{u}) and hOS (ContinuumOptimalStopping OmegaB) deleted; "
+        "every other binder and the three-clause conclusion (a measurable version U of the "
+        "continuum value with U(T,x) equal in law to T^{(4-d)/4} U(1,0); a uniform exponential "
+        "moment of the rescaled odometer and of the value; the moment identity E U(T,x)^p = "
+        "T^{p(4-d)/4} E U(1,0)^p with positivity) are unchanged character for character, so the "
+        "reading recorded for prop-continuum-value-selfsimilar applies verbatim. The stopping "
+        "stability is supplied by Sandpile.External.continuumStoppingStability_holds and the "
+        "optimal-stopping input is not used.",
+    "cor-dlt4-mean-asymptotic-proved":
+        "The statement is that of cor-dlt4-mean-asymptotic (Sandpile.Frozen.dlt4_mean_asymptotic) "
+        "with the cited-input binders hStab (ContinuumStoppingStability.{u}) and hOS "
+        "(ContinuumOptimalStopping OmegaB) deleted; every other binder and the ten-conjunct "
+        "conclusion (square integrability of the rescaled odometer, the odometer and the two "
+        "values, convergence of the rescaled mean, the scaling of the mean value, convergence of "
+        "the rescaled variance, positivity of the limiting variance, and the two ratio limits for "
+        "E u_t(0) and Var u_t(0)) are unchanged character for character, so the reading recorded "
+        "for cor-dlt4-mean-asymptotic applies verbatim. The stopping stability is supplied by "
+        "Sandpile.External.continuumStoppingStability_holds and the optimal-stopping input is not "
+        "used.",
+    "thm-d4-ball-green-crossing-proved":
+        "The statement is that of thm-d4-ball-green-crossing "
+        "(Sandpile.Frozen.d4_ball_green_crossing) with the cited-input binder hRSW (PlanarRSW) "
+        "deleted; nu0, theta0, K0, vartheta with their hypotheses, the order of quantifiers "
+        "(epsilon, then gamma, C and r0, then the law, r and x) and the crossing bound C (log "
+        "r)^3 r^{-gamma} are unchanged character for character, so the reading recorded for "
+        "thm-d4-ball-green-crossing applies verbatim. The planar RSW comparison is supplied by "
+        "Sandpile.External.planarRSW_holds.",
+    "thm-d4-critical-level-percolation-proved":
+        "The statement is that of thm-d4-critical-level-percolation "
+        "(Sandpile.Frozen.d4_critical_level_percolation) with the cited-input binders hRSW "
+        "(PlanarRSW) and hLSS (LSSDomination) deleted; nu0, theta0, K0 with their hypotheses, the "
+        "existential c > 0 and t0 before the law, and the almost-sure infinite planar component "
+        "of {z | c log t < u_t(planeEmbed z)} are unchanged character for character, so the "
+        "reading recorded for thm-d4-critical-level-percolation applies verbatim. The inputs are "
+        "supplied by Sandpile.External.planarRSW_holds and Sandpile.External.lssDomination.",
 }
 
 

@@ -379,8 +379,17 @@ path bound, and has a pointwise least raw contact time.
 First-contact optimality and the stopped value-process expectation bound remain unproved.
 `Support.first_contact_greatest_and_minimal_of_stopped_martingale` derives attainment and
 minimality assuming the martingale property up to contact and the expectation bound. The
-source theorem's Snell-envelope argument is still needed to establish those properties. `Support.brownian_optimal_stopping_of_continuous` proves
+proof of those estimates is not yet complete. `Support.brownian_optimal_stopping_of_continuous` proves
 the representation conditionally from the amended input.
+
+The paper cites the continuous-time Snell-envelope theorem. The Markovian route instead
+uses the strong Markov property and superharmonic majorants, following Peskir and Shiryaev,
+Chapter I, Theorem 2.7 and Remark 2.8. For general polynomial-growth rewards its
+lower-envelope argument must also be established. The formalized ingredients include
+`Continuum.IsBrownian.restart`, near-optimal raw path stopping rules, selection of bounded
+continuations at finitely many times, and passage from finite-range stopped expectation
+bounds to general bounded stops. The finite-range expectation bound and the first-contact
+equality remain open.
 
 The self-similarity proof does not use its optimal-stopping hypothesis. The successors
 `Support.continuum_value_self_similar_without_optimal_stopping`,

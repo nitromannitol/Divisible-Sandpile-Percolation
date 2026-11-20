@@ -1,5 +1,6 @@
 import Sandpile.Support.BrownianPolynomialReward
 import Sandpile.Support.PathStoppingPayoffLaw
+import LatticeProb.Prob.BrownianRestartLaw
 
 /-!
 # Stopping values and continuous path laws
@@ -98,3 +99,69 @@ theorem Sandpile.Support.snellValue_eq_of_continuousPathLaw
       hBm₁ hBm₂ hBc₁ hBc₂ hlaw T G hG hgrow
   · exact Sandpile.Support.snellValue_le_of_continuousPathLaw x₁ P₂ P₁ B₂ B₁ hB₁
       hBm₂ hBm₁ hBc₂ hBc₁ hlaw.symm T G hG hgrow
+
+/-- Continuous Brownian motions started at the same point have the same
+continuous-path law. -/
+theorem Sandpile.Support.brownian_continuousPathLaw_eq
+    {Ω₁ Ω₂ : Type*} [MeasurableSpace Ω₁] [MeasurableSpace Ω₂] {d : ℕ}
+    (x : Sandpile.Continuum.Space d)
+    (P₁ : Measure Ω₁) [IsProbabilityMeasure P₁] (P₂ : Measure Ω₂) [IsProbabilityMeasure P₂]
+    (B₁ : ℝ≥0 → Ω₁ → Sandpile.Continuum.Space d)
+    (B₂ : ℝ≥0 → Ω₂ → Sandpile.Continuum.Space d)
+    (hB₁ : Sandpile.Continuum.IsBrownian d x B₁ P₁)
+    (hB₂ : Sandpile.Continuum.IsBrownian d x B₂ P₂)
+    (hBm₁ : ∀ t, StronglyMeasurable (B₁ t)) (hBm₂ : ∀ t, StronglyMeasurable (B₂ t))
+    (hBc₁ : ∀ ω, Continuous fun t => B₁ t ω) (hBc₂ : ∀ ω, Continuous fun t => B₂ t ω) :
+    P₁.map (fun ω => (⟨fun t => B₁ t ω, hBc₁ ω⟩ : C(ℝ≥0, Sandpile.Continuum.Space d))) =
+      P₂.map (fun ω => (⟨fun t => B₂ t ω, hBc₂ ω⟩ : C(ℝ≥0, Sandpile.Continuum.Space d))) := by
+  let hL₁ : LatticeProb.IsBrownianSpace d x B₁ P₁ := ⟨hB₁.start, hB₁.coord, hB₁.indep⟩
+  let hL₂ : LatticeProb.IsBrownianSpace d x B₂ P₂ := ⟨hB₂.start, hB₂.coord, hB₂.indep⟩
+  let shift : LatticeProb.BrownianPath d → LatticeProb.BrownianPath d :=
+    fun p => ContinuousMap.const _ x + p
+  have hshift : Measurable shift := ContinuousMap.measurable_iff_eval.mpr fun t =>
+    measurable_const.add (ContinuousMap.measurable_eval t)
+  have hr₁ := LatticeProb.measurable_restartPath hBm₁ hBc₁ (τ := fun _ => 0) measurable_const
+  have hr₂ := LatticeProb.measurable_restartPath hBm₂ hBc₂ (τ := fun _ => 0) measurable_const
+  have hmap₁ : P₁.map (fun ω => (⟨fun t => B₁ t ω, hBc₁ ω⟩ : LatticeProb.BrownianPath d)) =
+      (P₁.map (LatticeProb.restartPath B₁ hBc₁ fun _ => 0)).map shift := by
+    rw [Measure.map_map hshift hr₁]
+    apply Measure.map_congr
+    filter_upwards [hB₁.start] with ω hω
+    ext t : 1
+    change B₁ t ω = x + (B₁ (0 + t) ω - B₁ 0 ω)
+    rw [zero_add, hω]
+    abel
+  have hmap₂ : P₂.map (fun ω => (⟨fun t => B₂ t ω, hBc₂ ω⟩ : LatticeProb.BrownianPath d)) =
+      (P₂.map (LatticeProb.restartPath B₂ hBc₂ fun _ => 0)).map shift := by
+    rw [Measure.map_map hshift hr₂]
+    apply Measure.map_congr
+    filter_upwards [hB₂.start] with ω hω
+    ext t : 1
+    change B₂ t ω = x + (B₂ (0 + t) ω - B₂ 0 ω)
+    rw [zero_add, hω]
+    abel
+  rw [hmap₁, hmap₂, hL₁.map_restartPath_zero_eq hL₂ hBc₁ hBc₂]
+
+/-- The finite-horizon Brownian stopping value depends only on the starting
+point and not on the chosen Brownian realization. -/
+theorem Sandpile.Support.snellValue_eq_of_isBrownian
+    {Ω₁ Ω₂ : Type*} [MeasurableSpace Ω₁] [MeasurableSpace Ω₂] {d : ℕ}
+    (x : Sandpile.Continuum.Space d)
+    (P₁ : Measure Ω₁) [IsProbabilityMeasure P₁] (P₂ : Measure Ω₂) [IsProbabilityMeasure P₂]
+    (B₁ : ℝ≥0 → Ω₁ → Sandpile.Continuum.Space d)
+    (B₂ : ℝ≥0 → Ω₂ → Sandpile.Continuum.Space d)
+    (hB₁ : Sandpile.Continuum.IsBrownian d x B₁ P₁)
+    (hB₂ : Sandpile.Continuum.IsBrownian d x B₂ P₂)
+    (hBm₁ : ∀ t, StronglyMeasurable (B₁ t)) (hBm₂ : ∀ t, StronglyMeasurable (B₂ t))
+    (hBc₁ : ∀ ω, Continuous fun t => B₁ t ω) (hBc₂ : ∀ ω, Continuous fun t => B₂ t ω)
+    (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
+    (hgrow : ∃ C k : ℝ, ∀ t ∈ Set.Icc (0 : ℝ) (T : ℝ),
+      ∀ y, |G t y| ≤ C * (1 + ‖y‖) ^ k) :
+    Sandpile.External.Snell.snellValue B₁ P₁ G T =
+      Sandpile.External.Snell.snellValue B₂ P₂ G T := by
+  exact Sandpile.Support.snellValue_eq_of_continuousPathLaw x x P₁ P₂ B₁ B₂ hB₁ hB₂
+    hBm₁ hBm₂ hBc₁ hBc₂
+    (Sandpile.Support.brownian_continuousPathLaw_eq x P₁ P₂ B₁ B₂ hB₁ hB₂
+      hBm₁ hBm₂ hBc₁ hBc₂) T G hG hgrow

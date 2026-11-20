@@ -985,6 +985,9 @@ import Sandpile.Support.ContinuumStoppingConsequences
 import Sandpile.PlanarRSWCorollaries
 import Sandpile.External.CubeStoppingStabilityProved
 import Sandpile.Support.CubeStoppingConsequences
+import Sandpile.NontrivialityUnconditional
+import Sandpile.CriticalLevelsUnconditional
+import Sandpile.D23CriticalLevelPercolationUnconditional
 
 /-!
 # The divisible sandpile percolation development

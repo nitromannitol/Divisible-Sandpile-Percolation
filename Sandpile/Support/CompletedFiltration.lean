@@ -79,3 +79,17 @@ theorem Sandpile.Support.exists_stoppingTime_seq_tendsto_of_usualAugmentation
   filter_upwards [he] with ω hω
   apply propext_iff.mp
   simpa only [Set.mem_ofPred_eq, ENNReal.coe_le_coe] using hω
+
+/-- A stopping time remains a stopping time after the usual augmentation. -/
+theorem Sandpile.Support.isStoppingTime_usualAugmentation
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (𝓕 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω))
+    (τ : Ω → ℝ≥0) (hτ : IsStoppingTime 𝓕 (fun ω => (τ ω : ℝ≥0∞))) :
+    IsStoppingTime (Sandpile.Support.aeCompletedFiltration P 𝓕).rightCont
+      (fun ω => (τ ω : ℝ≥0∞)) := by
+  intro t
+  have hle : 𝓕 t ≤ (Sandpile.Support.aeCompletedFiltration P 𝓕).rightCont t := by
+    have h1 : 𝓕 t ≤ (Sandpile.Support.aeCompletedFiltration P 𝓕) t :=
+      Sandpile.Support.le_aeCompletedSpace P (𝓕 t)
+    exact h1.trans ((Sandpile.Support.aeCompletedFiltration P 𝓕).le_rightCont t)
+  exact hle _ (hτ t)

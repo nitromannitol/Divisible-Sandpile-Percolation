@@ -34,7 +34,7 @@ theorem tendstoInMeasure_condExp_indicator_of_ae_observations
   intro ε hε
   have hhalf : 0 < ε / 2 := ENNReal.half_pos hε.ne'
   let Q : Measure E := P.map Y
-  letI : IsProbabilityMeasure Q := (Measure.isProbabilityMeasure_map_iff hY.aemeasurable).2 inferInstance
+  let : IsProbabilityMeasure Q := (Measure.isProbabilityMeasure_map_iff hY.aemeasurable).2 inferInstance
   have hi : Integrable (S.indicator (fun _ => (1 : ℝ))) Q := (integrable_const (1 : ℝ)).indicator hS
   obtain ⟨φ, hφ, _⟩ := (memLp_one_iff_integrable.2 hi).exists_boundedContinuous_eLpNorm_sub_le
     ENNReal.one_ne_top hhalf.ne'

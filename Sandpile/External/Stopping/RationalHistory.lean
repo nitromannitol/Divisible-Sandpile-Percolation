@@ -38,12 +38,12 @@ theorem brownianFiltration_eq_comap_rationalHistory {Ω : Type*} {d : ℕ}
   · apply Continuum.brownianFiltration_le B t
     intro s hs
     obtain ⟨q, hq⟩ := exists_rationalHistory_times_tendsto s t hs
-    letI : MeasurableSpace Ω := MeasurableSpace.comap (rationalHistory B t) inferInstance
+    let : MeasurableSpace Ω := MeasurableSpace.comap (rationalHistory B t) inferInstance
     have hm (n : ℕ) : Measurable (fun ω => B (min (Real.toNNReal (q n : ℝ)) t) ω) := by
       exact (measurable_pi_apply (q n)).comp (comap_measurable (rationalHistory B t))
     apply measurable_of_tendsto_metrizable hm
     exact tendsto_pi_nhds.2 fun ω => (hc ω).tendsto s |>.comp hq
-  · letI : MeasurableSpace Ω := Continuum.brownianFiltration B t
+  · let : MeasurableSpace Ω := Continuum.brownianFiltration B t
     apply measurable_iff_comap_le.mp
     apply measurable_pi_iff.2
     intro q

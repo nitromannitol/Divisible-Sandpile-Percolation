@@ -35,7 +35,7 @@ theorem exists_finite_natural_stopping_reward_approx
       Tendsto (fun n => ∫ ω, G (τn n ω) (Xn n (τn n ω) ω) ∂P) atTop
         (𝓝 (∫ ω, G (τ ω) (X (τ ω) ω) ∂P)) := by
   let O := ℚ → Continuum.Space d
-  letI := TopologicalSpace.upgradeIsCompletelyMetrizable O
+  let := TopologicalSpace.upgradeIsCompletelyMetrizable O
   let Y : ℝ≥0 → Ω → O := rationalHistory X
   let Yn : ℕ → ℝ≥0 → Ω → O := fun n => rationalHistory (Xn n)
   have hYm : ∀ t ∈ V, Measurable (Y t) := by
@@ -45,7 +45,7 @@ theorem exists_finite_natural_stopping_reward_approx
     exact hX _
   have hYnm : ∀ n, ∀ t ∈ V, @Measurable Ω O (F n t) inferInstance (Yn n t) := by
     intro n t ht
-    letI : MeasurableSpace Ω := F n t
+    let : MeasurableSpace Ω := F n t
     apply measurable_pi_iff.2
     intro q
     exact (hXadapt n _).mono ((F n).mono (min_le_right _ _)) le_rfl

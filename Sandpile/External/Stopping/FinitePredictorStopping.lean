@@ -26,7 +26,7 @@ theorem tendsto_measure_threshold_symmDiff
   intro n
   apply measure_mono
   intro ω hω
-  simp only [Set.mem_symmDiff, Set.mem_diff, Set.mem_setOf_eq] at hω
+  simp only [Set.mem_symmDiff, Set.mem_ofPred_eq] at hω
   change (1 / 2 : ℝ) ≤ dist (p n ω) (A.indicator (fun _ => (1 : ℝ)) ω)
   rcases hω with ⟨hpω, hAω⟩ | ⟨hAω, hpω⟩
   · rw [Set.indicator_of_notMem hAω, Real.dist_eq, sub_zero]

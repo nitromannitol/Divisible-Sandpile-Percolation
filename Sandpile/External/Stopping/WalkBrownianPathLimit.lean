@@ -48,7 +48,7 @@ theorem tendsto_diffusiveWalkPathLaw_brownian
       exact Filter.Eventually.of_forall (fun X => by ext i j; rfl)
     · filter_upwards [hFB] with ω hω
       ext i j
-      simp only [Function.comp_apply, e, WithLp.ofLp_toLp, Pi.add_apply]
+      simp only [Function.comp_apply, e, WithLp.ofLp_toLp]
       exact congrArg (fun z : Continuum.Space d => z j) (hω i).symm
   have heval : Measurable (fun f : C(ℝ≥0, Continuum.Space d) =>
       I.restrict (ReflectedGMS.MartingaleLimit.pathCoordinates f)) :=

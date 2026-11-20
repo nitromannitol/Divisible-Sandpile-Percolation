@@ -46,14 +46,14 @@ theorem isStoppingTime_finiteEventStop {Ω : Type*} {m : MeasurableSpace Ω}
   by_cases ht : T ≤ t
   · have heq : {ω | (finiteEventStop T V A ω : ℝ≥0∞) ≤ (t : ℝ≥0∞)} = Set.univ := by
       ext ω
-      simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true, ENNReal.coe_le_coe]
+      simp only [Set.mem_ofPred_eq, Set.mem_univ, iff_true, ENNReal.coe_le_coe]
       exact (finiteEventStop_le T V A hVT ω).trans ht
     rw [heq]
     exact MeasurableSet.univ
   · have heq : {ω | (finiteEventStop T V A ω : ℝ≥0∞) ≤ (t : ℝ≥0∞)} =
         ⋃ v ∈ V.filter (· ≤ t), A v := by
       ext ω
-      simp only [Set.mem_setOf_eq, ENNReal.coe_le_coe, Set.mem_iUnion, Finset.mem_filter,
+      simp only [Set.mem_ofPred_eq, ENNReal.coe_le_coe, Set.mem_iUnion, Finset.mem_filter,
         exists_prop]
       unfold finiteEventStop
       split

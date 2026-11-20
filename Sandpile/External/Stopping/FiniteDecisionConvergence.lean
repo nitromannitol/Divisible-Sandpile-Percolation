@@ -21,8 +21,8 @@ theorem finiteEventStop_eq_of_mem_range {Ω : Type*} (T : ℝ≥0) (V : Finset �
   unfold finiteEventStop
   have h : (V.filter fun t => ω ∈ {ω | τ ω = t}).Nonempty :=
     ⟨τ ω, Finset.mem_filter.2 ⟨hτV ω, rfl⟩⟩
-  simp only [Set.mem_setOf_eq] at h ⊢
-  rw [dif_pos h]
+  simp only [Set.mem_ofPred_eq] at h ⊢
+  rw [dite_eq_left h]
   have hm := Finset.mem_filter.1 ((V.filter fun t => ω ∈ {ω | τ ω = t}).min'_mem h)
   exact hm.2.symm
 
@@ -34,7 +34,7 @@ theorem tendstoInMeasure_finiteEventStop
     (hA : ∀ t ∈ V, Tendsto (fun n => P ((A n t) ∆ C t)) atTop (𝓝 0)) :
     TendstoInMeasure P (fun n => finiteEventStop T V (A n)) atTop (finiteEventStop T V C) := by
   have hsum : Tendsto (fun n => ∑ t ∈ V, P ((A n t) ∆ C t)) atTop (𝓝 0) := by
-    simpa only [Finset.sum_const_zero] using tendsto_finset_sum V (fun t ht => hA t ht)
+    simpa only [Finset.sum_const_zero] using tendsto_finsetSum V (fun t ht => hA t ht)
   have hbound (n : ℕ) : P {ω | finiteEventStop T V (A n) ω ≠ finiteEventStop T V C ω} ≤
       ∑ t ∈ V, P ((A n t) ∆ C t) := by
     calc

@@ -50,12 +50,12 @@ theorem exists_finite_stopping_factor_of_comap
     · left
       change finiteEventStop T V A ξ ∈ V
       unfold finiteEventStop
-      rw [dif_pos h]
+      rw [dite_eq_left h]
       exact (Finset.mem_filter.1 ((V.filter fun t => ξ ∈ A t).min'_mem h)).1
     · right
       change finiteEventStop T V A ξ = T
       unfold finiteEventStop
-      rw [dif_neg h]
+      rw [dite_eq_right h]
   · intro ω
     calc
       τ ω = finiteEventStop T V (fun t => {ω | τ ω = t}) ω :=

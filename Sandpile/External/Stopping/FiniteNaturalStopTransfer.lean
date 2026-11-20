@@ -18,7 +18,7 @@ natural filtration of the original process. -/
 theorem natFiltration_comp_eq_comap
     {Ω Ξ : Type*} [MeasurableSpace Ω] [MeasurableSpace Ξ] {d : ℕ}
     (Z : ℝ≥0 → Ξ → Continuum.Space d) (hZ : ∀ t, StronglyMeasurable (Z t))
-    (f : Ω → Ξ) (hf : Measurable f)
+    (f : Ω → Ξ) (_hf : Measurable f)
     (hfZ : ∀ t, StronglyMeasurable (fun ω => Z t (f ω))) (t : ℝ≥0) :
     LatticeProb.natFiltration (fun s ω => Z s (f ω)) hfZ t =
       (LatticeProb.natFiltration Z hZ t).comap f := by

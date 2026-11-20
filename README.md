@@ -207,8 +207,9 @@ set, but requires a pointwise least contact time that is a raw natural-filtratio
 time. A suitable exceptional path forces that time to be zero almost surely even for a gain
 where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
 `Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of every path and
-is a proposed correction; it is not yet proved. `Sandpile.Support.brownian_optimal_stopping_of_continuous`
-derives the Brownian representation from that corrected input. The mean-growth successor
+addresses that path defect but is also false as typed because it does not require ambient
+measurability of the Brownian time slices. `Sandpile.Support.brownian_optimal_stopping_of_continuous`
+derives the Brownian representation conditionally from that input. The mean-growth successor
 above does not require the input. See `CORRESPONDENCE.md` for the deviation.
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in

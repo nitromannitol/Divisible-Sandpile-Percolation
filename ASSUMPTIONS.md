@@ -25,8 +25,12 @@ modification and a raw natural-filtration stopping time. A pathological null
 path can force that stop to be zero almost surely even when stopping at the
 horizon has strictly greater reward. The proposed replacement
 `Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of
-every path, as in the paper's convention. This replacement remains unproved.
-The mean-growth successor `Sandpile.mean_growth_le_three_from_stability`
+every path, as in the paper's convention, but is also false as typed: Brownian
+time slices need only be almost-everywhere measurable, while the required
+modification must be measurable on the entire ambient space. A null copy of
+Wiener space with the trivial sigma algebra gives a contradiction; see
+`CORRESPONDENCE.md`. The mean-growth successor
+`Sandpile.mean_growth_le_three_from_stability`
 does not use either optimal-stopping input.
 
 ```lean

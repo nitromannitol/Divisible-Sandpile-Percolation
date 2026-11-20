@@ -376,7 +376,8 @@ and that it is jointly continuous in time and starting point
 process that is adapted to the raw filtration, dominates the reward, has an integrable
 path bound, and has a pointwise least raw contact time.
 
-First-contact optimality and the stopped value-process expectation bound remain unproved.
+First-contact optimality remains unproved. The stopped value-process expectation bound
+for every bounded raw stop is proved in `Support.brownian_stopped_value_expectation_bound`.
 `Support.first_contact_greatest_and_minimal_of_stopped_martingale` derives attainment and
 minimality assuming the martingale property up to contact and the expectation bound. The
 proof of those estimates is not yet complete. `Support.brownian_optimal_stopping_of_continuous` proves
@@ -388,8 +389,8 @@ Chapter I, Theorem 2.7 and Remark 2.8. For general polynomial-growth rewards its
 lower-envelope argument must also be established. The formalized ingredients include
 `Continuum.IsBrownian.restart`, near-optimal raw path stopping rules, selection of bounded
 continuations at finitely many times, and passage from finite-range stopped expectation
-bounds to general bounded stops. The finite-range expectation bound and the first-contact
-equality remain open.
+bounds to general bounded stops. The finite-range expectation bound and its extension to all bounded raw stops are proved
+(`Support.brownian_snellValue_superharmonic`); the first-contact equality remains open.
 
 The self-similarity proof does not use its optimal-stopping hypothesis. The successors
 `Support.continuum_value_self_similar_without_optimal_stopping`,

@@ -77,3 +77,39 @@ theorem Sandpile.Support.exists_path_stoppingTime_of_brownianStopping
   refine ⟨θ, hθstop, hθT, ?_⟩
   filter_upwards [ae_of_ae_map hpath.aemeasurable hθeq] with ω hω
   exact hω.trans (heq ω)
+
+/-- A right-continuation stopping functional remains a stopping time when
+evaluated on a measurable process. -/
+theorem Sandpile.Support.isStoppingTime_path_comp_rightCont
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hBm : ∀ t, StronglyMeasurable (B t))
+    (θ : (ℝ≥0 → Sandpile.Continuum.Space d) → ℝ≥0)
+    (hθ : IsStoppingTime (LatticeProb.natFiltration
+      (fun t (p : ℝ≥0 → Sandpile.Continuum.Space d) => p t)
+      (fun t => (measurable_pi_apply t).stronglyMeasurable)).rightCont
+      (fun p => (θ p : ℝ≥0∞))) :
+    IsStoppingTime (LatticeProb.natFiltration B hBm).rightCont
+      (fun ω => (θ (fun t => B t ω) : ℝ≥0∞)) := by
+  intro s
+  rw [Filtration.rightCont_eq, MeasurableSpace.measurableSet_iInf]
+  intro t
+  rw [MeasurableSpace.measurableSet_iInf]
+  intro hst
+  have hθs := (hθ.measurableSet_le s)
+  have hle : (LatticeProb.natFiltration
+      (fun t (p : ℝ≥0 → Sandpile.Continuum.Space d) => p t)
+      (fun t => (measurable_pi_apply t).stronglyMeasurable)).rightCont s ≤
+      (LatticeProb.natFiltration
+        (fun t (p : ℝ≥0 → Sandpile.Continuum.Space d) => p t)
+        (fun t => (measurable_pi_apply t).stronglyMeasurable)) t := by
+    rw [Filtration.rightCont_eq]
+    exact iInf₂_le t hst
+  have he := hle _ hθs
+  rw [LatticeProb.natFiltration_eq_comap] at he
+  obtain ⟨S, hS, hEq⟩ := he
+  rw [LatticeProb.natFiltration_eq_comap]
+  refine ⟨S, hS, ?_⟩
+  ext ω
+  have hh := Set.ext_iff.mp hEq (fun t => B t ω)
+  exact hh

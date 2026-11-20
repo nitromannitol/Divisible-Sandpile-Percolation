@@ -64,4 +64,37 @@ theorem exists_killed_walk_value_subsequence {d : ℕ} [NeZero d]
   dsimp only [F] at hn'
   linarith
 
+/-- Killed lattice values are eventually bounded above by the Brownian cube
+stopping value plus any prescribed positive error. -/
+theorem eventually_killed_walk_value_le_brownian_cube {d : ℕ} [NeZero d]
+    {ι : Type*} [Countable ι]
+    (R : ℕ → ℝ) (hRpos : ∀ n, 0 < R n) (hR : Tendsto R atTop atTop)
+    (q : ℕ → Site d) (H : ℕ → ℝ≥0) (T c : ℝ≥0) (hc : 0 < c)
+    (hH : Tendsto H atTop (𝓝 T)) (hHc : ∀ n, H n ≤ c)
+    (ν : ProbabilityMeasure C(ℝ≥0, Continuum.Space d))
+    (hpath : Tendsto (fun n => diffusiveWalkPathLaw d (R n) (q n)) atTop (𝓝 ν))
+    (a : Continuum.Space d)
+    (hstart : Tendsto (fun n => Lclt.scaledSite (R n) (q n)) atTop (𝓝 a))
+    (hB : Continuum.IsBrownian d a (fun t (f : C(ℝ≥0, Continuum.Space d)) => f t)
+      (ν : Measure C(ℝ≥0, Continuum.Space d)))
+    (time : ι → ℝ≥0)
+    (hdense : ∀ a b : ℝ≥0, a < b → ∃ i, a < time i ∧ time i < b)
+    (G : ℝ → Continuum.Space d → ℝ)
+    (hGc : Continuous (fun p : ℝ × Continuum.Space d => G p.1 p.2))
+    (M : ℝ) (hG : ∀ s z, |G s z| ≤ M) (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ n in atTop,
+      killedStoppingSup (supBox (q n) (R n)) ⌊R n ^ 2 * (H n : ℝ)⌋₊ (q n) (fun k X =>
+        G (((⌊R n ^ 2 * (H n : ℝ)⌋₊ : ℕ) - (k : ℝ)) / R n ^ 2)
+          (Lclt.scaledSite (R n) (X k))) <
+        Continuum.brownianDiscountCube (fun t (f : C(ℝ≥0, Continuum.Space d)) => f t)
+          (ν : Measure C(ℝ≥0, Continuum.Space d)) (fun s z => -G s z) T 1 a + ε := by
+  by_contra h
+  obtain ⟨ψ, hψ, hfail⟩ := exists_seq_forall_of_frequently (Filter.not_eventually.mp h)
+  obtain ⟨φ, hφ, hgood⟩ := exists_killed_walk_value_subsequence
+    (R ∘ ψ) (fun n => hRpos (ψ n)) (hR.comp hψ) (q ∘ ψ) (H ∘ ψ) T c hc
+    (hH.comp hψ) (fun n => hHc (ψ n)) ν (hpath.comp hψ) a (hstart.comp hψ)
+    hB time hdense G hGc M hG ε hε
+  obtain ⟨n, hn⟩ := hgood.exists
+  exact hfail (φ n) hn
+
 end Sandpile.External.Stopping

@@ -20,7 +20,8 @@ theorem translated_kstArmEvent_exists_walk (s W H : ℕ) (t : ℤ)
     ∃ (a b : centeredPlaneRectangle W H) (p : (rectangleGraph (centeredPlaneRectangle W H)).Walk a b),
       p.IsPath ∧ IsBondOpenWalk ω p ∧ (a : Site 2) 1 = t + s ∧ (b : Site 2) 1 = t - s ∧
       -((s / 64 : ℕ) : ℤ) ≤ (a : Site 2) 0 ∧ (a : Site 2) 0 ≤ (s / 64 : ℕ) ∧
-      -((s / 64 : ℕ) : ℤ) ≤ (b : Site 2) 0 ∧ (b : Site 2) 0 ≤ (s / 64 : ℕ) := by
+      -((s / 64 : ℕ) : ℤ) ≤ (b : Site 2) 0 ∧ (b : Site 2) 0 ≤ (s / 64 : ℕ) ∧
+      ∀ z ∈ p.support, t - (s : ℤ) ≤ (z : Site 2) 1 ∧ (z : Site 2) 1 ≤ t + s := by
   let Q := centeredPlaneRectangle (s + s / 64) s
   let R := centeredPlaneRectangle W H
   let v : Site 2 := ![0, t]
@@ -41,7 +42,7 @@ theorem translated_kstArmEvent_exists_walk (s W H : ℕ) (t : ℤ)
   obtain ⟨a, b, p, ha, hb, hp⟩ := hω
   refine ⟨f a, f b, p.bypass.map f, p.bypass_isPath.map hfinj,
     (isBondOpenWalk_map (fun z => z + v) f (fun _ => rfl) ω p.bypass).mpr hp.bypass,
-    ?_, ?_, ?_, ?_, ?_, ?_⟩
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · change (a : Site 2) 1 + v 1 = t + (s : ℤ)
     simp only [v, Matrix.cons_val_one, Matrix.cons_val_fin_one]
     rw [ha.1]
@@ -62,5 +63,12 @@ theorem translated_kstArmEvent_exists_walk (s W H : ℕ) (t : ℤ)
   · change (b : Site 2) 0 + v 0 ≤ ((s / 64 : ℕ) : ℤ)
     simp only [v, Matrix.cons_val_zero, add_zero]
     exact hb.2.2
+  · intro z hz
+    rw [SimpleGraph.Walk.support_map] at hz
+    obtain ⟨z', _, rfl⟩ := List.mem_map.mp hz
+    have hz' := (mem_centeredPlaneRectangle _ _ z').mp z'.property
+    change t - (s : ℤ) ≤ (z' : Site 2) 1 + v 1 ∧ (z' : Site 2) 1 + v 1 ≤ t + s
+    simp only [v, Matrix.cons_val_one, Matrix.cons_val_fin_one]
+    omega
 
 end Sandpile.External.RSW

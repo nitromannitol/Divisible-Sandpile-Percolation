@@ -45,7 +45,9 @@ theorem kstFourArmEvent_outer_paths (j : ℕ) {ω : Sym2 (Site 2) → Bool}
       -((3 * (m / 64) : ℕ) : ℤ) ≤ (c : Site 2) 0 ∧
       (c : Site 2) 0 ≤ ((3 * (m / 64) : ℕ) : ℤ) ∧
       -((3 * (m / 64) : ℕ) : ℤ) ≤ (d : Site 2) 0 ∧
-      (d : Site 2) 0 ≤ ((3 * (m / 64) : ℕ) : ℤ) := by
+      (d : Site 2) 0 ≤ ((3 * (m / 64) : ℕ) : ℤ) ∧
+      (∀ z ∈ p.support, -(m : ℤ) ≤ (z : Site 2) 1) ∧
+      (∀ z ∈ q.support, (z : Site 2) 1 ≤ m) := by
   let m := kstBaseScale j
   let s := 5 * m / 2
   let t := 3 * m / 2
@@ -55,13 +57,19 @@ theorem kstFourArmEvent_outer_paths (j : ℕ) {ω : Sym2 (Site 2) → Bool}
   have hsum' : (t : ℤ) + s = 4 * (m : ℤ) := by exact_mod_cast hsum
   have hwidth' : ((s / 64 : ℕ) : ℤ) ≤ ((3 * (m / 64) : ℕ) : ℤ) := by exact_mod_cast hwidth
   obtain ⟨_, _, htop, hbottom⟩ := hω
-  obtain ⟨a, b, p, hpath₁, hopen₁, hay, hby, haL, haR, hbL, hbR⟩ :=
+  obtain ⟨a, b, p, hpath₁, hopen₁, hay, hby, haL, haR, hbL, hbR, hpBounds⟩ :=
     translated_kstArmEvent_exists_walk s W (4 * m) t hw (by push_cast; omega)
       (by push_cast; omega) htop
-  obtain ⟨c, d, q, hpath₂, hopen₂, hcy, hdy, hcL, hcR, hdL, hdR⟩ :=
+  obtain ⟨c, d, q, hpath₂, hopen₂, hcy, hdy, hcL, hcR, hdL, hdR, hqBounds⟩ :=
     translated_kstArmEvent_exists_walk s W (4 * m) (-t) hw (by push_cast; omega)
       (by push_cast; omega) hbottom
-  refine ⟨a, b, c, d, p, q, hpath₁, hopen₁, hpath₂, hopen₂, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+  refine ⟨a, b, c, d, p, q, hpath₁, hopen₁, hpath₂, hopen₂, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  all_goals try omega
+  · intro z hz
+    have hh := hpBounds z hz
+    omega
+  · intro z hz
+    have hh := hqBounds z hz
     omega
 
 end Sandpile.External.RSW

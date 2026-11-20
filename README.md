@@ -209,6 +209,8 @@ where stopping at the horizon pays strictly more. The paper uses continuous Brow
 An earlier version with continuous paths also failed because it did not require ambient
 measurability of the time slices. `Sandpile.External.ContinuumOptimalStoppingOfContinuous`
 now requires both continuous paths and strongly measurable time slices; it remains unproved.
+The value is jointly continuous, independent of the Brownian realization, and has a measurable
+continuous process with a first raw contact time. First-contact optimality remains open.
 `Sandpile.Support.brownian_optimal_stopping_of_continuous` derives the Brownian representation
 conditionally from that input. The self-similarity and mean-growth successors above do not
 require it. See `CORRESPONDENCE.md` for the defects and deviation.

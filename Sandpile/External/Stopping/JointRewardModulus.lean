@@ -70,7 +70,7 @@ theorem exists_joint_reward_modulus
       Tendsto (fun n => ∫ ω, Δ n ω ∂P) atTop (𝓝 0) := by
   obtain ⟨V, hVm, hVc, hBV, _⟩ := exists_continuous_sandpile_brownian_version hB
   let K := Set.Icc (0 : ℝ≥0) H
-  letI : CompactSpace K := isCompact_iff_compactSpace.mp isCompact_Icc
+  let : CompactSpace K := isCompact_iff_compactSpace.mp isCompact_Icc
   let U : ℝ≥0 → Continuum.Space d → Ω → C(K, ℝ) := jointRewardCurve V hVc G hGc H
   let Δ : ℕ → Ω → ℝ := fun n ω => ‖U (Tn n) (un n) ω - U T u ω‖
   have hM : 0 ≤ M := (abs_nonneg (G 0 0)).trans (hG 0 0)

@@ -41,7 +41,7 @@ theorem tendsto_brownianDiscount_of_tendsto_start_horizon
         unfold D Continuum.brownianDiscount
         apply congrArg sSup
         ext a
-        simp only [C, Set.mem_setOf_eq, Sandpile.Support.isBrownianStopping_add_const]
+        simp only [C, Set.mem_ofPred_eq, Sandpile.Support.isBrownianStopping_add_const]
   let H : ℝ≥0 := T + 1
   obtain ⟨Δ, hΔi, hΔ, hΔlim⟩ := exists_joint_reward_modulus P 0 (B 0) (hB 0)
     H T Tn hTn x xn hx G hGc M hG

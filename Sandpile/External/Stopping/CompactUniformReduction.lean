@@ -23,7 +23,7 @@ theorem exists_large_scale_uniform_of_compact_sequences
       ∀ z ∈ K, |E R z| ≤ ε := by
   intro ε hε
   by_contra hn
-  push_neg at hn
+  push Not at hn
   have hbad (n : ℕ) : ∃ R : ℝ, (n : ℝ) + 1 ≤ R ∧ ∃ z ∈ K, ε < |E R z| :=
     hn ((n : ℝ) + 1) (by positivity)
   choose R hR z hzK hzbad using hbad

@@ -57,7 +57,7 @@ theorem kstBridgePiece_one_inter_reflect_subset_bottom (m : ℕ) (hm : 12 ≤ m)
   by_cases haBottom : (a : Site 2) 1 = -(m : ℤ)
   · have haCorner : kstBridgeCorner m true false a := by
       have haBox := (mem_centeredPlaneRectangle _ _ a).mp a.property
-      simp only [kstBridgeCorner, Bool.true_eq_false, Bool.false_eq_true, ↓reduceIte]
+      simp only [kstBridgeCorner, Bool.false_eq_true, ↓reduceIte]
       rcases ha with ha | ⟨ha, _⟩
       · push_cast at ha
         constructor <;> omega
@@ -104,7 +104,7 @@ theorem kstBridgePiece_one_inter_reflect_subset_bottom (m : ℕ) (hm : 12 ≤ m)
     exact ⟨hh.2, by omega⟩
   have hc'' : (c : Site 2) 1 = -(m : ℤ) ∧ (c : Site 2) 0 < 0 := by
     have hh := hc
-    simp only [kstBridgeCorner, Bool.true_eq_false, Bool.false_eq_true, ↓reduceIte] at hh
+    simp only [kstBridgeCorner, Bool.false_eq_true, ↓reduceIte] at hh
     exact ⟨hh.2, by omega⟩
   have hd'' : ((d : Site 2) 0 = ((m + m / 12 : ℕ) : ℤ) ∨
       ((d : Site 2) 1 = m ∧ 0 < (d : Site 2) 0)) ∧ -(m : ℤ) < (d : Site 2) 1 := by

@@ -43,7 +43,7 @@ def reflectBridgeRectangle (m : ℕ) (flipX flipY : Bool) :
     have hz := (mem_centeredPlaneRectangle _ _ z).mp z.property
     apply (mem_centeredPlaneRectangle _ _ _).mpr
     cases flipX <;> cases flipY <;>
-      simp only [reflectPlaneCoordinates, Bool.false_eq_true, Bool.true_eq_false, ↓reduceIte,
+      simp only [reflectPlaneCoordinates, Bool.false_eq_true, ↓reduceIte,
         Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] <;> omega⟩
   map_rel' h := lattice_adj_reflectPlaneCoordinates flipX flipY h
 
@@ -168,8 +168,7 @@ theorem measurePreserving_reflectPlaneCoordinates
     induction e using Sym2.ind with
     | _ x y =>
       simp only [Function.comp_apply, Sym2.map_mk]
-      congr 1 <;> ext i <;> fin_cases i <;>
-        simp [reflectPlaneCoordinates, swapPlaneSite, reflectPlaneSite]
+      congr 1
   cases flipX <;> cases flipY
   · convert MeasurePreserving.id μ using 1
     funext ω e
@@ -190,8 +189,7 @@ theorem measurePreserving_reflectPlaneCoordinates
     induction e using Sym2.ind with
     | _ x y =>
       simp only [Function.comp_apply, Sym2.map_mk]
-      congr 1 <;> ext i <;> fin_cases i <;>
-        simp [reflectPlaneCoordinates, reflectPlaneSite]
+      congr 1
 
 /-- The square-root bridge lower bound is attained by either the vertical-side crossing
 or the lower right-corner event. -/

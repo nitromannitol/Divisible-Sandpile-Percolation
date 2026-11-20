@@ -74,8 +74,8 @@ theorem exists_open_bottom_walk_spanning {M n : ℕ} {ω : Sym2 (Site 2) → Boo
     (hp : IsBondOpenWalk ω p) (hq : IsBondOpenWalk ω q)
     (ha : (a : Site 2) 1 = -(n : ℤ)) (hb : (b : Site 2) 1 = -(n : ℤ))
     (hc : (c : Site 2) 1 = -(n : ℤ)) (hd : (d : Site 2) 1 = -(n : ℤ))
-    (hab : (a : Site 2) 0 ≤ (b : Site 2) 0)
-    (hcd : (c : Site 2) 0 ≤ (d : Site 2) 0)
+    (_hab : (a : Site 2) 0 ≤ (b : Site 2) 0)
+    (_hcd : (c : Site 2) 0 ≤ (d : Site 2) 0)
     (had : (a : Site 2) 0 ≤ (d : Site 2) 0)
     (hcb : (c : Site 2) 0 ≤ (b : Site 2) 0) :
     ∃ (x y : centeredPlaneRectangle M n)

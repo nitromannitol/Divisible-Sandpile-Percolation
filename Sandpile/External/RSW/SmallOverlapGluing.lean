@@ -29,7 +29,7 @@ theorem bondCrossing_increment_pow_le (μ : Measure (Sym2 (Site 2) → Bool))
     measureReal_mono (bondCrossingEvent_width_height_mono (by omega) (by omega))
       (measure_ne_top μ _)
   induction k with
-  | zero => simpa only [Nat.mul_zero, Nat.zero_add, Nat.one_mul, pow_one, le_refl]
+  | zero => simp only [Nat.mul_zero, Nat.zero_add, Nat.one_mul, pow_one, le_refl]
   | succ k ih =>
     have hglue := bondCrossing_prob_glue μ ha (m₁ := n + (k + 1) * d) (m₂ := n + d) (n := n)
       (by omega) (by omega) (ht _) hs

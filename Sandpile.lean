@@ -983,6 +983,8 @@ import Sandpile.PercolationCorollaries
 import Sandpile.PercolationBoundaryCorollaries
 import Sandpile.Support.ContinuumStoppingConsequences
 import Sandpile.PlanarRSWCorollaries
+import Sandpile.External.CubeStoppingStabilityProved
+import Sandpile.Support.CubeStoppingConsequences
 
 /-!
 # The divisible sandpile percolation development

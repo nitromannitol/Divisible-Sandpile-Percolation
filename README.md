@@ -11,8 +11,8 @@ paper's three main theorems (Theorems 1.1 and 1.2 and the ten parts of Theorem 1
 theorems in all) are proved, in the form in which its introduction states them. Results cited
 from the literature enter as explicit hypotheses of the certified statements that use them, and
 most of them are proved here as well: ten of the 12 main theorems hold with no cited
-hypothesis, and Theorems 1.1 and 1.2 need only the cube-killed stopping stability
-`CubeStoppingStability`. See [Assumed literature inputs](#assumed-literature-inputs). Every
+hypothesis, and Theorems 1.1 and 1.2 need only the planar crossing comparison `PlanarRSW`,
+which is proved. See [Assumed literature inputs](#assumed-literature-inputs). Every
 other labelled theorem, lemma, proposition and corollary of the paper is formalized as well.
 
 The development is built on [mathlib](https://github.com/leanprover-community/mathlib4) and on
@@ -79,16 +79,15 @@ family of laws `μ_ρ` of mean `ρ`, with `Var_{μ_ρ} σ(0) ≥ ν₀²` and
 `E_{μ_ρ} e^{θ₀|σ(0)−ρ|} ≤ K₀` for `ρ ∈ [ρ₀, 1)`, there is `ρ₊ ∈ [ρ₀, 1)` such that for every
 `ρ ∈ (ρ₊, 1)` the toppled set contains an infinite component almost surely. Hypotheses:
 `PlanarRSW`, `ContinuumRSW`, `CubeStoppingStability`. `PlanarRSW` is proved by
-`Sandpile.External.planarRSW_holds` and implies `ContinuumRSW`, so
-`Sandpile.percolation_below_criticality_of_planar_rsw` applied to
-`Sandpile.External.planarRSW_holds` needs only `CubeStoppingStability`.
+`Sandpile.External.planarRSW_holds` and implies `ContinuumRSW`, and `CubeStoppingStability` is
+proved by `Sandpile.External.cubeStoppingStability_holds`; the successor
+`Sandpile.percolation_below_criticality_of_planar_rsw_proved` requires only `PlanarRSW`.
 
 **Theorem 1.2 (critical level percolation, `thm:main-critical-level-percolation`).** There are
 `c > 0` and `t₀`, depending only on `d, ν₀, θ₀, K₀`, such that for every mean-one law with
 those bounds and every `t ≥ t₀`, `{x : u_t(x) > c h(t)}` contains an infinite component almost
-surely. Hypotheses: the same as Theorem 1.1;
-`Sandpile.critical_level_percolation_of_planar_rsw` applied to
-`Sandpile.External.planarRSW_holds` needs only `CubeStoppingStability`.
+surely. Hypotheses: the same as Theorem 1.1; the successor
+`Sandpile.critical_level_percolation_of_planar_rsw_proved` requires only `PlanarRSW`.
 
 **Theorem 1.3(i) (`d ≤ 3`).**
 
@@ -208,7 +207,7 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.ContinuumRSW` (`hRSWc`) | the same crossing comparison for symmetric positively associated continuous planar fields (superlevel sets); follows from `PlanarRSW` and is proved by `Sandpile.External.continuumRSW_holds` | Köhler-Schindler and Tassion, Theorem 1 and Comment 1 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ExteriorBoundaryConnected` (`hBoundary`) | the exterior vertex boundary of a finite `*`-connected subset of `ℤ^d` is `*`-connected; proved by `Sandpile.External.exteriorBoundaryConnected_holds` | Timár, Theorem 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball; proved by `Sandpile.External.ballOccupationDensity_holds` | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
-| `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle; not proved here | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
+| `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle; proved by `Sandpile.External.cubeStoppingStability_holds` | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk; proved by `Sandpile.External.continuumStoppingStability_holds` | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth; the frozen form has the defect described below | Peskir and Shiryaev, Theorem 2.2 | frozen Theorem 1.3(i)(a) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field; proved by `Sandpile.External.membraneScalingLimitFour_holds` | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
@@ -223,11 +222,10 @@ inputs as hypotheses. The successors `Sandpile.mean_growth_le_three_proved`,
 `Sandpile.dlt4_mean_asymptotic_proved`, `Sandpile.d4_ball_green_crossing` and
 `Sandpile.d4_critical_level_percolation` are those statements with the inputs removed (and,
 for the first, third and fourth, the optimal-stopping input, which their proofs do not use),
-and take no hypothesis. `CubeStoppingStability` is the one cited input still needed by a main
-result: `Sandpile.percolation_below_criticality_of_planar_rsw` and
-`Sandpile.critical_level_percolation_of_planar_rsw`, applied to
-`Sandpile.External.planarRSW_holds`, are Theorems 1.1 and 1.2 with it as their only
-hypothesis.
+and take no hypothesis. `CubeStoppingStability` is proved by
+`Sandpile.External.cubeStoppingStability_holds`; `Sandpile.percolation_below_criticality_of_planar_rsw_proved`
+and `Sandpile.critical_level_percolation_of_planar_rsw_proved` are Theorems 1.1 and 1.2 with
+`PlanarRSW` as their only hypothesis.
 
 The frozen `ContinuumOptimalStopping` permits Brownian paths to be discontinuous on a null
 set, but requires a pointwise least contact time that is a raw natural-filtration stopping
@@ -288,7 +286,7 @@ proved. Every registered statement is pinned by hash; only the `FROZEN` ones are
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
-Status: **107 registered statements: 98 `PROVED/SEALED`, proved here, and 9 `FROZEN`, cited results recorded as hypotheses.**  The 98 `PROVED/SEALED` nodes are machine-checked and no proved
+Status: **108 registered statements: 99 `PROVED/SEALED`, proved here, and 9 `FROZEN`, cited results recorded as hypotheses.**  The 99 `PROVED/SEALED` nodes are machine-checked and no proved
 node's axiom closure contains `sorryAx`.  The 9 `FROZEN` nodes are cited results, stated in
 `Sandpile/External/` and carried as explicit hypotheses by the frozen
 theorems that use them; `ASSUMPTIONS.md` identifies those also proved here.  Run

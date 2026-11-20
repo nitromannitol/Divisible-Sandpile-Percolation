@@ -160,7 +160,7 @@ status:
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
-        - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis"
+        - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis and proved by Sandpile.External.membraneScalingLimitFour_holds"
           source: "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11"
     - declaration: "Sandpile.high_first_order"
       file: "Sandpile/MainTheorems.lean"
@@ -270,7 +270,7 @@ status:
       literature_dependencies:
         - statement: "the Besov tightness criterion in negative Sobolev spaces (Sandpile.External.ContinuumBesovTightness); carried as an explicit hypothesis"
           source: "Furlan and Mourrat, Theorem 2.30"
-        - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis"
+        - statement: "the scaling limit of the four-dimensional discrete membrane field (Sandpile.External.MembraneScalingLimitFour); carried as an explicit hypothesis and proved by Sandpile.External.membraneScalingLimitFour_holds"
           source: "Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11"
     - declaration: "SandpileAudit.high_first_order"
       file: "SandpileAudit/HighFirstOrder/Solution.lean"

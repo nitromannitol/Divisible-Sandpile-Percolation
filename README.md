@@ -198,14 +198,15 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
 | `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
-| `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
+| `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field; proved by `Sandpile.External.membraneScalingLimitFour_holds` | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
 `Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the
 `MultivariateBerryEsseen` hypothesis; `Sandpile.critical_toppling` and
 `Sandpile.critical_mean_one` discharge it using `Sandpile.External.multivariateBerryEsseen_holds`.
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
-hypothesis.
+hypothesis. The registered `Sandpile.four_sobolev` retains `hMembrane`;
+`Sandpile.four_sobolev_of_proved_inputs` discharges it and the Besov criterion.
 
 Further results the paper cites without proof are **proved unconditionally in this
 repository** (`Sandpile/External/*Proved.lean`) and so are not carried as a hypothesis by any

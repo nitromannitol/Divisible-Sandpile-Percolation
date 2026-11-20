@@ -211,8 +211,8 @@ nothing for it.
 | `prop-d4-one-point-gaussian` | `External.VarianceScale`, `External.PairedLocalCLTFour` | `eq:d4-window-l2`, `eq:d4-window-linfty`; Lawler–Limic Theorem 2.1.3 cited at `sandpile.tex:3250-3256` | proved here: `VarianceScale` by `Sandpile.External.varianceScale`, `PairedLocalCLTFour` by `Sandpile.External.pairedLocalCLTFour` |
 | `thm-main-explosion-ii-b` | `External.PairedLocalCLTFour` | Lawler–Limic Theorem 2.1.3 through `prop:d4-one-point-gaussian`, `sandpile.tex:3250-3256` | proved: `Sandpile.External.pairedLocalCLTFour` |
 | `prop-d4-superdiffusive-limit` | `External.VarianceScale` as well | `eq:d4-full-window-bounds`, `eq:d4-window-l2`, `eq:d4-window-linfty` | proved: `Sandpile.External.varianceScale` |
-| `prop-d4-superdiffusive-limit` | `External.MembraneScalingLimitFour` as well | Step 1, `sandpile.tex:3341-3342`, citing Cipriani-Hazra-Ruszel Theorem 2 and Cipriani-Dan-Hazra Theorem 3.11 for the convergence of the discrete membrane field; the truncation hypothesis it carries is the paper's own new point and is proved here | hypothesis |
-| `thm-main-explosion-ii-c` | `External.MembraneScalingLimitFour` | the same citation through `prop:d4-superdiffusive-limit` | hypothesis |
+| `prop-d4-superdiffusive-limit` | `External.MembraneScalingLimitFour` as well | Step 1, `sandpile.tex:3341-3342`, citing Cipriani-Hazra-Ruszel Theorem 2 and Cipriani-Dan-Hazra Theorem 3.11 for the convergence of the discrete membrane field; the truncation hypothesis it carries is the paper's own new point and is proved here | hypothesis, proved: `Sandpile.External.membraneScalingLimitFour_holds`; discharged by `Sandpile.d4_superdiffusive_limit_of_proved_inputs` |
+| `thm-main-explosion-ii-c` | `External.MembraneScalingLimitFour` | the same citation through `prop:d4-superdiffusive-limit` | hypothesis, proved: `Sandpile.External.membraneScalingLimitFour_holds`; discharged by `Sandpile.four_sobolev_of_proved_inputs` |
 | `thm-d4-critical-level-percolation` | `External.VarianceScale` as well | `eq:Qt-table`, `eq:d4-full-window-bounds` | proved: `Sandpile.External.varianceScale` |
 | `lem-dgt4-stretched-green-scenery-tail` | `External.GreenBoundsHigh` | `eq:dgt4-green-tail`, `eq:dgt4-green-l2` | proved: `Sandpile.External.greenBoundsHigh` |
 | `prop-dgt4-height-lower-stretched` | `External.GreenBoundsHigh` | `eq:dgt4-green-tail`, `eq:dgt4-green-l2` | proved: `Sandpile.External.greenBoundsHigh` |
@@ -343,6 +343,24 @@ optimal time the first entry into the contact set the field determines.  A
 measurable version is strictly more than almost-everywhere measurability of
 `continuumValue` itself, so the form weakens nothing the paper asserts
 (`prop-continuum-value-selfsimilar`).
+
+## Four-dimensional membrane input and cited scope
+
+The cited Cipriani–Hazra–Ruszel Theorem 2 treats a torus model, and
+Cipriani–Dan–Hazra Theorem 3.11 treats a clamped finite-domain model. Neither
+states the whole-space ω-representative scaling or the uniform negative Sobolev
+norm bound for every positive order in `MembraneScalingLimitFour`. This is an
+allowed deviation from the cited results, proved here by an additional argument.
+
+For scalar convergence, Fourier analysis gives convergence of the paired Green
+coefficients and their ℓ² norms, and a weighted independent-variable central
+limit theorem applies because the largest coefficient tends to zero. The stated
+coefficient-defect condition transfers the limit to the finite-time field. For
+the norm bound, a uniform logarithmic covariance estimate for the centered
+whole-space field gives local power bounds of arbitrarily small positive order;
+a Fourier negative Sobolev energy estimate and Markov's inequality then give
+the bound uniformly in time and scale. The resulting theorem is
+`Sandpile.External.membraneScalingLimitFour_holds`.
 
 ## Cited inputs proved here
 

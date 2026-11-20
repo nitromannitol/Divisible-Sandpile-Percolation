@@ -978,6 +978,8 @@ import Sandpile.External.ContinuumRSW.Consequences
 import Sandpile.CriticalBerryEsseenCorollaries
 import Sandpile.PercolationCorollaries
 import Sandpile.PercolationBoundaryCorollaries
+import Sandpile.External.CubeStoppingStabilityProved
+import Sandpile.Support.CubeStoppingConsequences
 
 /-!
 # The divisible sandpile percolation development

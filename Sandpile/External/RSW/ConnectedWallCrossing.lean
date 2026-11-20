@@ -103,4 +103,50 @@ theorem kstQuasiCrossing_of_intersecting_vertical_connections (n m : ℕ)
     upperLink horizontal hp hx hx hpOpen (hjoin.append hbOpen) htOpen hhOpen
     hbottom htop hleft hright
 
+/-- Two side walks make a quasi-crossing if each meets either of two open connected
+KST paths. The choice of path can be different on the two sides. -/
+theorem kstQuasiCrossing_of_side_walks_meeting_connected_paths (n m : ℕ)
+    {ω : Sym2 (Site 2) → Bool}
+    {a b x u c d y v left leftEnd right rightEnd :
+      centeredPlaneRectangle (n + 3 * (n / 12)) n}
+    (first : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk a b)
+    (firstLink : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk x u)
+    (second : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk c d)
+    (secondLink : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk y v)
+    (leftWalk : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk left leftEnd)
+    (rightWalk : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk right rightEnd)
+    (hp : IsKSTPath m first) (hq : IsKSTPath m second)
+    (hx : x ∈ first.support) (hy : y ∈ second.support)
+    (hpOpen : IsBondOpenWalk ω first) (huOpen : IsBondOpenWalk ω firstLink)
+    (hqOpen : IsBondOpenWalk ω second) (hvOpen : IsBondOpenWalk ω secondLink)
+    (hlOpen : IsBondOpenWalk ω leftWalk) (hrOpen : IsBondOpenWalk ω rightWalk)
+    (hleft : (left : Site 2) 0 = -((n + 3 * (n / 12) : ℕ) : ℤ))
+    (hright : (right : Site 2) 0 = ((n + 3 * (n / 12) : ℕ) : ℤ))
+    (hmeet : ∀ side : Bool, ∃ z,
+      (z ∈ first.support ∨ z ∈ firstLink.support ∨
+        z ∈ second.support ∨ z ∈ secondLink.support) ∧
+      (if side then z ∈ leftWalk.support else z ∈ rightWalk.support)) :
+    ω ∈ kstQuasiCrossingEvent n m := by
+  have hwall (side : Bool)
+      {s t : centeredPlaneRectangle (n + 3 * (n / 12)) n}
+      (walk : (rectangleGraph (centeredPlaneRectangle (n + 3 * (n / 12)) n)).Walk s t)
+      (hopen : IsBondOpenWalk ω walk)
+      (hs : (s : Site 2) 0 = (if side then -((n + 3 * (n / 12) : ℕ) : ℤ)
+        else ((n + 3 * (n / 12) : ℕ) : ℤ)))
+      (hint : ∃ z, (z ∈ first.support ∨ z ∈ firstLink.support ∨
+        z ∈ second.support ∨ z ∈ secondLink.support) ∧ z ∈ walk.support) :
+      ω ∈ kstWallEvent n m side := by
+    obtain ⟨z, hz, hzw⟩ := hint
+    rcases hz with hz | hz | hz | hz
+    · exact kstWallEvent_of_intersecting_walks n m side first firstLink walk hp hx hpOpen
+        huOpen hopen hs ⟨z, Or.inl hz, hzw⟩
+    · exact kstWallEvent_of_intersecting_walks n m side first firstLink walk hp hx hpOpen
+        huOpen hopen hs ⟨z, Or.inr hz, hzw⟩
+    · exact kstWallEvent_of_intersecting_walks n m side second secondLink walk hq hy hqOpen
+        hvOpen hopen hs ⟨z, Or.inl hz, hzw⟩
+    · exact kstWallEvent_of_intersecting_walks n m side second secondLink walk hq hy hqOpen
+        hvOpen hopen hs ⟨z, Or.inr hz, hzw⟩
+  exact ⟨hwall true leftWalk hlOpen (by simpa using hleft) (by simpa using hmeet true),
+    hwall false rightWalk hrOpen (by simpa using hright) (by simpa using hmeet false)⟩
+
 end Sandpile.External.RSW

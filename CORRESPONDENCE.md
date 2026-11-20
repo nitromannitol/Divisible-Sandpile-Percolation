@@ -371,15 +371,15 @@ carry both hypotheses. The input remains unproved. The supporting results prove 
 raw and augmented values agree (`Support.snellValue_eq_sSup_usualAugmentation`), that the
 value does not depend on the Brownian realization (`Support.snellValue_eq_of_isBrownian`),
 and that it is jointly continuous in time and starting point
-(`Support.continuousOn_brownian_snellValue`). They also construct a measurable continuous
-value process with a pointwise least raw contact time and an integrable path bound
-(`Support.exists_brownian_value_process_dominating_reward` and
-`Support.exists_integrable_brownian_value_process_bound`).
+(`Support.continuousOn_brownian_snellValue`). The theorem
+`Support.exists_adapted_brownian_value_process` constructs a measurable continuous value
+process that is adapted to the raw filtration, dominates the reward, has an integrable
+path bound, and has a pointwise least raw contact time.
 
 First-contact optimality and the stopped value-process expectation bound remain unproved.
-`Support.first_contact_greatest_and_minimal_of_expectation_bounds` derives attainment and
-minimality assuming those two estimates. The source theorem's Snell-envelope argument is
-still needed to establish them. `Support.brownian_optimal_stopping_of_continuous` proves
+`Support.first_contact_greatest_and_minimal_of_stopped_martingale` derives attainment and
+minimality assuming the martingale property up to contact and the expectation bound. The
+source theorem's Snell-envelope argument is still needed to establish those properties. `Support.brownian_optimal_stopping_of_continuous` proves
 the representation conditionally from the amended input.
 
 The self-similarity proof does not use its optimal-stopping hypothesis. The successors

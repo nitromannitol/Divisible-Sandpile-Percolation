@@ -23,15 +23,14 @@ Of these, **4 are also proved in this repository** and so need not be taken on t
 Brownian motion while requiring a pointwise least contact for a right-continuous
 modification and a raw natural-filtration stopping time. A pathological null
 path can force that stop to be zero almost surely even when stopping at the
-horizon has strictly greater reward. The proposed replacement
-`Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of
-every path, as in the paper's convention, but is also false as typed: Brownian
-time slices need only be almost-everywhere measurable, while the required
-modification must be measurable on the entire ambient space. A null copy of
-Wiener space with the trivial sigma algebra gives a contradiction; see
-`CORRESPONDENCE.md`. The mean-growth successor
-`Sandpile.mean_growth_le_three_from_stability`
-does not use either optimal-stopping input.
+horizon has strictly greater reward. An earlier continuous-path replacement
+also omitted ambient measurability of Brownian time slices; a null copy of
+Wiener space with the trivial sigma algebra gives a contradiction. The amended
+`Sandpile.External.ContinuumOptimalStoppingOfContinuous` assumes continuous
+paths and strongly measurable time slices and is proved by
+`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The Brownian
+representation `Sandpile.Support.brownian_optimal_stopping_of_continuous`
+uses this proved result. See `CORRESPONDENCE.md` for details.
 
 ```lean
 /-- The finite-horizon optimal-stopping theorem for Brownian motion on `ℝ^d`

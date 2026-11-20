@@ -11,6 +11,7 @@ open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
 /-- The Brownian optimal-stopping representation for regular paths. -/
+-- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
     (d : ℕ) (T : ℝ) (hT : 0 < T) (h : ℝ → Sandpile.Continuum.Space d → ℝ)
     (hcont : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => h p.1 p.2)
@@ -46,6 +47,7 @@ theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
           sSup {a : ℝ | ∃ σ : Ω → ℝ≥0, Sandpile.Continuum.IsBrownianStopping (B x) σ ∧
             (∀ ω : Ω, (σ ω : ℝ) ≤ T) ∧
             a = h T x - ∫ ω, h (T - (σ ω : ℝ)) (B x (σ ω) ω) ∂P}
+-- FROZEN-STATEMENT-END
 := by
   classical
   have hOS : Sandpile.External.ContinuumOptimalStoppingOfContinuous Ω :=

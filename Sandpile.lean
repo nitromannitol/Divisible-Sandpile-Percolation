@@ -20,6 +20,8 @@ import Sandpile.External.BrownianExitStepProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.ContinuumBesovTightnessProved
 import Sandpile.External.ContinuumOptimalStopping
+import Sandpile.Support.ContinuousOptimalStoppingRegistered
+import Sandpile.Support.BrownianOptimalStoppingContinuous
 import Sandpile.External.ContinuumRSW
 import Sandpile.External.CubeStoppingStability
 import Sandpile.External.ExteriorBoundaryConnected

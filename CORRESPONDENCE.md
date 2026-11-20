@@ -365,32 +365,33 @@ history criterion forces the same value on matching null copies. The pointwise c
 condition then makes `M 1` equal to `1 + B 1` on those copies of almost every Wiener path.
 This is nonconstant, but any measurable real function is constant on the null copy.
 
-The deviation `External.ContinuumOptimalStoppingOfContinuous` now requires continuity of
+The deviation `External.ContinuumOptimalStoppingOfContinuous` requires continuity of
 every path and strong measurability of every Brownian time slice; the main use sites already
-carry both hypotheses. The input remains unproved. The supporting results prove that the
-raw and augmented values agree (`Support.snellValue_eq_sSup_usualAugmentation`), that the
-value does not depend on the Brownian realization (`Support.snellValue_eq_of_isBrownian`),
-and that it is jointly continuous in time and starting point
-(`Support.continuousOn_brownian_snellValue`). The theorem
-`Support.exists_adapted_brownian_value_process` constructs a measurable continuous value
-process that is adapted to the raw filtration, dominates the reward, has an integrable
-path bound, and has a pointwise least raw contact time.
+carry both hypotheses. It is proved by `External.continuumOptimalStoppingOfContinuous_holds`.
+The supporting results prove that the raw and augmented values agree
+(`Support.snellValue_eq_sSup_usualAugmentation`), that the value does not depend on the
+Brownian realization (`Support.snellValue_eq_of_isBrownian`), and that it is jointly
+continuous in time and starting point (`Support.continuousOn_brownian_snellValue`).
+`Support.exists_adapted_brownian_value_process` constructs a continuous adapted value
+process with an integrable path bound and a least raw contact time.
 
-First-contact optimality remains unproved. The stopped value-process expectation bound
-for every bounded raw stop is proved in `Support.brownian_stopped_value_expectation_bound`.
-`Support.first_contact_greatest_and_minimal_of_stopped_martingale` derives attainment and
-minimality assuming the martingale property up to contact and the expectation bound. The
-proof of those estimates is not yet complete. `Support.brownian_optimal_stopping_of_continuous` proves
-the representation conditionally from the amended input.
+`Support.brownian_stopped_value_expectation_bound` proves the stopped expectation bound
+for every bounded raw stop, and `Support.brownian_first_contact_stopped_martingale`
+proves the martingale property through first contact. The first contact attains the value
+and is minimal among optimal stops. `Support.brownian_optimal_stopping_of_continuous`
+therefore proves the representation without an optimal-stopping hypothesis.
 
-The paper cites the continuous-time Snell-envelope theorem. The Markovian route instead
-uses the strong Markov property and superharmonic majorants, following Peskir and Shiryaev,
-Chapter I, Theorem 2.7 and Remark 2.8. For general polynomial-growth rewards its
-lower-envelope argument must also be established. The formalized ingredients include
-`Continuum.IsBrownian.restart`, near-optimal raw path stopping rules, selection of bounded
-continuations at finitely many times, and passage from finite-range stopped expectation
-bounds to general bounded stops. The finite-range expectation bound and its extension to all bounded raw stops are proved
-(`Support.brownian_snellValue_superharmonic`); the first-contact equality remains open.
+The paper cites the continuous-time Snell-envelope theorem. The proof here uses Brownian
+restart and superharmonicity in the Markovian setting, as in Peskir and Shiryaev,
+Chapter I, Section 2.2, but obtains contact optimality by a different argument. Choose
+near-optimal bounded stops. Their expected nonnegative value-minus-reward gaps converge
+to zero, so the probability that such a stop precedes the first ε-contact tends to zero.
+The stopped supermartingale comparison and the integrable path envelope then show that
+the expected value at ε-contact equals the initial value. Continuity and domination pass
+this equality to first contact. The stopped martingale follows from equal expectations.
+Superharmonicity itself follows by selecting finitely many near-optimal continuations on
+compact sets, using Brownian restart and controlling the tails; dyadic stopping-time
+approximation extends the bound to arbitrary bounded stops.
 
 The self-similarity proof does not use its optimal-stopping hypothesis. The successors
 `Support.continuum_value_self_similar_without_optimal_stopping`,

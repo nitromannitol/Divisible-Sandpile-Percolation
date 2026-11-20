@@ -207,15 +207,16 @@ set, but requires a pointwise least contact time that is a raw natural-filtratio
 time. A suitable exceptional path forces that time to be zero almost surely even for a gain
 where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
 An earlier version with continuous paths also failed because it did not require ambient
-measurability of the time slices. `Sandpile.External.ContinuumOptimalStoppingOfContinuous`
-now requires both continuous paths and strongly measurable time slices; it remains unproved.
-The value is jointly continuous, independent of the Brownian realization, and has a measurable
-continuous process with a first raw contact time. Brownian restart, near-optimal path rules,
-and the stopped-value expectation bound for every bounded raw stop are proved. First-contact
-optimality remains open.
-`Sandpile.Support.brownian_optimal_stopping_of_continuous` derives the Brownian representation
-conditionally from that input. The self-similarity and mean-growth successors above do not
-require it. See `CORRESPONDENCE.md` for the defects and deviation.
+measurability of the time slices. The amended
+`Sandpile.External.ContinuumOptimalStoppingOfContinuous` requires continuous paths and
+strongly measurable time slices and is proved by
+`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The value is jointly
+continuous and independent of the Brownian realization. The first contact is optimal and
+minimal, and the value process stopped there is a martingale.
+`Sandpile.Support.brownian_optimal_stopping_of_continuous` proves the Brownian representation
+under these path and measurability hypotheses without an optimal-stopping input. The
+self-similarity and mean-growth successors above do not require that input either. See
+`CORRESPONDENCE.md` for the defects and deviation.
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
 `Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the

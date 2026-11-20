@@ -1100,3 +1100,23 @@ nodes:
     provider: Sandpile.Frozen.brownian_ball_localization
     approved: "2026-09-27"
 
+
+  - id: ext-continuous-brownian-optimal-stopping
+    version: 1
+    kind: theorem
+    source: sandpile.tex:1099 (Peskir and Shiryaev, finite-horizon Brownian optimal stopping); continuous paths and measurable time slices
+    file: Sandpile/Support/ContinuousOptimalStoppingRegistered.lean
+    export: Sandpile.External.continuousOptimalStopping_holds
+    state: SEALED
+    frozen_sha256: 7e20f9a987b12af2157a94753c0a9fb2cdf17c9b5d4e4533c92231959e86111a
+    provider: Sandpile.External.continuousOptimalStopping_holds
+
+  - id: prop-brownian-os-continuous
+    version: 1
+    kind: theorem
+    source: sandpile.tex:1083-1099 (label prop-brownian-os); continuous paths and measurable time slices
+    file: Sandpile/Support/BrownianOptimalStoppingContinuous.lean
+    export: Sandpile.Support.brownian_optimal_stopping_of_continuous
+    state: SEALED
+    frozen_sha256: 027f6db2614f306145ee4fcac7c4d9d077cae138c14fe7b61bf8467c2e96933c
+    provider: Sandpile.Support.brownian_optimal_stopping_of_continuous

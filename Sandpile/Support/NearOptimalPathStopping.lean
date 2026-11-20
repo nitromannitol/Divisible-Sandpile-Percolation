@@ -5,7 +5,7 @@ import Mathlib.MeasureTheory.Integral.DominatedConvergence
 /-!
 # Near-optimal path stopping rules
 
-Continuous rewards with polynomial growth admit bounded near-optimal stopping
+Continuous rewards with polynomial growth have bounded near-optimal stopping
 rules on path space.
 -/
 

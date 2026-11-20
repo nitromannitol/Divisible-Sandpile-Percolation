@@ -21,7 +21,7 @@ theorem Sandpile.Support.exists_brownian_first_contact
     ∃ τ : Ω → ℝ≥0,
       (∀ ω, IsLeast {t : ℝ≥0 | t ≤ T ∧ H (t, B t ω) = 0} (τ ω)) ∧
       Sandpile.Continuum.IsBrownianStopping B τ := by
-  letI : MeasurableSpace Ω := MeasurableSpace.comap (fun ω t => B t ω) inferInstance
+  let : MeasurableSpace Ω := MeasurableSpace.comap (fun ω t => B t ω) inferInstance
   have hp : Measurable (fun ω : Ω => fun t : ℝ≥0 => B t ω) :=
     measurable_iff_comap_le.mpr le_rfl
   have hBm : ∀ t, StronglyMeasurable (B t) := fun t =>

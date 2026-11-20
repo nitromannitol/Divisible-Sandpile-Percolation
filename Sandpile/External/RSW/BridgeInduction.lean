@@ -4,20 +4,20 @@ import Sandpile.External.RSW.CorridorCascade
 import Sandpile.External.RSW.BridgePathIntersection
 import Sandpile.External.RSW.BaseScaleArithmetic
 import Sandpile.External.RSW.NearScaleBound
+import Sandpile.External.RSW.DualBridgeLong
 
 /-!
 # Bridge induction from geometric estimates
 
-The base-scale bridge comparison follows from long-crossing, adjacent-scale
-quasi-crossing, and corridor estimates for the primal and dual bond laws.
+The base-scale bridge comparison follows from adjacent-scale quasi-crossing and corridor
+estimates for the primal and dual bond laws.
 -/
 
 open MeasureTheory Set
 
 namespace Sandpile.External.RSW
 
-/-- Long-crossing and quasi-crossing estimates imply the bridge comparison along the
-integer geometric scales. -/
+/-- Quasi-crossing estimates imply the bridge comparison along the integer geometric scales. -/
 theorem kstBridge_base_comparison_of_geometry
     (μ : Measure (Sym2 (Site 2) → Bool)) [IsProbabilityMeasure μ]
     (ha : ∀ A B : Set (Sym2 (Site 2) → Bool), IsUpperSet A → IsUpperSet B →
@@ -26,14 +26,8 @@ theorem kstBridge_base_comparison_of_geometry
       ω ∘ Sym2.map (fun z => z + v)) μ μ)
     (hs : MeasurePreserving (fun ω : Sym2 (Site 2) → Bool =>
       ω ∘ Sym2.map swapPlaneSite) μ μ)
-    (hlong : ∀ j,
-      (kstScaleIso 1 (probabilityInUnitInterval μ (kstBridgeEvent (kstBaseScale j))) : ℝ) ≤
-        μ.real (bondCrossingEvent (16 * kstBaseScale j) (2 * kstBaseScale j)))
-    (hlongDual : ∀ j,
-      (kstScaleIso 1 (probabilityInUnitInterval (μ.map dualBondConfig)
-        (kstBridgeEvent (kstBaseScale j))) : ℝ) ≤
-        (μ.map dualBondConfig).real
-          (bondCrossingEvent (16 * kstBaseScale j) (2 * kstBaseScale j)))
+    (hr : MeasurePreserving (fun ω : Sym2 (Site 2) → Bool =>
+      ω ∘ Sym2.map reflectPlaneSite) μ μ)
     (hnear : ∀ j,
       (kstScaleIso 2 (unitIntervalComplement
         (probabilityInUnitInterval (μ.map dualBondConfig)
@@ -78,6 +72,16 @@ theorem kstBridge_base_comparison_of_geometry
   have hmono {i j : ℕ} (hij : i ≤ j) : kstBaseScale i ≤ kstBaseScale j := by
     dsimp only [kstBaseScale]
     exact Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by omega) hij)
+  have hdiv (j : ℕ) : 12 ∣ kstBaseScale j :=
+    dvd_mul_of_dvd_left (by norm_num : 12 ∣ 1536) _
+  have hsize (j : ℕ) : 12 ≤ kstBaseScale j := by
+    have hp : 1 ≤ 4 ^ j := Nat.one_le_pow j 4 (by omega)
+    dsimp only [kstBaseScale]
+    nlinarith
+  have hlong (j : ℕ) := kstBridge_long_crossing μ ha ht hs hr
+    (kstBaseScale j) (hsize j) (hdiv j)
+  have hlongDual (j : ℕ) := kstBridge_long_dual_crossing μ ha ht hs hr
+    (kstBaseScale j) (hsize j) (hdiv j)
   have hstep : ∀ j, kstScaleIso 1 (b j) ≤ b (j + 1) := by
     intro j
     simpa only [b, ← kstBaseScale_succ] using

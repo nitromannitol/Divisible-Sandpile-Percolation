@@ -57,4 +57,17 @@ theorem one_sub_dual_centeredBridge_le_arm
   rw [Sym2.map_id, Function.comp_id]
   exact dual_centeredBridge_of_not_kstArmEvent m hm ω hω
 
+/-- The six-event inclusion and corridor cover imply planar RSW. -/
+theorem planarRSW_of_six_event_and_corridor
+    (hgeom : ∀ j, kstAdjacentSixEvent (kstBaseScale j) ⊆
+      kstQuasiCrossingEvent (4 * kstBaseScale j) (kstBaseScale j))
+    (hcover : ∀ i j, j < i → KSTCorridorBridgeCover
+      (kstBaseScale (i + 1)) (kstBaseScale i) (kstBaseScale j)) :
+    Sandpile.External.PlanarRSW := by
+  apply planarRSW_of_dual_bridge_obstruction_and_geometry ?_ hgeom hcover
+  intro μ _ hμ s hs hdiv
+  have h64 : 64 ∣ s := dvd_trans (by norm_num : 64 ∣ 192) hdiv
+  have hlarge : 64 ≤ s := Nat.le_of_dvd hs h64
+  exact one_sub_dual_centeredBridge_le_arm μ hμ.2.1 s hlarge
+
 end Sandpile.External.RSW

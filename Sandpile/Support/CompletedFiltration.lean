@@ -4,7 +4,7 @@ import Sandpile.Support.StoppingTimeRepresentative
 # Completion of filtrations
 
 The usual augmentation is the right-continuation of the filtration completed
-by all ambient null sets. Its bounded stopping times admit bounded stopping-time
+by all ambient null sets. Its bounded stopping times have bounded stopping-time
 approximations in the original filtration.
 -/
 

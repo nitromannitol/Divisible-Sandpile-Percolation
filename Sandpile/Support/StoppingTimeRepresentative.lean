@@ -4,7 +4,7 @@ import Mathlib.MeasureTheory.Measure.AEMeasurable
 /-!
 # Representatives of stopping times
 
-Threshold events that admit representatives in a filtration determine a bounded
+Threshold events with representatives in a filtration determine a bounded
 stopping time of its right-continuation.
 -/
 

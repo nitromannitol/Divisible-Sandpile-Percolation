@@ -13,7 +13,7 @@ open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
 /-- Clipped reward differences for converging horizons and starting points
-admit integrable uniform envelopes whose expectations converge to zero. -/
+have integrable uniform envelopes whose expectations converge to zero. -/
 theorem Sandpile.Support.exists_integrable_clipped_reward_envelopes
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω)
     (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)

@@ -3,7 +3,7 @@ import Sandpile.Support.BrownianPolynomialReward
 /-!
 # Uniform bounds for translated Brownian rewards
 
-Polynomial-growth rewards along Brownian paths admit an integrable bound
+Polynomial-growth rewards along Brownian paths have an integrable bound
 uniformly over bounded shifts and a finite time strip.
 -/
 

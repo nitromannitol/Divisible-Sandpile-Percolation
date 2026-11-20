@@ -5,8 +5,9 @@ of the formalization of *Quantitative explosion and percolation of the divisible
 sandpile* (Bou-Rabee and Panagiotis, arXiv:2609.02829): Theorem 1.1 on
 percolation of the toppled set below mean one, Theorem 1.2 on percolation of the
 critical level sets, and the ten parts of Theorem 1.3 on critical growth and
-spatial scaling, each registered as its own node.  Each comparator lives in its
-own subdirectory:
+spatial scaling, each registered as its own node, and the hypothesis-free forms of
+the five of them whose certified statements carry cited results.  Each comparator
+lives in its own subdirectory:
 
 | Directory | Paper statement | Checked theorem | Library theorem |
 | --- | --- | --- | --- |
@@ -22,12 +23,17 @@ own subdirectory:
 | `HighTail/` | Theorem 1.3(iii)(b), `thm:main-explosion` | `SandpileAudit.high_tail` | `Sandpile.high_tail` |
 | `HighSobolevLimit/` | Theorem 1.3(iii)(c), `thm:main-explosion` | `SandpileAudit.high_sobolev_limit` | `Sandpile.high_sobolev_limit` |
 | `HighNonconvergence/` | Theorem 1.3(iii)(d), `thm:main-explosion` | `SandpileAudit.high_nonconvergence` | `Sandpile.high_nonconvergence` |
+| `NontrivialityUnconditional/` | Theorem 1.1, without hypotheses | `SandpileAudit.percolation_below_criticality_unconditional` | `Sandpile.percolation_below_criticality_proved` |
+| `CriticalLevelsUnconditional/` | Theorem 1.2, without hypotheses | `SandpileAudit.critical_level_percolation_unconditional` | `Sandpile.critical_level_percolation_proved` |
+| `MeanGrowthLowUnconditional/` | Theorem 1.3(i)(a), without hypotheses | `SandpileAudit.mean_growth_le_three_unconditional` | `Sandpile.mean_growth_le_three_proved` |
+| `BrownianScalingLimitUnconditional/` | Theorem 1.3(i)(b), without hypotheses | `SandpileAudit.brownian_scaling_limit_unconditional` | `Sandpile.brownian_scaling_limit_proved` |
+| `FourSobolevUnconditional/` | Theorem 1.3(ii)(c), without hypotheses | `SandpileAudit.four_sobolev_unconditional` | `Sandpile.four_sobolev_of_proved_inputs` |
 
 Each `Challenge.lean` imports only `Mathlib`, rebuilds from scratch every
 definition needed to read the theorem, states the theorem, and ends with one
 `sorry`, the proof being checked.  The definitions form one vocabulary block,
 between `-- VOCABULARY-BEGIN` and `-- VOCABULARY-END`, byte-identical in all
-twelve challenges: lattice sites, the nearest-neighbour lattice, i.i.d. laws, the
+seventeen challenges: lattice sites, the nearest-neighbour lattice, i.i.d. laws, the
 simple random walk heat kernel and the Brownian exit time (from
 `Lattice-Probability`); the odometer, its limit and the toppled set, the mass
 laws, the Green kernels, the walk on path space and its stopping problems, the
@@ -46,9 +52,12 @@ defined in the vocabulary at all.
 
 ## What Is Checked
 
-The theorems are conditional on results the paper cites without proof, and so
-are the challenges: each carries, as explicit hypotheses, the cited results its
-library theorem carries, restated in the vocabulary.
+The theorems of the first twelve pairs are stated with the cited results their
+certified statements carry, and so are those challenges: each carries, as explicit
+hypotheses, the cited results its library theorem carries, restated in the
+vocabulary.  Every such result is proved in the repository, and the five
+`*Unconditional/` pairs check the hypothesis-free forms: their challenges carry no
+cited result.
 
 | Directory | Cited results carried as hypotheses (namespace `External`) |
 | --- | --- |
@@ -64,6 +73,7 @@ library theorem carries, restated in the vocabulary.
 | `HighTail/` | none |
 | `HighSobolevLimit/` | none |
 | `HighNonconvergence/` | none |
+| `*Unconditional/` (five pairs) | none |
 
 Seven cited results, `GreenBoundsHigh`, `HeatKernelBounds`, `VarianceScale`,
 `IntersectionSecondMoment`, `LocalCLT`, `PairedLocalCLTFour` and
@@ -74,7 +84,7 @@ carries any of the seven as a hypothesis.  Four more, `PittGaussianFKG`,
 `GaussianLipschitzConcentration`, `NormalComparison` and
 `ContinuumBesovTightness`, are proved unconditionally in the same way.
 The certified statements of `Nontriviality/`, `CriticalLevels/`,
-`FourSobolev/`, `HighSobolevLimit/` and `HighNonconvergence/` still carry them
+`FourSobolev/`, `HighSobolevLimit/` and `HighNonconvergence/` carry them
 as hypotheses; the theorems of
 `Sandpile/MainTheorems.lean` discharge them, and the challenges above do not
 carry them.
@@ -135,6 +145,9 @@ of the pair's `Challenge.lean`, and imports only Mathlib.  `Solution.lean` impor
 repository together with the pair's `SolutionBasic.lean` and its bridge
 `SandpileAudit/Support/<Pair>Bridge.lean`, and proves the byte-identical statement from the
 corresponding theorem of `Sandpile/MainTheorems.lean` (see [`DESIGN.md`](DESIGN.md)).  The
+solution of a `<Pair>Unconditional/` pair uses the vocabulary and the bridge of `<Pair>/`, whose
+vocabulary block is byte-identical to its own, and proves its statement from the
+hypothesis-free library theorem.  The
 comparator checks each solution statement against its challenge, and the dependency closure
 against Mathlib.
 
@@ -179,7 +192,7 @@ COMPARATOR_LANDRUN=<landrun> COMPARATOR_LEAN4EXPORT=<lean4export> COMPARATOR_NAN
   lake env <comparator>/.lake/build/bin/comparator SandpileAudit/<Pair>/comparator.json
 ```
 
-**Status.**  All twelve solutions build.  `leanprover/comparator` passes on all twelve pairs,
+**Status.**  All seventeen solutions build.  `leanprover/comparator` passes on all seventeen pairs,
 with the Lean kernel and again with the independent nanoda kernel.
 [`COMPARATOR_RUNS.md`](COMPARATOR_RUNS.md) records the pins, the results and
 the reproduction steps.  The workflow

@@ -1,6 +1,6 @@
 name: Comparator audit
 
-# Runs the official leanprover/comparator on the twelve SandpileAudit/<X> pairs: for each
+# Runs the official leanprover/comparator on the seventeen SandpileAudit/<X> pairs: for each
 # pair it checks that Solution proves a statement whose full dependency closure
 # matches Challenge's, uses only the permitted axioms, and is accepted by BOTH
 # the Lean kernel (replay) and the independent nanoda kernel (every
@@ -114,7 +114,7 @@ jobs:
           git -C ~/tools/nanoda_lib checkout "$NANODA_REV"
           cd ~/tools/nanoda_lib && cargo +stable build --release
 
-      - name: Run the comparator on all twelve pairs
+      - name: Run the comparator on all seventeen pairs
         env:
           COMPARATOR_LANDRUN: /home/runner/tools/bin/landrun
           COMPARATOR_LEAN4EXPORT: /home/runner/tools/lean4export/.lake/build/bin/lean4export
@@ -122,7 +122,7 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
-          for X in Nontriviality CriticalLevels MeanGrowthLow BrownianScalingLimit MeanGrowthFour FourFirstOrder FourGaussian FourSobolev HighFirstOrder HighTail HighSobolevLimit HighNonconvergence; do
+          for X in Nontriviality CriticalLevels MeanGrowthLow BrownianScalingLimit MeanGrowthFour FourFirstOrder FourGaussian FourSobolev HighFirstOrder HighTail HighSobolevLimit HighNonconvergence NontrivialityUnconditional CriticalLevelsUnconditional MeanGrowthLowUnconditional BrownianScalingLimitUnconditional FourSobolevUnconditional; do
             echo "::group::$X"
             if lake env ~/tools/comparator/.lake/build/bin/comparator "SandpileAudit/$X/comparator.json" \
                  | tee "/tmp/comparator-$X.log" \

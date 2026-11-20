@@ -1,8 +1,12 @@
 # Comparator design memo: vocabulary, bridges, deltas
 
-This memo records how the twelve comparator pairs are built, for whoever checks
+This memo records how the seventeen comparator pairs are built, for whoever checks
 or extends them.  Each pair `SandpileAudit/<Thm>/` has the same four files, and
-each pair has its own bridge under `SandpileAudit/Support/`.
+each of the twelve theorem pairs has its own bridge under `SandpileAudit/Support/`.
+The five pairs `SandpileAudit/<Thm>Unconditional/` state the hypothesis-free forms
+of the theorems whose certified statements carry cited results; each uses the
+vocabulary module and the bridge of `<Thm>/`, and its solution closes the goal with
+the hypothesis-free library theorem.
 
 - `Challenge.lean` imports `Mathlib` and nothing else.  It rebuilds from Mathlib
   primitives every object its theorem mentions, states the theorem and ends in a
@@ -38,9 +42,9 @@ imports **only Mathlib** (`<Thm>/SolutionBasic.lean`), and `Solution.lean` impor
 the repository, that module, and the pair's bridge, and states the theorem with
 the challenge's bytes.
 
-The twelve challenges share one vocabulary block, byte-identical in each
+The seventeen challenges share one vocabulary block, byte-identical in each
 (`bash SandpileAudit/check_standalone.sh --vocabulary` compares each challenge
-with its `SolutionBasic.lean`), so the twelve `SolutionBasic.lean` files carry the
+with its `SolutionBasic.lean`), so the seventeen `SolutionBasic.lean` files carry the
 same block.  The block contains every definition that any of the twelve statements
 reaches; a given challenge uses only part of it, and the rest does not enter that
 theorem's dependency closure.  The block was determined mechanically: it is the
@@ -148,5 +152,5 @@ The solutions import both the repository and the vocabulary, and both declare
 that the two mass laws are probability measures.  A solution statement that
 picked up a repository or library constant, in particular one of the
 repository's instances, would differ from its challenge in the closure check.
-There is no separate local regression: the twelve solutions cannot be imported
+There is no separate local regression: the seventeen solutions cannot be imported
 into one module, because each pair has its own copy of the vocabulary.

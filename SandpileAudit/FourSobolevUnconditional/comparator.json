@@ -1,0 +1,14 @@
+{
+  "challenge_module": "SandpileAudit.FourSobolevUnconditional.Challenge",
+  "solution_module": "SandpileAudit.FourSobolevUnconditional.Solution",
+  "theorem_names": [
+    "SandpileAudit.four_sobolev_unconditional"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

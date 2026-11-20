@@ -27,7 +27,7 @@ theorem eventually_approx_grid_value_ge_brownian_of_tendsto_horizon
     (hGc : Continuous (fun p : ℝ × Continuum.Space d => G p.1 p.2))
     (H : ℕ → ℝ → Continuum.Space d → ℝ) (M : ℝ)
     (hG : ∀ s z, |G s z| ≤ M) (hH : ∀ n s z, |H n s z| ≤ M)
-    (happrox : ∀ ε > 0, ∀ᶠ n in atTop, ∀ s ∈ Icc (0 : ℝ) ((T : ℝ) + 1),
+    (happrox : ∀ ε > 0, ∀ᶠ n in atTop, ∀ s ∈ Icc (0 : ℝ) (Tn n : ℝ),
       ∀ z, |G s z - H n s z| ≤ ε)
     (ε : ℝ) (hε : 0 < ε) :
     ∀ᶠ n in atTop, Continuum.brownianDiscount B PB (fun s z => -G s z) T ≤
@@ -37,15 +37,10 @@ theorem eventually_approx_grid_value_ge_brownian_of_tendsto_horizon
   have hlower := eventually_grid_value_ge_brownian_of_bounded_reward
     R q hRpos hR a hstart PB B hB T hT Tn hTn G hGc M hG
     (ε / 2) (by positivity)
-  have hbound : ∀ᶠ n in atTop, (Tn n : ℝ) ≤ (T : ℝ) + 1 := by
-    have ht : Tendsto (fun n => (Tn n : ℝ)) atTop (𝓝 (T : ℝ)) :=
-      NNReal.continuous_coe.continuousAt.tendsto.comp hTn
-    exact (ht.eventually (Iio_mem_nhds (show (T : ℝ) < T + 1 by linarith))).mono
-      fun _ h => h.le
-  filter_upwards [hlower, hbound, happrox (ε / 2) (by positivity)] with n hn hb ha
+  filter_upwards [hlower, happrox (ε / 2) (by positivity)] with n hn ha
   have hc := abs_killedGridReward_sub_le_of_uniform (hRpos n) Set.univ (q n)
     (Tn n : ℝ) M (ε / 2) (Tn n).property G (H n) hG (hH n)
-    (fun s hs z => ha s ⟨hs.1, hs.2.trans hb⟩ z)
+    (fun s hs z => ha s hs z)
   rw [killedStoppingSup_univ, killedStoppingSup_univ] at hc
   linarith [(abs_le.mp hc).2]
 

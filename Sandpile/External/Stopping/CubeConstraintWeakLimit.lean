@@ -25,7 +25,7 @@ theorem isClosed_cubeConstrainedPaths {d : ℕ} (L : ℝ) :
       ⋂ t : ℝ≥0, ⋂ i : Fin d, {p : C(ℝ≥0, Continuum.Space d) × ℝ≥0 |
         p.2 ≤ t ∨ |p.1 t i| ≤ L} := by
     ext p
-    simp only [cubeConstrainedPaths, mem_setOf_eq, mem_iInter]
+    simp only [cubeConstrainedPaths, mem_ofPred_eq, mem_iInter]
     constructor
     · intro h t i
       by_cases ht : t < p.2

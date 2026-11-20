@@ -74,7 +74,7 @@ theorem exists_kernel_event_version_of_independent_future
     simp only [Set.mem_singleton_iff] at hu
     simpa only [hu] using hevent)
   have heventclock : MeasurableSet[clock] event :=
-    MeasurableSpace.measurableSet_generateFrom (by simp [clock])
+    MeasurableSpace.measurableSet_generateFrom (by simp)
   have hstrong : StronglyMeasurable[past ⊔ clock]
       (event.indicator (fun _ : Ω × I => (1 : ℝ))) :=
     stronglyMeasurable_const.indicator

@@ -15,12 +15,12 @@ open scoped NNReal
 namespace Sandpile.External.Stopping
 
 /-- The sigma-algebra of continuous-path observations up to time `t`. -/
-def pathPastSigma {d : ℕ} (t : ℝ≥0) : MeasurableSpace C(ℝ≥0, Continuum.Space d) :=
+@[instance_reducible] def pathPastSigma {d : ℕ} (t : ℝ≥0) : MeasurableSpace C(ℝ≥0, Continuum.Space d) :=
   ⨆ s : ℝ≥0, ⨆ (_ : s ≤ t), MeasurableSpace.comap (fun f : C(ℝ≥0, Continuum.Space d) => f s)
     inferInstance
 
 /-- The sigma-algebra of continuous-path increments after time `t`. -/
-def pathFutureSigma {d : ℕ} (t : ℝ≥0) : MeasurableSpace C(ℝ≥0, Continuum.Space d) :=
+@[instance_reducible] def pathFutureSigma {d : ℕ} (t : ℝ≥0) : MeasurableSpace C(ℝ≥0, Continuum.Space d) :=
   ⨆ s : ℝ≥0, MeasurableSpace.comap (fun f : C(ℝ≥0, Continuum.Space d) => f (t + s) - f t)
     inferInstance
 

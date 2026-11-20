@@ -25,7 +25,7 @@ theorem indepFun_futureIncrementPath_of_tendsto {d : ℕ} {Ω E : Type*}
     (u : ℕ → ℝ≥0) (t : ℝ≥0) (hu : Tendsto u atTop (𝓝 t))
     (hind : ∀ n, IndepFun (fun ω => futureIncrementPath (u n) (W ω)) Y P) :
     IndepFun (fun ω => futureIncrementPath t (W ω)) Y P := by
-  letI : MetricSpace C(ℝ≥0, Continuum.Space d) :=
+  let : MetricSpace C(ℝ≥0, Continuum.Space d) :=
     TopologicalSpace.metrizableSpaceMetric _
   apply indepFun_of_ae_tendsto P
     (fun n ω => futureIncrementPath (u n) (W ω)) (fun _ => Y)

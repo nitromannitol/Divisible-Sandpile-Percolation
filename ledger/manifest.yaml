@@ -239,26 +239,24 @@ nodes:
     approved: "2026-09-10"
 
   - id: ext-continuum-optimal-stopping
-    version: 1
+    version: 2
     kind: definition
     source: sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion)
     file: Sandpile/External/ContinuumOptimalStopping.lean
     export: Sandpile.External.ContinuumOptimalStopping
     state: FROZEN
-    frozen_sha256: 09748d20885c9e08b8d894015a6e912d2b9a957032adc9b3f197350b74626234
+    frozen_sha256: 931f93dee4cbf8fcc93ff9a02c722c94eecf01c9f660b5c0000e293eab96dbb0
     provider: Sandpile.External.ContinuumOptimalStopping
-    approved: "2026-09-10"
 
   - id: prop-brownian-os
-    version: 3
+    version: 4
     kind: theorem
     source: sandpile.tex:1083-1099 (label prop-brownian-os)
     file: Sandpile/Frozen/BrownianOptimalStopping.lean
     export: Sandpile.Frozen.brownian_optimal_stopping
-    state: PROVED
-    frozen_sha256: f82353e4fb954d03050ea15364074ea8a7dee465375ed8fa574dc2285a283568
+    state: SEALED
+    frozen_sha256: 08817d8e162539b2f0778a8dd672450d53fa4aa6800b2ce3d2cb8de31ab19f20
     provider: Sandpile.Frozen.brownian_optimal_stopping
-    approved: "2026-09-10"
 
   - id: lem-sobolev-tightness
     version: 2
@@ -1101,25 +1099,25 @@ nodes:
     approved: "2026-09-27"
 
 
-  - id: ext-continuous-brownian-optimal-stopping
+  - id: ext-continuum-optimal-stopping-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:1099 (Peskir and Shiryaev, finite-horizon Brownian optimal stopping); continuous paths and measurable time slices
-    file: Sandpile/Support/ContinuousOptimalStoppingRegistered.lean
-    export: Sandpile.External.continuousOptimalStopping_holds
+    source: sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion); a cited result, proved unconditionally in this repository rather than assumed
+    file: Sandpile/External/ContinuumOptimalStoppingProved.lean
+    export: Sandpile.External.continuumOptimalStopping_holds
     state: SEALED
-    frozen_sha256: 7e20f9a987b12af2157a94753c0a9fb2cdf17c9b5d4e4533c92231959e86111a
-    provider: Sandpile.External.continuousOptimalStopping_holds
+    frozen_sha256: 7ae0634e414387aa02ba5eb3371bf9743893bf2f7064c0ce1afe8c2f53ffbb62
+    provider: Sandpile.External.continuumOptimalStopping_holds
 
-  - id: prop-brownian-os-continuous
+  - id: prop-brownian-os-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:1083-1099 (label prop-brownian-os); continuous paths and measurable time slices
-    file: Sandpile/Support/BrownianOptimalStoppingContinuous.lean
-    export: Sandpile.Support.brownian_optimal_stopping_of_continuous
+    source: sandpile.tex:1083-1099 (label prop-brownian-os); the optimal-stopping hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumOptimalStopping_holds
+    file: Sandpile/Support/BrownianOptimalStoppingUnconditional.lean
+    export: Sandpile.brownian_optimal_stopping_proved
     state: SEALED
-    frozen_sha256: 027f6db2614f306145ee4fcac7c4d9d077cae138c14fe7b61bf8467c2e96933c
-    provider: Sandpile.Support.brownian_optimal_stopping_of_continuous
+    frozen_sha256: cd49bcd88b6b7c41b5a2c89d7ee9e62ded07388e2a10ca184c46e1bf7982a1cb
+    provider: Sandpile.brownian_optimal_stopping_proved
 
   - id: thm-main-explosion-i-a-proved
     version: 1

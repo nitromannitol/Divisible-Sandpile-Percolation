@@ -1166,11 +1166,13 @@ REVIEWED: dict[str, str] = {
         "y (B y) P. Hypotheses: d, T with hT : 0<T, x; h : R -> Space d -> R (deterministic by "
         "type) with hcont : ContinuousOn on Icc 0 T x univ and hgrow : exists C k, |h t y| <= C "
         "(1+|y|)^k for t in [0,T] (the degree k is the existentially quantified polynomial-growth "
-        "degree, no counterpart in the prose); a probability space Omega with P; and hOS : "
+        "degree, no counterpart in the prose); a probability space Omega with P; hOS : "
         "Sandpile.External.ContinuumOptimalStopping Omega, the cited Peskir-Shiryaev Theorem 2.2 "
-        "carried as an explicit hypothesis. Stopping times are those of the natural (not "
-        "completed) filtration of B x (Galmarino form). M and tau are quantified on the same "
-        "Omega. No clause of the paper's statement is dropped.",
+        "carried as an explicit hypothesis; and, after hB, hBc : every path s -> B y s omega is "
+        "continuous (the paper's Brownian motion has continuous paths) and hBm : every time "
+        "slice B y t is strongly measurable. Stopping times are those of the natural (not "
+        "completed) filtration of B x. M and tau are quantified on the same Omega. No clause of "
+        "the paper's statement is dropped.",
     "prop-continuum-value-selfsimilar":
         "Paper makes three assertions, in order: (1) for every T>0, x in R^d, U(T,x) equals in "
         "distribution T^{(4-d)/4} U(1,0); (2) there is theta>0 with sup_{R>=1} E exp(theta "
@@ -2288,6 +2290,16 @@ REVIEWED: dict[str, str] = {
         "unchanged character for character, so the reading recorded for thm-main-explosion-i-b "
         "applies verbatim. The stopping stability is supplied by "
         "Sandpile.External.continuumStoppingStability_holds.",
+    "prop-brownian-os-proved":
+        "The statement is that of prop-brownian-os (Sandpile.Frozen.brownian_optimal_stopping) "
+        "with the cited-input binder hOS (ContinuumOptimalStopping Omega) deleted; every other "
+        "binder, including the Brownian family with hB, hBc and hBm, and the conclusion (a "
+        "measurable right-continuous modification M of the value process; the first contact "
+        "tau as the least s <= T with h(T-s, B x s) + M s = 0, a stopping time attaining the "
+        "value and almost surely below every optimal stopping time; and the supremum identity) "
+        "are unchanged character for character, so the reading recorded for prop-brownian-os "
+        "applies verbatim. The optimal-stopping theorem is supplied by "
+        "Sandpile.External.continuumOptimalStopping_holds.",
     "prop-continuum-value-selfsimilar-proved":
         "The statement is that of prop-continuum-value-selfsimilar "
         "(Sandpile.Frozen.continuum_value_self_similar) with the cited-input binders hStab "

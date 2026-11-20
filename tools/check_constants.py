@@ -56,6 +56,11 @@ REVIEWED: dict[str, dict[str, str]] = {
              "value vanishes, both of which the paper says are built from the path started "
              "at that point",
     },
+    "prop-brownian-os-proved": {
+        "x": "the statement of prop-brownian-os with its optimal-stopping hypothesis "
+             "removed; the point is fixed before every clause for the reason recorded there "
+             "(sandpile.tex:1083-1084)",
+    },
     "rem-dlt4-killed-scaling": {
         "ε": "the remark reads \"for every compact $K$, every $T$ and every $\\varepsilon,\\delta>0$ "
              "there is $R_0$\" (sandpile.tex:1929-1950); its only real existential is the "

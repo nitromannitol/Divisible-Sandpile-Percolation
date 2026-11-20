@@ -99,4 +99,37 @@ theorem exists_uniform_brownian_le_grid_value
     (le_max_right 0 _).trans ((le_abs_self _).trans he)
   linarith
 
+
+/-- The uniform lower bound in the real-horizon parameterization. -/
+theorem exists_uniform_brownian_le_grid_value_real
+    {d : ℕ} [NeZero d] {ΩB : Type*} [MeasurableSpace ΩB]
+    (PB : Measure ΩB) [IsProbabilityMeasure PB]
+    (B : Continuum.Space d → ℝ≥0 → ΩB → Continuum.Space d)
+    (hB : ∀ x, Continuum.IsBrownian d x (B x) PB)
+    (T₀ T₁ : ℝ) (hT₀ : 0 < T₀) (hT : T₀ ≤ T₁)
+    (K : Set (Continuum.Space d)) (hK : IsCompact K)
+    (G : ℝ → Continuum.Space d → ℝ)
+    (hGc : Continuous (fun p : ℝ × Continuum.Space d => G p.1 p.2))
+    (G' : ℝ → ℝ → Continuum.Space d → ℝ) (M : ℝ)
+    (hG : ∀ s z, |G s z| ≤ M) (hG' : ∀ R s z, |G' R s z| ≤ M)
+    (happrox : ∀ ε > 0, ∃ R₁ > 0, ∀ R ≥ R₁,
+      ∀ s ∈ Icc (0 : ℝ) T₁, ∀ z, |G' R s z - G s z| ≤ ε) :
+    ∀ ε > 0, ∃ R₀ > 0, ∀ R ≥ R₀, ∀ T ∈ Icc T₀ T₁, ∀ x ∈ K,
+      Continuum.brownianDiscount (B x) PB (fun s z => -G s z) T ≤
+        stoppingSup ⌊R ^ 2 * T⌋₊ (fun i => ⌊R * x i⌋) (fun k X =>
+          G' R (((⌊R ^ 2 * T⌋₊ : ℕ) - (k : ℝ)) / R ^ 2)
+            (Lclt.scaledSite R (X k))) + ε := by
+  have hT₁ : 0 ≤ T₁ := hT₀.le.trans hT
+  have h := exists_uniform_brownian_le_grid_value PB B hB
+    (Real.toNNReal T₀) (Real.toNNReal T₁) (Real.toNNReal_pos.mpr hT₀)
+    K hK G hGc G' M hG hG' (by simpa only [Real.coe_toNNReal _ hT₁] using happrox)
+  intro ε hε
+  obtain ⟨R₀, hR₀, hr⟩ := h ε hε
+  refine ⟨R₀, hR₀, ?_⟩
+  intro R hR T hTm x hx
+  have hTpos : 0 ≤ T := hT₀.le.trans hTm.1
+  have hTm' : Real.toNNReal T ∈ Icc (Real.toNNReal T₀) (Real.toNNReal T₁) := by
+    exact ⟨Real.toNNReal_le_toNNReal hTm.1, Real.toNNReal_le_toNNReal hTm.2⟩
+  simpa only [Real.coe_toNNReal _ hTpos] using hr R hR (Real.toNNReal T) hTm' x hx
+
 end Sandpile.External.Stopping

@@ -35,3 +35,23 @@ theorem Sandpile.Support.measurableSet_stoppingTime_eq_and_label
     MeasurableSet[𝓕 t] {ω | τ ω = t ∧ k ω = i} :=
   Sandpile.Support.measurableSet_stoppingTime_eq_inter 𝓕 τ hτ hcount
     (k ⁻¹' {i}) (hk (measurableSet_singleton i)) t
+
+/-- A countable stopping-time value and a measurable label depending on that
+value and on information at the stop are jointly measurable at the stop. -/
+theorem Sandpile.Support.measurable_stoppingTime_value_and_label
+    {Ω α ι : Type*} {m : MeasurableSpace Ω} [MeasurableSpace α] [MeasurableSpace ι]
+    (𝓕 : Filtration ℝ≥0 m) (τ : Ω → ℝ≥0)
+    (hτ : IsStoppingTime 𝓕 (fun ω => (τ ω : ℝ≥0∞)))
+    (hcount : (Set.range τ).Countable)
+    (Y : Ω → α) (hY : Measurable[hτ.measurableSpace] Y)
+    (k : Set.range τ → α → ι) (hk : ∀ r, Measurable (k r)) :
+    Measurable[hτ.measurableSpace] (fun ω =>
+      ((⟨τ ω, ⟨ω, rfl⟩⟩ : Set.range τ), k ⟨τ ω, ⟨ω, rfl⟩⟩ (Y ω))) := by
+  let : Countable (Set.range τ) := hcount.to_subtype
+  have hτm : Measurable[hτ.measurableSpace] τ :=
+    measurable_coe_nnreal_ennreal_iff.1 hτ.measurable
+  have hr : Measurable[hτ.measurableSpace] (fun ω => (⟨τ ω, ⟨ω, rfl⟩⟩ : Set.range τ)) :=
+    hτm.subtype_mk
+  have hkprod : Measurable (fun p : Set.range τ × α => k p.1 p.2) :=
+    measurable_from_prod_countable_right hk
+  exact hr.prodMk (hkprod.comp (hr.prodMk hY))

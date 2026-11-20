@@ -8,26 +8,28 @@ edit it by hand.
 ## What is claimed
 
 Every theorem, lemma, proposition and corollary of the paper is stated in
-Lean 4: 71 nodes, all `PROVED`, proved from Mathlib and the shared
+Lean 4: 82 nodes, all `PROVED/SEALED`, proved from Mathlib and the shared
 library Lattice-Probability.  No node contains a `sorry` and none adds an
 axiom.
 
-The development is NOT unconditional.  28 further nodes state results the
-paper quotes from other papers; 16 of them are assumed, each carried as an
-explicit hypothesis by the theorems that use it, and the rest are proved here.
-The theorems below are therefore proved modulo those hypotheses, which are
-listed with their statements in `ASSUMPTIONS.md`.
+30 further nodes concern results the paper quotes from other papers.
+9 of them are the cited propositions, which the certified statements
+carry as explicit hypotheses; each is proved in this repository by the theorem
+named in the table below, and the others are theorems proved here.  No cited
+result is assumed, and every main theorem also holds without hypotheses.
+`ASSUMPTIONS.md` lists the cited propositions with their statements.
 
 ## Environment
 
 | | |
 |---|---|
-| Lean toolchain | `leanprover/lean4:v4.32.0` |
-| Mathlib revision | `81a5d257c8e410db227a6665ed08f64fea08e997` |
+| Lean toolchain | `leanprover/lean4:v4.35.0-rc2` |
+| Mathlib revision | `065356127b1dc0016f66b7283ce0ce2c4055aa55` |
+| Lattice-Probability revision | `751040ea092fcf9ae7de4edb7e4f89af4c5291ec` |
 | Paper (`paper/sandpile.tex`) SHA-256 | `886793b75289a92d7acbbf93231f5b86a6b1eae1e444e64751a08193e707d5ca` |
-| Build | succeeded, 10229 jobs |
-| Build warnings | 0 |
-| Generated | 2026-10-04 |
+| Build | succeeded, 11408 jobs |
+| Build warnings in this repository's modules | 0 |
+| Generated | 2026-11-20 |
 
 ## Reproducing it
 
@@ -59,7 +61,7 @@ nowhere below.
 | 5 | `thm-gaussian-upper-proved` | `Sandpile.External.gaussianUpper` | — | classical only |
 | 6 | `lem-weighted-exp-conc` | `Sandpile.Frozen.weighted_exp_concentration` | `lem-weighted-exp-conc` | classical only |
 | 7 | `lem-convex-linear-bound` | `Sandpile.Frozen.convex_linear_bound` | `lem-convex-linear-bound` | classical only |
-| 8 | `ext-multivariate-berry-esseen` | `Sandpile.External.MultivariateBerryEsseen` | — | classical only |
+| 8 | `ext-multivariate-berry-esseen` | `Sandpile.External.MultivariateBerryEsseen` | — | cited proposition, proved by `Sandpile.External.multivariateBerryEsseen_holds`: classical only |
 | 9 | `thm-white-noise-exists` | `Sandpile.Continuum.exists_isWhiteNoise` | — | classical only |
 | 10 | `thm-brownian-exists` | `Sandpile.Continuum.exists_isBrownian` | — | classical only |
 | 11 | `cor-dgt4-mean-lower` | `Sandpile.Frozen.dgt4_mean_lower` | `cor-dgt4-mean-lower` | classical only |
@@ -68,25 +70,25 @@ nowhere below.
 | 14 | `thm-main-explosion-ii-a` | `Sandpile.Frozen.mean_growth_four` | `thm:main-explosion` | classical only |
 | 15 | `thm-main-explosion-ii-a-first-order` | `Sandpile.Frozen.four_first_order` | `thm:main-explosion` | classical only |
 | 16 | `lem-d4-soft-bottleneck` | `Sandpile.Frozen.d4_soft_bottleneck` | `lem-d4-soft-bottleneck` | classical only |
-| 17 | `ext-exterior-boundary-connected` | `Sandpile.External.ExteriorBoundaryConnected` | — | classical only |
+| 17 | `ext-exterior-boundary-connected` | `Sandpile.External.ExteriorBoundaryConnected` | — | cited proposition, proved by `Sandpile.External.exteriorBoundaryConnected_holds`: classical only |
 | 18 | `lem-dgt4-blocking-to-crossing` | `Sandpile.Frozen.dgt4_blocking_to_crossing` | `lem-dgt4-blocking-to-crossing` | classical only |
-| 19 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | — | classical only |
-| 20 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | — | classical only |
-| 21 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | — | classical only |
+| 19 | `ext-planar-rsw` | `Sandpile.External.PlanarRSW` | — | cited proposition, proved by `Sandpile.External.planarRSW_holds`: classical only |
+| 20 | `ext-lss-domination` | `Sandpile.External.LSSDomination` | — | cited proposition, proved by `Sandpile.External.lssDomination`: classical only |
+| 21 | `ext-continuum-optimal-stopping` | `Sandpile.External.ContinuumOptimalStopping` | — | cited proposition, proved by `Sandpile.External.continuumOptimalStopping_holds`: classical only |
 | 22 | `prop-brownian-os` | `Sandpile.Frozen.brownian_optimal_stopping` | `prop-brownian-os` | classical only |
 | 23 | `lem-sobolev-tightness` | `Sandpile.Frozen.sobolev_tightness` | `lem-sobolev-tightness` | classical only |
 | 24 | `lem-dgt4-weighted-last-visits` | `Sandpile.Frozen.dgt4_last_visits` | `lem-dgt4-weighted-last-visits` | classical only |
-| 25 | `ext-normal-comparison` | `Sandpile.External.NormalComparison` | — | classical only |
-| 26 | `ext-continuum-rsw` | `Sandpile.External.ContinuumRSW` | — | classical only |
-| 27 | `ext-pitt-gaussian-fkg` | `Sandpile.External.PittGaussianFKG` | — | classical only |
+| 25 | `ext-normal-comparison` | `Sandpile.External.normalComparison` | — | classical only |
+| 26 | `ext-continuum-rsw` | `Sandpile.External.ContinuumRSW` | — | cited proposition, proved by `Sandpile.External.continuumRSW_holds`: classical only |
+| 27 | `ext-pitt-gaussian-fkg` | `Sandpile.External.pittGaussianFKG` | — | classical only |
 | 28 | `ext-gaussian-law-covariance` | `Sandpile.External.gaussianLawDeterminedByCovariance` | — | classical only |
 | 29 | `ext-pinsker` | `Sandpile.External.pinsker` | — | classical only |
-| 30 | `ext-cube-stopping-stability` | `Sandpile.External.CubeStoppingStability` | — | classical only |
-| 31 | `ext-gaussian-lipschitz-concentration` | `Sandpile.External.GaussianLipschitzConcentration` | — | classical only |
-| 32 | `ext-membrane-scaling-four` | `Sandpile.External.MembraneScalingLimitFour` | — | classical only |
-| 33 | `ext-continuum-stopping-stability` | `Sandpile.External.ContinuumStoppingStability` | — | classical only |
-| 34 | `ext-rellich-kondrachov-negsobolev` | `Sandpile.External.RellichKondrachovNegSobolev` | — | classical only |
-| 35 | `ext-ball-occupation-density` | `Sandpile.External.BallOccupationDensity` | — | classical only |
+| 30 | `ext-cube-stopping-stability` | `Sandpile.External.CubeStoppingStability` | — | cited proposition, proved by `Sandpile.External.cubeStoppingStability_holds`: classical only |
+| 31 | `ext-gaussian-lipschitz-concentration` | `Sandpile.External.gaussianLipschitzConcentration` | — | classical only |
+| 32 | `ext-membrane-scaling-four` | `Sandpile.External.MembraneScalingLimitFour` | — | cited proposition, proved by `Sandpile.External.membraneScalingLimitFour_holds`: classical only |
+| 33 | `ext-continuum-stopping-stability` | `Sandpile.External.ContinuumStoppingStability` | — | cited proposition, proved by `Sandpile.External.continuumStoppingStability_holds`: classical only |
+| 34 | `ext-rellich-kondrachov-negsobolev` | `Sandpile.External.rellichKondrachovNegSobolev_holds` | — | classical only |
+| 35 | `ext-ball-occupation-density` | `Sandpile.External.ballOccupationDensity_holds` | — | classical only |
 | 36 | `lem-recursion` | `Sandpile.Frozen.odometer_recursion` | `lem-recursion` | classical only |
 | 37 | `lem-finite-scale-extraction` | `Sandpile.Frozen.finite_scale_extraction` | `lem-finite-scale-extraction` | classical only |
 | 38 | `thm-limiting-odometer-crossing` | `Sandpile.Frozen.limiting_odometer_crossing` | — | classical only |
@@ -94,7 +96,7 @@ nowhere below.
 | 40 | `prop-finite-time-concentration-scale` | `Sandpile.Frozen.finite_time_concentration_scale` | `prop-finite-time-concentration-scale` | classical only |
 | 41 | `ext-heat-kernel-bounds` | `Sandpile.External.heatKernelBounds` | — | classical only |
 | 42 | `thm-max-displacement-proved` | `Sandpile.External.maxDisplacement` | — | classical only |
-| 43 | `ext-continuum-besov-tightness` | `Sandpile.External.ContinuumBesovTightness` | — | classical only |
+| 43 | `ext-continuum-besov-tightness` | `Sandpile.External.continuumBesovTightness_holds` | — | classical only |
 | 44 | `thm-rw` | `Sandpile.Frozen.random_walk_representation` | `thm-RW` | classical only |
 | 45 | `lem-difference-representation` | `Sandpile.Frozen.difference_representation` | `lem-difference-representation` | classical only |
 | 46 | `lem-localization-killing` | `Sandpile.Frozen.localization_killing` | `lem-localization-killing` | classical only |
@@ -148,13 +150,26 @@ nowhere below.
 | 94 | `thm-d4-ball-green-crossing` | `Sandpile.Frozen.d4_ball_green_crossing` | `thm:d4-ball-green-crossing` | classical only |
 | 95 | `lem-d4-exit-average-concentration` | `Sandpile.Frozen.d4_exit_average_concentration` | `lem-d4-exit-average-concentration` | classical only |
 | 96 | `thm-d4-critical-level-percolation` | `Sandpile.Frozen.d4_critical_level_percolation` | `thm:d4-critical-level-percolation` | classical only |
-| 97 | `ext-brownian-exit-step` | `Sandpile.External.BrownianExitStep` | — | classical only |
+| 97 | `ext-brownian-exit-step` | `Sandpile.External.brownianExitStep_holds` | — | classical only |
 | 98 | `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `lem:brownian-ball-localization` | classical only |
 | 99 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `lem:brownian-ball-localization` | classical only |
+| 100 | `ext-continuum-optimal-stopping-proved` | `Sandpile.External.continuumOptimalStopping_holds` | — | classical only |
+| 101 | `prop-brownian-os-proved` | `Sandpile.brownian_optimal_stopping_proved` | `prop-brownian-os` | classical only |
+| 102 | `thm-main-explosion-i-a-proved` | `Sandpile.mean_growth_le_three_proved` | `thm:main-explosion` | classical only |
+| 103 | `thm-main-explosion-i-b-proved` | `Sandpile.brownian_scaling_limit_proved` | `thm-main-explosion` | classical only |
+| 104 | `prop-continuum-value-selfsimilar-proved` | `Sandpile.continuum_value_self_similar_proved` | `prop-continuum-value-selfsimilar` | classical only |
+| 105 | `cor-dlt4-mean-asymptotic-proved` | `Sandpile.dlt4_mean_asymptotic_proved` | `cor-dlt4-mean-asymptotic` | classical only |
+| 106 | `thm-d4-ball-green-crossing-proved` | `Sandpile.d4_ball_green_crossing` | `thm:d4-ball-green-crossing` | classical only |
+| 107 | `thm-d4-critical-level-percolation-proved` | `Sandpile.d4_critical_level_percolation` | `thm:d4-critical-level-percolation` | classical only |
+| 108 | `ext-cube-stopping-stability-proved` | `Sandpile.External.cubeStoppingStability_holds` | — | classical only |
+| 109 | `thm-main-nontriviality-proved` | `Sandpile.percolation_below_criticality_proved` | `thm-main-nontriviality` | classical only |
+| 110 | `thm-main-critical-level-percolation-proved` | `Sandpile.critical_level_percolation_proved` | `thm-main-critical-level-percolation` | classical only |
+| 111 | `thm-d23-critical-level-percolation-proved` | `Sandpile.d23_critical_level_percolation_proved` | `thm-d23-critical-level-percolation` | classical only |
+| 112 | `rem-dlt4-killed-scaling-proved` | `Sandpile.dlt4_killed_scaling_proved` | `rem-dlt4-killed-scaling` | classical only |
 
-99 of 99 nodes depend on nothing beyond the three classical
-axioms.  In `ledger/manifest.yaml`, 83 nodes are `PROVED` and 16 are
-`FROZEN` (the assumed cited results).
+112 of 112 nodes depend on nothing beyond the three classical
+axioms.  In `ledger/manifest.yaml`, 103 nodes are `PROVED/SEALED` and 9 are
+`FROZEN` (the cited propositions, each proved by the theorem named in its row).
 
 ## Frozen statements
 
@@ -184,21 +199,21 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `lem-dgt4-blocking-to-crossing` | `52e7e161eee97f2cf1730940ac7ba575024df8618eb9fb993709dcebfa056e62` |
 | `ext-planar-rsw` | `0ae2bd89db0f6fa9278a60b555de6de2e834feba5a12bd5ab4c2ced2685ecdc4` |
 | `ext-lss-domination` | `98f2a1d197d73dbbfc9de9ad1d4ee5c13977d9b62495b8befb83ff70f2fd5a96` |
-| `ext-continuum-optimal-stopping` | `09748d20885c9e08b8d894015a6e912d2b9a957032adc9b3f197350b74626234` |
-| `prop-brownian-os` | `f82353e4fb954d03050ea15364074ea8a7dee465375ed8fa574dc2285a283568` |
+| `ext-continuum-optimal-stopping` | `931f93dee4cbf8fcc93ff9a02c722c94eecf01c9f660b5c0000e293eab96dbb0` |
+| `prop-brownian-os` | `08817d8e162539b2f0778a8dd672450d53fa4aa6800b2ce3d2cb8de31ab19f20` |
 | `lem-sobolev-tightness` | `28aa1819493b17d96196507f2f41e88ed26948c46d39b957b19761f6b6326fbf` |
 | `lem-dgt4-weighted-last-visits` | `bfa9926b9b3214fb23442fee101487cee6a9ded9d11ba414412dff5793e14374` |
-| `ext-normal-comparison` | `ce44350b4d4d0fa89376bb9148e2d3a28f9686efab06f50218a7f0a579225108` |
+| `ext-normal-comparison` | `9d182f5931907e3e88e06a53d4e38096c3d40f9a61a59714ff6808759f6f52eb` |
 | `ext-continuum-rsw` | `cf22eb43e6fa4556064182210a488dae35f4e8c38012cc56221b775d5f4faaf6` |
-| `ext-pitt-gaussian-fkg` | `18bc7b6f05b7825e98bb1d2104ffe0b625c11f75eaf7787e4a726b8cf72de301` |
+| `ext-pitt-gaussian-fkg` | `d8a48edc39551688cfcb4cd7e6a5edb6147dd200aab20e212c7c826eecfdd14a` |
 | `ext-gaussian-law-covariance` | `a74a2ccb839f261ecc9e1775bb1b5309f05eb87690ac7dc0c99585f3de7d7531` |
 | `ext-pinsker` | `051063a0dfae9d4317f653c7bab3be752d3059be80fcb4f73b75fecc72f0adc8` |
 | `ext-cube-stopping-stability` | `6d087780d8c28e94430977e47e5df786082268f7575102d0c8694f194d0ecb63` |
-| `ext-gaussian-lipschitz-concentration` | `593d6115d7f967f4aa56428a89c0b225ae301a9fe3368fe2db44615a0ff87c20` |
+| `ext-gaussian-lipschitz-concentration` | `afb0ce594d4041e341a41bfc3b12b97c2aa2b67d70b73de9f82f91917022f6ac` |
 | `ext-membrane-scaling-four` | `cf0693588491997322265c8876df370494020d9625222fd7207702756f0afab0` |
 | `ext-continuum-stopping-stability` | `1a29e4bcaedbd8e44aadb532d4de7f8bf74e122300908b8bcc67f6e70e930cb8` |
-| `ext-rellich-kondrachov-negsobolev` | `30484f96851b0082e8ca2d7af6792dc10c73a39dc50c1dd74a2dd5f3b86c89f7` |
-| `ext-ball-occupation-density` | `43a2ec07e5023f41b16b02cdc5cac64e18f410cffc6a9633360499f4b0d878d4` |
+| `ext-rellich-kondrachov-negsobolev` | `daf6030341cf030c79bdf516799d63e29f9057341abe9b528b681ebda3a29c03` |
+| `ext-ball-occupation-density` | `0df63b53fe69f49f5fd75f72e653b57d9faef1e62d3a54bd161408444617670e` |
 | `lem-recursion` | `5463c5f8eaf71f004a6336cd33127a790f2ddb29948a7fedb29c344687102ab1` |
 | `lem-finite-scale-extraction` | `e6fbaaf930026aa43dd7ceec091b13b19e4fef12807d80f49df05fbe335e3905` |
 | `thm-limiting-odometer-crossing` | `1288ff15b789d476d3f56584916e14d232943dcdf73aa22ef124d1a2f55781e4` |
@@ -206,7 +221,7 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `prop-finite-time-concentration-scale` | `cfcdf0b563aba234420a5ef385b83aa6eb8023357245aaf9a9de1f188cf9d9a6` |
 | `ext-heat-kernel-bounds` | `99d8d211a6db06462d471330c671dab2f41d82679944452388ab28c1e5ed9721` |
 | `thm-max-displacement-proved` | `8b7dd3cc8adf6d9354264ae85edc23cd5a0531e9d4d33db11d27aea951046d1c` |
-| `ext-continuum-besov-tightness` | `a8ad3690aff8f0523ac2530b309d5a64fe004e773a1bb2fb967de96b45776dce` |
+| `ext-continuum-besov-tightness` | `1eb1cd0532c4b8cdf45feef46adc74cc3a14c26c7f80b2c12ff6c7f77ddc460d` |
 | `thm-rw` | `47915d0b5cde43453c3d8fa9bb942ac19febcc1e4b53debc0d9edaa29d9e35e0` |
 | `lem-difference-representation` | `be21e961de68572ec46ab54bcb011b9780b76b94df13855954e5fda48edf59ca` |
 | `lem-localization-killing` | `517a9a01ba5700025c8a7d23e2b1b3dd4c6f8469ef54bc90d95e860d109bca44` |
@@ -260,9 +275,22 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `thm-d4-ball-green-crossing` | `730cdccb9b4a7d534fd604557c070bde570566d5f4281108f2628d7264f8c850` |
 | `lem-d4-exit-average-concentration` | `01c5e8705799d54e2e82896729c72d959cabef84f5f965d0ac81251c52064615` |
 | `thm-d4-critical-level-percolation` | `612e7e6d973c51aa0b1fc8632b3e2c04ccb0763f3642ca8960da22669c42bc89` |
-| `ext-brownian-exit-step` | `0aeebcb64fe85fcf26ba084c7348e96e0d7b051d4efe54d997f2378258d8ade9` |
+| `ext-brownian-exit-step` | `4828a213f9db8659a075a9fe640935c10a133e8b17b85720406a1be9308ead82` |
 | `lem-brownian-value-mono-horizon` | `b44b2719cc8c6121e7f017ff2b831957ec75e8ba0d338ae80c3e6d75566b6c53` |
 | `lem-brownian-ball-localization` | `9dd206a075f13ac93a6b5182a72daa20d0febe58c6346ce0e0e358b0ddad37c6` |
+| `ext-continuum-optimal-stopping-proved` | `7ae0634e414387aa02ba5eb3371bf9743893bf2f7064c0ce1afe8c2f53ffbb62` |
+| `prop-brownian-os-proved` | `cd49bcd88b6b7c41b5a2c89d7ee9e62ded07388e2a10ca184c46e1bf7982a1cb` |
+| `thm-main-explosion-i-a-proved` | `1af1c929a192593f5fe7beef10ba18515f0fdf4afaf8112bb2f826fcb20ae8cb` |
+| `thm-main-explosion-i-b-proved` | `17a268a097551d11d95e0e6b9803b2289bba056995a8f972184076210d2101bf` |
+| `prop-continuum-value-selfsimilar-proved` | `9b095505a7abb77f40645205b7a3a08a8ebb6e6b660c32995ed224d7b6dabead` |
+| `cor-dlt4-mean-asymptotic-proved` | `67fa3c026fc085f09a7d3e7aea05666091f98ce52400a216fb01d51bcafa6bb0` |
+| `thm-d4-ball-green-crossing-proved` | `b9770a7300e95cc65e8c7faf5736bdde945467f32ac6a1742d343ef47fb4fdd1` |
+| `thm-d4-critical-level-percolation-proved` | `06c7914e501891fc6ce4d5568dea4b6341dd98539ba5768f1167e898a984f3aa` |
+| `ext-cube-stopping-stability-proved` | `80632b64e15b799f5cda5006f72b3c77b38aacc7bc918a563bd2b2188b891655` |
+| `thm-main-nontriviality-proved` | `34d868da7ca8fd78eed20327bb1f08e81c61f7d18c3603cd67fd0b7a5cafa7a6` |
+| `thm-main-critical-level-percolation-proved` | `f83dfe255255c01d5e97268399023a8fdfc7152e76d25e80862f04dcdee1155e` |
+| `thm-d23-critical-level-percolation-proved` | `047a621a08bf02b9b75a81bde977624948988eec3f6ce9f78246cf474499a105` |
+| `rem-dlt4-killed-scaling-proved` | `3f054ceafa94689dc65640a62d89cdb8881fbe31d61dced9cd95298b3b774138` |
 
 ## What is not claimed
 

@@ -34,6 +34,25 @@ ELAN = str(Path.home() / ".elan" / "bin")
 # `sorryAx` -- means the statement is not proved.
 CLASSICAL = {"propext", "Classical.choice", "Quot.sound"}
 
+# The `FROZEN` cited propositions and the theorems of this repository that prove them with no
+# hypothesis.  A proposition stays `FROZEN` because the certified statements that use it carry it
+# as a hypothesis; the theorem named here, whose closure is checked below, discharges it.
+PROVED_INPUTS = {
+    "ext-continuum-optimal-stopping": "Sandpile.External.continuumOptimalStopping_holds",
+    "ext-continuum-rsw": "Sandpile.External.continuumRSW_holds",
+    "ext-continuum-stopping-stability": "Sandpile.External.continuumStoppingStability_holds",
+    "ext-cube-stopping-stability": "Sandpile.External.cubeStoppingStability_holds",
+    "ext-exterior-boundary-connected": "Sandpile.External.exteriorBoundaryConnected_holds",
+    "ext-lss-domination": "Sandpile.External.lssDomination",
+    "ext-membrane-scaling-four": "Sandpile.External.membraneScalingLimitFour_holds",
+    "ext-multivariate-berry-esseen": "Sandpile.External.multivariateBerryEsseen_holds",
+    "ext-planar-rsw": "Sandpile.External.planarRSW_holds",
+}
+
+# Warnings located in this repository's own modules; Lake also prints the replayed warnings of
+# dependencies, which are not counted.
+OWN_WARNING = ("warning: Sandpile/", "warning: Sandpile.lean", "warning: ./Sandpile")
+
 
 def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
     import os
@@ -92,13 +111,14 @@ def build() -> str:
     r = run(["lake", "build", "Sandpile"], timeout=7200)
     jobs = re.search(r"Build completed successfully \((\d+) jobs\)", r.stdout)
     build_ok = r.returncode == 0
-    warnings = [l for l in r.stdout.splitlines() if l.startswith("warning:")]
+    warnings = [l for l in r.stdout.splitlines() if l.startswith(OWN_WARNING)]
 
-    ax = axiom_lines(exports)
+    ax = axiom_lines(exports + list(PROVED_INPUTS.values()))
     toolchain = (ROOT / "lean-toolchain").read_text().strip()
     mlmanifest = yaml.safe_load("{}")
     packages = json.loads((ROOT / "lake-manifest.json").read_text(encoding="utf-8"))["packages"]
     ml_rev = next((p["rev"] for p in packages if p["name"] == "mathlib"), None)
+    lp_rev = next((p["rev"] for p in packages if p["name"] == "«lattice-probability»"), None)
     paper = ROOT / "paper" / "sandpile.tex"
     paper_sha = hashlib.sha256(paper.read_bytes()).hexdigest()
 
@@ -116,17 +136,26 @@ def build() -> str:
     # The counts come from the manifest, so this paragraph cannot drift from it.
     _paper = [n for n in nodes if not n["file"].startswith("Sandpile/External/")]
     _ext = [n for n in nodes if n["file"].startswith("Sandpile/External/")]
-    _assumed = [n for n in _ext if n["state"] == "FROZEN"]
+    _cited = [n for n in _ext if n["state"] == "FROZEN"]
+    _assumed = [n for n in _cited if n["id"] not in PROVED_INPUTS]
     A(f"Every theorem, lemma, proposition and corollary of the paper is stated in")
     A(f"Lean 4: {len(_paper)} nodes, all `{state_label}`, proved from Mathlib and the shared")
     A(f"library Lattice-Probability.  No node contains a `sorry` and none adds an")
     A(f"axiom.")
     A("")
-    A(f"The development is NOT unconditional.  {len(_ext)} further nodes state results the")
-    A(f"paper quotes from other papers; {len(_assumed)} of them are assumed, each carried as an")
-    A(f"explicit hypothesis by the theorems that use it, and the rest are proved here.")
-    A("The theorems below are therefore proved modulo those hypotheses, which are")
-    A("listed with their statements in `ASSUMPTIONS.md`.")
+    if _assumed:
+        A(f"The development is NOT unconditional.  {len(_ext)} further nodes state results the")
+        A(f"paper quotes from other papers; {len(_assumed)} of them are assumed, each carried as an")
+        A(f"explicit hypothesis by the theorems that use it, and the rest are proved here.")
+        A("The theorems below are therefore proved modulo those hypotheses, which are")
+        A("listed with their statements in `ASSUMPTIONS.md`.")
+    else:
+        A(f"{len(_ext)} further nodes concern results the paper quotes from other papers.")
+        A(f"{len(_cited)} of them are the cited propositions, which the certified statements")
+        A("carry as explicit hypotheses; each is proved in this repository by the theorem")
+        A("named in the table below, and the others are theorems proved here.  No cited")
+        A("result is assumed, and every main theorem also holds without hypotheses.")
+        A("`ASSUMPTIONS.md` lists the cited propositions with their statements.")
     A("")
     A("## Environment")
     A("")
@@ -134,10 +163,11 @@ def build() -> str:
     A("|---|---|")
     A(f"| Lean toolchain | `{toolchain}` |")
     A(f"| Mathlib revision | `{ml_rev or 'unknown'}` |")
+    A(f"| Lattice-Probability revision | `{lp_rev or 'unknown'}` |")
     A(f"| Paper (`paper/sandpile.tex`) SHA-256 | `{paper_sha}` |")
     A(f"| Build | {'succeeded' if build_ok else 'FAILED'}"
       f"{f', {jobs.group(1)} jobs' if jobs else ''} |")
-    A(f"| Build warnings | {len(warnings)} |")
+    A(f"| Build warnings in this repository's modules | {len(warnings)} |")
     A(f"| Generated | {date.today().isoformat()} |")
     A("")
     A("## Reproducing it")
@@ -171,6 +201,12 @@ def build() -> str:
         verdict = "classical only" if not extra else "**" + ", ".join(sorted(extra)) + "**"
         if not extra:
             clean += 1
+        if n["id"] in PROVED_INPUTS:
+            comp = PROVED_INPUTS[n["id"]]
+            got_c = {a.strip() for a in ax.get(comp, "").split(",") if a.strip()}
+            if got_c - CLASSICAL:
+                raise RuntimeError(f"{n['id']}: `{comp}` is not axiom-clean: {sorted(got_c)}")
+            verdict = f"cited proposition, proved by `{comp}`: classical only"
         src = n["source"]
         m = re.search(r"label ([A-Za-z][A-Za-z0-9:_-]*)", src)
         paper_cell = f"`{m.group(1)}`" if m else "—"
@@ -179,7 +215,7 @@ def build() -> str:
     A(f"{clean} of {len(nodes)} nodes depend on nothing beyond the three classical")
     n_frozen = sum(1 for n in nodes if n["state"] == "FROZEN")
     A(f"axioms.  In `ledger/manifest.yaml`, {proved} nodes are `{state_label}` and {n_frozen} are")
-    A("`FROZEN` (the assumed cited results).")
+    A("`FROZEN` (the cited propositions, each proved by the theorem named in its row).")
     A("")
     A("## Frozen statements")
     A("")

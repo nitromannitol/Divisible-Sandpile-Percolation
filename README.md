@@ -335,7 +335,7 @@ parameter is bound before it. The certificate of the build and of each node's ax
   module and fails on any warning or `sorry`, and `python3 tools/check_axioms.py` checks the
   axiom closure of every registered statement. The cited results are hypotheses, not axioms.
 - **Builds from a clean checkout.** In continuous integration, `lake build` of a fresh
-  checkout completes 10,229 jobs without error, and the build fails on any warning or `sorry`
+  checkout completes 11,408 jobs without error, and the build fails on any warning or `sorry`
   warning.
 - **Pinned statements.** Every registered statement is pinned by the SHA-256 of its text in
   [`ledger/manifest.yaml`](ledger/manifest.yaml), checked by

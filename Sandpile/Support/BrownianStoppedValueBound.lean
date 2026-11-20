@@ -1,6 +1,7 @@
 import Sandpile.Support.BrownianCompactContinuation
 import Sandpile.Support.IntegrablePositionTail
 import Sandpile.Support.StoppedExpectationExtension
+import Sandpile.Support.BrownianValueProcessAdapted
 
 /-!
 # Brownian stopped-value expectation bound
@@ -133,3 +134,32 @@ theorem Sandpile.Support.brownian_stopped_value_expectation_bound
   intro σ hσ hσfin hσT
   exact (Sandpile.Support.brownian_stopped_value_le_of_countable_range
     P B hB hBc hBm x T G hG hgrow M hMm hMc hMval σ hσ hσfin.countable hσT).2
+
+/-- The Brownian stopping value is superharmonic for every bounded raw
+stopping time. -/
+theorem Sandpile.Support.brownian_snellValue_superharmonic
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hB : ∀ y, Sandpile.Continuum.IsBrownian d y (B y) P)
+    (hBc : ∀ y ω, Continuous fun t => B y t ω)
+    (hBm : ∀ y t, StronglyMeasurable (B y t))
+    (x : Sandpile.Continuum.Space d) (T : ℝ≥0)
+    (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
+    (hgrow : ∃ C k : ℝ, ∀ t ∈ Set.Icc (0 : ℝ) (T : ℝ),
+      ∀ y, |G t y| ≤ C * (1 + ‖y‖) ^ k)
+    (τ : Ω → ℝ≥0) (hτ : Sandpile.Continuum.IsBrownianStopping (B x) τ)
+    (hτT : ∀ ω, τ ω ≤ T) :
+    Integrable (fun ω => Sandpile.External.Snell.snellValue (B (B x (τ ω) ω)) P G
+      ((T : ℝ) - τ ω)) P ∧
+    (∫ ω, Sandpile.External.Snell.snellValue (B (B x (τ ω) ω)) P G
+      ((T : ℝ) - τ ω) ∂P) ≤ Sandpile.External.Snell.snellValue (B x) P G T := by
+  obtain ⟨M, _, _, hMm, hMval, hMc, _, _, _, _⟩ :=
+    Sandpile.Support.exists_adapted_brownian_value_process P B hB hBc hBm x T G hG hgrow
+  have hh := Sandpile.Support.brownian_stopped_value_expectation_bound
+    P B hB hBc hBm x T G hG hgrow M hMm hMc hMval τ hτ hτT
+  have heq : (fun ω => M (τ ω) ω) = fun ω =>
+      Sandpile.External.Snell.snellValue (B (B x (τ ω) ω)) P G ((T : ℝ) - τ ω) :=
+    funext fun ω => hMval (τ ω) (hτT ω) ω
+  rwa [heq] at hh

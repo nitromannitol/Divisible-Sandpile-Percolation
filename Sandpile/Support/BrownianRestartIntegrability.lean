@@ -55,3 +55,48 @@ theorem Sandpile.Support.integrable_brownian_restart_average
   change Integrable (fun ω => ∫ w, F (Y ω, w) ∂(P.map (LatticeProb.restartPath B hBc fun _ => 0)))
     (P.restrict E) at hGi
   rwa [heq] at hGi
+
+/-- A pointwise estimate by a fresh-path continuation average transfers to an
+integral estimate for the corresponding restarted payoff. -/
+theorem Sandpile.Support.setIntegral_le_brownian_restart_add
+    {Ω Ω' α : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω'] [MeasurableSpace α] {d : ℕ}
+    (P : Measure Ω) [IsProbabilityMeasure P] (P' : Measure Ω') [IsProbabilityMeasure P']
+    (x : Sandpile.Continuum.Space d)
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (W : ℝ≥0 → Ω' → Sandpile.Continuum.Space d)
+    (hB : Sandpile.Continuum.IsBrownian d x B P)
+    (hW : Sandpile.Continuum.IsBrownian d 0 W P')
+    (hBm : ∀ t, StronglyMeasurable (B t)) (hWm : ∀ t, StronglyMeasurable (W t))
+    (hBc : ∀ ω, Continuous fun t => B t ω) (hWc : ∀ ω, Continuous fun t => W t ω)
+    (τ : Ω → ℝ≥0)
+    (hτ : IsStoppingTime (LatticeProb.natFiltration B hBm) (fun ω => (τ ω : ℝ≥0∞)))
+    (E : Set Ω) (hE : MeasurableSet[hτ.measurableSpace] E)
+    (Y : Ω → α) (hY : Measurable[hτ.measurableSpace] Y)
+    (F : α × LatticeProb.BrownianPath d → ℝ) (hF : Measurable F)
+    (hFi : Integrable (fun ω => F (Y ω, LatticeProb.restartPath B hBc τ ω)) (P.restrict E))
+    (Z : Ω → ℝ) (hZi : Integrable Z (P.restrict E)) (ε : ℝ)
+    (hnear : ∀ᵐ ω ∂P.restrict E,
+      Z ω ≤ (∫ ω', F (Y ω, (⟨fun t => W t ω', hWc ω'⟩ : LatticeProb.BrownianPath d)) ∂P') + ε) :
+    (∫ ω in E, Z ω ∂P) ≤
+      (∫ ω in E, F (Y ω, LatticeProb.restartPath B hBc τ ω) ∂P) + P.real E * ε := by
+  let A : Ω → ℝ := fun ω =>
+    ∫ ω', F (Y ω, (⟨fun t => W t ω', hWc ω'⟩ : LatticeProb.BrownianPath d)) ∂P'
+  have hAi : Integrable A (P.restrict E) :=
+    Sandpile.Support.integrable_brownian_restart_average
+      P P' x B W hB hW hBm hWm hBc hWc τ hτ E hE Y hY F hF hFi
+  have hrestart := hB.toIsBrownianSpace.setIntegral_restart_canonical
+    P x B hBm hBc τ hτ Y hY E hE F hF hFi
+  have hpath : Measurable (fun ω => (⟨fun t => W t ω, hWc ω⟩ : LatticeProb.BrownianPath d)) :=
+    ContinuousMap.measurable_iff_eval.mpr fun t => (hWm t).measurable
+  have hlaw := Sandpile.Support.brownian_centered_path_law_eq_zero_start P P' x B W hB hW hBc hWc
+  have heq : (fun ω => ∫ w, F (Y ω, w) ∂(P.map (LatticeProb.restartPath B hBc fun _ => 0))) = A := by
+    funext ω
+    rw [hlaw]
+    exact integral_map hpath.aemeasurable (hF.comp (measurable_const.prodMk measurable_id)).aestronglyMeasurable
+  rw [heq] at hrestart
+  calc
+    _ ≤ ∫ ω in E, (A ω + ε) ∂P := integral_mono_ae hZi (hAi.add (integrable_const ε)) hnear
+    _ = (∫ ω in E, A ω ∂P) + P.real E * ε := by
+      rw [integral_add hAi (integrable_const ε), setIntegral_const]
+      rfl
+    _ = _ := by rw [hrestart]

@@ -61,14 +61,14 @@ theorem eventually_grid_value_ge_brownian_of_compact_support
     unfold Continuum.brownianDiscount
     congr 1
     ext r
-    simp only [Continuum.stoppingPayoffs, Set.mem_ofPred_eq, neg_neg, V, H,
+    simp only [Set.mem_ofPred_eq, neg_neg, V, H,
       isBrownianStopping_sub_const_iff, sub_add_cancel]
   have hnat : sSup (naturalStoppingPayoffs P Z T (fun t z => H ((T : ℝ) - t) z)) =
       Continuum.brownianDiscount Z P (fun s z => -H s z) T := by
     unfold Continuum.brownianDiscount
     congr 1
     ext r
-    simp only [naturalStoppingPayoffs, Continuum.stoppingPayoffs, Set.mem_ofPred_eq,
+    simp only [naturalStoppingPayoffs, Set.mem_ofPred_eq,
       neg_neg, NNReal.coe_le_coe]
   have hlower := eventually_grid_value_ge_limit_of_start_tendsto P R q hRpos hR
     W Y hWm hYm hWlaw hconv T a hstart G hGc K hK hsupp M hG ε hε

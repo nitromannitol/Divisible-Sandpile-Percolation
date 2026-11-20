@@ -42,7 +42,7 @@ theorem map_pathMap_eq_of_sandpile_brownian
     (x : Continuum.Space d)
     (B : ℝ≥0 → Ω → Continuum.Space d) (C : ℝ≥0 → Ω' → Continuum.Space d)
     (hB : Continuum.IsBrownian d x B P) (hC : Continuum.IsBrownian d x C Q)
-    (hBm : ∀ t, Measurable (B t)) (hCm : ∀ t, Measurable (C t))
+    (_hBm : ∀ t, Measurable (B t)) (_hCm : ∀ t, Measurable (C t))
     (hBc : ∀ ω, Continuous fun t => B t ω)
     (hCc : ∀ ω, Continuous fun t => C t ω) :
     P.map (LatticeProb.pathMap B hBc) = Q.map (LatticeProb.pathMap C hCc) := by

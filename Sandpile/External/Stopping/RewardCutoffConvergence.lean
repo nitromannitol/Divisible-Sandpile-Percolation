@@ -36,6 +36,6 @@ theorem tendsto_integral_cutoff_mul
       filter_upwards [tendsto_natCast_atTop_atTop.eventually_ge_atTop ‖Y ω‖] with n hn
       apply Continuum.cutoff_eq_one_of_norm_le _ (by positivity)
       linarith
-    exact tendsto_const_nhds.congr' (heq.mono fun n hn => by simpa only [hn, one_mul])
+    exact tendsto_const_nhds.congr' (heq.mono fun n hn => by simp only [hn, one_mul])
 
 end Sandpile.External.Stopping

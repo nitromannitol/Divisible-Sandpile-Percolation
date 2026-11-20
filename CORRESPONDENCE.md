@@ -61,6 +61,22 @@ hypothesis and the conclusion as in `Sandpile/MainTheorems.lean`.  Their Mathlib
 counterparts are in `SandpileAudit/Nontriviality/Corollary.lean` and
 `SandpileAudit/CriticalLevels/Corollary.lean`.
 
+Ten of the twelve hold without any cited hypothesis.  Theorems 1.3(ii)(a), (ii)(b) and
+(iii)(a)-(d) take none in `Sandpile/MainTheorems.lean`.  Theorem 1.3(i)(a) is
+`Sandpile.mean_growth_le_three_proved` and Theorem 1.3(i)(b) is
+`Sandpile.brownian_scaling_limit_proved`: the certified statements with
+`External.ContinuumStoppingStability`, proved by
+`Sandpile.External.continuumStoppingStability_holds`, removed, and for (i)(a) also
+`External.ContinuumOptimalStopping`, which its proof does not use.  Theorem 1.3(ii)(c) is
+`Sandpile.four_sobolev_of_proved_inputs`.  Theorems 1.1 and 1.2 carry `External.PlanarRSW`,
+`External.ContinuumRSW` and `External.CubeStoppingStability`.  The first is proved by
+`Sandpile.External.planarRSW_holds` and implies the second
+(`External.ContinuumRSW.continuumRSW_of_planarRSW`), so
+`Sandpile.percolation_below_criticality_of_planar_rsw` and
+`Sandpile.critical_level_percolation_of_planar_rsw`, applied to
+`Sandpile.External.planarRSW_holds`, need only `External.CubeStoppingStability`.  That is the
+one cited input still needed by a main result.
+
 ## How the paper's objects are modelled
 
 | paper | Lean | where |
@@ -119,6 +135,8 @@ origin-anchored rectangles used here. The field’s symmetry and positive
 association are explicit hypotheses of this input; it contains no Gaussian
 mean or tail estimate. The square estimate and planar duality are proved in
 `Support/GaussianSquareMean.lean` and `Support/RectangleIntersection.lean`.
+The comparison itself is proved by `Sandpile.External.planarRSW_holds`; see
+[Planar RSW and the cited source](#planar-rsw-and-the-cited-source).
 
 The continuum crossing comparison is registered as `External.ContinuumRSW`, the
 continuum form of Köhler-Schindler–Tassion Theorem 1 and Comment 1 that the
@@ -131,7 +149,12 @@ surely continuous field lies between the measures of the chain events
 `crossApprox` at the level and at any lower level, and those are genuine events
 depending on countably many values of the field.  For a law on the space of all
 planar functions every crossing event has outer measure one
-(`Sandpile/Support/CrossVacuity.lean`).
+(`Sandpile/Support/CrossVacuity.lean`).  The continuum comparison follows from the planar one
+(`External.ContinuumRSW.continuumRSW_of_planarRSW`): threshold samplings of the field on
+square meshes are symmetric and associated lattice laws, fine-mesh crossings bracket the
+continuum crossings up to an arbitrarily small loss of level, and the comparison passes to the
+limit.  With `Sandpile.External.planarRSW_holds` it is proved by
+`Sandpile.External.continuumRSW_holds`.
 
 ## Cited inputs of each node
 
@@ -147,23 +170,23 @@ nothing for it.
 | node | cited input | which displays of the paper | in this repository |
 |---|---|---|---|
 | `lem-dgt4-blocking-to-crossing` | `External.ExteriorBoundaryConnected` | Timár Theorem 3, cited at `sandpile.tex:6595` | hypothesis |
-| `prop-fixed-scale-crossings` | `External.ContinuumRSW` | the continuum form of the RSW theorem of Köhler-Schindler and Tassion, cited at `sandpile.tex:2218` and applied at `sandpile.tex:2235-2240` | hypothesis |
+| `prop-fixed-scale-crossings` | `External.ContinuumRSW` | the continuum form of the RSW theorem of Köhler-Schindler and Tassion, cited at `sandpile.tex:2218` and applied at `sandpile.tex:2235-2240` | hypothesis, proved: `Sandpile.External.continuumRSW_holds` |
 | `prop-fixed-scale-crossings` | `External.GaussianLawDeterminedByCovariance` | the invariance in law of `𝒳_1` under the plane symmetries asserted at `sandpile.tex:2103-2104`, whose proof from the covariance identity of `Sandpile/Support/CrossBallSym.lean` needs the classical determination of a centred Gaussian law by its covariance | proved: `Sandpile.External.gaussianLawDeterminedByCovariance` |
 | `prop-fixed-scale-crossings` | `External.PittGaussianFKG` | Pitt's Gaussian FKG theorem, cited at `sandpile.tex:2104` and applied at `sandpile.tex:2229` to build the circuit out of four rectangle crossings | hypothesis, proved: `Sandpile.External.pittGaussianFKG` |
 | `prop-fixed-scale-crossings` | `External.Pinsker` | Pinsker's inequality, cited by name at `sandpile.tex:2390` for the last step of the level loss | proved: `Sandpile.External.pinsker` |
-| `lem-finite-scale-extraction` | `External.ContinuumRSW` | the same, reached through the rescaled crossing estimate of `sandpile.tex:2429-2436`, which is `prop:fixed-scale-crossings` rescaled | hypothesis |
+| `lem-finite-scale-extraction` | `External.ContinuumRSW` | the same, reached through the rescaled crossing estimate of `sandpile.tex:2429-2436`, which is `prop:fixed-scale-crossings` rescaled | hypothesis, proved: `Sandpile.External.continuumRSW_holds` |
 | `lem-finite-scale-extraction` | `External.PittGaussianFKG` | the same, reached through `prop:fixed-scale-crossings` | hypothesis, proved: `Sandpile.External.pittGaussianFKG` |
-| `thm-limiting-odometer-crossing` | `External.ContinuumRSW` | the same, reached through `lem:finite-scale-extraction`, which the proof at `sandpile.tex:2531-2560` applies | hypothesis |
+| `thm-limiting-odometer-crossing` | `External.ContinuumRSW` | the same, reached through `lem:finite-scale-extraction`, which the proof at `sandpile.tex:2531-2560` applies | hypothesis, proved: `Sandpile.External.continuumRSW_holds` |
 | `thm-limiting-odometer-crossing` | `External.PittGaussianFKG` | the same, reached through `lem:finite-scale-extraction` | hypothesis, proved: `Sandpile.External.pittGaussianFKG` |
 | `thm-limiting-odometer-crossing` | `External.BallOccupationDensity` | the expected occupation density of the Brownian motion stopped on exiting a ball, `sandpile.tex:2499-2503`, and the kernel of `X_s`, `sandpile.tex:2101-2115`; Mörters and Peres, *Brownian Motion*, Chapter 3, the Green function of a ball | hypothesis, proved: `Sandpile.External.ballOccupationDensity_holds` |
 | `thm-rw`, `lem-odometer-derivative`, `lem-difference-representation`, `lem-localization-killing` | `External.OptimalStopping` | the optimal-stopping representation, `thm:RW` | proved: `Sandpile.External.optimalStopping` |
 | `cor-mean-localization` | `External.HeatKernelBounds` | `eq:rw-max-displacement` | proved: `Sandpile.External.heatKernelBounds` |
 | `prop-d4-diffusive-tightness` | `External.HeatKernelBounds` | `eq:rw-gaussian-upper` | proved: `Sandpile.External.heatKernelBounds` |
 | `prop-d4-superdiffusive-limit` | `External.HeatKernelBounds` | `eq:rw-tv-gradient` | proved: `Sandpile.External.heatKernelBounds` |
-| `thm-d4-ball-green-crossing` | `External.PlanarRSW` | Köhler-Schindler–Tassion Theorem 1 and Comment 1, cited at `sandpile.tex:400,2064,2218,2235`; dimension 4 in the RSW framework at `sandpile.tex:661-663` | hypothesis |
-| `thm-d4-critical-level-percolation` | `External.PlanarRSW` | rectangle extension of the Gaussian far field, cited at `sandpile.tex:3987` via Theorem `thm:d4-ball-green-crossing` | hypothesis |
-| `thm-d4-critical-level-percolation` | `External.LSSDomination` | Liggett-Schonmann-Stacey Corollary 1.4, cited at `sandpile.tex:3987` | hypothesis |
-| `thm-main-critical-level-percolation` | `External.PlanarRSW` | the `d = 4` branch, through `thm:d4-critical-level-percolation`, whose proof cites the rectangle extension of the Gaussian far field at `sandpile.tex:3987` | hypothesis |
+| `thm-d4-ball-green-crossing` | `External.PlanarRSW` | Köhler-Schindler–Tassion Theorem 1 and Comment 1, cited at `sandpile.tex:400,2064,2218,2235`; dimension 4 in the RSW framework at `sandpile.tex:661-663` | hypothesis, proved: `Sandpile.External.planarRSW_holds`; discharged by `Sandpile.d4_ball_green_crossing` |
+| `thm-d4-critical-level-percolation` | `External.PlanarRSW` | rectangle extension of the Gaussian far field, cited at `sandpile.tex:3987` via Theorem `thm:d4-ball-green-crossing` | hypothesis, proved: `Sandpile.External.planarRSW_holds`; discharged by `Sandpile.d4_critical_level_percolation` |
+| `thm-d4-critical-level-percolation` | `External.LSSDomination` | Liggett-Schonmann-Stacey Corollary 1.4, cited at `sandpile.tex:3987` | hypothesis, proved: `Sandpile.External.lssDomination`; discharged by `Sandpile.d4_critical_level_percolation` |
+| `thm-main-critical-level-percolation` | `External.PlanarRSW` | the `d = 4` branch, through `thm:d4-critical-level-percolation`, whose proof cites the rectangle extension of the Gaussian far field at `sandpile.tex:3987` | hypothesis, proved: `Sandpile.External.planarRSW_holds` |
 | `thm-main-critical-level-percolation` | `External.LSSDomination` | the `d = 2,3` and `d = 4` branches, through `thm:d23-critical-level-percolation` and `thm:d4-critical-level-percolation`, whose proofs cite Liggett-Schonmann-Stacey Corollary 1.4 at `sandpile.tex:2589` and `sandpile.tex:3987` | hypothesis |
 | `thm-main-critical-level-percolation` | `External.ExteriorBoundaryConnected` | the `d ≥ 5` branch, through `thm:dgt4-nontriviality`, whose proof cites Timar Theorem 3 at `sandpile.tex:6595` | hypothesis |
 | `thm-dgt4-diffusive-membrane` | `External.HeatKernelBounds`, `External.GreenBoundsHigh`, `External.LocalCLT`, `External.ContinuumBesovTightness` | the same four, reached through `prop:weighted-membrane-limit`, which the proof at `sandpile.tex:4634-4686` applies with the weight `(1-r/T)^κ` | hypothesis: `ContinuumBesovTightness` (proved: `Sandpile.External.continuumBesovTightness_holds`); proved here: `HeatKernelBounds` by `Sandpile.External.heatKernelBounds`, `GreenBoundsHigh` by `Sandpile.External.greenBoundsHigh`, `LocalCLT` by `Sandpile.External.localCLT` |
@@ -189,22 +212,22 @@ nothing for it.
 | `thm-d4-critical-level-percolation` | `External.BallGreenBounds` | `eq:d4ball-time-tail` | proved: `Sandpile.External.ballGreenBounds` |
 | `lem-d4-double-heat-kernel` | `External.LocalCLT`, `External.PairedLocalCLTFour` | `eq:lclt-parity` and its quantitative paired remainder from Lawler–Limic Theorem 2.1.3, Eq. (2.8), used in `sandpile.tex:1171-1172` | hypothesis: `PairedLocalCLTFour` (the proposition is proved here as `Sandpile.External.pairedLocalCLTFour`); proved here: `LocalCLT` by `Sandpile.External.localCLT` |
 | `thm-main-explosion-i-a` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
-| `thm-main-explosion-i-a` | `External.ContinuumStoppingStability` | reached through `cor:dlt4-mean-asymptotic` and `thm:main-explosion`(i)(b), which the proof applies at `T = 1`; the paper's own reduction is `sandpile.tex:299`, "Part (i)(a) is Corollary~\ref{cor:dlt4-mean-asymptotic}". The input is taken at the universe of the realization spaces the statement builds for itself | hypothesis |
+| `thm-main-explosion-i-a` | `External.ContinuumStoppingStability` | reached through `cor:dlt4-mean-asymptotic` and `thm:main-explosion`(i)(b), which the proof applies at `T = 1`; the paper's own reduction is `sandpile.tex:299`, "Part (i)(a) is Corollary~\ref{cor:dlt4-mean-asymptotic}". The input is taken at the universe of the realization spaces the statement builds for itself | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.mean_growth_le_three_proved` |
 | `thm-main-explosion-i-a` | `External.VarianceScale` | reached through `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`), whose uniform exponential moment is the input the corollary's sentence names at `sandpile.tex:2030-2032` | proved: `Sandpile.External.varianceScale` |
-| `thm-main-explosion-i-a` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`. The statement names no probability space, so the hypothesis is carried for every space carrying a family of Brownian motions, which is the form the cited theorem has | hypothesis |
+| `thm-main-explosion-i-a` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`. The statement names no probability space, so the hypothesis is carried for every space carrying a family of Brownian motions, which is the form the cited theorem has | hypothesis; not used by `Sandpile.mean_growth_le_three_proved` |
 | `prop-dlt4-heat-potential-invariance` | `External.LocalCLT` | `eq:lclt-parity` | proved: `Sandpile.External.localCLT` |
 | `thm-main-explosion-ii-c` | `External.ContinuumBesovTightness` | the Besov tightness criterion, reached through `prop:d4-diffusive-tightness` and `lem:sobolev-tightness`, which the paper cites at `sandpile.tex:1676-1680`; part (ii)(c) is those two propositions by `sandpile.tex:302-304` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `thm-main-explosion-iii-c` | `External.LocalCLT`, `External.ContinuumBesovTightness` | the same two that `thm:dgt4-diffusive-membrane` carries; part (iii)(c) is that theorem by `sandpile.tex:307-308` | hypothesis: `ContinuumBesovTightness` (proved: `Sandpile.External.continuumBesovTightness_holds`); proved here: `LocalCLT` by `Sandpile.External.localCLT` |
 | `thm-main-explosion-iii-c` | `External.GaussianLipschitzConcentration`, `External.NormalComparison` | the same that `thm:dgt4-diffusive-membrane` carries; part (iii)(c) is that theorem by `sandpile.tex:307-308` | hypothesis: `GaussianLipschitzConcentration` (proved: `Sandpile.External.gaussianLipschitzConcentration`), `NormalComparison` (proved: `Sandpile.External.normalComparison`) |
 | `thm-main-explosion-iii-d` | `External.LocalCLT`, `External.ContinuumBesovTightness` | the local central limit theorem that `thm:dgt4-many-limits` carries, and the Besov criterion through `lem:sobolev-tightness` for the tightness clause; part (iii)(d) is that theorem by `sandpile.tex:308-309` | hypothesis: `ContinuumBesovTightness` (proved: `Sandpile.External.continuumBesovTightness_holds`); proved here: `LocalCLT` by `Sandpile.External.localCLT` |
 | `thm-main-nontriviality` | `External.BallGreenBounds` | `eq:d4ball-time-tail`, reached through `thm:main-critical-level-percolation`, from which Theorem 1.1 is deduced at `sandpile.tex:317-342` | proved: `Sandpile.External.ballGreenBounds` |
-| `thm-main-nontriviality` | `External.PlanarRSW`, `External.LSSDomination`, `External.ExteriorBoundaryConnected`, `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity`, `External.CubeStoppingStability` | the seven inputs that `thm-main-critical-level-percolation` carries, through which Theorem 1.1 is deduced at `sandpile.tex:317-342` | hypothesis: `PlanarRSW`, `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW`, `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`), `CubeStoppingStability` |
+| `thm-main-nontriviality` | `External.PlanarRSW`, `External.LSSDomination`, `External.ExteriorBoundaryConnected`, `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity`, `External.CubeStoppingStability` | the seven inputs that `thm-main-critical-level-percolation` carries, through which Theorem 1.1 is deduced at `sandpile.tex:317-342` | hypothesis: `PlanarRSW` (proved: `Sandpile.External.planarRSW_holds`), `LSSDomination`, `ExteriorBoundaryConnected`, `ContinuumRSW` (proved: `Sandpile.External.continuumRSW_holds`), `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`), `CubeStoppingStability` |
 | `thm-critical-toppling` | `External.VarianceScale`, `External.MultivariateBerryEsseen` | `eq:Qt-table`, `eq:corr-bound`; the multivariate Berry-Esseen comparison of `sandpile.tex:1770-1782` | hypothesis: `MultivariateBerryEsseen`; proved here: `VarianceScale` by `Sandpile.External.varianceScale` |
 | `thm-critical-toppling-d4` | `External.VarianceScale` | `eq:Qt-table`, `eq:d4-full-window-bounds` | proved: `Sandpile.External.varianceScale` |
 | `prop-continuum-value-selfsimilar` | `External.VarianceScale` | `eq:Qt-table` | proved: `Sandpile.External.varianceScale` |
 | `prop-continuum-value-selfsimilar` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
-| `prop-continuum-value-selfsimilar` | `External.ContinuumStoppingStability` | Coquet–Toldo Theorem 3 and Corollary 4, through the parabolic scaling limit `thm:main-explosion`(i)(b), used at `sandpile.tex:1995-1997`. The input is taken at the Brownian realization space’s universe, and the motion carries continuous paths and strongly measurable evaluations. | hypothesis |
-| `prop-continuum-value-selfsimilar` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis |
+| `prop-continuum-value-selfsimilar` | `External.ContinuumStoppingStability` | Coquet–Toldo Theorem 3 and Corollary 4, through the parabolic scaling limit `thm:main-explosion`(i)(b), used at `sandpile.tex:1995-1997`. The input is taken at the Brownian realization space’s universe, and the motion carries continuous paths and strongly measurable evaluations. | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.continuum_value_self_similar_proved` |
+| `prop-continuum-value-selfsimilar` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis; not used by `Sandpile.continuum_value_self_similar_proved` |
 | `prop-d4-pointwise-linearization` | `External.VarianceScale` | `eq:d4-window-l2`, `eq:d4-window-linfty` | proved: `Sandpile.External.varianceScale` |
 | `lem-d4-difference-tail` | `External.VarianceScale` | `eq:d4-full-window-bounds` | proved: `Sandpile.External.varianceScale` |
 | `cor-critical-mean-one` | `External.VarianceScale`, `External.MultivariateBerryEsseen` | `eq:Qt-table`, `eq:corr-bound`; the multivariate Berry-Esseen comparison of `sandpile.tex:1770-1782` | hypothesis: `MultivariateBerryEsseen`; proved here: `VarianceScale` by `Sandpile.External.varianceScale` |
@@ -226,19 +249,19 @@ nothing for it.
 | `thm-dgt4-many-limits` | `External.ContinuumBesovTightness` | the Besov tightness criterion through `lem:sobolev-tightness`, for the tightness clause | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `thm-main-critical-level-percolation` | `External.BallGreenBounds` | `eq:d4ball-point`, `eq:d4ball-square`, `eq:d4ball-near`, `eq:d4ball-far-cube`, `eq:d4ball-shift`, `eq:d4ball-time-tail` | proved: `Sandpile.External.ballGreenBounds` |
 | `thm-main-critical-level-percolation` | `External.GreenBoundsHigh`, `External.VarianceScale` | `eq:dgt4-green-tail`; `eq:Qt-table`, `eq:d4-full-window-bounds` | proved here: `GreenBoundsHigh` by `Sandpile.External.greenBoundsHigh`, `VarianceScale` by `Sandpile.External.varianceScale` |
-| `thm-main-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity`, `External.CubeStoppingStability` | the `d = 2, 3` branch, through `thm:d23-critical-level-percolation` | hypothesis: `ContinuumRSW`, `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`), `CubeStoppingStability` |
+| `thm-main-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity`, `External.CubeStoppingStability` | the `d = 2, 3` branch, through `thm:d23-critical-level-percolation` | hypothesis: `ContinuumRSW` (proved: `Sandpile.External.continuumRSW_holds`), `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`), `CubeStoppingStability` |
 | `prop-brownian-os` | `External.ContinuumOptimalStopping` | the finite-horizon optimal-stopping theorem applied to the gain `-h(T-s,B_s)`, Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099` | hypothesis |
 | `lem-sobolev-tightness` | `External.ContinuumBesovTightness` | the tightness criterion of Furlan and Mourrat, Theorem 2.30, at `p = q = 2` with regularity exponent `-β/2` and `α = -s`, together with the identification of `B^{-s,loc}_{2,2}` with `H^{-s}_loc`, cited at `sandpile.tex:1661-1662` and `sandpile.tex:1676-1680` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `prop-d4-diffusive-tightness` | `External.ContinuumBesovTightness` as well | the same criterion, reached through `lem:sobolev-tightness`, which the proof at `sandpile.tex:3288-3316` applies with `β = 2ε` | hypothesis, proved: `Sandpile.External.continuumBesovTightness_holds` |
 | `cor-dlt4-mean-asymptotic` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the parabolic scaling limit `thm:main-explosion`(i)(b). | proved: `Sandpile.External.localCLT` |
-| `cor-dlt4-mean-asymptotic` | `External.ContinuumStoppingStability` | reached through `thm:main-explosion`(i)(b), which the corollary's proof applies at `T = 1` and at the origin (`sandpile.tex:2030-2032`). The input is taken at the universe of the corollary's own Brownian realization space and beside the path regularity of the motion | hypothesis |
+| `cor-dlt4-mean-asymptotic` | `External.ContinuumStoppingStability` | reached through `thm:main-explosion`(i)(b), which the corollary's proof applies at `T = 1` and at the origin (`sandpile.tex:2030-2032`). The input is taken at the universe of the corollary's own Brownian realization space and beside the path regularity of the motion | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.dlt4_mean_asymptotic_proved` |
 | `cor-dlt4-mean-asymptotic` | `External.VarianceScale` | reached through `prop:continuum-value-selfsimilar` (`sandpile.tex:1961-1980`), whose uniform exponential moment is the input the corollary's sentence names at `sandpile.tex:2030-2032` | proved: `Sandpile.External.varianceScale` |
-| `cor-dlt4-mean-asymptotic` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`; carried at the corollary's own Brownian realization space, exactly as that proposition carries it | hypothesis |
+| `cor-dlt4-mean-asymptotic` | `External.ContinuumOptimalStopping` | Peskir and Shiryaev Theorem 2.2, cited at `sandpile.tex:1099`, reached through `prop:continuum-value-selfsimilar`; carried at the corollary's own Brownian realization space, exactly as that proposition carries it | hypothesis; not used by `Sandpile.dlt4_mean_asymptotic_proved` |
 | `thm-main-explosion-i-b` | `External.LocalCLT` | Lawler–Limic Theorem 2.1.3, Eq. (2.8), cited at `sandpile.tex:1145-1161`, through the heat-potential invariance proposition used in the scaling proof at `sandpile.tex:1877-1879`. | proved: `Sandpile.External.localCLT` |
-| `thm-main-explosion-i-b` | `External.ContinuumStoppingStability` | the stability of optimal-stopping values under uniform convergence of bounded rewards, together with the invariance principle for the stopped walk, Coquet and Toldo Theorem 3 and Corollary 4, cited at `sandpile.tex:1900-1907` and announced at `sandpile.tex:649`. The input is taken at the universe of the statement's own Brownian realization space, and the motion carries the path regularity of `lem:brownian-ball-localization` | hypothesis |
-| `rem-dlt4-killed-scaling` | `External.ContinuumStoppingStability`, `External.CubeStoppingStability`, `External.LocalCLT` | Coquet–Toldo stopping stability and its killed form, `sandpile.tex:1900-1907` and `sandpile.tex:1929-1931`; the parity local central limit theorem `eq:lclt-parity` through `prop:dlt4-heat-potential-invariance`. The stopping stability is taken at the universe of the statement's two realization spaces | hypothesis: `ContinuumStoppingStability`, `CubeStoppingStability`; proved here: `LocalCLT` by `Sandpile.External.localCLT` |
+| `thm-main-explosion-i-b` | `External.ContinuumStoppingStability` | the stability of optimal-stopping values under uniform convergence of bounded rewards, together with the invariance principle for the stopped walk, Coquet and Toldo Theorem 3 and Corollary 4, cited at `sandpile.tex:1900-1907` and announced at `sandpile.tex:649`. The input is taken at the universe of the statement's own Brownian realization space, and the motion carries the path regularity of `lem:brownian-ball-localization` | hypothesis, proved: `Sandpile.External.continuumStoppingStability_holds`; discharged by `Sandpile.brownian_scaling_limit_proved` |
+| `rem-dlt4-killed-scaling` | `External.ContinuumStoppingStability`, `External.CubeStoppingStability`, `External.LocalCLT` | Coquet–Toldo stopping stability and its killed form, `sandpile.tex:1900-1907` and `sandpile.tex:1929-1931`; the parity local central limit theorem `eq:lclt-parity` through `prop:dlt4-heat-potential-invariance`. The stopping stability is taken at the universe of the statement's two realization spaces | hypothesis: `ContinuumStoppingStability` (proved: `Sandpile.External.continuumStoppingStability_holds`), `CubeStoppingStability`; proved here: `LocalCLT` by `Sandpile.External.localCLT` |
 | `thm-d23-critical-level-percolation` | `External.LSSDomination` | Liggett-Schonmann-Stacey Corollary 1.4, cited at `sandpile.tex:2589` | hypothesis |
-| `thm-d23-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity` | the three inputs that `thm-limiting-odometer-crossing` carries | hypothesis: `ContinuumRSW`, `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`) |
+| `thm-d23-critical-level-percolation` | `External.ContinuumRSW`, `External.PittGaussianFKG`, `External.BallOccupationDensity` | the three inputs that `thm-limiting-odometer-crossing` carries | hypothesis: `ContinuumRSW` (proved: `Sandpile.External.continuumRSW_holds`), `PittGaussianFKG` (proved: `Sandpile.External.pittGaussianFKG`), `BallOccupationDensity` (proved: `Sandpile.External.ballOccupationDensity_holds`) |
 | `thm-d23-critical-level-percolation` | `External.CubeStoppingStability` | the killed form of the stopping stability, which `rem-dlt4-killed-scaling` carries as well | hypothesis |
 | `lem-brownian-ball-localization` | `External.BrownianExitStep` | the strong Markov property of Brownian motion at the exit time of the ball, `sandpile.tex:1648-1686`; Mörters and Peres, *Brownian Motion*, Theorem 2.16 | hypothesis, proved: `Sandpile.External.brownianExitStep_holds` |
 
@@ -400,7 +423,10 @@ The self-similarity proof does not use its optimal-stopping hypothesis. The succ
 `Support.mean_growth_le_three_without_optimal_stopping`,
 `Support.dlt4_mean_asymptotic_from_stability`, and
 `Sandpile.mean_growth_le_three_from_stability` establish the corresponding conclusions
-without it, retaining continuum stopping stability. The earlier description of
+without it, retaining continuum stopping stability. With
+`Sandpile.External.continuumStoppingStability_holds` they become
+`Sandpile.continuum_value_self_similar_proved`, `Sandpile.dlt4_mean_asymptotic_proved` and
+`Sandpile.mean_growth_le_three_proved`, which take no hypothesis. The earlier description of
 `prop:continuum-value-selfsimilar` above records the frozen declaration and its intended
 argument; the successor uses the parabolic scaling limit directly.
 
@@ -421,6 +447,93 @@ whole-space field gives local power bounds of arbitrarily small positive order;
 a Fourier negative Sobolev energy estimate and Markov's inequality then give
 the bound uniformly in time and scale. The resulting theorem is
 `Sandpile.External.membraneScalingLimitFour_holds`.
+
+## Continuum stopping stability and the cited source
+
+`External.ContinuumStoppingStability` is proved as frozen by
+`Sandpile.External.continuumStoppingStability_holds` (`Sandpile/External/Stopping/`). The paper
+cites Coquet and Toldo, Theorem 3 and Corollary 4 (arXiv:math/0504318v2), at
+`sandpile.tex:1900-1907`. The cited results do not yield the frozen conclusion from its
+premises. They are stated for real-valued processes and assume convergence in probability,
+the Aldous condition and inclusion or convergence of the filtrations. Here the walks and the
+Brownian family live on different spaces, so only convergence in law is available, and the
+Brownian paths are continuous only almost surely. The paper's
+sentence asserts convergence uniformly in the horizon and the starting point and gives no
+argument for the uniformity; the frozen conclusion is uniform over `[T₀, T₁] × K`, for
+rewards `G'_R` that need be neither measurable nor continuous. The proof here assumes no
+filtration hypothesis.
+
+- *Invariance principle.* The diffusively rescaled interpolated walk converges in law on
+  continuous path space to Brownian motion for convergent rescaled starts, by a central limit
+  theorem for disjoint increment blocks and a Gaussian modulus estimate.
+- *Lower bound.* A Skorokhod coupling makes the centred walks converge to Brownian paths
+  almost surely and uniformly. A Brownian stopping time is approximated by finitely valued
+  natural rules, and each decision event by conditional predictions in the walk filtrations,
+  as in Coquet and Toldo, Section 2.2. The predictions use the step walk, constant between
+  lattice times, because the linear interpolation reveals the next increment and is not
+  adapted to the walk. The rules are then rounded to lattice stopping times at the cost of the
+  temporal modulus of the reward.
+- *Upper bound.* Near-optimal lattice stopping times, encoded as clocks in `[0, 1]`, have
+  joint path-clock laws with weakly convergent subsequences. When a lattice time lies strictly
+  between `t` and `u`, the increments after `u` depend on steps disjoint from those that
+  determine the path stopped at `t` and the clock clipped at `t`, so they are independent of
+  both. The independence passes to the weak limit, and letting `u` decrease to `t` closes the
+  gap. The limiting conditional clock law is therefore adapted, and its quantile at an
+  independent uniform parameter realizes the limit as a randomized stopping time of the
+  right-continuous Brownian filtration. For continuous paths neither the randomization nor the
+  right continuation raises the value, and bounded continuous rewards converge along the
+  subsequence.
+- *Uniformity.* Both bounds are proved along sequences of converging starts and horizons and
+  then made uniform over `[T₀, T₁] × K` by compactness, using the joint continuity of the
+  Brownian value in the start and the horizon. The value depends only on the law of a
+  continuous version of the Brownian family, which handles exceptional paths. The
+  approximation of `G` by `G'_R` is applied to the lattice values directly, so `G'_R` needs no
+  regularity.
+
+## Planar RSW and the cited source
+
+`External.PlanarRSW` is proved as frozen by `Sandpile.External.planarRSW_holds`
+(`Sandpile/External/RSW/`), following Köhler-Schindler and Tassion, arXiv:2011.04618v1, the
+only arXiv version (published in Duke Math. J. 172 (2023)). The proof runs on bond percolation
+of `ℤ²` and its dual. The following steps are not in the source as written and are proved
+here.
+
+- *Site to bond.* Comment 1 asserts the site case without an argument. A site configuration
+  gives the bond configuration in which `{u, v}` is open when `u` and `v` are both open. This
+  map is measurable, increasing and commutes with the lattice symmetries, so symmetry and
+  positive association pass to the bond law. A site crossing gives a bond crossing, and every
+  vertex of a nonempty bond crossing is an open site, so the rectangle events agree.
+- *Dual boundaries.* The source writes `C(m, n) = 1 − C*(n, m)` with dual paths on
+  `(ℤ + ½)²`, whose endpoints cannot lie on the integral boundary lines. Exact duality here
+  pairs rectangles whose sides differ by one, as in
+  `P[C(2m+1, 16m−1)] + P*[C(16m, 2m)] = 1`, and the unit shifts are carried through every
+  estimate.
+- *Rounding and scales.* The source takes `αn` integral and dismisses small scales as
+  rounding, while translations such as `2βn` need not be integral. The induction here runs at
+  the scales `1536 · 4^j`, at which every bridge, wall and quasi-crossing is integral. The
+  initial scale is made good by a horizontal midline of `L` edges, giving `b ≥ p^L` and
+  `b* ≥ (1 − p)^L`, in place of the source's scale one. Bounded scales are handled through a
+  finite box, in which every crossing has an open site, and association. A scale
+  `4^j ≤ n < 4^(j+1)` is reached by inclusion of crossing events.
+- *Zero denominators.* The cascade divides by `q(ℓ, k)` and by `√b(n)`, which may vanish. The
+  proof uses the undivided inequality `P(E) q(ℓ, k) ≤ 1 − (1 − b(ℓ))²` and treats the
+  endpoint cases separately.
+- *Composition.* The inequality `f_{2i} ≤ f_i ∘ f_i` is asserted for real exponents without
+  proof. It is proved for the integer exponents `a = 2000^i` that are used, from an `a × a`
+  array of independent Bernoulli(`t`) entries: an all-open column gives an open entry in
+  every row, so `1 − (1 − t^a)^a ≤ (1 − (1 − t)^a)^a`.
+- *Gluing bridges.* Consecutive bridges need not intersect when their bottom endpoint
+  intervals are nested. The intervals of distinct open components are disjoint or nested,
+  since alternating endpoints force an intersection, so a maximal one spans the target.
+- *Corridor and adjacent-scale arguments.* Where the source passes from the absence of a
+  smaller path to a continuous curve avoiding the larger one, the proof uses the untrimmed
+  wired dual cut on the refined lattice. It avoids the open path and meets both attached
+  walls, and with the wall links it forms a crossing that the path must meet
+  (`kstUnorientedCorridorIntersects` and `kstAdjacentSixEvent_subset_quasi`).
+
+`Sandpile.d4_ball_green_crossing` and `Sandpile.d4_critical_level_percolation` are the
+certified statements of `thm:d4-ball-green-crossing` and `thm:d4-critical-level-percolation`
+with the planar comparison, and for the latter LSS domination, supplied.
 
 ## Cited inputs proved here
 
@@ -450,6 +563,9 @@ Lattice-Probability.
 | `External.BallOccupationDensity`, the occupation density of Brownian motion killed on exiting a ball | `Sandpile.External.ballOccupationDensity_holds` |
 | `External.RellichKondrachovNegSobolev`, the Rellich-Kondrachov compact embedding of the Sobolev scale on a bounded domain | `Sandpile.External.rellichKondrachovNegSobolev_holds` |
 | `External.ContinuumBesovTightness`, the Besov tightness criterion of Furlan and Mourrat in its covariance form | `Sandpile.External.continuumBesovTightness_holds` |
+| `External.ContinuumStoppingStability`, the stability of optimal-stopping values with the invariance principle for the stopped walk | `Sandpile.External.continuumStoppingStability_holds` |
+| `External.PlanarRSW`, the planar crossing comparison of Köhler-Schindler and Tassion | `Sandpile.External.planarRSW_holds` |
+| `External.ContinuumRSW`, the continuum crossing comparison, from the planar one | `Sandpile.External.continuumRSW_holds` |
 | the existence of white noise on `ℝ^d`, on which every `IsWhiteNoise` statement is quantified | `Sandpile.Continuum.exists_isWhiteNoise` |
 | the existence of Brownian motion on `ℝ^d`, on which every `IsBrownian` statement is quantified | `Sandpile.Continuum.exists_isBrownian` |
 
@@ -580,5 +696,13 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 | `ext-brownian-exit-step` | `Sandpile.External.brownianExitStep_holds` | sandpile.tex:1648-1686 (lem:brownian-ball-localization, lemma and proof); Morters-Peres, Brownian Motion, Theorem 2.16; a cited result, proved unconditionally in this repository from the shared library rather than assumed | SEALED |
 | `lem-brownian-value-mono-horizon` | `Sandpile.Frozen.brownian_value_mono_horizon` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
 | `lem-brownian-ball-localization` | `Sandpile.Frozen.brownian_ball_localization` | `sandpile.tex:1648-1659`, `lem:brownian-ball-localization` | PROVED |
+| `ext-continuous-brownian-optimal-stopping` | `Sandpile.External.continuousOptimalStopping_holds` | sandpile.tex:1099 (Peskir and Shiryaev, finite-horizon Brownian optimal stopping); continuous paths and measurable time slices | SEALED |
+| `prop-brownian-os-continuous` | `Sandpile.Support.brownian_optimal_stopping_of_continuous` | `sandpile.tex:1083-1099`, `prop-brownian-os` | SEALED |
+| `thm-main-explosion-i-a-proved` | `Sandpile.mean_growth_le_three_proved` | `sandpile.tex:213-215`, `thm:main-explosion` | SEALED |
+| `thm-main-explosion-i-b-proved` | `Sandpile.brownian_scaling_limit_proved` | `sandpile.tex:216-236`, `thm-main-explosion` | SEALED |
+| `prop-continuum-value-selfsimilar-proved` | `Sandpile.continuum_value_self_similar_proved` | `sandpile.tex:1989-2008`, `prop-continuum-value-selfsimilar` | SEALED |
+| `cor-dlt4-mean-asymptotic-proved` | `Sandpile.dlt4_mean_asymptotic_proved` | `sandpile.tex:2068-2086`, `cor-dlt4-mean-asymptotic` | SEALED |
+| `thm-d4-ball-green-crossing-proved` | `Sandpile.d4_ball_green_crossing` | `sandpile.tex:3575-3596`, `thm:d4-ball-green-crossing` | SEALED |
+| `thm-d4-critical-level-percolation-proved` | `Sandpile.d4_critical_level_percolation` | `sandpile.tex:4023-4039`, `thm:d4-critical-level-percolation` | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

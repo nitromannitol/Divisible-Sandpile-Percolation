@@ -17,6 +17,8 @@ except ImportError:
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BEGIN, END = "-- FROZEN-STATEMENT-BEGIN", "-- FROZEN-STATEMENT-END"
+# An optional explicit universe instantiation, as in `ContinuumStoppingStability.{u}`.
+UNIVERSES = r"(?:\.\{[^}]*\})?"
 
 
 def frozen_block(path):
@@ -52,7 +54,7 @@ def bridge_proof(n):
     if (ROOT / companion).is_file():
         text = (ROOT / companion).read_text(encoding="utf-8")
         top_level = re.search(r"^theorem\s+(" + re.escape(namespace) + r"\.\w+)\s*:\s*"
-                              + re.escape(export) + r"\s*:=", text, re.M)
+                              + re.escape(export) + UNIVERSES + r"\s*:=", text, re.M)
         if top_level and not re.search(r"^\s*(?:variable|variables|section|namespace)\b",
                                        text[:top_level.start()], re.M):
             return {"id": top_level.group(1), "file": str(companion),
@@ -61,14 +63,16 @@ def bridge_proof(n):
         if opening:
             block = text[opening.end():].split("\nend " + namespace, 1)[0]
             target = r"(?:" + re.escape(export) + "|" + re.escape(short) + r")"
-            match = re.search(r"^theorem\s+(\w+)\s*:\s*" + target + r"\s*:=", block, re.M)
+            match = re.search(r"^theorem\s+(\w+)\s*:\s*" + target + UNIVERSES + r"\s*:=",
+                              block, re.M)
             prefix = text[:opening.end()] + block[:match.start()] if match else ""
             if (match and len(re.findall(r"^\s*namespace\b", prefix, re.M)) == 1
                     and not re.search(r"^\s*(?:variable|variables|section)\b", prefix, re.M)):
                 return {"id": namespace + "." + match.group(1), "file": str(companion),
                         "unconditional_bridge": True}
     names = {re.escape(export), r"External\." + re.escape(short)}
-    pat = re.compile(r"^theorem\s+(\S+)\s*:\s*(?:" + "|".join(names) + r")\s*:=", re.M)
+    pat = re.compile(r"^theorem\s+(\S+)\s*:\s*(?:" + "|".join(names) + r")" + UNIVERSES
+                     + r"\s*:=", re.M)
     pkg = pathlib.Path(n["file"]).parts[0]
     for f in sorted((ROOT / pkg).rglob("*.lean")):
         rel = f.relative_to(ROOT)

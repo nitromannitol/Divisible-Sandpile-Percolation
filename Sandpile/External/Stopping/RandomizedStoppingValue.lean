@@ -8,13 +8,32 @@ An independent random parameter cannot improve a bounded optimal-stopping
 value: every section of the randomized rule is an admissible stopping time,
 and Fubini's theorem averages their expected rewards. This reduction is used
 in the upper-value argument of Coquet and Toldo, *Convergence of values in
-optimal stopping and convergence of optimal stopping times*, Section 2.1.
+optimal stopping and convergence of optimal stopping times*, Section 2.3.1,
+Lemma 7.
 -/
 
 open MeasureTheory
 open scoped NNReal ENNReal
 
 namespace Sandpile.External.Stopping
+
+/-- Sections of a stopping rule adapted to a product filtration are natural
+stopping times of the underlying process. -/
+theorem isBrownianStopping_section_of_product_events
+    {Ω A : Type*} [MeasurableSpace Ω] [mA : MeasurableSpace A] {d : ℕ}
+    (X : ℝ≥0 → Ω → Continuum.Space d) (τ : A → Ω → ℝ≥0)
+    (hτ : ∀ t, MeasurableSet[mA.prod (Continuum.brownianFiltration X t)]
+      {p : A × Ω | τ p.1 p.2 ≤ t}) (a : A) :
+    Continuum.IsBrownianStopping X (τ a) := by
+  intro t
+  have hm : @Measurable Ω (A × Ω) (Continuum.brownianFiltration X t)
+      (mA.prod (Continuum.brownianFiltration X t)) (fun ω => (a, ω)) :=
+    measurable_prodMk_left
+  have hs := (hτ t).preimage hm
+  change MeasurableSet[Continuum.brownianFiltration X t] {ω | τ a ω ≤ t} at hs
+  change MeasurableSet[Continuum.brownianFiltration X t]
+    {ω | (τ a ω : ℝ≥0∞) ≤ (t : ℝ≥0∞)}
+  simpa only [ENNReal.coe_le_coe] using hs
 
 /-- An independent mixture of bounded natural stopping rules has expected
 reward at most the natural stopping value. -/

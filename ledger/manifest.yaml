@@ -576,7 +576,7 @@ nodes:
   - id: cor-mean-localization
     version: 5
     kind: theorem
-    source: sandpile.tex:1624-1634 (label cor-mean-localization); the heat-kernel bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.heatKernelBounds
+    source: sandpile.tex:1624-1634 (label cor-mean-localization); without the heat-kernel bounds hypothesis, which Sandpile.External.heatKernelBounds discharges unconditionally
     file: Sandpile/Frozen/MeanLocalization.lean
     export: Sandpile.Frozen.mean_localization
     state: PROVED
@@ -587,7 +587,7 @@ nodes:
   - id: prop-d4-diffusive-tightness
     version: 4
     kind: theorem
-    source: sandpile.tex:3317-3324 (label prop-d4-diffusive-tightness); the heat-kernel bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.heatKernelBounds
+    source: sandpile.tex:3317-3324 (label prop-d4-diffusive-tightness); without the heat-kernel bounds hypothesis, which Sandpile.External.heatKernelBounds discharges unconditionally
     file: Sandpile/Frozen/D4DiffusiveTightness.lean
     export: Sandpile.Frozen.d4_diffusive_tightness
     state: PROVED
@@ -598,7 +598,7 @@ nodes:
   - id: thm-critical-toppling
     version: 5
     kind: theorem
-    source: sandpile.tex:1730-1748 (label thm-critical-toppling); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:1730-1748 (label thm-critical-toppling); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/CriticalToppling.lean
     export: Sandpile.Frozen.critical_toppling
     state: PROVED
@@ -609,7 +609,7 @@ nodes:
   - id: cor-critical-mean-one
     version: 5
     kind: theorem
-    source: sandpile.tex:1820-1826 (label cor-critical-mean-one); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:1820-1826 (label cor-critical-mean-one); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/CriticalMeanOne.lean
     export: Sandpile.Frozen.critical_mean_one
     state: PROVED
@@ -620,7 +620,7 @@ nodes:
   - id: lem-d4-difference-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:3029-3042 (label lem-d4-difference-tail); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3029-3042 (label lem-d4-difference-tail); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/D4DifferenceTail.lean
     export: Sandpile.Frozen.d4_difference_tail
     state: PROVED
@@ -631,7 +631,7 @@ nodes:
   - id: prop-d4-pointwise-linearization
     version: 4
     kind: theorem
-    source: sandpile.tex:3087-3102 (label prop-d4-pointwise-linearization); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3087-3102 (label prop-d4-pointwise-linearization); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/D4PointwiseLinearization.lean
     export: Sandpile.Frozen.d4_pointwise_linearization
     state: PROVED
@@ -642,7 +642,7 @@ nodes:
   - id: thm-critical-toppling-d4
     version: 5
     kind: theorem
-    source: sandpile.tex:2719-2748 (label thm-critical-toppling-d4); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:2719-2748 (label thm-critical-toppling-d4); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/CriticalTopplingD4.lean
     export: Sandpile.Frozen.critical_toppling_d4
     state: PROVED
@@ -653,7 +653,7 @@ nodes:
   - id: prop-d4-superdiffusive-limit
     version: 7
     kind: theorem
-    source: sandpile.tex:3356-3364 (label prop-d4-superdiffusive-limit); the variance-scale hypothesis is now also dropped, discharged unconditionally by Sandpile.External.varianceScale
+    source: sandpile.tex:3356-3364 (label prop-d4-superdiffusive-limit); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally
     file: Sandpile/Frozen/D4SuperdiffusiveLimit.lean
     export: Sandpile.Frozen.d4_superdiffusive_limit
     state: PROVED
@@ -664,7 +664,7 @@ nodes:
   - id: lem-dgt4-cascade
     version: 5
     kind: theorem
-    source: sandpile.tex:6570-6579 (label lem-dgt4-cascade); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6570-6579 (label lem-dgt4-cascade); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4Cascade.lean
     export: Sandpile.Frozen.dgt4_cascade
     state: PROVED
@@ -675,7 +675,7 @@ nodes:
   - id: prop-dgt4-contact-asymptotics
     version: 5
     kind: theorem
-    source: sandpile.tex:4894-4896 (label prop-dgt4-contact-asymptotics); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4894-4896 (label prop-dgt4-contact-asymptotics); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4ContactAsymptotics.lean
     export: Sandpile.Frozen.dgt4_contact_asymptotics
     state: PROVED
@@ -686,7 +686,7 @@ nodes:
   - id: lem-dgt4-stretched-green-scenery-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4412-4429 (label lem-dgt4-stretched-green-scenery-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4412-4429 (label lem-dgt4-stretched-green-scenery-tail); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4GreenSceneryTail.lean
     export: Sandpile.Frozen.dgt4_green_scenery_tail
     state: PROVED
@@ -697,7 +697,7 @@ nodes:
   - id: thm-dgt4-height-lower
     version: 4
     kind: theorem
-    source: sandpile.tex:4195-4218 (label thm-dgt4-height-lower); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4195-4218 (label thm-dgt4-height-lower); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4HeightLower.lean
     export: Sandpile.Frozen.dgt4_height_lower
     state: PROVED
@@ -708,7 +708,7 @@ nodes:
   - id: prop-dgt4-height-lower-stretched
     version: 4
     kind: theorem
-    source: sandpile.tex:4366-4377 (label prop-dgt4-height-lower-stretched); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4366-4377 (label prop-dgt4-height-lower-stretched); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4HeightLowerStretched.lean
     export: Sandpile.Frozen.dgt4_height_lower_stretched
     state: PROVED
@@ -719,7 +719,7 @@ nodes:
   - id: thm-dgt4-height-upper-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4528-4539 (label thm-dgt4-height-upper-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4528-4539 (label thm-dgt4-height-upper-tail); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4HeightUpperTail.lean
     export: Sandpile.Frozen.dgt4_height_upper_tail
     state: PROVED
@@ -730,7 +730,7 @@ nodes:
   - id: lem-dgt4-level-shift-decoupling
     version: 5
     kind: theorem
-    source: sandpile.tex:6499-6513 (label lem-dgt4-level-shift-decoupling); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6499-6513 (label lem-dgt4-level-shift-decoupling); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4LevelShiftDecoupling.lean
     export: Sandpile.Frozen.dgt4_level_shift_decoupling
     state: PROVED
@@ -741,7 +741,7 @@ nodes:
   - id: lem-dgt4-linearization-from-survival
     version: 6
     kind: theorem
-    source: sandpile.tex:5686-5731 (label lem-dgt4-linearization-from-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:5686-5731 (label lem-dgt4-linearization-from-survival); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4LinearizationFromSurvival.lean
     export: Sandpile.Frozen.dgt4_linearization_from_survival
     state: PROVED
@@ -752,7 +752,7 @@ nodes:
   - id: prop-dgt4-linearization
     version: 5
     kind: theorem
-    source: sandpile.tex:4809-4825 (label prop-dgt4-linearization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4809-4825 (label prop-dgt4-linearization); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4Linearization.lean
     export: Sandpile.Frozen.dgt4_linearization
     state: PROVED
@@ -763,7 +763,7 @@ nodes:
   - id: lem-dgt4-localization
     version: 5
     kind: theorem
-    source: sandpile.tex:6451-6462 (label lem-dgt4-localization); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6451-6462 (label lem-dgt4-localization); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4Localization.lean
     export: Sandpile.Frozen.dgt4_localization
     state: PROVED
@@ -774,7 +774,7 @@ nodes:
   - id: thm-dgt4-nontriviality
     version: 6
     kind: theorem
-    source: sandpile.tex:6699-6721 (label thm-dgt4-nontriviality); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:6699-6721 (label thm-dgt4-nontriviality); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4Nontriviality.lean
     export: Sandpile.Frozen.dgt4_nontriviality
     state: PROVED
@@ -785,7 +785,7 @@ nodes:
   - id: lem-dgt4-origin-frozen
     version: 4
     kind: theorem
-    source: sandpile.tex:4909-4945 (label lem-dgt4-origin-frozen); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4909-4945 (label lem-dgt4-origin-frozen); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4OriginFrozen.lean
     export: Sandpile.Frozen.dgt4_origin_frozen
     state: PROVED
@@ -796,7 +796,7 @@ nodes:
   - id: lem-dgt4-path-survival
     version: 6
     kind: theorem
-    source: sandpile.tex:5540-5557 (label lem-dgt4-path-survival); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:5540-5557 (label lem-dgt4-path-survival); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4PathSurvival.lean
     export: Sandpile.Frozen.dgt4_path_survival
     state: PROVED
@@ -807,7 +807,7 @@ nodes:
   - id: lem-dgt4-smoothed-odometer-tail
     version: 4
     kind: theorem
-    source: sandpile.tex:4488-4499 (label lem-dgt4-smoothed-odometer-tail); the green-bounds-high hypothesis is dropped, now discharged unconditionally by Sandpile.External.greenBoundsHigh
+    source: sandpile.tex:4488-4499 (label lem-dgt4-smoothed-odometer-tail); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally
     file: Sandpile/Frozen/DGT4SmoothedOdometerTail.lean
     export: Sandpile.Frozen.dgt4_smoothed_odometer_tail
     state: PROVED
@@ -851,7 +851,7 @@ nodes:
   - id: thm-dgt4-many-limits
     version: 7
     kind: theorem
-    source: sandpile.tex:5971-5999 (label thm-dgt4-many-limits); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:5971-5999 (label thm-dgt4-many-limits); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/DGT4ManyLimits.lean
     export: Sandpile.Frozen.dgt4_many_limits
     state: PROVED
@@ -862,7 +862,7 @@ nodes:
   - id: thm-d23-critical-level-percolation
     version: 4
     kind: theorem
-    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/D23CriticalLevelPercolation.lean
     export: Sandpile.Frozen.d23_critical_level_percolation
     state: PROVED
@@ -873,7 +873,7 @@ nodes:
   - id: prop-continuum-value-selfsimilar
     version: 10
     kind: theorem
-    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/ContinuumValueSelfSimilar.lean
     export: Sandpile.Frozen.continuum_value_self_similar
     state: PROVED
@@ -884,7 +884,7 @@ nodes:
   - id: thm-main-explosion-i-b
     version: 9
     kind: theorem
-    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/BrownianScalingLimit.lean
     export: Sandpile.Frozen.brownian_scaling_limit
     state: PROVED
@@ -895,7 +895,7 @@ nodes:
   - id: lem-d4-double-heat-kernel
     version: 5
     kind: theorem
-    source: sandpile.tex:1164-1169 (label lem-d4-double-heat-kernel); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:1164-1169 (label lem-d4-double-heat-kernel); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/DoubleHeatKernel.lean
     export: Sandpile.Frozen.d4_double_heat_kernel
     state: PROVED
@@ -906,7 +906,7 @@ nodes:
   - id: thm-dgt4-diffusive-membrane
     version: 9
     kind: theorem
-    source: sandpile.tex:4687-4710 (label thm-dgt4-diffusive-membrane); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:4687-4710 (label thm-dgt4-diffusive-membrane); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/DGT4DiffusiveMembrane.lean
     export: Sandpile.Frozen.dgt4_diffusive_membrane
     state: PROVED
@@ -917,7 +917,7 @@ nodes:
   - id: prop-dlt4-heat-potential-invariance
     version: 4
     kind: theorem
-    source: sandpile.tex:1869-1876 (label prop-dlt4-heat-potential-invariance); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:1869-1876 (label prop-dlt4-heat-potential-invariance); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/HeatPotentialInvariance.lean
     export: Sandpile.Frozen.heat_potential_invariance
     state: PROVED
@@ -928,7 +928,7 @@ nodes:
   - id: thm-main-explosion-i-a
     version: 8
     kind: theorem
-    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/MeanGrowthLow.lean
     export: Sandpile.Frozen.mean_growth_le_three
     state: PROVED
@@ -939,7 +939,7 @@ nodes:
   - id: cor-dlt4-mean-asymptotic
     version: 8
     kind: theorem
-    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/MeanAsymptotic.lean
     export: Sandpile.Frozen.dlt4_mean_asymptotic
     state: PROVED
@@ -950,7 +950,7 @@ nodes:
   - id: thm-main-explosion-iii-d
     version: 7
     kind: theorem
-    source: sandpile.tex:286-293 (label thm-main-explosion, part (iii)(d)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:286-293 (label thm-main-explosion, part (iii)(d)); without the intersection second moment hypothesis, which Sandpile.External.intersectionSecondMoment discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/HighNonconvergence.lean
     export: Sandpile.Frozen.high_nonconvergence
     state: PROVED
@@ -961,7 +961,7 @@ nodes:
   - id: prop-weighted-membrane-limit
     version: 6
     kind: theorem
-    source: sandpile.tex:4763-4774 (label prop-weighted-membrane-limit); the green-bounds-high hypothesis is now also dropped, discharged unconditionally by Sandpile.External.greenBoundsHigh; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:4763-4774 (label prop-weighted-membrane-limit); without the green-bounds-high hypothesis, which Sandpile.External.greenBoundsHigh discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/WeightedMembraneLimit.lean
     export: Sandpile.Frozen.weighted_membrane_limit
     state: PROVED
@@ -972,7 +972,7 @@ nodes:
   - id: rem-dlt4-killed-scaling
     version: 6
     kind: theorem
-    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/DLT4KilledScaling.lean
     export: Sandpile.Frozen.dlt4_killed_scaling
     state: PROVED
@@ -983,7 +983,7 @@ nodes:
   - id: thm-main-explosion-iii-c
     version: 6
     kind: theorem
-    source: sandpile.tex:274-285 (label thm-main-explosion, part (iii)(c)); the intersection second moment hypothesis is dropped, now discharged unconditionally by Sandpile.External.intersectionSecondMoment; the local central limit theorem hypothesis is also dropped, now discharged unconditionally by Sandpile.External.localCLT
+    source: sandpile.tex:274-285 (label thm-main-explosion, part (iii)(c)); without the intersection second moment hypothesis, which Sandpile.External.intersectionSecondMoment discharges unconditionally; and without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally
     file: Sandpile/Frozen/HighSobolevLimit.lean
     export: Sandpile.Frozen.high_sobolev_limit
     state: PROVED
@@ -994,7 +994,7 @@ nodes:
   - id: prop-d4-one-point-gaussian
     version: 6
     kind: theorem
-    source: sandpile.tex:3270-3283 (label prop-d4-one-point-gaussian); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the paired dimension-four local limit hypothesis is also dropped, now discharged unconditionally by Sandpile.External.pairedLocalCLTFour
+    source: sandpile.tex:3270-3283 (label prop-d4-one-point-gaussian); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally; and without the paired dimension-four local limit hypothesis, which Sandpile.External.pairedLocalCLTFour discharges unconditionally
     file: Sandpile/Frozen/D4OnePointGaussian.lean
     export: Sandpile.Frozen.d4_one_point_gaussian
     state: PROVED
@@ -1005,7 +1005,7 @@ nodes:
   - id: thm-main-explosion-ii-b
     version: 4
     kind: theorem
-    source: sandpile.tex:247-253 (label thm-main-explosion, part (ii)(b)); the paired dimension-four local limit hypothesis is dropped, now discharged unconditionally by Sandpile.External.pairedLocalCLTFour
+    source: sandpile.tex:247-253 (label thm-main-explosion, part (ii)(b)); without the paired dimension-four local limit hypothesis, which Sandpile.External.pairedLocalCLTFour discharges unconditionally
     file: Sandpile/Frozen/FourGaussian.lean
     export: Sandpile.Frozen.four_gaussian
     state: PROVED
@@ -1016,7 +1016,7 @@ nodes:
   - id: thm-main-nontriviality
     version: 7
     kind: theorem
-    source: sandpile.tex:95-103 (label thm-main-nontriviality); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    source: sandpile.tex:95-103 (label thm-main-nontriviality); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally; and without the ball-killed Green bounds hypothesis, which Sandpile.External.ballGreenBounds discharges unconditionally
     file: Sandpile/Frozen/Nontriviality.lean
     export: Sandpile.Frozen.percolation_below_criticality
     state: PROVED
@@ -1027,7 +1027,7 @@ nodes:
   - id: thm-main-critical-level-percolation
     version: 8
     kind: theorem
-    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); the local central limit theorem hypothesis is dropped, now discharged unconditionally by Sandpile.External.localCLT; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); without the local central limit theorem hypothesis, which Sandpile.External.localCLT discharges unconditionally; and without the ball-killed Green bounds hypothesis, which Sandpile.External.ballGreenBounds discharges unconditionally
     file: Sandpile/Frozen/CriticalLevels.lean
     export: Sandpile.Frozen.critical_level_percolation
     state: PROVED
@@ -1038,7 +1038,7 @@ nodes:
   - id: thm-d4-ball-green-crossing
     version: 6
     kind: theorem
-    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); the ball-killed Green bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); without the ball-killed Green bounds hypothesis, which Sandpile.External.ballGreenBounds discharges unconditionally
     file: Sandpile/Frozen/D4BallGreenCrossing.lean
     export: Sandpile.Frozen.d4_ball_green_crossing
     state: PROVED
@@ -1049,7 +1049,7 @@ nodes:
   - id: lem-d4-exit-average-concentration
     version: 5
     kind: theorem
-    source: sandpile.tex:3974-3985 (label lem-d4-exit-average-concentration); the ball-killed Green bounds hypothesis is dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    source: sandpile.tex:3974-3985 (label lem-d4-exit-average-concentration); without the ball-killed Green bounds hypothesis, which Sandpile.External.ballGreenBounds discharges unconditionally
     file: Sandpile/Frozen/D4ExitAverageConcentration.lean
     export: Sandpile.Frozen.d4_exit_average_concentration
     state: PROVED
@@ -1060,7 +1060,7 @@ nodes:
   - id: thm-d4-critical-level-percolation
     version: 8
     kind: theorem
-    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); the variance-scale hypothesis is dropped, now discharged unconditionally by Sandpile.External.varianceScale; the ball-killed Green bounds hypothesis is also dropped, now discharged unconditionally by Sandpile.External.ballGreenBounds
+    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); without the variance-scale hypothesis, which Sandpile.External.varianceScale discharges unconditionally; and without the ball-killed Green bounds hypothesis, which Sandpile.External.ballGreenBounds discharges unconditionally
     file: Sandpile/Frozen/D4CriticalLevelPercolation.lean
     export: Sandpile.Frozen.d4_critical_level_percolation
     state: PROVED
@@ -1114,7 +1114,7 @@ nodes:
   - id: prop-brownian-os-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:1083-1099 (label prop-brownian-os); the optimal-stopping hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumOptimalStopping_holds
+    source: sandpile.tex:1083-1099 (label prop-brownian-os); without the optimal-stopping hypothesis, which Sandpile.External.continuumOptimalStopping_holds discharges unconditionally
     file: Sandpile/Support/BrownianOptimalStoppingUnconditional.lean
     export: Sandpile.brownian_optimal_stopping_proved
     state: SEALED
@@ -1124,7 +1124,7 @@ nodes:
   - id: thm-main-explosion-i-a-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    source: sandpile.tex:213-215 (label thm:main-explosion, part (i)(a)); without the continuum stopping-stability hypothesis, which Sandpile.External.continuumStoppingStability_holds discharges unconditionally; and without the optimal-stopping hypothesis, which the proof does not use
     file: Sandpile/Support/MeanGrowthLowUnconditional.lean
     export: Sandpile.mean_growth_le_three_proved
     state: SEALED
@@ -1134,7 +1134,7 @@ nodes:
   - id: thm-main-explosion-i-b-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds
+    source: sandpile.tex:216-236 (label thm-main-explosion, part (i)(b)); without the continuum stopping-stability hypothesis, which Sandpile.External.continuumStoppingStability_holds discharges unconditionally
     file: Sandpile/Support/BrownianScalingLimitUnconditional.lean
     export: Sandpile.brownian_scaling_limit_proved
     state: SEALED
@@ -1144,7 +1144,7 @@ nodes:
   - id: prop-continuum-value-selfsimilar-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    source: sandpile.tex:1989-2008 (label prop-continuum-value-selfsimilar); without the continuum stopping-stability hypothesis, which Sandpile.External.continuumStoppingStability_holds discharges unconditionally; and without the optimal-stopping hypothesis, which the proof does not use
     file: Sandpile/Support/ContinuumValueSelfSimilarUnconditional.lean
     export: Sandpile.continuum_value_self_similar_proved
     state: SEALED
@@ -1154,7 +1154,7 @@ nodes:
   - id: cor-dlt4-mean-asymptotic-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the optimal-stopping hypothesis is also dropped, as the proof does not use it
+    source: sandpile.tex:2068-2086 (label cor-dlt4-mean-asymptotic); without the continuum stopping-stability hypothesis, which Sandpile.External.continuumStoppingStability_holds discharges unconditionally; and without the optimal-stopping hypothesis, which the proof does not use
     file: Sandpile/Support/MeanAsymptoticUnconditional.lean
     export: Sandpile.dlt4_mean_asymptotic_proved
     state: SEALED
@@ -1164,7 +1164,7 @@ nodes:
   - id: thm-d4-ball-green-crossing-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); the planar RSW hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds
+    source: sandpile.tex:3575-3596 (label thm:d4-ball-green-crossing); without the planar RSW hypothesis, which Sandpile.External.planarRSW_holds discharges unconditionally
     file: Sandpile/D4BallGreenCrossingUnconditional.lean
     export: Sandpile.d4_ball_green_crossing
     state: SEALED
@@ -1174,7 +1174,7 @@ nodes:
   - id: thm-d4-critical-level-percolation-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); the planar RSW hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds; the LSS domination hypothesis is also dropped, now discharged unconditionally by Sandpile.External.lssDomination
+    source: sandpile.tex:4023-4039 (label thm:d4-critical-level-percolation); without the planar RSW hypothesis, which Sandpile.External.planarRSW_holds discharges unconditionally; and without the LSS domination hypothesis, which Sandpile.External.lssDomination discharges unconditionally
     file: Sandpile/D4CriticalLevelPercolationUnconditional.lean
     export: Sandpile.d4_critical_level_percolation
     state: SEALED
@@ -1194,7 +1194,7 @@ nodes:
   - id: thm-main-nontriviality-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:95-103 (label thm-main-nontriviality); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    source: sandpile.tex:95-103 (label thm-main-nontriviality); without cited-input hypotheses, which Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds discharge unconditionally
     file: Sandpile/NontrivialityUnconditional.lean
     export: Sandpile.percolation_below_criticality_proved
     state: SEALED
@@ -1204,7 +1204,7 @@ nodes:
   - id: thm-main-critical-level-percolation-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); without cited-input hypotheses, which Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds discharge unconditionally
     file: Sandpile/CriticalLevelsUnconditional.lean
     export: Sandpile.critical_level_percolation_proved
     state: SEALED
@@ -1214,7 +1214,7 @@ nodes:
   - id: thm-d23-critical-level-percolation-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.lssDomination, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); without cited-input hypotheses, which Sandpile.External.lssDomination, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds discharge unconditionally
     file: Sandpile/D23CriticalLevelPercolationUnconditional.lean
     export: Sandpile.d23_critical_level_percolation_proved
     state: SEALED
@@ -1224,7 +1224,7 @@ nodes:
   - id: rem-dlt4-killed-scaling-proved
     version: 1
     kind: theorem
-    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the cube stopping-stability hypothesis is also dropped, now discharged unconditionally by Sandpile.External.cubeStoppingStability_holds
+    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); without the continuum stopping-stability hypothesis, which Sandpile.External.continuumStoppingStability_holds discharges unconditionally; and without the cube stopping-stability hypothesis, which Sandpile.External.cubeStoppingStability_holds discharges unconditionally
     file: Sandpile/Support/DLT4KilledScalingUnconditional.lean
     export: Sandpile.dlt4_killed_scaling_proved
     state: SEALED

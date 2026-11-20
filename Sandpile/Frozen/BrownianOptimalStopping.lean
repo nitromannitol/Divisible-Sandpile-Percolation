@@ -67,9 +67,16 @@ identity is the supremum over admissible stopping times of
 `h(T,x) - E_x^{BM} h(T-τ,B_τ)`, written as the `sSup` of the set of values
 attained, which is how `brownianDiscount` itself is written.
 
-Stopping times are those of `IsBrownianStopping`, Galmarino's criterion, which
-for the natural filtration of `B` is equivalent to the paper's "stopping times
-of the completed natural filtration of $B$" (`sandpile.tex:973-974`).
+Brownian motion has continuous paths, as in the paper: `hBc` asks every path
+of the family to be continuous, and `hBm` asks every time slice to be a strongly
+measurable random variable, so that the family is a process on `Ω` and its
+natural filtration is a filtration of the ambient measurable space.
+
+Stopping times are those of `IsBrownianStopping`, the stopping times of the
+natural filtration of `B x`.  The paper takes the stopping times of the
+completed natural filtration of $B$ (`sandpile.tex:973-974`); for a gain of
+polynomial growth the value is the same over both classes
+(`Sandpile.Support.snellValue_eq_sSup_usualAugmentation`).
 
 Every clause of the proposition is transcribed; none is dropped.
 
@@ -82,6 +89,8 @@ gain of polynomial growth (`Sandpile.External.ContinuumOptimalStopping`).  The g
 `G = -h`, as the paper says; the proof below verifies that `-h` is continuous
 with polynomial growth and translates the input's value, contact set and
 attainment into the paper's `𝒟_h`, `𝒰_h` and the two displayed identities.
+The input is proved in this repository (`Sandpile.External.continuumOptimalStopping_holds`), and
+`Sandpile.brownian_optimal_stopping_proved` is this statement without `hOS`.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -99,7 +108,9 @@ theorem Sandpile.Frozen.brownian_optimal_stopping
     (hOS : Sandpile.External.ContinuumOptimalStopping Ω)
     (P : Measure Ω) [IsProbabilityMeasure P]
     (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
-    (hB : ∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P) :
+    (hB : ∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P)
+    (hBc : ∀ y ω, Continuous fun s => B y s ω)
+    (hBm : ∀ y t, StronglyMeasurable (B y t)) :
     ∃ M : ℝ≥0 → Ω → ℝ,
       (∀ s : ℝ≥0, Measurable (M s)) ∧
       (∀ s : ℝ≥0, (s : ℝ) ≤ T →
@@ -133,7 +144,7 @@ theorem Sandpile.Frozen.brownian_optimal_stopping
     obtain ⟨C, k, hCk⟩ := hgrow
     exact ⟨C, k, fun t ht y => by simpa using hCk t ht y⟩
   obtain ⟨M, hMmeas, hMmod, hMright, τ, hτleast, hτstop, hτgreat, hτmin⟩ :=
-    hOS d T hT (fun t y => -h t y) hGcont hGgrow x P B hB
+    hOS d T hT (fun t y => -h t y) hGcont hGgrow x P B hB hBc hBm
   have hτle : ∀ ω : Ω, ((τ ω : ℝ≥0) : ℝ) ≤ T := fun ω => (hτleast ω).1.1
   -- the value of the stopping problem is attained at `τ`
   have hdisc : Sandpile.Continuum.brownianDiscount (B x) P h T

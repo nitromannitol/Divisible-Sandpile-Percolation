@@ -8,10 +8,13 @@ optimal-stopping theorem of Peskir and Shiryaev (*Optimal Stopping and Free-Boun
 2006, Chapter I, Section 2, Theorem 2.2): `snellValue` is the value
 `V(t,x) = sup_{0 ≤ τ ≤ t} E_x G(t-τ, B_τ)` of the stopping problem with gain `G` and horizon `t`,
 and `attainable` is the set of payoffs achieved by some admissible stopping time.
-`Sandpile.External.ContinuumOptimalStopping` asserts, for Brownian motion on `ℝ^d` and a gain of
-polynomial growth, that the value process has a right-continuous modification, that the first
-entry time into the contact set is an optimal stopping time attaining the value, and that every
-optimal stopping time dominates it; it is cited rather than proved.
+`Sandpile.External.ContinuumOptimalStopping` asserts, for a family of Brownian motions on `ℝ^d`
+indexed by the starting point and a gain of polynomial growth, that the value process has a
+right-continuous modification, that the first entry time into the contact set is an optimal
+stopping time attaining the value, and that every optimal stopping time dominates it almost
+surely.  As in the paper, Brownian motion has continuous paths, and each time slice of the
+family is a strongly measurable random variable.  The paper cites the theorem; it is proved in
+this repository as `Sandpile.External.continuumOptimalStopping_holds`.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
@@ -41,7 +44,8 @@ end Sandpile.External.Snell
 /-- The finite-horizon optimal-stopping theorem for Brownian motion on `ℝ^d`
 with a continuous gain of polynomial growth, in the form cited at
 `sandpile.tex:1099` (Peskir and Shiryaev, Theorem 2.2), on a probability space
-`Ω` carrying such a Brownian family.  Assumed, not proved. -/
+`Ω` carrying such a Brownian family.  Following the paper's convention, every
+path of the family is continuous, and every time slice is strongly measurable. -/
 def Sandpile.External.ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (T : ℝ), 0 < T →
     ∀ G : ℝ → Sandpile.Continuum.Space d → ℝ,
@@ -53,6 +57,8 @@ def Sandpile.External.ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω]
         ∀ (P : Measure Ω) [IsProbabilityMeasure P]
           (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d),
           (∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P) →
+          (∀ y ω, Continuous fun s => B y s ω) →
+          (∀ y t, StronglyMeasurable (B y t)) →
           ∃ M : ℝ≥0 → Ω → ℝ,
             (∀ s : ℝ≥0, Measurable (M s)) ∧
             (∀ s : ℝ≥0, (s : ℝ) ≤ T →

@@ -41,7 +41,8 @@ The statement names no probability space: the proof builds its own, through
 `Sandpile.Continuum.exists_isBrownian_cont`.  The optimal-stopping input is therefore
 carried in the form it has for every space, which is the form the cited theorem
 has: its conclusion is guarded by the hypothesis that the space carries a family
-of Brownian motions, so on a space that carries none it says nothing.  For the
+of Brownian motions with continuous paths and strongly measurable time slices, so
+on a space that carries none it says nothing.  For the
 same reason the stability input is taken at the universe of those constructed
 spaces, `Type 0`, and not at an unrelated one.
 -/

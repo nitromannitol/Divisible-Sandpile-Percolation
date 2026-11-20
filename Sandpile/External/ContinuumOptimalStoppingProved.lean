@@ -1,24 +1,36 @@
-import Sandpile.External.ContinuumOptimalStoppingOfContinuous
+import Sandpile.External.ContinuumOptimalStopping
 import Sandpile.Support.BrownianValueProcessAdapted
 import Sandpile.Support.BrownianFirstContactMartingale
 import Sandpile.Support.BrownianOptimalityReduction
 
 /-!
-# Brownian optimal stopping for continuous paths
+# Brownian optimal stopping, proved
 
-For Brownian paths that are continuous at every sample point and have
-measurable time slices, first contact attains the stopping value and is
-minimal among optimal stopping times.
+This module discharges the external input `Sandpile.External.ContinuumOptimalStopping`, the
+finite-horizon optimal-stopping theorem for Brownian motion (Peskir and Shiryaev, Theorem 2.2),
+instead of assuming it.
+
+`Sandpile.Support.exists_adapted_brownian_value_process` builds a continuous, adapted and
+integrably dominated version of the value process together with its first contact time.  At every
+bounded stopping time the expected stopped value is at most the value
+(`Sandpile.Support.brownian_stopped_value_expectation_bound`), and the value process stopped at
+first contact is a martingale
+(`Sandpile.Support.brownian_first_contact_stopped_martingale`), so first contact attains the
+value and is almost surely minimal among the optimal stopping times
+(`Sandpile.Support.first_contact_greatest_and_minimal_of_stopped_martingale`).
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
-/-- The finite-horizon Brownian optimal-stopping theorem holds for continuous
-paths and strongly measurable time slices. -/
-theorem Sandpile.External.continuumOptimalStoppingOfContinuous_holds
+-- FROZEN-STATEMENT-BEGIN
+/-- The finite-horizon optimal-stopping theorem for Brownian motion, proved rather than
+assumed. -/
+theorem Sandpile.External.continuumOptimalStopping_holds
     {Ω : Type*} [MeasurableSpace Ω] :
-    Sandpile.External.ContinuumOptimalStoppingOfContinuous Ω := by
+    Sandpile.External.ContinuumOptimalStopping Ω
+-- FROZEN-STATEMENT-END
+:= by
   intro d T hT G hG hgrow x P _ B hB hBc hBm
   let T' : ℝ≥0 := ⟨T, hT.le⟩
   have hG' : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)

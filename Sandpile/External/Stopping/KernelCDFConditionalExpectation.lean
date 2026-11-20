@@ -1,6 +1,7 @@
 import Sandpile.External.Stopping.QuantileStoppingLaw
 import Mathlib.Probability.Kernel.CondDistrib
 import Mathlib.MeasureTheory.Function.FactorsThrough
+import LatticeProb.Prob.EfronSteinSigma
 
 /-!
 # Conditional expectations and adapted clock distributions
@@ -48,6 +49,42 @@ theorem exists_kernel_event_version_of_condExp
       ((ρ.condKernel.measurable_coe hs).ennreal_toReal)
   change ∀ᵐ ω ∂ρ.map Prod.fst, f ω = (ρ.condKernel ω).real s
   exact (ae_map_iff measurable_fst.aemeasurable hmeas).2 hfeq
+
+/-- Independence of future information from the past together with one clock
+event makes the conditional probability of that event past-measurable. -/
+theorem exists_kernel_event_version_of_independent_future
+    {Ω : Type*} [m : MeasurableSpace Ω] (ρ : Measure (Ω × I))
+    [IsProbabilityMeasure ρ] (F : Filtration ℝ≥0 m) (t : ℝ≥0)
+    (s : Set I) (hs : MeasurableSet s)
+    (future : MeasurableSpace (Ω × I))
+    (hfuture : future ≤ m.prod inferInstance)
+    (hgenerate : m.comap Prod.fst = future ⊔ (F t).comap Prod.fst)
+    (hindep : Indep future
+      ((F t).comap Prod.fst ⊔ MeasurableSpace.generateFrom {Prod.snd ⁻¹' s}) ρ) :
+    ∃ f : Ω → ℝ, @Measurable Ω ℝ (F t) inferInstance f ∧
+      f =ᵐ[ρ.fst] fun ω => (ρ.condKernel ω).real s := by
+  let event : Set (Ω × I) := Prod.snd ⁻¹' s
+  let past : MeasurableSpace (Ω × I) := (F t).comap Prod.fst
+  let clock : MeasurableSpace (Ω × I) := MeasurableSpace.generateFrom {event}
+  have hpast : past ≤ m.prod inferInstance :=
+    (MeasurableSpace.comap_mono (F.le t)).trans measurable_fst.comap_le
+  have hevent : @MeasurableSet (Ω × I) (m.prod inferInstance) event := hs.preimage measurable_snd
+  have hclock : clock ≤ m.prod inferInstance := MeasurableSpace.generateFrom_le (by
+    intro u hu
+    simp only [Set.mem_singleton_iff] at hu
+    simpa only [hu] using hevent)
+  have heventclock : MeasurableSet[clock] event :=
+    MeasurableSpace.measurableSet_generateFrom (by simp [clock])
+  have hstrong : StronglyMeasurable[past ⊔ clock]
+      (event.indicator (fun _ : Ω × I => (1 : ℝ))) :=
+    stronglyMeasurable_const.indicator
+      ((show clock ≤ past ⊔ clock from le_sup_right) _ heventclock)
+  have hint : Integrable (event.indicator (fun _ : Ω × I => (1 : ℝ))) ρ :=
+    (integrable_const _).indicator hevent
+  apply exists_kernel_event_version_of_condExp ρ F t s hs
+  rw [hgenerate]
+  exact LatticeProb.condExp_sup_indep_eq le_sup_left (sup_le hpast hclock) hfuture
+    hindep hstrong hint
 
 /-- Conditional clock probabilities that depend only on the observed past at
 countably many dense times admit a randomized stopping realization of the

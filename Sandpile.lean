@@ -13,12 +13,15 @@ import Sandpile.External.BallGreenBounds
 import Sandpile.External.BallGreenBoundsProved
 import Sandpile.External.BallOccupationDensityProved
 import Sandpile.External.BerryEsseen
+import Sandpile.External.MultivariateBerryEsseenProved
 import Sandpile.External.ContStoppingStability
 import Sandpile.External.BrownianExitStep
 import Sandpile.External.BrownianExitStepProved
 import Sandpile.External.ContinuumBesovTightness
 import Sandpile.External.ContinuumBesovTightnessProved
 import Sandpile.External.ContinuumOptimalStopping
+import Sandpile.Support.ContinuousOptimalStoppingRegistered
+import Sandpile.Support.BrownianOptimalStoppingContinuous
 import Sandpile.External.ContinuumRSW
 import Sandpile.External.CubeStoppingStability
 import Sandpile.External.ExteriorBoundaryConnected
@@ -971,6 +974,8 @@ import Sandpile.Support.ContSelfSimilarMesh
 import Sandpile.Support.ContSelfSimilarMoments
 import Sandpile.Support.ContSelfSimilarFromScaling
 import Sandpile.MainTheorems
+import Sandpile.External.ContinuumRSW.Consequences
+import Sandpile.CriticalBerryEsseenCorollaries
 import Sandpile.PercolationCorollaries
 import Sandpile.PercolationBoundaryCorollaries
 

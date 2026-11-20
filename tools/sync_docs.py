@@ -90,11 +90,11 @@ def status_block(nodes: list[dict]) -> str:
         if frozen:
             body += (
                 f"  The {frozen} `FROZEN` nodes are cited results, stated in\n"
-                f"`Sandpile/External/` and carried as explicit hypotheses by the theorems\n"
-                f"that use them; they are assumed here, not proved.")
+                f"`Sandpile/External/` and carried as explicit hypotheses by the frozen\n"
+                f"theorems that use them; `ASSUMPTIONS.md` identifies those also proved here.")
     return (
         f"Status: **{len(nodes)} registered statements: {proved} `{state_label}`, "
-        f"proved here, and {frozen} `FROZEN`, cited results that are assumed.**  "
+        f"proved here, and {frozen} `FROZEN`, cited results recorded as hypotheses.**  "
         f"{body}  Run\n"
         f"`python3 tools/check_axioms.py` to confirm.  Counts here are generated\n"
         f"from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; do not\n"

@@ -63,7 +63,7 @@ theorem continuumStoppingStability
 theorem continuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω]
     (h : SandpileAudit.External.ContinuumOptimalStopping Ω) :
     Sandpile.External.ContinuumOptimalStopping Ω :=
-  fun d T hT G hG hgrow x P _ B hB =>
-    h d T hT G hG hgrow x P B (fun y => (isBrownian_iff _ _ _ _).2 (hB y))
+  fun d T hT G hG hgrow x P _ B hB hBc hBm =>
+    h d T hT G hG hgrow x P B (fun y => (isBrownian_iff _ _ _ _).2 (hB y)) hBc hBm
 
 end SandpileAudit.Bridge

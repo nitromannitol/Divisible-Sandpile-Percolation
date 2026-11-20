@@ -1003,8 +1003,9 @@ def attainable {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
 
 end Snell
 
-/-- The finite-horizon optimal-stopping theorem for Brownian motion with a continuous
-gain of polynomial growth (Peskir and Shiryaev, Theorem 2.2).  Assumed. -/
+/-- The finite-horizon optimal-stopping theorem for Brownian motion with continuous paths and
+strongly measurable time slices and a continuous gain of polynomial growth (Peskir and Shiryaev,
+Theorem 2.2).  Assumed. -/
 def ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (T : ℝ), 0 < T →
     ∀ G : ℝ → Continuum.Space d → ℝ,
@@ -1016,6 +1017,8 @@ def ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω] : Prop :=
         ∀ (P : Measure Ω) [IsProbabilityMeasure P]
           (B : Continuum.Space d → ℝ≥0 → Ω → Continuum.Space d),
           (∀ y : Continuum.Space d, Continuum.IsBrownian d y (B y) P) →
+          (∀ y ω, Continuous fun s => B y s ω) →
+          (∀ y t, StronglyMeasurable (B y t)) →
           ∃ M : ℝ≥0 → Ω → ℝ,
             (∀ s : ℝ≥0, Measurable (M s)) ∧
             (∀ s : ℝ≥0, (s : ℝ) ≤ T →

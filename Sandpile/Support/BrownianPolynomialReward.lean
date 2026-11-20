@@ -11,9 +11,9 @@ domination for finite-horizon stopping rewards.
 open MeasureTheory ProbabilityTheory Real Set Filter Topology
 open scoped NNReal ENNReal
 
-/-- A polynomial-growth reward has an integrable bound along a finite-horizon
-Brownian path. -/
-theorem Sandpile.Support.exists_integrable_brownian_reward_bound
+/-- A polynomial-growth reward is uniformly bounded by an integrable function
+over the time strip and a finite-horizon Brownian path. -/
+theorem Sandpile.Support.exists_integrable_brownian_reward_uniform_bound
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (x : Sandpile.Continuum.Space d)
     (P : Measure Ω) [IsProbabilityMeasure P]
     (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
@@ -24,7 +24,7 @@ theorem Sandpile.Support.exists_integrable_brownian_reward_bound
     (hgrow : ∃ C k : ℝ, ∀ t ∈ Set.Icc (0 : ℝ) (T : ℝ),
       ∀ y, |G t y| ≤ C * (1 + ‖y‖) ^ k) :
     ∃ bound : Ω → ℝ, Integrable bound P ∧
-      ∀ᵐ ω ∂P, ∀ t ≤ T, ‖G ((T : ℝ) - t) (B t ω)‖ ≤ bound ω := by
+      ∀ᵐ ω ∂P, ∀ u ∈ Set.Icc (0 : ℝ) (T : ℝ), ∀ t ≤ T, ‖G u (B t ω)‖ ≤ bound ω := by
   obtain ⟨C, k, hCk⟩ := hgrow
   have hC : 0 ≤ C := by
     have h := hCk 0 ⟨le_rfl, T.coe_nonneg⟩ 0
@@ -49,12 +49,10 @@ theorem Sandpile.Support.exists_integrable_brownian_reward_bound
         simpa only [Real.norm_eq_abs, abs_of_nonneg (add_nonneg zero_le_one (hM0 _))] using hi
     exact hmom.const_mul C
   refine ⟨bound, hint, ?_⟩
-  filter_upwards [hMbound] with ω hω t ht
-  have h0 : (0 : ℝ) ≤ (T : ℝ) - (t : ℝ) := sub_nonneg.mpr (by exact_mod_cast ht)
-  have hT : (T : ℝ) - (t : ℝ) ≤ (T : ℝ) := sub_le_self _ t.coe_nonneg
+  filter_upwards [hMbound] with ω hω u hu t ht
   calc
-    ‖G ((T : ℝ) - t) (B t ω)‖ = |G ((T : ℝ) - t) (B t ω)| := Real.norm_eq_abs _
-    _ ≤ C * (1 + ‖B t ω‖) ^ k := hCk _ ⟨h0, hT⟩ _
+    ‖G u (B t ω)‖ = |G u (B t ω)| := Real.norm_eq_abs _
+    _ ≤ C * (1 + ‖B t ω‖) ^ k := hCk u hu _
     _ ≤ C * (1 + ‖B t ω‖) ^ n := by
       apply mul_le_mul_of_nonneg_left _ hC
       simpa only [Real.rpow_natCast] using
@@ -63,6 +61,28 @@ theorem Sandpile.Support.exists_integrable_brownian_reward_bound
       dsimp [bound]
       have hm : 1 + ‖B t ω‖ ≤ 1 + M ω := by linarith [hω t ht]
       exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hm n) hC
+
+/-- A polynomial-growth reward has an integrable bound along a finite-horizon
+Brownian path. -/
+theorem Sandpile.Support.exists_integrable_brownian_reward_bound
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (x : Sandpile.Continuum.Space d)
+    (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hB : Sandpile.Continuum.IsBrownian d x B P)
+    (hBm : ∀ t, StronglyMeasurable (B t))
+    (hBc : ∀ ω, Continuous fun t => B t ω) (T : ℝ≥0)
+    (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hgrow : ∃ C k : ℝ, ∀ t ∈ Set.Icc (0 : ℝ) (T : ℝ),
+      ∀ y, |G t y| ≤ C * (1 + ‖y‖) ^ k) :
+    ∃ bound : Ω → ℝ, Integrable bound P ∧
+      ∀ᵐ ω ∂P, ∀ t ≤ T, ‖G ((T : ℝ) - t) (B t ω)‖ ≤ bound ω := by
+  obtain ⟨bound, hint, hbound⟩ :=
+    Sandpile.Support.exists_integrable_brownian_reward_uniform_bound x P B hB hBm hBc T G hgrow
+  refine ⟨bound, hint, ?_⟩
+  filter_upwards [hbound] with ω hω t ht
+  apply hω ((T : ℝ) - t) ⟨?_, ?_⟩ t ht
+  · exact sub_nonneg.mpr (by exact_mod_cast ht)
+  · exact sub_le_self _ t.coe_nonneg
 
 /-- Polynomial-growth Brownian stopping values are unchanged by the usual
 augmentation of the natural filtration. -/

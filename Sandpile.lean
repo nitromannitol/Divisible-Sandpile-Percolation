@@ -972,6 +972,7 @@ import Sandpile.Support.ContSelfSimilarMesh
 import Sandpile.Support.ContSelfSimilarMoments
 import Sandpile.Support.ContSelfSimilarFromScaling
 import Sandpile.MainTheorems
+import Sandpile.External.ContinuumRSW.Consequences
 import Sandpile.CriticalBerryEsseenCorollaries
 import Sandpile.PercolationCorollaries
 import Sandpile.PercolationBoundaryCorollaries

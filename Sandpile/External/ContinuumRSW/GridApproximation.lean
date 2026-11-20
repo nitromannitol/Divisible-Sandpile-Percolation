@@ -5,7 +5,7 @@ import Sandpile.Support.CrossingWitness
 /-!
 # Grid approximation of rectangle crossings
 
-Connected crossings of a mesh-aligned rectangle admit lattice walks close to the
+Connected crossings of a mesh-aligned rectangle give lattice walks close to the
 crossing, and lattice walks give polygonal crossings with a controlled level loss.
 -/
 

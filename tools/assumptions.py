@@ -135,7 +135,9 @@ def render():
                  if len(withproof) > 1 else
                  "Of these, **one is also proved in this repository** and so need not "
                  "be taken on trust; it is marked below with the theorem that proves it. ") +
-                f"The remaining **{len(assumed) - len(withproof)}** are assumed outright.", ""]
+                (f"The remaining **{len(assumed) - len(withproof)}** are assumed outright."
+                 if len(assumed) - len(withproof) != 1 else
+                 "The remaining **one** is assumed outright."), ""]
         ncond = sum(1 for n in withproof if conditional(comp[pathlib.Path(n["file"]).stem]))
         if ncond:
             out[-2] += (f" Of the {len(withproof)} proofs, **{ncond}** hold only under hypotheses "
@@ -143,12 +145,13 @@ def render():
     for n in sorted(assumed, key=lambda x: x["id"]):
         c = comp.get(pathlib.Path(n["file"]).stem)
         cond = conditional(c) if c else None
+        name = (c.get("export") or c["id"]) if c else None
         if cond:
-            line = (f"* **Also proved here, under hypotheses**, by `{c['id']}` in `{c['file']}`, "
+            line = (f"* **Also proved here, under hypotheses**, by `{name}` in `{c['file']}`, "
                     "whose statement is shown after the assumed one; where those hypotheses "
                     "hold, this hypothesis can be discharged, and elsewhere it is assumed")
         elif c:
-            line = (f"* **Also proved here** by `{c['id']}` in `{c['file']}`, so this hypothesis "
+            line = (f"* **Also proved here** by `{name}` in `{c['file']}`, so this hypothesis "
                     "can be discharged rather than assumed")
         else:
             line = "* **Not proved here**: this one is assumed outright"
@@ -173,7 +176,7 @@ def render():
                     "uses this proved result. See `CORRESPONDENCE.md` for details.", ""]
         out += ["```lean", frozen_block(n["file"]), "```", ""]
         if cond:
-            out += [f"The proof `{c['id']}`:", "", "```lean", cond, "```", ""]
+            out += [f"The proof `{name}`:", "", "```lean", cond, "```", ""]
     return "\n".join(out)
 
 

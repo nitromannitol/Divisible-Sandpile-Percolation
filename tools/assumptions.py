@@ -47,6 +47,8 @@ def bridge_proof(n):
     namespace, short = export.rsplit(".", 1)
     source = pathlib.Path(n["file"])
     companion = source.with_name(source.stem + "Proved.lean")
+    if not (ROOT / companion).is_file():
+        companion = source.with_name(short + "Proved.lean")
     if (ROOT / companion).is_file():
         text = (ROOT / companion).read_text(encoding="utf-8")
         top_level = re.search(r"^theorem\s+(" + re.escape(namespace) + r"\.\w+)\s*:\s*"
@@ -151,11 +153,21 @@ def render():
                 f"* **File** `{n['file']}`",
                 f"* **Cited at** {n['source']}",
                 line,
-                "",
-                "```lean",
-                frozen_block(n["file"]),
-                "```",
                 ""]
+        if n["id"] == "ext-continuum-optimal-stopping":
+            out += ["**Defect and deviation.** The frozen proposition permits exceptional paths of",
+                    "Brownian motion while requiring a pointwise least contact for a right-continuous",
+                    "modification and a raw natural-filtration stopping time. A pathological null",
+                    "path can force that stop to be zero almost surely even when stopping at the",
+                    "horizon has strictly greater reward. An earlier continuous-path replacement",
+                    "also omitted ambient measurability of Brownian time slices; a null copy of",
+                    "Wiener space with the trivial sigma algebra gives a contradiction. The amended",
+                    "`Sandpile.External.ContinuumOptimalStoppingOfContinuous` assumes continuous",
+                    "paths and strongly measurable time slices and is proved by",
+                    "`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The Brownian",
+                    "representation `Sandpile.Support.brownian_optimal_stopping_of_continuous`",
+                    "uses this proved result. See `CORRESPONDENCE.md` for details.", ""]
+        out += ["```lean", frozen_block(n["file"]), "```", ""]
         if cond:
             out += [f"The proof `{c['id']}`:", "", "```lean", cond, "```", ""]
     return "\n".join(out)

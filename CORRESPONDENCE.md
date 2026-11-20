@@ -211,8 +211,8 @@ nothing for it.
 | `prop-d4-one-point-gaussian` | `External.VarianceScale`, `External.PairedLocalCLTFour` | `eq:d4-window-l2`, `eq:d4-window-linfty`; Lawler–Limic Theorem 2.1.3 cited at `sandpile.tex:3250-3256` | proved here: `VarianceScale` by `Sandpile.External.varianceScale`, `PairedLocalCLTFour` by `Sandpile.External.pairedLocalCLTFour` |
 | `thm-main-explosion-ii-b` | `External.PairedLocalCLTFour` | Lawler–Limic Theorem 2.1.3 through `prop:d4-one-point-gaussian`, `sandpile.tex:3250-3256` | proved: `Sandpile.External.pairedLocalCLTFour` |
 | `prop-d4-superdiffusive-limit` | `External.VarianceScale` as well | `eq:d4-full-window-bounds`, `eq:d4-window-l2`, `eq:d4-window-linfty` | proved: `Sandpile.External.varianceScale` |
-| `prop-d4-superdiffusive-limit` | `External.MembraneScalingLimitFour` as well | Step 1, `sandpile.tex:3341-3342`, citing Cipriani-Hazra-Ruszel Theorem 2 and Cipriani-Dan-Hazra Theorem 3.11 for the convergence of the discrete membrane field; the truncation hypothesis it carries is the paper's own new point and is proved here | hypothesis |
-| `thm-main-explosion-ii-c` | `External.MembraneScalingLimitFour` | the same citation through `prop:d4-superdiffusive-limit` | hypothesis |
+| `prop-d4-superdiffusive-limit` | `External.MembraneScalingLimitFour` as well | Step 1, `sandpile.tex:3378`, citing Cipriani-Hazra-Ruszel Theorem 2 and Cipriani-Dan-Hazra Theorem 3.11 for the convergence of the discrete membrane field; the truncation hypothesis it carries is the paper's own new point and is proved here | hypothesis, proved: `Sandpile.External.membraneScalingLimitFour_holds`; discharged by `Sandpile.d4_superdiffusive_limit_of_proved_inputs` |
+| `thm-main-explosion-ii-c` | `External.MembraneScalingLimitFour` | the same citation through `prop:d4-superdiffusive-limit` | hypothesis, proved: `Sandpile.External.membraneScalingLimitFour_holds`; discharged by `Sandpile.four_sobolev_of_proved_inputs` |
 | `thm-d4-critical-level-percolation` | `External.VarianceScale` as well | `eq:Qt-table`, `eq:d4-full-window-bounds` | proved: `Sandpile.External.varianceScale` |
 | `lem-dgt4-stretched-green-scenery-tail` | `External.GreenBoundsHigh` | `eq:dgt4-green-tail`, `eq:dgt4-green-l2` | proved: `Sandpile.External.greenBoundsHigh` |
 | `prop-dgt4-height-lower-stretched` | `External.GreenBoundsHigh` | `eq:dgt4-green-tail`, `eq:dgt4-green-l2` | proved: `Sandpile.External.greenBoundsHigh` |
@@ -343,6 +343,84 @@ optimal time the first entry into the contact set the field determines.  A
 measurable version is strictly more than almost-everywhere measurability of
 `continuumValue` itself, so the form weakens nothing the paper asserts
 (`prop-continuum-value-selfsimilar`).
+
+## Brownian optimal stopping and exceptional paths
+
+The frozen `External.ContinuumOptimalStopping` assumes Brownian paths are continuous only
+almost surely but asks for an everywhere right-continuous modification whose contact set has
+a pointwise least element that is a raw natural-filtration stopping time. On an exceptional
+null path one can arrange contacts with every right-continuous candidate at times arbitrarily
+close to zero. Its least contact is then zero, and the raw stopping-time history criterion
+forces the time to be zero almost surely. For the gain `G(t,z) = z₀ + 1 - t` with horizon
+one, that stop has mean zero while the constant stop at one has mean one. The contact-time
+conclusion of `Frozen.brownian_optimal_stopping` has the same defect, taking `h = -G`.
+The frozen theorem is conditional on the defective input.
+
+An earlier all-path-continuous version also failed: `IsBrownian` gives only
+almost-everywhere measurability of the time slices, while `M` must be measurable in the
+ambient space. Take a disjoint null copy of canonical Wiener path space, equip that copy
+with the trivial sigma algebra, and use the same continuous path on both copies. For the
+gain above, optimality forces the stop to be one almost surely, and the raw stopping-time
+history criterion forces the same value on matching null copies. The pointwise contact
+condition then makes `M 1` equal to `1 + B 1` on those copies of almost every Wiener path.
+This is nonconstant, but any measurable real function is constant on the null copy.
+
+The deviation `External.ContinuumOptimalStoppingOfContinuous` requires continuity of
+every path and strong measurability of every Brownian time slice; the main use sites already
+carry both hypotheses. It is proved by `External.continuumOptimalStoppingOfContinuous_holds`.
+The supporting results prove that the raw and augmented values agree
+(`Support.snellValue_eq_sSup_usualAugmentation`), that the value does not depend on the
+Brownian realization (`Support.snellValue_eq_of_isBrownian`), and that it is jointly
+continuous in time and starting point (`Support.continuousOn_brownian_snellValue`).
+`Support.exists_adapted_brownian_value_process` constructs a continuous adapted value
+process with an integrable path bound and a least raw contact time.
+
+`Support.brownian_stopped_value_expectation_bound` proves the stopped expectation bound
+for every bounded raw stop, and `Support.brownian_first_contact_stopped_martingale`
+proves the martingale property through first contact. The first contact attains the value
+and is minimal among optimal stops. `Support.brownian_optimal_stopping_of_continuous`
+therefore proves the representation without an optimal-stopping hypothesis.
+
+The paper cites the continuous-time Snell-envelope theorem. The proof here uses Brownian
+restart and superharmonicity in the Markovian setting, as in Peskir and Shiryaev,
+Chapter I, Section 2.2, but obtains contact optimality by a different argument. Choose
+near-optimal bounded stops. Their expected nonnegative value-minus-reward gaps converge
+to zero, so the probability that such a stop precedes the first ε-contact tends to zero.
+The stopped supermartingale comparison and the integrable path envelope then show that
+the expected value at ε-contact equals the initial value. Continuity and domination pass
+this equality to first contact. The stopped martingale follows from equal expectations.
+Superharmonicity itself follows by selecting finitely many near-optimal continuations on
+compact sets, using Brownian restart and controlling the tails; dyadic stopping-time
+approximation extends the bound to arbitrary bounded stops.
+
+The self-similarity proof does not use its optimal-stopping hypothesis. The successors
+`Support.continuum_value_self_similar_without_optimal_stopping`,
+`Support.dlt4_mean_asymptotic_without_optimal_stopping`,
+`Support.mean_variance_limit_at_origin_without_optimal_stopping`,
+`Support.mean_growth_le_three_without_optimal_stopping`,
+`Support.dlt4_mean_asymptotic_from_stability`, and
+`Sandpile.mean_growth_le_three_from_stability` establish the corresponding conclusions
+without it, retaining continuum stopping stability. The earlier description of
+`prop:continuum-value-selfsimilar` above records the frozen declaration and its intended
+argument; the successor uses the parabolic scaling limit directly.
+
+## Four-dimensional membrane input and cited scope
+
+The cited Cipriani–Hazra–Ruszel Theorem 2 treats a torus model, and
+Cipriani–Dan–Hazra Theorem 3.11 treats a clamped finite-domain model. Neither
+states the whole-space ω-representative scaling or the uniform negative Sobolev
+norm bound for every positive order in `MembraneScalingLimitFour`. This is an
+allowed deviation from the cited results, proved here by an additional argument.
+
+For scalar convergence, Fourier analysis gives convergence of the paired Green
+coefficients and their ℓ² norms, and a weighted independent-variable central
+limit theorem applies because the largest coefficient tends to zero. The stated
+coefficient-defect condition transfers the limit to the finite-time field. For
+the norm bound, a uniform logarithmic covariance estimate for the centered
+whole-space field gives local power bounds of arbitrarily small positive order;
+a Fourier negative Sobolev energy estimate and Markov's inequality then give
+the bound uniformly in time and scale. The resulting theorem is
+`Sandpile.External.membraneScalingLimitFour_holds`.
 
 ## Cited inputs proved here
 

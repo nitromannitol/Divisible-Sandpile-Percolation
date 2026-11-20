@@ -88,7 +88,9 @@ surely. Hypotheses: the same as Theorem 1.1.
 **Theorem 1.3(i) (`d ≤ 3`).**
 
 1. *(a) Mean growth.* `t^{−(4−d)/4} E u_t(0)` converges to a positive limit. Hypotheses:
-   `ContinuumStoppingStability`, `ContinuumOptimalStopping`.
+   `ContinuumStoppingStability`, `ContinuumOptimalStopping` in the frozen declaration.
+   The successor `Sandpile.mean_growth_le_three_from_stability` requires only
+   `ContinuumStoppingStability`.
 2. *(b) Scaling limit.* The multilinear interpolation of `R^{−(2−d/2)} u_{⌊TR²⌋}` converges in
    finite-dimensional distributions to the Brownian stopping value `𝒰(T, ·)` and is tight in
    the uniform norm on compact sets. Hypothesis: `ContinuumStoppingStability`.
@@ -197,13 +199,32 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
-| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
-| `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
+| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth; the frozen form has the defect described below | Peskir and Shiryaev, Theorem 2.2 | frozen Theorem 1.3(i)(a) |
+| `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field; proved by `Sandpile.External.membraneScalingLimitFour_holds` | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
 
-The inputs `MultivariateBerryEsseen` and `RellichKondrachovNegSobolev` are hypotheses of
-intermediate statements in `Sandpile/Frozen/` only.
+The frozen `ContinuumOptimalStopping` permits Brownian paths to be discontinuous on a null
+set, but requires a pointwise least contact time that is a raw natural-filtration stopping
+time. A suitable exceptional path forces that time to be zero almost surely even for a gain
+where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
+An earlier version with continuous paths also failed because it did not require ambient
+measurability of the time slices. The amended
+`Sandpile.External.ContinuumOptimalStoppingOfContinuous` requires continuous paths and
+strongly measurable time slices and is proved by
+`Sandpile.External.continuumOptimalStoppingOfContinuous_holds`. The value is jointly
+continuous and independent of the Brownian realization. The first contact is optimal and
+minimal, and the value process stopped there is a martingale.
+`Sandpile.Support.brownian_optimal_stopping_of_continuous` proves the Brownian representation
+under these path and measurability hypotheses without an optimal-stopping input. The
+self-similarity and mean-growth successors above do not require that input either. See
+`CORRESPONDENCE.md` for the defects and deviation.
+
+The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
+`Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the
+`MultivariateBerryEsseen` hypothesis; `Sandpile.critical_toppling` and
+`Sandpile.critical_mean_one` discharge it using `Sandpile.External.multivariateBerryEsseen_holds`.
 Theorems 1.3(ii)(a) (both clauses), 1.3(ii)(b), 1.3(iii)(a) and 1.3(iii)(b) take no
-hypothesis.
+hypothesis. The registered `Sandpile.four_sobolev` retains `hMembrane`;
+`Sandpile.four_sobolev_of_proved_inputs` discharges it and the Besov criterion.
 
 Further results the paper cites without proof are **proved unconditionally in this
 repository** (`Sandpile/External/*Proved.lean`) and so are not carried as a hypothesis by any
@@ -213,7 +234,8 @@ determination of a centred Gaussian law by its covariance, Pinsker's inequality,
 intersection moment of two independent walks, the local central limit theorem, its paired
 dimension-four form, the ball-killed Green bounds, Pitt's Gaussian FKG theorem (Pitt 1982),
 Gaussian concentration for Lipschitz functionals (Borell; Tsirelson, Ibragimov and Sudakov),
-the normal comparison inequality (Li and Shao, Corollary 2.1), the Besov tightness criterion,
+the normal comparison inequality (Li and Shao, Corollary 2.1), the multivariate Berry–Esseen
+comparison for orthants (Raič, Theorem 1.1), the Besov tightness criterion,
 the strong Markov property of Brownian motion at the exit time of a ball
 (Mörters and Peres, *Brownian Motion*, Theorem 2.16), and the finite-range percolation
 consequence of LSS domination
@@ -239,10 +261,10 @@ proved. Every registered statement is pinned by hash; only the `FROZEN` ones are
 
 <!-- STATUS-BEGIN (generated by tools/sync_docs.py) -->
 
-Status: **99 registered statements: 87 `PROVED/SEALED`, proved here, and 12 `FROZEN`, cited results that are assumed.**  The 87 `PROVED/SEALED` nodes are machine-checked and no proved
-node's axiom closure contains `sorryAx`.  The 12 `FROZEN` nodes are cited results, stated in
-`Sandpile/External/` and carried as explicit hypotheses by the theorems
-that use them; they are assumed here, not proved.  Run
+Status: **99 registered statements: 90 `PROVED/SEALED`, proved here, and 9 `FROZEN`, cited results recorded as hypotheses.**  The 90 `PROVED/SEALED` nodes are machine-checked and no proved
+node's axiom closure contains `sorryAx`.  The 9 `FROZEN` nodes are cited results, stated in
+`Sandpile/External/` and carried as explicit hypotheses by the frozen
+theorems that use them; `ASSUMPTIONS.md` identifies those also proved here.  Run
 `python3 tools/check_axioms.py` to confirm.  Counts here are generated
 from `ledger/manifest.yaml` by `python3 tools/sync_docs.py`; do not
 edit them by hand and do not trust a count in prose that the checkers

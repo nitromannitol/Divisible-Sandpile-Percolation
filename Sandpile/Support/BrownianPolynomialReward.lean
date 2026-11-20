@@ -112,3 +112,38 @@ theorem Sandpile.Support.bddAbove_augmented_brownian_payoffs
     Sandpile.Support.brownian_stopping_reward_regular P B hBc hBm T G hG
   exact Sandpile.Support.bddAbove_augmented_stopping_payoffs P (LatticeProb.natFiltration B hBm)
     T (fun t ω => G ((T : ℝ) - t) (B t ω)) bound (ae_of_all _ hcont) hint hbound hmeas
+
+/-- Every bounded natural-filtration payoff is integrable, and the attainable
+payoffs form a bounded-above set. -/
+theorem Sandpile.Support.brownian_stopping_payoffs_integrable_and_bddAbove
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (x : Sandpile.Continuum.Space d)
+    (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hB : Sandpile.Continuum.IsBrownian d x B P)
+    (hBm : ∀ t, StronglyMeasurable (B t))
+    (hBc : ∀ ω, Continuous fun t => B t ω) (T : ℝ≥0)
+    (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
+    (hgrow : ∃ C k : ℝ, ∀ t ∈ Set.Icc (0 : ℝ) (T : ℝ),
+      ∀ y, |G t y| ≤ C * (1 + ‖y‖) ^ k) :
+    (∀ σ : Ω → ℝ≥0, Sandpile.Continuum.IsBrownianStopping B σ →
+      (∀ ω, σ ω ≤ T) → Integrable (fun ω => G ((T : ℝ) - σ ω) (B (σ ω) ω)) P) ∧
+    BddAbove (Sandpile.External.Snell.attainable B P G T) := by
+  obtain ⟨bound, hint, hbound⟩ :=
+    Sandpile.Support.exists_integrable_brownian_reward_bound x P B hB hBm hBc T G hgrow
+  obtain ⟨_, hmeas⟩ := Sandpile.Support.brownian_stopping_reward_regular P B hBc hBm T G hG
+  have hintσ : ∀ σ : Ω → ℝ≥0, Sandpile.Continuum.IsBrownianStopping B σ →
+      (∀ ω, σ ω ≤ T) → Integrable (fun ω => G ((T : ℝ) - σ ω) (B (σ ω) ω)) P := by
+    intro σ hσ hσT
+    apply hint.mono' (hmeas σ
+      ((Sandpile.Continuum.isBrownianStopping_iff_natFiltration B hBm σ).mp hσ) hσT)
+    filter_upwards [hbound] with ω hω
+    exact hω (σ ω) (hσT ω)
+  refine ⟨hintσ, ⟨∫ ω, bound ω ∂P, ?_⟩⟩
+  rintro a ⟨σ, hσ, hσT, rfl⟩
+  have hσT' : ∀ ω, σ ω ≤ T := fun ω => by exact_mod_cast hσT ω
+  apply integral_mono_ae (hintσ σ hσ hσT') hint
+  filter_upwards [hbound] with ω hω
+  exact (le_abs_self (G ((T : ℝ) - σ ω) (B (σ ω) ω))).trans
+    (by simpa only [Real.norm_eq_abs] using hω (σ ω) (hσT' ω))

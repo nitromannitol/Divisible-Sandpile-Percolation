@@ -125,3 +125,45 @@ theorem Sandpile.Support.exists_stoppingTime_seq_tendsto_of_thresholds
   refine ⟨σ, hσstop, hσT, ?_⟩
   filter_upwards [hθeq] with ω hω
   simpa only [← hω] using hσlim ω
+
+/-- If each past stopping event has a representative in every later filtration
+space, a bounded time is the almost-sure limit of bounded stopping times. -/
+theorem Sandpile.Support.exists_stoppingTime_seq_tendsto_of_future_representatives
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (𝓕 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω))
+    (τ : Ω → ℝ≥0) (T : ℝ≥0) (hτT : ∀ ω, τ ω ≤ T)
+    (hcomp : ∀ s t : ℝ≥0, s < t → ∃ A : Set Ω, MeasurableSet[𝓕 t] A ∧
+      ∀ᵐ ω ∂P, ω ∈ A ↔ τ ω ≤ s) :
+    ∃ σ : ℕ → Ω → ℝ≥0,
+      (∀ n, IsStoppingTime 𝓕 (fun ω => (σ n ω : ℝ≥0∞))) ∧
+      (∀ n ω, σ n ω ≤ T) ∧
+      (∀ᵐ ω ∂P, Tendsto (fun n => σ n ω) atTop (𝓝 (τ ω))) := by
+  classical
+  apply Sandpile.Support.exists_stoppingTime_seq_tendsto_of_thresholds P 𝓕 τ T hτT
+  intro t
+  obtain ⟨D, hD⟩ := TopologicalSpace.exists_dense_seq ℝ≥0
+  let A : ℕ → Set Ω := fun n =>
+    if hn : D n < t then Classical.choose (hcomp (D n) t hn) else ∅
+  have hA : ∀ n, MeasurableSet[𝓕 t] (A n) := by
+    intro n
+    dsimp [A]
+    split_ifs with hn
+    · exact (Classical.choose_spec (hcomp (D n) t hn)).1
+    · exact @MeasurableSet.empty Ω (𝓕 t)
+  have hAe : ∀ n, ∀ᵐ ω ∂P, ω ∈ A n ↔ D n < t ∧ τ ω ≤ D n := by
+    intro n
+    by_cases hn : D n < t
+    · simpa [A, hn] using
+        (Classical.choose_spec (hcomp (D n) t hn)).2
+    · filter_upwards [] with ω
+      simp [A, hn]
+  refine ⟨⋃ n, A n, MeasurableSet.iUnion hA, ?_⟩
+  filter_upwards [ae_all_iff.mpr hAe] with ω hω
+  simp only [Set.mem_iUnion]
+  constructor
+  · rintro ⟨n, hn⟩
+    exact lt_of_le_of_lt ((hω n).1 hn).2 ((hω n).1 hn).1
+  · intro ht
+    obtain ⟨x, hx⟩ := exists_between ht
+    obtain ⟨n, hn⟩ := hD.exists_mem_open isOpen_Ioo ⟨x, hx⟩
+    exact ⟨n, (hω n).2 ⟨hn.2, hn.1.le⟩⟩

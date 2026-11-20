@@ -32,6 +32,17 @@ theorem continuous_futureIncrementPath {d : ℕ} (t : ℝ≥0) :
     (continuous_const.add continuous_snd))).sub
       (continuous_eval.comp (continuous_fst.prodMk continuous_const))
 
+/-- The future-increment path depends continuously on both the starting time
+and the original path. -/
+theorem continuous_futureIncrementPath_uncurry {d : ℕ} :
+    Continuous (fun p : ℝ≥0 × C(ℝ≥0, Continuum.Space d) =>
+      futureIncrementPath p.1 p.2) := by
+  apply ContinuousMap.continuous_of_continuous_uncurry
+  exact (continuous_eval.comp ((continuous_snd.comp continuous_fst).prodMk
+    ((continuous_fst.comp continuous_fst).add continuous_snd))).sub
+      (continuous_eval.comp ((continuous_snd.comp continuous_fst).prodMk
+        (continuous_fst.comp continuous_fst)))
+
 /-- The future-increment path generates the future-increment sigma-algebra. -/
 theorem comap_futureIncrementPath_eq_pathFutureSigma {d : ℕ} (t : ℝ≥0) :
     MeasurableSpace.comap (futureIncrementPath (d := d) t) inferInstance =

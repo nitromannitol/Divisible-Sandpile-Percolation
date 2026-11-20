@@ -16,11 +16,11 @@ namespace Sandpile.External.RSW
 planar RSW. -/
 theorem planarRSW_of_arm_crossing_geometry
     (harm : ∀ μ : Measure (Sym2 (Site 2) → Bool), ∀ [IsProbabilityMeasure μ],
-      IsKSTBondLaw μ → ∀ s, 1 ≤ s →
+      IsKSTBondLaw μ → ∀ s, 1 ≤ s → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval μ (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
         μ.real (kstArmEvent s))
     (harmDual : ∀ μ : Measure (Sym2 (Site 2) → Bool), ∀ [IsProbabilityMeasure μ],
-      IsKSTBondLaw μ → ∀ s, 1 ≤ s →
+      IsKSTBondLaw μ → ∀ s, 1 ≤ s → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval (μ.map dualBondConfig)
         (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
           (μ.map dualBondConfig).real (kstArmEvent s))
@@ -32,14 +32,14 @@ theorem planarRSW_of_arm_crossing_geometry
   apply planarRSW_of_quasi_crossing_estimates
   · intro μ _ hμ j
     apply measureReal_adjacentQuasi_ge_of_arm_tall μ hμ.1 hμ.2.1 hμ.2.2.1 j (hgeom j)
-    intro s hms _
+    intro s hms _ hdiv
     have hm : 0 < kstBaseScale j := Nat.mul_pos (by norm_num) (pow_pos (by norm_num) j)
-    exact harm μ hμ s (by omega)
+    exact harm μ hμ s (by omega) hdiv
   · intro μ _ hμ j
     apply measureReal_adjacentDualQuasi_ge_of_arm_tall μ hμ.1 hμ.2.1 hμ.2.2.1 j (hgeom j)
-    intro s hms _
+    intro s hms _ hdiv
     have hm : 0 < kstBaseScale j := Nat.mul_pos (by norm_num) (pow_pos (by norm_num) j)
-    exact harmDual μ hμ s (by omega)
+    exact harmDual μ hμ s (by omega) hdiv
   · exact hcover
 
 end Sandpile.External.RSW

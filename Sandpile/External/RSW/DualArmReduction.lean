@@ -16,11 +16,11 @@ namespace Sandpile.External.RSW
 associated bond law. -/
 theorem dual_arm_estimate_of_arm_estimate
     (harm : ∀ μ : Measure (Sym2 (Site 2) → Bool), ∀ [IsProbabilityMeasure μ],
-      IsKSTBondLaw μ → ∀ s, 1 ≤ s →
+      IsKSTBondLaw μ → ∀ s, 1 ≤ s → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval μ (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
         μ.real (kstArmEvent s))
     (μ : Measure (Sym2 (Site 2) → Bool)) [IsProbabilityMeasure μ]
-    (hμ : IsKSTBondLaw μ) (s : ℕ) (hs : 1 ≤ s) :
+    (hμ : IsKSTBondLaw μ) (s : ℕ) (hs : 1 ≤ s) (hdiv : 192 ∣ s) :
     (kstScaleIso 1 (probabilityInUnitInterval (μ.map dualBondConfig)
       (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
         (μ.map dualBondConfig).real (kstArmEvent s) := by
@@ -108,13 +108,13 @@ theorem dual_arm_estimate_of_arm_estimate
           (measurableSet_bondCrossingEvent _ _)]
         rfl
       _ = _ := restrictToPlaneEdges_crossing ν _ _
-  have hh := harm ξ ⟨haξ, htξ, hsξ, hrξ⟩ s hs
+  have hh := harm ξ ⟨haξ, htξ, hsξ, hrξ⟩ s hs hdiv
   rwa [hcross_eq, harm_eq] at hh
 
 /-- The primal arm estimate and the two geometric inclusions imply planar RSW. -/
 theorem planarRSW_of_arm_estimate_and_geometry
     (harm : ∀ μ : Measure (Sym2 (Site 2) → Bool), ∀ [IsProbabilityMeasure μ],
-      IsKSTBondLaw μ → ∀ s, 1 ≤ s →
+      IsKSTBondLaw μ → ∀ s, 1 ≤ s → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval μ (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
         μ.real (kstArmEvent s))
     (hgeom : ∀ j, kstAdjacentSixEvent (kstBaseScale j) ⊆
@@ -122,7 +122,7 @@ theorem planarRSW_of_arm_estimate_and_geometry
     (hcover : ∀ i j, j < i → KSTCorridorBridgeCover
       (kstBaseScale (i + 1)) (kstBaseScale i) (kstBaseScale j)) :
     Sandpile.External.PlanarRSW :=
-  planarRSW_of_arm_crossing_geometry harm (fun μ _ hμ s hs =>
-    dual_arm_estimate_of_arm_estimate harm μ hμ s hs) hgeom hcover
+  planarRSW_of_arm_crossing_geometry harm (fun μ _ hμ s hs hdiv =>
+    dual_arm_estimate_of_arm_estimate harm μ hμ s hs hdiv) hgeom hcover
 
 end Sandpile.External.RSW

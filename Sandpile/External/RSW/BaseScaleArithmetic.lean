@@ -27,6 +27,17 @@ theorem kstBaseScale_intermediate (j : ℕ) :
   dsimp only [kstBaseScale]
   omega
 
+/-- The three arm scales have integral arm and bridge offsets. -/
+theorem kstBaseScale_arm_scales_dvd (j : ℕ) :
+    192 ∣ kstBaseScale j ∧ 192 ∣ 5 * kstBaseScale j / 2 ∧
+      192 ∣ 31 * kstBaseScale j / 8 := by
+  rcases kstBaseScale_intermediate j with ⟨h₁, _, h₂⟩
+  rw [h₁, h₂]
+  refine ⟨?_, ?_, ?_⟩
+  · exact ⟨8 * 4 ^ j, by simp only [kstBaseScale]; ring⟩
+  · exact ⟨20 * 4 ^ j, by ring⟩
+  · exact ⟨31 * 4 ^ j, by ring⟩
+
 /-- The arm and bridge offsets at both intermediate scales are integral. -/
 theorem kstBaseScale_intermediate_offsets (j : ℕ) :
     (5 * kstBaseScale j / 2) / 64 = 60 * 4 ^ j ∧

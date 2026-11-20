@@ -57,7 +57,7 @@ theorem measureReal_adjacentQuasi_ge_of_arm_tall
       ω ∘ Sym2.map swapPlaneSite) μ μ) (j : ℕ)
     (hgeom : kstAdjacentSixEvent (kstBaseScale j) ⊆
       kstQuasiCrossingEvent (4 * kstBaseScale j) (kstBaseScale j))
-    (harm : ∀ s, kstBaseScale j ≤ s → s ≤ 4 * kstBaseScale j →
+    (harm : ∀ s, kstBaseScale j ≤ s → s ≤ 4 * kstBaseScale j → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval μ (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
         μ.real (kstArmEvent s)) :
     (kstScaleIso 2 (unitIntervalComplement (probabilityInUnitInterval (μ.map dualBondConfig)
@@ -68,12 +68,14 @@ theorem measureReal_adjacentQuasi_ge_of_arm_tall
     (kstBridgeEvent (4 * m)))
   have hm : 0 < m := Nat.mul_pos (by norm_num) (pow_pos (by norm_num) j)
   obtain ⟨hmid₀, hmid₁, hfar₀, hfar₁⟩ := kstBaseScale_intermediate_bounds j
+  obtain ⟨hd₀, hd₁, hd₂⟩ := kstBaseScale_arm_scales_dvd j
   have hzero : (kstScaleIso 1 x : ℝ) ≤ μ.real (kstArmEvent m) :=
-    measureReal_kstArm_ge_of_dualBridge μ ht hs m m hm le_rfl (by omega) (harm m le_rfl (by omega))
+    measureReal_kstArm_ge_of_dualBridge μ ht hs m m hm le_rfl (by omega)
+      (harm m le_rfl (by omega) hd₀)
   have hmid : (kstScaleIso 1 x : ℝ) ≤ μ.real (kstArmEvent (5 * m / 2)) :=
-    measureReal_kstArm_ge_of_dualBridge μ ht hs m _ hm hmid₀ hmid₁ (harm _ hmid₀ hmid₁)
+    measureReal_kstArm_ge_of_dualBridge μ ht hs m _ hm hmid₀ hmid₁ (harm _ hmid₀ hmid₁ hd₁)
   have hfar : (kstScaleIso 1 x : ℝ) ≤ μ.real (kstArmEvent (31 * m / 8)) :=
-    measureReal_kstArm_ge_of_dualBridge μ ht hs m _ hm hfar₀ hfar₁ (harm _ hfar₀ hfar₁)
+    measureReal_kstArm_ge_of_dualBridge μ ht hs m _ hm hfar₀ hfar₁ (harm _ hfar₀ hfar₁ hd₂)
   have hh := measureReal_adjacentQuasi_ge_of_six_events μ ha ht hs j x hgeom hzero hmid hfar
   change (kstScaleIso 2 (unitIntervalComplement (probabilityInUnitInterval (μ.map dualBondConfig)
       (kstBridgeEvent (4 * kstBaseScale j)))) : ℝ) ≤
@@ -93,7 +95,7 @@ theorem measureReal_adjacentDualQuasi_ge_of_arm_tall
       ω ∘ Sym2.map swapPlaneSite) μ μ) (j : ℕ)
     (hgeom : kstAdjacentSixEvent (kstBaseScale j) ⊆
       kstQuasiCrossingEvent (4 * kstBaseScale j) (kstBaseScale j))
-    (harm : ∀ s, kstBaseScale j ≤ s → s ≤ 4 * kstBaseScale j →
+    (harm : ∀ s, kstBaseScale j ≤ s → s ≤ 4 * kstBaseScale j → 192 ∣ s →
       (kstScaleIso 1 (probabilityInUnitInterval (μ.map dualBondConfig)
         (bondCrossingEvent (2 * s) (16 * s))) : ℝ) ≤
           (μ.map dualBondConfig).real (kstArmEvent s)) :

@@ -1,5 +1,6 @@
 import Sandpile.Support.BrownianFirstContact
 import Sandpile.External.ContinuumOptimalStopping
+import Sandpile.Support.SnellValueZero
 
 /-!
 # Value processes and first contact
@@ -84,3 +85,36 @@ theorem Sandpile.Support.exists_value_process_first_contact
       intro hs
       simp only [H, Vext, Gext, M, min_eq_left hs, sub_eq_zero]
     exact heq ▸ hτleast ω
+
+/-- Continuity of the Brownian stopping value yields a measurable value process
+and a pointwise least natural-filtration contact time. -/
+theorem Sandpile.Support.exists_snell_value_process_first_contact_of_continuous
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hB : ∀ y, Sandpile.Continuum.IsBrownian d y (B y) P)
+    (x : Sandpile.Continuum.Space d) (hBc : ∀ ω, Continuous fun t => B x t ω)
+    (hBm : ∀ t, StronglyMeasurable (B x t))
+    (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
+    (hV : ContinuousOn (fun p : ℝ≥0 × Sandpile.Continuum.Space d =>
+      Sandpile.External.Snell.snellValue (B p.2) P G ((T : ℝ) - p.1))
+      (Set.Icc 0 T ×ˢ Set.univ)) :
+    ∃ M : ℝ≥0 → Ω → ℝ,
+      (∀ s, Measurable (M s)) ∧
+      (∀ s ≤ T, ∀ ω, M s ω =
+        Sandpile.External.Snell.snellValue (B (B x s ω)) P G ((T : ℝ) - s)) ∧
+      (∀ ω, Continuous fun s => M s ω) ∧
+      ∃ τ : Ω → ℝ≥0,
+        (∀ ω, IsLeast {s : ℝ≥0 | s ≤ T ∧
+          M s ω = G ((T : ℝ) - s) (B x s ω)} (τ ω)) ∧
+        Sandpile.Continuum.IsBrownianStopping (B x) τ := by
+  let V : ℝ≥0 → Sandpile.Continuum.Space d → ℝ := fun s y =>
+    Sandpile.External.Snell.snellValue (B y) P G ((T : ℝ) - s)
+  have hVT : ∀ y, V T y = G 0 y := by
+    intro y
+    dsimp only [V]
+    rw [sub_self]
+    exact Sandpile.External.Snell.snellValue_zero P (B y) y (hB y).start G
+  exact Sandpile.Support.exists_value_process_first_contact P B x hBc hBm T G hG V hV hVT
+    (fun _ _ _ => rfl)

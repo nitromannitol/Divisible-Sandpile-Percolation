@@ -179,14 +179,14 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 
 | node | SHA-256 of the frozen statement |
 |---|---|
-| `ext-green-bounds-high` | `1089d0bcf24eb796b49a340e4d41102cc446b6a91c28eb40077b21d8abef9854` |
+| `ext-green-bounds-high` | `96e8edbd73c04212e2d9d43e175c3d0856ca4f653f23409403b047a1e5c0b17e` |
 | `ext-variance-scale` | `38be267fecb15e25df213a1e78613b6598820b101df76eb83660470456a8b529` |
 | `lem-reflection-increment` | `b4e6776acb66270fa3b72b0245fbb7c338a9da4391417397bbb645665441fc7d` |
 | `ext-optimal-stopping` | `50a5612509541bb1c9e063ad718b459bc9072c232fea41648faef0bc0c50527a` |
 | `thm-gaussian-upper-proved` | `6bc2d60d95981c664df28235dd6474ef996733d48c4917fcbba5d57a8f7d63e4` |
 | `lem-weighted-exp-conc` | `cde3fa027de6cb6601febf9b49b286959ecaac00bcf10b433ad305d2288bb1a8` |
 | `lem-convex-linear-bound` | `6a1bee52a2b536f68854249a19228e240ebdac75c96906b327eec80ea7d4b3ad` |
-| `ext-multivariate-berry-esseen` | `693a87a50c0a3e50a874d0465c2664bd6f5244e4efe7236d8bcf6bdcac769969` |
+| `ext-multivariate-berry-esseen` | `cb5a5c20e1a53a7f3e583a563df33703b561b9ebeb5e4c83dfb505c35a9c3247` |
 | `thm-white-noise-exists` | `3d8dc3ab829523b8334ba7a5902c807e1ca28e1a4c6263aa7d4fb9f4b69ba409` |
 | `thm-brownian-exists` | `ba9bd7d94a0501c44bd82fbd01d94ec3102745aa0af0a305fc47cac6e425444d` |
 | `cor-dgt4-mean-lower` | `b7756ddb707afbb1dc5926335a83e4ea0ef44f5f4324d3ca5c8563d9fafc20f7` |
@@ -195,23 +195,23 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `thm-main-explosion-ii-a` | `19edf234fa88c8459c512f0d84eb8d301675e27c08e68e77e066005c255a48b2` |
 | `thm-main-explosion-ii-a-first-order` | `bec76c39b1175ba6af9dd089c20b21f33e479c9a42e99eb0f3c89d18cb6bea50` |
 | `lem-d4-soft-bottleneck` | `a7b5de486dc5cb9a0dd337ffa08e541270d99588857e68694628b862ce3a4f0b` |
-| `ext-exterior-boundary-connected` | `5e10a290353f8b24e7a60dc086624b84abc04daab771f9ac3f0c730f4a07e628` |
+| `ext-exterior-boundary-connected` | `2599183e5fd708450a20b6315c5fe47256fce74670839892b023190277d1a414` |
 | `lem-dgt4-blocking-to-crossing` | `52e7e161eee97f2cf1730940ac7ba575024df8618eb9fb993709dcebfa056e62` |
-| `ext-planar-rsw` | `0ae2bd89db0f6fa9278a60b555de6de2e834feba5a12bd5ab4c2ced2685ecdc4` |
-| `ext-lss-domination` | `98f2a1d197d73dbbfc9de9ad1d4ee5c13977d9b62495b8befb83ff70f2fd5a96` |
+| `ext-planar-rsw` | `a2059c6e919e67d28721aab634ff09a4943db683421ec6f35d1ec145fed3d215` |
+| `ext-lss-domination` | `c6f4be75d2b5dfe763ef1c61ac14f390737ebc1f93b74b8957e2ee72db8efcd6` |
 | `ext-continuum-optimal-stopping` | `931f93dee4cbf8fcc93ff9a02c722c94eecf01c9f660b5c0000e293eab96dbb0` |
 | `prop-brownian-os` | `08817d8e162539b2f0778a8dd672450d53fa4aa6800b2ce3d2cb8de31ab19f20` |
 | `lem-sobolev-tightness` | `28aa1819493b17d96196507f2f41e88ed26948c46d39b957b19761f6b6326fbf` |
 | `lem-dgt4-weighted-last-visits` | `bfa9926b9b3214fb23442fee101487cee6a9ded9d11ba414412dff5793e14374` |
 | `ext-normal-comparison` | `9d182f5931907e3e88e06a53d4e38096c3d40f9a61a59714ff6808759f6f52eb` |
-| `ext-continuum-rsw` | `cf22eb43e6fa4556064182210a488dae35f4e8c38012cc56221b775d5f4faaf6` |
+| `ext-continuum-rsw` | `bc2df2d4c24ea44e33d84ed613db216dca64bbe8a5125c7ccbdfbe8eac537a7e` |
 | `ext-pitt-gaussian-fkg` | `d8a48edc39551688cfcb4cd7e6a5edb6147dd200aab20e212c7c826eecfdd14a` |
 | `ext-gaussian-law-covariance` | `a74a2ccb839f261ecc9e1775bb1b5309f05eb87690ac7dc0c99585f3de7d7531` |
 | `ext-pinsker` | `051063a0dfae9d4317f653c7bab3be752d3059be80fcb4f73b75fecc72f0adc8` |
-| `ext-cube-stopping-stability` | `6d087780d8c28e94430977e47e5df786082268f7575102d0c8694f194d0ecb63` |
+| `ext-cube-stopping-stability` | `3293f66f9a4d5ff2e13cc7aa8753ff3653ee9547df5449e7c4471542a1aaf650` |
 | `ext-gaussian-lipschitz-concentration` | `afb0ce594d4041e341a41bfc3b12b97c2aa2b67d70b73de9f82f91917022f6ac` |
-| `ext-membrane-scaling-four` | `cf0693588491997322265c8876df370494020d9625222fd7207702756f0afab0` |
-| `ext-continuum-stopping-stability` | `1a29e4bcaedbd8e44aadb532d4de7f8bf74e122300908b8bcc67f6e70e930cb8` |
+| `ext-membrane-scaling-four` | `38d713d667f32d00e950cbc34d572eaee68009afe89357a51ecdd4692988a0e2` |
+| `ext-continuum-stopping-stability` | `239ab0027dac374edf2fadfd68b64b799a86901717ff500bd7bc4f5a84ece071` |
 | `ext-rellich-kondrachov-negsobolev` | `daf6030341cf030c79bdf516799d63e29f9057341abe9b528b681ebda3a29c03` |
 | `ext-ball-occupation-density` | `0df63b53fe69f49f5fd75f72e653b57d9faef1e62d3a54bd161408444617670e` |
 | `lem-recursion` | `5463c5f8eaf71f004a6336cd33127a790f2ddb29948a7fedb29c344687102ab1` |
@@ -229,7 +229,7 @@ verifies these; the recipe is in `CORRESPONDENCE.md`.
 | `thm-main-explosion-iii-a` | `b165790a943142008377ea6e0dae67988d9f42fe19678c6c9eb82fd7e38c8d61` |
 | `thm-main-explosion-iii-b` | `670253366db20953efea4004c821a376d8628b9f640b2093838db687f993c70b` |
 | `thm-main-explosion-ii-c` | `9586262156f799140d8da342905a7d8ba486d44606dae16f1713bf9467b7b43f` |
-| `ext-intersection-second-moment` | `d8040d1d37b435ad8e3dcdf38473ee172e6e94091830b8f413b557b824221aae` |
+| `ext-intersection-second-moment` | `9138edc1b642c660fdd20c08bc815beed783768ab0d3cf1791421ee2d9e17c51` |
 | `cor-mean-localization` | `d808abb774b9c47af4c39a74fc71ffb7f66d542c6ccd02a416a2825969a5850a` |
 | `prop-d4-diffusive-tightness` | `ae21b2376b073f2792fcefa0a58762c774aa940c1619d4a8d04a5ff6e01bfd95` |
 | `thm-critical-toppling` | `24a69b951ee78548541af7484cba209080925de83e9e229cae43210e8bff3cdb` |

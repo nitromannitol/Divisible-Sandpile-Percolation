@@ -2,6 +2,7 @@ import Sandpile.External.Stopping.KilledWalkValueSubsequence
 import Sandpile.External.Stopping.BrownianPathLawBrownian
 import Sandpile.External.Stopping.WalkBrownianUpper
 import Sandpile.External.Stopping.CubeStoppingValueLaw
+import Sandpile.External.Stopping.KilledRewardApproximation
 
 /-!
 # Brownian upper bounds for killed walk values
@@ -73,5 +74,36 @@ theorem eventually_killed_grid_value_le_continuous_brownian_cube
     (fun s z => -G s z) T 1 a + ε at h
   rw [hval] at h
   exact h.mono (fun _ hn => hn.le)
+
+/-- Uniformly approximating rewards retain the sequential killed-grid upper
+bound for a continuous Brownian realization. -/
+theorem eventually_approx_killed_grid_value_le_continuous_brownian_cube
+    {d : ℕ} [NeZero d] (R : ℕ → ℝ) (q : ℕ → Site d)
+    (hRpos : ∀ n, 0 < R n) (hR : Tendsto R atTop atTop)
+    (a : Continuum.Space d)
+    (hstart : Tendsto (fun n => Lclt.scaledSite (R n) (q n)) atTop (𝓝 a))
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : ℝ≥0 → Ω → Continuum.Space d) (hB : Continuum.IsBrownian d a B P)
+    (hm : ∀ t, Measurable (B t)) (hc : ∀ ω, Continuous fun t => B t ω)
+    (T : ℝ≥0) (H : ℕ → ℝ≥0) (hH : Tendsto H atTop (𝓝 T))
+    (G : ℝ → Continuum.Space d → ℝ)
+    (hGc : Continuous (fun p : ℝ × Continuum.Space d => G p.1 p.2))
+    (G' : ℕ → ℝ → Continuum.Space d → ℝ) (M : ℝ)
+    (hG : ∀ s z, |G s z| ≤ M) (hG' : ∀ n s z, |G' n s z| ≤ M)
+    (happrox : ∀ ε > 0, ∀ᶠ n in atTop, ∀ s ∈ Set.Icc (0 : ℝ) (H n : ℝ),
+      ∀ z, |G s z - G' n s z| ≤ ε)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ n in atTop, killedStoppingSup (supBox (q n) (R n)) ⌊R n ^ 2 * (H n : ℝ)⌋₊
+      (q n) (fun k X => G' n
+        (((⌊R n ^ 2 * (H n : ℝ)⌋₊ : ℕ) - (k : ℝ)) / R n ^ 2)
+        (Lclt.scaledSite (R n) (X k))) ≤
+      Continuum.brownianDiscountCube B P (fun s z => -G s z) T 1 a + ε := by
+  have hupper := eventually_killed_grid_value_le_continuous_brownian_cube
+    R q hRpos hR a hstart P B hB hm hc T H hH G hGc M hG (ε / 2) (by positivity)
+  filter_upwards [hupper, happrox (ε / 2) (by positivity)] with n hn ha
+  have hcmp := abs_killedGridReward_sub_le_of_uniform (hRpos n) (supBox (q n) (R n)) (q n)
+    (H n : ℝ) M (ε / 2) (H n).property G (G' n) hG (hG' n)
+    (fun s hs z => ha s hs z)
+  linarith [(abs_le.mp hcmp).1]
 
 end Sandpile.External.Stopping

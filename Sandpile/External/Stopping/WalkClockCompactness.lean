@@ -63,6 +63,8 @@ theorem exists_walk_clock_limit_with_reward_bound {d : ℕ} [NeZero d]
     (M : ℝ) (hG : ∀ s z, |G s z| ≤ M) :
     ∃ (φ : ℕ → ℕ) (ρ : ProbabilityMeasure (C(ℝ≥0, Continuum.Space d) × I)),
       StrictMono φ ∧ ρ.map Prod.fst = ν ∧
+      Tendsto (fun n => normalizedWalkClockLaw (R (φ n)) (q (φ n)) c (τ (φ n))
+        (LatticeProb.measurable_isWalkStopping (hτ (φ n)) (hτH (φ n)))) atTop (𝓝 ρ) ∧
       (∀ F : (C(ℝ≥0, Continuum.Space d) × I) →ᵇ ℝ,
         Tendsto (fun n => ∫ X, F (diffusiveWalkPath (R (φ n)) X,
           normalizedWalkClock (R (φ n)) c (τ (φ n)) X) ∂(walkLaw d (q (φ n))))
@@ -84,7 +86,7 @@ theorem exists_walk_clock_limit_with_reward_bound {d : ℕ} [NeZero d]
   let := TopologicalSpace.upgradeIsCompletelyMetrizable C(ℝ≥0, Continuum.Space d)
   obtain ⟨φ, ρ, hφ, hlim, hmarg'⟩ :=
     exists_subseq_joint_law_of_compact_clock_of_tendsto μ ν hmarg
-  refine ⟨φ, ρ, hφ, hmarg', ?_, ?_⟩
+  refine ⟨φ, ρ, hφ, hmarg', hlim, ?_, ?_⟩
   · intro F
     have h := (ProbabilityMeasure.tendsto_iff_forall_integral_tendsto.1 hlim) F
     have heq (n : ℕ) : ∫ p, F p ∂(μ (φ n) : Measure (C(ℝ≥0, Continuum.Space d) × I)) =

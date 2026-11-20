@@ -93,3 +93,21 @@ theorem Sandpile.Support.isStoppingTime_usualAugmentation
       Sandpile.Support.le_aeCompletedSpace P (𝓕 t)
     exact h1.trans ((Sandpile.Support.aeCompletedFiltration P 𝓕).le_rightCont t)
   exact hle _ (hτ t)
+
+/-- A stopping time of the right-continuation remains a stopping time after
+completing the filtration by ambient null sets. -/
+theorem Sandpile.Support.isStoppingTime_usualAugmentation_of_rightCont
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (𝓕 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω))
+    (τ : Ω → ℝ≥0) (hτ : IsStoppingTime 𝓕.rightCont (fun ω => (τ ω : ℝ≥0∞))) :
+    IsStoppingTime (Sandpile.Support.aeCompletedFiltration P 𝓕).rightCont
+      (fun ω => (τ ω : ℝ≥0∞)) := by
+  intro s
+  rw [Filtration.rightCont_eq, MeasurableSpace.measurableSet_iInf]
+  intro t
+  rw [MeasurableSpace.measurableSet_iInf]
+  intro hst
+  have hle : 𝓕.rightCont s ≤ 𝓕 t := by
+    rw [Filtration.rightCont_eq]
+    exact iInf₂_le t hst
+  exact (hle.trans (Sandpile.Support.le_aeCompletedSpace P (𝓕 t))) _ (hτ s)

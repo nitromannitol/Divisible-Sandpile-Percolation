@@ -12,23 +12,20 @@ natural filtration and in its usual augmentation.
 open MeasureTheory ProbabilityTheory Filter Topology
 open scoped NNReal ENNReal
 
-/-- The natural-filtration Brownian stopping value agrees with its augmented
-filtration value when the reward has an integrable path bound. -/
-theorem Sandpile.Support.snellValue_eq_sSup_usualAugmentation_of_integrable_bound
+/-- Continuous finite-horizon rewards have continuous paths and measurable
+stopped payoffs for a process with continuous paths and measurable slices. -/
+theorem Sandpile.Support.brownian_stopping_reward_regular
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω)
     (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
     (hBc : ∀ ω, Continuous fun t => B t ω)
     (hBm : ∀ t, StronglyMeasurable (B t))
     (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ)
     (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
-      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
-    (bound : Ω → ℝ) (hint : Integrable bound P)
-    (hbound : ∀ᵐ ω ∂P, ∀ t ≤ T, ‖G ((T : ℝ) - t) (B t ω)‖ ≤ bound ω) :
-    Sandpile.External.Snell.snellValue B P G T =
-    sSup {a : ℝ | ∃ σ : Ω → ℝ≥0,
-      IsStoppingTime (Sandpile.Support.aeCompletedFiltration P
-        (LatticeProb.natFiltration B hBm)).rightCont (fun ω => (σ ω : ℝ≥0∞)) ∧
-      (∀ ω, σ ω ≤ T) ∧ a = ∫ ω, G ((T : ℝ) - σ ω) (B (σ ω) ω) ∂P} := by
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ)) :
+    (∀ ω, ContinuousOn (fun t : ℝ≥0 => G ((T : ℝ) - t) (B t ω)) (Set.Icc 0 T)) ∧
+    (∀ σ : Ω → ℝ≥0, IsStoppingTime (LatticeProb.natFiltration B hBm)
+      (fun ω => (σ ω : ℝ≥0∞)) → (∀ ω, σ ω ≤ T) →
+      AEStronglyMeasurable (fun ω => G ((T : ℝ) - σ ω) (B (σ ω) ω)) P) := by
   let 𝓕 := LatticeProb.natFiltration B hBm
   let R : ℝ≥0 → Ω → ℝ := fun t ω => G ((T : ℝ) - t) (B t ω)
   have hRcont : ∀ ω, ContinuousOn (fun t => R t ω) (Set.Icc 0 T) := by
@@ -71,6 +68,29 @@ theorem Sandpile.Support.snellValue_eq_sSup_usualAugmentation_of_integrable_boun
       rw [min_eq_right hT, max_eq_right h0]
     rw [← heq]
     exact hm.stronglyMeasurable.aestronglyMeasurable
+  exact ⟨hRcont, hmeas⟩
+
+/-- The natural-filtration Brownian stopping value agrees with its augmented
+filtration value when the reward has an integrable path bound. -/
+theorem Sandpile.Support.snellValue_eq_sSup_usualAugmentation_of_integrable_bound
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω)
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hBc : ∀ ω, Continuous fun t => B t ω)
+    (hBm : ∀ t, StronglyMeasurable (B t))
+    (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (T : ℝ) ×ˢ Set.univ))
+    (bound : Ω → ℝ) (hint : Integrable bound P)
+    (hbound : ∀ᵐ ω ∂P, ∀ t ≤ T, ‖G ((T : ℝ) - t) (B t ω)‖ ≤ bound ω) :
+    Sandpile.External.Snell.snellValue B P G T =
+    sSup {a : ℝ | ∃ σ : Ω → ℝ≥0,
+      IsStoppingTime (Sandpile.Support.aeCompletedFiltration P
+        (LatticeProb.natFiltration B hBm)).rightCont (fun ω => (σ ω : ℝ≥0∞)) ∧
+      (∀ ω, σ ω ≤ T) ∧ a = ∫ ω, G ((T : ℝ) - σ ω) (B (σ ω) ω) ∂P} := by
+  let 𝓕 := LatticeProb.natFiltration B hBm
+  let R : ℝ≥0 → Ω → ℝ := fun t ω => G ((T : ℝ) - t) (B t ω)
+  obtain ⟨hRcont, hmeas⟩ :=
+    Sandpile.Support.brownian_stopping_reward_regular P B hBc hBm T G hG
   have hh := Sandpile.Support.sSup_stopping_payoffs_eq_usualAugmentation
     P 𝓕 T R bound (ae_of_all _ hRcont) hint hbound hmeas
   change sSup {a : ℝ | ∃ σ : Ω → ℝ≥0,

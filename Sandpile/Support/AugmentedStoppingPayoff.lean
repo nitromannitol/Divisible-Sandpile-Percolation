@@ -127,3 +127,32 @@ theorem Sandpile.Support.sSup_stopping_payoffs_eq_usualAugmentation
     intro a ha
     exact le_csSup hUbound (hsubset ha)
   · exact csSup_le hU hu
+
+/-- Continuous dominated stopping payoffs form a bounded-above set after the
+usual augmentation. -/
+theorem Sandpile.Support.bddAbove_augmented_stopping_payoffs
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω)
+    (𝓕 : Filtration ℝ≥0 (inferInstance : MeasurableSpace Ω)) (T : ℝ≥0)
+    (R : ℝ≥0 → Ω → ℝ) (bound : Ω → ℝ)
+    (hcont : ∀ᵐ ω ∂P, ContinuousOn (fun s => R s ω) (Set.Icc 0 T))
+    (hint : Integrable bound P)
+    (hbound : ∀ᵐ ω ∂P, ∀ s ≤ T, ‖R s ω‖ ≤ bound ω)
+    (hmeas : ∀ σ : Ω → ℝ≥0,
+      IsStoppingTime 𝓕 (fun ω => (σ ω : ℝ≥0∞)) → (∀ ω, σ ω ≤ T) →
+      AEStronglyMeasurable (fun ω => R (σ ω) ω) P) :
+    BddAbove {a : ℝ | ∃ σ : Ω → ℝ≥0,
+      IsStoppingTime (Sandpile.Support.aeCompletedFiltration P 𝓕).rightCont
+        (fun ω => (σ ω : ℝ≥0∞)) ∧ (∀ ω, σ ω ≤ T) ∧
+      a = ∫ ω, R (σ ω) ω ∂P} := by
+  refine ⟨∫ ω, bound ω ∂P, ?_⟩
+  rintro a ⟨σ, hσ, hσT, rfl⟩
+  apply Sandpile.Support.payoff_le_of_usualAugmentation P 𝓕 σ T hσT hσ
+    R bound hcont hint hbound hmeas
+  intro η hη hηT
+  have hn : ∀ᵐ ω ∂P, ‖R (η ω) ω‖ ≤ bound ω := by
+    filter_upwards [hbound] with ω hω
+    exact hω (η ω) (hηT ω)
+  have hi : Integrable (fun ω => R (η ω) ω) P := hint.mono' (hmeas η hη hηT) hn
+  apply integral_mono_ae hi hint
+  filter_upwards [hn] with ω hω
+  exact (le_abs_self (R (η ω) ω)).trans (by simpa only [Real.norm_eq_abs] using hω)

@@ -247,6 +247,7 @@ nodes:
     state: FROZEN
     frozen_sha256: 931f93dee4cbf8fcc93ff9a02c722c94eecf01c9f660b5c0000e293eab96dbb0
     provider: Sandpile.External.ContinuumOptimalStopping
+    approved: "2026-11-20"
 
   - id: prop-brownian-os
     version: 4
@@ -257,6 +258,7 @@ nodes:
     state: SEALED
     frozen_sha256: 08817d8e162539b2f0778a8dd672450d53fa4aa6800b2ce3d2cb8de31ab19f20
     provider: Sandpile.Frozen.brownian_optimal_stopping
+    approved: "2026-11-20"
 
   - id: lem-sobolev-tightness
     version: 2

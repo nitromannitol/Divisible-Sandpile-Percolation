@@ -688,7 +688,7 @@ noncomputable def timeTail (r : ℕ) (A : ℝ) (u : Site 4) : ℝ :=
 end BallGreen
 
 /-- The dimension-four ball-killed Green estimates of `ssec:green-estimates`
-(Lawler and Limic, Theorem 4.3.1 and Chapter 6).  Assumed. -/
+(Lawler and Limic, Theorem 4.3.1 and Chapter 6). -/
 def BallGreenBounds : Prop :=
   ∃ C c : ℝ, 0 < C ∧ 0 < c ∧ ∀ r : ℕ, 2 ≤ r →
     (∀ u : Site 4,
@@ -742,7 +742,7 @@ noncomputable def tailKernel (d : ℕ) (m : ℕ) (y : Site d) : ℝ :=
   ∑' j : {j : ℕ // m ≤ j}, heatKernel d (j : ℕ) 0 y
 
 /-- The `d ≥ 5` Green-function estimates of `ssec:green-estimates` (Lawler and Limic,
-Theorem 4.3.1, and Lawler, Chapter 3).  Assumed. -/
+Theorem 4.3.1, and Lawler, Chapter 3). -/
 def GreenBoundsHigh : Prop :=
   ∀ d : ℕ, 5 ≤ d →
     (∃ C : ℝ, 0 < C ∧
@@ -803,7 +803,7 @@ end Variance
 
 /-- The finite-time variance scale `eq:Qt-table`, the membrane correlation bound
 `eq:corr-bound`, and the dimension-four window and tail bounds of
-`ssec:green-estimates`, in their Green-kernel form.  Assumed. -/
+`ssec:green-estimates`, in their Green-kernel form. -/
 def VarianceScale : Prop :=
   (∀ d : ℕ, 1 ≤ d →
       ∃ c C : ℝ, 0 < c ∧ 0 < C ∧
@@ -834,7 +834,7 @@ def VarianceScale : Prop :=
 
 /-- The universal RSW comparison for symmetric, positively associated planar
 site percolation, expressed through real field superlevel sets (Köhler-Schindler and
-Tassion, Theorem 1 and Comment 1).  Assumed. -/
+Tassion, Theorem 1 and Comment 1). -/
 def PlanarRSW : Prop :=
   ∀ ρ : ℕ, 1 ≤ ρ → ∃ ψ : Set.Icc (0 : ℝ) 1 ≃o Set.Icc (0 : ℝ) 1,
     ∀ μ : Measure (Site 2 → ℝ), ∀ [IsProbabilityMeasure μ],
@@ -854,7 +854,7 @@ def SameParity {d : ℕ} (x w : Site d) : Prop :=
 
 /-- The Gaussian upper bound, the total-variation gradient bound and the
 maximal-displacement bound for the heat kernel (`ssec:green-estimates`; Lawler and Limic,
-Propositions 2.4.1 and 2.4.4, with Hoeffding's inequality).  Assumed. -/
+Propositions 2.4.1 and 2.4.4, with Hoeffding's inequality). -/
 def HeatKernelBounds : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     (∃ C c : ℝ, 0 < C ∧ 0 < c ∧
@@ -874,8 +874,7 @@ def HeatKernelBounds : Prop :=
             ENNReal.ofReal (C * Real.exp (-c * R ^ 2 / (n : ℝ))))
 
 /-- Domination of stationary finite-range dependent planar site processes by
-supercritical Bernoulli percolation (Liggett, Schonmann and Stacey, Corollary 1.4).
-Assumed. -/
+supercritical Bernoulli percolation (Liggett, Schonmann and Stacey, Corollary 1.4). -/
 def LSSDomination : Prop :=
   ∀ k : ℕ,
     ∃ δ : ℝ, 0 < δ ∧
@@ -895,8 +894,7 @@ def LSSDomination : Prop :=
       (∀ z : Site 2, 1 - δ ≤ (P {ω : Ω | X z ω = true}).toReal) →
       ∀ᵐ ω ∂P, HasInfiniteComponent {z : Site 2 | X z ω}
 
-/-- Timár's exterior-boundary connectivity theorem on the lattice (Timár, Theorem 3).
-Assumed. -/
+/-- Timár's exterior-boundary connectivity theorem on the lattice (Timár, Theorem 3). -/
 def ExteriorBoundaryConnected : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∀ D : Set (Site d), D.Finite →
     ((starLatticeGraph d).induce D).Connected →
@@ -904,7 +902,7 @@ def ExteriorBoundaryConnected : Prop :=
 
 /-- The universal RSW comparison for symmetric, positively associated continuous
 planar fields, expressed through superlevel-set crossings (the continuum form of
-Köhler-Schindler and Tassion, Theorem 1).  Assumed. -/
+Köhler-Schindler and Tassion, Theorem 1). -/
 def ContinuumRSW : Prop :=
   ∀ ρ : ℝ, 1 ≤ ρ → ∃ ψ : Set.Icc (0 : ℝ) 1 ≃o Set.Icc (0 : ℝ) 1,
     ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
@@ -922,7 +920,7 @@ def ContinuumRSW : Prop :=
               {u | level ≤ X u ω}}
 
 /-- Pitt's Gaussian FKG theorem: a centred Gaussian planar field with nonnegative
-covariances is positively associated (Pitt).  Assumed. -/
+covariances is positively associated (Pitt). -/
 def PittGaussianFKG : Prop :=
   ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
     (X : Continuum.Space 2 → Ω → ℝ),
@@ -933,7 +931,7 @@ def PittGaussianFKG : Prop :=
     Continuum.IsAssociatedField P X
 
 /-- The Green function of a Euclidean ball, in occupation-density form (Mörters and Peres,
-*Brownian Motion*, Chapter 3).  Assumed. -/
+*Brownian Motion*, Chapter 3). -/
 def BallOccupationDensity : Prop :=
   ∀ (d : ℕ), d = 2 ∨ d = 3 → ∀ (s : ℝ), 0 < s →
   ∀ (u : Continuum.Space 2)
@@ -963,7 +961,7 @@ noncomputable def scaledSite {d : ℕ} (R : ℝ) (x : Site d) :
 end Lclt
 
 /-- The local central limit theorem in the parity form `eq:lclt-parity` (Lawler and
-Limic, Theorem 2.1.3).  Assumed. -/
+Limic, Theorem 2.1.3). -/
 def LocalCLT : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ δ T C₀ : ℝ, 0 < δ → δ < T →
@@ -983,7 +981,7 @@ def LocalCLT : Prop :=
 
 /-- Stability of cube-killed optimal-stopping values under uniform convergence of
 bounded rewards, with the invariance principle for the killed stopped walk
-(Coquet and Toldo, Theorem 3 and Corollary 4).  Assumed. -/
+(Coquet and Toldo, Theorem 3 and Corollary 4). -/
 def CubeStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]
@@ -1012,7 +1010,7 @@ def CubeStoppingStability : Prop :=
 
 /-- Stability of optimal-stopping values under uniform convergence of bounded
 rewards, with the invariance principle for the stopped walk (Coquet and Toldo,
-Theorem 3 and Corollary 4).  Assumed. -/
+Theorem 3 and Corollary 4). -/
 def ContinuumStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type u) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]
@@ -1059,7 +1057,7 @@ end Snell
 
 /-- The finite-horizon optimal-stopping theorem for Brownian motion with continuous paths and
 strongly measurable time slices and a continuous gain of polynomial growth (Peskir and Shiryaev,
-Theorem 2.2).  Assumed. -/
+Theorem 2.2). -/
 def ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (T : ℝ), 0 < T →
     ∀ G : ℝ → Continuum.Space d → ℝ,
@@ -1093,7 +1091,7 @@ def ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω] : Prop :=
                 ∀ᵐ ω ∂P, τ ω ≤ τ' ω
 
 /-- The dimension-four paired local limit estimate (Lawler and Limic, Theorem 2.1.3,
-Eq. (2.8)).  Assumed. -/
+Eq. (2.8)). -/
 def PairedLocalCLTFour : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n → ∀ x y : Site 4,
     |heatKernel 4 n x y + heatKernel 4 (n + 1) x y -
@@ -1102,7 +1100,7 @@ def PairedLocalCLTFour : Prop :=
       C / (n : ℝ) ^ 3
 
 /-- The covariance form of the tightness criterion of Furlan and Mourrat, Theorem 2.30,
-with the identification of `B^{-s,loc}_{2,2}` with `H^{-s}_loc`.  Assumed. -/
+with the identification of `B^{-s,loc}_{2,2}` with `H^{-s}_loc`. -/
 def ContinuumBesovTightness (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (β K : ℝ), 0 < β → β < (d : ℝ) → ∀ s : ℝ, β / 2 < s →
     ∀ (P : Measure Ω) [IsProbabilityMeasure P]
@@ -1134,8 +1132,7 @@ noncomputable def membraneDefect (R : ℝ) (t : ℕ)
       (fun x => greenTime 4 t x y - potentialKernel 4 x y)) φ
 
 /-- The scaling limit of the four-dimensional discrete membrane field
-(Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11).
-Assumed. -/
+(Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11). -/
 def MembraneScalingLimitFour : Prop :=
   ∀ ν : Measure ℝ, ∀ _hprob : IsProbabilityMeasure ν, ∫ z, z ∂ν = 0 →
     0 < evariance id ν → evariance id ν < ⊤ →
@@ -1164,7 +1161,7 @@ def MembraneScalingLimitFour : Prop :=
             ENNReal.ofReal ε)
 
 /-- Gaussian concentration for a Lipschitz functional (Borell; Tsirelson, Ibragimov
-and Sudakov).  Assumed. -/
+and Sudakov). -/
 def GaussianLipschitzConcentration : Prop :=
   ∀ (ι : Type) (F : (ι → ℝ) → ℝ) (L : ℝ), 0 < L →
     Measurable F → Integrable F (gaussLaw ι) →
@@ -1174,7 +1171,7 @@ def GaussianLipschitzConcentration : Prop :=
       (gaussLaw ι) {ω | ∫ η, F η ∂(gaussLaw ι) + t ≤ F ω}
         ≤ ENNReal.ofReal (Real.exp (-(t ^ 2) / (2 * L ^ 2)))
 
-/-- The normal comparison inequality (Li and Shao, Corollary 2.1).  Assumed. -/
+/-- The normal comparison inequality (Li and Shao, Corollary 2.1). -/
 def NormalComparison : Prop :=
   ∃ C : ℝ, 0 < C ∧
     ∀ (m : ℕ) (v : ℝ≥0), 0 < v →

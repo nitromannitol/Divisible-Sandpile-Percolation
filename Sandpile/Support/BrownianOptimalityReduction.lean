@@ -37,8 +37,8 @@ theorem Sandpile.Support.first_contact_greatest_and_minimal_of_expectation_bound
     (hopt : (∫ ω, G ((T : ℝ) - τ ω) (B x (τ ω) ω) ∂P) =
       Sandpile.External.Snell.snellValue (B x) P G T)
     (hupper : ∀ σ : Ω → ℝ≥0, Sandpile.Continuum.IsBrownianStopping (B x) σ →
-      (∀ ω, σ ω ≤ T) → (∫ ω, M (σ ω) ω ∂P) ≤
-        Sandpile.External.Snell.snellValue (B x) P G T) :
+      (∀ ω, σ ω ≤ T) → Integrable (fun ω => M (σ ω) ω) P ∧
+        (∫ ω, M (σ ω) ω ∂P) ≤ Sandpile.External.Snell.snellValue (B x) P G T) :
     IsGreatest (Sandpile.External.Snell.attainable (B x) P G T)
       (∫ ω, G ((T : ℝ) - τ ω) (B x (τ ω) ω) ∂P) ∧
     ∀ σ : Ω → ℝ≥0, Sandpile.Continuum.IsBrownianStopping (B x) σ →
@@ -67,4 +67,4 @@ theorem Sandpile.Support.first_contact_greatest_and_minimal_of_expectation_bound
         x P (B x) (hB x) (hBm x) (hBc x) T G hG hgrow).1 σ hσ hσT
     exact Sandpile.Support.ae_first_contact_le_of_integral_bound P M
       (fun s ω => G ((T : ℝ) - s) (B x s ω)) T τ σ hfirst hσT hσMi hσRi
-      (ae_of_all _ fun ω => hMdom (σ ω) (hσT ω) ω) _ (hupper σ hσ hσT) hσopt
+      (ae_of_all _ fun ω => hMdom (σ ω) (hσT ω) ω) _ (hupper σ hσ hσT).2 hσopt

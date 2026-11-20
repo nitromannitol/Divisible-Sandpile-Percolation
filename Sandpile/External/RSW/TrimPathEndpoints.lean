@@ -14,7 +14,8 @@ theorem exists_subwalk_trim_endpoints {V : Type*} {G : SimpleGraph V} {a b : V}
     (p : G.Walk a b) (hp : p.IsPath) (hne : a ≠ b) (hsep : ¬ G.Adj a b)
     (C : V → Prop) (hs : ∀ z ∈ p.support, z ≠ a → z ≠ b → C z) :
     ∃ (c d : V) (q : G.Walk c d), q.IsSubwalk p ∧
-      (c = a ∨ G.Adj a c) ∧ (d = b ∨ G.Adj d b) ∧
+      ((C a ∧ c = a) ∨ (¬ C a ∧ G.Adj a c)) ∧
+      ((C b ∧ d = b) ∨ (¬ C b ∧ G.Adj d b)) ∧
       (∀ z ∈ q.support, C z) := by
   classical
   have hnil : ¬ p.Nil := fun h => hne h.eq
@@ -40,29 +41,31 @@ theorem exists_subwalk_trim_endpoints {V : Type*} {G : SimpleGraph V} {a b : V}
     exact h.2
   by_cases ha : C a
   · by_cases hb : C b
-    · refine ⟨a, b, p, SimpleGraph.Walk.isSubwalk_rfl p, Or.inl rfl, Or.inl rfl, ?_⟩
+    · refine ⟨a, b, p, SimpleGraph.Walk.isSubwalk_rfl p, Or.inl ⟨ha, rfl⟩,
+        Or.inl ⟨hb, rfl⟩, ?_⟩
       intro z hz
       by_cases hza : z = a
       · simpa only [hza] using ha
       by_cases hzb : z = b
       · simpa only [hzb] using hb
       exact hs z hz hza hzb
-    · refine ⟨a, p.penultimate, p.dropLast, hdropSub, Or.inl rfl,
-        Or.inr (p.adj_penultimate hnil), ?_⟩
+    · refine ⟨a, p.penultimate, p.dropLast, hdropSub, Or.inl ⟨ha, rfl⟩,
+        Or.inr ⟨hb, p.adj_penultimate hnil⟩, ?_⟩
       intro z hz
       by_cases hza : z = a
       · simpa only [hza] using ha
       have hzb : z ≠ b := fun h => hbDrop (h ▸ hz)
       exact hs z (hdropSub.support_subset hz) hza hzb
   · by_cases hb : C b
-    · refine ⟨p.snd, b, p.tail, htailSub, Or.inr (p.adj_snd hnil), Or.inl rfl, ?_⟩
+    · refine ⟨p.snd, b, p.tail, htailSub, Or.inr ⟨ha, p.adj_snd hnil⟩,
+        Or.inl ⟨hb, rfl⟩, ?_⟩
       intro z hz
       by_cases hzb : z = b
       · simpa only [hzb] using hb
       have hza : z ≠ a := fun h => haTail (h ▸ hz)
       exact hs z (htailSub.support_subset hz) hza hzb
     · refine ⟨p.snd, p.tail.penultimate, p.tail.dropLast, hmidSub,
-        Or.inr (p.adj_snd hnil), Or.inr (p.tail.adj_penultimate htailnil), ?_⟩
+        Or.inr ⟨ha, p.adj_snd hnil⟩, Or.inr ⟨hb, p.tail.adj_penultimate htailnil⟩, ?_⟩
       intro z hz
       have hzTail := (SimpleGraph.Walk.isSubwalk_rfl p.tail).dropLast.support_subset hz
       have hza : z ≠ a := fun h => haTail (h ▸ hzTail)

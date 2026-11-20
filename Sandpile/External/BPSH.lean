@@ -30,7 +30,8 @@ noncomputable def Sandpile.optimalStop {d : ℕ} (ζ : Sandpile.Site d → ℝ) 
   sInf {k : ℕ | k ≤ n ∧ Sandpile.stoppingValue ζ (n - k) (X k) = 0}
 
 -- FROZEN-STATEMENT-BEGIN
-/-- Theorem 3.2 of `BPSH`, the optimal-stopping representation `thm:RW`, assumed. -/
+/-- Theorem 3.2 of `BPSH`, the optimal-stopping representation `thm:RW`.
+Proved as `Sandpile.External.optimalStopping`. -/
 def Sandpile.External.OptimalStopping : Prop :=
   ∀ (d : ℕ), 1 ≤ d → ∀ (ζ : Sandpile.Site d → ℝ) (n : ℕ) (x : Sandpile.Site d),
     Sandpile.odometerOf ζ n x = Sandpile.stoppingValue ζ n x ∧

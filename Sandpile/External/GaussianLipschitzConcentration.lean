@@ -65,7 +65,7 @@ open scoped ENNReal NNReal
 Tsirelson-Ibragimov-Sudakov).  A measurable functional of a family of
 independent standard Gaussians which moves by at most `L` times the `ℓ²`
 distance between two configurations exceeds its mean by `t` with probability at
-most `exp(-t²/(2L²))`.  Assumed, not proved. -/
+most `exp(-t²/(2L²))`.  Proved as `Sandpile.External.gaussianLipschitzConcentration`. -/
 def Sandpile.External.GaussianLipschitzConcentration : Prop :=
   ∀ (ι : Type) (F : (ι → ℝ) → ℝ) (L : ℝ), 0 < L →
     Measurable F → Integrable F (LatticeProb.gaussLaw ι) →

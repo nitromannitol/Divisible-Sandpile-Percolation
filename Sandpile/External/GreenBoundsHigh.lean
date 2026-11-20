@@ -102,7 +102,7 @@ end Sandpile.External
 bounds `eq:dgt4-green-tail`, the square summability `eq:dgt4-green-l2`, the
 time-tail kernel bounds `eq:dgt4-tail-kernel`, and the Green-function forms of
 the two intersection estimates `eq:dgt4-intersection-first-moment` and
-`eq:dgt4-intersection-second-moment`.  Assumed, not proved. -/
+`eq:dgt4-intersection-second-moment`.  Proved as `Sandpile.External.greenBoundsHigh`. -/
 def Sandpile.External.GreenBoundsHigh : Prop :=
   ∀ d : ℕ, 5 ≤ d →
     (∃ C : ℝ, 0 < C ∧

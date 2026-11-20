@@ -59,7 +59,7 @@ open scoped NNReal ENNReal
 Theorem 2.30, at `p = q = 2` with regularity exponent `-β/2` and `α = -s`,
 together with the identification of `B^{-s,loc}_{2,2}(ℝ^d)` with
 `H^{-s}_loc(ℝ^d)`, in the form the paper invokes at `sandpile.tex:1676-1680`.
-Assumed, not proved. -/
+Proved as `Sandpile.External.continuumBesovTightness_holds`. -/
 def Sandpile.External.ContinuumBesovTightness (Ω : Type*) [MeasurableSpace Ω] : Prop :=
   ∀ (d : ℕ) (β K : ℝ), 0 < β → β < (d : ℝ) → ∀ s : ℝ, β / 2 < s →
     ∀ (P : Measure Ω) [IsProbabilityMeasure P]

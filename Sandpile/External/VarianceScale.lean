@@ -150,8 +150,8 @@ end Sandpile.External.Variance
 /-- The finite-time variance scale `eq:Qt-table`, the membrane correlation bound
 `eq:corr-bound`, and the dimension-four window and tail bounds
 `eq:d4-window-l2`, `eq:d4-window-linfty` and `eq:d4-full-window-bounds` of
-`ssec:green-estimates`, all in their scenery-free Green-kernel form.  Assumed,
-not proved. -/
+`ssec:green-estimates`, all in their scenery-free Green-kernel form.  Proved as
+`Sandpile.External.varianceScale`. -/
 def Sandpile.External.VarianceScale : Prop :=
   (∀ d : ℕ, 1 ≤ d →
       ∃ c C : ℝ, 0 < c ∧ 0 < C ∧

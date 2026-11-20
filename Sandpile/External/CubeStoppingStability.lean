@@ -51,7 +51,7 @@ open scoped NNReal ENNReal
 /-- Stability of cube-killed optimal-stopping values under uniform convergence of
 bounded rewards, together with the invariance principle for the killed stopped
 walk (`sandpile.tex:1929-1931` through `sandpile.tex:1900-1907`; Coquet-Toldo,
-Theorem 3 and Corollary 4).  Assumed, not proved. -/
+Theorem 3 and Corollary 4).  Proved as `Sandpile.External.cubeStoppingStability_holds`. -/
 def Sandpile.External.CubeStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]

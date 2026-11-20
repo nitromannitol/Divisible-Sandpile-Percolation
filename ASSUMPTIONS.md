@@ -68,7 +68,7 @@ def Sandpile.External.ContinuumOptimalStopping (Ω : Type*) [MeasurableSpace Ω]
 ```lean
 /-- The universal RSW comparison for symmetric, positively associated
 continuous planar fields, expressed through superlevel-set crossings.
-Assumed, not proved. -/
+Proved as `Sandpile.External.continuumRSW_holds`. -/
 def Sandpile.External.ContinuumRSW : Prop :=
   ∀ ρ : ℝ, 1 ≤ ρ → ∃ ψ : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1,
     ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
@@ -97,7 +97,7 @@ def Sandpile.External.ContinuumRSW : Prop :=
 /-- Stability of optimal-stopping values under uniform convergence of bounded
 rewards, together with the invariance principle for the stopped walk
 (`sandpile.tex:1900-1907`, `sandpile.tex:649`; Coquet-Toldo, Theorem 3 and
-Corollary 4).  Assumed, not proved. -/
+Corollary 4).  Proved as `Sandpile.External.continuumStoppingStability_holds`. -/
 def Sandpile.External.ContinuumStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type u) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]
@@ -135,7 +135,7 @@ def Sandpile.External.ContinuumStoppingStability : Prop :=
 /-- Stability of cube-killed optimal-stopping values under uniform convergence of
 bounded rewards, together with the invariance principle for the killed stopped
 walk (`sandpile.tex:1929-1931` through `sandpile.tex:1900-1907`; Coquet-Toldo,
-Theorem 3 and Corollary 4).  Assumed, not proved. -/
+Theorem 3 and Corollary 4).  Proved as `Sandpile.External.cubeStoppingStability_holds`. -/
 def Sandpile.External.CubeStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]
@@ -172,7 +172,7 @@ def Sandpile.External.CubeStoppingStability : Prop :=
 
 ```lean
 /-- Timár's exterior-boundary connectivity theorem on the lattice.
-Assumed, not proved. -/
+Proved as `Sandpile.External.exteriorBoundaryConnected_holds`. -/
 def Sandpile.External.ExteriorBoundaryConnected : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∀ D : Set (Sandpile.Site d), D.Finite →
     ((Sandpile.starLatticeGraph d).induce D).Connected →
@@ -190,7 +190,7 @@ def Sandpile.External.ExteriorBoundaryConnected : Prop :=
 /-- Domination of stationary finite-range dependent planar site processes
 by supercritical Bernoulli percolation, in the form the paper applies:
 for each dependence range, a small enough one-site deficit gives an
-infinite component.  Assumed, not proved. -/
+infinite component.  Proved as `Sandpile.External.lssDomination`. -/
 def Sandpile.External.LSSDomination : Prop :=
   ∀ k : ℕ,
     ∃ δ : ℝ, 0 < δ ∧
@@ -223,7 +223,8 @@ def Sandpile.External.LSSDomination : Prop :=
 (`sandpile.tex:3341-3342`, citing Cipriani-Hazra-Ruszel Theorem 2 and
 Cipriani-Dan-Hazra Theorem 3.11): a lattice field whose kernel approaches the
 four-dimensional potential kernel in the paired `ℓ²` sense has `ω`-representative
-converging to `𝒢_4^ω` in `H^{-s}(D)`.  Assumed, not proved. -/
+converging to `𝒢_4^ω` in `H^{-s}(D)`.
+Proved as `Sandpile.External.membraneScalingLimitFour_holds`. -/
 def Sandpile.External.MembraneScalingLimitFour : Prop :=
   ∀ ν : Measure ℝ, ∀ _hprob : IsProbabilityMeasure ν, ∫ z, z ∂ν = 0 →
     0 < evariance id ν → evariance id ν < ⊤ →
@@ -267,7 +268,8 @@ the `3/2` power of its variance, and coefficients `a` whose covariance matrix
 `Σ` has quadratic form between `1-δ` and `1+δ`, the law of the linear forms
 `Y_j = ∑_i a_i(j) ξ_i` and the centred Gaussian with covariance `Σ` assign
 probabilities to the orthant `{y_j ≤ h_j}` differing by at most
-`C m^{1/4} \Var(ν)^{3/2} ∑_i |a(i)|³`.  Assumed, not proved. -/
+`C m^{1/4} \Var(ν)^{3/2} ∑_i |a(i)|³`.
+Proved as `Sandpile.External.multivariateBerryEsseen_holds`. -/
 def Sandpile.External.MultivariateBerryEsseen : Prop :=
   ∀ M δ : ℝ, 0 < M → 0 < δ → δ < 1 →
     ∃ C : ℝ, 0 < C ∧
@@ -303,8 +305,8 @@ def Sandpile.External.MultivariateBerryEsseen : Prop :=
 
 ```lean
 /-- The universal RSW comparison for symmetric, positively associated planar
-site percolation, expressed through real field superlevel sets. Assumed,
-not proved. -/
+site percolation, expressed through real field superlevel sets. Proved as
+`Sandpile.External.planarRSW_holds`. -/
 def Sandpile.External.PlanarRSW : Prop :=
   ∀ ρ : ℕ, 1 ≤ ρ → ∃ ψ : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1,
     ∀ μ : Measure (Sandpile.Site 2 → ℝ), ∀ [IsProbabilityMeasure μ],

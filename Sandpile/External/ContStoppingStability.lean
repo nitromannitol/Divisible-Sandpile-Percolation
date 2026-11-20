@@ -114,7 +114,7 @@ universe u
 /-- Stability of optimal-stopping values under uniform convergence of bounded
 rewards, together with the invariance principle for the stopped walk
 (`sandpile.tex:1900-1907`, `sandpile.tex:649`; Coquet-Toldo, Theorem 3 and
-Corollary 4).  Assumed, not proved. -/
+Corollary 4).  Proved as `Sandpile.External.continuumStoppingStability_holds`. -/
 def Sandpile.External.ContinuumStoppingStability : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ (ΩB : Type u) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]

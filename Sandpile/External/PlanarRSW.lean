@@ -25,8 +25,8 @@ open MeasureTheory Set
 
 -- FROZEN-STATEMENT-BEGIN
 /-- The universal RSW comparison for symmetric, positively associated planar
-site percolation, expressed through real field superlevel sets. Assumed,
-not proved. -/
+site percolation, expressed through real field superlevel sets. Proved as
+`Sandpile.External.planarRSW_holds`. -/
 def Sandpile.External.PlanarRSW : Prop :=
   ∀ ρ : ℕ, 1 ≤ ρ → ∃ ψ : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1,
     ∀ μ : Measure (Sandpile.Site 2 → ℝ), ∀ [IsProbabilityMeasure μ],

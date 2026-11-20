@@ -16,7 +16,8 @@ open MeasureTheory ProbabilityTheory Set
 
 -- FROZEN-STATEMENT-BEGIN
 /-- Pitt's Gaussian FKG theorem: a centred Gaussian planar field with
-nonnegative covariances is positively associated.  Assumed, not proved. -/
+nonnegative covariances is positively associated.
+Proved as `Sandpile.External.pittGaussianFKG`. -/
 def Sandpile.External.PittGaussianFKG : Prop :=
   ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
     (X : Sandpile.Continuum.Space 2 → Ω → ℝ),

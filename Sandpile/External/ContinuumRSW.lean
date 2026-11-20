@@ -44,7 +44,7 @@ open MeasureTheory Set
 -- FROZEN-STATEMENT-BEGIN
 /-- The universal RSW comparison for symmetric, positively associated
 continuous planar fields, expressed through superlevel-set crossings.
-Assumed, not proved. -/
+Proved as `Sandpile.External.continuumRSW_holds`. -/
 def Sandpile.External.ContinuumRSW : Prop :=
   ∀ ρ : ℝ, 1 ≤ ρ → ∃ ψ : Icc (0 : ℝ) 1 ≃o Icc (0 : ℝ) 1,
     ∀ (Ω : Type) [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]

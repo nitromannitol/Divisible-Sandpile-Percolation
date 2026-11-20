@@ -24,7 +24,7 @@ covariance `S`, common variance `v` and nonnegative correlations, the
 probability of an orthant differs from the product of the one-dimensional
 probabilities by at most
 `C ∑_{i<j} ρ_{ij} exp(-(b_i²+b_j²)/(2v(1+ρ_{ij})))`, where `ρ_{ij} = S i j / v`.
-Assumed, not proved. -/
+Proved as `Sandpile.External.normalComparison`. -/
 def Sandpile.External.NormalComparison : Prop :=
   ∃ C : ℝ, 0 < C ∧
     ∀ (m : ℕ) (v : ℝ≥0), 0 < v →

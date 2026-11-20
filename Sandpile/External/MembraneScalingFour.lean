@@ -73,7 +73,8 @@ end Sandpile.External
 (`sandpile.tex:3341-3342`, citing Cipriani-Hazra-Ruszel Theorem 2 and
 Cipriani-Dan-Hazra Theorem 3.11): a lattice field whose kernel approaches the
 four-dimensional potential kernel in the paired `ℓ²` sense has `ω`-representative
-converging to `𝒢_4^ω` in `H^{-s}(D)`.  Assumed, not proved. -/
+converging to `𝒢_4^ω` in `H^{-s}(D)`.
+Proved as `Sandpile.External.membraneScalingLimitFour_holds`. -/
 def Sandpile.External.MembraneScalingLimitFour : Prop :=
   ∀ ν : Measure ℝ, ∀ _hprob : IsProbabilityMeasure ν, ∫ z, z ∂ν = 0 →
     0 < evariance id ν → evariance id ν < ⊤ →

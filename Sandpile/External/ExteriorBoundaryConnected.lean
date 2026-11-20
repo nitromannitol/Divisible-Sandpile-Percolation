@@ -17,7 +17,7 @@ proved separately and are not part of this input.
 
 -- FROZEN-STATEMENT-BEGIN
 /-- Timár's exterior-boundary connectivity theorem on the lattice.
-Assumed, not proved. -/
+Proved as `Sandpile.External.exteriorBoundaryConnected_holds`. -/
 def Sandpile.External.ExteriorBoundaryConnected : Prop :=
   ∀ d : ℕ, 2 ≤ d → ∀ D : Set (Sandpile.Site d), D.Finite →
     ((Sandpile.starLatticeGraph d).induce D).Connected →

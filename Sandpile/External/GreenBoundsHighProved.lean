@@ -57,8 +57,8 @@ theorem rpow_half_neg {x : ℝ} (hx : 0 < x) (n : ℕ) :
 end Sandpile.External
 
 -- FROZEN-STATEMENT-BEGIN
-/-- **The `d ≥ 5` Green-function estimates hold**; they are no longer an
-assumption. -/
+/-- **The `d ≥ 5` Green-function estimates hold**, from the shared library's estimates for the
+simple random walk above dimension four. -/
 theorem Sandpile.External.greenBoundsHigh : Sandpile.External.GreenBoundsHigh
 -- FROZEN-STATEMENT-END
 := by

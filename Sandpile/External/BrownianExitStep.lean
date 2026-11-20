@@ -46,7 +46,8 @@ open scoped NNReal ENNReal
 /-- The strong Markov property at the exit time of the ball, in the set-integral form of
 `lem:brownian-ball-localization` (`sandpile.tex:1618`, `sandpile.tex:1640-1665`), for a
 field with an integrable envelope along the motions started near `K`, with the value at
-the exit position taken over the remaining horizon.  Assumed, not proved. -/
+the exit position taken over the remaining horizon.
+Proved as `Sandpile.External.brownianExitStep_holds`. -/
 def Sandpile.External.BrownianExitStep : Prop :=
   ∀ (d : ℕ),
     ∀ (ΩB : Type) [MeasurableSpace ΩB] (PB : Measure ΩB) [IsProbabilityMeasure PB]

@@ -571,7 +571,7 @@ theorem lintegral_interCount_sq_le [NeZero d] (hd : 5 ≤ d) :
 end Sandpile
 
 -- FROZEN-STATEMENT-BEGIN
-/-- **The second intersection estimate holds**; it is no longer an assumption. -/
+/-- **The second intersection estimate holds**, through the local times of the two walks. -/
 theorem Sandpile.External.intersectionSecondMoment : Sandpile.External.IntersectionSecondMoment := by
   intro d hd
   have : NeZero d := ⟨by omega⟩

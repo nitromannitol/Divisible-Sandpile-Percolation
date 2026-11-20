@@ -36,7 +36,7 @@ open MeasureTheory ProbabilityTheory Set
 /-- Domination of stationary finite-range dependent planar site processes
 by supercritical Bernoulli percolation, in the form the paper applies:
 for each dependence range, a small enough one-site deficit gives an
-infinite component.  Assumed, not proved. -/
+infinite component.  Proved as `Sandpile.External.lssDomination`. -/
 def Sandpile.External.LSSDomination : Prop :=
   ∀ k : ℕ,
     ∃ δ : ℝ, 0 < δ ∧

@@ -82,7 +82,7 @@ end Sandpile.External
 /-- The heat-kernel bounds of `ssec:green-estimates`: the Gaussian upper bound
 `eq:rw-gaussian-upper`, the total-variation gradient bound
 `eq:rw-tv-gradient`, and the maximal-displacement bound
-`eq:rw-max-displacement`.  Assumed, not proved. -/
+`eq:rw-max-displacement`.  Proved as `Sandpile.External.heatKernelBounds`. -/
 def Sandpile.External.HeatKernelBounds : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     (∃ C c : ℝ, 0 < C ∧ 0 < c ∧

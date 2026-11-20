@@ -45,7 +45,8 @@ the `3/2` power of its variance, and coefficients `a` whose covariance matrix
 `Σ` has quadratic form between `1-δ` and `1+δ`, the law of the linear forms
 `Y_j = ∑_i a_i(j) ξ_i` and the centred Gaussian with covariance `Σ` assign
 probabilities to the orthant `{y_j ≤ h_j}` differing by at most
-`C m^{1/4} \Var(ν)^{3/2} ∑_i |a(i)|³`.  Assumed, not proved. -/
+`C m^{1/4} \Var(ν)^{3/2} ∑_i |a(i)|³`.
+Proved as `Sandpile.External.multivariateBerryEsseen_holds`. -/
 def Sandpile.External.MultivariateBerryEsseen : Prop :=
   ∀ M δ : ℝ, 0 < M → 0 < δ → δ < 1 →
     ∃ C : ℝ, 0 < C ∧

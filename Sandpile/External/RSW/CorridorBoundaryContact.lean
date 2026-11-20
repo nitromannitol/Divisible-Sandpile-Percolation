@@ -1,6 +1,7 @@
 import Sandpile.External.RSW.CorridorWallSeparation
 import Sandpile.External.RSW.HorizontalWalk
 import Sandpile.External.RSW.QuasiCrossing
+import Sandpile.External.RSW.VerticalStripSubpath
 
 /-!
 # Boundary contacts between corridor walls
@@ -103,5 +104,37 @@ theorem centered_crossing_meets_kst_wall_endpoint_segments {M N k : ℕ}
       p r q r' q' ha hb hx hu hleft hright (Or.inl r.end_mem_support)
       (Or.inl r'.end_mem_support) (hr.2.2.1.trans hr'.2.2.1.symm) havoid
     exact ⟨z, hzp, hzrow.trans hr.2.2.1, hzorder⟩
+
+/-- Every row of two KST walls contains a crossing vertex between wall vertices. -/
+theorem centered_crossing_meets_each_row_between_kst_walls {M N k : ℕ}
+    {a b c d x left e f u right : centeredPlaneRectangle M N}
+    (p : (rectangleGraph (centeredPlaneRectangle M N)).Walk a b)
+    (r : (rectangleGraph (centeredPlaneRectangle M N)).Walk c d)
+    (q : (rectangleGraph (centeredPlaneRectangle M N)).Walk x left)
+    (r' : (rectangleGraph (centeredPlaneRectangle M N)).Walk e f)
+    (q' : (rectangleGraph (centeredPlaneRectangle M N)).Walk u right)
+    (ha : (a : Site 2) 1 = N) (hb : (b : Site 2) 1 = -(N : ℤ))
+    (hr : IsKSTPath k r) (hr' : IsKSTPath k r')
+    (hx : x ∈ r.support) (hu : u ∈ r'.support)
+    (hleft : (left : Site 2) 0 = -(M : ℤ)) (hright : (right : Site 2) 0 = M)
+    (havoid : ∀ z ∈ p.support, z ∉ r.support ∧ z ∉ q.support ∧
+      z ∉ r'.support ∧ z ∉ q'.support)
+    (height : ℤ) (hbottom : -(k : ℤ) ≤ height) (htop : height ≤ k) :
+    ∃ s ∈ r.support, ∃ t ∈ r'.support, ∃ z ∈ p.support,
+      (s : Site 2) 1 = height ∧ (t : Site 2) 1 = height ∧ (z : Site 2) 1 = height ∧
+      (((s : Site 2) 0 ≤ (z : Site 2) 0 ∧ (z : Site 2) 0 ≤ (t : Site 2) 0) ∨
+       ((t : Site 2) 0 ≤ (z : Site 2) 0 ∧ (z : Site 2) 0 ≤ (s : Site 2) 0)) := by
+  obtain ⟨s, hsr, hsrow⟩ := rectangle_walk_exists_height r.reverse height
+    (by simpa only [hr.2.2.1] using hbottom) (by simpa only [hr.2.1] using htop)
+  obtain ⟨t, htr, htrow⟩ := rectangle_walk_exists_height r'.reverse height
+    (by simpa only [hr'.2.2.1] using hbottom) (by simpa only [hr'.2.1] using htop)
+  have hs : s ∈ r.support := by
+    simpa only [SimpleGraph.Walk.support_reverse, List.mem_reverse] using hsr
+  have ht : t ∈ r'.support := by
+    simpa only [SimpleGraph.Walk.support_reverse, List.mem_reverse] using htr
+  obtain ⟨z, hzp, hzrow, hzorder⟩ := centered_crossing_meets_segment_between_attached_walks
+    p r q r' q' ha hb hx hu hleft hright (Or.inl hs) (Or.inl ht)
+    (hsrow.trans htrow.symm) havoid
+  exact ⟨s, hs, t, ht, z, hzp, hsrow, htrow, hzrow.trans hsrow, hzorder⟩
 
 end Sandpile.External.RSW

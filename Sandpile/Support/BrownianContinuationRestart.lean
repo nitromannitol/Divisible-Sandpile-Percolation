@@ -67,3 +67,38 @@ theorem Sandpile.Support.brownian_centered_path_law_eq_zero_start
   ext t : 1
   change W (0 + t) ω - W 0 ω = W t ω
   simp only [zero_add, hω, sub_zero]
+
+/-- Integration of a continuation payoff against the centred path law agrees
+with integration along a zero-start Brownian motion. -/
+theorem Sandpile.Support.integral_continuation_centered_path_eq_zero_start
+    {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω'] {d : ℕ}
+    (P : Measure Ω) [IsProbabilityMeasure P] (P' : Measure Ω') [IsProbabilityMeasure P']
+    (x : Sandpile.Continuum.Space d)
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (W : ℝ≥0 → Ω' → Sandpile.Continuum.Space d)
+    (hB : Sandpile.Continuum.IsBrownian d x B P)
+    (hW : Sandpile.Continuum.IsBrownian d 0 W P')
+    (hBc : ∀ ω, Continuous fun t => B t ω) (hWc : ∀ ω, Continuous fun t => W t ω)
+    (hWm : ∀ t, StronglyMeasurable (W t))
+    (H : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (H : ℝ) ×ˢ Set.univ))
+    (y z : Sandpile.Continuum.Space d)
+    (θ : (ℝ≥0 → Sandpile.Continuum.Space d) → ℝ≥0)
+    (hθ : IsStoppingTime (LatticeProb.natFiltration
+      (fun t (p : ℝ≥0 → Sandpile.Continuum.Space d) => p t)
+      (fun t => (measurable_pi_apply t).stronglyMeasurable))
+      (fun p => (θ p : ℝ≥0∞))) (hθH : ∀ p, θ p ≤ H) :
+    (∫ w : LatticeProb.BrownianPath d,
+      G ((H : ℝ) - θ (fun t => z + w t)) (y + w (θ (fun t => z + w t)))
+        ∂(P.map (LatticeProb.restartPath B hBc fun _ => 0))) =
+    ∫ ω, G ((H : ℝ) - θ (fun t => z + W t ω))
+      (y + W (θ (fun t => z + W t ω)) ω) ∂P' := by
+  rw [Sandpile.Support.brownian_centered_path_law_eq_zero_start P P' x B W hB hW hBc hWc]
+  have hpath : Measurable (fun ω => (⟨fun t => W t ω, hWc ω⟩ : LatticeProb.BrownianPath d)) :=
+    ContinuousMap.measurable_iff_eval.mpr fun t => (hWm t).measurable
+  have hF := Sandpile.Support.measurable_continuation_payoff H G hG z θ hθ hθH
+  have hF' : Measurable (fun w : LatticeProb.BrownianPath d =>
+      G ((H : ℝ) - θ (fun t => z + w t)) (y + w (θ (fun t => z + w t)))) :=
+    hF.comp (measurable_const.prodMk measurable_id)
+  exact integral_map hpath.aemeasurable hF'.aestronglyMeasurable

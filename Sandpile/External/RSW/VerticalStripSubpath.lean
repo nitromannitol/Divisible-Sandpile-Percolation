@@ -25,13 +25,15 @@ theorem rectangle_walk_exists_height {Q : Finset (Site 2)} {a b : Q}
   obtain ⟨v, hv, rfl⟩ := hz
   exact ⟨v, hv, hzt⟩
 
-/-- A path crossing a vertical strip has a contiguous path confined to the strip. -/
-theorem exists_vertical_strip_subpath {Q : Finset (Site 2)} {a b : Q}
+/-- A strip-crossing path has a contiguous subpath meeting the boundary rows only at its ends. -/
+theorem exists_vertical_strip_subpath_with_boundary {Q : Finset (Site 2)} {a b : Q}
     (p : (rectangleGraph Q).Walk a b) (hp : p.IsPath) {B T : ℤ} (hBT : B < T)
     (ha : T ≤ (a : Site 2) 1) (hb : (b : Site 2) 1 ≤ B) :
     ∃ (c d : Q) (q : (rectangleGraph Q).Walk c d),
       q.IsSubwalk p ∧ q.IsPath ∧ (c : Site 2) 1 = T ∧ (d : Site 2) 1 = B ∧
-      ∀ z ∈ q.support, B ≤ (z : Site 2) 1 ∧ (z : Site 2) 1 ≤ T := by
+      (∀ z ∈ q.support, B ≤ (z : Site 2) 1 ∧ (z : Site 2) 1 ≤ T) ∧
+      ∀ z ∈ q.support, ((z : Site 2) 1 = T → z = c) ∧
+        ((z : Site 2) 1 = B → z = d) := by
   classical
   let A : Q → Prop := fun z => T ≤ (z : Site 2) 1
   let D : Q → Prop := fun z => (z : Site 2) 1 ≤ B
@@ -50,16 +52,33 @@ theorem exists_vertical_strip_subpath {Q : Finset (Site 2)} {a b : Q}
     simpa only [SimpleGraph.Walk.support_reverse, List.mem_reverse] using hv
   have hvD : v = d := (hends v hvq).2 (by dsimp [D]; omega)
   have hdB : (d : Site 2) 1 = B := by simpa only [hvD] using hvB
-  refine ⟨c, d, q, hsub, SimpleGraph.Walk.isPath_of_isSubwalk hsub hp, hcT, hdB, ?_⟩
-  intro z hz
-  constructor
-  · by_contra hn
-    have heq : z = d := (hends z hz).2 (by dsimp [D]; omega)
-    have := congrArg (fun x : Q => (x : Site 2) 1) heq
-    omega
-  · by_contra hn
-    have heq : z = c := (hends z hz).1 (by dsimp [A]; omega)
-    have := congrArg (fun x : Q => (x : Site 2) 1) heq
-    omega
+  refine ⟨c, d, q, hsub, SimpleGraph.Walk.isPath_of_isSubwalk hsub hp, hcT, hdB, ?_, ?_⟩
+  · intro z hz
+    constructor
+    · by_contra hn
+      have heq : z = d := (hends z hz).2 (by dsimp [D]; omega)
+      have := congrArg (fun x : Q => (x : Site 2) 1) heq
+      omega
+    · by_contra hn
+      have heq : z = c := (hends z hz).1 (by dsimp [A]; omega)
+      have := congrArg (fun x : Q => (x : Site 2) 1) heq
+      omega
+  · intro z hz
+    constructor
+    · intro hzT
+      exact (hends z hz).1 (by dsimp [A]; omega)
+    · intro hzB
+      exact (hends z hz).2 (by dsimp [D]; omega)
+
+/-- A path crossing a vertical strip has a contiguous path confined to the strip. -/
+theorem exists_vertical_strip_subpath {Q : Finset (Site 2)} {a b : Q}
+    (p : (rectangleGraph Q).Walk a b) (hp : p.IsPath) {B T : ℤ} (hBT : B < T)
+    (ha : T ≤ (a : Site 2) 1) (hb : (b : Site 2) 1 ≤ B) :
+    ∃ (c d : Q) (q : (rectangleGraph Q).Walk c d),
+      q.IsSubwalk p ∧ q.IsPath ∧ (c : Site 2) 1 = T ∧ (d : Site 2) 1 = B ∧
+      ∀ z ∈ q.support, B ≤ (z : Site 2) 1 ∧ (z : Site 2) 1 ≤ T := by
+  obtain ⟨c, d, q, hsub, hpath, hc, hd, hstrip, _⟩ :=
+    exists_vertical_strip_subpath_with_boundary p hp hBT ha hb
+  exact ⟨c, d, q, hsub, hpath, hc, hd, hstrip⟩
 
 end Sandpile.External.RSW

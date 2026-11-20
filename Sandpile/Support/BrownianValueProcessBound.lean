@@ -63,3 +63,29 @@ theorem Sandpile.Support.exists_integrable_brownian_value_process_bound
   apply hDi.mono' hst.stronglyMeasurable.aestronglyMeasurable
   filter_upwards [hMbound] with ω hω
   exact hω (σ ω) (hσT ω)
+
+/-- The Brownian value process starts almost surely at the deterministic
+stopping value. -/
+theorem Sandpile.Support.brownian_value_process_zero_ae
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω)
+    (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (x : Sandpile.Continuum.Space d) (hB : Sandpile.Continuum.IsBrownian d x (B x) P)
+    (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ) (M : ℝ≥0 → Ω → ℝ)
+    (hMval : ∀ s ≤ T, ∀ ω, M s ω =
+      Sandpile.External.Snell.snellValue (B (B x s ω)) P G ((T : ℝ) - s)) :
+    M 0 =ᵐ[P] fun _ => Sandpile.External.Snell.snellValue (B x) P G T := by
+  filter_upwards [hB.start] with ω hω
+  simpa only [NNReal.coe_zero, sub_zero, hω] using hMval 0 zero_le ω
+
+/-- The expectation of the initial value process equals the deterministic
+stopping value. -/
+theorem Sandpile.Support.integral_brownian_value_process_zero
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (x : Sandpile.Continuum.Space d) (hB : Sandpile.Continuum.IsBrownian d x (B x) P)
+    (T : ℝ≥0) (G : ℝ → Sandpile.Continuum.Space d → ℝ) (M : ℝ≥0 → Ω → ℝ)
+    (hMval : ∀ s ≤ T, ∀ ω, M s ω =
+      Sandpile.External.Snell.snellValue (B (B x s ω)) P G ((T : ℝ) - s)) :
+    (∫ ω, M 0 ω ∂P) = Sandpile.External.Snell.snellValue (B x) P G T := by
+  rw [integral_congr_ae (Sandpile.Support.brownian_value_process_zero_ae P B x hB T G M hMval)]
+  simp

@@ -64,6 +64,13 @@ REVIEWED: dict[str, dict[str, str]] = {
         "δ": "same statement; the threshold $R_0$ is per-accuracy and per-probability by the "
              "remark's own quantifier order",
     },
+    "rem-dlt4-killed-scaling-proved": {
+        "ε": "the statement of rem-dlt4-killed-scaling with its two cited-input hypotheses "
+             "removed; the threshold $R_0$ is bound after the accuracy for the reason recorded "
+             "there (sandpile.tex:1929-1950)",
+        "δ": "same statement; the threshold $R_0$ is per-accuracy and per-probability by the "
+             "remark's own quantifier order",
+    },
     "thm-limiting-odometer-crossing": {
         "ε": "the theorem reads \"For every $\\varepsilon>0$, there are $T<\\infty$ and "
              "$H>0$ such that\" (sandpile.tex:2517-2519), so the horizon and the height are "

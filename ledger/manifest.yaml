@@ -1190,3 +1190,43 @@ nodes:
     state: SEALED
     frozen_sha256: 80632b64e15b799f5cda5006f72b3c77b38aacc7bc918a563bd2b2188b891655
     provider: Sandpile.External.cubeStoppingStability_holds
+
+  - id: thm-main-nontriviality-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:95-103 (label thm-main-nontriviality); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    file: Sandpile/NontrivialityUnconditional.lean
+    export: Sandpile.percolation_below_criticality_proved
+    state: SEALED
+    frozen_sha256: 34d868da7ca8fd78eed20327bb1f08e81c61f7d18c3603cd67fd0b7a5cafa7a6
+    provider: Sandpile.percolation_below_criticality_proved
+
+  - id: thm-main-critical-level-percolation-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:113-126 (label thm-main-critical-level-percolation); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.planarRSW_holds, Sandpile.External.lssDomination, Sandpile.External.exteriorBoundaryConnected_holds, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    file: Sandpile/CriticalLevelsUnconditional.lean
+    export: Sandpile.critical_level_percolation_proved
+    state: SEALED
+    frozen_sha256: f83dfe255255c01d5e97268399023a8fdfc7152e76d25e80862f04dcdee1155e
+    provider: Sandpile.critical_level_percolation_proved
+
+  - id: thm-d23-critical-level-percolation-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:2596-2611 (label thm-d23-critical-level-percolation); every cited-input hypothesis is dropped, now discharged unconditionally by Sandpile.External.lssDomination, Sandpile.External.continuumRSW_holds, Sandpile.External.pittGaussianFKG, Sandpile.External.ballOccupationDensity_holds and Sandpile.External.cubeStoppingStability_holds
+    file: Sandpile/D23CriticalLevelPercolationUnconditional.lean
+    export: Sandpile.d23_critical_level_percolation_proved
+    state: SEALED
+    frozen_sha256: 047a621a08bf02b9b75a81bde977624948988eec3f6ce9f78246cf474499a105
+    provider: Sandpile.d23_critical_level_percolation_proved
+
+  - id: rem-dlt4-killed-scaling-proved
+    version: 1
+    kind: theorem
+    source: sandpile.tex:1957-1984 (label rem-dlt4-killed-scaling); the continuum stopping-stability hypothesis is dropped, now discharged unconditionally by Sandpile.External.continuumStoppingStability_holds; the cube stopping-stability hypothesis is also dropped, now discharged unconditionally by Sandpile.External.cubeStoppingStability_holds
+    file: Sandpile/Support/DLT4KilledScalingUnconditional.lean
+    export: Sandpile.dlt4_killed_scaling_proved
+    state: SEALED
+    frozen_sha256: 3f054ceafa94689dc65640a62d89cdb8881fbe31d61dced9cd95298b3b774138
+    provider: Sandpile.dlt4_killed_scaling_proved

@@ -2326,6 +2326,43 @@ REVIEWED: dict[str, str] = {
         "of {z | c log t < u_t(planeEmbed z)} are unchanged character for character, so the "
         "reading recorded for thm-d4-critical-level-percolation applies verbatim. The inputs are "
         "supplied by Sandpile.External.planarRSW_holds and Sandpile.External.lssDomination.",
+    "thm-main-nontriviality-proved":
+        "The statement is that of thm-main-nontriviality "
+        "(Sandpile.Frozen.percolation_below_criticality) with its seven cited-input binders hRSW, "
+        "hLSS, hBoundary, hRSWc, hPitt, hOcc and hCube deleted; d with 2 <= d, the family mu with "
+        "its probability, mean, variance and exponential-moment hypotheses on [rho0, 1), the "
+        "witnesses rho0, nu0, theta0, K0, and the conclusion (there is rhoPlus in [rho0, 1) such "
+        "that for every rho in (rhoPlus, 1) the toppled set has an infinite component almost "
+        "surely under massLaw d (mu rho)) are unchanged character for character, so the reading "
+        "recorded for thm-main-nontriviality applies verbatim. The seven inputs are supplied by "
+        "their proofs in Sandpile/External.",
+    "thm-main-critical-level-percolation-proved":
+        "The statement is that of thm-main-critical-level-percolation "
+        "(Sandpile.Frozen.critical_level_percolation) with its seven cited-input binders hRSW, "
+        "hLSS, hBoundary, hRSWc, hPitt, hOcc and hCube deleted; d with 2 <= d, nu0, theta0, K0 "
+        "with their hypotheses, the existential c > 0 and t0 bound before the law, and the "
+        "almost-sure infinite component of {x | c * criticalScale d t < u_t(x)} for t >= t0 are "
+        "unchanged character for character, so the reading recorded for "
+        "thm-main-critical-level-percolation applies verbatim. The seven inputs are supplied by "
+        "their proofs in Sandpile/External.",
+    "thm-d23-critical-level-percolation-proved":
+        "The statement is that of thm-d23-critical-level-percolation "
+        "(Sandpile.Frozen.d23_critical_level_percolation) with its five cited-input binders hLSS, "
+        "hRSWc, hPitt, hOcc and hCube deleted; d with d = 2 or d = 3, nu0, theta0, K0 with their "
+        "hypotheses, the existential c > 0 and t0 bound before the law, and the almost-sure "
+        "infinite planar component of {z | c t^{(4-d)/4} < u_t(planeSite z)} are unchanged "
+        "character for character, so the reading recorded for thm-d23-critical-level-percolation "
+        "applies verbatim. The five inputs are supplied by their proofs in Sandpile/External.",
+    "rem-dlt4-killed-scaling-proved":
+        "The statement is that of rem-dlt4-killed-scaling (Sandpile.Frozen.dlt4_killed_scaling) "
+        "with its two cited-input binders hStab (ContinuumStoppingStability.{0}) and hCube "
+        "(CubeStoppingStability) deleted; every other binder and the four-clause conclusion (the "
+        "coupling of the localized odometer with the cube-killed Brownian value, the comparison "
+        "of the ball-killed and cube-killed values, the coupling uniform along convergent laws, "
+        "and the square-root scaling of the cube value in the variance) are unchanged character "
+        "for character, so the reading recorded for rem-dlt4-killed-scaling applies verbatim. The "
+        "inputs are supplied by Sandpile.External.continuumStoppingStability_holds and "
+        "Sandpile.External.cubeStoppingStability_holds.",
 }
 
 

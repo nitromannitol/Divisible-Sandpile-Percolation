@@ -18,7 +18,7 @@ namespace Sandpile.External.Stopping
 version of the quantile sublevel event on the independent product space. -/
 theorem exists_quantile_sublevel_event_of_ae_cdf
     {Ω : Type*} [m : MeasurableSpace Ω] (P : Measure Ω) [SFinite P]
-    (m₀ : MeasurableSpace Ω) (κ : Kernel Ω I) [IsMarkovKernel κ]
+    (m₀ : MeasurableSpace Ω) (κ : @Kernel Ω I m inferInstance) [IsMarkovKernel κ]
     (t : I) (f : Ω → ℝ) (hf : @Measurable Ω ℝ m₀ inferInstance f)
     (hversion : f =ᵐ[P] fun ω => (κ ω).real (Icc 0 t)) :
     ∃ s : Set (Ω × I), @MeasurableSet (Ω × I) (m₀.prod inferInstance) s ∧

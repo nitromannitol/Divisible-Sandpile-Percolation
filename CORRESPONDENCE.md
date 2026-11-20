@@ -344,6 +344,29 @@ measurable version is strictly more than almost-everywhere measurability of
 `continuumValue` itself, so the form weakens nothing the paper asserts
 (`prop-continuum-value-selfsimilar`).
 
+## Brownian optimal stopping and exceptional paths
+
+The frozen `External.ContinuumOptimalStopping` assumes Brownian paths are continuous only
+almost surely but asks for an everywhere right-continuous modification whose contact set has
+a pointwise least element that is a raw natural-filtration stopping time. On an exceptional
+null path one can arrange contacts with every right-continuous candidate at times arbitrarily
+close to zero. Its least contact is then zero, and the raw stopping-time history criterion
+forces the time to be zero almost surely. For the gain `G(t,z) = z₀ + 1 - t` with horizon
+one, that stop has mean zero while the constant stop at one has mean one. The contact-time
+conclusion of `Frozen.brownian_optimal_stopping` has the same defect, taking `h = -G`.
+The frozen theorem is conditional on the defective input.
+
+The paper's Brownian convention uses continuous paths. The proposed deviation
+`External.ContinuumOptimalStoppingOfContinuous` adds continuity of every path and preserves
+all other clauses; it is not yet proved. `Support.brownian_optimal_stopping_of_continuous`
+proves the corresponding representation from this corrected input. The existing
+self-similarity proof does not use its optimal-stopping hypothesis, so
+`Support.continuum_value_self_similar_without_optimal_stopping` and
+`Sandpile.mean_growth_le_three_from_stability` establish the same conclusions without that
+hypothesis, retaining continuum stopping stability. The earlier description of
+`prop:continuum-value-selfsimilar` above records the frozen declaration and its intended
+argument; the successor uses the parabolic scaling limit directly.
+
 ## Four-dimensional membrane input and cited scope
 
 The cited Cipriani–Hazra–Ruszel Theorem 2 treats a torus model, and

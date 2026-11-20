@@ -88,7 +88,9 @@ surely. Hypotheses: the same as Theorem 1.1.
 **Theorem 1.3(i) (`d ≤ 3`).**
 
 1. *(a) Mean growth.* `t^{−(4−d)/4} E u_t(0)` converges to a positive limit. Hypotheses:
-   `ContinuumStoppingStability`, `ContinuumOptimalStopping`.
+   `ContinuumStoppingStability`, `ContinuumOptimalStopping` in the frozen declaration.
+   The successor `Sandpile.mean_growth_le_three_from_stability` requires only
+   `ContinuumStoppingStability`.
 2. *(b) Scaling limit.* The multilinear interpolation of `R^{−(2−d/2)} u_{⌊TR²⌋}` converges in
    finite-dimensional distributions to the Brownian stopping value `𝒰(T, ·)` and is tight in
    the uniform norm on compact sets. Hypothesis: `ContinuumStoppingStability`.
@@ -197,8 +199,17 @@ some of these now have proofs. The following inputs are used as hypotheses:
 | `Sandpile.External.BallOccupationDensity` (`hOcc`) | Green function, or expected occupation density, of Brownian motion killed on exiting a Euclidean ball | Mörters and Peres, *Brownian Motion*, Chapter 3 | Theorems 1.1, 1.2 |
 | `Sandpile.External.CubeStoppingStability` (`hCube`) | cube-killed version of the stability of optimal-stopping values, with the killed invariance principle | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.1, 1.2 |
 | `Sandpile.External.ContinuumStoppingStability` (`hStab`) | stability of optimal-stopping values under uniform convergence of the reward, and an invariance principle for the stopped walk | Coquet and Toldo (2007), Theorem 3 and Corollary 4 | Theorems 1.3(i)(a), 1.3(i)(b) |
-| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth | Peskir and Shiryaev, Theorem 2.2 | Theorem 1.3(i)(a) |
+| `Sandpile.External.ContinuumOptimalStopping` (`hOS`) | finite-horizon optimal stopping for Brownian motion with a continuous gain of polynomial growth; the frozen form has the defect described below | Peskir and Shiryaev, Theorem 2.2 | frozen Theorem 1.3(i)(a) |
 | `Sandpile.External.MembraneScalingLimitFour` (`hMembrane`) | scaling limit of the four-dimensional discrete membrane field; proved by `Sandpile.External.membraneScalingLimitFour_holds` | Cipriani, Hazra and Ruszel, Theorem 2; Cipriani, Dan and Hazra, Theorem 3.11 | Theorem 1.3(ii)(c) |
+
+The frozen `ContinuumOptimalStopping` permits Brownian paths to be discontinuous on a null
+set, but requires a pointwise least contact time that is a raw natural-filtration stopping
+time. A suitable exceptional path forces that time to be zero almost surely even for a gain
+where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
+`Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of every path and
+is a proposed correction; it is not yet proved. `Sandpile.Support.brownian_optimal_stopping_of_continuous`
+derives the Brownian representation from that corrected input. The mean-growth successor
+above does not require the input. See `CORRESPONDENCE.md` for the deviation.
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
 `Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the

@@ -19,6 +19,16 @@ Of these, **4 are also proved in this repository** and so need not be taken on t
 * **Cited at** sandpile.tex:1099 (PeskirShiryaev Theorem 2.2, finite-horizon optimal stopping for Brownian motion)
 * **Not proved here**: this one is assumed outright
 
+**Defect and deviation.** The frozen proposition permits exceptional paths of
+Brownian motion while requiring a pointwise least contact for a right-continuous
+modification and a raw natural-filtration stopping time. A pathological null
+path can force that stop to be zero almost surely even when stopping at the
+horizon has strictly greater reward. The proposed replacement
+`Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of
+every path, as in the paper's convention. This replacement remains unproved.
+The mean-growth successor `Sandpile.mean_growth_le_three_from_stability`
+does not use either optimal-stopping input.
+
 ```lean
 /-- The finite-horizon optimal-stopping theorem for Brownian motion on `ℝ^d`
 with a continuous gain of polynomial growth, in the form cited at

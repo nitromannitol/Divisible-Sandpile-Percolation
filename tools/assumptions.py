@@ -153,11 +153,18 @@ def render():
                 f"* **File** `{n['file']}`",
                 f"* **Cited at** {n['source']}",
                 line,
-                "",
-                "```lean",
-                frozen_block(n["file"]),
-                "```",
                 ""]
+        if n["id"] == "ext-continuum-optimal-stopping":
+            out += ["**Defect and deviation.** The frozen proposition permits exceptional paths of",
+                    "Brownian motion while requiring a pointwise least contact for a right-continuous",
+                    "modification and a raw natural-filtration stopping time. A pathological null",
+                    "path can force that stop to be zero almost surely even when stopping at the",
+                    "horizon has strictly greater reward. The proposed replacement",
+                    "`Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of",
+                    "every path, as in the paper's convention. This replacement remains unproved.",
+                    "The mean-growth successor `Sandpile.mean_growth_le_three_from_stability`",
+                    "does not use either optimal-stopping input.", ""]
+        out += ["```lean", frozen_block(n["file"]), "```", ""]
         if cond:
             out += [f"The proof `{c['id']}`:", "", "```lean", cond, "```", ""]
     return "\n".join(out)

@@ -60,6 +60,60 @@ theorem wiredKSTConfig_lower_entrance (k : ℕ) (ω : Sym2 (Site 2) → Bool)
   exact ha.2 y (by simp only [Sym2.mem_iff, or_true]) hy x
     (by simp only [Sym2.mem_iff, true_or]) hx
 
+/-- Bonds along the upper wired row are open. -/
+theorem wiredKSTConfig_upper_row (k : ℕ) (ω : Sym2 (Site 2) → Bool)
+    (x y : Site 2) (hx : x 1 = (k : ℤ) + 1) (hy : y 1 = (k : ℤ) + 1) :
+    wiredKSTConfig k ω s(x, y) = true := by
+  classical
+  have hn : ¬ (∀ z ∈ s(x, y), -(k : ℤ) ≤ z 1 ∧ z 1 ≤ k) := by
+    intro h
+    have h' := h x (by simp only [Sym2.mem_iff, true_or])
+    omega
+  rw [wiredKSTConfig, ite_eq_right hn]
+  simp only [decide_eq_true_eq, wiredKSTAllowed, Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+  omega
+
+/-- Bonds along the lower wired row are open. -/
+theorem wiredKSTConfig_lower_row (k : ℕ) (ω : Sym2 (Site 2) → Bool)
+    (x y : Site 2) (hx : x 1 = -((k : ℤ) + 1)) (hy : y 1 = -((k : ℤ) + 1)) :
+    wiredKSTConfig k ω s(x, y) = true := by
+  classical
+  have hn : ¬ (∀ z ∈ s(x, y), -(k : ℤ) ≤ z 1 ∧ z 1 ≤ k) := by
+    intro h
+    have h' := h x (by simp only [Sym2.mem_iff, true_or])
+    omega
+  rw [wiredKSTConfig, ite_eq_right hn]
+  simp only [decide_eq_true_eq, wiredKSTAllowed, Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+  omega
+
+/-- Bonds connecting the upper wired row to its target are open. -/
+theorem wiredKSTConfig_upper_connector (k : ℕ) (ω : Sym2 (Site 2) → Bool)
+    (x y : Site 2) (hx : x 1 = (k : ℤ) + 1) (hy : y 1 = k)
+    (hl : -((k / 12 : ℕ) : ℤ) ≤ y 0) (hr : y 0 ≤ k / 12) :
+    wiredKSTConfig k ω s(x, y) = true := by
+  classical
+  have hn : ¬ (∀ z ∈ s(x, y), -(k : ℤ) ≤ z 1 ∧ z 1 ≤ k) := by
+    intro h
+    have h' := h x (by simp only [Sym2.mem_iff, true_or])
+    omega
+  rw [wiredKSTConfig, ite_eq_right hn]
+  simp only [decide_eq_true_eq, wiredKSTAllowed, Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+  omega
+
+/-- Bonds connecting the lower wired row to its target are open. -/
+theorem wiredKSTConfig_lower_connector (k : ℕ) (ω : Sym2 (Site 2) → Bool)
+    (x y : Site 2) (hy : y 1 = -((k : ℤ) + 1)) (hx : x 1 = -(k : ℤ))
+    (hl : -((k / 12 : ℕ) : ℤ) ≤ x 0) (hr : x 0 ≤ k / 12) :
+    wiredKSTConfig k ω s(x, y) = true := by
+  classical
+  have hn : ¬ (∀ z ∈ s(x, y), -(k : ℤ) ≤ z 1 ∧ z 1 ≤ k) := by
+    intro h
+    have h' := h y (by simp only [Sym2.mem_iff, or_true])
+    omega
+  rw [wiredKSTConfig, ite_eq_right hn]
+  simp only [decide_eq_true_eq, wiredKSTAllowed, Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+  omega
+
 /-- A crossing of the wired rectangle yields an open scale path. -/
 theorem exists_kstPath_of_canonical_wired_crossing (k : ℕ) (hk : 0 < k)
     (ω : Sym2 (Site 2) → Bool)

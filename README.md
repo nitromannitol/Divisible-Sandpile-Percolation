@@ -206,11 +206,12 @@ The frozen `ContinuumOptimalStopping` permits Brownian paths to be discontinuous
 set, but requires a pointwise least contact time that is a raw natural-filtration stopping
 time. A suitable exceptional path forces that time to be zero almost surely even for a gain
 where stopping at the horizon pays strictly more. The paper uses continuous Brownian paths.
-`Sandpile.External.ContinuumOptimalStoppingOfContinuous` adds continuity of every path and
-addresses that path defect but is also false as typed because it does not require ambient
-measurability of the Brownian time slices. `Sandpile.Support.brownian_optimal_stopping_of_continuous`
-derives the Brownian representation conditionally from that input. The mean-growth successor
-above does not require the input. See `CORRESPONDENCE.md` for the deviation.
+An earlier version with continuous paths also failed because it did not require ambient
+measurability of the time slices. `Sandpile.External.ContinuumOptimalStoppingOfContinuous`
+now requires both continuous paths and strongly measurable time slices; it remains unproved.
+`Sandpile.Support.brownian_optimal_stopping_of_continuous` derives the Brownian representation
+conditionally from that input. The self-similarity and mean-growth successors above do not
+require it. See `CORRESPONDENCE.md` for the defects and deviation.
 
 The input `RellichKondrachovNegSobolev` is a hypothesis of intermediate statements in
 `Sandpile/Frozen/` only. The frozen critical toppling and mean-one statements retain the

@@ -356,24 +356,30 @@ one, that stop has mean zero while the constant stop at one has mean one. The co
 conclusion of `Frozen.brownian_optimal_stopping` has the same defect, taking `h = -G`.
 The frozen theorem is conditional on the defective input.
 
-The paper's Brownian convention uses continuous paths. The proposed deviation
-`External.ContinuumOptimalStoppingOfContinuous` adds continuity of every path and preserves
-all other clauses. It too is false as typed: `IsBrownian` gives only almost-everywhere
-measurability of the time slices, while the process `M` must be measurable in the ambient
-space. To see this, take a disjoint null copy of canonical Wiener path space, equip that copy
-with the trivial sigma algebra, and use the same continuous path on both copies. For the gain
-above, optimality forces the stop to be one almost surely, and the raw stopping-time history
-criterion forces the same value on the matching null copies. The pointwise contact condition
-then makes `M 1` equal to `1 + B 1` on those copies of almost every Wiener path. This is
-nonconstant, but any measurable real function is constant on the null copy. The main use sites
-already assume measurable time slices in addition to continuous paths.
+An earlier all-path-continuous version also failed: `IsBrownian` gives only
+almost-everywhere measurability of the time slices, while `M` must be measurable in the
+ambient space. Take a disjoint null copy of canonical Wiener path space, equip that copy
+with the trivial sigma algebra, and use the same continuous path on both copies. For the
+gain above, optimality forces the stop to be one almost surely, and the raw stopping-time
+history criterion forces the same value on matching null copies. The pointwise contact
+condition then makes `M 1` equal to `1 + B 1` on those copies of almost every Wiener path.
+This is nonconstant, but any measurable real function is constant on the null copy.
 
-`Support.brownian_optimal_stopping_of_continuous` proves the corresponding representation
-conditionally from the proposed input. The existing self-similarity proof does not use its
-optimal-stopping hypothesis, so
-`Support.continuum_value_self_similar_without_optimal_stopping` and
-`Sandpile.mean_growth_le_three_from_stability` establish the same conclusions without that
-hypothesis, retaining continuum stopping stability. The earlier description of
+The deviation `External.ContinuumOptimalStoppingOfContinuous` now requires continuity of
+every path and strong measurability of every Brownian time slice; the main use sites already
+carry both hypotheses. The input remains unproved. The source's augmented-filtration result
+requires a transfer to the raw natural filtration used here, together with a path-law
+invariance argument. `Support.brownian_optimal_stopping_of_continuous` proves the
+representation conditionally from the amended input.
+
+The self-similarity proof does not use its optimal-stopping hypothesis. The successors
+`Support.continuum_value_self_similar_without_optimal_stopping`,
+`Support.dlt4_mean_asymptotic_without_optimal_stopping`,
+`Support.mean_variance_limit_at_origin_without_optimal_stopping`,
+`Support.mean_growth_le_three_without_optimal_stopping`,
+`Support.dlt4_mean_asymptotic_from_stability`, and
+`Sandpile.mean_growth_le_three_from_stability` establish the corresponding conclusions
+without it, retaining continuum stopping stability. The earlier description of
 `prop:continuum-value-selfsimilar` above records the frozen declaration and its intended
 argument; the successor uses the parabolic scaling limit directly.
 

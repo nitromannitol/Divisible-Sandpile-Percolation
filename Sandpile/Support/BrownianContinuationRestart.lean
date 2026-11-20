@@ -1,6 +1,7 @@
 import Sandpile.Support.BrownianContinuationPayoff
 import Sandpile.Support.BrownianContinuationAtStopping
 import Sandpile.Support.BrownianRestart
+import LatticeProb.Prob.BrownianRestartLaw
 
 /-!
 # Expected payoff of a restarted Brownian rule
@@ -46,3 +47,23 @@ theorem Sandpile.Support.setIntegral_brownian_continuation_restart
   have hpos := Sandpile.Support.measurable_brownian_stopped_position B hBm hBc τ hτ
   exact hB.toIsBrownianSpace.setIntegral_restart_canonical P x B hBm hBc τ hτ
     (fun ω => B (τ ω) ω) hpos E hE F hF hint
+
+/-- The centred continuous-path law of a Brownian motion is the path law of
+any Brownian motion started at zero. -/
+theorem Sandpile.Support.brownian_centered_path_law_eq_zero_start
+    {Ω Ω' : Type*} [MeasurableSpace Ω] [MeasurableSpace Ω'] {d : ℕ}
+    (P : Measure Ω) [IsProbabilityMeasure P] (P' : Measure Ω') [IsProbabilityMeasure P']
+    (x : Sandpile.Continuum.Space d)
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (W : ℝ≥0 → Ω' → Sandpile.Continuum.Space d)
+    (hB : Sandpile.Continuum.IsBrownian d x B P)
+    (hW : Sandpile.Continuum.IsBrownian d 0 W P')
+    (hBc : ∀ ω, Continuous fun t => B t ω) (hWc : ∀ ω, Continuous fun t => W t ω) :
+    P.map (LatticeProb.restartPath B hBc fun _ => 0) =
+      P'.map (fun ω => (⟨fun t => W t ω, hWc ω⟩ : LatticeProb.BrownianPath d)) := by
+  rw [hB.toIsBrownianSpace.map_restartPath_zero_eq hW.toIsBrownianSpace hBc hWc]
+  apply Measure.map_congr
+  filter_upwards [hW.start] with ω hω
+  ext t : 1
+  change W (0 + t) ω - W 0 ω = W t ω
+  simp only [zero_add, hω, sub_zero]

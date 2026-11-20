@@ -28,17 +28,21 @@ stability results of \citet*[Theorem~3 and Corollary~4]{CoquetToldo}."
 
 The cited source is Coquet and Toldo, *Convergence of values in optimal
 stopping and convergence of optimal stopping times*, Electronic Journal of
-Probability 12 (2007), 207-228, Theorem 3 and Corollary 4.  Theorem 3 there
-states that if a sequence of processes converges in law for the Skorokhod
-topology and the associated reward families are uniformly integrable, then the
-values of the finite-horizon optimal-stopping problems converge; Corollary 4
-specializes it to rewards of the form `G(t, Z_t)` with `G` bounded continuous
-and `Z^n \Rightarrow Z`, which is the shape the paper uses: the processes are
-the rescaled simple random walks, whose invariance principle supplies the
-convergence in law, and the rewards are the two displayed bounded functions of
-time and position.
+Probability 12 (2007), 207-228 (arXiv:math/0504318), Theorem 3 and Corollary 4.
+Theorem 3 there concerns real-valued càdlàg processes `X^n` and `X` on one
+probability space and a bounded continuous gain `γ` on `[0,T] × ℝ`: if `X^n`
+converges to `X` in probability for the Skorokhod topology, the sequence
+satisfies Aldous' criterion for tightness, and the natural filtrations of the
+`X^n` are contained in the right-continuous filtration of `X` or converge to it
+weakly, then the values `sup_τ E[γ(τ, X^n_τ)]` over stopping times of the
+natural filtrations converge to `sup_τ E[γ(τ, X_τ)]`.  Corollary 4 lets the gain
+vary with `n`: bounded continuous gains `γ^n` converging uniformly to `γ`.  The
+paper applies them to the rescaled simple random walks and Brownian motion, with
+the two displayed bounded rewards.  The statement below is the conclusion the
+paper draws, for walks and a Brownian family that live on different spaces, in
+dimension `d`; `CORRESPONDENCE.md` records how its proof departs from the source.
 
-This result is assumed here, not proved.
+It is proved in this repository as `Sandpile.External.continuumStoppingStability_holds`.
 
 Modelling.  The conclusion is the paper's, stated with the supremum over
 `(T,x)\in[T_-,T_+]\times K` written in `\varepsilon`-`R_0` form, exactly as

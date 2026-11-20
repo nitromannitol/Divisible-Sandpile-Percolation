@@ -28,10 +28,10 @@ finite-horizon optimal-stopping theorem for Brownian motion (`sandpile.tex:1099`
 Peskir and Shiryaev, Theorem 2.2).  The first and third are carried here as
 explicit hypotheses rather than as axioms.  The variance scaling is proved
 unconditionally in this repository, `Sandpile.External.varianceScale`
-(`Sandpile/External/VarianceScaleProved.lean`), so it is no longer carried as an
-explicit hypothesis.  The polynomial growth on every strip of a continuous
+(`Sandpile/External/VarianceScaleProved.lean`), so it is not an explicit
+hypothesis.  The polynomial growth on every strip of a continuous
 version of the Gaussian heat potential (`sandpile.tex:1019-1021`, Adler and
-Taylor, Theorem 2.1.1) is likewise no longer an input: it is
+Taylor, Theorem 2.1.1) is likewise not an input: it is
 `Sandpile.Support.continuousVersionGrowth`, proved in the repository from the
 Kolmogorov moment machinery of `MeanA*` and a quantitative box tail, by
 Borel-Cantelli over the unit boxes of the integer lattice.

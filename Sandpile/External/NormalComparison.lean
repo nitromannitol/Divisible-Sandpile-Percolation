@@ -11,7 +11,7 @@ vector with covariance `S`, common variance `v`, and nonnegative correlations
 one-dimensional marginal probabilities by at most
 `C ∑_{i<j} ρ_{ij} exp(-(b_i²+b_j²)/(2v(1+ρ_{ij})))`.  It specializes the source's inequality to
 the nonnegative-correlation case the proof of `lem:dgt4-path-survival` applies it to, and is
-cited rather than proved.
+proved as `Sandpile.External.normalComparison`.
 -/
 
 open MeasureTheory ProbabilityTheory

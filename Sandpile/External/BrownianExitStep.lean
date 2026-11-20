@@ -10,7 +10,7 @@ The paper proves the lattice analogue `lem:localization-killing` (`sandpile.tex:
 by splitting the reward at the first exit `τ_D` of the ball: the part before `τ_D` is
 kept inside the localized value, and on `{τ_D < τ}` the strong Markov property at
 `τ_D` leaves at most the value at the exit position `X_{τ_D}` for the remaining
-horizon.  The Brownian analogue assumed here is the same step: on the event where the
+horizon.  The Brownian analogue stated here is the same step: on the event where the
 ball is left at `σ` before the stopping time, the conditional reward after the exit is
 at most the value `𝒰_h(T - σ, B_σ)` of the restarted motion at its exit position for the
 remaining horizon `T - σ`, hence at most the supremum of `𝒰_h(s, z)` over horizons
@@ -35,7 +35,8 @@ side is positive while every value at horizon `T` is `0`).  That the value of th
 heat potential does increase with the horizon is proved in the repository, not assumed.
 
 Mathlib 4.32 has the Markov property at a deterministic time and no strong Markov
-property at a stopping time, so the predicate below is assumed, and only it.
+property at a stopping time; the predicate below is proved in this repository as
+`Sandpile.External.brownianExitStep_holds`.
 -/
 
 open MeasureTheory ProbabilityTheory

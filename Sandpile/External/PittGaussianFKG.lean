@@ -8,7 +8,8 @@ Probability* 10, 1982, Theorem, p. 496, Eq. (1)) the development uses: a centred
 process on the plane with nonnegative pairwise covariances is positively associated, in the
 finite-dimensional sense of `Sandpile.Continuum.IsAssociatedField`.  It discharges the
 association hypothesis of `Sandpile.External.ContinuumRSW` for the ball field `𝒳_1`, whose
-covariances are `L²` inner products of nonnegative kernels, and is cited rather than proved.
+covariances are `L²` inner products of nonnegative kernels, and is proved as
+`Sandpile.External.pittGaussianFKG`.
 -/
 
 open MeasureTheory ProbabilityTheory Set

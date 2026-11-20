@@ -23,8 +23,8 @@ over `Finset.range t`, with `Sandpile.heatKernel 4` for `p`.
 The summable local limit remainder used by the proof is exposed through
 `External.PairedLocalCLTFour`, the dimension-four specialization of the cited
 Lawler–Limic Theorem 2.1.3, Eq. (2.8). The qualitative `External.LocalCLT`
-limit is no longer carried as a hypothesis: it is proved unconditionally in
-this repository (`Sandpile.External.localCLT`).
+limit is not a hypothesis: it is proved unconditionally in this repository
+(`Sandpile.External.localCLT`).
 
 The threshold `2 ≤ t` and the constraint `sqDist x y ≤ t` keep the argument of
 `Real.log` strictly positive, so the logarithm never takes its junk value at `0`.

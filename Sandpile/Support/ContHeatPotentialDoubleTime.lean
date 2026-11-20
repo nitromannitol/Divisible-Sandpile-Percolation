@@ -9,7 +9,7 @@ The finite-dimensional clause of `prop:dlt4-heat-potential-invariance`
 (`sandpile.tex:1841-1848`) in dimensions one to three, reduced to a single
 convergence statement.
 
-Four of the five inputs the clause needed are now theorems.  The Lindeberg
+Four of the five inputs the clause needs are theorems.  The Lindeberg
 smallness of the coefficients is `interp_hsmall`, the square integrability of the
 Brownian Green kernels is `memLp_greenTimeBM`, the sums of squares of the
 coefficients are exactly a finite combination of rescaled double time sums of
@@ -58,7 +58,7 @@ theorem sum_interp_sq_eq' (d : ℕ) {R : ℝ} (hR : 0 < R) (L : ℝ) {m : ℕ} (
 
 /-- **The finite-dimensional clause of `prop:dlt4-heat-potential-invariance` in
 dimensions one to three, from one convergence statement.**  Everything else in the
-clause is now a theorem: the Lindeberg smallness of the coefficients, the square
+clause is a theorem: the Lindeberg smallness of the coefficients, the square
 integrability of the Brownian Green kernels, the exact lattice Fubini identity for
 the doubled coefficient sums, and the continuum Green identity for their limit.  What
 remains is the local central limit theorem in the form of `ssec:green-estimates`: the

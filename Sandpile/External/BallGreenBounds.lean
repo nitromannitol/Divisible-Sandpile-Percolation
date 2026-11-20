@@ -38,7 +38,7 @@ and the seven displays are, in the paper's own words
    \[ \max_{u\in\Z^4}|q_{r,A}(u)|\leq Cr^{-2}e^{-cA}\, , \qquad
       \sum_{u\in\Z^4}q_{r,A}(u)^2\leq Ce^{-cA}\, . \]"
 
-These results are assumed here, not proved.
+These results are proved in this repository as `Sandpile.External.ballGreenBounds`.
 
 Modelling.  `g^{Q(0,r)}` is `Sandpile.killedGreen (box r)` and
 `g_t^{Q(0,r)}` is `Sandpile.killedGreenTime (box r) t`, with `box r` the box
@@ -119,7 +119,7 @@ end Sandpile.External.BallGreen
 /-- The dimension-four ball-killed Green estimates of `ssec:green-estimates`:
 `eq:d4ball-point`, `eq:d4ball-square`, `eq:d4ball-near`, the annular gradient
 bound of `sandpile.tex:1256-1260`, `eq:d4ball-far-cube`, `eq:d4ball-shift` and
-`eq:d4ball-time-tail`.  Assumed, not proved. -/
+`eq:d4ball-time-tail`.  Proved as `Sandpile.External.ballGreenBounds`. -/
 def Sandpile.External.BallGreenBounds : Prop :=
   ∃ C c : ℝ, 0 < C ∧ 0 < c ∧ ∀ r : ℕ, 2 ≤ r →
     (∀ u : Sandpile.Site 4,

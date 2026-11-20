@@ -27,7 +27,7 @@ The three displays transcribed here are, in the paper's own words
    \[ \mathbf P_x\Bigl(\max_{0\leq k\leq n}|X_k-x|\geq R\Bigr)
       \leq C\exp\{-cR^2/n\}\, . \]"
 
-These results are assumed here, not proved.
+These results are proved in this repository as `Sandpile.External.heatKernelBounds`.
 
 Modelling.  `p_n` is `Sandpile.heatKernel d n`, and `P_x` is the measure
 `Sandpile.walkLaw d x` on path space `ℕ → Site d`.  The Euclidean norm `|x-y|`

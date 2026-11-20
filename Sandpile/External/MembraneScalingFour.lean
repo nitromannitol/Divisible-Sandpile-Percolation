@@ -15,10 +15,10 @@ field.  Step 1 of the proof of `prop:d4-superdiffusive-limit` records at
    being that the time truncation in $V_{t_R}$ washes out at superdiffusive
    times."
 
-The cited half is assumed here; the new point is not.  The paper's own sentence
-is proved in this repository: `Sandpile.tendsto_multiplier` and
-`Sandpile.multiplier_uniform_bound` are the multiplier statements of
-`sandpile.tex:3345-3352`, and the `ℓ²` hypothesis below is the quantitative form
+The cited half is proved in this repository as
+`Sandpile.External.membraneScalingLimitFour_holds`, and so is the paper's own sentence:
+`Sandpile.tendsto_multiplier` and `Sandpile.multiplier_uniform_bound` are the multiplier
+statements of `sandpile.tex:3345-3352`, and the `ℓ²` hypothesis below is the quantitative form
 of "the time truncation washes out", discharged at `t_R = ⌊R^α⌋` with `α > 2`.
 
 The untruncated field.  The discrete membrane field of the two citations is the

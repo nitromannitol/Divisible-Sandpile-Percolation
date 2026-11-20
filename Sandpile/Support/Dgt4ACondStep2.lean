@@ -8,7 +8,7 @@ import Sandpile.Support.Dgt4ACondCompare
 `b=\E u_n(0)+\Sigma^2y/\E u_n(0)` with its unconditional average, and bounding their
 difference by the Lipschitz constant times `\E|b+V_\infty(0)|`".
 
-The three inputs are now all in place: the Lipschitz bound in the level
+The three inputs are: the Lipschitz bound in the level
 (`exists_avgIterate_abs_condScenery_deviation_le`), the integrability of the conditional
 expectation at every level and in the level (`Support/Dgt4ACondTerminal.lean` and
 `Support/Dgt4ACondIntegrable.lean`), and the identification of the unconditional average with

@@ -7,9 +7,9 @@ import Sandpile.Support.LimJoint
 The two assemblies of the crossing chain with the law of the finite-scale maximum
 discharged.
 
-`Sandpile.Support.MaxBallFieldLaw` was assumed while the determination of a
-centred Gaussian law by its covariance was available only on ONE probability
-space.  It is now proved (`Sandpile.Support.maxBallFieldLaw`), so the two
+The law of the finite-scale maximum, `Sandpile.Support.MaxBallFieldLaw` (the maximum of the
+ball fields at finitely many scales has the same law on any two spaces carrying white noise), is
+proved as `Sandpile.Support.maxBallFieldLaw` from the joint law of the ball fields, so the two
 assemblies of `lem:finite-scale-extraction` and `thm:limiting-odometer-crossing`
 rest on strictly fewer inputs: the zero-one upgrade of Step 1
 (`ScaleCrossingAS`), the two facts of `sandpile.tex:2499-2511`
@@ -28,7 +28,7 @@ namespace Sandpile.Support
 open Sandpile.Continuum Sandpile.Frozen.FixedScaleCrossings
 
 /-- `lem:finite-scale-extraction` from `prop:fixed-scale-crossings` and Step 1 alone: the
-law of the finite-scale maximum is no longer an input. -/
+law of the finite-scale maximum is not an input. -/
 theorem finite_scale_extraction_of_scale_crossing
     (hRSWc : Sandpile.External.ContinuumRSW)
     (hPitt : Sandpile.External.PittGaussianFKG)

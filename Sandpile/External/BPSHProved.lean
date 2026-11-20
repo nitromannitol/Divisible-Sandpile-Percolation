@@ -3,11 +3,11 @@ import LatticeProb.Graph.ZdRepresentation
 
 /-! # Optimal-Stopping Representation, Proved
 
-The optimal-stopping representation is no longer assumed.
+The optimal-stopping representation is proved here.
 
-`Sandpile/External/BPSH.lean` states it as a `Prop`, as a cited result must be
-stated while it is only assumed, and the statements whose paper proofs use it
-take that `Prop` as an explicit hypothesis.  The shared library now proves the
+`Sandpile/External/BPSH.lean` states it as a `Prop`, the form in which a cited result is
+stated, and the statements whose paper proofs use it take that `Prop` as an
+explicit hypothesis.  The shared library proves the
 divisible sandpile's random-walk representation on a general graph, and its
 specialization to `ℤ^d` is exactly that `Prop`, so it is discharged here.  The
 `Prop` and its name are left untouched, so no frozen statement changes.

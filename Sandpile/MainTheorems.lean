@@ -31,22 +31,22 @@ critical growth and scaling theorem (`thm:main-explosion`) as they are registere
 Each theorem below restates its certified counterpart in `Sandpile/Frozen/` and is proved by
 `exact` of it, so the statements displayed in this file are the certified ones, except that
 Theorems 1.1, 1.2, 1.3(ii)(c), 1.3(iii)(c) and 1.3(iii)(d) omit hypotheses of their certified
-counterparts that are now proved in this repository (see below).  The hypotheses whose types
-are named `Sandpile.External.*` are results the paper cites without proof; they are assumed, not
-proved, and are listed with their statements in `ASSUMPTIONS.md`.
+counterparts that are proved in this repository (see below).  The hypotheses whose types
+are named `Sandpile.External.*` are results the paper cites without proof; each is proved in
+this repository, and `ASSUMPTIONS.md` lists them with their statements and proofs.
 Cited inputs proved in this repository (the files `Sandpile/External/*Proved.lean`) include
 the `d ≥ 5` Green estimates, the finite-time variance scale, the heat-kernel bounds, Pitt's
 Gaussian FKG theorem, Gaussian concentration for a Lipschitz functional, the normal comparison
 inequality, the Besov tightness criterion of Furlan and Mourrat, the optimal-stopping
 representation, exterior-boundary connectedness, ball occupation density, the
 Gaussian-law-by-covariance fact, and Pinsker's inequality.  The certified statements of
-Theorems 1.1 and 1.2 still carry LSS domination, exterior-boundary connectedness, ball
+Theorems 1.1 and 1.2 carry LSS domination, exterior-boundary connectedness, ball
 occupation density and Pitt's theorem; that of Theorem 1.3(iii)(c) carries Gaussian
 concentration, the normal comparison inequality and the Besov
 tightness criterion, and those of Theorems 1.3(ii)(c) and 1.3(iii)(d) the Besov tightness
 criterion; the theorems here supply the proofs.  The optimal-stopping representation is used,
 and discharged the same way, inside the certified proofs of `thm:RW` and two lemmas that feed
-these theorems; it was never itself a hypothesis of a theorem in this file.  The
+these theorems; it is not a hypothesis of any theorem in this file.  The
 Gaussian-law-by-covariance fact and Pinsker's inequality are used only inside the certified
 proofs and are not hypotheses of any theorem in this file either.
 

@@ -20,7 +20,7 @@ denominators are nonzero because `1 ≤ n`.
 -/
 
 /-- The dimension-four specialization of the paired local limit estimate,
-Lawler–Limic Theorem 2.1.3, Eq. (2.8). Assumed, not proved. -/
+Lawler–Limic Theorem 2.1.3, Eq. (2.8).  Proved as `Sandpile.External.pairedLocalCLTFour`. -/
 def Sandpile.External.PairedLocalCLTFour : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n → ∀ x y : Sandpile.Site 4,
     |Sandpile.heatKernel 4 n x y + Sandpile.heatKernel 4 (n + 1) x y -

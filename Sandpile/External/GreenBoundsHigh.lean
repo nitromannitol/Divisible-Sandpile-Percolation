@@ -41,7 +41,7 @@ The displays transcribed here are, in the paper's own words
    \[ \mathbf E_x\mathbf E_y \sum_{i,j\geq0}\one_{\{X_i=Y_j\}}
       = \sum_{z\in\Z^d}G(x,z)G(y,z) \leq C(1+|x-y|)^{4-d}\, . \]"
 
-These results are assumed here, not proved.
+These results are proved in this repository as `Sandpile.External.greenBoundsHigh`.
 
 Modelling.  `G` is `Sandpile.green d` and `p_j` is `Sandpile.heatKernel d j`.
 The Euclidean norm of the notation section (`sandpile.tex:678`) is

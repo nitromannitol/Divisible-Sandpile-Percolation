@@ -5,11 +5,11 @@ import LatticeProb.Prob.GaussianLaw
 # Gaussian law determined by covariance, proved
 
 The determination of the law of a centred Gaussian process by its covariance is
-no longer assumed.
+proved here.
 
-`Sandpile/External/GaussianLawCovariance.lean` states it as a `Prop`, as a
-classical fact must be stated while it is only assumed.  The shared library now
-proves it for a process indexed by an arbitrary set, so the `Prop` is discharged
+`Sandpile/External/GaussianLawCovariance.lean` states it as a `Prop`, the form in
+which a cited classical fact is stated.  The shared library proves it for a process
+indexed by an arbitrary set, so the `Prop` is discharged
 here.  The `Prop` and its name are left untouched, so no frozen statement
 changes, and every node carrying
 `Sandpile.External.GaussianLawDeterminedByCovariance` as a hypothesis becomes

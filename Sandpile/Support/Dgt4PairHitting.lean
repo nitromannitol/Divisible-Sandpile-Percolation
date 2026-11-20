@@ -395,7 +395,7 @@ theorem pairKilledMeanLower (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 �
   exact pair_denom_pos hd3 z₀
 
 /-- **Case (b) of `prop:dgt4-contact-asymptotics`, with no residual.**  Everything of
-`sandpile.tex:5301-5412` is now proved. -/
+`sandpile.tex:5301-5412` is proved. -/
 theorem caseThresholdField_linear
     (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)
     (ν : Measure ℝ) [IsProbabilityMeasure ν]

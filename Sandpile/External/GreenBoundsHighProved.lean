@@ -5,11 +5,11 @@ import LatticeProb.Walk.GreenPointwise
 /-!
 # The high-dimensional Green estimates are proved
 
-The high-dimensional Green estimates are no longer assumed.
+The high-dimensional Green estimates are proved here.
 
 `Sandpile/External/GreenBoundsHigh.lean` states the estimates of
-`ssec:green-estimates` as a `Prop`, as a cited result must be stated while it is
-only assumed.  The shared library now proves all five displays for the simple
+`ssec:green-estimates` as a `Prop`, the form in which a cited result is stated.
+The shared library proves all five displays for the simple
 random walk above dimension four, so the `Prop` is discharged here.  The `Prop`
 and its name are left untouched, so no frozen statement changes, and every node
 carrying `Sandpile.External.GreenBoundsHigh` as a hypothesis becomes

@@ -30,7 +30,7 @@ and states the display itself, with its own citation, at
    parity: for fixed $x$ and $\ell$, the sites $y$ with $p_\ell(x,y)>0$ form
    one parity class, whose scaled counting measure has density $1/2$."
 
-This result is assumed here, not proved.
+It is proved in this repository as `Sandpile.External.localCLT`.
 
 Modelling.  `p_\ell` is `Sandpile.heatKernel d ℓ` and `p^{\rm BM}_{\ell/R^2}` is
 `Sandpile.Continuum.heatKernelBM d (ℓ / R ^ 2)`, the kernel of
@@ -84,7 +84,7 @@ end Sandpile.External.Lclt
 
 /-- The local central limit theorem in the parity form `eq:lclt-parity` of
 `ssec:green-estimates` (`sandpile.tex:1145-1161`), with the supremum written as
-a uniform bound over the admissible triples.  Assumed, not proved. -/
+a uniform bound over the admissible triples.  Proved as `Sandpile.External.localCLT`. -/
 def Sandpile.External.LocalCLT : Prop :=
   ∀ d : ℕ, 1 ≤ d →
     ∀ δ T C₀ : ℝ, 0 < δ → δ < T →

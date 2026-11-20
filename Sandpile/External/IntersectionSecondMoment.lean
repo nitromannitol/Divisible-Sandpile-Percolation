@@ -25,13 +25,13 @@ noncomputable def interCount {d : ℕ} (X Y : ℕ → Sandpile.Site d) : ℝ≥0
 
 end Sandpile.External
 
--- No longer a frozen node's own file: the second intersection estimate is proved,
--- unconditionally, in `Sandpile.External.IntersectionSecondMomentProved`; this `Prop`'s
--- body is retained byte-for-byte as the statement that theorem discharges.
+-- The second intersection estimate is proved unconditionally in
+-- `Sandpile.External.IntersectionSecondMomentProved`; this `Prop` is the statement that theorem
+-- discharges.
 /-- The second intersection estimate `eq:dgt4-intersection-second-moment`
 (`sandpile.tex:1318-1323`): in dimensions `d ≥ 5` the second moment of the
 number of intersections of two independent simple random walks started at `x`
-and `y` is at most `C(1+|x-y|)^{4-d}`.  Assumed, not proved. -/
+and `y` is at most `C(1+|x-y|)^{4-d}`.  Proved as `Sandpile.External.intersectionSecondMoment`. -/
 def Sandpile.External.IntersectionSecondMoment : Prop :=
   ∀ d : ℕ, 5 ≤ d →
     ∃ C : ℝ, 0 < C ∧

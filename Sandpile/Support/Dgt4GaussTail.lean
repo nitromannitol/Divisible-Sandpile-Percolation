@@ -138,7 +138,7 @@ theorem infiniteFieldGaussianTail_gaussian (hd : 5 ≤ d) (v : ℝ≥0) :
   infiniteFieldGaussianTail_of_map hd v _ (map_infiniteGreenField_iid hd v)
 
 /-- Case (a) with the hypotheses exactly as the two frozen statements supply them.  The law
-of the field is no longer an input: it is `infiniteFieldGaussianTail_gaussian`, so the
+of the field is not an input: it is `infiniteFieldGaussianTail_gaussian`, so the
 Gaussian branch rests on `eq:dgt4-contact-mean-increment` and
 `eq:dgt4-contact-threshold-relative-error` alone. -/
 theorem caseThresholdField_gaussian_of_hcase (hd : 5 ≤ d) (ν : Measure ℝ)

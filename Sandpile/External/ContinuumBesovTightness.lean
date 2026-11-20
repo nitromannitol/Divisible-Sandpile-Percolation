@@ -19,14 +19,15 @@ and, after the statement of `lem:sobolev-tightness`, gives its whole proof:
 
 The cited source is Furlan and Mourrat, *A tightness criterion for random
 fields, with application to the Ising model*, Annales de l'Institut Henri
-Poincaré Probabilités et Statistiques 53 (2017), Theorem 2.30.  What is
-assumed here is that theorem in exactly the shape the sentence above puts it
+Poincaré Probabilités et Statistiques 53 (2017), Theorem 2.30.  The input is
+that theorem in exactly the shape the sentence above puts it
 in: at `p = q = 2` a second-moment bound at the diffusive scale, with the
 regularity exponent the covariance decay produces, gives tightness in the
 Besov space `B^{-s,loc}_{2,2}(ℝ^d)`, and that space is `H^{-s}_loc(ℝ^d)`.  Both
 halves of the sentence, the moment criterion and the identification of the two
-scales of spaces, are assumed together, since the paper asserts them together
-and proves neither.
+scales of spaces, are stated together, since the paper asserts them together
+and cites both; they are proved in this repository as
+`Sandpile.External.continuumBesovTightness_holds`.
 
 Shape of the input.  A field indexed by `R ≥ 1` whose covariance decays like
 `K R^β (1 + R|y - y'|)^{-β}` is exactly a field whose pairing against a bump of

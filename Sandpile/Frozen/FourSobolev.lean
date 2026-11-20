@@ -42,13 +42,15 @@ paper's smooth ones.  The exponential moment is carried, since the preamble of
 Theorem 1.3 assumes it in part (ii).
 
 Cited inputs (standing convention R1).  The two propositions the proof combines
-carry the heat-kernel bounds, the Besov tightness criterion and the variance
-scaling of the four-dimensional field, so this statement carried them too at
-earlier versions; the heat-kernel bounds and the variance scaling are each
-proved unconditionally in this repository (`Sandpile.External.heatKernelBounds`,
-`Sandpile.External.varianceScale`), so neither is carried here as an explicit
-hypothesis.  `hMembrane`, the scaling limit of the four-dimensional discrete
-membrane field cited in Step 1 of `prop:d4-superdiffusive-limit`, remains one.
+use the heat-kernel bounds, the Besov tightness criterion and the variance
+scaling of the four-dimensional field.  The heat-kernel bounds and the variance
+scaling are proved unconditionally in this repository
+(`Sandpile.External.heatKernelBounds`, `Sandpile.External.varianceScale`), so
+neither is an explicit hypothesis here.  The Besov tightness criterion (`hBesov`)
+and `hMembrane`, the scaling limit of the four-dimensional discrete membrane field
+cited in Step 1 of `prop:d4-superdiffusive-limit`, are explicit hypotheses; both are
+proved in this repository, and `Sandpile.four_sobolev_of_proved_inputs` is the
+statement without them.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology

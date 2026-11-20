@@ -12,12 +12,10 @@ Step 1 builds the one-site law and its band estimates; Step 3 turns Step 2's out
 field limits. Both are proved. This file is Step 2: from the band estimates to
 `Dgt4AStep2Output`, together with the scale the theorem needs.
 
-This is the second statement of Step 2. The first was audited before any proof was written and
-six defects were found; the corrections are recorded where they bite. In particular the scale
-is CONSTRUCTED here rather than taken as given: the paper's auxiliary sequence grows slowly
-enough that the band errors times its square still vanish, and a vacuity check showed that for
-a fast sequence the one-step hypotheses are outright false, so the choice is what keeps Step 2
-meaningful rather than merely convenient.
+The scale is constructed here rather than taken as given: the paper's auxiliary sequence grows
+slowly enough that the band errors times its square still vanish, and the one-step hypotheses
+can hold only along such a slowly growing sequence, so Step 2 produces the scale together with
+its output.
 
   (a) the band errors as one sequence            `bandErrorSeq`
   (b) the slow scale, constructed                `exists_bandScale`

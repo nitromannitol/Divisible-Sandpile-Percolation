@@ -7,7 +7,7 @@ import Sandpile.Support.Localization
 
 The second intersection moment `Sandpile.External.IntersectionSecondMoment`,
 Lawler, *Intersections of Random Walks*, proof of Theorem 3.3.2 (pp. 95-97),
-is no longer assumed.
+is proved here.
 
 The paper's proof (`sandpile.tex:1331-1336`) splits the second moment of the
 intersection count of two independent walks into the four relative orderings

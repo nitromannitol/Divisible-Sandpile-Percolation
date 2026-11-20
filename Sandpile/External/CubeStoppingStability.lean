@@ -30,7 +30,7 @@ and the cube correspond under the parabolic rescaling: a site `y` lies in
 `Q(⌊Rx⌋,R)` exactly when `|y_i-⌊Rx⌋_i| ≤ ⌊R⌋` for every `i`, so `y/R` is within
 `1+O(1/R)` of `x` in every coordinate.
 
-This result is assumed here, not proved.
+It is proved in this repository as `Sandpile.External.cubeStoppingStability_holds`.
 
 Modelling.  Every clause is the clause of
 `Sandpile.External.ContinuumStoppingStability`, with the two values replaced by

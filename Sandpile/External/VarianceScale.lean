@@ -50,7 +50,7 @@ Then `eq:d4-window-l2`, `eq:d4-window-linfty` and `eq:d4-full-window-bounds`
       \leq C\log(n+2)\, ,\qquad
       \sup_{z\in\Z^4}\sum_{k=0}^{n-1}p_k(x,z)\leq C\, . \]"
 
-These results are assumed here, not proved.
+These results are proved in this repository as `Sandpile.External.varianceScale`.
 
 Modelling.  `p_k` is `Sandpile.heatKernel d k` and `g_t` is
 `Sandpile.greenTime d t`; the full window `\sum_{k=0}^{n-1}p_k(x,z)` is
@@ -64,7 +64,7 @@ converted by the paper's own identities
 `\Var(V_t(0)) = \Var(\zeta(0))\sum_y g_t(0,y)^2` and
 `\Cov(V_m(0),V_n(0)) = \Var(\zeta(0))\sum_x g_m(0,x)g_n(0,x)`, stated at
 `sandpile.tex:1179-1184` and `sandpile.tex:1197-1204`.  Those two identities are
-the paper's own lines and are NOT part of what is assumed here: what is frozen
+the paper's own lines and are NOT part of the cited statement: what is frozen
 below is the two-sided bound on `\sum_y g_t(0,y)^2` and the upper bound on
 `\sum_x g_m(0,x)g_n(0,x)`, from which the paper's `V` forms follow by dividing
 by the positive constant `\Var(\zeta(0))`, which cancels from the normalized

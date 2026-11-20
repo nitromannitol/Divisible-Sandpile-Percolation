@@ -10,7 +10,7 @@ paper restates it in `thm:RW` (`sandpile.tex:857-863`):
    $u_n(x) = v_n(x) = \mathbf E_x[S_{\tau_n^*}]$,
    where $\tau_n^* \coloneqq \min\{0 \leq k \leq n : v_{n-k}(X_k) = 0\}$."
 
-Assumed here.  The paper's `u_n` written in the scenery is
+Proved as `Sandpile.External.optimalStopping`.  The paper's `u_n` written in the scenery is
 `Sandpile.odometerOf ζ n`, its `v_n` is `Sandpile.stoppingValue ζ n`, its
 `S_k` is `Sandpile.sceneryPartialSum ζ k`, and `E_x` is the integral against
 `Sandpile.walkLaw d x`.  The scenery `ζ` is an arbitrary real field, which is

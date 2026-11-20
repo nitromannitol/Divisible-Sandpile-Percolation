@@ -12,9 +12,9 @@ nonnegative and bounded above by the expected reward `E_x[1_{τ_D ≤ t} u_t(X_{
 against the simple random walk law `Sandpile.walkLaw d x` on path space. Since
 `Sandpile.exitTime D X` has type `ℕ∞`, the event `{τ_D ≤ t}` is written with `Set.indicator` so
 that the junk value `(⊤).toNat = 0` on its complement is multiplied by zero and never read. The
-paper's proof invokes the optimal-stopping representation of the odometer as a cited result, now
-proved unconditionally as `Sandpile.External.optimalStopping`, so it is no longer carried here as
-an explicit hypothesis.
+paper's proof invokes the optimal-stopping representation of the odometer as a cited result
+proved unconditionally as `Sandpile.External.optimalStopping`, so it is not an explicit
+hypothesis here.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology

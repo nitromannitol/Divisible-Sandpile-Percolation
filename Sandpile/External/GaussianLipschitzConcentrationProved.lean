@@ -5,11 +5,11 @@ import Sandpile.Support.GaussianConcentrationInfinite
 # Gaussian concentration for a Lipschitz functional is proved
 
 Gaussian concentration for a Lipschitz functional (Borell; Tsirelson, Ibragimov and Sudakov) is
-no longer assumed.
+proved here.
 
 `Sandpile/External/GaussianLipschitzConcentration.lean` states the inequality as a `Prop`, for
-an arbitrary index set and the Cameron-Martin Lipschitz condition, as a cited result must be
-stated while it is only assumed.  The shared library proves the inequality for Euclidean
+an arbitrary index set and the Cameron-Martin Lipschitz condition, the form in which a cited result
+is stated.  The shared library proves the inequality for Euclidean
 Lipschitz functions of finitely many standard Gaussians, with the same constant
 (`LatticeProb.GaussConc`).  `Sandpile/Support/GaussianConcentrationInfinite.lean` passes it to
 an arbitrary index set by the martingale convergence the statement's docstring describes.  The

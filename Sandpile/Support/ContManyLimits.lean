@@ -92,7 +92,7 @@ theorem dgt4_many_limits_of (d : ℕ) (hd : 1 ≤ d)
 
 /-- **Theorem 1.3(iii)(d) from the subsequential convergence alone.**  The
 derivation of `ContHighNonconvergence` needs two inputs, the subsequential
-convergence and the distinctness of the limit covariances; the second is now
+convergence and the distinctness of the limit covariances; the second is
 proved, so the nonconvergence rests on the first alone. -/
 theorem high_nonconvergence_of_sub
     (hHeatKernel : Sandpile.External.HeatKernelBounds)

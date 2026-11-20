@@ -6,11 +6,11 @@ import LatticeProb.Walk.Correlation
 /-!
 # The finite-time variance scale is proved
 
-The finite-time variance scale is no longer assumed.
+The finite-time variance scale is proved here.
 
 `Sandpile/External/VarianceScale.lean` states the random-walk estimates of
-`ssec:green-estimates` as a `Prop`, as a cited result must be stated while it is
-only assumed.  The shared library now proves all three clauses for the simple
+`ssec:green-estimates` as a `Prop`, the form in which a cited result is stated.
+The shared library proves all three clauses for the simple
 random walk, so the `Prop` is discharged here.  The `Prop` and its name are left
 untouched, so no frozen statement changes, and every node carrying
 `Sandpile.External.VarianceScale` as a hypothesis becomes unconditional.

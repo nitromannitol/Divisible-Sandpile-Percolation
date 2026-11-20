@@ -4,12 +4,12 @@ import LatticeProb.Walk.MaxDisp
 /-!
 # Maximal-displacement estimate, proved
 
-The maximal-displacement estimate is no longer assumed.
+The maximal-displacement estimate is proved here.
 
 `Sandpile/External/HeatKernelBounds.lean` states three displays of
 `ssec:green-estimates` as a single `Prop`, and the statements whose paper proofs
 cite any of them take that `Prop` as an explicit hypothesis.  The third display,
-`eq:rw-max-displacement`, is now a theorem of the shared library, so the clause
+`eq:rw-max-displacement`, is a theorem of the shared library, so the clause
 of the `Prop` that transcribes it is discharged here.  The `Prop` and its name
 are left untouched, so no frozen statement changes; what is added is the clause
 itself, proved.

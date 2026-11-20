@@ -142,7 +142,7 @@ example : ∃ (P : BandParameters) (m : ℕ → ℕ) (mu : ℝ) (v : ℝ≥0),
     exists_step1_law (1 / 2) (by norm_num) (by norm_num)
   exact ⟨P, m, mu, v, h1, hm, hv, hprob, hmean, hvar, hprof, hint⟩
 
-/-- **The Step-1 analytic clauses of the frozen statement that are now proved**,
+/-- **The Step-1 analytic clauses of the frozen statement that are proved**,
 at parameters produced by `BandParameters.exists_admissible`: the exponential
 moment and the two-sided linear log tail in the exact shape the frozen `htail`
 asks for, and a shift making the mean zero. -/

@@ -5,10 +5,10 @@ import Mathlib.Probability.Distributions.Gaussian.IsGaussianProcess.Basic
 /-!
 # Pitt's Gaussian FKG theorem is proved
 
-Pitt's Gaussian FKG theorem is no longer assumed.
+Pitt's Gaussian FKG theorem is proved here.
 
 `Sandpile/External/PittGaussianFKG.lean` states the direction of Pitt's theorem the development
-uses as a `Prop`, as a cited result must be stated while it is only assumed.  The shared
+uses as a `Prop`, the form in which a cited result is stated.  The shared
 library proves Pitt's theorem for a Gaussian vector with nonnegative covariances
 (`LatticeProb.Pitt.integral_mul_le_of_monotone`, L. D. Pitt, *Ann. Probab.* 10 (1982)
 496–499).  A finite marginal `(X (q i))_{i < k}` of a Gaussian process is a Gaussian vector

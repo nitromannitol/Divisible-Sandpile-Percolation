@@ -4,11 +4,11 @@ import LatticeProb.Prob.Pinsker
 /-!
 # Pinsker's inequality is proved
 
-Pinsker's inequality is no longer assumed.
+Pinsker's inequality is proved here.
 
 `Sandpile/External/Pinsker.lean` states the form the level loss of
-`prop:fixed-scale-crossings` uses as a `Prop`, as a cited classical inequality
-must be stated while it is only assumed.  The shared library now proves it, by
+`prop:fixed-scale-crossings` uses as a `Prop`, the form in which a cited classical
+inequality is stated.  The shared library proves it, by
 Gibbs' inequality against an exponential tilt together with Hoeffding's lemma
 for the centred indicator of the event, with the same constant.  The `Prop` and
 its name are left untouched, so no frozen statement changes, and every node

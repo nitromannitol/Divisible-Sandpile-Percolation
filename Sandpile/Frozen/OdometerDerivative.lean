@@ -13,8 +13,8 @@ paper's scenery coordinates need not be identically distributed, the law is the 
 `Measure.infinitePi ν` over an arbitrary family of one-site laws, with atomlessness at a site
 recorded as `NullSingletonClass (ν x)`; the derivative itself is `HasDerivAt` of `h ↦ u_n(x)`
 computed from `Function.update ζ z h` at the point `ζ z`. The second equality reads off the
-optimal-stopping representation of the odometer, a cited result now proved unconditionally as
-`Sandpile.External.optimalStopping`, so it is no longer carried as an explicit hypothesis.
+optimal-stopping representation of the odometer, a cited result proved unconditionally as
+`Sandpile.External.optimalStopping`, so it is not an explicit hypothesis.
 -/
 
 open MeasureTheory ProbabilityTheory Filter Topology

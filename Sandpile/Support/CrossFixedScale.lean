@@ -70,7 +70,7 @@ theorem fixed_scale_crossings_of_inputs
   exact liminf_crossing_of_level_and_loss P X θ lev c C α (max 1 θ⁻¹) hc hα hzero L (hloss L hL)
 
 /-- The fixed-scale crossing estimate from the level loss alone.  The square
-estimate is no longer an assumption: it is proved in
+estimate is not an assumption: it is proved in
 `Sandpile/Support/CrossDuality.lean` from the continuum planar duality of
 `Sandpile/Support/CrossGrid.lean` and the symmetry of the field, at the level
 `-ε` the grid and the bracket of the chain events give.  What is left of

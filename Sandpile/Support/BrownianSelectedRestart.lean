@@ -80,3 +80,33 @@ theorem Sandpile.Support.setIntegral_brownian_selected_continuation
   have hF' : Measurable (fun w : Path => F (Y ω, w)) :=
     hF.comp (measurable_const.prodMk measurable_id)
   exact integral_map hpath.aemeasurable hF'.aestronglyMeasurable
+
+/-- A countable family of bounded continuation payoffs is jointly measurable
+in the starting position, rule label and future path. -/
+theorem Sandpile.Support.measurable_selected_continuation_payoff
+    {ι : Type*} {d : ℕ} [Countable ι] [MeasurableSpace ι] [MeasurableSingletonClass ι]
+    (L : ℝ≥0) (H : ι → ℝ≥0) (hHL : ∀ i, H i ≤ L)
+    (G : ℝ → Sandpile.Continuum.Space d → ℝ)
+    (hG : ContinuousOn (fun p : ℝ × Sandpile.Continuum.Space d => G p.1 p.2)
+      (Set.Icc 0 (L : ℝ) ×ˢ Set.univ))
+    (z : ι → Sandpile.Continuum.Space d)
+    (θ : ι → (ℝ≥0 → Sandpile.Continuum.Space d) → ℝ≥0)
+    (hθ : ∀ i, IsStoppingTime (LatticeProb.natFiltration
+      (fun t (p : ℝ≥0 → Sandpile.Continuum.Space d) => p t)
+      (fun t => (measurable_pi_apply t).stronglyMeasurable))
+      (fun p => (θ i p : ℝ≥0∞))) (hθH : ∀ i p, θ i p ≤ H i) :
+    Measurable (fun q : (Sandpile.Continuum.Space d × ι) × LatticeProb.BrownianPath d =>
+      G ((H q.1.2 : ℝ) - θ q.1.2 (fun t => z q.1.2 + q.2 t))
+        (q.1.1 + q.2 (θ q.1.2 (fun t => z q.1.2 + q.2 t)))) := by
+  let A := Sandpile.Continuum.Space d
+  let Path := LatticeProb.BrownianPath d
+  have hGi : ∀ i, ContinuousOn (fun p : ℝ × A => G p.1 p.2)
+      (Set.Icc 0 (H i : ℝ) ×ˢ Set.univ) := fun i => hG.mono (by
+    intro p hp
+    exact ⟨⟨hp.1.1, hp.1.2.trans (by exact_mod_cast hHL i)⟩, hp.2⟩)
+  have hF : Measurable (fun q : (A × Path) × ι =>
+      G ((H q.2 : ℝ) - θ q.2 (fun t => z q.2 + q.1.2 t))
+        (q.1.1 + q.1.2 (θ q.2 (fun t => z q.2 + q.1.2 t)))) :=
+    measurable_from_prod_countable_left fun i =>
+      Sandpile.Support.measurable_continuation_payoff (H i) G (hGi i) (z i) (θ i) (hθ i) (hθH i)
+  exact hF.comp (((measurable_fst.fst).prodMk measurable_snd).prodMk measurable_fst.snd)

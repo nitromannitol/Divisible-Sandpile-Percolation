@@ -61,7 +61,7 @@ hypothesis and the conclusion as in `Sandpile/MainTheorems.lean`.  Their Mathlib
 counterparts are in `SandpileAudit/Nontriviality/Corollary.lean` and
 `SandpileAudit/CriticalLevels/Corollary.lean`.
 
-Ten of the twelve hold without any cited hypothesis.  Theorems 1.3(ii)(a), (ii)(b) and
+All twelve hold without any cited hypothesis.  Theorems 1.3(ii)(a), (ii)(b) and
 (iii)(a)-(d) take none in `Sandpile/MainTheorems.lean`.  Theorem 1.3(i)(a) is
 `Sandpile.mean_growth_le_three_proved` and Theorem 1.3(i)(b) is
 `Sandpile.brownian_scaling_limit_proved`: the certified statements with
@@ -75,7 +75,9 @@ Ten of the twelve hold without any cited hypothesis.  Theorems 1.3(ii)(a), (ii)(
 `Sandpile.percolation_below_criticality_of_planar_rsw` and
 `Sandpile.critical_level_percolation_of_planar_rsw`, applied to
 `Sandpile.External.planarRSW_holds`, need only `External.CubeStoppingStability`, which
-`Sandpile.External.cubeStoppingStability_holds` proves.
+`Sandpile.External.cubeStoppingStability_holds` proves.  With every input of their certified
+statements proved, `Sandpile.percolation_below_criticality_proved` and
+`Sandpile.critical_level_percolation_proved` are Theorems 1.1 and 1.2 without hypotheses.
 
 ## How the paper's objects are modelled
 
@@ -463,6 +465,9 @@ on a continuous path it is the truncated exit time (`Stopping.rawExitClock_eq_of
 planar RSW input as their only hypothesis, and
 `Sandpile.d23_critical_level_percolation_of_continuum_rsw` is
 `thm:d23-critical-level-percolation` with the continuum RSW input as its only hypothesis.
+With `Sandpile.External.planarRSW_holds` and `Sandpile.External.continuumRSW_holds`,
+`Sandpile.percolation_below_criticality_proved`, `Sandpile.critical_level_percolation_proved`
+and `Sandpile.d23_critical_level_percolation_proved` hold without hypotheses.
 
 ## Four-dimensional membrane input and cited scope
 
@@ -740,5 +745,9 @@ Mathlib's `variance_sum_pi` and the covariance is polarization.
 | `thm-d4-ball-green-crossing-proved` | `Sandpile.d4_ball_green_crossing` | `sandpile.tex:3575-3596`, `thm:d4-ball-green-crossing` | SEALED |
 | `thm-d4-critical-level-percolation-proved` | `Sandpile.d4_critical_level_percolation` | `sandpile.tex:4023-4039`, `thm:d4-critical-level-percolation` | SEALED |
 | `ext-cube-stopping-stability-proved` | `Sandpile.External.cubeStoppingStability_holds` | sandpile.tex:1956-1958 and sandpile.tex:1900-1907 (CoquetToldo Theorem 3 and Corollary 4, stability of killed optimal-stopping values); a cited result, proved unconditionally in this repository rather than assumed | SEALED |
+| `thm-main-nontriviality-proved` | `Sandpile.percolation_below_criticality_proved` | `sandpile.tex:95-103`, `thm-main-nontriviality` | SEALED |
+| `thm-main-critical-level-percolation-proved` | `Sandpile.critical_level_percolation_proved` | `sandpile.tex:113-126`, `thm-main-critical-level-percolation` | SEALED |
+| `thm-d23-critical-level-percolation-proved` | `Sandpile.d23_critical_level_percolation_proved` | `sandpile.tex:2596-2611`, `thm-d23-critical-level-percolation` | SEALED |
+| `rem-dlt4-killed-scaling-proved` | `Sandpile.dlt4_killed_scaling_proved` | `sandpile.tex:1957-1984`, `rem-dlt4-killed-scaling` | SEALED |
 
 <!-- FROZEN-SURFACE-END -->

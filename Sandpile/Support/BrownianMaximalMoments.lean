@@ -1,6 +1,7 @@
 import Sandpile.Support.TailMoment
 import LatticeProb.Prob.BrownianLevyReflection
 import LatticeProb.Prob.BrownianAbsMoments
+import LatticeProb.Prob.GaussSupTailField
 
 /-!
 # Brownian maximal moments
@@ -51,3 +52,47 @@ theorem Sandpile.Support.integrable_pow_of_brownian_max_tail
     _ ≤ 2 * P {ω | t ≤ |B T ω|} + 2 * P {ω | t ≤ |B T ω|} :=
       add_le_add (hE.trans (mul_le_mul' le_rfl he1)) (hF.trans (mul_le_mul' le_rfl he2))
     _ = 4 * P {ω | t ≤ |B T ω|} := by ring
+
+/-- The increments of a continuous real Brownian path up to a finite horizon
+have a measurable bound with finite moments of every nonnegative integer order. -/
+theorem Sandpile.Support.exists_brownian_increment_bound
+    {Ω : Type*} [MeasurableSpace Ω] (P : Measure Ω) [IsProbabilityMeasure P]
+    (B : ℝ≥0 → Ω → ℝ) (hB : IsBrownianReal B P) (hBm : ∀ t, Measurable (B t))
+    (hBc : ∀ ω, Continuous fun t => B t ω) (T : ℝ≥0) :
+    ∃ M : Ω → ℝ, Measurable M ∧ (∀ ω, 0 ≤ M ω) ∧
+      (∀ ω t, t ≤ T → |B t ω - B 0 ω| ≤ M ω) ∧
+      ∀ n : ℕ, Integrable (fun ω => M ω ^ n) P := by
+  let I := Set.Icc (0 : ℝ≥0) T
+  have : Nonempty I := ⟨⟨0, ⟨le_rfl, zero_le⟩⟩⟩
+  let X : I → Ω → ℝ := fun t ω => |B t ω - B 0 ω|
+  have hXc : ∀ ω, Continuous fun t => X t ω := by
+    intro ω
+    exact (((hBc ω).comp continuous_subtype_val).sub continuous_const).abs
+  have hXbdd : ∀ ω, BddAbove (Set.range fun t => X t ω) := by
+    intro ω
+    let : CompactSpace I := isCompact_iff_compactSpace.mp isCompact_Icc
+    exact (isCompact_range (hXc ω)).bddAbove
+  let M : Ω → ℝ := fun ω => ⨆ t : I, X t ω
+  have hMm : Measurable M := by
+    have heq : M = fun ω => ⨆ n, X (TopologicalSpace.denseSeq I n) ω := by
+      funext ω
+      exact LatticeProb.GaussConc.SupTail.iSup_eq_iSup_denseSeq (hXc ω)
+        (TopologicalSpace.denseRange_denseSeq I) (hXbdd ω)
+    rw [heq]
+    exact Measurable.iSup fun n => ((hBm _).sub (hBm 0)).abs
+  have hM0 : ∀ ω, 0 ≤ M ω := by
+    intro ω
+    exact (abs_nonneg _).trans (le_ciSup (hXbdd ω) (Classical.choice inferInstance))
+  have hMbound : ∀ ω t, t ≤ T → |B t ω - B 0 ω| ≤ M ω := by
+    intro ω t ht
+    exact le_ciSup (hXbdd ω) (⟨t, zero_le, ht⟩ : I)
+  refine ⟨M, hMm, hM0, hMbound, ?_⟩
+  intro n
+  by_cases hn : 0 < n
+  · apply Sandpile.Support.integrable_pow_of_brownian_max_tail P B hB hBm T M hMm hM0 ?_ n hn
+    intro ω t ht hlt
+    obtain ⟨s, hs⟩ := exists_lt_of_lt_ciSup hlt
+    exact ⟨s, s.property.2, hs⟩
+  · have : n = 0 := Nat.eq_zero_of_not_pos hn
+    subst n
+    simpa only [pow_zero] using (integrable_const (1 : ℝ) : Integrable (fun _ : Ω => (1 : ℝ)) P)

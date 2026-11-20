@@ -1,5 +1,5 @@
 import Sandpile.Frozen.BrownianOptimalStopping
-import Sandpile.External.ContinuumOptimalStoppingOfContinuous
+import Sandpile.Support.ContinuumOptimalStoppingProved
 
 /-!
 # Brownian optimal stopping with continuous paths
@@ -19,7 +19,6 @@ theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
       ∀ y : Sandpile.Continuum.Space d, |h t y| ≤ C * (1 + ‖y‖) ^ k)
     (x : Sandpile.Continuum.Space d)
     {Ω : Type*} [MeasurableSpace Ω]
-    (hOS : Sandpile.External.ContinuumOptimalStoppingOfContinuous Ω)
     (P : Measure Ω) [IsProbabilityMeasure P]
     (B : Sandpile.Continuum.Space d → ℝ≥0 → Ω → Sandpile.Continuum.Space d)
     (hB : ∀ y : Sandpile.Continuum.Space d, Sandpile.Continuum.IsBrownian d y (B y) P)
@@ -49,6 +48,8 @@ theorem Sandpile.Support.brownian_optimal_stopping_of_continuous
             a = h T x - ∫ ω, h (T - (σ ω : ℝ)) (B x (σ ω) ω) ∂P}
 := by
   classical
+  have hOS : Sandpile.External.ContinuumOptimalStoppingOfContinuous Ω :=
+    Sandpile.External.continuumOptimalStoppingOfContinuous_holds
   have hGcont : ContinuousOn
       (fun p : ℝ × Sandpile.Continuum.Space d => (fun t y => -h t y) p.1 p.2)
       (Set.Icc 0 T ×ˢ (Set.univ : Set (Sandpile.Continuum.Space d))) := hcont.neg

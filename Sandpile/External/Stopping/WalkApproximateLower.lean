@@ -1,4 +1,4 @@
-import Sandpile.External.Stopping.WalkBrownianVaryingLower
+import Sandpile.External.Stopping.WalkBrownianGeneralLower
 import Sandpile.External.Stopping.KilledRewardApproximation
 
 /-!
@@ -25,8 +25,6 @@ theorem eventually_approx_grid_value_ge_brownian_of_tendsto_horizon
     (T : ℝ≥0) (hT : 0 < T) (Tn : ℕ → ℝ≥0) (hTn : Tendsto Tn atTop (𝓝 T))
     (G : ℝ → Continuum.Space d → ℝ)
     (hGc : Continuous (fun p : ℝ × Continuum.Space d => G p.1 p.2))
-    (K : Set (Continuum.Space d)) (hK : IsCompact K)
-    (hsupp : ∀ s z, z ∉ K → G s z = 0)
     (H : ℕ → ℝ → Continuum.Space d → ℝ) (M : ℝ)
     (hG : ∀ s z, |G s z| ≤ M) (hH : ∀ n s z, |H n s z| ≤ M)
     (happrox : ∀ ε > 0, ∀ᶠ n in atTop, ∀ s ∈ Icc (0 : ℝ) ((T : ℝ) + 1),
@@ -36,8 +34,8 @@ theorem eventually_approx_grid_value_ge_brownian_of_tendsto_horizon
       stoppingSup ⌊R n ^ 2 * (Tn n : ℝ)⌋₊ (q n) (fun k X =>
         H n (((⌊R n ^ 2 * (Tn n : ℝ)⌋₊ : ℕ) - (k : ℝ)) / R n ^ 2)
           (Lclt.scaledSite (R n) (X k))) + ε := by
-  have hlower := eventually_grid_value_ge_brownian_of_tendsto_horizon
-    R q hRpos hR a hstart PB B hB T hT Tn hTn G hGc K hK hsupp M hG
+  have hlower := eventually_grid_value_ge_brownian_of_bounded_reward
+    R q hRpos hR a hstart PB B hB T hT Tn hTn G hGc M hG
     (ε / 2) (by positivity)
   have hbound : ∀ᶠ n in atTop, (Tn n : ℝ) ≤ (T : ℝ) + 1 := by
     have ht : Tendsto (fun n => (Tn n : ℝ)) atTop (𝓝 (T : ℝ)) :=

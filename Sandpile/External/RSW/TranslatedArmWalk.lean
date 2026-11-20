@@ -29,7 +29,7 @@ theorem translated_kstArmEvent_exists_walk (s W H : ℕ) (t : ℤ)
     have hz := (mem_centeredPlaneRectangle _ _ z).mp z.property
     apply (mem_centeredPlaneRectangle _ _ _).mpr
     simp only [Pi.add_apply, v, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.cons_val_fin_one, add_zero, zero_add]
+      Matrix.cons_val_fin_one, add_zero]
     push_cast at *
     omega
   let f : rectangleGraph Q →g rectangleGraph R :=

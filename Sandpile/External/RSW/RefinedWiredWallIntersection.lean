@@ -67,7 +67,7 @@ theorem refined_wired_boundary_walk_intersects_wall (k : ℕ) (hk : 0 < k)
     have h1 := hQ1 w hw
     change -2*A-1 ≤ w 0 ∧ w 0 ≤ 2*A+1 ∧ -2*(k : ℤ)-1 ≤ w 1 ∧ w 1 ≤ 2*(k : ℤ)+1
     omega
-  have hAD : D ≤ A := by dsimp [A, D]; push_cast; omega
+  have hAD : D ≤ A := by dsimp [A, D]; omega
   have htop := refined_wired_dual_avoids_upper_connector k ω q hopen a ha.1 ha.2.1 ha.2.2
   have hbot := refined_wired_dual_avoids_lower_connector k ω q hopen b hb.1 hb.2.1 hb.2.2
   have hcross := inset_vertical_walk_intersects_boundary_walk

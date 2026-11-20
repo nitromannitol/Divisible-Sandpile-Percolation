@@ -83,7 +83,8 @@ theorem refined_wired_dual_avoids_lower_connector (k : ℕ)
   have heq : refinedVertex 0 y + Pi.single 1 1 =
       refinedVertex 0 x - Pi.single 1 1 := by
     ext i
-    fin_cases i <;> simp [refinedVertex, y] <;> omega
+    fin_cases i <;> simp [refinedVertex, y]
+    all_goals omega
   intro h
   have he := horizontal_edge_of_refined_dual_upper_neighbor q y (heq ▸ h)
   have hopen := hq _ he

@@ -41,7 +41,8 @@ theorem translatedKSTArmEvent_reflectY (m : ℕ) (x y : ℤ)
           reflectPlaneCoordinates false true (z + ![x, -y]) =
             reflectPlaneCoordinates false true z + ![x, y] := by
         ext i
-        fin_cases i <;> simp [reflectPlaneCoordinates] <;> ring
+        fin_cases i <;> simp [reflectPlaneCoordinates]
+        all_goals ring
       simp only [Function.comp_apply, Sym2.map_mk, hsite]
   change ((ω ∘ Sym2.map (reflectPlaneCoordinates false true)) ∘
     Sym2.map (fun z => z + ![x, -y])) ∈ kstArmEvent m

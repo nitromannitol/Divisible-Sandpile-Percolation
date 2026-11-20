@@ -16,7 +16,7 @@ namespace Sandpile.External.RSW
 or intersects one of the paths. -/
 theorem central_corridor_first_exit {L R B T lc ld rc rd : ℤ}
     (hL : L < lc) (hR : rd < R) (hBT : B < T)
-    (hleft : lc ≤ ld) (hbetween : ld ≤ rc) (hright : rc ≤ rd)
+    (_hleft : lc ≤ ld) (hbetween : ld ≤ rc) (hright : rc ≤ rd)
     {a₁ b₁ a₂ b₂ u v : Site 2}
     (p₁ : (LatticeModels.zdGraph 2).Walk a₁ b₁)
     (p₂ : (LatticeModels.zdGraph 2).Walk a₂ b₂)

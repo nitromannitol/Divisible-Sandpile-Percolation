@@ -39,11 +39,11 @@ theorem kstAdjacentSixEvent_subset_quasi (j : ℕ) :
   have hleft : ω ∈ kstWallEvent (4 * m) m true := by
     apply kstWallEvent_of_spanning_side_walk (4 * m) m M (5 * m) true
       hm hM hN hMW hwidth lp lower lowerLink upper upperLink hlOpen
-    · simp only [Bool.true_eq, ↓reduceIte] at hla ⊢
+    · simp only [↓reduceIte] at hla ⊢
       push_cast at *
       omega
     · left
-      simp only [Bool.true_eq, ↓reduceIte] at hla hlb
+      simp only [↓reduceIte] at hla hlb
       dsimp only [M]
       push_cast at *
       omega

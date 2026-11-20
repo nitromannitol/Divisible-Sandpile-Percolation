@@ -1,5 +1,4 @@
-import Sandpile.External.Stopping.CubeClockConstraint
-import Sandpile.External.Stopping.ApproximatedClockValue
+import Sandpile.External.Stopping.ValueHorizonLower
 
 /-!
 # Lower semicontinuity of cube stopping values in the horizon
@@ -48,25 +47,8 @@ theorem eventually_brownianDiscountCube_le_add_of_tendsto_horizon
       exact ENNReal.coe_min _ _
     rw [heq]
     exact h
-  have hσlim : ∀ ω, Tendsto (fun n => σ n ω) atTop (𝓝 (τ ω)) := by
-    intro ω
-    have hle : τ ω ≤ T := by exact_mod_cast hτT ω
-    simpa only [σ, min_eq_left hle] using (tendsto_const_nhds (x := τ ω)).min hTn
-  have hBL : LatticeProb.IsBrownianSpace d x B P := ⟨hB.start, hB.coord, hB.indep⟩
-  have hlim : Tendsto (fun n => ∫ ω, G ((Tn n : ℝ) - σ n ω) (B (σ n ω) ω) ∂P)
-      atTop (𝓝 (∫ ω, G ((T : ℝ) - τ ω) (B (τ ω) ω) ∂P)) := by
-    refine tendsto_integral_of_dominated_convergence (fun _ => M) (fun n => ?_)
-      (integrable_const M) (fun n => ?_) ?_
-    · have hσm := Continuum.IsBrownianStopping.aemeasurable (hσstop n) P hB.aemeasurable
-      have hp := Continuum.aemeasurable_stopped_position P hB.aemeasurable hBL.cont hσm
-      exact (hGc.measurable.comp_aemeasurable
-        ((aemeasurable_const.sub (measurable_coe_nnreal_real.comp_aemeasurable hσm)).prodMk hp)).aestronglyMeasurable
-    · filter_upwards with ω
-      simpa only [Real.norm_eq_abs] using hG _ _
-    · filter_upwards [hBL.cont] with ω hc
-      have hs := (NNReal.continuous_coe.tendsto _).comp (hσlim ω)
-      have ht := (NNReal.continuous_coe.tendsto _).comp hTn
-      exact (hGc.tendsto _).comp ((ht.sub hs).prodMk_nhds ((hc.tendsto _).comp (hσlim ω)))
+  have hτT' : ∀ ω, τ ω ≤ T := fun ω => by exact_mod_cast hτT ω
+  have hlim := tendsto_integral_reward_min_horizon P x B hB T Tn hTn τ hτ hτT' G hGc M hG
   have hbd : ∀ n, BddAbove (Continuum.cubeStoppingPayoffs B P (fun s z => -G s z) (Tn n) 1 x) := by
     intro n
     refine ⟨M, ?_⟩

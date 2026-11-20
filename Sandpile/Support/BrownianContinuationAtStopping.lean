@@ -1,5 +1,6 @@
 import Sandpile.Support.BrownianContinuationSelection
 import Sandpile.Support.StoppingTimeSelectionEvents
+import LatticeProb.Prob.BrownianPathPaste
 
 /-!
 # Continuations after countably valued Brownian stops
@@ -59,3 +60,21 @@ theorem Sandpile.Support.isBrownianStopping_continuation_of_countable_stop
     (fun p => hθ p.1 p.2) (fun p => hθT p.1 p.2) T
     (fun p => le_of_eq (add_tsub_cancel_of_le (hr p)))
   exact h
+
+/-- The position of a continuous adapted process at a finite stopping time is
+measurable for the stopping-time sigma algebra. -/
+theorem Sandpile.Support.measurable_brownian_stopped_position
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+    (B : ℝ≥0 → Ω → Sandpile.Continuum.Space d)
+    (hBm : ∀ t, StronglyMeasurable (B t)) (hBc : ∀ ω, Continuous fun t => B t ω)
+    (τ : Ω → ℝ≥0)
+    (hτ : IsStoppingTime (LatticeProb.natFiltration B hBm) (fun ω => (τ ω : ℝ≥0∞))) :
+    Measurable[hτ.measurableSpace] (fun ω => B (τ ω) ω) := by
+  have hprog : IsStronglyProgressive (LatticeProb.natFiltration B hBm) B :=
+    (LatticeProb.stronglyAdapted_natFiltration B hBm).isStronglyProgressive_of_continuous hBc
+  have h := measurable_stoppedValue hprog hτ
+  have heq : stoppedValue B (fun ω => (τ ω : ℝ≥0∞)) = fun ω => B (τ ω) ω := by
+    funext ω
+    change B ((τ ω : ℝ≥0∞).untopA) ω = B (τ ω) ω
+    rw [LatticeProb.untopA_eq_toNNReal ENNReal.coe_ne_top, ENNReal.toNNReal_coe]
+  rwa [heq] at h

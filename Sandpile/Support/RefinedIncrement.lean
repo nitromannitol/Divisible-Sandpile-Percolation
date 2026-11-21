@@ -448,7 +448,6 @@ theorem integral_exp_neg_shift_le {c β m : ℝ} (hc : 0 < c) (hβ : 1 ≤ β) (
 
 /-! ### The refined increment bound -/
 
-set_option maxHeartbeats 1000000 in
 /-- **The refined increment bound** `eq:dgt4-reduction-increment`:
 `E u_{t+1}(0) - E u_t(0) ≤ C e^{-c (E u_t(0))^β}` with `β = min(γ, d/2)`. -/
 theorem exists_refined_increment (hGH : Sandpile.External.GreenBoundsHigh) (hd : 5 ≤ d)

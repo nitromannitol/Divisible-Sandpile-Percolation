@@ -160,8 +160,6 @@ theorem tendsto_convex_comb {ι : Type*} [Fintype ι] {W : ℝ → ι → ℝ} {
   obtain ⟨N, hN⟩ := eventually_atTop.mp hfin
   exact ⟨N, hN⟩
 
-set_option maxHeartbeats 1600000 in
-
 /-- **The interpolated double time sum converges to the double time integral `I`.** Written via
 `tendsto_convex_comb` as a convex combination over the `2^d × 2` corner-time pairs of each of the
 two points, whose weights are `interpTermWeight` (nonnegative, summing to one), and whose terms
@@ -305,8 +303,6 @@ theorem timeIndex_le_mul {R ρ : ℝ} (hR : 1 ≤ R) (hρ : 0 ≤ ρ) (b : Bool)
     push_cast
     nlinarith
 
-set_option maxHeartbeats 800000 in
-
 /-- **At the degenerate horizon `r = 0` the interpolated double time sum vanishes in the limit.**
 As in `tendsto_interpDoubleTimeSum`, this is `tendsto_convex_comb` applied to the corner-time
 terms, but each term now converges to `0` by `tendsto_double_time_sum_of_small`, using
@@ -363,8 +359,6 @@ theorem doubleTimeSum_swap (k k' : ℕ) (x y : Site d) :
       = ∑ a ∈ Finset.range k', ∑ b ∈ Finset.range k, Sandpile.heatKernel d (a + b) x y := by
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [Nat.add_comm]
-
-set_option maxHeartbeats 800000 in
 
 /-- **At the degenerate horizon `r' = 0` the interpolated double time sum vanishes in the limit.**
 The mirror image of `tendsto_interpDoubleTimeSum_zero_left`: each corner-time term is reduced to

@@ -46,8 +46,6 @@ theorem scaled_time_sum_eq_filter' {R : ℝ} (hR : 0 < R) (T : ℝ) (g₁ g₂ :
   refine Finset.sum_congr rfl fun p _ => ?_
   ring
 
-set_option maxHeartbeats 1000000 in
-
 /-- **The scaled double time sum against the lattice kernel converges to the double
 time integral against the Brownian kernel.** -/
 theorem tendsto_scaled_time_sum_of_localCLT'

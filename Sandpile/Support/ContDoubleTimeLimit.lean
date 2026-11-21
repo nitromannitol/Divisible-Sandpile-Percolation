@@ -393,7 +393,6 @@ theorem weighted_sum_eq {M k k' : ℕ} (hk : k ≤ M) (hk' : k' ≤ M)
   rw [← e1]
   exact Finset.sum_congr rfl fun a _ => (e2 a).symm
 
-set_option maxHeartbeats 1600000 in
 /-- **The rescaled double time sum of transition probabilities converges to the
 double time integral of the Brownian heat kernel**, in dimensions one to three,
 for two time horizons and two lattice sites that are within one step of `R^2 r`

@@ -259,7 +259,6 @@ theorem setIntegral_Ioo_eq_intervalIntegral {ρ : ℝ} (hρ : 0 ≤ ρ) (F : ℝ
     (∫ x in Set.Ioo (0 : ℝ) ρ, F x) = ∫ x in (0 : ℝ)..ρ, F x := by
   rw [intervalIntegral.integral_of_le hρ, Measure.restrict_congr_set Ioo_ae_eq_Ioc]
 
-set_option maxHeartbeats 1600000 in
 /-- **`ContinuumDoubleTimeLimit`.** The trapezoidally-weighted double time
 integral of the Brownian heat kernel over `Set.Ico 0 T ×ˢ Set.Ico 0 T` converges,
 as the trapezoid resolution `n → ∞`, to the iterated interval integral of the

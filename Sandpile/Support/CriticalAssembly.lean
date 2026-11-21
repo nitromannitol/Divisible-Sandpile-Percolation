@@ -86,7 +86,6 @@ theorem log_count_pow {q t m : ℕ} (hq : 2 ≤ q) (ht : 3 ≤ t)
         Real.mul_rpow h1 h2
 
 
-set_option maxHeartbeats 4000000 in
 /-- **`thm:critical-toppling` in real form.**  The two-term bound of
 `sandpile.tex:1735-1793`, before the passage to `ℝ≥0∞`. -/
 theorem exists_critical_toppling_bound
@@ -307,7 +306,14 @@ theorem exists_critical_toppling_bound
         have h2 : (0 : ℝ) ≤ (t : ℝ) ^ (-((1 : ℝ) / 2)) * L ^ (a * ((1 : ℝ) / 2)) := by
           exact mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg t) _)
             (Real.rpow_nonneg hL0R.le _)
-        nlinarith [hρ, h1, h2]
+        calc supOverSd d N
+            ≤ 2 * (1 + Real.log (t : ℝ)) *
+                ((t : ℝ) ^ (-((1 : ℝ) / 2)) * L ^ (a * ((1 : ℝ) / 2))) := hρ
+          _ ≤ 2 * (2 * Real.log (t : ℝ)) *
+                ((t : ℝ) ^ (-((1 : ℝ) / 2)) * L ^ (a * ((1 : ℝ) / 2))) :=
+              mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h1 (by norm_num)) h2
+          _ = 4 * Real.log (t : ℝ) *
+                ((t : ℝ) ^ (-((1 : ℝ) / 2)) * L ^ (a * ((1 : ℝ) / 2))) := by ring
       have hstep : CBE * (Aq * Real.log (t : ℝ) ^ ((3 : ℝ) / 4)) *
             ((CS / Real.sqrt cQ) * (6 * supOverSd d N)) ≤ Cbig * R := by
         have hb : (CS / Real.sqrt cQ) * (6 * supOverSd d N)
@@ -372,7 +378,7 @@ theorem exists_critical_toppling_bound
                   (t : ℝ) ^ (-((1 : ℝ) / 4)) * L ^ (a * ((1 : ℝ) / 4)) :=
                 mul_nonneg (mul_nonneg (Real.rpow_nonneg hlogt _)
                   (Real.rpow_nonneg (Nat.cast_nonneg t) _)) (Real.rpow_nonneg hL0R.le _)
-              nlinarith [hXnn, hRR]
+              exact mul_le_mul_of_nonneg_right (by linarith only [hXnn]) hRR
           _ = Cbig * R := by rw [hCbigdef, hRdef, he1, he2]; ring
       calc (Sandpile.centeredMassLaw d ν {σ | Sandpile.odometer σ t 0 ≤ hv}).toReal
           ≤ persistKappa ^ m + CBE * (m : ℝ) ^ ((1 : ℝ) / 4) *
@@ -393,6 +399,6 @@ theorem exists_critical_toppling_bound
     have h2 : L0 ^ cexp ≤ C := le_trans (le_max_left _ _) (le_max_left _ _)
     have h3 : L0 ^ cexp * L ^ (-cexp) ≤ C * L ^ (-cexp) :=
       mul_le_mul_of_nonneg_right h2 hLneg.le
-    nlinarith [hprob1, h1, h3, mul_nonneg hC.le hrate0]
+    linarith only [hprob1, h1, h3, mul_nonneg hC.le hrate0]
 
 end Sandpile

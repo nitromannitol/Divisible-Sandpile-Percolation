@@ -18,9 +18,20 @@ along the second crossing walk to its start.
 -/
 
 open scoped NNReal
-set_option maxHeartbeats 1000000
 noncomputable section
 namespace Sandpile
+
+/-- The inclusion of a narrower rectangle into a wider one does not move sites. -/
+private theorem rectangleIncl_coe {w W h : ℕ} (hle : w ≤ W) (v : planeRectangle w h) :
+    ((rectangleIncl hle v : planeRectangle W h) : Site 2) = (v : Site 2) := by
+  unfold rectangleIncl
+  exact rfl
+
+/-- The inclusion of a shorter rectangle into a taller one does not move sites. -/
+private theorem rectangleInclVert_coe {w h H : ℕ} (hle : h ≤ H) (v : planeRectangle w h) :
+    ((rectangleInclVert hle v : planeRectangle w H) : Site 2) = (v : Site 2) := by
+  unfold rectangleInclVert
+  exact rfl
 
 /-- For horizontally adjacent good blocks at `z` and `z + e₀`, any two bottom-top crossing walks
 `TB₁`, `TB₂` of the respective squares (with field values at least `ℓ`) have their starts joined
@@ -52,6 +63,7 @@ theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
     intro w hw
     rw [SimpleGraph.Walk.support_map] at hw
     obtain ⟨v, hv, rfl⟩ := List.mem_map.mp hw
+    rw [rectangleIncl_coe]
     exact hTB₁ v hv
   have hTB₂' : ∀ w ∈ (TB₂.map (rectTranslateHom (2 * r) (2 * r) (2 * r) 0)).support,
       ℓ ≤ F (blockShift r z w) := by
@@ -92,7 +104,8 @@ theorem block_route_adj_e0 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
   obtain ⟨w, hw, hwv⟩ := List.mem_map.mp ht₁
   have ht₁ : w ∈ TB₁.support := hw
   have hutw : (w : Site 2) = (s₁ : Site 2) := by
-    have hw1 : (w : Site 2) = (t₁ : Site 2) := congrArg Subtype.val hwv
+    have hw1 : (w : Site 2) = (t₁ : Site 2) :=
+      (rectangleIncl_coe _ w).symm.trans (congrArg Subtype.val hwv)
     rw [hw1]
     exact hut₁
   rw [List.mem_map] at hu'₁
@@ -190,6 +203,7 @@ theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
     intro w hw
     rw [SimpleGraph.Walk.support_map] at hw
     obtain ⟨v, hv, rfl⟩ := List.mem_map.mp hw
+    rw [rectangleInclVert_coe]
     exact hLR₁ v hv
   have hLR₂' : ∀ w ∈ (LR₂.map (rectTranslateHom (2 * r) (2 * r) 0 (2 * r))).support,
       ℓ ≤ F (blockShift r z w) := by
@@ -240,7 +254,8 @@ theorem block_route_adj_e1 {r : ℕ} (hr : 1 ≤ r) (F : Site 2 → ℝ) (ℓ : 
   obtain ⟨t₁, ht₁, hut₁⟩ := List.mem_map.mp hu₁'
   have hutw : (v₁ : Site 2) = (t₁ : Site 2) := by
     have h1' : (v₁ : Site 2) =
-        ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) := rfl
+        ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) :=
+      (rectangleInclVert_coe _ v₁).symm
     have h2' : ((rectangleInclVert (show 2 * r ≤ 2 * r + 2 * r by omega)) v₁ : Site 2) =
         (s₁ : Site 2) :=
       congrArg Subtype.val hvv

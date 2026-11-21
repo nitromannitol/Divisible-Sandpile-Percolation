@@ -117,8 +117,6 @@ theorem tendsto_sqrt_log_mul_rpow_neg (δ : ℝ) (hδ : 0 < δ) :
           mul_le_mul_of_nonneg_right hrootle hnn
       _ = (Real.sqrt δ)⁻¹ * (n : ℝ) ^ (-(δ / 2)) := by rw [mul_assoc, hcomb]
 
-
-set_option maxHeartbeats 1000000 in
 /-- The quantitative core of the first display: for any horizon `k` with `2 * k n ≤ n`
 eventually, the mean odometer at `n` times the first absolute moment of the centred value at
 `m = n - k n` is bounded by a constant times the decay rate
@@ -210,8 +208,13 @@ theorem exists_step2_first_bound
     have : n ≤ 2 * m := by omega
     exact_mod_cast this
   have hdiffle : |A n - A m| ≤ 2 * (k n : ℝ) * A n / (n : ℝ) := by
-    rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ A n - A m), le_div_iff₀ hnR]
-    nlinarith [hdiff, hn2m, (by linarith : (0 : ℝ) ≤ A n - A m)]
+    have hnn : (0 : ℝ) ≤ A n - A m := sub_nonneg.2 hAmn
+    rw [abs_of_nonneg hnn, le_div_iff₀ hnR]
+    calc (A n - A m) * (n : ℝ) ≤ (A n - A m) * (2 * (m : ℝ)) :=
+          mul_le_mul_of_nonneg_left hn2m hnn
+      _ = 2 * ((m : ℝ) * (A n - A m)) := by ring
+      _ ≤ 2 * ((k n : ℝ) * A n) := mul_le_mul_of_nonneg_left hdiff (by norm_num)
+      _ = 2 * (k n : ℝ) * A n := by ring
   have hmge : (n : ℝ) / 2 ≤ (m : ℝ) := by linarith
   have hhalfpos : (0 : ℝ) < (n : ℝ) / 2 := by linarith
   have hrp : (m : ℝ) ^ (-δ) ≤ ((n : ℝ) / 2) ^ (-δ) :=
@@ -220,7 +223,8 @@ theorem exists_step2_first_bound
     rw [Real.div_rpow hnR.le (by norm_num), Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2)]
     field_simp
   have hsqlog : A n ^ 2 ≤ K ^ 2 * Real.log n := by
-    nlinarith [haK, han, Real.sq_sqrt hlogn, Real.sqrt_nonneg (Real.log n), hK]
+    calc A n ^ 2 ≤ (K * Real.sqrt (Real.log n)) ^ 2 := pow_le_pow_left₀ han haK 2
+      _ = K ^ 2 * Real.log n := by rw [mul_pow, Real.sq_sqrt hlogn]
   have hnrn : (0 : ℝ) ≤ (n : ℝ) ^ (-δ) := Real.rpow_nonneg hnR.le _
   have hknn : (0 : ℝ) ≤ (k n : ℝ) := Nat.cast_nonneg _
   have hterm1 : A n * (∫ ζ, |X ζ + A m| ∂(LatticeProb.iidLaw d (gaussianReal 0 v)))
@@ -256,9 +260,11 @@ theorem exists_step2_first_bound
   refine le_trans hfinal ?_
   have hq1 : (0 : ℝ) ≤ Real.sqrt (Real.log n) * (n : ℝ) ^ (-δ) := by positivity
   have hq2 : (0 : ℝ) ≤ (k n : ℝ) * Real.log n / (n : ℝ) := by positivity
-  have hc1 : C * K * (2 : ℝ) ^ δ ≤ C * K * (2 : ℝ) ^ δ + 2 * K ^ 2 + 1 := by nlinarith
+  have hc1 : C * K * (2 : ℝ) ^ δ ≤ C * K * (2 : ℝ) ^ δ + 2 * K ^ 2 + 1 :=
+    le_trans (le_add_of_nonneg_right (by positivity)) (le_add_of_nonneg_right zero_le_one)
   have hc2 : 2 * K ^ 2 ≤ C * K * (2 : ℝ) ^ δ + 2 * K ^ 2 + 1 := by
-    nlinarith [mul_pos (mul_pos hC hK) htwo]
+    have h := mul_pos (mul_pos hC hK) htwo
+    linarith only [h]
   exact add_le_add (mul_le_mul_of_nonneg_right hc1 hq1) (mul_le_mul_of_nonneg_right hc2 hq2)
 
 

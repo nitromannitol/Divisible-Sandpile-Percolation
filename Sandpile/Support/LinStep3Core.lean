@@ -121,7 +121,6 @@ theorem abs_cov_survival_le_one (ν : Measure ℝ) [IsProbabilityMeasure ν]
   · nlinarith [hb0, hc0, hb1, hc1, ha1]
   · nlinarith [hb0, hc0, hb1, hc1, ha0]
 
-set_option maxHeartbeats 2000000 in
 /-- **`eq:dgt4-positive-path-covariance`**, the second conclusion of
 `lem:dgt4-path-survival` (`sandpile.tex:5579-5605`), from the window hypothesis along any filter of
 diverging scales. The error tends to zero along that same filter. -/
@@ -231,7 +230,7 @@ theorem exists_cov_bound_core [NeZero d] {l : Filter ℝ}
         Set.indicator_nonneg (fun _ _ => zero_le_one) _
     have hcoef : (0 : ℝ) ≤ 4 * Gk / (δ * R ^ 2) := by positivity
     have hone := abs_cov_survival_le_one ν ⌊R ^ 2 * T⌋₊ i j X Y
-    nlinarith [hcount, hcoef, hone]
+    linarith only [mul_nonneg hcoef hcount, hone]
   · intro e he
     set eta : ℝ := min (1 / 2) (e / (8 * (1 + L))) with hetadef
     have hetap : 0 < eta := lt_min (by norm_num) (by positivity)
@@ -279,7 +278,9 @@ theorem exists_cov_bound_core [NeZero d] {l : Filter ℝ}
       exact_mod_cast hlt
     have hεn : ε * (n : ℝ) ≤ δ * R ^ 2 := by
       rw [hεdef, div_mul_eq_mul_div, div_le_iff₀ (by positivity : (0 : ℝ) < 2 * T)]
-      nlinarith [hnle, hδ0.le, hR2.le]
+      have h1 : δ * (n : ℝ) ≤ δ * (R ^ 2 * T) := mul_le_mul_of_nonneg_left hnle hδ0.le
+      have h2 : 0 ≤ δ * (R ^ 2 * T) := by positivity
+      linarith only [h1, h2]
     have hexp : (1 - ε) * (n : ℝ) = (n : ℝ) - ε * (n : ℝ) := by ring
     have hMn : (M : ℝ) ≤ (1 - ε) * (n : ℝ) := by
       rw [hexp]
@@ -373,7 +374,7 @@ theorem exists_cov_bound_core [NeZero d] {l : Filter ℝ}
       push_cast at hcast
       linarith
     have hn2 : 2 * (n : ℝ) ≤ 2 * T * R ^ 2 := by
-      nlinarith [hnle, hT.le, hR2.le]
+      linarith only [hnle]
     have hcardX : ((((Finset.range (i + 1)).image X).card : ℕ) : ℝ) ≤ 2 * T * R ^ 2 := by
       have h1 : ((Finset.range (i + 1)).image X).card ≤ i + 1 :=
         le_trans Finset.card_image_le (by rw [Finset.card_range])

@@ -30,7 +30,6 @@ open scoped ENNReal NNReal
 universe u v
 open Sandpile Sandpile.Continuum
 
-set_option maxHeartbeats 3200000 in
 /-- **The parabolic scaling limit of `thm:main-explosion`(i)(b), assembled from its four error
 inputs.** Given a compact set `K` and accuracies `ε, δ`, there is a scale `R₀` beyond which the
 rescaled odometer and the Brownian potential's stopped value can be coupled, through a
@@ -142,10 +141,11 @@ theorem Sandpile.dlt4_scaling_of_inputs
   have hRcm : Rc ≤ R := (le_max_right _ _).trans ((le_max_right _ _).trans hrest)
   have hTR : (1 : ℝ) ≤ T * R ^ 2 := by
     have h1 : 1 / T ≤ R := by linarith
-    have h2 : R ≤ R ^ 2 := by nlinarith
+    have h2 : R ≤ R ^ 2 := le_self_pow₀ hR1 (by norm_num)
     have h3 : 1 / T ≤ R ^ 2 := le_trans h1 h2
     rw [div_le_iff₀ hT] at h3
-    nlinarith
+    rw [mul_comm]
+    exact h3
   have hn1 : 1 ≤ ⌊T * R ^ 2⌋₊ := Nat.le_floor (by exact_mod_cast hTR)
   obtain ⟨P, hP, hPf, hPs, hPgap⟩ := hcoup R hRcm
   obtain ⟨Gw, hGwm, hGw⟩ := hwenv R hR1
@@ -216,8 +216,7 @@ theorem Sandpile.dlt4_scaling_of_inputs
     have hqmem : (((n : ℝ) / R ^ 2, Support.meshPoint R u) : ℝ × Space d) ∈ C := by
       refine ⟨⟨div_nonneg (Nat.cast_nonneg n) (sq_nonneg R), ?_⟩, ?_⟩
       · apply (div_le_iff₀ (by positivity : (0:ℝ) < R ^ 2)).2
-        rw [hndef]
-        nlinarith [Nat.floor_le (show (0:ℝ) ≤ R ^ 2 * T by positivity)]
+        exact hnT.trans_eq (mul_comm _ _)
       · simp only [Metric.mem_closedBall, dist_zero_right]
         rw [hρ'val] at hAbox
         linarith
@@ -263,7 +262,10 @@ theorem Sandpile.dlt4_scaling_of_inputs
         simpa only [Metric.mem_closedBall, dist_zero_right] using (le_of_not_ge hy)⟩
       have he : |v p.1 s w - z p.2 s w| ≤ η := le_of_not_gt (fun h => hg ⟨(s, w), hwC, h⟩)
       rw [← mul_sub, abs_mul, abs_of_nonneg (cutoff_nonneg A w), abs_sub_comm]
-      nlinarith [cutoff_nonneg A w, cutoff_le_one A w, abs_nonneg (v p.1 s w - z p.2 s w)]
+      calc cutoff A w * |v p.1 s w - z p.2 s w| ≤ cutoff A w * η :=
+            mul_le_mul_of_nonneg_left he (cutoff_nonneg A w)
+        _ ≤ 1 * η := mul_le_mul_of_nonneg_right (cutoff_le_one A w) hη.le
+        _ = η := one_mul η
     have hE₂ := hstab R hRsm hRp u hu
       (fun s w => -(cutoff A w * v p.1 s w)) (fun s w => -(cutoff A w * z p.2 s w)) i
       ((((continuous_cutoff A).comp continuous_snd).mul hvc).neg.continuousOn)
@@ -307,7 +309,8 @@ theorem Sandpile.dlt4_scaling_of_inputs
         rw [sub_add_cancel] at h
         linarith
       have h3 : (1 + ‖w‖) ≤ (1 + ρ) * (1 + ‖w - u‖) := by
-        nlinarith [norm_nonneg (w - u), hρ]
+        have h5 := mul_nonneg hρ.le (norm_nonneg (w - u))
+        linarith only [h2, h5]
       have h4 : (1 + ‖w‖) ^ mz ≤ ((1 + ρ) * (1 + ‖w - u‖)) ^ mz :=
         pow_le_pow_left₀ (by positivity) h3 mz
       rw [Real.norm_eq_abs]
@@ -319,8 +322,12 @@ theorem Sandpile.dlt4_scaling_of_inputs
         ‖cutoff A w * z p.2 (vv : ℝ) w‖ ≤ ((mz : ℝ) * (1 + ρ) ^ mz) * (1 + ‖w - u‖) ^ mz := by
       intro vv hvv w
       have h := hgrowu vv hvv w
-      rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (cutoff_nonneg A w)] at *
-      nlinarith [cutoff_nonneg A w, cutoff_le_one A w, abs_nonneg (z p.2 (vv : ℝ) w)]
+      rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (cutoff_nonneg A w)]
+      rw [Real.norm_eq_abs] at h
+      calc cutoff A w * |z p.2 (vv : ℝ) w| ≤ 1 * |z p.2 (vv : ℝ) w| :=
+            mul_le_mul_of_nonneg_right (cutoff_le_one A w) (abs_nonneg _)
+        _ = |z p.2 (vv : ℝ) w| := one_mul _
+        _ ≤ _ := h
     obtain ⟨Denv, hDenv, hDdom⟩ := Sandpile.Support.exists_brownian_envelope_of_polynomial_growth
       (hB u) (hBm u) (hBc u) (z p.2) T.toNNReal ((mz : ℝ) * (1 + ρ) ^ mz) (by positivity) mz
       hgrowu
@@ -339,8 +346,11 @@ theorem Sandpile.dlt4_scaling_of_inputs
       have h := hω' r hr
       rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (cutoff_nonneg A _)]
       rw [Real.norm_eq_abs] at h
-      nlinarith [cutoff_nonneg A (B u r ω'), cutoff_le_one A (B u r ω'),
-        abs_nonneg (z p.2 (T - (r : ℝ)) (B u r ω'))]
+      calc cutoff A (B u r ω') * |z p.2 (T - (r : ℝ)) (B u r ω')|
+          ≤ 1 * |z p.2 (T - (r : ℝ)) (B u r ω')| :=
+            mul_le_mul_of_nonneg_right (cutoff_le_one A _) (abs_nonneg _)
+        _ = |z p.2 (T - (r : ℝ)) (B u r ω')| := one_mul _
+        _ ≤ Denv ω' := h
     have hint1 := Sandpile.Continuum.integrable_stopped_reward_of_envelope (B u) PB (z p.2) T
       hcz (fun t => (hBm u t).aemeasurable) (Filter.Eventually.of_forall (hBc u)) Denv hDenv hdom
     have hint2 := Sandpile.Continuum.integrable_stopped_reward_of_envelope (B u) PB
@@ -364,8 +374,11 @@ theorem Sandpile.dlt4_scaling_of_inputs
         have h0 : 0 ≤ 1 - cutoff A (B u (τ ω') ω') := by
           linarith [cutoff_le_one A (B u (τ ω') ω')]
         rw [abs_of_nonneg h0]
-        nlinarith [cutoff_nonneg A (B u (τ ω') ω'),
-          abs_nonneg (z p.2 (T - (τ ω' : ℝ)) (B u (τ ω') ω'))]
+        calc (1 - cutoff A (B u (τ ω') ω')) * |z p.2 (T - (τ ω' : ℝ)) (B u (τ ω') ω')|
+            ≤ 1 * |z p.2 (T - (τ ω' : ℝ)) (B u (τ ω') ω')| :=
+              mul_le_mul_of_nonneg_right (by linarith only [cutoff_nonneg A (B u (τ ω') ω')])
+                (abs_nonneg _)
+          _ = |z p.2 (T - (τ ω' : ℝ)) (B u (τ ω') ω')| := one_mul _
     have hbdd1 : BddAbove (stoppingPayoffs (B u) PB (z p.2) T) :=
       Sandpile.Continuum.bddAbove_stoppingPayoffs_of_samplewise_growth (hB u) (hBm u) (hBc u)
         (z p.2) T hT.le hcz (fun _ => (mz : ℝ) * (1 + ρ) ^ mz) ((mz : ℝ) * (1 + ρ) ^ mz)

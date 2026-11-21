@@ -45,7 +45,7 @@ with common law `ν`. -/
 noncomputable def Sandpile.truncatedGap (ν : Measure ℝ) (L : ℝ) : ℝ :=
   ∫ y, ∫ z, (if L < |y - z| then (y - z) ^ 2 else 0) ∂ν ∂ν
 
-set_option maxHeartbeats 1000000 in
+set_option maxHeartbeats 400000 in
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.convex_linear_bound :
     ∃ C : ℝ, 0 < C ∧

@@ -29,7 +29,7 @@ Integrability of `|ζ(0)|³` is the standing hypothesis `E|ζ(0)|³ < ∞`.
 
 open MeasureTheory ProbabilityTheory Filter Topology
 
-set_option maxHeartbeats 4000000 in
+set_option maxHeartbeats 400000 in
 -- FROZEN-STATEMENT-BEGIN
 theorem Sandpile.Frozen.critical_mean_one
     (hBerryEsseen : Sandpile.External.MultivariateBerryEsseen)

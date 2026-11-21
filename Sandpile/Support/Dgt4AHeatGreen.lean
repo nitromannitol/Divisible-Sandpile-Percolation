@@ -11,8 +11,6 @@ average of the Green function with the tail kernel of `eq:dgt4-tail-kernel`
 
 open MeasureTheory Filter Topology Set
 
-set_option maxHeartbeats 800000
-
 namespace Sandpile
 
 variable {d : ℕ}
@@ -39,8 +37,10 @@ theorem tsum_heatKernel_mul_green (hd : 3 ≤ d) (j : ℕ) (z' : Site d) :
   have hstep : ∀ z : Site d, heatKernel d j 0 z * green d z z'
       = ∑' r : ℕ, heatKernel d j 0 z * heatKernel d r z z' :=
     fun z => (Summable.tsum_mul_left _ (summable_heatKernel_transient hd z z')).symm
+  have hsum' : Summable (Function.uncurry fun (r : ℕ) (z : Site d) =>
+      heatKernel d j 0 z * heatKernel d r z z') := hsum
   simp_rw [hstep]
-  rw [Summable.tsum_comm hsum]
+  rw [Summable.tsum_comm hsum']
   exact tsum_congr hinner
 
 end Sandpile

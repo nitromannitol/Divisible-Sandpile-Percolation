@@ -16,7 +16,6 @@ induction that chains a coarse walk of good blocks into a single fine walk of th
 level superlevel set (`block_chain`).
 -/
 
-set_option maxHeartbeats 1000000
 open scoped NNReal
 noncomputable section
 namespace Sandpile

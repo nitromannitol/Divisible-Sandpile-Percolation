@@ -15,8 +15,6 @@ independence of the two factor σ-algebras of a product measure (`indep_comap_fs
 
 open MeasureTheory ProbabilityTheory LatticeProb
 
-set_option maxHeartbeats 1000000
-
 namespace Sandpile
 
 /-- Pullback of independence along a measure-preserving map. -/

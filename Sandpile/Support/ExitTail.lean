@@ -16,7 +16,6 @@ arithmetic comparison `exit_tail_arith` between the box cardinality `(2r+1)^d` a
 scaling `A^(d/2)`. `walkLaw_univ` records that the walk's law is a probability measure.
 -/
 
-set_option maxHeartbeats 1000000
 open MeasureTheory
 open scoped NNReal ENNReal
 noncomputable section

@@ -13,7 +13,6 @@ the fine superlevel set.
 All results in this file are local support lemmas.
 -/
 
-set_option maxHeartbeats 1000000
 open scoped NNReal
 open LatticeProb
 noncomputable section

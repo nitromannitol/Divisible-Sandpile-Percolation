@@ -239,7 +239,6 @@ theorem integral_pick (ν : Measure ℝ) [IsProbabilityMeasure ν] {N : ℕ}
   rw [hmap] at this
   exact this.symm
 
-set_option maxHeartbeats 1000000 in
 /-- The variance of a linear functional of finitely many distinct sites of an
 i.i.d. field. -/
 theorem variance_linear_pick (ν : Measure ℝ) [IsProbabilityMeasure ν]
@@ -252,7 +251,7 @@ theorem variance_linear_pick (ν : Measure ℝ) [IsProbabilityMeasure ν]
     Finset.measurable_sum _ fun i _ => measurable_const.mul (measurable_pi_apply i)
   have hvar : variance (fun ζ : Site d → ℝ => ∑ i, ℓ i * ζ (e i)) (LatticeProb.iidLaw d ν)
       = variance (fun ξ : Fin N → ℝ => ∑ i, ℓ i * ξ i) (Measure.pi fun _ : Fin N => ν) :=
-    hpick.variance_fun_comp hmeasM.aemeasurable
+    hpick.variance_fun_comp (f := fun ξ : Fin N → ℝ => ∑ i, ℓ i * ξ i) hmeasM.aemeasurable
   have hMemLp : ∀ i : Fin N, MemLp (fun z : ℝ => ℓ i * z) 2 ν := fun i => hsq.const_mul (ℓ i)
   have hsum : variance (fun ξ : Fin N → ℝ => ∑ i, ℓ i * ξ i) (Measure.pi fun _ : Fin N => ν)
       = ∑ i, variance (fun z : ℝ => ℓ i * z) ν := by

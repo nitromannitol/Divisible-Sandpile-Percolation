@@ -150,7 +150,6 @@ theorem tendsto_rpow_inv_succ {p : ℝ} (hp : 0 < p) :
 
 /-! ### The error made by the continuous time weight -/
 
-set_option maxHeartbeats 1600000 in
 /-- **The error the trapezoidal weight makes in the first time variable, at
 resolution `n`.**  Two windows contribute: the times below `2R^2/n`, where the
 near-diagonal bound of `ContSmallTime` gives `n^{-1/4}`, and the times within
@@ -177,10 +176,10 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
   have hrh : (0:ℝ) < r / 2 := by linarith
   have hrg : (0:ℝ) < (r / 2) ^ (-γ) := Real.rpow_pos_of_pos hrh _
   have hρg : (0:ℝ) < (2 * ρ) ^ (1 - α) := Real.rpow_pos_of_pos (by linarith) _
-  have hCsmρ : (0:ℝ) < Csm * (1 + 2 * ρ) := by nlinarith
+  have hCsmρ : (0:ℝ) < Csm * (1 + 2 * ρ) := mul_pos hCsm (by positivity)
   have hband0 : (0:ℝ) < 24 * C₀ * ((r / 2) ^ (-γ) * (2 * ρ) ^ (1 - α)) := by
     have : (0:ℝ) < (r / 2) ^ (-γ) * (2 * ρ) ^ (1 - α) := mul_pos hrg hρg
-    nlinarith
+    exact mul_pos (mul_pos (by norm_num) hC₀) this
   refine ⟨Csm * (1 + 2 * ρ) * 3 + 24 * C₀ * ((r / 2) ^ (-γ) * (2 * ρ) ^ (1 - α)), by linarith, ?_⟩
   intro n hn3 hnr
   have hn1 : (0:ℝ) < (n : ℝ) + 1 := by linarith
@@ -189,13 +188,15 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
     with R hkR hk'R hR1 hRn hRρ
   intro x y
   have hR0 : (0:ℝ) < R := lt_of_lt_of_le one_pos hR1
-  have hRsq : (1:ℝ) ≤ R ^ 2 := by nlinarith
+  have hRsq : (1:ℝ) ≤ R ^ 2 := one_le_pow₀ hR1
   have hRn2 : ((n : ℝ) + 1) ≤ R ^ 2 := by
     have h := Real.sq_sqrt (le_of_lt hn1)
-    nlinarith [Real.sqrt_nonneg ((n : ℝ) + 1)]
+    calc (n : ℝ) + 1 = Real.sqrt ((n : ℝ) + 1) ^ 2 := h.symm
+      _ ≤ R ^ 2 := pow_le_pow_left₀ (Real.sqrt_nonneg _) hRn 2
   have hRρ2 : 1 / ρ ≤ R ^ 2 := by
     have h := Real.sq_sqrt (by positivity : (0:ℝ) ≤ 1 / ρ)
-    nlinarith [Real.sqrt_nonneg (1 / ρ)]
+    calc 1 / ρ = Real.sqrt (1 / ρ) ^ 2 := h.symm
+      _ ≤ R ^ 2 := pow_le_pow_left₀ (Real.sqrt_nonneg _) hRρ 2
   have hR2pos : (0:ℝ) < R ^ 2 := by linarith
   have hquot : (1:ℝ) ≤ R ^ 2 / ((n : ℝ) + 1) := by
     rw [le_div_iff₀ hn1]; linarith
@@ -205,7 +206,7 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
   have hklb : R ^ 2 * r - 1 ≤ ((k R : ℕ) : ℝ) := by linarith
   have hρR : (1:ℝ) ≤ R ^ 2 * ρ := by
     rw [div_le_iff₀ hρ] at hRρ2; linarith
-  have hk'2R : ((k' R : ℕ) : ℝ) ≤ 2 * ρ * R ^ 2 := by nlinarith
+  have hk'2R : ((k' R : ℕ) : ℝ) ≤ 2 * ρ * R ^ 2 := by linarith only [hk'2, hρR]
   set A₁ : ℕ := ⌈2 * R ^ 2 / ((n : ℝ) + 1)⌉₊ with hA₁def
   set A₂ : ℕ := ⌈R ^ 2 * (r - 5 / ((n : ℝ) + 1))⌉₊ with hA₂def
   set S : ℕ → ℝ := fun a => ∑ b ∈ Finset.range (k' R), Sandpile.heatKernel d (a + b) x y with hSdef
@@ -270,7 +271,7 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
   have hA₂lb : (r / 2) * R ^ 2 ≤ (A₂ : ℝ) + 1 := by
     have : R ^ 2 * (r / 2) ≤ R ^ 2 * (r - 5 / ((n : ℝ) + 1)) :=
       mul_le_mul_of_nonneg_left hrr (by positivity)
-    nlinarith
+    linarith only [this, hA₂ge]
   have hcnt : ((k R - A₂ : ℕ) : ℝ) ≤ (6 / ((n : ℝ) + 1)) * R ^ 2 := by
     rcases le_or_gt (k R) A₂ with h | h
     · have hz : k R - A₂ = 0 := by omega
@@ -322,7 +323,7 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
       have hQnn : (0:ℝ) ≤ 4 * C₀ * (((6 / ((n : ℝ) + 1)) * R ^ 2) * ((r / 2) * R ^ 2) ^ (-γ)) := by
         have h1 : (0:ℝ) ≤ ((6 / ((n : ℝ) + 1)) * R ^ 2) * ((r / 2) * R ^ 2) ^ (-γ) :=
           mul_nonneg (by positivity) hQ1nn
-        nlinarith
+        exact mul_nonneg (by positivity) h1
       exact mul_le_mul hB hP2 hP2nn hQnn
     have h3 : R ^ ((d : ℝ) - 4) * (4 * C₀ * (((6 / ((n : ℝ) + 1)) * R ^ 2) *
           ((r / 2) * R ^ 2) ^ (-γ)) * ((2 * ρ) * R ^ 2) ^ (1 - α))
@@ -349,9 +350,7 @@ theorem exists_row_error_bound (hd : 1 ≤ d) (hd3 : d ≤ 3) {r ρ : ℝ} (hr :
       ≤ Csm * (1 + 2 * ρ) * 3 * (1 / ((n : ℝ) + 1)) ^ ((1 : ℝ) / 4) := by
     have h := mul_le_mul_of_nonneg_left hsmall2 hCsmρ.le
     linarith
-  have hextra1 : (0:ℝ) ≤ Csm * (1 + 2 * ρ) * 3 * (1 / ((n : ℝ) + 1)) := by
-    have := hCsmρ.le
-    nlinarith
+  have hextra1 : (0:ℝ) ≤ Csm * (1 + 2 * ρ) * 3 * (1 / ((n : ℝ) + 1)) := by positivity
   have hextra2 : (0:ℝ) ≤ 24 * C₀ * ((r / 2) ^ (-γ) * (2 * ρ) ^ (1 - α)) *
       ((1 / ((n : ℝ) + 1)) ^ ((1 : ℝ) / 4)) := mul_nonneg hband0.le hq0
   have hgoal : (Csm * (1 + 2 * ρ) * 3 + 24 * C₀ * ((r / 2) ^ (-γ) * (2 * ρ) ^ (1 - α))) *

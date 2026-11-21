@@ -1,6 +1,6 @@
 # Comparator runs
 
-The official `leanprover/comparator` was run on all seventeen pairs in this directory on a local machine (Linux 6.17), with the Lean kernel and the independent `nanoda` kernel both enabled (every committed `comparator.json` sets `"enable_nanoda": true`).  The pairs `FourFirstOrder`, `FourGaussian`, `HighFirstOrder`, `HighNonconvergence`, `HighSobolevLimit`, `HighTail` and `MeanGrowthFour` were run against the repository at commit `22843dcf6cd47a3a8688a3fb9196accb2d229087`, the five `*Unconditional` pairs at commit `909746b755502d79322614e4c263e0aef15e64b5`, and `Nontriviality`, `CriticalLevels`, `MeanGrowthLow`, `BrownianScalingLimit` and `FourSobolev`, whose bridges name the cited propositions, at commit `b391b5ef6564052b3ff594418d5d5d62abeddf49`.  Between these commits the challenges, solutions, bridges and vocabulary of the pairs are unchanged, and the library changes only in docstrings.  The dependencies are those pinned in `lake-manifest.json` (mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55`, Lattice-Probability `751040ea092fcf9ae7de4edb7e4f89af4c5291ec`) under `leanprover/lean4:v4.35.0-rc2`.
+The official `leanprover/comparator` was run on all seventeen pairs in this directory on a local machine (Linux 6.17), with the Lean kernel and the independent `nanoda` kernel both enabled (every committed `comparator.json` sets `"enable_nanoda": true`).  All seventeen pairs were run against the repository at commit `0f0f9369d247243a9d107b5725a5bcdc73858456`.  The dependencies are those pinned in `lake-manifest.json` (mathlib `065356127b1dc0016f66b7283ce0ce2c4055aa55`, Lattice-Probability `751040ea092fcf9ae7de4edb7e4f89af4c5291ec`) under `leanprover/lean4:v4.35.0-rc2`.
 
 | Tool | Revision |
 |---|---|
@@ -15,103 +15,103 @@ A pass means the comparator printed `nanoda kernel accepts the solution`, `Lean 
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (531 s) |
+| Lean and nanoda kernels | passed (435 s) |
 
 ## `BrownianScalingLimitUnconditional`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (377 s) |
+| Lean and nanoda kernels | passed (477 s) |
 
 ## `CriticalLevels`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (652 s) |
+| Lean and nanoda kernels | passed (625 s) |
 
 ## `CriticalLevelsUnconditional`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (636 s) |
+| Lean and nanoda kernels | passed (730 s) |
 
 ## `FourFirstOrder`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (210 s) |
+| Lean and nanoda kernels | passed (265 s) |
 
 ## `FourGaussian`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (286 s) |
+| Lean and nanoda kernels | passed (399 s) |
 
 ## `FourSobolev`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (434 s) |
+| Lean and nanoda kernels | passed (457 s) |
 
 ## `FourSobolevUnconditional`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (369 s) |
+| Lean and nanoda kernels | passed (516 s) |
 
 ## `HighFirstOrder`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (168 s) |
+| Lean and nanoda kernels | passed (242 s) |
 
 ## `HighNonconvergence`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (419 s) |
+| Lean and nanoda kernels | passed (479 s) |
 
 ## `HighSobolevLimit`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (583 s) |
+| Lean and nanoda kernels | passed (660 s) |
 
 ## `HighTail`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (203 s) |
+| Lean and nanoda kernels | passed (217 s) |
 
 ## `MeanGrowthFour`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (207 s) |
+| Lean and nanoda kernels | passed (256 s) |
 
 ## `MeanGrowthLow`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (621 s) |
+| Lean and nanoda kernels | passed (389 s) |
 
 ## `MeanGrowthLowUnconditional`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (371 s) |
+| Lean and nanoda kernels | passed (419 s) |
 
 ## `Nontriviality`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (613 s) |
+| Lean and nanoda kernels | passed (609 s) |
 
 ## `NontrivialityUnconditional`
 
 | Check | Result |
 |---|---|
-| Lean and nanoda kernels | passed (612 s) |
+| Lean and nanoda kernels | passed (668 s) |
 
 To reproduce one pair, from the repository root:
 

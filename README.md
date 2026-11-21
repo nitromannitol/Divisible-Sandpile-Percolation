@@ -384,9 +384,9 @@ parameter is bound before it. The certificate of the build and of each node's ax
 
 ## Size
 
-The library contains 1,866 Lean files with 268,795 physical lines, on top of mathlib and
+The library contains 1,866 Lean files with 268,835 physical lines, on top of mathlib and
 Lattice-Probability. The count covers `Sandpile.lean` and `Sandpile/`. The comparator sources
-(65 files, 41,398 lines) are counted separately.
+(65 files, 41,296 lines) are counted separately.
 
 ## Building
 

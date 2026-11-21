@@ -331,7 +331,6 @@ theorem abs_cutoff_meshValue_translate_sub_le
     simp only [zero_mul, sub_zero, abs_zero]
     positivity
 
-set_option maxHeartbeats 1600000 in
 /-- **The oscillation of the rescaled odometer between two lattice sites at unit lattice
 separation `e`,** the estimate clause 1 of `thm:main-explosion`(i)(b) needs: with probability
 at least `1 - δ`, the difference `R^(d/2-2)(u_{⌊TR²⌋}(y+e) - u_{⌊TR²⌋}(y))` stays below any
@@ -415,10 +414,11 @@ theorem exists_odometer_cell_oscillation
     have h1 : 1 / T ≤ R := by
       have : (0:ℝ) < 1 / T := by positivity
       linarith
-    have h2 : R ≤ R ^ 2 := by nlinarith
+    have h2 : R ≤ R ^ 2 := le_self_pow₀ hR1 (by norm_num)
     have h3 : 1 / T ≤ R ^ 2 := le_trans h1 h2
     rw [div_le_iff₀ hT] at h3
-    nlinarith
+    rw [mul_comm]
+    exact h3
   have hn1 : 1 ≤ ⌊T * R ^ 2⌋₊ := Nat.le_floor (by exact_mod_cast hTR)
   have hnT : ((⌊T * R ^ 2⌋₊ : ℕ) : ℝ) ≤ R ^ 2 * T := by
     have h := Nat.floor_le (show (0:ℝ) ≤ T * R ^ 2 by positivity)
@@ -480,11 +480,11 @@ theorem exists_odometer_cell_oscillation
           have h2 : (Sandpile.External.Lclt.scaledSite R y) i = ((y i : ℤ) : ℝ) / R := rfl
           rw [h2, abs_div, abs_of_pos hR0]
           rw [div_le_iff₀ hR0]
-          nlinarith [abs_nonneg ((y i : ℤ) : ℝ), h1, hR1, hρ]
+          linarith only [h1, hR1]
         exact Sandpile.Continuum.norm_le_of_coord_le (v := Sandpile.External.Lclt.scaledSite R y)
           (by positivity : (0:ℝ) ≤ ρ + 1) hc
       have hyρ' : ‖Sandpile.External.Lclt.scaledSite R y‖ ≤ ρ' := by
-        rw [hρ'def]; nlinarith [hnormy, hsd0, hρ]
+        rw [hρ'def]; linarith only [hnormy, hsd0, hρ]
       have hdist1 : ‖Sandpile.External.Lclt.scaledSite R (y + e)
           - Sandpile.External.Lclt.scaledSite R y‖ ≤ Real.sqrt d / R := by
         have h := Sandpile.norm_scaledSite_sub_le (m := 1) hR0 (y + e) y (by norm_num)
@@ -500,7 +500,7 @@ theorem exists_odometer_cell_oscillation
           - Sandpile.External.Lclt.scaledSite R y) (Sandpile.External.Lclt.scaledSite R y)
         rw [sub_add_cancel] at h
         have h2 : Real.sqrt d * (ρ + 1) ≤ ρ' - Real.sqrt d := by
-          rw [hρ'def]; nlinarith [hsd0, hρ]
+          rw [hρ'def]; linarith only [hρ]
         have h3 : ‖Sandpile.External.Lclt.scaledSite R y‖ ≤ ρ' - Real.sqrt d := le_trans hnormy h2
         linarith [h, hdist1, hsdR, h3]
       have hnR2T : (n : ℝ) / R ^ 2 ≤ T := by
@@ -521,7 +521,7 @@ theorem exists_odometer_cell_oscillation
         have h2 : Real.sqrt d / R ≤ δ₁ / 2 := by
           rw [div_le_iff₀ hδ₁] at hRδ₁
           rw [div_le_iff₀ hR0]
-          nlinarith [hRδ₁, hδ₁]
+          linarith only [hRδ₁]
         linarith [hdist1, h2, hδ₁]
       have hE₀ : |Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) n (y + e)
           - Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) n y| ≤ ε / 8 := by
@@ -599,7 +599,7 @@ theorem exists_odometer_cell_oscillation
           have h2 : Real.sqrt d / R ≤ δ₂ / 2 := by
             rw [div_le_iff₀ hδ₂] at hRδ₂
             rw [div_le_iff₀ hR0]
-            nlinarith [hRδ₂, hδ₂]
+            linarith only [hRδ₂]
           linarith [hdistz, h2, hδ₂]
         have h := le_of_not_gt (fun hlt => hnotB ⟨_, hp, _, hq, hdistpq, hlt⟩)
         simp only at h
@@ -654,7 +654,7 @@ theorem exists_odometer_cell_oscillation
         have hMle : Real.sqrt d / (R * A) * M ≤ ε / 8 := by
           rw [div_mul_eq_mul_div, div_le_iff₀ (by positivity : (0:ℝ) < R * A)]
           rw [div_le_iff₀ (by positivity : (0:ℝ) < A * ε)] at hRM
-          nlinarith [hRM, hA0, hε, hM0, hsd0]
+          linarith only [hRM]
         linarith [h, hMle]
       have hb := Sandpile.abs_rescaled_odometer_translate_sub_le hd R hR0
         (Sandpile.scenery d σ) n y e

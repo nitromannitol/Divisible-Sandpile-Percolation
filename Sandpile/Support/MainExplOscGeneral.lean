@@ -142,7 +142,6 @@ theorem abs_cutoff_meshValue_translate_sub_le_of_dist
     simp only [zero_mul, sub_zero, abs_zero]
     positivity
 
-set_option maxHeartbeats 1600000 in
 /-- **The oscillation of the rescaled odometer between two lattice sites at a fixed
 continuum mesh distance,** generalizing `exists_odometer_cell_oscillation` from a
 unit lattice step to a continuum separation `η` produced by the theorem itself
@@ -226,7 +225,7 @@ theorem exists_odometer_oscillation_at_distance
       (le_div_iff₀ (by positivity : (0:ℝ) < 8 * (M + 1))).mp hηAM
     have hstep : η * M ≤ η * (M + 1) := mul_le_mul_of_nonneg_left hMM1 hη0.le
     rw [div_mul_eq_mul_div, div_le_iff₀ hA0]
-    nlinarith [hkey, hstep]
+    linarith only [hkey, hstep]
   set R₀ : ℝ := max (1 + 1 / T) 1 with hR₀def
   have hR₀0 : 0 < R₀ := lt_of_lt_of_le (by positivity) (le_max_left _ _)
   refine ⟨η, R₀, hη0, hR₀0, ?_⟩
@@ -240,10 +239,11 @@ theorem exists_odometer_oscillation_at_distance
     have h1 : 1 / T ≤ R := by
       have : (0:ℝ) < 1 / T := by positivity
       linarith
-    have h2 : R ≤ R ^ 2 := by nlinarith
+    have h2 : R ≤ R ^ 2 := le_self_pow₀ hR1 (by norm_num)
     have h3 : 1 / T ≤ R ^ 2 := le_trans h1 h2
     rw [div_le_iff₀ hT] at h3
-    nlinarith
+    rw [mul_comm]
+    exact h3
   have hn1 : 1 ≤ ⌊T * R ^ 2⌋₊ := Nat.le_floor (by exact_mod_cast hTR)
   have hnT : ((⌊T * R ^ 2⌋₊ : ℕ) : ℝ) ≤ R ^ 2 * T := by
     have h := Nat.floor_le (show (0:ℝ) ≤ T * R ^ 2 by positivity)
@@ -305,11 +305,11 @@ theorem exists_odometer_oscillation_at_distance
           have h2 : (Sandpile.External.Lclt.scaledSite R y) i = ((y i : ℤ) : ℝ) / R := rfl
           rw [h2, abs_div, abs_of_pos hR0]
           rw [div_le_iff₀ hR0]
-          nlinarith [abs_nonneg ((y i : ℤ) : ℝ), h1, hR1, hρ]
+          linarith only [h1, hR1]
         exact Sandpile.Continuum.norm_le_of_coord_le (v := Sandpile.External.Lclt.scaledSite R y)
           (by positivity : (0:ℝ) ≤ ρ + 1) hc
       have hyρ' : ‖Sandpile.External.Lclt.scaledSite R y‖ ≤ ρ' := by
-        rw [hρ'def]; nlinarith [hnormy]
+        rw [hρ'def]; linarith only [hnormy]
       have hdist1 : ‖Sandpile.External.Lclt.scaledSite R (y + e)
           - Sandpile.External.Lclt.scaledSite R y‖ ≤ η := by
         rw [Sandpile.scaledSite_add, add_sub_cancel_left]; exact heη
@@ -318,7 +318,7 @@ theorem exists_odometer_oscillation_at_distance
           - Sandpile.External.Lclt.scaledSite R y) (Sandpile.External.Lclt.scaledSite R y)
         rw [sub_add_cancel] at h
         rw [hρ'def]
-        nlinarith [h, hdist1, hnormy, hη1]
+        linarith only [h, hdist1, hnormy, hη1]
       have hnR2T : (n : ℝ) / R ^ 2 ≤ T := by
         rw [div_le_iff₀ (by positivity : (0:ℝ) < R ^ 2)]
         calc (n : ℝ) ≤ R ^ 2 * T := hnT'
@@ -349,7 +349,7 @@ theorem exists_odometer_oscillation_at_distance
           |Frozen.HeatPotentialInvariance.meshValue d R (Sandpile.scenery d σ) (n - k) z| ≤ M := by
         intro k hk z hz
         have hzC₂ : ‖Sandpile.External.Lclt.scaledSite R z‖ ≤ 2 * A + 5 := by
-          nlinarith [hη1]
+          linarith only [hz, hη1]
         have hnkT : ((n - k : ℕ) : ℝ) / R ^ 2 ≤ T := by
           have h1 : ((n - k : ℕ) : ℝ) ≤ (n : ℝ) := by
             exact_mod_cast Nat.sub_le n k
@@ -372,7 +372,7 @@ theorem exists_odometer_oscillation_at_distance
               ≤ ε / 8 := by
         intro k hk z hz
         have hzC₂ : ‖Sandpile.External.Lclt.scaledSite R z‖ ≤ 2 * A + 5 := by
-          nlinarith [hη1]
+          linarith only [hz, hη1]
         have hdistz : ‖Sandpile.External.Lclt.scaledSite R (e + z)
             - Sandpile.External.Lclt.scaledSite R z‖ ≤ η := by
           rw [Sandpile.scaledSite_add, add_sub_cancel_right]; exact heη
@@ -380,7 +380,7 @@ theorem exists_odometer_oscillation_at_distance
           have h := norm_add_le (Sandpile.External.Lclt.scaledSite R (e + z)
             - Sandpile.External.Lclt.scaledSite R z) (Sandpile.External.Lclt.scaledSite R z)
           rw [sub_add_cancel] at h
-          nlinarith [h, hdistz, hz, hη1]
+          linarith only [h, hdistz, hz, hη1]
         have hnkT : ((n - k : ℕ) : ℝ) / R ^ 2 ≤ T := by
           have h1 : ((n - k : ℕ) : ℝ) ≤ (n : ℝ) := by exact_mod_cast Nat.sub_le n k
           have h2 : ((n - k : ℕ) : ℝ) / R ^ 2 ≤ (n : ℝ) / R ^ 2 :=
